@@ -1,7 +1,7 @@
 <div align="center">
     <img src="https://github.com/TrackVerse.png?size=2048" width="128px" style="max-width:100%;">
     <h3 style="font-size: 2rem; margin-bottom: 0">PR Guidelines</h3>
-    <h4 style="margin-top: 0">Revision 3.2</h4>
+    <h4 style="margin-top: 0">Revision 1.1</h4>
     <br />
 </div>
 

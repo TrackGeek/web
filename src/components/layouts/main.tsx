@@ -2,7 +2,6 @@ import { Bell, Heart, LogIn, Menu } from "lucide-react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
-import { StarsBackground } from "../ui/starsBackground";
 
 interface LayoutProps {
 	title: string;
@@ -16,8 +15,7 @@ export function Layout({ title, children }: LayoutProps) {
 				<title>{title} | TrackGeek</title>
 			</Helmet>
 
-			<div className="flex flex-col min-h-full">
-				<StarsBackground />
+			<div className="bg-neutral-900 flex flex-col min-h-full">
 				<header className="bg-black w-full h-14 flex items-center justify-between px-5 py-2">
 					<div className="flex items-center justify-center gap-3">
 						<Button>

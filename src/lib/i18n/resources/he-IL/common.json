@@ -1,0 +1,11 @@
+{
+  "example": "This is an example string for {{name}}.",
+  "yes": "yes",
+  "no": "no",
+  "languages": {
+    "ptBR": "Portuguese - Brazil",
+    "ptPT": "Portuguese - Portugal",
+    "esES": "Spanish - Spain",
+    "enUS": "English - United States"
+  }
+}

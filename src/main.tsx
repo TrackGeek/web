@@ -1,16 +1,11 @@
+import "./lib/i18n/config.ts";
 import "./global.css";
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import {
-	createBrowserRouter,
-	Navigate,
-	RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import { HomePage } from "./pages/home";
 import { LoginPage } from "./pages/login";
-
-import "../i18n.ts";
 
 export function Routes() {
 	const protectRoutes = [

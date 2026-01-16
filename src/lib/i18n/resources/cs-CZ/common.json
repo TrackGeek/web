@@ -1,7 +1,7 @@
 {
-	"example": "Esta é uma string de exemplo para {{name}}.",
-	"yes": "sim",
-	"no": "não",
+	"example": "This is an example string for {{name}}.",
+	"yes": "yes",
+	"no": "no",
 	"donate": "Donate",
 	"languages": {
 		"ptBR": "Portuguese (Brazil)",

@@ -1,0 +1,29 @@
+{
+	"following": "Following",
+	"global": "Global",
+	"trending": "Trending",
+	"reviewed": "reviewed <strong>{{content}}</strong>",
+	"addScreenshots": "added screenshots of <strong>{{content}}</strong>",
+	"rewatched": "rewatched <strong>{{content}}</strong>",
+	"replayed": "replayed <strong>{{content}}</strong>",
+	"watchedEpisodes": "watched episode {{episodeNumber}} of <strong>{{content}}</strong>",
+	"readChapters": "read chapter {{chapterNumberInitial}} - {{chapterNumberEnd}} of <strong>{{content}}</strong>",
+	"moved": "moved a {{type}} from {{fromList}} to {{toList}}",
+	"plansToRead": "plans to read <strong>{{content}}</strong>",
+	"plansToWatch": "plans to watch <strong>{{content}}</strong>",
+	"lists": {
+		"playing": "Playing",
+		"wanttoplay": "Want to Play",
+		"played": "Played",
+		"replaying": "Replaying",
+		"planning": "Planning",
+		"rewatching": "Rewatching",
+		"reading": "Reading",
+		"read": "Read",
+		"rereading": "Rereading",
+		"paused": "Paused",
+		"completed": "Completed",
+		"dropped": "Dropped",
+		"toRead": "To Read"
+	}
+}

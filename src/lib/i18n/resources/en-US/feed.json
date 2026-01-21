@@ -25,5 +25,20 @@
 		"completed": "Completed",
 		"dropped": "Dropped",
 		"toRead": "To Read"
-	}
+	},
+  "criteries": {
+    "gameplay": "Gameplay",
+    "story": "Story",
+    "soundtrack": "Soundtrack",
+    "graphics": "Graphics",
+    "direction": "Direction",
+    "production": "Production",
+    "acting": "Acting",
+    "characters": "Characters",
+    "language": "Language",
+    "theme": "Theme",
+    "art": "Art",
+    "worldbuilding": "World-building",
+    "animation": "Animation"
+  }
 }

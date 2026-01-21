@@ -6,6 +6,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import { HomePage } from "./pages/home";
 import { LoginPage } from "./pages/login";
+import { RootProvider } from './providers/root-provider.tsx';
 
 export function Routes() {
 	const protectRoutes = [
@@ -36,6 +37,8 @@ export function Routes() {
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<Routes />
+    <RootProvider>
+		  <Routes />
+    </RootProvider>
 	</StrictMode>,
 );

@@ -27,3 +27,7 @@ dist-ssr
 
 bun.lock
 pnpm-lock.yaml
+
+# env
+.env*
+!.env.example

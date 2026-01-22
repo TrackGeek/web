@@ -89,9 +89,6 @@ export function FeedReview({ profile, item }: feedReviewProps) {
 									);
 								}
 							})}
-							<span className="text-sm text-muted-foreground ml-2">
-								{item.criteries.all}/10
-							</span>
 						</div>
 
 						<div className="flex gap-4 text-xs">
@@ -132,9 +129,6 @@ export function FeedReview({ profile, item }: feedReviewProps) {
 										}
 									})}
 								</div>
-								<span className="text-muted-foreground ml-1">
-									{item.criteries.gameplay}
-								</span>
 							</div>
 							<p>•</p>
 							<div className="flex items-center gap-1">
@@ -174,9 +168,6 @@ export function FeedReview({ profile, item }: feedReviewProps) {
 										}
 									})}
 								</div>
-								<span className="text-muted-foreground ml-1">
-									{item.criteries.story}
-								</span>
 							</div>
 							<p>•</p>
 							<div className="flex items-center gap-1">
@@ -216,9 +207,6 @@ export function FeedReview({ profile, item }: feedReviewProps) {
 										}
 									})}
 								</div>
-								<span className="text-muted-foreground ml-1">
-									{item.criteries.graphics}
-								</span>
 							</div>
 							<p>•</p>
 							<div className="flex items-center gap-1">
@@ -258,9 +246,6 @@ export function FeedReview({ profile, item }: feedReviewProps) {
 										}
 									})}
 								</div>
-								<span className="text-muted-foreground ml-1">
-									{item.criteries.soundtrack}
-								</span>
 							</div>
 						</div>
 						<p className="text-sm line-clamp-2 text-foreground/90">

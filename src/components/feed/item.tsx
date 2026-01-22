@@ -23,11 +23,11 @@ interface feedItemProps {
 export function FeedItem({ profile, item }: feedItemProps) {
 	const { i18n } = useTranslation();
 	return (
-		<div className="flex w-full max-h-28">
-			<Link to={"/"} className="w-auto max-w-20">
+		<div className="flex w-full h-30">
+			<Link to={"/"} className="w-auto min-w-16 shrink-0">
 				<img
 					src={item.coverURL}
-					className="h-full w-full object-contain rounded-l-2xl"
+					className="h-full object-cover rounded-l-2xl aspect-3/4"
 					alt=""
 				/>
 			</Link>

@@ -1,6 +1,6 @@
 {
-	"example": "Esta es una cadena de ejemplo para {{name}}.",
-	"yes": "si",
+	"example": "This is an example string for {{name}}.",
+	"yes": "yes",
 	"no": "no",
 	"donate": "Donate",
 	"languages": {

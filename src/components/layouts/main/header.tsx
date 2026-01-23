@@ -13,6 +13,7 @@ import {
 	Mail,
 	Menu,
 	Mountain,
+	Search,
 	Settings,
 	TvMinimalPlay,
 	User,
@@ -134,6 +135,11 @@ export function Header() {
 			</div>
 
 			<div className="flex items-center justify-center gap-3">
+				<Link to="/search">
+					<Button>
+						<Search />
+					</Button>
+				</Link>
 				<Link to="/donate">
 					<Button variant={"outline"} className="">
 						<Heart color="red" fill="red" />

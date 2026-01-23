@@ -17,9 +17,9 @@ export function Footer() {
 					<div className="flex flex-col gap-3">
 						<h3 className="text-accent font-bold">{t("common:community")}</h3>
 
-						<Link to="/">{t("common:addData")}</Link>
-						<Link to="/">{t("common:about")}</Link>
-						<Link to="/">{t("common:donate")}</Link>
+						<Link to="/add-data">{t("common:addData")}</Link>
+						<Link to="/about">{t("common:about")}</Link>
+						<Link to="/donate">{t("common:donate")}</Link>
 						<Link to="https://crowdin.com/project/trackgeek-official" target="_blank">
 							{t("common:translate")}
 						</Link>
@@ -28,8 +28,8 @@ export function Footer() {
 					<div className="flex flex-col gap-3">
 						<h3 className="text-accent font-bold">{t("common:legal")}</h3>
 
-						<Link to="/">{t("common:terms")}</Link>
-						<Link to="/">{t("common:privacy")}</Link>
+						<Link to="/terms">{t("common:terms")}</Link>
+						<Link to="/privacy-policy">{t("common:privacy")}</Link>
 					</div>
 
 					<div className="flex flex-col gap-3">

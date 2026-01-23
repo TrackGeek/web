@@ -3,12 +3,18 @@ import { Icon } from "@iconify/react";
 import { useQuery } from "@tanstack/react-query";
 import {
 	Bell,
+	Book,
+	Clapperboard,
+	Gamepad2,
 	Heart,
+	LibraryBig,
 	LogIn,
 	LogOut,
 	Mail,
 	Menu,
+	Mountain,
 	Settings,
+	TvMinimalPlay,
 	User,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -72,9 +78,55 @@ export function Header() {
 	return (
 		<header className="bg-border/30 backdrop-blur border-b border-border w-full h-14 flex items-center justify-between px-5 py-2">
 			<div className="flex items-center justify-center gap-3">
-				<Button>
-					<Menu />
-				</Button>
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild className="w-fit">
+						<Button>
+							<Menu />
+						</Button>
+					</DropdownMenuTrigger>
+
+					<DropdownMenuContent
+						className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+						align="start"
+					>
+						<DropdownMenuItem asChild>
+							<Link to="/anime" className="cursor-pointer">
+								<Mountain size={18} className="text-white" />
+								{t("common:types.anime_plural")}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link to="/books" className="cursor-pointer">
+								<Book size={18} className="text-white" />
+								{t("common:types.book_plural")}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link to="/games" className="cursor-pointer">
+								<Gamepad2 size={18} className="text-white" />
+								{t("common:types.game_plural")}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link to="/tv" className="cursor-pointer">
+								<TvMinimalPlay size={18} className="text-white" />
+								{t("common:types.tv_plural")}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link to="/mangas" className="cursor-pointer">
+								<LibraryBig size={18} className="text-white" />
+								{t("common:types.manga_plural")}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link to="/movies" className="cursor-pointer">
+								<Clapperboard size={18} className="text-white" />
+								{t("common:types.movie_plural")}
+							</Link>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
 
 				<Link to="/">
 					<img src="/logo.svg" alt="Logo" className="h-full w-45" />
@@ -96,7 +148,7 @@ export function Header() {
 						{meQuery.data && (
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
-									<Avatar className="border border-border size-9">
+									<Avatar className="border border-border size-9 cursor-pointer">
 										<AvatarFallback>{getInitialsFromName(name)}</AvatarFallback>
 									</Avatar>
 								</DropdownMenuTrigger>
@@ -125,7 +177,7 @@ export function Header() {
 									<DropdownMenuItem asChild>
 										<Link to="/profile" className="cursor-pointer">
 											<User size={18} className="text-white" />
-											Profile
+											{t("common:profile")}
 										</Link>
 									</DropdownMenuItem>
 

@@ -1,12 +1,18 @@
-import { Filter } from "lucide-react";
+import { Filter, Mountain } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { FeedListFollowing } from "@/components/feed/listFollowing";
 import { Layout } from "@/components/layouts/main";
+import { StillReading } from "@/components/sidebar/stillReading";
 import { StillWatching } from "@/components/sidebar/stillWatching";
 import { Button } from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuCheckboxItem,
+	DropdownMenuContent,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LANGUAGE_TOKEN, supportedLanguages } from "@/lib/i18n/config";
-import { StillReading } from "@/components/sidebar/stillReading";
 
 export function HomePage() {
 	const { t, i18n } = useTranslation();
@@ -24,9 +30,23 @@ export function HomePage() {
 								<TabsTrigger value="global">{t("feed:global")}</TabsTrigger>
 								<TabsTrigger value="trending">{t("feed:trending")}</TabsTrigger>
 							</TabsList>
-							<Button variant="default">
-								<Filter />
-							</Button>
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild className="w-fit">
+									<Button>
+										<Filter />
+									</Button>
+								</DropdownMenuTrigger>
+
+								<DropdownMenuContent
+									className="w-(--radix-dropdown-menu-trigger-width) rounded-lg"
+									align="end"
+								>
+									<DropdownMenuCheckboxItem checked>
+										<Mountain size={18} className="text-white" />
+										{t("common:types.anime_other")}
+									</DropdownMenuCheckboxItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
 						</div>
 						<TabsContent value="following">
 							<FeedListFollowing />
@@ -97,7 +117,7 @@ export function HomePage() {
 					>
 						{supportedLanguages.map((lang) => (
 							<option key={lang.id} value={lang.id}>
-								{t(lang.name as any)}
+								{t(lang.name)}
 							</option>
 						))}
 					</select>

@@ -343,7 +343,7 @@ export function BookDetails() {
 										<div className="flex items-center justify-between mb-2">
 											<img src="https://assets.hardcover.app/edition/31601422/3a01ea07-01f4-45a2-9940-6fc7e00e0d08.jpeg" />
 										</div>
-										<p className="text-xl font-bold text-card-foreground">
+										<p className="text-lg font-bold text-card-foreground">
 											Livros Que Te Querem Deixar Louco
 										</p>
 									</div>

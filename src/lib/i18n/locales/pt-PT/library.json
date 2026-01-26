@@ -1,4 +1,19 @@
 {
-	"stillWatching": "Ainda a assistir...",
-	"stillReading": "Ainda a ler..."
+	"stillWatching": "Still Watching...",
+	"stillReading": "Still Reading...",
+	"refreshData": "Refresh Data",
+	"year": "Year",
+	"pages": "Pages",
+	"moreOptions": "More Options",
+	"reviews": "reviews",
+	"medium": "Medium",
+	"days": "days",
+	"genres": "Genres",
+	"synopsis": "Synopsis",
+	"bookCharacteristics": "Book Characteristics",
+	"mood": "Mood",
+	"contentWarnings": "Content Warnings",
+	"communityStatistics": "Community Statistics",
+	"lists": "Lists",
+	"info": "Info"
 }

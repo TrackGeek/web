@@ -4,7 +4,6 @@
 	"scripts": {
     "crowdin:download": "crowdin download",
     "crowdin:upload": "crowdin upload",
-    "crowdin:push": "crowdin push",
     "crowdin:status": "crowdin status",
 		"lint": "biome check",
 		"format": "biome format --write",

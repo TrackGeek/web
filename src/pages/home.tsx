@@ -12,7 +12,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LANGUAGE_TOKEN, supportedLanguages } from "@/lib/i18n/config";
+import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
 
 export function HomePage() {
 	const { t, i18n } = useTranslation();
@@ -115,7 +115,7 @@ export function HomePage() {
 							localStorage.setItem(LANGUAGE_TOKEN, e.target.value);
 						}}
 					>
-						{supportedLanguages.map((lang) => (
+						{SUPPORTED_LANGUAGES.map((lang) => (
 							<option key={lang.id} value={lang.id}>
 								{t(lang.name)}
 							</option>

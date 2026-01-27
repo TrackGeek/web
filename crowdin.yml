@@ -1,8 +1,8 @@
-project_id: '862852'
+project_id_env: "CROWDIN_PROJECT_ID"
+api_token_env: "CROWDIN_API_TOKEN"
 base_path: .
-base_url: 'https://api.crowdin.com'
-preserve_hierarchy: 1
+preserve_hierarchy: true
+
 files:
-  - source: src/lib/i18n/resources/**/*.json
-    translation: /src/lib/i18n/resources/%locale%/%original_file_name%
-    dest: TrackGeek/%original_file_name%
+  - source: src/lib/i18n/locales/en-US/*.json
+    translation: src/lib/i18n/locales/%locale%/%original_file_name%

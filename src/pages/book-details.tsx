@@ -1,19 +1,23 @@
 import {
 	BarChart3,
+	Barcode,
+	BookCopy,
 	Bookmark,
 	BookOpen,
 	BookOpenText,
-	Brain,
 	CheckCircle,
 	CheckSquare,
-	Clock,
 	Heart,
 	MoreHorizontal,
+	ScanBarcode,
 	Star,
 	User,
 	XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { ListItem } from "@/components/details/list";
+import { ReviewItem } from "@/components/details/review";
 import { Layout } from "@/components/layouts/main";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -113,7 +117,7 @@ export function BookDetails() {
 								<p className="font-semibold text-card-foreground">2021</p>
 							</div>
 						</div>
-						<Button variant="outline" className="w-full mt-5">
+						<Button variant="outline" className="w-full">
 							{t("library:refreshData")}
 						</Button>
 					</div>
@@ -127,9 +131,21 @@ export function BookDetails() {
 							</h1>
 							<div className="flex items-center space-x-2">
 								<User className="w-5 h-5 text-muted-foreground" />
-								<p className="text-xl text-muted-foreground">
+								<Link
+									to={"/writer/patrick-rothfuss"}
+									className="text-xl text-muted-foreground"
+								>
 									Patrick Rothfuss
-								</p>
+								</Link>
+							</div>
+							<div className="flex items-center space-x-2 mt-2">
+								<BookCopy className="w-5 h-5 text-muted-foreground" />
+								<Link
+									to={"/books-series/series_names"}
+									className="text-xl text-muted-foreground"
+								>
+									series_names (can be hidden if not exists)
+								</Link>
 							</div>
 						</div>
 
@@ -161,9 +177,11 @@ export function BookDetails() {
 								<TabsList className="w-full">
 									<TabsTrigger value="info">{t("library:info")}</TabsTrigger>
 									<TabsTrigger value="reviews" className="capitalize">
-										{t("library:reviews")}
+										{t("library:reviews")} (125)
 									</TabsTrigger>
-									<TabsTrigger value="lists">{t("library:lists")}</TabsTrigger>
+									<TabsTrigger value="lists">
+										{t("library:lists")} (30)
+									</TabsTrigger>
 								</TabsList>
 							</div>
 							<TabsContent value="info">
@@ -225,22 +243,22 @@ export function BookDetails() {
 									</h3>
 									<div className="grid grid-cols-2 md:grid-cols-3 gap-4">
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Clock className="w-5 h-5 text-muted-foreground" />
+											<ScanBarcode className="w-5 h-5 text-muted-foreground" />
 											<div>
-												<p className="text-sm text-muted-foreground">Ritmo</p>
+												<p className="text-sm text-muted-foreground">ISBN 10</p>
 												<p className="font-medium text-card-foreground">
-													Médio
+													6555117737
 												</p>
 											</div>
 										</div>
 
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Brain className="w-5 h-5 text-muted-foreground" />
+											<Barcode className="w-5 h-5 text-muted-foreground" />
 											<div>
-												<p className="text-sm text-muted-foreground">
-													Complexidade
+												<p className="text-sm text-muted-foreground">ISBN 13</p>
+												<p className="font-medium text-card-foreground">
+													9786555117738
 												</p>
-												<p className="font-medium text-card-foreground">Alta</p>
 											</div>
 										</div>
 
@@ -336,17 +354,12 @@ export function BookDetails() {
 									</div>
 								</div>
 							</TabsContent>
-							<TabsContent value="reviews"></TabsContent>
+							<TabsContent value="reviews">
+								<ReviewItem />
+							</TabsContent>
 							<TabsContent value="lists">
-								<div className="grid grid-cols-3">
-									<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
-										<div className="flex items-center justify-between mb-2">
-											<img src="https://assets.hardcover.app/edition/31601422/3a01ea07-01f4-45a2-9940-6fc7e00e0d08.jpeg" />
-										</div>
-										<p className="text-lg font-bold text-card-foreground">
-											Livros Que Te Querem Deixar Louco
-										</p>
-									</div>
+								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+									<ListItem />
 								</div>
 							</TabsContent>
 						</Tabs>

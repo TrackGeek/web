@@ -16,14 +16,9 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { ListItem } from "@/components/details/list";
+import { ReviewItem } from "@/components/details/review";
 import { Layout } from "@/components/layouts/main";
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarGroup,
-	AvatarGroupCount,
-	AvatarImage,
-} from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -122,7 +117,7 @@ export function BookDetails() {
 								<p className="font-semibold text-card-foreground">2021</p>
 							</div>
 						</div>
-						<Button variant="outline" className="w-full mt-5">
+						<Button variant="outline" className="w-full">
 							{t("library:refreshData")}
 						</Button>
 					</div>
@@ -359,171 +354,12 @@ export function BookDetails() {
 									</div>
 								</div>
 							</TabsContent>
-							<TabsContent value="reviews"></TabsContent>
+							<TabsContent value="reviews">
+								<ReviewItem />
+							</TabsContent>
 							<TabsContent value="lists">
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-									<Link
-										to={"/user/johndoe/list/true-story"}
-										className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border"
-									>
-										<div className="flex items-center justify-between mb-2">
-											<AvatarGroup className="items-center -space-x-3 overflow-x-hidden">
-												<Avatar className="aspect-3/4 h-max w-16 rounded-md">
-													<AvatarImage
-														src="https://assets.hardcover.app/edition/31601422/3a01ea07-01f4-45a2-9940-6fc7e00e0d08.jpeg"
-														alt="Book Title"
-														className="object-cover aspect-3/4 h-full"
-													/>
-													<AvatarFallback className="rounded-lg">
-														Book Title
-													</AvatarFallback>
-												</Avatar>
-												<Avatar className="aspect-3/4 h-max w-16 rounded-md">
-													<AvatarImage
-														src="https://assets.hardcover.app/edition/32508798/62c09422-138d-42ef-81d9-a9599e2fba5c.jpg"
-														alt="Book Title"
-														className="object-cover aspect-3/4 h-full"
-													/>
-													<AvatarFallback className="rounded-lg">
-														Book Title
-													</AvatarFallback>
-												</Avatar>
-												<Avatar className="aspect-3/4 h-max w-16 rounded-md">
-													<AvatarImage
-														src="https://assets.hardcover.app/editions/30399846/4434002844651.jpg"
-														alt="Book Title"
-														className="object-cover aspect-3/4 h-full"
-													/>
-													<AvatarFallback className="rounded-lg">
-														Book Title
-													</AvatarFallback>
-												</Avatar>
-												<AvatarGroupCount className="w-16 size-none h-max aspect-3/4 rounded-lg">
-													+159
-												</AvatarGroupCount>
-											</AvatarGroup>
-										</div>
-										<p className="text-lg font-bold text-card-foreground">
-											Livros Que Te Querem Deixar Louco
-										</p>
-										<Link
-											to={"/user/johndoe"}
-											className="flex gap-1 items-center mt-2"
-										>
-											<Avatar size="sm">
-												<AvatarImage src="https://assets.hardcover.app/editions/30399846/4434002844651.jpg"></AvatarImage>
-											</Avatar>
-											<p className="text-md text-secondary">John Doe</p>
-										</Link>
-									</Link>
-									<Link
-										to={"/user/johndoe/list/true-story"}
-										className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border"
-									>
-										<div className="flex items-center justify-between mb-2">
-											<AvatarGroup className="items-center -space-x-3 overflow-x-hidden">
-												<Avatar className="aspect-3/4 h-max w-16 rounded-md">
-													<AvatarImage
-														src="https://assets.hardcover.app/edition/31601422/3a01ea07-01f4-45a2-9940-6fc7e00e0d08.jpeg"
-														alt="Book Title"
-														className="object-cover aspect-3/4 h-full"
-													/>
-													<AvatarFallback className="rounded-lg">
-														Book Title
-													</AvatarFallback>
-												</Avatar>
-												<Avatar className="aspect-3/4 h-max w-16 rounded-md">
-													<AvatarImage
-														src="https://assets.hardcover.app/edition/32508798/62c09422-138d-42ef-81d9-a9599e2fba5c.jpg"
-														alt="Book Title"
-														className="object-cover aspect-3/4 h-full"
-													/>
-													<AvatarFallback className="rounded-lg">
-														Book Title
-													</AvatarFallback>
-												</Avatar>
-												<Avatar className="aspect-3/4 h-max w-16 rounded-md">
-													<AvatarImage
-														src="https://assets.hardcover.app/editions/30399846/4434002844651.jpg"
-														alt="Book Title"
-														className="object-cover aspect-3/4 h-full"
-													/>
-													<AvatarFallback className="rounded-lg">
-														Book Title
-													</AvatarFallback>
-												</Avatar>
-												<AvatarGroupCount className="w-16 size-none h-max aspect-3/4 rounded-lg">
-													+7
-												</AvatarGroupCount>
-											</AvatarGroup>
-										</div>
-										<p className="text-lg font-bold text-card-foreground">
-											Top 10 Mind-Fucking Books
-										</p>
-										<Link
-											to={"/user/johndoe"}
-											className="flex gap-1 items-center mt-2"
-										>
-											<Avatar size="sm">
-												<AvatarImage src="https://assets.hardcover.app/editions/30399846/4434002844651.jpg"></AvatarImage>
-											</Avatar>
-											<p className="text-md text-secondary">John Doe</p>
-										</Link>
-									</Link>
-									<Link
-										to={"/user/johndoe/list/true-story"}
-										className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border"
-									>
-										<div className="flex items-center justify-between mb-2">
-											<AvatarGroup className="items-center -space-x-3 overflow-x-hidden">
-												<Avatar className="aspect-3/4 h-max w-16 rounded-md">
-													<AvatarImage
-														src="https://assets.hardcover.app/edition/31601422/3a01ea07-01f4-45a2-9940-6fc7e00e0d08.jpeg"
-														alt="Book Title"
-														className="object-cover aspect-3/4 h-full"
-													/>
-													<AvatarFallback className="rounded-lg">
-														Book Title
-													</AvatarFallback>
-												</Avatar>
-												<Avatar className="aspect-3/4 h-max w-16 rounded-md">
-													<AvatarImage
-														src="https://assets.hardcover.app/edition/32508798/62c09422-138d-42ef-81d9-a9599e2fba5c.jpg"
-														alt="Book Title"
-														className="object-cover aspect-3/4 h-full"
-													/>
-													<AvatarFallback className="rounded-lg">
-														Book Title
-													</AvatarFallback>
-												</Avatar>
-												<Avatar className="aspect-3/4 h-max w-16 rounded-md">
-													<AvatarImage
-														src="https://assets.hardcover.app/editions/30399846/4434002844651.jpg"
-														alt="Book Title"
-														className="object-cover aspect-3/4 h-full"
-													/>
-													<AvatarFallback className="rounded-lg">
-														Book Title
-													</AvatarFallback>
-												</Avatar>
-												<AvatarGroupCount className="w-16 size-none h-max aspect-3/4 rounded-lg">
-													+34
-												</AvatarGroupCount>
-											</AvatarGroup>
-										</div>
-										<p className="text-lg font-bold text-card-foreground">
-											The Human Shadow: True Crime
-										</p>
-										<Link
-											to={"/user/johndoe"}
-											className="flex gap-1 items-center mt-2"
-										>
-											<Avatar size="sm">
-												<AvatarImage src="https://assets.hardcover.app/editions/30399846/4434002844651.jpg"></AvatarImage>
-											</Avatar>
-											<p className="text-md text-secondary">John Doe</p>
-										</Link>
-									</Link>
+									<ListItem />
 								</div>
 							</TabsContent>
 						</Tabs>

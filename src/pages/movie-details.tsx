@@ -1,18 +1,27 @@
 import {
+	SiFacebook,
+	SiFacebookHex,
+	SiImdb,
+	SiImdbHex,
+	SiInstagram,
+	SiInstagramHex,
+	SiX,
+} from "@icons-pack/react-simple-icons";
+import {
 	Bookmark,
 	Box,
-	Bug,
-	Building2,
-	Cctv,
+	Building,
 	CheckCircle,
 	CheckSquare,
-	Code,
-	Computer,
-	EthernetPort,
-	Gamepad,
+	Clapperboard,
+	Clock,
+	ExternalLink,
+	Languages,
 	MoreHorizontal,
+	PiggyBank,
+	Projector,
 	Star,
-	TreeDeciduous,
+	Ticket,
 	XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -21,28 +30,23 @@ import { ListItem } from "@/components/details/list";
 import { ReviewItem } from "@/components/details/review";
 import { Layout } from "@/components/layouts/main";
 import { Button } from "@/components/ui/button";
-import {
-	Carousel,
-	CarouselContent,
-	CarouselItem,
-	CarouselNext,
-	CarouselPrevious,
-} from "@/components/ui/carousel";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+import { CastItem } from "@/components/details/cast";
 
-export function GameDetails() {
+export function MovieDetails() {
 	const { t } = useTranslation();
 
 	return (
-		<Layout title="Game Name">
+		<Layout title="Movie Name">
 			<div className="flex flex-col lg:flex-row gap-8">
 				<div className="lg:w-1/3">
 					<div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 gap-4 flex flex-col">
 						<div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
 							<img
-								src="https://images.igdb.com/igdb/image/upload/t_original/cobc4t.webp"
-								alt="Capa do jogo"
+								src="https://image.tmdb.org/t/p/w1280/hBxN6dwrANN1ic3a4G9x6JZcR3C.jpg"
+								alt="Capa do filme"
 								className="w-full h-auto object-cover"
 							/>
 						</div>
@@ -57,7 +61,7 @@ export function GameDetails() {
 										<Bookmark className="text-purple-400" />
 									</div>
 									<p className="font-medium text-card-foreground text-center">
-										{t("feed:lists.wanttoplay")}
+										{t("feed:lists.planning")}
 									</p>
 								</div>
 								<div className="status-indicator hidden">
@@ -71,10 +75,10 @@ export function GameDetails() {
 							>
 								<div className="flex flex-col items-center gap-x-4 gap-2">
 									<div className="w-10 h-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
-										<Gamepad className="text-primary" />
+										<Projector className="text-primary" />
 									</div>
 									<p className="font-medium text-card-foreground text-center">
-										{t("feed:lists.playing")}
+										{t("feed:lists.watching")}
 									</p>
 								</div>
 								<div className="status-indicator hidden">
@@ -91,7 +95,7 @@ export function GameDetails() {
 										<CheckSquare className="text-chart-3" />
 									</div>
 									<p className="font-medium text-card-foreground text-center">
-										{t("feed:lists.played")}
+										{t("feed:lists.completed")}
 									</p>
 								</div>
 								<div className="status-indicator hidden">
@@ -117,20 +121,56 @@ export function GameDetails() {
 								<p className="text-sm text-muted-foreground">
 									{t("library:status")}
 								</p>
-								<p className="font-semibold text-card-foreground">
-									Early Access
-								</p>
+								<p className="font-semibold text-card-foreground">Released</p>
 							</div>
 							<div className="bg-muted/50 p-4 rounded-lg border border-border">
 								<p className="text-sm text-muted-foreground">
 									{t("library:releaseDate")}
 								</p>
-								<p className="font-semibold text-card-foreground">13/01/2026</p>
+								<p className="font-semibold text-card-foreground">25/12/2025</p>
 							</div>
 						</div>
-						<Button variant="outline" className="w-full">
-							{t("library:refreshData")}
-						</Button>
+						<Link
+							to="https://www.themoviedb.org/movie/1234731-anaconda"
+							target="_blank"
+						>
+							<Button variant="outline" className="w-full">
+								{t("library:refreshData")}
+							</Button>
+						</Link>
+						<div className="flex gap-2 items-center justify-center">
+							<Link to="https://anacondamovie.com/" target="_blank">
+								<ExternalLink />
+							</Link>
+							<Link
+								to="https://instagram.com/theanacondamovie/"
+								target="_blank"
+								className={cn(`hover:text-[${SiInstagramHex}]`)}
+							>
+								<SiInstagram />
+							</Link>
+							<Link
+								to="https://www.facebook.com/AnacondaMovie"
+								target="_blank"
+								className={cn(`hover:text-[${SiFacebookHex}]`)}
+							>
+								<SiFacebook />
+							</Link>
+							<Link
+								to="https://x.com/Anaconda_Movie"
+								target="_blank"
+								className={cn(`hover:text-white`)}
+							>
+								<SiX />
+							</Link>
+							<Link
+								to="https://www.imdb.com/title/tt4900148"
+								target="_blank"
+								className={cn(`hover:text-[${SiImdbHex}]`, "my-1 mr-1")}
+							>
+								<SiImdb />
+							</Link>
+						</div>
 					</div>
 				</div>
 
@@ -138,12 +178,12 @@ export function GameDetails() {
 					<div className="bg-card rounded-2xl shadow-lg p-8">
 						<div className="mb-5">
 							<h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-								Hytale
+								Anaconda
 							</h1>
 							<div className="flex items-center space-x-2 mt-2">
 								<Box className="w-5 h-5 text-muted-foreground" />
 								<Link
-									to={"/games-franchises/franchise_name"}
+									to={"/movies-collection/franchise_name"}
 									className="text-xl text-muted-foreground"
 								>
 									franchise_name (can be hidden if not exists)
@@ -170,14 +210,15 @@ export function GameDetails() {
 							<div className="flex items-center justify-between gap-3 mb-2">
 								<TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
 									<TabsTrigger value="info">{t("library:info")}</TabsTrigger>
+									<TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
+									<TabsTrigger value="medias">
+										{t("library:medias")}
+									</TabsTrigger>
 									<TabsTrigger value="reviews" className="capitalize">
 										{t("library:reviews")} (125)
 									</TabsTrigger>
 									<TabsTrigger value="lists">
 										{t("library:lists")} (30)
-									</TabsTrigger>
-									<TabsTrigger value="screenshots">
-										{t("library:screenshots")} (67)
 									</TabsTrigger>
 								</TabsList>
 							</div>
@@ -187,15 +228,24 @@ export function GameDetails() {
 										{t("library:genres")}
 									</h3>
 									<div className="flex flex-wrap gap-2">
-										<span className="px-3 py-1.5 bg-linear-to-r from-chart-1/20 to-chart-1/30 text-chart-1 border border-chart-1/30 rounded-full text-sm font-medium">
-											RPG
-										</span>
-										<span className="px-3 py-1.5 bg-linear-to-r from-purple-500/20 to-purple-500/30 text-purple-400 border border-purple-500/30 rounded-full text-sm font-medium">
+										<Link
+											to="/movies/genres/comedy"
+											className="px-3 py-1.5 bg-linear-to-r from-chart-1/20 to-chart-1/30 text-chart-1 border border-chart-1/30 rounded-full text-sm font-medium"
+										>
+											Comédia
+										</Link>
+										<Link
+											to="/movies/genres/adventure"
+											className="px-3 py-1.5 bg-linear-to-r from-purple-500/20 to-purple-500/30 text-purple-400 border border-purple-500/30 rounded-full text-sm font-medium"
+										>
 											Aventura
-										</span>
-										<span className="px-3 py-1.5 bg-linear-to-r from-chart-3/20 to-chart-3/30 text-chart-3 border border-chart-3/30 rounded-full text-sm font-medium">
-											Indie
-										</span>
+										</Link>
+										<Link
+											to="/movies/genres/horror"
+											className="px-3 py-1.5 bg-linear-to-r from-chart-3/20 to-chart-3/30 text-chart-3 border border-chart-3/30 rounded-full text-sm font-medium"
+										>
+											Horror
+										</Link>
 									</div>
 								</div>
 
@@ -205,98 +255,87 @@ export function GameDetails() {
 									</h3>
 									<div className="text-muted-foreground leading-relaxed space-y-4">
 										<p>
-											Hytale combines the scope of a sandbox with the depth of a
-											roleplaying game, immersing players in a procedurally
-											generated world where teetering towers and deep dungeons
-											promise rich rewards throughout their adventures. Hytale
-											supports everything from block-by-block construction to
-											scripting and minigame creation, delivered using easy to
-											use and powerful tools.
+											A group of friends facing mid-life crises head to the
+											rainforest with the intention of remaking their favorite
+											movie from their youth, only to find themselves in a fight
+											for their lives against natural disasters, giant snakes
+											and violent criminals.
 										</p>
 									</div>
 								</div>
 
 								<div className="mb-5">
 									<h3 className="font-semibold text-card-foreground text-lg mb-4">
-										{t("library:gameCharacteristics")}
+										{t("library:movieCharacteristics")}
 									</h3>
 									<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Code className="w-5 h-5 text-muted-foreground" />
+											<Clapperboard className="w-5 h-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
-													{t("library:developers")}
+													{t("library:directors")}
+												</p>
+												<Link
+													to="/cast/tom-gormican"
+													className="font-medium text-card-foreground"
+												>
+													Tom Gormican
+												</Link>
+											</div>
+										</div>
+										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
+											<PiggyBank className="w-5 h-5 text-muted-foreground" />
+											<div>
+												<p className="text-sm text-muted-foreground">
+													{t("library:budget")}
 												</p>
 												<p className="font-medium text-card-foreground">
-													Hypixel Studios
+													$45,000,000.00
 												</p>
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Building2 className="w-5 h-5 text-muted-foreground" />
+											<Ticket className="w-5 h-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
-													{t("library:publishers")}
+													{t("library:revenue")}
 												</p>
 												<p className="font-medium text-card-foreground">
-													Hypixel Studios
+													$128,328,016.00
 												</p>
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Computer className="w-5 h-5 text-muted-foreground" />
+											<Languages className="w-5 h-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
-													{t("library:platforms")}
+													{t("library:language")}
 												</p>
 												<p className="font-medium text-card-foreground">
-													Linux, Mac, PC (Microsoft Windows)
+													English
 												</p>
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<TreeDeciduous className="w-5 h-5 text-muted-foreground" />
+											<Building className="w-5 h-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
-													{t("library:themes")}
+													{t("library:productionCompanies")}
 												</p>
 												<p className="font-medium text-card-foreground">
-													Action, Fantasy, Sandbox
-												</p>
-											</div>
-										</div>
-										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<EthernetPort className="w-5 h-5 text-muted-foreground" />
-											<div>
-												<p className="text-sm text-muted-foreground">
-													{t("library:gameModes")}
-												</p>
-												<p className="font-medium text-card-foreground">
-													Single player, Multiplayer
-												</p>
-											</div>
-										</div>
-
-										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Cctv className="w-5 h-5 text-muted-foreground" />
-											<div>
-												<p className="text-sm text-muted-foreground">
-													{t("library:playerPerspectives")}
-												</p>
-												<p className="font-medium text-card-foreground">
-													First Person, Third Person
+													Sony Pictures
 												</p>
 											</div>
 										</div>
 
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Bug className="w-5 h-5 text-muted-foreground" />
+											<Clock className="w-5 h-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
-													{t("library:gameEngine")}
+													{t("library:runtime")}
 												</p>
 												<p className="font-medium text-card-foreground">
-													Custom C# Engine
+													1h 40m
 												</p>
 											</div>
 										</div>
@@ -311,7 +350,7 @@ export function GameDetails() {
 										<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
 											<div className="flex items-center justify-between mb-2">
 												<span className="text-sm font-medium text-muted-foreground">
-													{t("feed:lists.wanttoplay")}
+													{t("feed:lists.planning")}
 												</span>
 												<Bookmark className="w-5 h-5 text-purple-400" />
 											</div>
@@ -323,9 +362,9 @@ export function GameDetails() {
 										<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
 											<div className="flex items-center justify-between mb-2">
 												<span className="text-sm font-medium text-muted-foreground">
-													{t("feed:lists.playing")}
+													{t("feed:lists.watching")}
 												</span>
-												<Gamepad className="w-5 h-5 text-chart-1" />
+												<Projector className="w-5 h-5 text-chart-1" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												15%
@@ -335,7 +374,7 @@ export function GameDetails() {
 										<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
 											<div className="flex items-center justify-between mb-2">
 												<span className="text-sm font-medium text-muted-foreground">
-													{t("feed:lists.played")}
+													{t("feed:lists.completed")}
 												</span>
 												<CheckCircle className="w-5 h-5 text-secondary" />
 											</div>
@@ -357,37 +396,12 @@ export function GameDetails() {
 										</div>
 									</div>
 								</div>
-								<Carousel
-									className="w-full px-4"
-									opts={{
-										loop: true,
-										align: "center",
-									}}
-								>
-									<CarouselContent>
-										<CarouselItem>
-											<iframe
-												src="https://youtube.com/embed/rhaqjb_S2X8"
-												allowFullScreen
-												className="w-full aspect-video"
-											/>
-										</CarouselItem>
-										<CarouselItem>
-											<img
-												src="https://images.igdb.com/igdb/image/upload/t_720p/sc5rik.webp"
-												className="w-full aspect-video"
-											/>
-										</CarouselItem>
-										<CarouselItem>
-											<img
-												src="https://images.igdb.com/igdb/image/upload/t_720p/sc5ril.webp"
-												className="w-full aspect-video"
-											/>
-										</CarouselItem>
-									</CarouselContent>
-									<CarouselPrevious variant="default" className="-left-6" />
-									<CarouselNext variant="default" className="-right-6" />
-								</Carousel>
+
+								<iframe
+									src="https://youtube.com/embed/az8M5Mai0X4"
+									allowFullScreen
+									className="w-full aspect-video"
+								/>
 							</TabsContent>
 							<TabsContent value="reviews">
 								<ReviewItem />
@@ -396,36 +410,53 @@ export function GameDetails() {
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 									<ListItem />
 								</div>
-							</TabsContent>{" "}
-							<TabsContent value="screenshots">
+							</TabsContent>
+							<TabsContent value="cast">
+								<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+									<CastItem />
+									<CastItem />
+									<CastItem />
+									<CastItem />
+									<CastItem />
+									<CastItem />
+									<CastItem />
+								</div>
+							</TabsContent>
+							<TabsContent value="medias">
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 									<ImageZoom>
 										<img
-											src="https://images.igdb.com/igdb/image/upload/t_720p/sc5rij.webp"
+											src="https://image.tmdb.org/t/p/original/1pi3gH590JGNsFO0ngAoiyKacA7.jpg"
 											alt=""
 										/>
 									</ImageZoom>
 									<ImageZoom>
 										<img
-											src="https://images.igdb.com/igdb/image/upload/t_720p/sc5rii.webp"
+											src="https://image.tmdb.org/t/p/original/7VgSwKz420hI9sqXiXpGCViBq2C.jpg"
 											alt=""
 										/>
 									</ImageZoom>
 									<ImageZoom>
 										<img
-											src="https://images.igdb.com/igdb/image/upload/t_720p/sc5rim.webp"
+											src="https://image.tmdb.org/t/p/original/9pOh1eQ0bjbFiBGqT3mYaeRPLru.jpg"
 											alt=""
 										/>
 									</ImageZoom>
 									<ImageZoom>
 										<img
-											src="https://images.igdb.com/igdb/image/upload/t_720p/sc5rin.webp"
+											src="https://image.tmdb.org/t/p/original/1ysgMpzp4ftZBiCT8k7rq6R2obv.jpg"
 											alt=""
 										/>
 									</ImageZoom>
 									<ImageZoom>
 										<img
-											src="https://images.igdb.com/igdb/image/upload/t_720p/sc5riq.webp"
+											src="https://image.tmdb.org/t/p/original/y342NhmRhXNbxhxWQbYv65bvf4C.jpg"
+											alt=""
+										/>
+									</ImageZoom>
+									<ImageZoom>
+										<img
+											src="https://image.tmdb.org/t/p/original/kLApBgtLOfpCdT9bJWfRVCcRYMY.jpg"
 											alt=""
 										/>
 									</ImageZoom>
@@ -437,9 +468,7 @@ export function GameDetails() {
 					<div className="mt-6 text-center text-sm text-muted-foreground">
 						<p>
 							Nota: O botão "Mais opções" abriria um modal para gerenciar status
-							avançados como "Abandonado", "Rejogando", "Pausado", etc. Ainda
-							vai ter "100%", "Main Game", "Main Game + Extras" e "Endless" num
-							novo status
+							avançados como "Abandonado", "Revendo", "Pausado", etc.
 						</p>
 					</div>
 				</div>

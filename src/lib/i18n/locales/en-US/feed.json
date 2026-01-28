@@ -24,7 +24,8 @@
 		"paused": "Paused",
 		"completed": "Completed",
 		"dropped": "Dropped",
-		"toRead": "To Read"
+		"toRead": "To Read",
+    "watching": "Watching"
 	},
 	"criteries": {
 		"gameplay": "Gameplay",

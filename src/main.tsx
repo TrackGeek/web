@@ -6,30 +6,30 @@ import { createRoot } from "react-dom/client";
 import {
 	createBrowserRouter,
 	Navigate,
+	type RouteObject,
 	RouterProvider,
-  type RouteObject,
 } from "react-router-dom";
-
+import { useAuth } from "./hooks/use-auth.tsx";
 import { BookDetails } from "./pages/book-details.tsx";
-import { HomePage } from "./pages/home";
-import { RootProvider } from "./providers/root-provider.tsx";
 import { GameDetails } from "./pages/game-details.tsx";
-import { UserDetailsPage } from './pages/user-details.tsx';
-import { SettingsPage } from './pages/settings.tsx';
-import { useAuth } from './hooks/use-auth.tsx';
+import { HomePage } from "./pages/home";
+import { SettingsPage } from "./pages/settings.tsx";
+import { UserDetailsPage } from "./pages/user-details.tsx";
+import { RootProvider } from "./providers/root-provider.tsx";
+import { MovieDetails } from "./pages/movie-details.tsx";
 
 export function Routes() {
-  const { isAuthenticated } = useAuth();
-  
+	const { isAuthenticated } = useAuth();
+
 	const protectRoutes: RouteObject[] = [
-    {
-      path: "/settings",
-      element: <SettingsPage />,
-    }
-  ];
+		{
+			path: "/settings",
+			element: <SettingsPage />,
+		},
+	];
 
 	const publicRoutes: RouteObject[] = [
-    {
+		{
 			path: "/",
 			element: <HomePage />,
 		},
@@ -40,8 +40,12 @@ export function Routes() {
 		{
 			path: "/game/:bookSlug",
 			element: <GameDetails />,
-    },
-    {
+		},
+		{
+			path: "/movie/:bookSlug",
+			element: <MovieDetails />,
+		},
+		{
 			path: "/user/:username",
 			element: <UserDetailsPage />,
 		},

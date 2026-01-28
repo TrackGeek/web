@@ -1,0 +1,57 @@
+{
+  "banner": {
+    "title": "Banner",
+    "description": "Allowed Formats: JPG, JPEG, PNG, GIF. Max size: 5mb. Optimal dimensions: 1700x330",
+    "upload": {
+      "title": "Upload Banner",
+      "success": "Banner uploaded successfully.",
+      "error": "Failed to upload banner. Please try again."
+    },
+    "delete": {
+      "success": "Banner deleted successfully.",
+      "error": "Failed to delete banner. Please try again."
+    }
+  },
+  "avatar": {
+    "title": "Avatar",
+    "description": "Allowed Formats: JPG, JPEG, PNG, GIF. Max size: 5mb. Optimal dimensions: 500x500",
+    "upload": {
+      "title": "Upload Avatar",
+      "success": "Avatar uploaded successfully.",
+      "error": "Failed to upload avatar. Please try again."
+    },
+    "delete": {
+      "success": "Avatar deleted successfully.",
+      "error": "Failed to delete avatar. Please try again."
+    }
+  },
+  "profile": {
+    "title": "Profile Settings",
+    "description": "Manage your personal information and preferences.",
+    "name": "Name",
+    "username": "Username",
+    "about": "About Me"
+  },
+  "color": {
+    "title": "Color Theme",
+    "description": "Choose your preferred color theme for the application interface.",
+    "custom": "Custom Color"
+  },
+  "save": {
+    "title": "Save Changes",
+    "success": "Settings saved successfully.",
+    "error": "Failed to save settings. Please try again."
+  },
+  "preferrences": {
+    "title": "Preferences",
+    "description": "Set your application preferences.",
+    "language": {
+      "title": "Language",
+      "placeholder": "Select your preferred language"
+    },
+    "timezone": {
+      "title": "Timezone",
+      "placeholder": "Select your timezone"
+    }
+  }
+}

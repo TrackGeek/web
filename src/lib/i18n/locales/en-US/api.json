@@ -1,0 +1,12 @@
+{
+  "INVALID_EMAIL_LOGIN_CODE": "The provided email login code is invalid or has expired.",
+  "INVALID_GOOGLE_LOGIN_CODE": "The provided Google authorization code is invalid.",
+  "INVALID_DISCORD_LOGIN_CODE": "The provided Discord authorization code is invalid.",
+  "INVALID_GITHUB_LOGIN_CODE": "The provided GitHub authorization code is invalid.",
+  "INVALID_REFRESH_TOKEN": "The provided refresh token is invalid.",
+  "EXPIRED_REFRESH_TOKEN": "The provided refresh token has expired.",
+  "ACCESS_TOKEN_MISSING": "Access token is missing from the request.",
+  "ACCESS_TOKEN_EXPIRED": "The access token has expired.",
+  "INVALID_ACCESS_TOKEN": "The provided access token is invalid.",
+  "USER_NOT_FOUND": "User not found."
+}

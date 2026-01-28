@@ -16,16 +16,14 @@ for (const path in modules) {
 	resources[lang][file] = modules[path];
 }
 
-console.log(resources);
-
 export const SUPPORTED_LANGUAGES = Object.keys(resources).map((language) => ({
 	id: language,
 	name: `common:languages.${language.replace("-", "")}`,
 }));
 
-export const LANGUAGE_TOKEN = "@trackgeek/language";
+export const LANGUAGE_TOKEN = "trackgeek-language";
 
-export const DEFAULT_LANGUAGE = SUPPORTED_LANGUAGES[0].id;
+export const DEFAULT_LANGUAGE = "en-US";
 
 i18next
 	.use(i18nextHttpBackend)

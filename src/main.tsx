@@ -7,21 +7,32 @@ import {
 	createBrowserRouter,
 	Navigate,
 	RouterProvider,
+  type RouteObject,
 } from "react-router-dom";
+
 import { BookDetails } from "./pages/book-details.tsx";
 import { HomePage } from "./pages/home";
 import { RootProvider } from "./providers/root-provider.tsx";
 import { GameDetails } from "./pages/game-details.tsx";
+import { UserDetailsPage } from './pages/user-details.tsx';
+import { SettingsPage } from './pages/settings.tsx';
+import { useAuth } from './hooks/use-auth.tsx';
 
 export function Routes() {
-	const protectRoutes = [
-		{
+  const { isAuthenticated } = useAuth();
+  
+	const protectRoutes: RouteObject[] = [
+    {
+      path: "/settings",
+      element: <SettingsPage />,
+    }
+  ];
+
+	const publicRoutes: RouteObject[] = [
+    {
 			path: "/",
 			element: <HomePage />,
 		},
-	];
-
-	const publicRoutes = [
 		{
 			path: "/book/:bookSlug",
 			element: <BookDetails />,
@@ -29,15 +40,19 @@ export function Routes() {
 		{
 			path: "/game/:bookSlug",
 			element: <GameDetails />,
+    },
+    {
+			path: "/user/:username",
+			element: <UserDetailsPage />,
 		},
 	];
 
 	const router = createBrowserRouter([
-		...protectRoutes,
 		...publicRoutes,
+		...(isAuthenticated ? protectRoutes : []),
 		{
 			path: "*",
-			element: <Navigate to="/" replace />,
+			element: <Navigate to="/" />,
 		},
 	]);
 

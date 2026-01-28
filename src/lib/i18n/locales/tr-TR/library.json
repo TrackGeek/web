@@ -16,5 +16,16 @@
 	"communityStatistics": "Community Statistics",
 	"lists": "Lists",
 	"info": "Info",
-	"readMore": "Read More"
+	"readMore": "Read More",
+	"releaseDate": "Release Date",
+	"status": "Status",
+	"gameCharacteristics": "Game Characteristics",
+	"screenshots": "Screenshots",
+	"developers": "Developers",
+	"publishers": "Publishers",
+	"themes": "Themes",
+	"gameModes": "Game Modes",
+	"playerPerspectives": "Player Perspectives",
+	"gameEngine": "Game Engine",
+	"platforms": "Platforms"
 }

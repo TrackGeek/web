@@ -13,6 +13,13 @@
 	"settings": "Settings",
 	"notifications": "Notifications",
 	"profile": "Profile",
+  "continents": {
+    "Africa": "Africa",
+    "America": "America",
+    "Asia": "Asia",
+    "Europe": "Europe",
+    "Pacific": "Pacific"
+  },
 	"languages": {
 		"ptBR": "Portuguese (Brazil)",
 		"ptPT": "Portuguese (Portugal)",

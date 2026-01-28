@@ -1,5 +1,35 @@
 import {
+	SiApple,
+	SiAppstore,
+	SiBluesky,
+	SiBlueskyHex,
+	SiDiscord,
+	SiDiscordHex,
+	SiEpicgames,
+	SiEpicgamesHex,
+	SiFacebook,
+	SiFacebookHex,
+	SiGogdotcom,
+	SiGoogleplay,
+	SiGoogleplayHex,
+	SiInstagram,
+	SiInstagramHex,
+	SiItchdotio,
+	SiItchdotioHex,
+	SiReddit,
+	SiRedditHex,
+	SiSteam,
+	SiSteamHex,
+	SiTwitch,
+	SiTwitchHex,
+	SiWikipedia,
+	SiX,
+	SiYoutube,
+	SiYoutubeHex,
+} from "@icons-pack/react-simple-icons";
+import {
 	Bookmark,
+	BookSearch,
 	Box,
 	Bug,
 	Building2,
@@ -9,6 +39,7 @@ import {
 	Code,
 	Computer,
 	EthernetPort,
+	ExternalLink,
 	Gamepad,
 	MoreHorizontal,
 	Star,
@@ -30,6 +61,7 @@ import {
 } from "@/components/ui/carousel";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
 
 export function GameDetails() {
 	const { t } = useTranslation();
@@ -131,6 +163,107 @@ export function GameDetails() {
 						<Button variant="outline" className="w-full">
 							{t("library:refreshData")}
 						</Button>
+						<div className="flex flex-wrap gap-3 items-center justify-center">
+							<Link to="https://anacondamovie.com/" target="_blank">
+								<ExternalLink />
+							</Link>
+							<Link to="https://anacondamovie.com/" target="_blank">
+								<BookSearch />
+							</Link>
+							<Link
+								to="https://steam.com/"
+								target="_blank"
+								className={cn(`hover:text-[${SiSteamHex}]`)}
+							>
+								<SiSteam />
+							</Link>
+							<Link
+								to="https://epicgames.com/"
+								target="_blank"
+								className={cn(`hover:text-[${SiEpicgamesHex}]`)}
+							>
+								<SiEpicgames />
+							</Link>
+							<Link to="https://gog.com/" target="_blank">
+								<SiGogdotcom />
+							</Link>
+							<Link
+								to="https://itch.io/"
+								target="_blank"
+								className={cn(`hover:text-[${SiItchdotioHex}]`)}
+							>
+								<SiItchdotio />
+							</Link>
+							<Link
+								to="https://googleplay.com/"
+								target="_blank"
+								className={cn(`hover:text-[${SiGoogleplayHex}]`)}
+							>
+								<SiGoogleplay />
+							</Link>
+							<Link to="https://applestore.com/" target="_blank">
+								<SiAppstore />
+							</Link>
+							<Link
+								to="https://instagram.com/theanacondamovie/"
+								target="_blank"
+								className={cn(`hover:text-[${SiInstagramHex}]`)}
+							>
+								<SiInstagram />
+							</Link>
+							<Link
+								to="https://www.facebook.com/AnacondaMovie"
+								target="_blank"
+								className={cn(`hover:text-[${SiFacebookHex}]`)}
+							>
+								<SiFacebook />
+							</Link>
+							<Link
+								to="https://x.com/Anaconda_Movie"
+								target="_blank"
+								className={cn(`hover:text-white`)}
+							>
+								<SiX />
+							</Link>{" "}
+							<Link
+								to="https://discord.gg/"
+								target="_blank"
+								className={cn(`hover:text-[${SiDiscordHex}]`)}
+							>
+								<SiDiscord />
+							</Link>
+							<Link
+								to="https://youtube.com/@"
+								target="_blank"
+								className={cn(`hover:text-[${SiYoutubeHex}]`)}
+							>
+								<SiYoutube />
+							</Link>
+							<Link
+								to="https://twitch.tv/@"
+								target="_blank"
+								className={cn(`hover:text-[${SiTwitchHex}]`)}
+							>
+								<SiTwitch />
+							</Link>
+							<Link
+								to="https://reddit.com/@"
+								target="_blank"
+								className={cn(`hover:text-[${SiRedditHex}]`)}
+							>
+								<SiReddit />
+							</Link>
+							<Link
+								to="https://bsky.app/@"
+								target="_blank"
+								className={cn(`hover:text-[${SiBlueskyHex}]`)}
+							>
+								<SiBluesky />
+							</Link>
+							<Link to="https://wikipedia.com/Anaconda_Movie" target="_blank">
+								<SiWikipedia />
+							</Link>
+						</div>
 					</div>
 				</div>
 

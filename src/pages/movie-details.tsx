@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { CastItem } from "@/components/details/cast";
 import { ListItem } from "@/components/details/list";
 import { ReviewItem } from "@/components/details/review";
 import { Layout } from "@/components/layouts/main";
@@ -33,7 +34,6 @@ import { Button } from "@/components/ui/button";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { CastItem } from "@/components/details/cast";
 
 export function MovieDetails() {
 	const { t } = useTranslation();
@@ -138,7 +138,7 @@ export function MovieDetails() {
 								{t("library:refreshData")}
 							</Button>
 						</Link>
-						<div className="flex gap-2 items-center justify-center">
+						<div className="flex flex-wrap gap-3 items-center justify-center">
 							<Link to="https://anacondamovie.com/" target="_blank">
 								<ExternalLink />
 							</Link>

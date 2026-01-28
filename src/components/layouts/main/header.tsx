@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
 	Bell,
 	Book,
@@ -22,6 +22,10 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import z from "zod";
+import ViteImage from "@son426/vite-image/react";
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -46,35 +50,153 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
 import { api, apiEndpoints, type apiTypes } from "@/lib/api";
-import { extractNameFromEmail, getInitialsFromName } from "@/lib/utils";
+import { getInitialsFromName, openPopup } from "@/lib/utils";
 
-const requestEmailLoginLinkSchema = z.object({
+const requestEmailLoginSchema = z.object({
 	email: z.email(),
 });
 
-type RequestEmailLoginLinkFormData = z.infer<
-	typeof requestEmailLoginLinkSchema
+type RequestEmailLoginFormData = z.infer<
+	typeof requestEmailLoginSchema
 >;
 
 export function Header() {
 	const { t } = useTranslation();
 
 	const auth = useAuth();
+  
+  const [loginPopup, setLoginPopup] = useState<Window | null>(null);
+  const [loginType, setLoginType] = useState<'email' | 'google' | 'discord' | 'github' | null>(null);
 
-	const requestEmailLoginLinkForm = useForm<RequestEmailLoginLinkFormData>({
-		resolver: zodResolver(requestEmailLoginLinkSchema),
+	const requestEmailLoginForm = useForm<RequestEmailLoginFormData>({
+		resolver: zodResolver(requestEmailLoginSchema),
 		mode: "onChange",
+    disabled: !!loginPopup && loginType !== 'email',
 	});
 
-	const meQuery = useQuery<apiTypes.AuthMeResponse>({
+	const meQuery = useQuery<apiTypes.MeResponse>({
 		queryKey: ["me"],
-		queryFn: () => api.get(apiEndpoints.auth.me).then(({ data }) => data),
+		queryFn: () => api.get(apiEndpoints.me.get).then(({ data }) => data),
 		enabled: auth.isAuthenticated,
 	});
+  
+  const requestEmailLoginMutation = useMutation({
+		mutationFn: (email: string) => api.get(apiEndpoints.requestEmailLogin.get, { params: { email }, }),
+		onSuccess: () => {
+      setLoginType(null);
+      
+      toast.success(t("auth:enterYourEmail"))
+      
+      requestEmailLoginForm.reset();
+      requestEmailLoginForm.clearErrors();
+    },
+		onError: () => toast.error(t("auth:failedToLogin")),
+	});
+  
+  const requestGoogleLoginMutation = useMutation({
+		mutationFn: () => api.get(apiEndpoints.requestGoogleLogin.get),
+		onSuccess: (response) => {
+      setLoginPopup(openPopup(response.data?.url, 600, 600))
+      setLoginType('google');
+    },
+		onError: () => toast.error(t("auth:failedToLogin")),
+	});
+  
+  const requestDiscordLoginMutation = useMutation({
+		mutationFn: () => api.get(apiEndpoints.requestDiscordLogin.get),
+		onSuccess: (response) => {
+      setLoginPopup(openPopup(response.data?.url, 600, 600))
+      setLoginType('discord');
+    },
+		onError: () => toast.error(t("auth:failedToLogin")),
+	});
+  
+  const requestGithubLoginMutation = useMutation({
+    mutationFn: () => api.get(apiEndpoints.requestGithubLogin.get),
+    onSuccess: (response) => {
+      setLoginPopup(openPopup(response.data?.url, 600, 600))
+      setLoginType('github');
+    },
+    onError: () => toast.error(t("auth:failedToLogin")),
+  });
 
-	const name = meQuery.data
-		? (meQuery.data.user.name ?? extractNameFromEmail(meQuery.data.user.email))
-		: "";
+	const logoutMutation = useMutation({
+		mutationFn: () => api.get("/auth/logout"),
+		onSuccess: () => {
+			auth.setAuthenticated(false);
+
+			toast.success(t("auth:logoutSuccessful"));
+		},
+		onError: () => toast.error(t("auth:failedToLogout")),
+	});
+  
+  useEffect(() => {
+		if (!loginPopup) return;
+
+		const interval = setInterval(() => {
+			if (loginPopup.closed) {
+				setLoginPopup(null);
+        setLoginType(null);
+        
+				clearInterval(interval);
+			}
+		}, 500);
+
+		return () => {
+			clearInterval(interval);
+		};
+	}, [loginPopup]);
+
+	useEffect(() => {
+		function handleListenPopupMessages(event: MessageEvent) {
+      if (event.origin !== import.meta.env.VITE_API_URL) return;
+        
+			try {
+				const data = JSON.parse(event.data) as Record<string, any>;
+        
+        if (!data) {
+          return;
+        }
+
+				if (data?.type !== "SUCCESS_LOGIN") {
+					console.error(data);
+
+					auth.setAuthenticated(false);
+          
+					setLoginPopup(null);
+          setLoginType(null);
+
+					toast.error(t("auth:failedToLogin"));
+
+					return;
+				}
+
+				toast.success(t("auth:loginSuccessful"));
+
+				loginPopup?.close();
+        
+				auth.setAuthenticated(true);
+
+				setLoginPopup(null);
+        setLoginType(null);
+			} catch (error) {
+				console.error(error);
+
+				auth.setAuthenticated(false);
+        
+				setLoginPopup(null);
+        setLoginType(null);
+
+				toast.error(t("auth:failedToLogin"));
+			}
+		}
+
+		window.addEventListener("message", handleListenPopupMessages);
+
+		return () => {
+			window.removeEventListener("message", handleListenPopupMessages);
+		};
+	}, []);
 
 	return (
 		<header className="bg-border/30 backdrop-blur border-b border-border w-full h-14 flex items-center justify-between px-5 py-2">
@@ -155,7 +277,20 @@ export function Header() {
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<Avatar className="border border-border size-9 cursor-pointer">
-										<AvatarFallback>{getInitialsFromName(name)}</AvatarFallback>
+                    {meQuery.data.user.avatarUrl ? (
+                      <ViteImage
+                        className='aspect-square size-full'
+                        src={{
+                          src: meQuery.data.user.avatarUrl,
+                          blurDataURL: 'LKO2:N%2Tw=w]~RBVZRi};RPxuwH',
+                          width: 36,
+                          height: 36,
+                        }}
+                      />
+                    ) : (
+                      <AvatarFallback>{getInitialsFromName(meQuery.data.user.name)}</AvatarFallback>
+                    )}
+        
 									</Avatar>
 								</DropdownMenuTrigger>
 
@@ -167,8 +302,7 @@ export function Header() {
 										<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
 											<div className="grid flex-1 text-left text-sm leading-tight">
 												<span className="truncate font-medium">
-													{meQuery.data.user.name ??
-														extractNameFromEmail(meQuery.data.user.email)}
+													{meQuery.data.user.name}
 												</span>
 
 												<span className="truncate text-xs">
@@ -181,7 +315,7 @@ export function Header() {
 									<DropdownMenuSeparator />
 
 									<DropdownMenuItem asChild>
-										<Link to="/profile" className="cursor-pointer">
+										<Link to={`/user/${meQuery.data.user.username}`} className="cursor-pointer">
 											<User size={18} className="text-white" />
 											{t("common:profile")}
 										</Link>
@@ -207,7 +341,7 @@ export function Header() {
 										<button
 											type="button"
 											className="w-full cursor-pointer"
-											onClick={() => auth.logout()}
+											onClick={() => logoutMutation.mutate()}
 										>
 											<LogOut size={18} className="text-white" />
 											{t("auth:logout")}
@@ -221,8 +355,8 @@ export function Header() {
 					<Dialog
 						onOpenChange={(open) => {
 							if (!open) {
-								requestEmailLoginLinkForm.reset();
-								requestEmailLoginLinkForm.clearErrors();
+								requestEmailLoginForm.reset();
+								requestEmailLoginForm.clearErrors();
 							}
 						}}
 					>
@@ -244,44 +378,70 @@ export function Header() {
 							<div className="flex flex-col gap-4">
 								<Button
 									className="w-full"
-									disabled={auth.hasLoginPopup}
-									onClick={() => auth.requestLogin("google")}
+									disabled={!!loginPopup || loginType === 'google' || requestEmailLoginMutation.isPending}
+									onClick={() => requestGoogleLoginMutation.mutate()}
 								>
-									<Icon icon="fa7-brands:google" className="size-5" />
-									{t("auth:continueWithGoogle")}
+                  {loginType === 'google' ? (
+                    <Icon
+                      className="size-5"
+                      icon="eos-icons:loading"
+                    />
+                  ) : (
+                    <>
+                      <Icon icon="fa7-brands:google" className="size-5" />
+                  
+									    {t("auth:continueWithGoogle")}
+                    </>
+                  )}
 								</Button>
 
 								<Button
 									className="w-full"
-									disabled={auth.hasLoginPopup}
-									onClick={() => auth.requestLogin("discord")}
+									disabled={!!loginPopup || loginType === 'discord' || requestEmailLoginMutation.isPending}
+									onClick={() => requestDiscordLoginMutation.mutate()}
 								>
-									<Icon icon="fa7-brands:discord" className="size-5" />
-									{t("auth:continueWithDiscord")}
+                  {loginType === 'discord' ? (
+                    <Icon
+                      className="size-5"
+                      icon="eos-icons:loading"
+                    />
+                  ) : (
+                    <>
+                      <Icon icon="fa7-brands:discord" className="size-5" />
+									    
+                      {t("auth:continueWithDiscord")}
+                    </>
+                  )}
 								</Button>
 
 								<Button
 									className="w-full"
-									disabled={auth.hasLoginPopup}
-									onClick={() => auth.requestLogin("github")}
+									disabled={!!loginPopup || loginType === 'github' || requestEmailLoginMutation.isPending}
+									onClick={() => requestGithubLoginMutation.mutate()}
 								>
-									<Icon icon="fa7-brands:github" className="size-5" />
-									{t("auth:continueWithGithub")}
+                  {loginType === 'github' ? (
+                    <Icon
+                      className="size-5"
+                      icon="eos-icons:loading"
+                    />
+                  ) : (
+                    <>
+                      <Icon icon="fa7-brands:github" className="size-5" />
+									
+                      {t("auth:continueWithGithub")}
+                    </>
+                  )}
 								</Button>
 
 								<Separator />
 
 								<form
 									className="flex flex-col gap-2"
-									onSubmit={requestEmailLoginLinkForm.handleSubmit(
-										async (formData) => {
-											await auth.requestLogin("email", {
-												email: formData.email,
-											});
-
-											requestEmailLoginLinkForm.reset();
-										},
-									)}
+									onSubmit={requestEmailLoginForm.handleSubmit(async ({ email }) => {
+                    setLoginType('email');
+                    
+                    await requestEmailLoginMutation.mutateAsync(email)
+                  })}
 								>
 									<Field>
 										<FieldLabel htmlFor="email">
@@ -293,17 +453,17 @@ export function Header() {
 											type="email"
 											placeholder="jhondoe@example.com"
 											disabled={
-												auth.hasLoginPopup ||
-												requestEmailLoginLinkForm.formState.isSubmitting
+												!!loginPopup ||
+												requestEmailLoginMutation.isPending
 											}
-											{...requestEmailLoginLinkForm.register("email")}
+											{...requestEmailLoginForm.register("email")}
 										/>
 
-										{requestEmailLoginLinkForm.formState.errors.email
+										{requestEmailLoginForm.formState.errors.email
 											?.message && (
 											<FieldError>
 												{
-													requestEmailLoginLinkForm.formState.errors.email
+													requestEmailLoginForm.formState.errors.email
 														?.message
 												}
 											</FieldError>
@@ -313,14 +473,14 @@ export function Header() {
 									<Button
 										className="w-full mt-2"
 										disabled={
-											auth.hasLoginPopup ||
-											requestEmailLoginLinkForm.formState.isSubmitting
+											!!loginPopup ||
+											requestEmailLoginMutation.isPending
 										}
 									>
-										{requestEmailLoginLinkForm.formState.isSubmitting ? (
+										{requestEmailLoginMutation.isPending ? (
 											<Icon
 												className="size-5"
-												icon="line-md:loading-twotone-loop"
+												icon="eos-icons:loading"
 											/>
 										) : (
 											<>

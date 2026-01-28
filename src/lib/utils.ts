@@ -5,14 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function extractNameFromEmail(email: string): string {
-  if (!email.includes("@")) return "";
-
-  const name = email.split("@")[0].replace(/\./g, "");
-
-  return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-}
-
 export function getInitialsFromName(name: string): string {
   const words = name.trim().split(" ");
   if (words.length === 0) return "";

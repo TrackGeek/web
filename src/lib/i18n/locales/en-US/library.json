@@ -28,13 +28,13 @@
 	"playerPerspectives": "Player Perspectives",
 	"gameEngine": "Game Engine",
 	"platforms": "Platforms",
-  "cast": "Cast",
-  "medias": "Medias",
-  "movieCharacteristics": "Movie Characteristics",
-  "language": "Language",
-  "runtime": "Runtime",
-  "revenue": "Revenue",
-  "budget": "Budget",
-  "productionCompanies": "Production Companies",
-  "directors": "Directors"
+	"cast": "Cast",
+	"medias": "Medias",
+	"movieCharacteristics": "Movie Characteristics",
+	"language": "Language",
+	"runtime": "Runtime",
+	"revenue": "Revenue",
+	"budget": "Budget",
+	"productionCompanies": "Production Companies",
+	"directors": "Directors"
 }

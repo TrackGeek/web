@@ -13,28 +13,28 @@ jobs:
       if: ${{ !contains(github.event.head_commit.message, 'chore(i18n): update translations') }}
       name: Crowdin Sync
       runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+      steps:
+        - uses: actions/checkout@v4
 
-      - name: Upload sources
-        uses: crowdin/github-action@v2
-        with:
-          upload_sources: true 
-          upload_translations: false
-          download_translations: true
-          github_user_name: "TrackGeekBot"
-          github_user_email: "256638171+TrackGeekBot@users.noreply.github.com"
-          localization_branch_name: "feat/crowdin-sync"
-          create_pull_request: true
-          pull_request_title: "chore(i18n): update translations"
-          pull_request_body: |
-            Translations synced from Crowdin
+        - name: Upload sources
+          uses: crowdin/github-action@v2
+          with:
+            upload_sources: true 
+            upload_translations: false
+            download_translations: true
+            github_user_name: "TrackGeekBot"
+            github_user_email: "256638171+TrackGeekBot@users.noreply.github.com"
+            localization_branch_name: "feat/crowdin-sync"
+            create_pull_request: true
+            pull_request_title: "chore(i18n): update translations"
+            pull_request_body: |
+              Translations synced from Crowdin
 
-            - Thanks to all contributors.
-          pull_request_reviewers: |
-            Kuriel23
-            izakdvlpr
-        env:
-          GITHUB_TOKEN: ${{ secrets.GHT }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_API_TOKEN: ${{ secrets.CROWDIN_API_TOKEN }}
+              - Thanks to all contributors.
+            pull_request_reviewers: |
+              Kuriel23
+              izakdvlpr
+          env:
+            GITHUB_TOKEN: ${{ secrets.GHT }}
+            CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+            CROWDIN_API_TOKEN: ${{ secrets.CROWDIN_API_TOKEN }}

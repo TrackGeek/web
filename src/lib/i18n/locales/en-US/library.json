@@ -53,5 +53,6 @@
 	"markEpisode": "Mark Episode",
 	"unmarkEpisode": "Unmark Episode",
 	"unmarkAll": "Unmark All",
-	"unmarkSeason": "Unmark Season"
+	"unmarkSeason": "Unmark Season",
+  "source": "Source"
 }

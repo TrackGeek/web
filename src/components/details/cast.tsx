@@ -1,12 +1,5 @@
-import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarGroup,
-	AvatarGroupCount,
-	AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function CastItem() {
 	return (
@@ -25,9 +18,7 @@ export function CastItem() {
 				</Avatar>
 			</div>
 			<p className="text-card-foreground font-bold text-center">Jack Black</p>
-			<p className="text-muted-foreground text-center">
-				Doug McCallister
-			</p>
+			<p className="text-muted-foreground text-center">Doug McCallister</p>
 		</Link>
 	);
 }

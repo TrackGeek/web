@@ -1,15 +1,13 @@
 import {
 	SiFacebook,
 	SiFacebookHex,
-	SiImdb,
-	SiImdbHex,
 	SiInstagram,
 	SiInstagramHex,
+	SiMyanimelist,
 	SiX,
 } from "@icons-pack/react-simple-icons";
 import {
 	Bookmark,
-	Box,
 	Building,
 	CheckCircle,
 	CheckSquare,
@@ -28,58 +26,41 @@ import {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import {
+	AnimeEpisodeProgress,
+	type SingleSeasonData,
+} from "@/components/details/anime-progress";
+import { AnimeRelations } from "@/components/details/anime-relations";
 import { CastItem } from "@/components/details/cast";
+import { CharacterItem } from "@/components/details/character";
 import { EpisodeItem } from "@/components/details/episode";
 import { ListItem } from "@/components/details/list";
-import {
-	EpisodeProgress,
-	type SeasonData,
-} from "@/components/details/progress";
 import { ReviewItem } from "@/components/details/review";
 import { Layout } from "@/components/layouts/main";
-import {
-	Accordion,
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
-export function TVShowDetails() {
+export function AnimeDetails() {
 	const { t } = useTranslation();
-	const [mySeasons, setMySeasons] = useState<SeasonData[]>([
-		{
-			seasonNumber: 0,
-			totalEpisodes: 3,
-			watchedEpisodes: [1, 2],
-		},
-		{
-			seasonNumber: 1,
-			totalEpisodes: 10,
-			watchedEpisodes: [1, 2, 3, 4, 5],
-		},
-		{
-			seasonNumber: 2,
-			totalEpisodes: 8,
-			watchedEpisodes: [],
-		},
-	]);
+	const [mySeason, setMySeason] = useState<SingleSeasonData>({
+		totalEpisodes: 12,
+		watchedEpisodes: [1, 2, 3, 4, 5],
+	});
 
-	function handleToggle(season: number, ep: number) {
-		console.log(season, ep);
+	function handleToggle(ep: number) {
+		console.log(ep);
 	}
 	return (
-		<Layout title="TV Show Name">
+		<Layout title="Anime Name">
 			<div className="flex flex-col lg:flex-row gap-8">
 				<div className="lg:w-1/3">
 					<div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 gap-4 flex flex-col">
 						<div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
 							<img
-								src="https://www.themoviedb.org/t/p/w1280/c15BtJxCXMrISLVmysdsnZUPQft.jpg"
-								alt="Capa da série"
+								src="https://cdn.myanimelist.net/images/anime/1921/154528l.jpg"
+								alt="Capa do anime"
 								className="w-full h-auto object-cover"
 							/>
 						</div>
@@ -154,13 +135,17 @@ export function TVShowDetails() {
 								<p className="text-sm text-muted-foreground">
 									{t("library:status")}
 								</p>
-								<p className="font-semibold text-card-foreground">Returning</p>
+								<p className="font-semibold text-card-foreground">
+									Currently Airing
+								</p>
 							</div>
 							<div className="bg-muted/50 p-4 rounded-lg border border-border">
 								<p className="text-sm text-muted-foreground">
 									{t("library:releaseDate")}
 								</p>
-								<p className="font-semibold text-card-foreground">2024</p>
+								<p className="font-semibold text-card-foreground">
+									Winter 2026
+								</p>
 							</div>
 						</div>
 						<Link
@@ -196,12 +181,8 @@ export function TVShowDetails() {
 							>
 								<SiX />
 							</Link>
-							<Link
-								to="https://www.imdb.com/title/tt4900148"
-								target="_blank"
-								className={cn(`hover:text-[${SiImdbHex}]`, "my-1 mr-1")}
-							>
-								<SiImdb />
+							<Link to="https://www.imdb.com/title/tt4900148" target="_blank">
+								<SiMyanimelist />
 							</Link>
 						</div>
 					</div>
@@ -211,7 +192,7 @@ export function TVShowDetails() {
 					<div className="bg-card rounded-2xl shadow-lg p-8">
 						<div className="mb-5">
 							<h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-								Fallout
+								Sousou no Frieren 2nd Season
 							</h1>
 						</div>
 
@@ -234,10 +215,16 @@ export function TVShowDetails() {
 							<div className="flex items-center justify-between gap-3 mb-2">
 								<TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
 									<TabsTrigger value="info">{t("library:info")}</TabsTrigger>
+									<TabsTrigger value="relations">
+										{t("library:relations")}
+									</TabsTrigger>
 									<TabsTrigger value="episodes">
 										{t("library:episodes")}
 									</TabsTrigger>
 									<TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
+									<TabsTrigger value="characters">
+										{t("library:characters")}
+									</TabsTrigger>
 									<TabsTrigger value="medias">
 										{t("library:medias")}
 									</TabsTrigger>
@@ -256,25 +243,19 @@ export function TVShowDetails() {
 									</h3>
 									<div className="flex flex-wrap gap-2">
 										<Link
-											to="/tv/genres/action"
-											className="px-3 py-1.5 bg-linear-to-r from-chart-1/20 to-chart-1/30 text-chart-1 border border-chart-1/30 rounded-full text-sm font-medium"
-										>
-											Ação
-										</Link>
-										<Link
-											to="/tv/genres/adventure"
+											to="/anime/genres/adventure"
 											className="px-3 py-1.5 bg-linear-to-r from-purple-500/20 to-purple-500/30 text-purple-400 border border-purple-500/30 rounded-full text-sm font-medium"
 										>
 											Aventura
 										</Link>
 										<Link
-											to="/tv/genres/scifi"
+											to="/anime/genres/scifi"
 											className="px-3 py-1.5 bg-linear-to-r from-chart-3/20 to-chart-3/30 text-chart-3 border border-chart-3/30 rounded-full text-sm font-medium"
 										>
-											Sci-fi
+											Drama
 										</Link>
 										<Link
-											to="/tv/genres/fantasy"
+											to="/anime/genres/fantasy"
 											className="px-3 py-1.5 bg-linear-to-r from-chart-3/20 to-chart-3/30 text-chart-3 border border-chart-3/30 rounded-full text-sm font-medium"
 										>
 											Fantasy
@@ -287,51 +268,33 @@ export function TVShowDetails() {
 										{t("library:synopsis")}
 									</h3>
 									<div className="text-muted-foreground leading-relaxed space-y-4">
-										<p>
-											The story of haves and have-nots in a world in which
-											there's almost nothing left to have. 200 years after the
-											apocalypse, the gentle denizens of luxury fallout shelters
-											are forced to return to the irradiated hellscape their
-											ancestors left behind — and are shocked to discover an
-											incredibly complex, gleefully weird, and highly violent
-											universe waiting for them.
-										</p>
+										<p>Second season of Sousou no Frieren.</p>
 									</div>
 								</div>
 
 								<div className="mb-5">
 									<h3 className="font-semibold text-card-foreground text-lg mb-4">
-										{t("library:tvShowCharacteristics")}
+										{t("library:animeCharacteristics")}
 									</h3>
 									<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
 											<FilePenLine className="w-5 h-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
-													{t("library:creators")}
+													{t("library:type")}
 												</p>
-												<p className="font-medium text-card-foreground flex flex-wrap">
-													<Link
-														to="/cast/graham-wagner"
-													>
-														Graham Wagner
-													</Link>
-													,
-													<Link
-														to="/cast/geneva-robertson-dworet"
-													>
-														Geneva Robertson-Dworet
-													</Link>
-												</p>
+												<p className="font-medium text-card-foreground">TV</p>
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
 											<Hash className="w-5 h-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
-													{t("library:seasons")}
+													{t("library:source")}
 												</p>
-												<p className="font-medium text-card-foreground">2</p>
+												<p className="font-medium text-card-foreground">
+													Manga
+												</p>
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
@@ -340,17 +303,17 @@ export function TVShowDetails() {
 												<p className="text-sm text-muted-foreground">
 													{t("library:totalEpisodes")}
 												</p>
-												<p className="font-medium text-card-foreground">16</p>
+												<p className="font-medium text-card-foreground">12</p>
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Languages className="w-5 h-5 text-muted-foreground" />
+											<FileType className="w-5 h-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
-													{t("library:language")}
+													{t("library:broadcast")}
 												</p>
 												<p className="font-medium text-card-foreground">
-													English
+													Fridays at 23:00 (JST)
 												</p>
 											</div>
 										</div>
@@ -358,10 +321,10 @@ export function TVShowDetails() {
 											<Building className="w-5 h-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
-													{t("library:productionCompanies")}
+													{t("library:rating")}
 												</p>
 												<p className="font-medium text-card-foreground">
-													Amazon Prime Video
+													PG-13
 												</p>
 											</div>
 										</div>
@@ -373,7 +336,7 @@ export function TVShowDetails() {
 													{t("library:runtime")}
 												</p>
 												<p className="font-medium text-card-foreground">
-													14 hours 20 minutes
+													24 min
 												</p>
 											</div>
 										</div>
@@ -381,22 +344,65 @@ export function TVShowDetails() {
 											<FileType className="w-5 h-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
-													{t("library:type")}
+													{t("library:studios")}
 												</p>
-												<p className="font-medium text-card-foreground">
-													Scripted
+												<p className="font-medium text-card-foreground flex-wrap flex">
+													<Link to="/anime-producers/graham-wagner">
+														Aniplex
+													</Link>
+													,
+													<Link to="/anime-producers/graham-wagner">
+														Dentsu
+													</Link>
+													,
+													<Link to="/anime-producers/graham-wagner">
+														Nippon Television Network
+													</Link>
+													,
+													<Link to="/anime-producers/graham-wagner">
+														TOHO animation
+													</Link>
+													,
+													<Link to="/anime-producers/graham-wagner">
+														Shogakukan-Shueisha Productions
+													</Link>
+													,
+													<Link to="/anime-producers/graham-wagner">
+														Sound Team Don Juan
+													</Link>
+													,
+													<Link to="/anime-producers/graham-wagner">
+														Miracle Bus
+													</Link>
+													,
+													<Link to="/anime-producers/graham-wagner">
+														Shogakukan
+													</Link>
+													,
+													<Link to="/anime-producers/graham-wagner">
+														TOHO Music
+													</Link>
+												</p>
+											</div>
+										</div>
+										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
+											<Languages className="w-5 h-5 text-muted-foreground" />
+											<div>
+												<p className="text-sm text-muted-foreground">
+													{t("library:producers")}
+												</p>
+												<p className="font-medium text-card-foreground flex-wrap flex">
+													<Link to="/anime-producers/graham-wagner">
+														Madhouse
+													</Link>
 												</p>
 											</div>
 										</div>
 									</div>
 								</div>
 
-								<EpisodeProgress
-									seasons={mySeasons}
-									defaultSeason={1}
-									seasonCustomNames={{
-										0: t("library:specials"),
-									}}
+								<AnimeEpisodeProgress
+									season={mySeason}
 									onToggle={handleToggle}
 								/>
 
@@ -456,49 +462,24 @@ export function TVShowDetails() {
 								</div>
 
 								<iframe
-									src="https://youtube.com/embed/0kQ8i2FpRDk"
+									src="https://www.youtube-nocookie.com/embed/RH-FcW94z00?enablejsapi=1&wmode=opaque&autoplay=1"
 									allowFullScreen
 									className="w-full aspect-video"
 									title="Trailer"
 								/>
 							</TabsContent>
 							<TabsContent value="episodes">
-								<Accordion type="single" collapsible defaultValue="item-1">
-									<AccordionItem value="item-1">
-										<AccordionTrigger className="cursor-pointer">
-											<h3 className="font-semibold text-card-foreground text-lg mb-3">
-												{t("library:season", { count: 1 })} 1
-											</h3>
-										</AccordionTrigger>
-										<AccordionContent>
-											<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-												<EpisodeItem />
-												<EpisodeItem />
-												<EpisodeItem />
-												<EpisodeItem />
-												<EpisodeItem />
-												<EpisodeItem />
-											</div>
-										</AccordionContent>
-									</AccordionItem>
-									<AccordionItem value="item-2">
-										<AccordionTrigger className="cursor-pointer">
-											<h3 className="font-semibold text-card-foreground text-lg mb-3">
-												{t("library:season", { count: 1 })} 2
-											</h3>
-										</AccordionTrigger>
-										<AccordionContent>
-											<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-												<EpisodeItem />
-												<EpisodeItem />
-												<EpisodeItem />
-												<EpisodeItem />
-												<EpisodeItem />
-												<EpisodeItem />
-											</div>
-										</AccordionContent>
-									</AccordionItem>
-								</Accordion>
+								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+									<EpisodeItem />
+									<EpisodeItem />
+									<EpisodeItem />
+									<EpisodeItem />
+									<EpisodeItem />
+									<EpisodeItem />
+								</div>
+							</TabsContent>
+							<TabsContent value="relations">
+								<AnimeRelations />
 							</TabsContent>
 							<TabsContent value="reviews">
 								<ReviewItem />
@@ -517,6 +498,17 @@ export function TVShowDetails() {
 									<CastItem />
 									<CastItem />
 									<CastItem />
+								</div>
+							</TabsContent>
+							<TabsContent value="characters">
+								<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+									<CharacterItem />
+									<CharacterItem />
+									<CharacterItem />
+									<CharacterItem />
+									<CharacterItem />
+									<CharacterItem />
+									<CharacterItem />
 								</div>
 							</TabsContent>
 							<TabsContent value="medias">

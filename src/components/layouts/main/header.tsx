@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
+import ViteImage from "@son426/vite-image/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
 	Bell,
@@ -18,13 +19,12 @@ import {
 	TvMinimalPlay,
 	User,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import z from "zod";
-import ViteImage from "@son426/vite-image/react";
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -56,22 +56,22 @@ const requestEmailLoginSchema = z.object({
 	email: z.email(),
 });
 
-type RequestEmailLoginFormData = z.infer<
-	typeof requestEmailLoginSchema
->;
+type RequestEmailLoginFormData = z.infer<typeof requestEmailLoginSchema>;
 
 export function Header() {
 	const { t } = useTranslation();
 
 	const auth = useAuth();
-  
-  const [loginPopup, setLoginPopup] = useState<Window | null>(null);
-  const [loginType, setLoginType] = useState<'email' | 'google' | 'discord' | 'github' | null>(null);
+
+	const [loginPopup, setLoginPopup] = useState<Window | null>(null);
+	const [loginType, setLoginType] = useState<
+		"email" | "google" | "discord" | "github" | null
+	>(null);
 
 	const requestEmailLoginForm = useForm<RequestEmailLoginFormData>({
 		resolver: zodResolver(requestEmailLoginSchema),
 		mode: "onChange",
-    disabled: !!loginPopup && loginType !== 'email',
+		disabled: !!loginPopup && loginType !== "email",
 	});
 
 	const meQuery = useQuery<apiTypes.MeResponse>({
@@ -79,46 +79,47 @@ export function Header() {
 		queryFn: () => api.get(apiEndpoints.me.get).then(({ data }) => data),
 		enabled: auth.isAuthenticated,
 	});
-  
-  const requestEmailLoginMutation = useMutation({
-		mutationFn: (email: string) => api.get(apiEndpoints.requestEmailLogin.get, { params: { email }, }),
+
+	const requestEmailLoginMutation = useMutation({
+		mutationFn: (email: string) =>
+			api.get(apiEndpoints.requestEmailLogin.get, { params: { email } }),
 		onSuccess: () => {
-      setLoginType(null);
-      
-      toast.success(t("auth:enterYourEmail"))
-      
-      requestEmailLoginForm.reset();
-      requestEmailLoginForm.clearErrors();
-    },
+			setLoginType(null);
+
+			toast.success(t("auth:enterYourEmail"));
+
+			requestEmailLoginForm.reset();
+			requestEmailLoginForm.clearErrors();
+		},
 		onError: () => toast.error(t("auth:failedToLogin")),
 	});
-  
-  const requestGoogleLoginMutation = useMutation({
+
+	const requestGoogleLoginMutation = useMutation({
 		mutationFn: () => api.get(apiEndpoints.requestGoogleLogin.get),
 		onSuccess: (response) => {
-      setLoginPopup(openPopup(response.data?.url, 600, 600))
-      setLoginType('google');
-    },
+			setLoginPopup(openPopup(response.data?.url, 600, 600));
+			setLoginType("google");
+		},
 		onError: () => toast.error(t("auth:failedToLogin")),
 	});
-  
-  const requestDiscordLoginMutation = useMutation({
+
+	const requestDiscordLoginMutation = useMutation({
 		mutationFn: () => api.get(apiEndpoints.requestDiscordLogin.get),
 		onSuccess: (response) => {
-      setLoginPopup(openPopup(response.data?.url, 600, 600))
-      setLoginType('discord');
-    },
+			setLoginPopup(openPopup(response.data?.url, 600, 600));
+			setLoginType("discord");
+		},
 		onError: () => toast.error(t("auth:failedToLogin")),
 	});
-  
-  const requestGithubLoginMutation = useMutation({
-    mutationFn: () => api.get(apiEndpoints.requestGithubLogin.get),
-    onSuccess: (response) => {
-      setLoginPopup(openPopup(response.data?.url, 600, 600))
-      setLoginType('github');
-    },
-    onError: () => toast.error(t("auth:failedToLogin")),
-  });
+
+	const requestGithubLoginMutation = useMutation({
+		mutationFn: () => api.get(apiEndpoints.requestGithubLogin.get),
+		onSuccess: (response) => {
+			setLoginPopup(openPopup(response.data?.url, 600, 600));
+			setLoginType("github");
+		},
+		onError: () => toast.error(t("auth:failedToLogin")),
+	});
 
 	const logoutMutation = useMutation({
 		mutationFn: () => api.get("/auth/logout"),
@@ -129,15 +130,15 @@ export function Header() {
 		},
 		onError: () => toast.error(t("auth:failedToLogout")),
 	});
-  
-  useEffect(() => {
+
+	useEffect(() => {
 		if (!loginPopup) return;
 
 		const interval = setInterval(() => {
 			if (loginPopup.closed) {
 				setLoginPopup(null);
-        setLoginType(null);
-        
+				setLoginType(null);
+
 				clearInterval(interval);
 			}
 		}, 500);
@@ -149,22 +150,22 @@ export function Header() {
 
 	useEffect(() => {
 		function handleListenPopupMessages(event: MessageEvent) {
-      if (event.origin !== import.meta.env.VITE_API_URL) return;
-        
+			if (event.origin !== import.meta.env.VITE_API_URL) return;
+
 			try {
 				const data = JSON.parse(event.data) as Record<string, any>;
-        
-        if (!data) {
-          return;
-        }
+
+				if (!data) {
+					return;
+				}
 
 				if (data?.type !== "SUCCESS_LOGIN") {
 					console.error(data);
 
 					auth.setAuthenticated(false);
-          
+
 					setLoginPopup(null);
-          setLoginType(null);
+					setLoginType(null);
 
 					toast.error(t("auth:failedToLogin"));
 
@@ -174,18 +175,18 @@ export function Header() {
 				toast.success(t("auth:loginSuccessful"));
 
 				loginPopup?.close();
-        
+
 				auth.setAuthenticated(true);
 
 				setLoginPopup(null);
-        setLoginType(null);
+				setLoginType(null);
 			} catch (error) {
 				console.error(error);
 
 				auth.setAuthenticated(false);
-        
+
 				setLoginPopup(null);
-        setLoginType(null);
+				setLoginType(null);
 
 				toast.error(t("auth:failedToLogin"));
 			}
@@ -277,20 +278,21 @@ export function Header() {
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<Avatar className="border border-border size-9 cursor-pointer">
-                    {meQuery.data.user.avatarUrl ? (
-                      <ViteImage
-                        className='aspect-square size-full'
-                        src={{
-                          src: meQuery.data.user.avatarUrl,
-                          blurDataURL: 'LKO2:N%2Tw=w]~RBVZRi};RPxuwH',
-                          width: 36,
-                          height: 36,
-                        }}
-                      />
-                    ) : (
-                      <AvatarFallback>{getInitialsFromName(meQuery.data.user.name)}</AvatarFallback>
-                    )}
-        
+										{meQuery.data.user.avatarUrl ? (
+											<ViteImage
+												className="aspect-square size-full"
+												src={{
+													src: meQuery.data.user.avatarUrl,
+													blurDataURL: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH",
+													width: 36,
+													height: 36,
+												}}
+											/>
+										) : (
+											<AvatarFallback>
+												{getInitialsFromName(meQuery.data.user.name)}
+											</AvatarFallback>
+										)}
 									</Avatar>
 								</DropdownMenuTrigger>
 
@@ -315,7 +317,10 @@ export function Header() {
 									<DropdownMenuSeparator />
 
 									<DropdownMenuItem asChild>
-										<Link to={`/user/${meQuery.data.user.username}`} className="cursor-pointer">
+										<Link
+											to={`/user/${meQuery.data.user.username}`}
+											className="cursor-pointer"
+										>
 											<User size={18} className="text-white" />
 											{t("common:profile")}
 										</Link>
@@ -378,70 +383,75 @@ export function Header() {
 							<div className="flex flex-col gap-4">
 								<Button
 									className="w-full"
-									disabled={!!loginPopup || loginType === 'google' || requestEmailLoginMutation.isPending}
+									disabled={
+										!!loginPopup ||
+										loginType === "google" ||
+										requestEmailLoginMutation.isPending
+									}
 									onClick={() => requestGoogleLoginMutation.mutate()}
 								>
-                  {loginType === 'google' ? (
-                    <Icon
-                      className="size-5"
-                      icon="eos-icons:loading"
-                    />
-                  ) : (
-                    <>
-                      <Icon icon="fa7-brands:google" className="size-5" />
-                  
-									    {t("auth:continueWithGoogle")}
-                    </>
-                  )}
+									{loginType === "google" ? (
+										<Icon className="size-5" icon="eos-icons:loading" />
+									) : (
+										<>
+											<Icon icon="fa7-brands:google" className="size-5" />
+
+											{t("auth:continueWithGoogle")}
+										</>
+									)}
 								</Button>
 
 								<Button
 									className="w-full"
-									disabled={!!loginPopup || loginType === 'discord' || requestEmailLoginMutation.isPending}
+									disabled={
+										!!loginPopup ||
+										loginType === "discord" ||
+										requestEmailLoginMutation.isPending
+									}
 									onClick={() => requestDiscordLoginMutation.mutate()}
 								>
-                  {loginType === 'discord' ? (
-                    <Icon
-                      className="size-5"
-                      icon="eos-icons:loading"
-                    />
-                  ) : (
-                    <>
-                      <Icon icon="fa7-brands:discord" className="size-5" />
-									    
-                      {t("auth:continueWithDiscord")}
-                    </>
-                  )}
+									{loginType === "discord" ? (
+										<Icon className="size-5" icon="eos-icons:loading" />
+									) : (
+										<>
+											<Icon icon="fa7-brands:discord" className="size-5" />
+
+											{t("auth:continueWithDiscord")}
+										</>
+									)}
 								</Button>
 
 								<Button
 									className="w-full"
-									disabled={!!loginPopup || loginType === 'github' || requestEmailLoginMutation.isPending}
+									disabled={
+										!!loginPopup ||
+										loginType === "github" ||
+										requestEmailLoginMutation.isPending
+									}
 									onClick={() => requestGithubLoginMutation.mutate()}
 								>
-                  {loginType === 'github' ? (
-                    <Icon
-                      className="size-5"
-                      icon="eos-icons:loading"
-                    />
-                  ) : (
-                    <>
-                      <Icon icon="fa7-brands:github" className="size-5" />
-									
-                      {t("auth:continueWithGithub")}
-                    </>
-                  )}
+									{loginType === "github" ? (
+										<Icon className="size-5" icon="eos-icons:loading" />
+									) : (
+										<>
+											<Icon icon="fa7-brands:github" className="size-5" />
+
+											{t("auth:continueWithGithub")}
+										</>
+									)}
 								</Button>
 
 								<Separator />
 
 								<form
 									className="flex flex-col gap-2"
-									onSubmit={requestEmailLoginForm.handleSubmit(async ({ email }) => {
-                    setLoginType('email');
-                    
-                    await requestEmailLoginMutation.mutateAsync(email)
-                  })}
+									onSubmit={requestEmailLoginForm.handleSubmit(
+										async ({ email }) => {
+											setLoginType("email");
+
+											await requestEmailLoginMutation.mutateAsync(email);
+										},
+									)}
 								>
 									<Field>
 										<FieldLabel htmlFor="email">
@@ -453,19 +463,14 @@ export function Header() {
 											type="email"
 											placeholder="jhondoe@example.com"
 											disabled={
-												!!loginPopup ||
-												requestEmailLoginMutation.isPending
+												!!loginPopup || requestEmailLoginMutation.isPending
 											}
 											{...requestEmailLoginForm.register("email")}
 										/>
 
-										{requestEmailLoginForm.formState.errors.email
-											?.message && (
+										{requestEmailLoginForm.formState.errors.email?.message && (
 											<FieldError>
-												{
-													requestEmailLoginForm.formState.errors.email
-														?.message
-												}
+												{requestEmailLoginForm.formState.errors.email?.message}
 											</FieldError>
 										)}
 									</Field>
@@ -473,15 +478,11 @@ export function Header() {
 									<Button
 										className="w-full mt-2"
 										disabled={
-											!!loginPopup ||
-											requestEmailLoginMutation.isPending
+											!!loginPopup || requestEmailLoginMutation.isPending
 										}
 									>
 										{requestEmailLoginMutation.isPending ? (
-											<Icon
-												className="size-5"
-												icon="eos-icons:loading"
-											/>
+											<Icon className="size-5" icon="eos-icons:loading" />
 										) : (
 											<>
 												<Mail className="size-5" />

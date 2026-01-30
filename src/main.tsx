@@ -17,6 +17,7 @@ import { SettingsPage } from "./pages/settings.tsx";
 import { UserDetailsPage } from "./pages/user-details.tsx";
 import { RootProvider } from "./providers/root-provider.tsx";
 import { MovieDetails } from "./pages/movie-details.tsx";
+import { TVShowDetails } from "./pages/tv-show-details.tsx";
 
 export function Routes() {
 	const { isAuthenticated } = useAuth();
@@ -44,6 +45,10 @@ export function Routes() {
 		{
 			path: "/movie/:bookSlug",
 			element: <MovieDetails />,
+		},
+		{
+			path: "/tv/:bookSlug",
+			element: <TVShowDetails />,
 		},
 		{
 			path: "/user/:username",

@@ -36,5 +36,22 @@
 	"revenue": "Revenue",
 	"budget": "Budget",
 	"productionCompanies": "Production Companies",
-	"directors": "Directors"
+	"directors": "Directors",
+	"episodes": "Episodes",
+	"creators": "Creators",
+	"season": "Season",
+	"season_other": "Seasons",
+	"episode": "Episode",
+	"episode_other": "Episodes",
+	"totalEpisodes": "Total Episodes",
+	"type": "Type",
+	"tvShowCharacteristics": "TV Show Characteristics",
+	"specials": "Specials",
+	"selectWatchedEpisodes": "Select the watched episodes.",
+	"markAll": "Mark All",
+	"markSeason": "Mark Season {{season}}",
+	"markEpisode": "Mark Episode",
+	"unmarkEpisode": "Unmark Episode",
+	"unmarkAll": "Unmark All",
+	"unmarkSeason": "Unmark Season"
 }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export function Footer() {
 	const { t } = useTranslation();
-  
+
 	return (
 		<footer className="bg-border/30 backdrop-blur border-t border-border w-full px-3 md:px-10 py-6">
 			<div className="flex flex-col lg:flex-row md:items-center justify-between gap-8">
@@ -20,7 +20,7 @@ export function Footer() {
 						<Link to="/add-data">{t("common:addData")}</Link>
 						<Link to="/about">{t("common:about")}</Link>
 						<Link to="/donate">{t("common:donate")}</Link>
-						<Link to="https://crowdin.com/project/trackgeek-official" target="_blank">
+						<Link to="https://crowdin.com/project/trackgeek" target="_blank">
 							{t("common:translate")}
 						</Link>
 					</div>

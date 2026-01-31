@@ -3,6 +3,7 @@ import "./global.css";
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import {
 	createBrowserRouter,
 	Navigate,
@@ -10,15 +11,15 @@ import {
 	RouterProvider,
 } from "react-router-dom";
 import { useAuth } from "./hooks/use-auth.tsx";
+import { AnimeDetails } from "./pages/anime-details.tsx";
 import { BookDetails } from "./pages/book-details.tsx";
 import { GameDetails } from "./pages/game-details.tsx";
 import { HomePage } from "./pages/home";
+import { MovieDetails } from "./pages/movie-details.tsx";
 import { SettingsPage } from "./pages/settings.tsx";
+import { TVShowDetails } from "./pages/tv-show-details.tsx";
 import { UserDetailsPage } from "./pages/user-details.tsx";
 import { RootProvider } from "./providers/root-provider.tsx";
-import { MovieDetails } from "./pages/movie-details.tsx";
-import { TVShowDetails } from "./pages/tv-show-details.tsx";
-import { AnimeDetails } from "./pages/anime-details.tsx";
 
 export function Routes() {
 	const { isAuthenticated } = useAuth();
@@ -75,8 +76,10 @@ export function Routes() {
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<RootProvider>
-			<Routes />
-		</RootProvider>
+		<HelmetProvider>
+			<RootProvider>
+				<Routes />
+			</RootProvider>
+		</HelmetProvider>
 	</StrictMode>,
 );

@@ -1,7 +1,7 @@
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
-import { Footer } from './footer';
-import { Header } from './header';
+import { Footer } from "./footer";
+import { Header } from "./header";
 
 interface LayoutProps {
 	title: string;
@@ -14,7 +14,6 @@ export function Layout({ title, children }: LayoutProps) {
 			<Helmet>
 				<title>{title} | TrackGeek</title>
 			</Helmet>
-
 			<div className="bg-background flex flex-col min-h-screen">
 				<Header />
 

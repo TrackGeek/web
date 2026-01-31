@@ -1,12 +1,12 @@
 {
-  "INVALID_EMAIL_LOGIN_CODE": "The provided email login code is invalid or has expired.",
-  "INVALID_GOOGLE_LOGIN_CODE": "The provided Google authorization code is invalid.",
-  "INVALID_DISCORD_LOGIN_CODE": "The provided Discord authorization code is invalid.",
-  "INVALID_GITHUB_LOGIN_CODE": "The provided GitHub authorization code is invalid.",
-  "INVALID_REFRESH_TOKEN": "The provided refresh token is invalid.",
-  "EXPIRED_REFRESH_TOKEN": "The provided refresh token has expired.",
-  "ACCESS_TOKEN_MISSING": "Access token is missing from the request.",
-  "ACCESS_TOKEN_EXPIRED": "The access token has expired.",
-  "INVALID_ACCESS_TOKEN": "The provided access token is invalid.",
-  "USER_NOT_FOUND": "User not found."
+  "INVALID_EMAIL_LOGIN_CODE": "O código de login do e-mail fornecido é inválido ou expirou.",
+  "INVALID_GOOGLE_LOGIN_CODE": "O código de autorização do Google fornecido é inválido.",
+  "INVALID_DISCORD_LOGIN_CODE": "O código de autorização do Discord fornecido é inválido.",
+  "INVALID_GITHUB_LOGIN_CODE": "O código de autorização do GitHub fornecido é inválido.",
+  "INVALID_REFRESH_TOKEN": "O token de atualização fornecido é inválido.",
+  "EXPIRED_REFRESH_TOKEN": "O token de atualização fornecido expirou.",
+  "ACCESS_TOKEN_MISSING": "O token de acesso está faltando na solicitação.",
+  "ACCESS_TOKEN_EXPIRED": "O token de acesso expirou.",
+  "INVALID_ACCESS_TOKEN": "O token de acesso fornecido é inválido.",
+  "USER_NOT_FOUND": "Usuário não encontrado"
 }

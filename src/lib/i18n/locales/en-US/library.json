@@ -54,12 +54,12 @@
 	"unmarkEpisode": "Unmark Episode",
 	"unmarkAll": "Unmark All",
 	"unmarkSeason": "Unmark Season",
-  "studios": "Studios",
-  "producers": "Producers",
-  "rating": "Age Rating",
-  "broadcast": "Broadcast",
-  "source": "Source",
-  "characters": "Characters",
-  "relations": "Relations",
-  "animeCharacteristics": "Anime Characteristics"
+	"studios": "Studios",
+	"producers": "Producers",
+	"rating": "Age Rating",
+	"broadcast": "Broadcast",
+	"source": "Source",
+	"characters": "Characters",
+	"relations": "Relations",
+	"animeCharacteristics": "Anime Characteristics"
 }

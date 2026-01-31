@@ -1,57 +1,57 @@
 {
   "banner": {
     "title": "Banner",
-    "description": "Allowed Formats: JPG, JPEG, PNG, GIF. Max size: 5mb. Optimal dimensions: 1700x330",
+    "description": "Formatos permitidos: JPG, JPEG, PNG, GIF. Tamanho máximo: 5mb. Dimensões ideais: 1700x330",
     "upload": {
-      "title": "Upload Banner",
-      "success": "Banner uploaded successfully.",
-      "error": "Failed to upload banner. Please try again."
+      "title": "Enviar Banner",
+      "success": "Banner enviado com sucesso.",
+      "error": "Falha ao carregar o banner. Por favor, tente novamente."
     },
     "delete": {
-      "success": "Banner deleted successfully.",
-      "error": "Failed to delete banner. Please try again."
+      "success": "Banner deletado com sucesso.",
+      "error": "Falha ao apagar o banner. Por favor, tente novamente."
     }
   },
   "avatar": {
     "title": "Avatar",
-    "description": "Allowed Formats: JPG, JPEG, PNG, GIF. Max size: 5mb. Optimal dimensions: 500x500",
+    "description": "Formatos permitidos: JPG, JPEG, PNG, GIF. Tamanho máximo: 5mb. Dimensões ideais: 500x500",
     "upload": {
-      "title": "Upload Avatar",
-      "success": "Avatar uploaded successfully.",
-      "error": "Failed to upload avatar. Please try again."
+      "title": "Carregar Avatar",
+      "success": "Avatar enviado com sucesso.",
+      "error": "Falha ao atualizar o avatar. Por favor, tente novamente."
     },
     "delete": {
-      "success": "Avatar deleted successfully.",
-      "error": "Failed to delete avatar. Please try again."
+      "success": "Imagem do perfil excluída com sucesso.",
+      "error": "Falha ao excluir o avatar. Por favor, tente novamente."
     }
   },
   "profile": {
-    "title": "Profile Settings",
-    "description": "Manage your personal information and preferences.",
-    "name": "Name",
-    "username": "Username",
-    "about": "About Me"
+    "title": "Opções do perfil",
+    "description": "Gerenciar suas informações pessoais e preferências",
+    "name": "Nome",
+    "username": "Nome de usuário",
+    "about": "Sobre Mim"
   },
   "color": {
-    "title": "Color Theme",
-    "description": "Choose your preferred color theme for the application interface.",
-    "custom": "Custom Color"
+    "title": "Cor do Tema",
+    "description": "Escolha sua cor de tema preferida para a interface do aplicativo.",
+    "custom": "Cor customizada"
   },
   "save": {
-    "title": "Save Changes",
-    "success": "Settings saved successfully.",
-    "error": "Failed to save settings. Please try again."
+    "title": "Salvar alterações",
+    "success": "Configurações salvas com sucesso.",
+    "error": "Não foi possível salvar as configurações. Por favor, tente novamente."
   },
   "preferrences": {
-    "title": "Preferences",
-    "description": "Set your application preferences.",
+    "title": "Preferências",
+    "description": "Configure suas preferências de aplicação.",
     "language": {
-      "title": "Language",
-      "placeholder": "Select your preferred language"
+      "title": "Idioma",
+      "placeholder": "Selecione seu idioma de preferência"
     },
     "timezone": {
-      "title": "Timezone",
-      "placeholder": "Select your timezone"
+      "title": "Fuso horário",
+      "placeholder": "Selecione o seu fuso horário"
     }
   }
 }

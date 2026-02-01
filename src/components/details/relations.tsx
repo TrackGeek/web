@@ -8,7 +8,6 @@ import {
 	useNodesInitialized,
 	useReactFlow,
 } from "@xyflow/react";
-import { useTranslation } from "react-i18next";
 import "@xyflow/react/dist/style.css";
 import { useCallback, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
@@ -69,7 +68,7 @@ const edges = [
 	{ id: "manga-n1", source: "manga", target: "n1", className: "edge-path" },
 ];
 
-export function AnimeCard({ data }: any) {
+export function Card({ data }: any) {
 	return (
 		<Link
 			to={data.link}
@@ -173,8 +172,7 @@ const organizeNodes = (nodes: any[], edges: any[], centerNodeId: string) => {
 	return organizedNodes;
 };
 
-function AnimeFlow() {
-	const { t } = useTranslation();
+function Flow() {
 	const { fitView, setNodes, setEdges } = useReactFlow();
 	const nodesInitialized = useNodesInitialized();
 	const hasOrganized = useRef(false);
@@ -217,7 +215,7 @@ function AnimeFlow() {
 			<ReactFlow
 				nodes={nodes}
 				edges={edges}
-				nodeTypes={{ custom: AnimeCard }}
+				nodeTypes={{ custom: Card }}
 				nodesDraggable={false}
 				nodesConnectable={false}
 				elementsSelectable={false}
@@ -247,7 +245,6 @@ function AnimeFlow() {
 				/>
 			</ReactFlow>
 
-			{/* Overlay para garantir que edges fiquem atrás */}
 			<style>{`
         .react-flow__edges {
           z-index: 0 !important;
@@ -277,10 +274,10 @@ function AnimeFlow() {
 	);
 }
 
-export function AnimeRelations() {
+export function Relations() {
 	return (
 		<ReactFlowProvider>
-			<AnimeFlow />
+			<Flow />
 		</ReactFlowProvider>
 	);
 }

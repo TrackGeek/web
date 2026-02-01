@@ -80,7 +80,7 @@ export function EpisodeProgress({
 								type="button"
 								onClick={() => setActiveSeason(season.seasonNumber)}
 								className={cn(
-									"flex-1 min-w-[120px] flex flex-col items-center justify-center px-2 py-1 rounded-lg text-sm font-medium transition-all",
+									"flex-1 min-w-[120px] flex flex-col items-center justify-center px-2 py-1 rounded-lg text-sm font-medium transition-all cursor-pointer",
 									isActive
 										? "bg-background text-foreground shadow-sm"
 										: "text-muted-foreground hover:text-foreground hover:bg-muted/50",
@@ -132,7 +132,7 @@ export function EpisodeProgress({
 										onToggle(currentSeasonData.seasonNumber, episode)
 									}
 									className={cn(
-										"group relative flex items-center justify-center w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200 border",
+										"group relative flex items-center justify-center w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200 border cursor-pointer",
 										watched
 											? "bg-primary text-primary-foreground border-primary shadow-sm"
 											: "bg-background border-border text-muted-foreground hover:border-primary/50 hover:text-primary hover:shadow-sm",

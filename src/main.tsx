@@ -15,6 +15,7 @@ import { AnimeDetails } from "./pages/anime-details.tsx";
 import { BookDetails } from "./pages/book-details.tsx";
 import { GameDetails } from "./pages/game-details.tsx";
 import { HomePage } from "./pages/home";
+import { MangaDetails } from "./pages/manga-details.tsx";
 import { MovieDetails } from "./pages/movie-details.tsx";
 import { SettingsPage } from "./pages/settings.tsx";
 import { TVShowDetails } from "./pages/tv-show-details.tsx";
@@ -45,16 +46,20 @@ export function Routes() {
 			element: <GameDetails />,
 		},
 		{
-			path: "/movie/:bookSlug",
+			path: "/movie/:movieSlug",
 			element: <MovieDetails />,
 		},
 		{
-			path: "/tv/:bookSlug",
+			path: "/tv/:tvShowSlug",
 			element: <TVShowDetails />,
 		},
 		{
-			path: "/anime/:bookSlug",
+			path: "/anime/:animeSlug",
 			element: <AnimeDetails />,
+		},
+		{
+			path: "/manga/:mangaSlug",
+			element: <MangaDetails />,
 		},
 		{
 			path: "/user/:username",

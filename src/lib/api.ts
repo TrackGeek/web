@@ -83,12 +83,14 @@ export namespace apiTypes {
     name: string;
     username: string;
     email?: string;
-    color?: string;
-    language?: string;
-    about?: string;
-    avatarUrl?: string;
-    bannerUrl?: string;
     createdAt: Date;
+    profile: {
+      color?: string;
+      language?: string;
+      about?: string;
+      avatarUrl?: string;
+      bannerUrl?: string;
+    }
   }
   
   export interface MeResponse {

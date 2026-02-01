@@ -278,21 +278,20 @@ export function Header() {
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<Avatar className="border border-border size-9 cursor-pointer">
-										{meQuery.data.user.avatarUrl ? (
-											<ViteImage
-												className="aspect-square size-full"
-												src={{
-													src: meQuery.data.user.avatarUrl,
-													blurDataURL: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH",
-													width: 36,
-													height: 36,
-												}}
-											/>
-										) : (
-											<AvatarFallback>
-												{getInitialsFromName(meQuery.data.user.name)}
-											</AvatarFallback>
-										)}
+                    {meQuery.data.user?.profile?.avatarUrl ? (
+                      <ViteImage
+                        className='aspect-square size-full'
+                        src={{
+                          src: meQuery.data.user.profile.avatarUrl,
+                          blurDataURL: 'LKO2:N%2Tw=w]~RBVZRi};RPxuwH',
+                          width: 36,
+                          height: 36,
+                        }}
+                      />
+                    ) : (
+                      <AvatarFallback>{getInitialsFromName(meQuery.data.user.name)}</AvatarFallback>
+                    )}
+        
 									</Avatar>
 								</DropdownMenuTrigger>
 

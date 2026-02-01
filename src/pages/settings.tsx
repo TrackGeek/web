@@ -157,12 +157,12 @@ export function SettingsPage() {
             </FieldDescription>
             
             <div className='flex items-center justify-center gap-2 h-55'>
-              {meQuery.data?.user?.avatarUrl ? (
+              {meQuery.data?.user?.profile?.avatarUrl ? (
                 <div className='w-55 h-55 relative'>
                   <ViteImage
                     className='w-full h-full rounded-lg border-accent border'
                     src={{
-                      src: meQuery.data.user.avatarUrl,
+                      src: meQuery.data.user.profile.avatarUrl,
                       blurDataURL: 'LKO2:N%2Tw=w]~RBVZRi};RPxuwH',
                       width: 220,
                       height: 220,
@@ -203,7 +203,7 @@ export function SettingsPage() {
               ) : (
                 <div 
                   className="w-55 h-55 rounded-lg cursor-pointer relative"
-                  style={{ backgroundColor: meQuery.data?.user.color, }}
+                  style={{ backgroundColor: meQuery.data?.user.profile?.color, }}
                   onClick={() => avatarInputRef.current?.click()}
                 >
                   {uploadAvatarMutation.isPending ? (
@@ -249,12 +249,12 @@ export function SettingsPage() {
             </FieldDescription>
             
             <div className='flex items-center gap-2 h-55'>
-              {meQuery.data?.user?.bannerUrl ? (
+              {meQuery.data?.user?.profile?.bannerUrl ? (
                 <div className='w-full h-full relative'>
                   <ViteImage
                     className='w-full h-full rounded-lg border-accent border'
                     src={{
-                      src: meQuery.data.user.bannerUrl,
+                      src: meQuery.data.user.profile.bannerUrl,
                       blurDataURL: 'LKO2:N%2Tw=w]~RBVZRi};RPxuwH',
                       width: 300,
                       height: 220,
@@ -295,7 +295,7 @@ export function SettingsPage() {
               ) : (
                 <div 
                   className="w-full h-full rounded-lg cursor-pointer relative"
-                  style={{ backgroundColor: meQuery.data?.user.color, }}
+                  style={{ backgroundColor: meQuery.data?.user.profile?.color, }}
                   onClick={() => bannerInputRef.current?.click()}
                 >
                   {uploadBannerMutation.isPending ? (

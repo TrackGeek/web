@@ -13,13 +13,13 @@
 	"settings": "Settings",
 	"notifications": "Notifications",
 	"profile": "Profile",
-  "credits": "Credits",
-  "providers": {
+	"credits": "Credits",
+	"providers": {
     "IGDBMetadata": "Game metadata provided by",
     "TMDBMetadata": "Movies and TV Shows metadata provided by",
     "MALMetadata": "Animes and Manga metadata provided by <mal /> and <jikan>Jikan</jikan>",
     "HardCoverMetadata": "Books metadata provided by <1>HardCover</1>"
-  },
+	},
 	"continents": {
     "Africa": "Africa",
     "America": "America",

@@ -1,5 +1,4 @@
 import {
-	SiApple,
 	SiAppstore,
 	SiBluesky,
 	SiBlueskyHex,
@@ -80,67 +79,55 @@ export function GameDetails() {
 						</div>
 
 						<div className="grid grid-cols-3 w-full gap-4">
-							<button
-								type="button"
-								className="w-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20"
-							>
+							<Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20">
 								<div className="flex flex-col items-center gap-x-4 gap-2">
 									<div className="w-10 h-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
-										<Bookmark className="text-purple-400" />
+										<Bookmark className="text-purple-400 size-6" />
 									</div>
-									<p className="font-medium text-card-foreground text-center">
+									<p className="font-medium text-card-foreground text-center text-base">
 										{t("feed:lists.wanttoplay")}
 									</p>
 								</div>
 								<div className="status-indicator hidden">
 									<CheckCircle className="text-secondary w-6 h-6" />
 								</div>
-							</button>
+							</Button>
 
-							<button
-								type="button"
-								className="w-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20"
-							>
+							<Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20">
 								<div className="flex flex-col items-center gap-x-4 gap-2">
 									<div className="w-10 h-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
-										<Gamepad className="text-primary" />
+										<Gamepad className="text-primary size-6" />
 									</div>
-									<p className="font-medium text-card-foreground text-center">
+									<p className="font-medium text-card-foreground text-center text-base">
 										{t("feed:lists.playing")}
 									</p>
 								</div>
 								<div className="status-indicator hidden">
 									<CheckCircle className="text-secondary w-6 h-6" />
 								</div>
-							</button>
+							</Button>
 
-							<button
-								type="button"
-								className="w-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20"
-							>
+							<Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20">
 								<div className="flex flex-col items-center gap-x-4 gap-2">
 									<div className="w-10 h-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
-										<CheckSquare className="text-chart-3" />
+										<CheckSquare className="text-chart-3 size-6" />
 									</div>
-									<p className="font-medium text-card-foreground text-center">
+									<p className="font-medium text-card-foreground text-center text-base">
 										{t("feed:lists.played")}
 									</p>
 								</div>
 								<div className="status-indicator hidden">
 									<CheckCircle className="text-secondary w-6 h-6" />
 								</div>
-							</button>
+							</Button>
 						</div>
 
-						<button
-							type="button"
-							className="flex items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300"
-						>
+						<Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
 							<MoreHorizontal className="w-5 h-5" />
 							<span className="text-sm font-medium">
 								{t("library:moreOptions")}
 							</span>
-						</button>
+						</Button>
 
 						<div className="border-t border-border"></div>
 
@@ -503,18 +490,21 @@ export function GameDetails() {
 												src="https://youtube.com/embed/rhaqjb_S2X8"
 												allowFullScreen
 												className="w-full aspect-video"
+												title="Trailer"
 											/>
 										</CarouselItem>
 										<CarouselItem>
 											<img
 												src="https://images.igdb.com/igdb/image/upload/t_720p/sc5rik.webp"
 												className="w-full aspect-video"
+												alt="Screenshot"
 											/>
 										</CarouselItem>
 										<CarouselItem>
 											<img
 												src="https://images.igdb.com/igdb/image/upload/t_720p/sc5ril.webp"
 												className="w-full aspect-video"
+												alt="Screenshot"
 											/>
 										</CarouselItem>
 									</CarouselContent>

@@ -61,5 +61,28 @@
 	"source": "Source",
 	"characters": "Characters",
 	"relations": "Relations",
-	"animeCharacteristics": "Anime Characteristics"
+	"animeCharacteristics": "Anime Characteristics",
+	"mangaCharacteristics": "Manga Characteristics",
+	"chapters": "Chapters",
+	"volumes": "Volumes",
+	"authors": "Authors",
+	"publisher": "Publisher",
+	"relationships": {
+		"sequel": "Sequel",
+		"prequel": "Prequel",
+		"sideStory": "Side Story",
+		"alternative": "Alternative",
+		"spinOff": "Spin Off",
+		"remaster": "Remaster",
+		"remake": "Remake",
+		"port": "Port",
+		"mods": "Mods",
+		"expansion": "Expansion",
+		"dlc": "DLC",
+		"standalone": "Standalone",
+		"fork": "Fork",
+		"expandedGame": "Expanded Game",
+		"pack": "Pack",
+		"update": "Update"
+	}
 }

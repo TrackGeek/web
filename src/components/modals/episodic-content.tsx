@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { Calendar1, Plus, Save, Star, Trash, X } from "lucide-react";
+import { Calendar1, Plus, Save, Star, Trash } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "../ui/button";
@@ -7,6 +7,12 @@ import { Calendar } from "../ui/calendar";
 import { Checkbox } from "../ui/checkbox";
 import { Field, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
+import {
+	InputGroup,
+	InputGroupAddon,
+	InputGroupInput,
+	InputGroupText,
+} from "../ui/input-group";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import {
 	Select,
@@ -18,11 +24,11 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 
-interface AnimeModalProps {
+interface EpisodicContentModalProps {
 	mediaData?: any;
 }
 
-export function AnimeModal({ mediaData }: AnimeModalProps) {
+export function EpisodicContentModal({ mediaData }: EpisodicContentModalProps) {
 	const [startDate, setStartDate] = useState<Date>();
 	const [finishDate, setFinishDate] = useState<Date>();
 	const [customLists, setCustomLists] = useState<string[]>([
@@ -44,8 +50,8 @@ export function AnimeModal({ mediaData }: AnimeModalProps) {
 				<div className="space-y-4">
 					<div className="bg-muted/30 rounded-lg p-4 border border-border/50">
 						<h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-							<Star className="w-4 h-4" />
-							Progress
+							<Star className="size-4" />
+							{t("feed:progress")}
 						</h3>
 						<div className="space-y-3">
 							<Field>
@@ -54,7 +60,7 @@ export function AnimeModal({ mediaData }: AnimeModalProps) {
 								</FieldLabel>
 								<Select>
 									<SelectTrigger className="w-full bg-background">
-										<SelectValue placeholder="Select status" />
+										<SelectValue placeholder={t("feed:selectStatus")} />
 									</SelectTrigger>
 									<SelectContent>
 										<SelectGroup>
@@ -85,13 +91,17 @@ export function AnimeModal({ mediaData }: AnimeModalProps) {
 								<FieldLabel htmlFor="episodes" className="text-sm font-medium">
 									{t("library:episode_other")}
 								</FieldLabel>
-								<Input
-									id="episodes"
-									type="number"
-									min={0}
-									placeholder="0"
-									className="bg-background"
-								/>
+								<InputGroup className="bg-background">
+									<InputGroupInput
+										id="episodes"
+										type="number"
+										min={0}
+										placeholder="0"
+									/>
+									<InputGroupAddon align="inline-end">
+										<InputGroupText>/13</InputGroupText>
+									</InputGroupAddon>
+								</InputGroup>
 							</Field>
 
 							<Field>
@@ -113,8 +123,8 @@ export function AnimeModal({ mediaData }: AnimeModalProps) {
 				<div className="space-y-4">
 					<div className="bg-muted/30 rounded-lg p-4 border border-border/50">
 						<h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-							<Calendar1 className="w-4 h-4" />
-							Timeline
+							<Calendar1 className="size-4" />
+							{t("feed:timeline")}
 						</h3>
 						<div className="space-y-3">
 							<Field>
@@ -128,7 +138,7 @@ export function AnimeModal({ mediaData }: AnimeModalProps) {
 											data-empty={!startDate}
 											className="w-full justify-start text-left font-normal bg-background"
 										>
-											<Calendar1 className="w-4 h-4 mr-2" />
+											<Calendar1 className="size-4 mr-2" />
 											{startDate ? (
 												format(startDate, "PPP")
 											) : (
@@ -162,7 +172,7 @@ export function AnimeModal({ mediaData }: AnimeModalProps) {
 											data-empty={!finishDate}
 											className="w-full justify-start text-left font-normal bg-background"
 										>
-											<Calendar1 className="w-4 h-4 mr-2" />
+											<Calendar1 className="size-4 mr-2" />
 											{finishDate ? (
 												format(finishDate, "PPP")
 											) : (
@@ -202,7 +212,7 @@ export function AnimeModal({ mediaData }: AnimeModalProps) {
 								{t("feed:customLists")}
 							</h3>
 							<Button variant="ghost" size="sm" className="h-6 px-2">
-								<Plus className="w-3 h-3" />
+								<Plus className="size-3" />
 							</Button>
 						</div>
 						<div className="space-y-2">
@@ -226,7 +236,7 @@ export function AnimeModal({ mediaData }: AnimeModalProps) {
 			<div className="flex justify-between items-center pt-4 border-t border-border/50">
 				<Button variant="destructive" size="sm" className="gap-2">
 					<Trash className="size-4" />
-					{t("feed:delete")}
+					{t("feed:remove")}
 				</Button>
 				<div className="flex gap-2">
 					<Button variant="outline" size="sm">

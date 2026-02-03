@@ -1,6 +1,10 @@
 import { ChevronDown, Heart, Star } from "lucide-react";
 import { Link } from "react-router-dom";
-import { AnimeModal } from "../modals/anime";
+import { BookModal } from "../modals/book";
+import { EpisodicContentModal } from "../modals/episodic-content";
+import { GameModal } from "../modals/game";
+import { MangaModal } from "../modals/manga";
+import { MovieModal } from "../modals/movie";
 import { Button } from "../ui/button";
 import {
 	Dialog,
@@ -16,11 +20,22 @@ interface CardProps {
 	title: string;
 	url: string;
 	imageURL: string;
+	rating: number;
+	year: number;
+	synopsis: string;
 	mediaType: MediaType;
 	mediaData?: any;
 }
 
-export function CardItem({ title, url, imageURL }: CardProps) {
+export function CardItem({
+	title,
+	url,
+	rating,
+	year,
+	imageURL,
+	mediaType,
+	synopsis,
+}: CardProps) {
 	return (
 		<>
 			<div className="relative rounded-xl border border-border overflow-hidden aspect-3/4 group">
@@ -50,6 +65,7 @@ export function CardItem({ title, url, imageURL }: CardProps) {
 								backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${imageURL}")`,
 							}}
 						>
+							<div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
 							<div className="flex flex-row items-center w-full">
 								<img
 									src={imageURL}
@@ -63,14 +79,13 @@ export function CardItem({ title, url, imageURL }: CardProps) {
 									<div className="flex items-center gap-4 text-white/90 text-sm">
 										<div className="flex items-center gap-1">
 											<Star className="size-4 fill-yellow-400 text-yellow-400" />
-											<span>8.5</span>
+											<span>{rating}</span>
 										</div>
 										<span>•</span>
-										<span>2024</span>
+										<span>{year}</span>
 									</div>
 									<p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">
-										A captivating story that follows the journey of characters
-										through extraordinary circumstances...
+										{synopsis}
 									</p>
 								</div>
 							</div>
@@ -87,7 +102,13 @@ export function CardItem({ title, url, imageURL }: CardProps) {
 						</DialogHeader>
 
 						<div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
-							<AnimeModal />
+							{(mediaType === "anime" || mediaType === "tv-show") && (
+								<EpisodicContentModal />
+							)}
+							{mediaType === "movie" && <MovieModal />}
+							{mediaType === "book" && <BookModal />}
+							{mediaType === "game" && <GameModal />}
+							{mediaType === "manga" && <MangaModal />}
 						</div>
 					</DialogContent>
 				</Dialog>

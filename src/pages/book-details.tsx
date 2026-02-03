@@ -19,11 +19,27 @@ import { Link } from "react-router-dom";
 import { ListItem } from "@/components/details/list";
 import { ReviewItem } from "@/components/details/review";
 import { Layout } from "@/components/layouts/main";
+import { BookModal } from "@/components/modals/book";
 import { Button } from "@/components/ui/button";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function BookDetails() {
 	const { t } = useTranslation();
+
+	const synopsis =
+		"O Nome do Vento é o primeiro livro da trilogia Crônica do Matador do Rei, uma obra de fantasia épica que narra a história de Kvothe, um homem de lendária fama que vive escondido sob uma identidade comum.";
+	const year = "2021";
+	const imageURL =
+		"https://assets.hardcover.app/edition/31601422/3a01ea07-01f4-45a2-9940-6fc7e00e0d08.jpeg";
+	const title = "O Nome do Vento";
+	const rating = 4.2;
 
 	return (
 		<Layout title="Book Name">
@@ -32,7 +48,7 @@ export function BookDetails() {
 					<div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 gap-4 flex flex-col">
 						<div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
 							<img
-								src="https://assets.hardcover.app/edition/31601422/3a01ea07-01f4-45a2-9940-6fc7e00e0d08.jpeg"
+								src={imageURL}
 								alt="Capa do livro"
 								className="w-full h-auto object-cover"
 							/>
@@ -82,19 +98,70 @@ export function BookDetails() {
 							</Button>
 						</div>
 
-						<Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-							<MoreHorizontal className="w-5 h-5" />
-							<span className="text-sm font-medium">
-								{t("library:moreOptions")}
-							</span>
-						</Button>
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
+									<MoreHorizontal className="size-5" />
+									<span className="text-sm font-medium">
+										{t("library:moreOptions")}
+									</span>
+								</Button>
+							</DialogTrigger>
+							<DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
+								<DialogHeader
+									className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
+									style={{
+										backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${imageURL}")`,
+									}}
+								>
+									<div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
+									<div className="flex flex-row items-center w-full">
+										<img
+											src={imageURL}
+											alt="Cover"
+											className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
+										/>
+										<div className="flex-1 px-6 relative z-10">
+											<DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">
+												{title}
+											</DialogTitle>
+											<div className="flex items-center gap-4 text-white/90 text-sm">
+												<div className="flex items-center gap-1">
+													<Star className="size-4 fill-yellow-400 text-yellow-400" />
+													<span>{rating}</span>
+												</div>
+												<span>•</span>
+												<span>{year}</span>
+											</div>
+											<p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">
+												{synopsis}
+											</p>
+										</div>
+									</div>
+
+									<div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
+										<Button
+											size="sm"
+											variant="ghost"
+											className="text-white hover:bg-white/10 hover:text-white"
+										>
+											<Heart className="size-6" />
+										</Button>
+									</div>
+								</DialogHeader>
+
+								<div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
+									<BookModal />
+								</div>
+							</DialogContent>
+						</Dialog>
 
 						<div className="border-t border-border"></div>
 
 						<div className="grid grid-cols-2 gap-4">
 							<div className="bg-muted/50 p-4 rounded-lg border border-border">
 								<p className="text-sm text-muted-foreground">
-									{t("library:pages")}
+									{t("library:page_other")}
 								</p>
 								<p className="font-semibold text-card-foreground">328</p>
 							</div>
@@ -102,7 +169,7 @@ export function BookDetails() {
 								<p className="text-sm text-muted-foreground">
 									{t("library:year")}
 								</p>
-								<p className="font-semibold text-card-foreground">2021</p>
+								<p className="font-semibold text-card-foreground">{year}</p>
 							</div>
 						</div>
 						<Button variant="outline" className="w-full">
@@ -115,10 +182,10 @@ export function BookDetails() {
 					<div className="bg-card rounded-2xl shadow-lg p-8">
 						<div className="mb-5">
 							<h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-								O Nome do Vento
+								{title}
 							</h1>
 							<div className="flex items-center space-x-2">
-								<User className="w-5 h-5 text-muted-foreground" />
+								<User className="size-5 text-muted-foreground" />
 								<Link
 									to={"/writer/patrick-rothfuss"}
 									className="text-xl text-muted-foreground"
@@ -127,7 +194,7 @@ export function BookDetails() {
 								</Link>
 							</div>
 							<div className="flex items-center space-x-2 mt-2">
-								<BookCopy className="w-5 h-5 text-muted-foreground" />
+								<BookCopy className="size-5 text-muted-foreground" />
 								<Link
 									to={"/books-series/series_names"}
 									className="text-xl text-muted-foreground"
@@ -140,20 +207,22 @@ export function BookDetails() {
 						<div className="flex flex-wrap items-center gap-6 mb-5 pb-6 border-b border-border">
 							<div className="flex items-center">
 								<div className="flex mr-2">
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-muted-foreground" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-muted-foreground" />
 								</div>
-								<span className="font-semibold text-card-foreground">4.2</span>
+								<span className="font-semibold text-card-foreground">
+									{rating}
+								</span>
 								<span className="text-muted-foreground ml-1">
 									(128.543 {t("library:reviews")})
 								</span>
 							</div>
 
 							<div className="flex items-center text-muted-foreground">
-								<BarChart3 className="w-5 h-5 mr-2" />
+								<BarChart3 className="size-5 mr-2" />
 								<span>
 									{t("library:medium")}: {Math.round(465 / 29)}{" "}
 									{t("library:days")}
@@ -201,27 +270,7 @@ export function BookDetails() {
 										{t("library:synopsis")}
 									</h3>
 									<div className="text-muted-foreground leading-relaxed space-y-4">
-										<p>
-											O Nome do Vento é o primeiro livro da trilogia Crônica do
-											Matador do Rei, uma obra de fantasia épica que narra a
-											história de Kvothe, um homem de lendária fama que vive
-											escondido sob uma identidade comum.
-										</p>
-										<p>
-											A narrativa começa com Kvothe contando sua própria
-											história a um cronista, revelando sua infância numa trupe
-											de artistas itinerantes, os anos vividos como um mendigo
-											nas ruas de uma grande cidade e sua entrada numa escola de
-											magia, onde suas paixões por magia, música e mistério o
-											levam a buscar a verdade sobre os lendários assassinos
-											conhecidos como Chandrian.
-										</p>
-										<p>
-											Com uma escrita rica e personagens complexos, Rothfuss
-											constrói um mundo detalhado onde a música e a magia se
-											entrelaçam, criando uma das obras mais aclamadas da
-											fantasia contemporânea.
-										</p>
+										<p>{synopsis}</p>
 									</div>
 								</div>
 
@@ -231,7 +280,7 @@ export function BookDetails() {
 									</h3>
 									<div className="grid grid-cols-2 md:grid-cols-3 gap-4">
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<ScanBarcode className="w-5 h-5 text-muted-foreground" />
+											<ScanBarcode className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">ISBN 10</p>
 												<p className="font-medium text-card-foreground">
@@ -241,7 +290,7 @@ export function BookDetails() {
 										</div>
 
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Barcode className="w-5 h-5 text-muted-foreground" />
+											<Barcode className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">ISBN 13</p>
 												<p className="font-medium text-card-foreground">
@@ -251,7 +300,7 @@ export function BookDetails() {
 										</div>
 
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Heart className="w-5 h-5 text-muted-foreground" />
+											<Heart className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:mood")}
@@ -274,7 +323,7 @@ export function BookDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.planning")}
 												</span>
-												<Bookmark className="w-5 h-5 text-purple-400" />
+												<Bookmark className="size-5 text-purple-400" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												5%
@@ -286,7 +335,7 @@ export function BookDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.read")}
 												</span>
-												<BookOpen className="w-5 h-5 text-chart-1" />
+												<BookOpen className="size-5 text-chart-1" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												15%
@@ -298,7 +347,7 @@ export function BookDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.reading")}
 												</span>
-												<CheckCircle className="w-5 h-5 text-secondary" />
+												<CheckCircle className="size-5 text-secondary" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												72%
@@ -310,7 +359,7 @@ export function BookDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.dropped")}
 												</span>
-												<XCircle className="w-5 h-5 text-destructive" />
+												<XCircle className="size-5 text-destructive" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												8%

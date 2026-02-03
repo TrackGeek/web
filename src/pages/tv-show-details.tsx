@@ -222,7 +222,7 @@ export function TVShowDetails() {
 								<TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
 									<TabsTrigger value="info">{t("library:info")}</TabsTrigger>
 									<TabsTrigger value="episodes">
-										{t("library:episodes")}
+										{t("library:episode_other")}
 									</TabsTrigger>
 									<TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
 									<TabsTrigger value="medias">

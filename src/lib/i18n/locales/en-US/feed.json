@@ -41,5 +41,15 @@
 		"art": "Art",
 		"worldbuilding": "World-building",
 		"animation": "Animation"
-	}
+	},
+  "totalRewatches": "Total Rewatches",
+  "startDate": "Start Date",
+  "finishDate": "Finish Date",
+  "notes": "Notes",
+  "notesPlaceholder": "Add your thoughts about this...",
+  "pickADate": "Pick a date",
+  "delete": "Delete",
+  "save": "Save Changes",
+  "cancel": "Cancel",
+  "customLists": "Custom Lists"
 }

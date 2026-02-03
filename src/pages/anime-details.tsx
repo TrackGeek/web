@@ -219,7 +219,7 @@ export function AnimeDetails() {
 										{t("library:relations")}
 									</TabsTrigger>
 									<TabsTrigger value="episodes">
-										{t("library:episodes")}
+										{t("library:episode_other")}
 									</TabsTrigger>
 									<TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
 									<TabsTrigger value="characters">

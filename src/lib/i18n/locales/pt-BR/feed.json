@@ -41,5 +41,37 @@
 		"art": "Arte",
 		"worldbuilding": "Construção do Mundo",
 		"animation": "Animação"
-	}
+	},
+	"totalRewatches": "Total Rewatches",
+	"startDate": "Start Date",
+	"finishDate": "Finish Date",
+	"notes": "Notes",
+	"notesPlaceholder": "Add your thoughts about this...",
+	"pickADate": "Pick a date",
+	"remove": "Delete",
+	"save": "Save Changes",
+	"cancel": "Cancel",
+	"customLists": "Custom Lists",
+	"progress": "Progress",
+	"timeline": "Timeline",
+	"selectStatus": "Select a status",
+	"format": "Format",
+	"selectFormat": "Select a format",
+	"formats": {
+		"VHS": "VHS",
+		"bluray": "Bluray",
+		"cinema": "Cinema",
+		"DVD": "DVD",
+		"streaming": "Streaming"
+	},
+	"totalRereads": "Total Rereads",
+	"totalReplays": "Total Replays",
+	"completionStatus": {
+		"label": "Completion Status",
+		"select": "Select a completion status",
+		"mainStory": "Main Story",
+		"mainStoryPlusExtras": "Main Story + Extras",
+		"endless": "Endless"
+	},
+	"uploadScreenshot": "Drag and drop or <span>choose screenshots</span> to upload"
 }

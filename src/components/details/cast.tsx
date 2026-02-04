@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Link } from "@tanstack/react-router";
 
 export function CastItem() {
 	return (
 		<Link
-			to={"/cast/banana"}
+			to={"/"}
 			className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border"
 		>
 			<div className="flex items-center justify-between mb-2">

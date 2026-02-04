@@ -31,3 +31,6 @@ pnpm-lock.yaml
 # env
 .env*
 !.env.example
+
+# tanstack
+.tanstack

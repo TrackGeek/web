@@ -1,7 +1,7 @@
 import { Heart, Star } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export function ReviewItem() {
@@ -293,7 +293,7 @@ export function ReviewItem() {
 							<div className="absolute bottom-0 left-0 right-0 h-8 bg-linear-to-t from-card via-card/95 to-transparent pointer-events-none" />
 							<div className="absolute bottom-0 right-0 flex justify-end p-2">
 								<Link
-									to={"/users/kuriel/reviews/58"}
+									to={"/"}
 									className="text-sm text-primary hover:text-primary/80 font-medium transition-colors bg-primary-foreground/80 backdrop-blur-sm rounded-full px-2 py-1"
 								>
 									{t("library:readMore")}

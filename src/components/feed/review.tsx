@@ -1,13 +1,13 @@
 import { Heart, MessageCircle, Star } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 interface TempCriteries {
-  gameplay: number;
-  soundtrack: number;
-  story: number;
-  graphics: number;
-  all: number;
+	gameplay: number;
+	soundtrack: number;
+	story: number;
+	graphics: number;
+	all: number;
 }
 
 interface TempUser {
@@ -21,7 +21,7 @@ interface TempItem {
 	content?: string;
 	time: Date;
 	likes?: number;
-  criteries: TempCriteries;
+	criteries: TempCriteries;
 }
 
 interface feedReviewProps {

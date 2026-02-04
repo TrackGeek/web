@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 interface TempItem {
 	coverURL: string;
@@ -21,9 +21,7 @@ export function StillReading({ items }: Items) {
 			<div
 				className={clsx(
 					"grid gap-3",
-					items.length >= 3
-						? "grid-cols-3"
-						: "grid-cols-2",
+					items.length >= 3 ? "grid-cols-3" : "grid-cols-2",
 				)}
 			>
 				{items.map((item) => (

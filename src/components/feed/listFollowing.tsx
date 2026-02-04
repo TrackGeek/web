@@ -39,7 +39,8 @@ export function FeedListFollowing() {
 					title: t("feed:reviewed", {
 						content: "Grand Theft Auto VI",
 					}),
-          content: "Slk, realista d+ mas cheio de bug, música péssima, história paia",
+					content:
+						"Slk, realista d+ mas cheio de bug, música péssima, história paia",
 					likes: 190,
 					criteries: {
 						all: 10,

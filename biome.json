@@ -8,13 +8,18 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"ignoreUnknown": false
+		"ignoreUnknown": false,
+		"includes": [
+			"**/src/**/*.ts",
+			"**/src/**/*.tsx",
+			"!**/src/routeTree.gen.ts"
+		]
 	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "space",
 		"indentWidth": 2,
-    "lineWidth": 120
+		"lineWidth": 120
 	},
 	"linter": {
 		"enabled": true,

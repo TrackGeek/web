@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 interface EpisodeProps {
 	title: string;
 	imageURL: string;
-  number: number;
+	number: number;
 }
 
 export function EpisodeItem() {
@@ -18,7 +18,9 @@ export function EpisodeItem() {
 			/>
 			<div className="relative bg-linear-to-t from-muted/80 via-muted/40 to-transparent p-3 h-full flex flex-col justify-end">
 				<p className="font-bold text-card-foreground">The Radio</p>
-				<p className="text-muted-foreground font-bold text-sm">{t("library:episode")} 1</p>
+				<p className="text-muted-foreground font-bold text-sm">
+					{t("library:episode")} 1
+				</p>
 			</div>
 		</div>
 	);

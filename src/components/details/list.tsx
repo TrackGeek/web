@@ -1,5 +1,5 @@
 import { Heart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import {
 	Avatar,
 	AvatarFallback,
@@ -11,7 +11,7 @@ import {
 export function ListItem() {
 	return (
 		<Link
-			to={"/user/johndoe/list/true-story"}
+			to={"/"}
 			className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border"
 		>
 			<div className="flex items-center justify-between mb-2">
@@ -49,7 +49,7 @@ export function ListItem() {
 				The Human Shadow: True Crime
 			</p>
 			<div className="flex justify-between items-center mt-2">
-				<Link to={"/user/johndoe"} className="flex gap-1 items-center">
+				<Link to={"/"} className="flex gap-1 items-center">
 					<Avatar size="sm">
 						<AvatarImage src="https://assets.hardcover.app/editions/30399846/4434002844651.jpg"></AvatarImage>
 					</Avatar>

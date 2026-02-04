@@ -1,0 +1,609 @@
+import {
+	SiFacebook,
+	SiFacebookHex,
+	SiInstagram,
+	SiInstagramHex,
+	SiMyanimelist,
+	SiX,
+} from "@icons-pack/react-simple-icons";
+import {
+	Bookmark,
+	Building,
+	CheckCircle,
+	CheckSquare,
+	Clock,
+	ExternalLink,
+	FilePenLine,
+	FileType,
+	Hash,
+	Heart,
+	Languages,
+	MoreHorizontal,
+	Star,
+	TvIcon,
+	TvMinimalPlay,
+	XCircle,
+} from "lucide-react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { createFileRoute, Link } from "@tanstack/react-router";
+
+import {
+	AnimeEpisodeProgress,
+	type SingleSeasonData,
+} from "@/components/details/anime-progress";
+import { CastItem } from "@/components/details/cast";
+import { CharacterItem } from "@/components/details/character";
+import { EpisodeItem } from "@/components/details/episode";
+import { ListItem } from "@/components/details/list";
+import { Relations } from "@/components/details/relations";
+import { ReviewItem } from "@/components/details/review";
+import { EpisodicContentModal } from "@/components/modals/episodic-content";
+import { Button } from "@/components/ui/button";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import { ImageZoom } from "@/components/ui/image-zoom";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+
+export const Route = createFileRoute("/anime/$slug")({
+	head: () => ({
+		meta: [{ title: "Anime Details | TrackGeek" }],
+	}),
+	component: AnimeDetailsRoute,
+});
+
+function AnimeDetailsRoute() {
+	const { slug } = Route.useParams();
+
+	const { t } = useTranslation();
+	const [mySeason, setMySeason] = useState<SingleSeasonData>({
+		totalEpisodes: 12,
+		watchedEpisodes: [1, 2, 3, 4, 5],
+	});
+	const synopsis = "Second season of Sousou no Frieren.";
+	const year = "Winter 2026";
+	const imageURL = "https://cdn.myanimelist.net/images/anime/1921/154528l.jpg";
+	const title = "Sousou no Frieren 2nd Season";
+	const rating = 4.2;
+
+	function handleToggle(ep: number) {
+		console.log(ep);
+	}
+
+	return (
+		<div className="flex flex-col lg:flex-row gap-8">
+			<div className="lg:w-1/3">
+				<div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 gap-4 flex flex-col">
+					<div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
+						<img
+							src={imageURL}
+							alt="Capa do anime"
+							className="w-full h-auto object-cover"
+						/>
+					</div>
+
+					<div className="grid grid-cols-3 w-full gap-4">
+						<button
+							type="button"
+							className="w-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20"
+						>
+							<div className="flex flex-col items-center gap-x-4 gap-2">
+								<div className="w-10 h-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
+									<Bookmark className="text-purple-400" />
+								</div>
+								<p className="font-medium text-card-foreground text-center">
+									{t("feed:lists.planning")}
+								</p>
+							</div>
+							<div className="status-indicator hidden">
+								<CheckCircle className="text-secondary w-6 h-6" />
+							</div>
+						</button>
+
+						<button
+							type="button"
+							className="w-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20"
+						>
+							<div className="flex flex-col items-center gap-x-4 gap-2">
+								<div className="w-10 h-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
+									<TvMinimalPlay className="text-primary" />
+								</div>
+								<p className="font-medium text-card-foreground text-center">
+									{t("feed:lists.watching")}
+								</p>
+							</div>
+							<div className="status-indicator hidden">
+								<CheckCircle className="text-secondary w-6 h-6" />
+							</div>
+						</button>
+
+						<button
+							type="button"
+							className="w-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20"
+						>
+							<div className="flex flex-col items-center gap-x-4 gap-2">
+								<div className="w-10 h-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
+									<CheckSquare className="text-chart-3" />
+								</div>
+								<p className="font-medium text-card-foreground text-center">
+									{t("feed:lists.completed")}
+								</p>
+							</div>
+							<div className="status-indicator hidden">
+								<CheckCircle className="text-secondary w-6 h-6" />
+							</div>
+						</button>
+					</div>
+
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
+								<MoreHorizontal className="size-5" />
+								<span className="text-sm font-medium">
+									{t("library:moreOptions")}
+								</span>
+							</Button>
+						</DialogTrigger>
+						<DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
+							<DialogHeader
+								className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
+								style={{
+									backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${imageURL}")`,
+								}}
+							>
+								<div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
+								<div className="flex flex-row items-center w-full">
+									<img
+										src={imageURL}
+										alt="Cover"
+										className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
+									/>
+									<div className="flex-1 px-6 relative z-10">
+										<DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">
+											{title}
+										</DialogTitle>
+										<div className="flex items-center gap-4 text-white/90 text-sm">
+											<div className="flex items-center gap-1">
+												<Star className="size-4 fill-yellow-400 text-yellow-400" />
+												<span>{rating}</span>
+											</div>
+											<span>•</span>
+											<span>{year}</span>
+										</div>
+										<p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">
+											{synopsis}
+										</p>
+									</div>
+								</div>
+
+								<div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
+									<Button
+										size="sm"
+										variant="ghost"
+										className="text-white hover:bg-white/10 hover:text-white"
+									>
+										<Heart className="size-6" />
+									</Button>
+								</div>
+							</DialogHeader>
+
+							<div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
+								<EpisodicContentModal />
+							</div>
+						</DialogContent>
+					</Dialog>
+
+					<div className="border-t border-border"></div>
+
+					<div className="grid grid-cols-2 gap-4">
+						<div className="bg-muted/50 p-4 rounded-lg border border-border">
+							<p className="text-sm text-muted-foreground">
+								{t("library:status")}
+							</p>
+							<p className="font-semibold text-card-foreground">
+								Currently Airing
+							</p>
+						</div>
+						<div className="bg-muted/50 p-4 rounded-lg border border-border">
+							<p className="text-sm text-muted-foreground">
+								{t("library:releaseDate")}
+							</p>
+							<p className="font-semibold text-card-foreground">{year}</p>
+						</div>
+					</div>
+					<a
+						href="https://www.themoviedb.org/tv/106379-fallout"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<Button variant="outline" className="w-full">
+							{t("library:refreshData")}
+						</Button>
+					</a>
+					<div className="flex flex-wrap gap-3 items-center justify-center">
+						<a
+							href="https://anacondamovie.com/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<ExternalLink />
+						</a>
+						<a
+							href="https://instagram.com/theanacondamovie/"
+							target="_blank"
+							rel="noopener noreferrer"
+							className={cn(`hover:text-[${SiInstagramHex}]`)}
+						>
+							<SiInstagram />
+						</a>
+						<a
+							href="https://www.facebook.com/AnacondaMovie"
+							target="_blank"
+							rel="noopener noreferrer"
+							className={cn(`hover:text-[${SiFacebookHex}]`)}
+						>
+							<SiFacebook />
+						</a>
+						<a
+							href="https://x.com/Anaconda_Movie"
+							target="_blank"
+							rel="noopener noreferrer"
+							className={cn(`hover:text-white`)}
+						>
+							<SiX />
+						</a>
+						<a
+							href="https://www.imdb.com/title/tt4900148"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<SiMyanimelist />
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div className="lg:w-2/3">
+				<div className="bg-card rounded-2xl shadow-lg p-8">
+					<div className="mb-5">
+						<h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
+							{title}
+						</h1>
+					</div>
+
+					<div className="flex flex-wrap items-center gap-6 mb-5 pb-6 border-b border-border">
+						<div className="flex items-center">
+							<div className="flex mr-2">
+								<Star className="size-5 text-chart-3 fill-chart-3" />
+								<Star className="size-5 text-chart-3 fill-chart-3" />
+								<Star className="size-5 text-chart-3 fill-chart-3" />
+								<Star className="size-5 text-chart-3 fill-chart-3" />
+								<Star className="size-5 text-muted-foreground" />
+							</div>
+							<span className="font-semibold text-card-foreground">
+								{rating}
+							</span>
+							<span className="text-muted-foreground ml-1">
+								(128.543 {t("library:reviews")})
+							</span>
+						</div>
+					</div>
+					<Tabs defaultValue="info">
+						<div className="flex items-center justify-between gap-3 mb-2">
+							<TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
+								<TabsTrigger value="info">{t("library:info")}</TabsTrigger>
+								<TabsTrigger value="relations">
+									{t("library:relations")}
+								</TabsTrigger>
+								<TabsTrigger value="episodes">
+									{t("library:episode_other")}
+								</TabsTrigger>
+								<TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
+								<TabsTrigger value="characters">
+									{t("library:characters")}
+								</TabsTrigger>
+								<TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>
+								<TabsTrigger value="reviews" className="capitalize">
+									{t("library:reviews")} (125)
+								</TabsTrigger>
+								<TabsTrigger value="lists">
+									{t("library:lists")} (30)
+								</TabsTrigger>
+							</TabsList>
+						</div>
+						<TabsContent value="info">
+							<div className="mb-5">
+								<h3 className="font-semibold text-card-foreground text-lg mb-3">
+									{t("library:genres")}
+								</h3>
+								<div className="flex flex-wrap gap-2">
+									<Link
+										to="/"
+										className="px-3 py-1.5 bg-linear-to-r from-purple-500/20 to-purple-500/30 text-purple-400 border border-purple-500/30 rounded-full text-sm font-medium"
+									>
+										Aventura
+									</Link>
+									<Link
+										to="/"
+										className="px-3 py-1.5 bg-linear-to-r from-chart-3/20 to-chart-3/30 text-chart-3 border border-chart-3/30 rounded-full text-sm font-medium"
+									>
+										Drama
+									</Link>
+									<Link
+										to="/"
+										className="px-3 py-1.5 bg-linear-to-r from-chart-3/20 to-chart-3/30 text-chart-3 border border-chart-3/30 rounded-full text-sm font-medium"
+									>
+										Fantasy
+									</Link>
+								</div>
+							</div>
+
+							<div className="mb-5">
+								<h3 className="font-semibold text-card-foreground text-lg mb-3">
+									{t("library:synopsis")}
+								</h3>
+								<div className="text-muted-foreground leading-relaxed space-y-4">
+									<p>{synopsis}</p>
+								</div>
+							</div>
+
+							<div className="mb-5">
+								<h3 className="font-semibold text-card-foreground text-lg mb-4">
+									{t("library:animeCharacteristics")}
+								</h3>
+								<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
+										<FilePenLine className="size-5 text-muted-foreground" />
+										<div>
+											<p className="text-sm text-muted-foreground">
+												{t("library:type")}
+											</p>
+											<p className="font-medium text-card-foreground">TV</p>
+										</div>
+									</div>
+									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
+										<Hash className="size-5 text-muted-foreground" />
+										<div>
+											<p className="text-sm text-muted-foreground">
+												{t("library:source")}
+											</p>
+											<p className="font-medium text-card-foreground">Manga</p>
+										</div>
+									</div>
+									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
+										<TvIcon className="size-5 text-muted-foreground" />
+										<div>
+											<p className="text-sm text-muted-foreground">
+												{t("library:totalEpisodes")}
+											</p>
+											<p className="font-medium text-card-foreground">12</p>
+										</div>
+									</div>
+									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
+										<FileType className="size-5 text-muted-foreground" />
+										<div>
+											<p className="text-sm text-muted-foreground">
+												{t("library:broadcast")}
+											</p>
+											<p className="font-medium text-card-foreground">
+												Fridays at 23:00 (JST)
+											</p>
+										</div>
+									</div>
+									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
+										<Building className="size-5 text-muted-foreground" />
+										<div>
+											<p className="text-sm text-muted-foreground">
+												{t("library:rating")}
+											</p>
+											<p className="font-medium text-card-foreground">PG-13</p>
+										</div>
+									</div>
+
+									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
+										<Clock className="size-5 text-muted-foreground" />
+										<div>
+											<p className="text-sm text-muted-foreground">
+												{t("library:runtime")}
+											</p>
+											<p className="font-medium text-card-foreground">24 min</p>
+										</div>
+									</div>
+									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
+										<FileType className="size-5 text-muted-foreground" />
+										<div>
+											<p className="text-sm text-muted-foreground">
+												{t("library:studios")}
+											</p>
+											<p className="font-medium text-card-foreground flex-wrap flex">
+												<Link to="/">Aniplex</Link>,<Link to="/">Dentsu</Link>,
+												<Link to="/">Nippon Television Network</Link>,
+												<Link to="/">TOHO animation</Link>,
+												<Link to="/">Shogakukan-Shueisha Productions</Link>,
+												<Link to="/">Sound Team Don Juan</Link>,
+												<Link to="/">Miracle Bus</Link>,
+												<Link to="/">Shogakukan</Link>,
+												<Link to="/">TOHO Music</Link>
+											</p>
+										</div>
+									</div>
+									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
+										<Languages className="size-5 text-muted-foreground" />
+										<div>
+											<p className="text-sm text-muted-foreground">
+												{t("library:producers")}
+											</p>
+											<p className="font-medium text-card-foreground flex-wrap flex">
+												<Link to="/">Madhouse</Link>
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<AnimeEpisodeProgress season={mySeason} onToggle={handleToggle} />
+
+							<div className="my-5">
+								<h3 className="font-semibold text-card-foreground text-lg mb-4">
+									{t("library:communityStatistics")}
+								</h3>
+								<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+									<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
+										<div className="flex items-center justify-between mb-2">
+											<span className="text-sm font-medium text-muted-foreground">
+												{t("feed:lists.planning")}
+											</span>
+											<Bookmark className="size-5 text-purple-400" />
+										</div>
+										<p className="text-2xl font-bold text-card-foreground">
+											5%
+										</p>
+									</div>
+
+									<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
+										<div className="flex items-center justify-between mb-2">
+											<span className="text-sm font-medium text-muted-foreground">
+												{t("feed:lists.watching")}
+											</span>
+											<TvMinimalPlay className="size-5 text-chart-1" />
+										</div>
+										<p className="text-2xl font-bold text-card-foreground">
+											15%
+										</p>
+									</div>
+
+									<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
+										<div className="flex items-center justify-between mb-2">
+											<span className="text-sm font-medium text-muted-foreground">
+												{t("feed:lists.completed")}
+											</span>
+											<CheckCircle className="size-5 text-secondary" />
+										</div>
+										<p className="text-2xl font-bold text-card-foreground">
+											72%
+										</p>
+									</div>
+
+									<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
+										<div className="flex items-center justify-between mb-2">
+											<span className="text-sm font-medium text-muted-foreground">
+												{t("feed:lists.dropped")}
+											</span>
+											<XCircle className="size-5 text-destructive" />
+										</div>
+										<p className="text-2xl font-bold text-card-foreground">
+											8%
+										</p>
+									</div>
+								</div>
+							</div>
+
+							<iframe
+								src="https://www.youtube-nocookie.com/embed/RH-FcW94z00?enablejsapi=1&wmode=opaque&autoplay=1"
+								allowFullScreen
+								className="w-full aspect-video"
+								title="Trailer"
+							/>
+						</TabsContent>
+						<TabsContent value="episodes">
+							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+								<EpisodeItem />
+								<EpisodeItem />
+								<EpisodeItem />
+								<EpisodeItem />
+								<EpisodeItem />
+								<EpisodeItem />
+							</div>
+						</TabsContent>
+						<TabsContent value="relations">
+							<Relations />
+						</TabsContent>
+						<TabsContent value="reviews">
+							<ReviewItem />
+						</TabsContent>
+						<TabsContent value="lists">
+							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+								<ListItem />
+							</div>
+						</TabsContent>
+						<TabsContent value="cast">
+							<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+								<CastItem />
+								<CastItem />
+								<CastItem />
+								<CastItem />
+								<CastItem />
+								<CastItem />
+								<CastItem />
+							</div>
+						</TabsContent>
+						<TabsContent value="characters">
+							<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+								<CharacterItem />
+								<CharacterItem />
+								<CharacterItem />
+								<CharacterItem />
+								<CharacterItem />
+								<CharacterItem />
+								<CharacterItem />
+							</div>
+						</TabsContent>
+						<TabsContent value="medias">
+							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+								<ImageZoom>
+									<img
+										src="https://image.tmdb.org/t/p/original/zLyuE8viLa6g9NELI5JFETlQoJm.jpg"
+										alt=""
+									/>
+								</ImageZoom>
+								<ImageZoom>
+									<img
+										src="https://image.tmdb.org/t/p/original/beADML9mJgtTGnmXR6nbdAVdoqC.jpg"
+										alt=""
+									/>
+								</ImageZoom>
+								<ImageZoom>
+									<img
+										src="https://image.tmdb.org/t/p/original/k7sjr8AgGfK8uKwTZ4pB2h1pTQB.jpg"
+										alt=""
+									/>
+								</ImageZoom>
+								<ImageZoom>
+									<img
+										src="https://image.tmdb.org/t/p/original/kd9lR1lJrUZMpuNEaNhaM9N3TOW.jpg"
+										alt=""
+									/>
+								</ImageZoom>
+								<ImageZoom>
+									<img
+										src="https://image.tmdb.org/t/p/original/w5PzqjBhUlJHpRyhBRHvEdkJ0iK.jpg"
+										alt=""
+									/>
+								</ImageZoom>
+								<ImageZoom>
+									<img
+										src="https://image.tmdb.org/t/p/original/cJ3cm8GwUmUvWXnMIbwlmC6trGf.jpg"
+										alt=""
+									/>
+								</ImageZoom>
+							</div>
+						</TabsContent>
+					</Tabs>
+				</div>
+
+				<div className="mt-6 text-center text-sm text-muted-foreground">
+					<p>
+						Nota: O botão "Mais opções" abriria um modal para gerenciar status
+						avançados como "Abandonado", "Revendo", "Pausado", etc.
+					</p>
+				</div>
+			</div>
+		</div>
+	);
+}

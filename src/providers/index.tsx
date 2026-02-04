@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { CookiesProvider } from "react-cookie";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 import { Toaster } from "@/components/ui/sonner";
-import { AuthProvider } from "./auth-provider";
 import { ReactQueryProvider } from "./react-query-provider";
 
 interface RootProviderProps {
@@ -13,10 +13,10 @@ export function RootProvider({ children }: RootProviderProps) {
 	return (
 		<>
 			<CookiesProvider>
-				<ReactQueryProvider>
-					<AuthProvider>{children}</AuthProvider>
-				</ReactQueryProvider>
+				<ReactQueryProvider>{children}</ReactQueryProvider>
 			</CookiesProvider>
+
+			<TanStackRouterDevtools position="bottom-left" />
 
 			<Toaster position="top-center" closeButton />
 		</>

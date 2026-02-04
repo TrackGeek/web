@@ -4,15 +4,15 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryClient } from "@/lib/react-query";
 
 interface ReactQueryProviderProps {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }
 
 export function ReactQueryProvider({ children }: ReactQueryProviderProps) {
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
+	return (
+		<QueryClientProvider client={queryClient}>
+			{children}
 
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  );
+			<ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right" />
+		</QueryClientProvider>
+	);
 }

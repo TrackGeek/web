@@ -1,57 +1,57 @@
 {
-  "banner": {
-    "title": "Banner",
-    "description": "Formatos permitidos: JPG, JPEG, PNG, GIF. Tamanho máximo: 5mb. Dimensões ideais: 1700x330",
-    "upload": {
-      "title": "Enviar Banner",
-      "success": "Banner enviado com sucesso.",
-      "error": "Falha ao carregar o banner. Por favor, tente novamente."
-    },
-    "delete": {
-      "success": "Banner deletado com sucesso.",
-      "error": "Falha ao apagar o banner. Por favor, tente novamente."
-    }
-  },
-  "avatar": {
-    "title": "Avatar",
-    "description": "Formatos permitidos: JPG, JPEG, PNG, GIF. Tamanho máximo: 5mb. Dimensões ideais: 500x500",
-    "upload": {
-      "title": "Carregar Avatar",
-      "success": "Avatar enviado com sucesso.",
-      "error": "Falha ao atualizar o avatar. Por favor, tente novamente."
-    },
-    "delete": {
-      "success": "Imagem do perfil excluída com sucesso.",
-      "error": "Falha ao excluir o avatar. Por favor, tente novamente."
-    }
-  },
-  "profile": {
-    "title": "Opções do perfil",
-    "description": "Gerenciar suas informações pessoais e preferências",
-    "name": "Nome",
-    "username": "Nome de usuário",
-    "about": "Sobre Mim"
-  },
-  "color": {
-    "title": "Cor do Tema",
-    "description": "Escolha sua cor de tema preferida para a interface do aplicativo.",
-    "custom": "Cor customizada"
-  },
-  "save": {
-    "title": "Salvar alterações",
-    "success": "Configurações salvas com sucesso.",
-    "error": "Não foi possível salvar as configurações. Por favor, tente novamente."
-  },
-  "preferrences": {
-    "title": "Preferências",
-    "description": "Configure suas preferências de aplicação.",
-    "language": {
-      "title": "Idioma",
-      "placeholder": "Selecione seu idioma de preferência"
-    },
-    "timezone": {
-      "title": "Fuso horário",
-      "placeholder": "Selecione o seu fuso horário"
-    }
-  }
+	"banner": {
+		"title": "Banner",
+		"description": "Formatos permitidos: JPG, JPEG, PNG, GIF. Tamanho máximo: 5mb. Dimensões ideais: 1700x330",
+		"upload": {
+			"title": "Enviar Banner",
+			"success": "Banner enviado com sucesso.",
+			"error": "Falha ao carregar o banner. Por favor, tente novamente."
+		},
+		"delete": {
+			"success": "Banner deletado com sucesso.",
+			"error": "Falha ao apagar o banner. Por favor, tente novamente."
+		}
+	},
+	"avatar": {
+		"title": "Avatar",
+		"description": "Formatos permitidos: JPG, JPEG, PNG, GIF. Tamanho máximo: 5mb. Dimensões ideais: 500x500",
+		"upload": {
+			"title": "Carregar Avatar",
+			"success": "Avatar enviado com sucesso.",
+			"error": "Falha ao atualizar o avatar. Por favor, tente novamente."
+		},
+		"delete": {
+			"success": "Imagem do perfil excluída com sucesso.",
+			"error": "Falha ao excluir o avatar. Por favor, tente novamente."
+		}
+	},
+	"profile": {
+		"title": "Opções do perfil",
+		"description": "Gerenciar suas informações pessoais e preferências",
+		"name": "Nome",
+		"username": "Nome de usuário",
+		"about": "Sobre Mim"
+	},
+	"color": {
+		"title": "Cor do Tema",
+		"description": "Escolha sua cor de tema preferida para a interface do aplicativo.",
+		"custom": "Cor customizada"
+	},
+	"save": {
+		"title": "Salvar alterações",
+		"success": "Configurações salvas com sucesso.",
+		"error": "Não foi possível salvar as configurações. Por favor, tente novamente."
+	},
+	"preferrences": {
+		"title": "Preferências",
+		"description": "Configure suas preferências de aplicação.",
+		"language": {
+			"title": "Idioma",
+			"placeholder": "Selecione seu idioma de preferência"
+		},
+		"timezone": {
+			"title": "Fuso horário",
+			"placeholder": "Selecione o seu fuso horário"
+		}
+	}
 }

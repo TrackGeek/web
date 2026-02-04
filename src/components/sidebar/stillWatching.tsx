@@ -1,7 +1,7 @@
+import { Link } from "@tanstack/react-router";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 
 interface TempItem {
 	coverURL: string;

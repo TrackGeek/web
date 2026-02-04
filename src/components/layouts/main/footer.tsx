@@ -3,8 +3,8 @@ import {
 	SiMyanimelist,
 	SiThemoviedatabase,
 } from "@icons-pack/react-simple-icons";
+import { Link } from "@tanstack/react-router";
 import { Trans, useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 
 export function Footer() {
 	const { t } = useTranslation();
@@ -19,21 +19,35 @@ export function Footer() {
 					<div className="flex flex-col gap-1">
 						<p className="flex gap-1 items-center">
 							{t("common:providers.IGDBMetadata")}
-							<Link to="https://www.igdb.com" target="_blank">
+							<a
+								href="https://www.igdb.com"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
 								<SiIgdb />
-							</Link>
+							</a>
 						</p>
 						<p className="flex gap-1 items-center">
 							{t("common:providers.TMDBMetadata")}
-							<Link to="https://www.themoviedb.org" target="_blank">
+							<a
+								href="https://www.themoviedb.org"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
 								<SiThemoviedatabase />
-							</Link>
+							</a>
 						</p>
 						<p className="flex gap-1 items-center">
 							<Trans
 								i18nKey="common:providers.HardCoverMetadata"
 								components={{
-									1: <Link to="https://hardcover.app" target="_blank" />,
+									1: (
+										<a
+											href="https://hardcover.app"
+											target="_blank"
+											rel="noopener noreferrer"
+										/>
+									),
 								}}
 							/>
 						</p>
@@ -42,11 +56,21 @@ export function Footer() {
 								i18nKey="common:providers.MALMetadata"
 								components={{
 									mal: (
-										<Link to="https://myanimelist.net" target="_blank">
+										<a
+											href="https://myanimelist.net"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
 											<SiMyanimelist />
-										</Link>
+										</a>
 									),
-									jikan: <Link to="https://jikan.moe" target="_blank" />,
+									jikan: (
+										<a
+											href="https://jikan.moe"
+											target="_blank"
+											rel="noopener noreferrer"
+										/>
+									),
 								}}
 							/>
 						</p>
@@ -57,47 +81,68 @@ export function Footer() {
 					<div className="flex flex-col gap-3">
 						<h3 className="text-accent font-bold">{t("common:community")}</h3>
 
-						<Link to="/add-data">{t("common:addData")}</Link>
-						<Link to="/about">{t("common:about")}</Link>
-						<Link to="/donate">{t("common:donate")}</Link>
-						<Link to="/special-thanks">{t("common:credits")}</Link>
-						<Link to="https://crowdin.com/project/trackgeek" target="_blank">
+						<Link to="/">{t("common:addData")}</Link>
+						<Link to="/">{t("common:about")}</Link>
+						<Link to="/">{t("common:donate")}</Link>
+						<Link to="/">{t("common:credits")}</Link>
+						<a
+							href="https://crowdin.com/project/trackgeek"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							{t("common:translate")}
-						</Link>
+						</a>
 					</div>
 
 					<div className="flex flex-col gap-3">
 						<h3 className="text-accent font-bold">{t("common:legal")}</h3>
 
-						<Link to="/terms">{t("common:terms")}</Link>
-						<Link to="/privacy-policy">{t("common:privacy")}</Link>
+						<Link to="/">{t("common:terms")}</Link>
+						<Link to="/">{t("common:privacy")}</Link>
 					</div>
 
 					<div className="flex flex-col gap-3">
 						<h3 className="text-accent font-bold">{t("common:socials")}</h3>
 
-						<Link
-							to="https://bsky.app/profile/trackgeek.bsky.social"
+						<a
+							href="https://bsky.app/profile/trackgeek.bsky.social"
 							target="_blank"
+							rel="noopener noreferrer"
 						>
 							BlueSky
-						</Link>
+						</a>
 
-						<Link to="https://discord.gg/76bcftRnuT" target="_blank">
+						<a
+							href="https://discord.gg/76bcftRnuT"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							Discord
-						</Link>
+						</a>
 
-						<Link to="https://www.instagram.com/trackgeekofc" target="_blank">
+						<a
+							href="https://www.instagram.com/trackgeekofc"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							Instagram
-						</Link>
+						</a>
 
-						<Link to="https://x.com/trackgeekofc" target="_blank">
+						<a
+							href="https://x.com/trackgeekofc"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							X (Twitter)
-						</Link>
+						</a>
 
-						<Link to="https://github.com/TrackGeek/" target="_blank">
+						<a
+							href="https://github.com/TrackGeek/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							GitHub
-						</Link>
+						</a>
 					</div>
 				</div>
 			</div>

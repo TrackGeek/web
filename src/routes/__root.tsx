@@ -12,9 +12,6 @@ interface RouterContext {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-	head: () => ({
-		meta: [{ title: "TrackGeek" }],
-	}),
 	component: RootLayout,
 });
 

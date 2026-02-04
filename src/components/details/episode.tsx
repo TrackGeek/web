@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 
-interface EpisodeProps {
-	title: string;
-	imageURL: string;
-	number: number;
-}
+// interface EpisodeProps {
+// 	title: string;
+// 	imageURL: string;
+// 	number: number;
+// }
 
 export function EpisodeItem() {
 	const { t } = useTranslation();

@@ -17,7 +17,12 @@ import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
 
 export const Route = createFileRoute("/feed")({
 	head: () => ({
-		meta: [{ title: "Feed | TrackGeek" }],
+		title: "Feed | TrackGeek",
+		meta: [
+			{ name: "description", content: "Your personalized feed on TrackGeek" },
+			{ property: "og:title", content: "Feed | TrackGeek" },
+			{ property: "og:description", content: "Your personalized feed on TrackGeek" },
+		],
 	}),
 	component: FeedRoute,
 });

@@ -73,13 +73,18 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/game/$slug")({
 	head: () => ({
-		meta: [{ title: "Game Details | TrackGeek" }],
+		title: "Game Details | TrackGeek",
+		meta: [
+			{ name: "description", content: "View detailed information about this game" },
+			{ property: "og:title", content: "Game Details | TrackGeek" },
+			{ property: "og:description", content: "View detailed information about this game" },
+		],
 	}),
 	component: GameDetailsRoute,
 });
 
 export function GameDetailsRoute() {
-	const { slug } = Route.useParams();
+	const { slug: _ } = Route.useParams();
 
 	const synopsis =
 		"Hytale combines the scope of a sandbox with the depth of a roleplaying game, immersing players in a procedurally generated world where teetering towers and deep dungeons promise rich rewards throughout their adventures. Hytale supports everything from block-by-block construction to scripting and minigame creation, delivered using easy to use and powerful tools.";

@@ -57,16 +57,21 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/tv/$slug")({
 	head: () => ({
-		meta: [{ title: "TV Show Details | TrackGeek" }],
+		title: "TV Show Details | TrackGeek",
+		meta: [
+			{ name: "description", content: "View detailed information about this TV show" },
+			{ property: "og:title", content: "TV Show Details | TrackGeek" },
+			{ property: "og:description", content: "View detailed information about this TV show" },
+		],
 	}),
 	component: TVShowDetailsPage,
 });
 
 export function TVShowDetailsPage() {
-	const { slug } = Route.useParams();
+	const { slug: _ } = Route.useParams();
 
 	const { t } = useTranslation();
-	const [mySeasons, setMySeasons] = useState<SeasonData[]>([
+	const [mySeasons, _setMySeasons] = useState<SeasonData[]>([
 		{
 			seasonNumber: 0,
 			totalEpisodes: 3,

@@ -45,13 +45,18 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/movie/$slug")({
 	head: () => ({
-		meta: [{ title: "Movie Details | TrackGeek" }],
+		title: "Movie Details | TrackGeek",
+		meta: [
+			{ name: "description", content: "View detailed information about this movie" },
+			{ property: "og:title", content: "Movie Details | TrackGeek" },
+			{ property: "og:description", content: "View detailed information about this movie" },
+		],
 	}),
 	component: MovieDetailsRoute,
 });
 
 export function MovieDetailsRoute() {
-	const { slug } = Route.useParams();
+	const { slug: _ } = Route.useParams();
 
 	const synopsis =
 		"A group of friends facing mid-life crises head to the rainforest with the intention of remaking their favorite movie from their youth, only to find themselves in a fight for their lives against natural disasters, giant snakes and violent criminals.";

@@ -28,7 +28,7 @@ interface BookModalProps {
 	mediaData?: any;
 }
 
-export function BookModal({ mediaData }: BookModalProps) {
+export function BookModal({ mediaData: _ }: BookModalProps) {
 	const [startDate, setStartDate] = useState<Date>();
 	const [finishDate, setFinishDate] = useState<Date>();
 	const [customLists, setCustomLists] = useState<string[]>([

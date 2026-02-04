@@ -42,7 +42,12 @@ const colorOptions = [
 
 export const Route = createFileRoute("/_authenticated/settings")({
 	head: () => ({
-		meta: [{ title: "Settings | TrackGeek" }],
+		title: "Settings | TrackGeek",
+		meta: [
+			{ name: "description", content: "Manage your account settings and preferences" },
+			{ property: "og:title", content: "Settings | TrackGeek" },
+			{ property: "og:description", content: "Manage your account settings and preferences" },
+		],
 	}),
 	component: SettingsRoute,
 });

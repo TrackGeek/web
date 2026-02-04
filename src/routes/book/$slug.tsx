@@ -31,13 +31,18 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/book/$slug")({
 	head: () => ({
-		meta: [{ title: "Book Details | TrackGeek" }],
+		title: "Book Details | TrackGeek",
+		meta: [
+			{ name: "description", content: "View detailed information about this book" },
+			{ property: "og:title", content: "Book Details | TrackGeek" },
+			{ property: "og:description", content: "View detailed information about this book" },
+		],
 	}),
 	component: BookDetailsRoute,
 });
 
 export function BookDetailsRoute() {
-	const { slug } = Route.useParams();
+	const { slug: _ } = Route.useParams();
 
 	const { t } = useTranslation();
 

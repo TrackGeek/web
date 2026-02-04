@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { Calendar1, File, Image, Plus, Save, Star, Trash } from "lucide-react";
+import { Calendar1, Image, Plus, Save, Star, Trash } from "lucide-react";
 import { type DragEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button } from "../ui/button";
@@ -28,7 +28,7 @@ interface GameModalProps {
 	mediaData?: any;
 }
 
-export function GameModal({ mediaData }: GameModalProps) {
+export function GameModal({ mediaData: _ }: GameModalProps) {
 	const [startDate, setStartDate] = useState<Date>();
 	const [finishDate, setFinishDate] = useState<Date>();
 	const [customLists, setCustomLists] = useState<string[]>([

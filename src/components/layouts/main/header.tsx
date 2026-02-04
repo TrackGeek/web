@@ -82,7 +82,7 @@ export function Header() {
 	async function handleLoginWithMagicLink(formData: MagicLinkFormData) {
 		const data = await signIn.magicLink({
 			email: formData.email,
-			callbackURL: window.location.origin,
+			callbackURL: `${window.location.origin}/feed`,
 		});
 
 		if (data.error) {
@@ -100,7 +100,7 @@ export function Header() {
 	async function handleLoginWithGoogle() {
 		const data = await signIn.social({
 			provider: "google",
-			callbackURL: window.location.origin,
+			callbackURL: `${window.location.origin}/feed`,
 		});
 
 		if (data.error) {
@@ -113,7 +113,7 @@ export function Header() {
 	async function handleLoginWithGithub() {
 		const data = await signIn.social({
 			provider: "github",
-			callbackURL: window.location.origin,
+			callbackURL: `${window.location.origin}/feed`,
 		});
 
 		if (data.error) {
@@ -126,7 +126,7 @@ export function Header() {
 	async function handleLoginWithDiscord() {
 		const data = await signIn.social({
 			provider: "discord",
-			callbackURL: window.location.origin,
+			callbackURL: `${window.location.origin}/feed`,
 		});
 
 		if (data.error) {

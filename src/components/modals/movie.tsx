@@ -22,7 +22,7 @@ interface MovieModalProps {
 	mediaData?: any;
 }
 
-export function MovieModal({ mediaData }: MovieModalProps) {
+export function MovieModal({ mediaData: _ }: MovieModalProps) {
 	const [startDate, setStartDate] = useState<Date>();
 	const [finishDate, setFinishDate] = useState<Date>();
 	const [customLists, setCustomLists] = useState<string[]>([

@@ -28,7 +28,7 @@ interface MangaModalProps {
 	mediaData?: any;
 }
 
-export function MangaModal({ mediaData }: MangaModalProps) {
+export function MangaModal({ mediaData: _ }: MangaModalProps) {
 	const [startDate, setStartDate] = useState<Date>();
 	const [finishDate, setFinishDate] = useState<Date>();
 	const [customLists, setCustomLists] = useState<string[]>([

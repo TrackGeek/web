@@ -17,7 +17,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/lab")({
 	head: () => ({
-		meta: [{ title: "Lab | TrackGeek" }],
+		title: "Lab | TrackGeek",
+		meta: [
+			{ name: "description", content: "Experimental features and testing area" },
+			{ property: "og:title", content: "Lab | TrackGeek" },
+			{ property: "og:description", content: "Experimental features and testing area" },
+		],
 	}),
 	component: LabRoute,
 });

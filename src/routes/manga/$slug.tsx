@@ -35,13 +35,18 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/manga/$slug")({
 	head: () => ({
-		meta: [{ title: "Manga Details | TrackGeek" }],
+		title: "Manga Details | TrackGeek",
+		meta: [
+			{ name: "description", content: "View detailed information about this manga" },
+			{ property: "og:title", content: "Manga Details | TrackGeek" },
+			{ property: "og:description", content: "View detailed information about this manga" },
+		],
 	}),
 	component: MangaDetailsRoute,
 });
 
 export function MangaDetailsRoute() {
-	const { slug } = Route.useParams();
+	const { slug: _ } = Route.useParams();
 
 	const synopsis =
 		"Tanjirou Kamado lives with his impoverished family on a remote mountain. As the oldest sibling, he took upon the responsibility of ensuring his family's livelihood after the death of his father. On a cold winter day, he goes down to the local village in order to sell some charcoal. As dusk falls, he is forced to spend the night in the house of a curious man who cautions him of strange creatures that roam the night: malevolent demons who crave human flesh.\n\nWhen he finally makes his way home, Tanjirou's worst nightmare comes true. His entire family has been brutally slaughtered with the sole exception of his sister Nezuko, who has turned into a flesh-eating demon. Engulfed in hatred and despair, Tanjirou desperately tries to stop Nezuko from attacking other people, setting out on a journey to avenge his family and find a way to turn his beloved sister back into a human.";

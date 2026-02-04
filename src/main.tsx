@@ -15,6 +15,7 @@ import { AnimeDetails } from "./pages/anime-details.tsx";
 import { BookDetails } from "./pages/book-details.tsx";
 import { GameDetails } from "./pages/game-details.tsx";
 import { HomePage } from "./pages/home";
+import { Lab } from "./pages/lab.tsx";
 import { MangaDetails } from "./pages/manga-details.tsx";
 import { MovieDetails } from "./pages/movie-details.tsx";
 import { SettingsPage } from "./pages/settings.tsx";
@@ -64,6 +65,10 @@ export function Routes() {
 		{
 			path: "/user/:username",
 			element: <UserDetailsPage />,
+		},
+		{
+			path: "/lab",
+			element: <Lab />,
 		},
 	];
 

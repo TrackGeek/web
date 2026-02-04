@@ -17,6 +17,7 @@ import {
 	FilePenLine,
 	FileType,
 	Hash,
+	Heart,
 	Languages,
 	MoreHorizontal,
 	Star,
@@ -36,6 +37,7 @@ import {
 } from "@/components/details/progress";
 import { ReviewItem } from "@/components/details/review";
 import { Layout } from "@/components/layouts/main";
+import { EpisodicContentModal } from "@/components/modals/episodic-content";
 import {
 	Accordion,
 	AccordionContent,
@@ -43,6 +45,13 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
@@ -70,6 +79,14 @@ export function TVShowDetails() {
 	function handleToggle(season: number, ep: number) {
 		console.log(season, ep);
 	}
+
+	const synopsis =
+		"The story of haves and have-nots in a world in which there's almost nothing left to have. 200 years after the apocalypse, the gentle denizens of luxury fallout shelters are forced to return to the irradiated hellscape their ancestors left behind — and are shocked to discover an incredibly complex, gleefully weird, and highly violent universe waiting for them.";
+	const year = "2024";
+	const imageURL =
+		"https://www.themoviedb.org/t/p/w1280/c15BtJxCXMrISLVmysdsnZUPQft.jpg";
+	const title = "Fallout";
+	const rating = 4.2;
 	return (
 		<Layout title="TV Show Name">
 			<div className="flex flex-col lg:flex-row gap-8">
@@ -77,7 +94,7 @@ export function TVShowDetails() {
 					<div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 gap-4 flex flex-col">
 						<div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
 							<img
-								src="https://www.themoviedb.org/t/p/w1280/c15BtJxCXMrISLVmysdsnZUPQft.jpg"
+								src={imageURL}
 								alt="Capa da série"
 								className="w-full h-auto object-cover"
 							/>
@@ -127,12 +144,63 @@ export function TVShowDetails() {
 							</Button>
 						</div>
 
-						<Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-							<MoreHorizontal className="w-5 h-5" />
-							<span className="text-sm font-medium">
-								{t("library:moreOptions")}
-							</span>
-						</Button>
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
+									<MoreHorizontal className="w-5 h-5" />
+									<span className="text-sm font-medium">
+										{t("library:moreOptions")}
+									</span>
+								</Button>
+							</DialogTrigger>
+							<DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
+								<DialogHeader
+									className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
+									style={{
+										backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${imageURL}")`,
+									}}
+								>
+									<div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
+									<div className="flex flex-row items-center w-full">
+										<img
+											src={imageURL}
+											alt="Cover"
+											className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
+										/>
+										<div className="flex-1 px-6 relative z-10">
+											<DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">
+												{title}
+											</DialogTitle>
+											<div className="flex items-center gap-4 text-white/90 text-sm">
+												<div className="flex items-center gap-1">
+													<Star className="size-4 fill-yellow-400 text-yellow-400" />
+													<span>{rating}</span>
+												</div>
+												<span>•</span>
+												<span>{year}</span>
+											</div>
+											<p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">
+												{synopsis}
+											</p>
+										</div>
+									</div>
+
+									<div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
+										<Button
+											size="sm"
+											variant="ghost"
+											className="text-white hover:bg-white/10 hover:text-white"
+										>
+											<Heart className="size-6" />
+										</Button>
+									</div>
+								</DialogHeader>
+
+								<div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
+									<EpisodicContentModal />
+								</div>
+							</DialogContent>
+						</Dialog>
 
 						<div className="border-t border-border"></div>
 
@@ -147,7 +215,7 @@ export function TVShowDetails() {
 								<p className="text-sm text-muted-foreground">
 									{t("library:releaseDate")}
 								</p>
-								<p className="font-semibold text-card-foreground">2024</p>
+								<p className="font-semibold text-card-foreground">{year}</p>
 							</div>
 						</div>
 						<Link
@@ -198,20 +266,22 @@ export function TVShowDetails() {
 					<div className="bg-card rounded-2xl shadow-lg p-8">
 						<div className="mb-5">
 							<h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-								Fallout
+								{title}
 							</h1>
 						</div>
 
 						<div className="flex flex-wrap items-center gap-6 mb-5 pb-6 border-b border-border">
 							<div className="flex items-center">
 								<div className="flex mr-2">
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-muted-foreground" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-muted-foreground" />
 								</div>
-								<span className="font-semibold text-card-foreground">4.2</span>
+								<span className="font-semibold text-card-foreground">
+									{rating}
+								</span>
 								<span className="text-muted-foreground ml-1">
 									(128.543 {t("library:reviews")})
 								</span>
@@ -222,7 +292,7 @@ export function TVShowDetails() {
 								<TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
 									<TabsTrigger value="info">{t("library:info")}</TabsTrigger>
 									<TabsTrigger value="episodes">
-										{t("library:episodes")}
+										{t("library:episode_other")}
 									</TabsTrigger>
 									<TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
 									<TabsTrigger value="medias">
@@ -274,15 +344,7 @@ export function TVShowDetails() {
 										{t("library:synopsis")}
 									</h3>
 									<div className="text-muted-foreground leading-relaxed space-y-4">
-										<p>
-											The story of haves and have-nots in a world in which
-											there's almost nothing left to have. 200 years after the
-											apocalypse, the gentle denizens of luxury fallout shelters
-											are forced to return to the irradiated hellscape their
-											ancestors left behind — and are shocked to discover an
-											incredibly complex, gleefully weird, and highly violent
-											universe waiting for them.
-										</p>
+										<p>{synopsis}</p>
 									</div>
 								</div>
 
@@ -292,7 +354,7 @@ export function TVShowDetails() {
 									</h3>
 									<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<FilePenLine className="w-5 h-5 text-muted-foreground" />
+											<FilePenLine className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:creators")}
@@ -306,7 +368,7 @@ export function TVShowDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Hash className="w-5 h-5 text-muted-foreground" />
+											<Hash className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:seasons")}
@@ -315,7 +377,7 @@ export function TVShowDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<TvIcon className="w-5 h-5 text-muted-foreground" />
+											<TvIcon className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:totalEpisodes")}
@@ -324,7 +386,7 @@ export function TVShowDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Languages className="w-5 h-5 text-muted-foreground" />
+											<Languages className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:language")}
@@ -335,7 +397,7 @@ export function TVShowDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Building className="w-5 h-5 text-muted-foreground" />
+											<Building className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:productionCompanies")}
@@ -347,7 +409,7 @@ export function TVShowDetails() {
 										</div>
 
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Clock className="w-5 h-5 text-muted-foreground" />
+											<Clock className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:runtime")}
@@ -358,7 +420,7 @@ export function TVShowDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<FileType className="w-5 h-5 text-muted-foreground" />
+											<FileType className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:type")}
@@ -390,7 +452,7 @@ export function TVShowDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.planning")}
 												</span>
-												<Bookmark className="w-5 h-5 text-purple-400" />
+												<Bookmark className="size-5 text-purple-400" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												5%
@@ -402,7 +464,7 @@ export function TVShowDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.watching")}
 												</span>
-												<TvMinimalPlay className="w-5 h-5 text-chart-1" />
+												<TvMinimalPlay className="size-5 text-chart-1" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												15%
@@ -414,7 +476,7 @@ export function TVShowDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.completed")}
 												</span>
-												<CheckCircle className="w-5 h-5 text-secondary" />
+												<CheckCircle className="size-5 text-secondary" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												72%
@@ -426,7 +488,7 @@ export function TVShowDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.dropped")}
 												</span>
-												<XCircle className="w-5 h-5 text-destructive" />
+												<XCircle className="size-5 text-destructive" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												8%

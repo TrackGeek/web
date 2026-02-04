@@ -7,6 +7,7 @@ import {
 	ExternalLink,
 	FilePenLine,
 	Hash,
+	Heart,
 	MoreHorizontal,
 	Notebook,
 	Pen,
@@ -22,10 +23,24 @@ import { ListItem } from "@/components/details/list";
 import { Relations } from "@/components/details/relations";
 import { ReviewItem } from "@/components/details/review";
 import { Layout } from "@/components/layouts/main";
+import { MangaModal } from "@/components/modals/manga";
 import { Button } from "@/components/ui/button";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function MangaDetails() {
+	const synopsis =
+		"Tanjirou Kamado lives with his impoverished family on a remote mountain. As the oldest sibling, he took upon the responsibility of ensuring his family's livelihood after the death of his father. On a cold winter day, he goes down to the local village in order to sell some charcoal. As dusk falls, he is forced to spend the night in the house of a curious man who cautions him of strange creatures that roam the night: malevolent demons who crave human flesh.\n\nWhen he finally makes his way home, Tanjirou's worst nightmare comes true. His entire family has been brutally slaughtered with the sole exception of his sister Nezuko, who has turned into a flesh-eating demon. Engulfed in hatred and despair, Tanjirou desperately tries to stop Nezuko from attacking other people, setting out on a journey to avenge his family and find a way to turn his beloved sister back into a human.";
+	const year = "Feb 15, 2016 to May 18, 2020";
+	const imageURL = "https://cdn.myanimelist.net/images/manga/3/179023l.jpg";
+	const title = "Kimetsu no Yaiba";
+	const rating = 4.2;
 	const { t } = useTranslation();
 
 	return (
@@ -35,7 +50,7 @@ export function MangaDetails() {
 					<div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 gap-4 flex flex-col">
 						<div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
 							<img
-								src="https://cdn.myanimelist.net/images/manga/3/179023l.jpg"
+								src={imageURL}
 								alt="Capa do mangá"
 								className="w-full h-auto object-cover"
 							/>
@@ -85,12 +100,63 @@ export function MangaDetails() {
 							</Button>
 						</div>
 
-						<Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-							<MoreHorizontal className="w-5 h-5" />
-							<span className="text-sm font-medium">
-								{t("library:moreOptions")}
-							</span>
-						</Button>
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
+									<MoreHorizontal className="w-5 h-5" />
+									<span className="text-sm font-medium">
+										{t("library:moreOptions")}
+									</span>
+								</Button>
+							</DialogTrigger>
+							<DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
+								<DialogHeader
+									className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
+									style={{
+										backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${imageURL}")`,
+									}}
+								>
+									<div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
+									<div className="flex flex-row items-center w-full">
+										<img
+											src={imageURL}
+											alt="Cover"
+											className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
+										/>
+										<div className="flex-1 px-6 relative z-10">
+											<DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">
+												{title}
+											</DialogTitle>
+											<div className="flex items-center gap-4 text-white/90 text-sm">
+												<div className="flex items-center gap-1">
+													<Star className="size-4 fill-yellow-400 text-yellow-400" />
+													<span>{rating}</span>
+												</div>
+												<span>•</span>
+												<span>{year}</span>
+											</div>
+											<p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">
+												{synopsis}
+											</p>
+										</div>
+									</div>
+
+									<div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
+										<Button
+											size="sm"
+											variant="ghost"
+											className="text-white hover:bg-white/10 hover:text-white"
+										>
+											<Heart className="size-6" />
+										</Button>
+									</div>
+								</DialogHeader>
+
+								<div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
+									<MangaModal />
+								</div>
+							</DialogContent>
+						</Dialog>
 
 						<div className="border-t border-border"></div>
 
@@ -105,9 +171,7 @@ export function MangaDetails() {
 								<p className="text-sm text-muted-foreground">
 									{t("library:releaseDate")}
 								</p>
-								<p className="font-semibold text-card-foreground">
-									Feb 15, 2016 to May 18, 2020
-								</p>
+								<p className="font-semibold text-card-foreground">{year}</p>
 							</div>
 						</div>
 						<Link
@@ -133,20 +197,22 @@ export function MangaDetails() {
 					<div className="bg-card rounded-2xl shadow-lg p-8">
 						<div className="mb-5">
 							<h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-								Kimetsu no Yaiba
+								{title}
 							</h1>
 						</div>
 
 						<div className="flex flex-wrap items-center gap-6 mb-5 pb-6 border-b border-border">
 							<div className="flex items-center">
 								<div className="flex mr-2">
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-muted-foreground" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-muted-foreground" />
 								</div>
-								<span className="font-semibold text-card-foreground">4.2</span>
+								<span className="font-semibold text-card-foreground">
+									{rating}
+								</span>
 								<span className="text-muted-foreground ml-1">
 									(128.543 {t("library:reviews")})
 								</span>
@@ -196,27 +262,7 @@ export function MangaDetails() {
 										{t("library:synopsis")}
 									</h3>
 									<div className="text-muted-foreground leading-relaxed space-y-4">
-										<p>
-											Tanjirou Kamado lives with his impoverished family on a
-											remote mountain. As the oldest sibling, he took upon the
-											responsibility of ensuring his family's livelihood after
-											the death of his father. On a cold winter day, he goes
-											down to the local village in order to sell some charcoal.
-											As dusk falls, he is forced to spend the night in the
-											house of a curious man who cautions him of strange
-											creatures that roam the night: malevolent demons who crave
-											human flesh.
-											<br />
-											<br />
-											When he finally makes his way home, Tanjirou's worst
-											nightmare comes true. His entire family has been brutally
-											slaughtered with the sole exception of his sister Nezuko,
-											who has turned into a flesh-eating demon. Engulfed in
-											hatred and despair, Tanjirou desperately tries to stop
-											Nezuko from attacking other people, setting out on a
-											journey to avenge his family and find a way to turn his
-											beloved sister back into a human.
-										</p>
+										<p>{synopsis}</p>
 									</div>
 								</div>
 
@@ -226,7 +272,7 @@ export function MangaDetails() {
 									</h3>
 									<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<FilePenLine className="w-5 h-5 text-muted-foreground" />
+											<FilePenLine className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:type")}
@@ -237,7 +283,7 @@ export function MangaDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Hash className="w-5 h-5 text-muted-foreground" />
+											<Hash className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:chapters")}
@@ -246,7 +292,7 @@ export function MangaDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<SwatchBook className="w-5 h-5 text-muted-foreground" />
+											<SwatchBook className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:volumes")}
@@ -255,7 +301,7 @@ export function MangaDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<TreePalm className="w-5 h-5 text-muted-foreground" />
+											<TreePalm className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:themes")}
@@ -267,7 +313,7 @@ export function MangaDetails() {
 										</div>
 
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Pen className="w-5 h-5 text-muted-foreground" />
+											<Pen className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:authors")}
@@ -280,7 +326,7 @@ export function MangaDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Notebook className="w-5 h-5 text-muted-foreground" />
+											<Notebook className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:publisher")}
@@ -303,7 +349,7 @@ export function MangaDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.planning")}
 												</span>
-												<Bookmark className="w-5 h-5 text-purple-400" />
+												<Bookmark className="size-5 text-purple-400" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												5%
@@ -315,7 +361,7 @@ export function MangaDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.reading")}
 												</span>
-												<BookOpenText className="w-5 h-5 text-chart-1" />
+												<BookOpenText className="size-5 text-chart-1" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												15%
@@ -327,7 +373,7 @@ export function MangaDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.read")}
 												</span>
-												<CheckCircle className="w-5 h-5 text-secondary" />
+												<CheckCircle className="size-5 text-secondary" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												72%
@@ -339,7 +385,7 @@ export function MangaDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.dropped")}
 												</span>
-												<XCircle className="w-5 h-5 text-destructive" />
+												<XCircle className="size-5 text-destructive" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												8%

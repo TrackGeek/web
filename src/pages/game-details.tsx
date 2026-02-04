@@ -40,6 +40,7 @@ import {
 	EthernetPort,
 	ExternalLink,
 	Gamepad,
+	Heart,
 	MoreHorizontal,
 	Star,
 	TreeDeciduous,
@@ -48,8 +49,10 @@ import {
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ListItem } from "@/components/details/list";
+import { Relations } from "@/components/details/relations";
 import { ReviewItem } from "@/components/details/review";
 import { Layout } from "@/components/layouts/main";
+import { GameModal } from "@/components/modals/game";
 import { Button } from "@/components/ui/button";
 import {
 	Carousel,
@@ -58,11 +61,25 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "@/components/ui/carousel";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
 export function GameDetails() {
+	const synopsis =
+		"Hytale combines the scope of a sandbox with the depth of a roleplaying game, immersing players in a procedurally generated world where teetering towers and deep dungeons promise rich rewards throughout their adventures. Hytale supports everything from block-by-block construction to scripting and minigame creation, delivered using easy to use and powerful tools.";
+	const year = "13/01/2026";
+	const imageURL =
+		"https://images.igdb.com/igdb/image/upload/t_original/cobc4t.webp";
+	const title = "Hytale";
+	const rating = 4.2;
 	const { t } = useTranslation();
 
 	return (
@@ -72,7 +89,7 @@ export function GameDetails() {
 					<div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 gap-4 flex flex-col">
 						<div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
 							<img
-								src="https://images.igdb.com/igdb/image/upload/t_original/cobc4t.webp"
+								src={imageURL}
 								alt="Capa do jogo"
 								className="w-full h-auto object-cover"
 							/>
@@ -122,12 +139,63 @@ export function GameDetails() {
 							</Button>
 						</div>
 
-						<Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-							<MoreHorizontal className="w-5 h-5" />
-							<span className="text-sm font-medium">
-								{t("library:moreOptions")}
-							</span>
-						</Button>
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
+									<MoreHorizontal className="w-5 h-5" />
+									<span className="text-sm font-medium">
+										{t("library:moreOptions")}
+									</span>
+								</Button>
+							</DialogTrigger>
+							<DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
+								<DialogHeader
+									className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
+									style={{
+										backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${imageURL}")`,
+									}}
+								>
+									<div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
+									<div className="flex flex-row items-center w-full">
+										<img
+											src={imageURL}
+											alt="Cover"
+											className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
+										/>
+										<div className="flex-1 px-6 relative z-10">
+											<DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">
+												{title}
+											</DialogTitle>
+											<div className="flex items-center gap-4 text-white/90 text-sm">
+												<div className="flex items-center gap-1">
+													<Star className="size-4 fill-yellow-400 text-yellow-400" />
+													<span>{rating}</span>
+												</div>
+												<span>•</span>
+												<span>{year}</span>
+											</div>
+											<p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">
+												{synopsis}
+											</p>
+										</div>
+									</div>
+
+									<div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
+										<Button
+											size="sm"
+											variant="ghost"
+											className="text-white hover:bg-white/10 hover:text-white"
+										>
+											<Heart className="size-6" />
+										</Button>
+									</div>
+								</DialogHeader>
+
+								<div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
+									<GameModal />
+								</div>
+							</DialogContent>
+						</Dialog>
 
 						<div className="border-t border-border"></div>
 
@@ -144,7 +212,7 @@ export function GameDetails() {
 								<p className="text-sm text-muted-foreground">
 									{t("library:releaseDate")}
 								</p>
-								<p className="font-semibold text-card-foreground">13/01/2026</p>
+								<p className="font-semibold text-card-foreground">{year}</p>
 							</div>
 						</div>
 						<Button variant="outline" className="w-full">
@@ -258,10 +326,10 @@ export function GameDetails() {
 					<div className="bg-card rounded-2xl shadow-lg p-8">
 						<div className="mb-5">
 							<h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-								Hytale
+								{title}
 							</h1>
 							<div className="flex items-center space-x-2 mt-2">
-								<Box className="w-5 h-5 text-muted-foreground" />
+								<Box className="size-5 text-muted-foreground" />
 								<Link
 									to={"/games-franchises/franchise_name"}
 									className="text-xl text-muted-foreground"
@@ -274,13 +342,15 @@ export function GameDetails() {
 						<div className="flex flex-wrap items-center gap-6 mb-5 pb-6 border-b border-border">
 							<div className="flex items-center">
 								<div className="flex mr-2">
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-chart-3 fill-chart-3" />
-									<Star className="w-5 h-5 text-muted-foreground" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-chart-3 fill-chart-3" />
+									<Star className="size-5 text-muted-foreground" />
 								</div>
-								<span className="font-semibold text-card-foreground">4.2</span>
+								<span className="font-semibold text-card-foreground">
+									{rating}
+								</span>
 								<span className="text-muted-foreground ml-1">
 									(128.543 {t("library:reviews")})
 								</span>
@@ -290,6 +360,9 @@ export function GameDetails() {
 							<div className="flex items-center justify-between gap-3 mb-2">
 								<TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
 									<TabsTrigger value="info">{t("library:info")}</TabsTrigger>
+									<TabsTrigger value="relations">
+										{t("library:relations")}
+									</TabsTrigger>
 									<TabsTrigger value="reviews" className="capitalize">
 										{t("library:reviews")} (125)
 									</TabsTrigger>
@@ -324,15 +397,7 @@ export function GameDetails() {
 										{t("library:synopsis")}
 									</h3>
 									<div className="text-muted-foreground leading-relaxed space-y-4">
-										<p>
-											Hytale combines the scope of a sandbox with the depth of a
-											roleplaying game, immersing players in a procedurally
-											generated world where teetering towers and deep dungeons
-											promise rich rewards throughout their adventures. Hytale
-											supports everything from block-by-block construction to
-											scripting and minigame creation, delivered using easy to
-											use and powerful tools.
-										</p>
+										<p>{synopsis}</p>
 									</div>
 								</div>
 
@@ -342,7 +407,7 @@ export function GameDetails() {
 									</h3>
 									<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Code className="w-5 h-5 text-muted-foreground" />
+											<Code className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:developers")}
@@ -353,7 +418,7 @@ export function GameDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Building2 className="w-5 h-5 text-muted-foreground" />
+											<Building2 className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:publishers")}
@@ -364,7 +429,7 @@ export function GameDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Computer className="w-5 h-5 text-muted-foreground" />
+											<Computer className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:platforms")}
@@ -375,7 +440,7 @@ export function GameDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<TreeDeciduous className="w-5 h-5 text-muted-foreground" />
+											<TreeDeciduous className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:themes")}
@@ -386,7 +451,7 @@ export function GameDetails() {
 											</div>
 										</div>
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<EthernetPort className="w-5 h-5 text-muted-foreground" />
+											<EthernetPort className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:gameModes")}
@@ -398,7 +463,7 @@ export function GameDetails() {
 										</div>
 
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Cctv className="w-5 h-5 text-muted-foreground" />
+											<Cctv className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:playerPerspectives")}
@@ -410,7 +475,7 @@ export function GameDetails() {
 										</div>
 
 										<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-											<Bug className="w-5 h-5 text-muted-foreground" />
+											<Bug className="size-5 text-muted-foreground" />
 											<div>
 												<p className="text-sm text-muted-foreground">
 													{t("library:gameEngine")}
@@ -433,7 +498,7 @@ export function GameDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.wanttoplay")}
 												</span>
-												<Bookmark className="w-5 h-5 text-purple-400" />
+												<Bookmark className="size-5 text-purple-400" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												5%
@@ -445,7 +510,7 @@ export function GameDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.playing")}
 												</span>
-												<Gamepad className="w-5 h-5 text-chart-1" />
+												<Gamepad className="size-5 text-chart-1" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												15%
@@ -457,7 +522,7 @@ export function GameDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.played")}
 												</span>
-												<CheckCircle className="w-5 h-5 text-secondary" />
+												<CheckCircle className="size-5 text-secondary" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												72%
@@ -469,7 +534,7 @@ export function GameDetails() {
 												<span className="text-sm font-medium text-muted-foreground">
 													{t("feed:lists.dropped")}
 												</span>
-												<XCircle className="w-5 h-5 text-destructive" />
+												<XCircle className="size-5 text-destructive" />
 											</div>
 											<p className="text-2xl font-bold text-card-foreground">
 												8%
@@ -519,7 +584,10 @@ export function GameDetails() {
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 									<ListItem />
 								</div>
-							</TabsContent>{" "}
+							</TabsContent>
+							<TabsContent value="relations">
+								<Relations />
+							</TabsContent>
 							<TabsContent value="screenshots">
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 									<ImageZoom>

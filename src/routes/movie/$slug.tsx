@@ -7,6 +7,7 @@ import {
 	SiInstagramHex,
 	SiX,
 } from "@icons-pack/react-simple-icons";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
 	Bookmark,
 	Box,
@@ -30,6 +31,7 @@ import { CastItem } from "@/components/details/cast";
 import { ListItem } from "@/components/details/list";
 import { ReviewItem } from "@/components/details/review";
 import { MovieModal } from "@/components/modals/movie";
+import { RefreshData } from "@/components/modals/refresh-data";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -41,15 +43,20 @@ import {
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/movie/$slug")({
 	head: () => ({
 		title: "Movie Details | TrackGeek",
 		meta: [
-			{ name: "description", content: "View detailed information about this movie" },
+			{
+				name: "description",
+				content: "View detailed information about this movie",
+			},
 			{ property: "og:title", content: "Movie Details | TrackGeek" },
-			{ property: "og:description", content: "View detailed information about this movie" },
+			{
+				property: "og:description",
+				content: "View detailed information about this movie",
+			},
 		],
 	}),
 	component: MovieDetailsRoute,
@@ -197,15 +204,7 @@ export function MovieDetailsRoute() {
 							<p className="font-semibold text-card-foreground">{year}</p>
 						</div>
 					</div>
-					<a
-						href="https://www.themoviedb.org/movie/1234731-anaconda"
-						rel="noopener noreferrer"
-						target="_blank"
-					>
-						<Button variant="outline" className="w-full">
-							{t("library:refreshData")}
-						</Button>
-					</a>
+					<RefreshData sourceURL="https://www.themoviedb.org/movie/1234731-anaconda" />
 					<div className="flex flex-wrap gap-3 items-center justify-center">
 						<a
 							href="https://anacondamovie.com/"

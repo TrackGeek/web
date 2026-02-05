@@ -1,3 +1,4 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
 	BarChart3,
 	Barcode,
@@ -27,15 +28,21 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { RefreshData } from "@/components/modals/refresh-data";
 
 export const Route = createFileRoute("/book/$slug")({
 	head: () => ({
 		title: "Book Details | TrackGeek",
 		meta: [
-			{ name: "description", content: "View detailed information about this book" },
+			{
+				name: "description",
+				content: "View detailed information about this book",
+			},
 			{ property: "og:title", content: "Book Details | TrackGeek" },
-			{ property: "og:description", content: "View detailed information about this book" },
+			{
+				property: "og:description",
+				content: "View detailed information about this book",
+			},
 		],
 	}),
 	component: BookDetailsRoute,
@@ -184,9 +191,7 @@ export function BookDetailsRoute() {
 							<p className="font-semibold text-card-foreground">{year}</p>
 						</div>
 					</div>
-					<Button variant="outline" className="w-full">
-						{t("library:refreshData")}
-					</Button>
+					<RefreshData sourceURL="https://hardcover.app/books/dungeon-crawler-carl" />
 				</div>
 			</div>
 

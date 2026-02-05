@@ -1,5 +1,5 @@
-import { Heart } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { Heart } from "lucide-react";
 import {
 	Avatar,
 	AvatarFallback,

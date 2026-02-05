@@ -188,5 +188,11 @@
 		"warPolitics": "Guerra & Política",
 		"western": "Ocidental",
 		"youngAdult": "Jovens Adultos"
+	},
+	"refreshDataModal": {
+		"title": "Is this information incorrect or outdated?",
+		"description": "If the content information is incorrect or outdated, you should first review the original source and correct it if the source itself is wrong. Once the changes are approved, you must update the data accordingly. Please note that each content can only be updated once per day.",
+		"checkSource": "Check Source",
+		"refreshInfoButton": "Refresh Info"
 	}
 }

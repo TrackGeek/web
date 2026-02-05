@@ -189,7 +189,7 @@ export function Header() {
 					</DropdownMenuContent>
 				</DropdownMenu>
 
-				<Link to="/">
+				<Link to="/feed">
 					<img src="/logo.svg" alt="Logo" className="h-full w-45" />
 				</Link>
 			</div>
@@ -253,8 +253,8 @@ export function Header() {
 
 							<DropdownMenuItem asChild>
 								<Link
-									to={"/user/$slug"}
-									params={{ slug: session.data.user.username }}
+									to={"/user/$username"}
+									params={{ username: session.data.user.username }}
 									className="cursor-pointer"
 								>
 									<User size={18} className="text-white" />

@@ -32,18 +32,7 @@ import { RefreshData } from "@/components/modals/refresh-data";
 
 export const Route = createFileRoute("/book/$slug")({
 	head: () => ({
-		title: "Book Details | TrackGeek",
-		meta: [
-			{
-				name: "description",
-				content: "View detailed information about this book",
-			},
-			{ property: "og:title", content: "Book Details | TrackGeek" },
-			{
-				property: "og:description",
-				content: "View detailed information about this book",
-			},
-		],
+		meta: [{ title: "Book Details | TrackGeek" }],
 	}),
 	component: BookDetailsRoute,
 });

@@ -74,18 +74,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/game/$slug")({
 	head: () => ({
-		title: "Game Details | TrackGeek",
-		meta: [
-			{
-				name: "description",
-				content: "View detailed information about this game",
-			},
-			{ property: "og:title", content: "Game Details | TrackGeek" },
-			{
-				property: "og:description",
-				content: "View detailed information about this game",
-			},
-		],
+		meta: [{ title: "Game Details | TrackGeek" }],
 	}),
 	component: GameDetailsRoute,
 });

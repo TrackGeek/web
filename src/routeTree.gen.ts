@@ -13,7 +13,7 @@ import { Route as LabRouteImport } from './routes/lab'
 import { Route as FeedRouteImport } from './routes/feed'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as UserSlugRouteImport } from './routes/user/$slug'
+import { Route as UserUsernameRouteImport } from './routes/user/$username'
 import { Route as TvSlugRouteImport } from './routes/tv/$slug'
 import { Route as MovieSlugRouteImport } from './routes/movie/$slug'
 import { Route as MangaSlugRouteImport } from './routes/manga/$slug'
@@ -41,9 +41,9 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UserSlugRoute = UserSlugRouteImport.update({
-  id: '/user/$slug',
-  path: '/user/$slug',
+const UserUsernameRoute = UserUsernameRouteImport.update({
+  id: '/user/$username',
+  path: '/user/$username',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TvSlugRoute = TvSlugRouteImport.update({
@@ -93,7 +93,7 @@ export interface FileRoutesByFullPath {
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
   '/tv/$slug': typeof TvSlugRoute
-  '/user/$slug': typeof UserSlugRoute
+  '/user/$username': typeof UserUsernameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -106,7 +106,7 @@ export interface FileRoutesByTo {
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
   '/tv/$slug': typeof TvSlugRoute
-  '/user/$slug': typeof UserSlugRoute
+  '/user/$username': typeof UserUsernameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -121,7 +121,7 @@ export interface FileRoutesById {
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
   '/tv/$slug': typeof TvSlugRoute
-  '/user/$slug': typeof UserSlugRoute
+  '/user/$username': typeof UserUsernameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -136,7 +136,7 @@ export interface FileRouteTypes {
     | '/manga/$slug'
     | '/movie/$slug'
     | '/tv/$slug'
-    | '/user/$slug'
+    | '/user/$username'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -149,7 +149,7 @@ export interface FileRouteTypes {
     | '/manga/$slug'
     | '/movie/$slug'
     | '/tv/$slug'
-    | '/user/$slug'
+    | '/user/$username'
   id:
     | '__root__'
     | '/'
@@ -163,7 +163,7 @@ export interface FileRouteTypes {
     | '/manga/$slug'
     | '/movie/$slug'
     | '/tv/$slug'
-    | '/user/$slug'
+    | '/user/$username'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -177,7 +177,7 @@ export interface RootRouteChildren {
   MangaSlugRoute: typeof MangaSlugRoute
   MovieSlugRoute: typeof MovieSlugRoute
   TvSlugRoute: typeof TvSlugRoute
-  UserSlugRoute: typeof UserSlugRoute
+  UserUsernameRoute: typeof UserUsernameRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -210,11 +210,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/user/$slug': {
-      id: '/user/$slug'
-      path: '/user/$slug'
-      fullPath: '/user/$slug'
-      preLoaderRoute: typeof UserSlugRouteImport
+    '/user/$username': {
+      id: '/user/$username'
+      path: '/user/$username'
+      fullPath: '/user/$username'
+      preLoaderRoute: typeof UserUsernameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tv/$slug': {
@@ -292,7 +292,7 @@ const rootRouteChildren: RootRouteChildren = {
   MangaSlugRoute: MangaSlugRoute,
   MovieSlugRoute: MovieSlugRoute,
   TvSlugRoute: TvSlugRoute,
-  UserSlugRoute: UserSlugRoute,
+  UserUsernameRoute: UserUsernameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

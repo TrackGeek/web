@@ -46,18 +46,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/movie/$slug")({
 	head: () => ({
-		title: "Movie Details | TrackGeek",
-		meta: [
-			{
-				name: "description",
-				content: "View detailed information about this movie",
-			},
-			{ property: "og:title", content: "Movie Details | TrackGeek" },
-			{
-				property: "og:description",
-				content: "View detailed information about this movie",
-			},
-		],
+		meta: [{ title: "Movie Details | TrackGeek" }],
 	}),
 	component: MovieDetailsRoute,
 });

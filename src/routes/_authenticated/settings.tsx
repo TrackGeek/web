@@ -26,6 +26,13 @@ import { api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth";
 import { SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
 
+export const Route = createFileRoute("/_authenticated/settings")({
+	head: () => ({
+		meta: [{ title: "Settings | TrackGeek" }],
+	}),
+	component: SettingsRoute,
+});
+
 const colorOptions = [
 	"#3b82f6", // Blue
 	"#8b5cf6", // Violet
@@ -38,24 +45,6 @@ const colorOptions = [
 	"#6366f1", // Indigo
 	"#a855f7", // Purple
 ];
-
-export const Route = createFileRoute("/_authenticated/settings")({
-	head: () => ({
-		title: "Settings | TrackGeek",
-		meta: [
-			{
-				name: "description",
-				content: "Manage your account settings and preferences",
-			},
-			{ property: "og:title", content: "Settings | TrackGeek" },
-			{
-				property: "og:description",
-				content: "Manage your account settings and preferences",
-			},
-		],
-	}),
-	component: SettingsRoute,
-});
 
 function SettingsRoute() {
 	const { t, i18n } = useTranslation();

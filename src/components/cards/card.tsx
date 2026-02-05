@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { ChevronDown, Heart, Star } from "lucide-react";
 import { BookModal } from "../modals/book";
 import { EpisodicContentModal } from "../modals/episodic-content";
@@ -12,7 +13,6 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "../ui/dialog";
-import { Link } from '@tanstack/react-router';
 
 type MediaType = "anime" | "movie" | "tv-show" | "game" | "book" | "manga";
 

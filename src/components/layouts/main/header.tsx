@@ -225,7 +225,7 @@ export function Header() {
 									/>
 								) : (
 									<AvatarFallback>
-										{getInitialsFromName(session.data.user.name as string)}
+										{getInitialsFromName(session.data?.user?.name || "John Doe")}
 									</AvatarFallback>
 								)}
 							</Avatar>

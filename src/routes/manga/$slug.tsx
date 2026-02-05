@@ -1,4 +1,5 @@
 import { SiWikipedia } from "@icons-pack/react-simple-icons";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
 	Bookmark,
 	BookOpenText,
@@ -31,15 +32,21 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { RefreshData } from "@/components/modals/refresh-data";
 
 export const Route = createFileRoute("/manga/$slug")({
 	head: () => ({
 		title: "Manga Details | TrackGeek",
 		meta: [
-			{ name: "description", content: "View detailed information about this manga" },
+			{
+				name: "description",
+				content: "View detailed information about this manga",
+			},
 			{ property: "og:title", content: "Manga Details | TrackGeek" },
-			{ property: "og:description", content: "View detailed information about this manga" },
+			{
+				property: "og:description",
+				content: "View detailed information about this manga",
+			},
 		],
 	}),
 	component: MangaDetailsRoute,
@@ -186,15 +193,7 @@ export function MangaDetailsRoute() {
 							<p className="font-semibold text-card-foreground">{year}</p>
 						</div>
 					</div>
-					<a
-						href="https://www.themoviedb.org/tv/106379-fallout"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<Button variant="outline" className="w-full">
-							{t("library:refreshData")}
-						</Button>
-					</a>
+					<RefreshData sourceURL="https://myanimelist.net/manga/96792/Kimetsu_no_Yaiba" />
 					<div className="flex flex-wrap gap-3 items-center justify-center">
 						<a
 							href="https://anacondamovie.com/"

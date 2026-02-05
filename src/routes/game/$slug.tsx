@@ -26,6 +26,7 @@ import {
 	SiYoutube,
 	SiYoutubeHex,
 } from "@icons-pack/react-simple-icons";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
 	Bookmark,
 	BookSearch,
@@ -51,6 +52,7 @@ import { ListItem } from "@/components/details/list";
 import { Relations } from "@/components/details/relations";
 import { ReviewItem } from "@/components/details/review";
 import { GameModal } from "@/components/modals/game";
+import { RefreshData } from "@/components/modals/refresh-data";
 import { Button } from "@/components/ui/button";
 import {
 	Carousel,
@@ -69,15 +71,20 @@ import {
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/game/$slug")({
 	head: () => ({
 		title: "Game Details | TrackGeek",
 		meta: [
-			{ name: "description", content: "View detailed information about this game" },
+			{
+				name: "description",
+				content: "View detailed information about this game",
+			},
 			{ property: "og:title", content: "Game Details | TrackGeek" },
-			{ property: "og:description", content: "View detailed information about this game" },
+			{
+				property: "og:description",
+				content: "View detailed information about this game",
+			},
 		],
 	}),
 	component: GameDetailsRoute,
@@ -225,9 +232,7 @@ export function GameDetailsRoute() {
 							<p className="font-semibold text-card-foreground">{year}</p>
 						</div>
 					</div>
-					<Button variant="outline" className="w-full">
-						{t("library:refreshData")}
-					</Button>
+					<RefreshData sourceURL="https://www.igdb.com/games/hytale" />
 					<div className="flex flex-wrap gap-3 items-center justify-center">
 						<a
 							href="https://anacondamovie.com/"
@@ -325,6 +330,7 @@ export function GameDetailsRoute() {
 							href="https://youtube.com/@"
 							target="_blank"
 							className={cn(`hover:text-[${SiYoutubeHex}]`)}
+							rel="noopener"
 						>
 							<SiYoutube />
 						</a>

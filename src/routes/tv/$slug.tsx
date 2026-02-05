@@ -7,6 +7,7 @@ import {
 	SiInstagramHex,
 	SiX,
 } from "@icons-pack/react-simple-icons";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
 	Bookmark,
 	Building,
@@ -27,7 +28,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { createFileRoute, Link } from "@tanstack/react-router";
 import { CastItem } from "@/components/details/cast";
 import { EpisodeItem } from "@/components/details/episode";
 import { ListItem } from "@/components/details/list";
@@ -37,6 +37,7 @@ import {
 } from "@/components/details/progress";
 import { ReviewItem } from "@/components/details/review";
 import { EpisodicContentModal } from "@/components/modals/episodic-content";
+import { RefreshData } from "@/components/modals/refresh-data";
 import {
 	Accordion,
 	AccordionContent,
@@ -59,9 +60,15 @@ export const Route = createFileRoute("/tv/$slug")({
 	head: () => ({
 		title: "TV Show Details | TrackGeek",
 		meta: [
-			{ name: "description", content: "View detailed information about this TV show" },
+			{
+				name: "description",
+				content: "View detailed information about this TV show",
+			},
 			{ property: "og:title", content: "TV Show Details | TrackGeek" },
-			{ property: "og:description", content: "View detailed information about this TV show" },
+			{
+				property: "og:description",
+				content: "View detailed information about this TV show",
+			},
 		],
 	}),
 	component: TVShowDetailsPage,
@@ -230,15 +237,7 @@ export function TVShowDetailsPage() {
 							<p className="font-semibold text-card-foreground">{year}</p>
 						</div>
 					</div>
-					<a
-						href="https://www.themoviedb.org/tv/106379-fallout"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<Button variant="outline" className="w-full">
-							{t("library:refreshData")}
-						</Button>
-					</a>
+					<RefreshData sourceURL="https://www.themoviedb.org/tv/106379-fallout" />
 					<div className="flex flex-wrap gap-3 items-center justify-center">
 						<a
 							href="https://anacondamovie.com/"

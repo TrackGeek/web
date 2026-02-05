@@ -28,7 +28,9 @@ interface EpisodicContentModalProps {
 	mediaData?: any;
 }
 
-export function EpisodicContentModal({ mediaData: _ }: EpisodicContentModalProps) {
+export function EpisodicContentModal({
+	mediaData: _,
+}: EpisodicContentModalProps) {
 	const [startDate, setStartDate] = useState<Date>();
 	const [finishDate, setFinishDate] = useState<Date>();
 	const [customLists, setCustomLists] = useState<string[]>([

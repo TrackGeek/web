@@ -1,31 +1,30 @@
-import { useMutation } from "@tanstack/react-query";
-import { useRef } from "react";
-import { useTranslation } from "react-i18next";
-import { CircleX, Image, Palette, Settings, Upload, User } from "lucide-react";
-import { toast } from "sonner";
-import { createFileRoute } from "@tanstack/react-router";
 import { Icon } from "@iconify/react";
 import ViteImage from "@son426/vite-image/react";
-
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
-import { api, apiEndpoints } from "@/lib/api";
-import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
-import { Label } from "@/components/ui/label";
-import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
-import { Textarea } from "@/components/ui/textarea";
+import { useMutation } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import { CircleX, Image, Palette, Settings, Upload, User } from "lucide-react";
+import { useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
+import { Label } from "@/components/ui/label";
 import {
+	Select,
 	SelectContent,
-	SelectLabel,
 	SelectGroup,
 	SelectItem,
+	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
+import { Textarea } from "@/components/ui/textarea";
+import { api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth";
+import { SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
 
 export const Route = createFileRoute("/_authenticated/settings")({
 	head: () => ({
@@ -216,6 +215,7 @@ function SettingsRoute() {
 									!uploadAvatarMutation.isPending) && (
 									<>
 										<button
+											type="button"
 											className="absolute top-2 right-10 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
 											onClick={() => avatarInputRef.current?.click()}
 										>
@@ -223,6 +223,7 @@ function SettingsRoute() {
 										</button>
 
 										<button
+											type="button"
 											className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
 											onClick={() => deleteAvatarMutation.mutate()}
 										>
@@ -232,10 +233,12 @@ function SettingsRoute() {
 								)}
 							</div>
 						) : (
+							// biome-ignore lint/a11y/noStaticElementInteractions: false positive
 							<div
 								className="w-55 h-55 rounded-lg cursor-pointer relative"
 								style={{ backgroundColor: session.data?.user?.profile?.color }}
 								onClick={() => avatarInputRef.current?.click()}
+								onKeyDown={() => avatarInputRef.current?.click()}
 							>
 								{uploadAvatarMutation.isPending ? (
 									<div className="w-full h-full flex flex-col justify-center items-center gap-2">
@@ -306,6 +309,7 @@ function SettingsRoute() {
 									!uploadBannerMutation.isPending) && (
 									<>
 										<button
+											type="button"
 											className="absolute top-2 right-10 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
 											onClick={() => bannerInputRef.current?.click()}
 										>
@@ -313,6 +317,7 @@ function SettingsRoute() {
 										</button>
 
 										<button
+											type="button"
 											className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
 											onClick={() => deleteBannerMutation.mutate()}
 										>
@@ -322,10 +327,12 @@ function SettingsRoute() {
 								)}
 							</div>
 						) : (
+							// biome-ignore lint/a11y/noStaticElementInteractions: false positive
 							<div
 								className="w-full h-full rounded-lg cursor-pointer relative"
 								style={{ backgroundColor: session.data?.user?.profile?.color }}
 								onClick={() => bannerInputRef.current?.click()}
+								onKeyDown={() => bannerInputRef.current?.click()}
 							>
 								{uploadBannerMutation.isPending ? (
 									<div className="w-full h-full flex flex-col justify-center items-center gap-2">
@@ -420,6 +427,7 @@ function SettingsRoute() {
 					<div className="flex flex-wrap gap-2 mt-2">
 						{colorOptions.map((color) => (
 							<button
+								type="button"
 								key={color}
 								className="w-10 h-10 rounded-full border-2 border-transparent hover:border-accent transition"
 								style={{ backgroundColor: color }}
@@ -492,7 +500,7 @@ function SettingsRoute() {
 						<SelectContent position="popper">
 							{Array.from(timezonesByGroup.entries()).map(
 								([group, timezones]) => (
-									<SelectGroup>
+									<SelectGroup key={group}>
 										<SelectLabel>{group}</SelectLabel>
 
 										{timezones.map((timezone) => (

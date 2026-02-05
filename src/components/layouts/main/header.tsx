@@ -1,3 +1,7 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Icon } from "@iconify/react";
+import ViteImage from "@son426/vite-image/react";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
 	Bell,
 	Book,
@@ -15,25 +19,14 @@ import {
 	TvMinimalPlay,
 	User,
 } from "lucide-react";
-import { Icon } from "@iconify/react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import ViteImage from "@son426/vite-image/react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-	getLastUsedLoginMethod,
-	signIn,
-	signOut,
-	useSession,
-} from "@/lib/auth";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
 	Dialog,
 	DialogContent,
@@ -51,9 +44,16 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { cn, getInitialsFromName } from "@/lib/utils";
-import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+	getLastUsedLoginMethod,
+	signIn,
+	signOut,
+	useSession,
+} from "@/lib/auth";
+import { cn, getInitialsFromName } from "@/lib/utils";
 
 const magicLinkSchema = z.object({
 	email: z.email(),
@@ -225,7 +225,7 @@ export function Header() {
 									/>
 								) : (
 									<AvatarFallback>
-										{getInitialsFromName(session.data.user.name)}
+										{getInitialsFromName(session.data?.user?.name || "John Doe")}
 									</AvatarFallback>
 								)}
 							</Avatar>
@@ -239,11 +239,11 @@ export function Header() {
 								<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
 									<div className="grid flex-1 text-left text-sm leading-tight">
 										<span className="truncate font-medium">
-											{session.data.user.name}
+											{session.data?.user?.name}
 										</span>
 
 										<span className="truncate text-xs">
-											{session.data.user.email}
+											{session.data?.user?.email}
 										</span>
 									</div>
 								</div>
@@ -254,7 +254,7 @@ export function Header() {
 							<DropdownMenuItem asChild>
 								<Link
 									to={"/user/$username"}
-									params={{ username: session.data.user.username }}
+									params={{ username: session.data?.user?.username }}
 									className="cursor-pointer"
 								>
 									<User size={18} className="text-white" />

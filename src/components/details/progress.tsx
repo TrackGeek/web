@@ -34,6 +34,8 @@ export function EpisodeProgress({
 	);
 
 	useEffect(() => {
+		if (!seasons || seasons.length === 0) return;
+
 		if (
 			defaultSeason &&
 			seasons.find((s) => s.seasonNumber === defaultSeason)
@@ -42,17 +44,13 @@ export function EpisodeProgress({
 		}
 	}, [defaultSeason, seasons]);
 
-	if (!seasons || seasons.length === 0) {
-		return null;
-	}
+	if (!seasons || seasons.length === 0) return null;
 
 	const currentSeasonData = seasons.find(
 		(s) => s.seasonNumber === activeSeason,
 	);
 
-	if (!currentSeasonData) {
-		return null;
-	}
+	if (!currentSeasonData) return null;
 
 	const getSeasonLabel = (seasonNumber: number) => {
 		return (

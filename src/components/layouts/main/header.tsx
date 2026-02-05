@@ -254,7 +254,7 @@ export function Header() {
 							<DropdownMenuItem asChild>
 								<Link
 									to={"/user/$slug"}
-									params={{ slug: session.data.user.username }}
+									params={{ slug: session.data?.user?.username }}
 									className="cursor-pointer"
 								>
 									<User size={18} className="text-white" />

@@ -253,7 +253,7 @@ export function Header() {
 
 							<DropdownMenuItem asChild>
 								<Link
-									to={"/username/$slug"}
+									to={"/user/$username"}
 									params={{ username: session.data?.user?.username }}
 									className="cursor-pointer"
 								>

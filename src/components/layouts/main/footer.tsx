@@ -105,7 +105,7 @@ export function Footer() {
 						<h3 className="text-accent font-bold">{t("common:socials")}</h3>
 
 						<a
-							href="https://bsky.app/profile/trackgeek.bsky.social"
+							href="https://bsky.app/profile/trackgeek.net"
 							target="_blank"
 							rel="noopener noreferrer"
 						>

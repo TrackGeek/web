@@ -125,3 +125,38 @@
 ::-webkit-scrollbar-thumb {
   @apply bg-primary rounded-4xl 
 }
+
+        .glass-panel {
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid hsl(var(--border));
+        }
+
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 50;
+            pointer-events: none;
+        }
+        .toast {
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            color: hsl(var(--foreground));
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .floating-bg {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: -1;
+        }

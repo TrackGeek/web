@@ -11,8 +11,7 @@
 		"ignoreUnknown": false,
 		"includes": [
 			"**/src/**/*.ts",
-			"**/src/**/*.tsx",
-			"!!**/src/routeTree.gen.ts"
+			"**/src/**/*.tsx"
 		]
 	},
 	"formatter": {

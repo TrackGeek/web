@@ -20,10 +20,11 @@ import {
 	Heart,
 	Languages,
 	MoreHorizontal,
+	Pause,
 	PiggyBank,
-	Projector,
 	Star,
 	Ticket,
+	Trash,
 	XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -90,20 +91,6 @@ export function MovieDetailsRoute() {
 							</div>
 						</Button>
 
-						<Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20">
-							<div className="flex flex-col items-center gap-x-4 gap-2">
-								<div className="w-10 h-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
-									<Projector className="text-primary size-6" />
-								</div>
-								<p className="font-medium text-card-foreground text-center text-base">
-									{t("feed:lists.watching")}
-								</p>
-							</div>
-							<div className="status-indicator hidden">
-								<CheckCircle className="text-secondary w-6 h-6" />
-							</div>
-						</Button>
-
 						<Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20">
 							<div className="flex flex-col items-center gap-x-4 gap-2">
 								<div className="w-10 h-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
@@ -111,6 +98,20 @@ export function MovieDetailsRoute() {
 								</div>
 								<p className="font-medium text-card-foreground text-center text-base">
 									{t("feed:lists.completed")}
+								</p>
+							</div>
+							<div className="status-indicator hidden">
+								<CheckCircle className="text-secondary w-6 h-6" />
+							</div>
+						</Button>
+
+						<Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-5 transition-all duration-300 bg-card hover:bg-chart-5/20">
+							<div className="flex flex-col items-center gap-x-4 gap-2">
+								<div className="w-10 h-10 rounded-full bg-linear-to-r from-chart-5/20 to-red-500/20 flex items-center justify-center border border-chart-5/30">
+									<Trash className="text-chart-5 size-6" />
+								</div>
+								<p className="font-medium text-card-foreground text-center text-base">
+									{t("feed:lists.dropped")}
 								</p>
 							</div>
 							<div className="status-indicator hidden">
@@ -415,24 +416,24 @@ export function MovieDetailsRoute() {
 									<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
 										<div className="flex items-center justify-between mb-2">
 											<span className="text-sm font-medium text-muted-foreground">
-												{t("feed:lists.watching")}
-											</span>
-											<Projector className="size-5 text-chart-1" />
-										</div>
-										<p className="text-2xl font-bold text-card-foreground">
-											15%
-										</p>
-									</div>
-
-									<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
-										<div className="flex items-center justify-between mb-2">
-											<span className="text-sm font-medium text-muted-foreground">
 												{t("feed:lists.completed")}
 											</span>
 											<CheckCircle className="size-5 text-secondary" />
 										</div>
 										<p className="text-2xl font-bold text-card-foreground">
 											72%
+										</p>
+									</div>
+                  
+									<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
+										<div className="flex items-center justify-between mb-2">
+											<span className="text-sm font-medium text-muted-foreground">
+												{t("feed:lists.paused")}
+											</span>
+											<Pause className="size-5 text-chart-3" />
+										</div>
+										<p className="text-2xl font-bold text-card-foreground">
+											15%
 										</p>
 									</div>
 

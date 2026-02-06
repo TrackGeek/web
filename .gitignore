@@ -34,3 +34,4 @@ pnpm-lock.yaml
 
 # tanstack
 .tanstack
+/src/routetree.gen.ts

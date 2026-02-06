@@ -376,7 +376,7 @@ export function TVShowDetailsPage() {
 										<Hash className="size-5 text-muted-foreground" />
 										<div>
 											<p className="text-sm text-muted-foreground">
-												{t("library:seasons")}
+												{t("library:season_other")}
 											</p>
 											<p className="font-medium text-card-foreground">2</p>
 										</div>

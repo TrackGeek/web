@@ -3,8 +3,8 @@
 	"stillReading": "Ainda a ler...",
 	"refreshData": "Atualizar dados",
 	"year": "Ano",
-	"page": "Page",
-	"page_other": "Pages",
+	"page": "Página",
+	"page_other": "Páginas",
 	"moreOptions": "Mais Opções",
 	"reviews": "avaliações",
 	"medium": "Médio",
@@ -190,9 +190,9 @@
 		"youngAdult": "Jovem Adulto"
 	},
 	"refreshDataModal": {
-		"title": "Is this information incorrect or outdated?",
-		"description": "If the content information is incorrect or outdated, you should first review the original source and correct it if the source itself is wrong. Once the changes are approved, you must update the data accordingly. Please note that each content can only be updated once per day.",
-		"checkSource": "Check Source",
-		"refreshInfoButton": "Refresh Info"
+		"title": "Esta informação está incorreta ou desatualizada?",
+		"description": "Se a informação do conteúdo estiver incorreta ou desatualizada, deves primeiro rever a fonte original e corrigi-la se estiver errada. Uma vez que as alterações são aprovadas, deves atualizar os dados em conformidade. Por favor, note que cada conteúdo só pode ser atualizado uma vez por dia.",
+		"checkSource": "Verificar Fonte",
+		"refreshInfoButton": "Atualizar Informações"
 	}
 }

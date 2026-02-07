@@ -37,5 +37,21 @@
 		"socialFeedDescription": "See what your friends are up to and share your thoughts with them.",
 		"gamesDescription": "A gaming fan who needs to better organize their library? Track playtime, overall game progress, and multiple completion statuses.",
 		"booksDescription": "For the more literary-minded, we offer an option as well. Track pages read and how many times you’ve reread a book."
+	},
+	"addData": {
+		"description": "TrackGeek relies on third-party databases like <tmdb>TMDB</tmdb> (The Movie Database), <mal>MAL</mal> (My Anime List), <hc>HardCover</hc>, <igdb>IGDB</igdb> for its TV show, Movie, Game, Book, Anime and Manga data. If you find that a specific show, game, manga, book, anime or movie is missing from TrackGeek, you can add it to the corresponding database.",
+		"warning": "Please keep in mind that it might take 24 hours to index the data from those sources to be discoverable in search using its Title as we update our search index once every 24 hours.",
+		"forAnimes": "For animes",
+		"forMovies": "For movies",
+		"forGames": "For games",
+		"forBooks": "For books",
+		"forManga": "For manga",
+		"forTVShows": "For TV shows",
+		"createAccount": "Create an <1>account</1>, you'll need an account to contribute.",
+		"fillInfo": "Visit this <1>page</1> to fill in the required information, such as title, release date, cover.",
+		"saveAnime": "Once you've completed the form, click \"Add Anime Series\" at the bottom of the page.",
+		"saveManga": "Once you've completed the form, click \"Add Manga\" at the bottom of the page.",
+		"saveGame": "Once you've completed the form, click \"Create Game\" at the bottom of the page.",
+		"save": "Once you've completed the form, click \"Save\" at the bottom of the page."
 	}
 }

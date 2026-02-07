@@ -1,6 +1,6 @@
+import { createFileRoute } from "@tanstack/react-router";
 import { Filter, Mountain } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { createFileRoute } from "@tanstack/react-router";
 
 import { CardItem } from "@/components/cards/card";
 import { FeedListFollowing } from "@/components/feed/listFollowing";

@@ -1,14 +1,11 @@
-
 ![Logo](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png)
-
 
 # TrackGeek
 
 Unified platform for tracking games, movies, series, anime, manga, and books — all in one place.
 
-
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
-
+[![Crowdin](https://badges.crowdin.net/trackgeek/localized.svg)](https://crowdin.com/project/trackgeek)
 
 ## Features
 
@@ -26,7 +23,6 @@ Unified platform for tracking games, movies, series, anime, manga, and books —
 - Clean layout;
 - Personalizated settings for notifications and display.
 
-
 ## Tech Stack
 
 - React
@@ -35,7 +31,6 @@ Unified platform for tracking games, movies, series, anime, manga, and books —
 - shadcn/ui
 - i18next
 - Biome
-
 
 ## Run Locally
 
@@ -62,7 +57,6 @@ Fill the .env with the variables from .env.example and start the server
 ```bash
   bun dev
 ```
-
 
 ## Contributing
 

@@ -51,7 +51,7 @@ export function Footer() {
 								}}
 							/>
 						</p>
-						<p className="flex gap-1 items-center">
+						<p className="flex flex-wrap gap-1 items-center">
 							<Trans
 								i18nKey="common:providers.MALMetadata"
 								components={{
@@ -97,8 +97,8 @@ export function Footer() {
 					<div className="flex flex-col gap-3">
 						<h3 className="text-accent font-bold">{t("common:legal")}</h3>
 
-						<Link to="/">{t("common:terms")}</Link>
-						<Link to="/">{t("common:privacy")}</Link>
+						<Link to="/tos">{t("common:terms")}</Link>
+						<Link to="/privacy-policy">{t("common:privacy")}</Link>
 					</div>
 
 					<div className="flex flex-col gap-3">

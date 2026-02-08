@@ -284,6 +284,7 @@ function AddDataRoute() {
 								</AccordionContent>
 							</AccordionItem>
 						</Accordion>
+						<p>{t("pages:addData.reminder")}</p>
 					</div>
 				</div>
 			</div>

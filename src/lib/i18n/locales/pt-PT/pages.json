@@ -39,55 +39,109 @@
 		"booksDescription": "Para os mais cultos, oferecemos uma opção também. Rastreie as páginas que leu e quantas vezes releu um livro."
 	},
 	"addData": {
-		"description": "TrackGeek relies on third-party databases like <tmdb>TMDB</tmdb> (The Movie Database), <mal>MAL</mal> (My Anime List), <hc>HardCover</hc>, <igdb>IGDB</igdb> for its TV show, Movie, Game, Book, Anime and Manga data. If you find that a specific show, game, manga, book, anime or movie is missing from TrackGeek, you can add it to the corresponding database.",
-		"warning": "Please keep in mind that it might take 24 hours to index the data from those sources to be discoverable in search using its Title as we update our search index once every 24 hours.",
-		"forAnimes": "For animes",
-		"forMovies": "For movies",
-		"forGames": "For games",
-		"forBooks": "For books",
-		"forManga": "For manga",
-		"forTVShows": "For TV shows",
-		"createAccount": "Create an <1>account</1>, you'll need an account to contribute.",
-		"fillInfo": "Visit this <1>page</1> to fill in the required information, such as title, release date, cover.",
-		"saveAnime": "Once you've completed the form, click \"Add Anime Series\" at the bottom of the page.",
-		"saveManga": "Once you've completed the form, click \"Add Manga\" at the bottom of the page.",
-		"saveGame": "Once you've completed the form, click \"Create Game\" at the bottom of the page.",
-		"save": "Once you've completed the form, click \"Save\" at the bottom of the page.",
-		"reminder": "Remember that TrackGeek relies on the accuracy and completeness of other databases, so any changes you make will also benefit the entire community."
+		"description": "O TrackGeek depende de bancos de dados de terceiros como <tmdb>TMDB</tmdb> (The Movie Database), <mal>MAL</mal> (My Anme List), <hc>HardCover</hc>, <igdb>IGDB</igdb> para os dados de Séries, Filmes, Jogos, Livros, Animes e Mangás. Se encontrar que uma série, jogo, mangá, livro, anime ou filme específico falta no TrackGeek, podes adicioná-lo ao banco de dados correspondente.",
+		"warning": "Tenha em mente que pode levar 24 horas para indexar os dados dessas fontes para serem detetáveis na busca usando o seu título, enquanto atualizamos o índice de pesquisa uma vez a cada 24 horas.",
+		"forAnimes": "Para animes",
+		"forMovies": "Para filmes",
+		"forGames": "Para jogos",
+		"forBooks": "Para livros",
+		"forManga": "Para mangá",
+		"forTVShows": "Para séries",
+		"createAccount": "Crie uma <1>conta</1>, vais precisar de uma conta para contribuir.",
+		"fillInfo": "Visite esta <1>página</1> para preencher as informações necessárias, como título, data de lançamento, capa.",
+		"saveAnime": "Uma vez que preencher o formulário, clique em \"Add Anime Series\" na parte inferior da página.",
+		"saveManga": "Uma vez que preencher o formulário, clique em \"Add Manga\" no final da página.",
+		"saveGame": "Uma vez que preencher o formulário, clique em \"Create Game\" na parte inferior da página.",
+		"save": "Uma vez que preencher o formulário, clique em \"Salvar\" no final da página.",
+		"reminder": "Lembre-se que o TrackGeek depende da precisão e completude de outros bancos de dados, então quaisquer mudanças que fizeres também beneficiarão toda comunidade."
 	},
 	"privacyPolicy": {
-		"title": "Privacy Policy",
-		"lastUpdated": "Last updated: {{date}}",
-		"intro": "TrackGeek (\"we\", \"our\", \"us\") respects your privacy. This Privacy Policy explains how we collect, use, store, and protect your personal data when you use trackgeek.net.",
-		"dataWeCollect.title": "Data We Collect",
-		"dataWeCollect.account": "When you create an account, we collect your email address, username, and avatar.",
-		"dataWeCollect.auth": "Authentication is provided via magic link email and third-party providers such as GitHub, Google, and Discord.",
-		"dataWeCollect.content": "We store your tracked content, progress, reviews, notes, and related metadata you choose to save.",
-		"dataWeCollect.cookies": "We use technical cookies required for authentication and platform functionality.",
-		"howWeUseData.title": "How We Use Your Data",
-		"howWeUseData.list1": "Provide and maintain the TrackGeek service.",
-		"howWeUseData.list2": "Authenticate users and secure accounts.",
-		"howWeUseData.list3": "Store your tracking data and preferences.",
-		"howWeUseData.list4": "Improve the platform and user experience.",
-		"thirdParties.title": "Third-Party Services",
-		"thirdParties.metadata": "TrackGeek uses third-party APIs (IGDB, TMDB, MyAnimeList, HardCover) only to fetch metadata. No personal user data is shared with these providers.",
-		"thirdParties.analytics": "TrackGeek uses Google Analytics to understand general usage patterns and improve the platform. Analytics data is collected only after user consent and processed in accordance with GDPR requirements, including IP anonymization.",
-		"payments.title": "Donations and Payments",
-		"payments.info": "TrackGeek may offer optional donation tiers via third-party platforms such as Patreon. Payment processing is handled by those platforms, and TrackGeek does not store payment details.",
-		"dataRetention.title": "Data Retention",
-		"dataRetention.text": "We retain your data for as long as your account is active. You may delete your account at any time, and your data will be permanently removed.",
-		"userRights.title": "Your Rights (GDPR)",
-		"userRights.access": "You have the right to access your personal data.",
-		"userRights.export": "You can request an export of your data.",
-		"userRights.delete": "You can delete your account and personal data at any time.",
-		"userRights.rectify": "You can request correction of inaccurate data.",
-		"security.title": "Security",
-		"security.text": "We use industry-standard security measures to protect your data, including encryption and access controls.",
-		"children.title": "Children",
-		"children.text": "TrackGeek is available to all audiences. We do not knowingly collect personal data from children without parental consent where required by law.",
-		"changes.title": "Changes to This Policy",
-		"changes.text": "We may update this Privacy Policy from time to time. Changes will be published on this page with an updated date.",
-		"contact.title": "Contact",
-		"contact.text": "If you have questions about this Privacy Policy or your data, contact us at <email>privacy@trackgeek.net</email>."
+		"title": "Política de Privacidade",
+		"lastUpdated": "Última atualização: {{date}}",
+		"intro": "TrackGeek (\"nós\", \"nosso\", \"nós\") respeita a tua privacidade. Esta Política de Privacidade explica como coletamos, usamos, armazenamos e protegemos os teus dados pessoais quando usas trackgeek.net.",
+		"dataWeCollect.title": "Dados que recolhemos",
+		"dataWeCollect.account": "Quando crias uma conta, coletamos o teu endereço de e-mail, nome de utilizador e avatar.",
+		"dataWeCollect.auth": "A autenticação é fornecida por e-mail com links mágicos e provedores de terceiros, como GitHub, Google e Discord.",
+		"dataWeCollect.content": "Nós armazenamos o seu conteúdo rastreado, progresso, as tuas avaliações, notas e os metadados relacionados que escolheste salvar.",
+		"dataWeCollect.cookies": "Nós usamos cookies técnicos necessários para autenticação e funcionalidade da plataforma.",
+		"howWeUseData.title": "Como utilizamos os teus dados",
+		"howWeUseData.list1": "Fornece e mantém o serviço TrackGeek.",
+		"howWeUseData.list2": "Autenticação de utilizadores e contas seguras.",
+		"howWeUseData.list3": "Guardar os teus dados e preferências.",
+		"howWeUseData.list4": "Melhorar a experiência da plataforma e do utilizador.",
+		"thirdParties.title": "Serviços de Terceiros",
+		"thirdParties.metadata": "TrackGeek usa APIs de terceiros (IGDB, TMDB, MyAnimeList, HardCover) apenas para buscar metadados. Nenhum dado de utilizador pessoal é compartilhado com esses provedores.",
+		"thirdParties.analytics": "O TrackGeek usa o Google Analytics para entender padrões gerais de uso e melhorar a plataforma. Os dados da análise são coletados apenas após o consentimento do utilizador e processados de acordo com requisitos do GDPR, incluindo anonimato de IP.",
+		"payments.title": "Doações e Pagamentos",
+		"payments.info": "O TrackGeek pode oferecer níveis opcionais de doação através de plataformas de terceiros, como o Patreon. O processamento de pagamento é manipulado por essas plataformas, e o TrackGeek não armazena detalhes de pagamento.",
+		"dataRetention.title": "Retenção de dados",
+		"dataRetention.text": "Nós mantemos os teus dados enquanto a conta estiver ativa. Podes excluir a conta a qualquer momento e os dados serão removidos permanentemente.",
+		"userRights.title": "Teus Direitos (GDPR)",
+		"userRights.access": "Tens direito de acessar os teus dados pessoais.",
+		"userRights.export": "Podes solicitar uma exportação dos teus dados.",
+		"userRights.delete": "Podes apagar a conta e dados pessoais quando quiseres.",
+		"userRights.rectify": "Podes solicitar a correção de dados errados.",
+		"security.title": "Segurança",
+		"security.text": "Usamos medidas de segurança padrão do setor para proteger os teus dados, incluindo controles de criptografia e acesso.",
+		"children.title": "Crianças",
+		"children.text": "TrackGeek está disponível para todas as audiências. Nós não coletamos dados pessoais de crianças sem o consentimento dos pais quando exigido por lei.",
+		"changes.title": "Alterações nesta Política",
+		"changes.text": "Podemos atualizar esta Política de Privacidade de vez em quando. As alterações serão publicadas nesta página com uma data atualizada.",
+		"contact.title": "Contacto",
+		"contact.text": "Se tiveres dúvidas sobre esta Política de Privacidade ou os teus dados, entre em contato conosco pelo <email>privacy@trackgeek.net</email>."
+	},
+	"terms": {
+		"title": "Terms of Service",
+		"lastUpdated": "Last Updated: {{date}}",
+		"intro": {
+			"title": "1. Introduction",
+			"text": "Welcome to TrackGeek. TrackGeek is a community-driven, non-commercial project developed and maintained by independent contributors. By accessing or using the TrackGeek platform, you agree to these Terms of Service. If you do not agree to these terms, you must not use TrackGeek."
+		},
+		"definitions": {
+			"title": "2. Definitions",
+			"trackgeek": "“TrackGeek” refers to the TrackGeek platform, website, software, and related services.",
+			"user": "“User” refers to any individual who creates an account on TrackGeek.",
+			"content": "“Content” means any data submitted by users, including media tracking information, reviews, ratings, text, and metadata.",
+			"linkedAccounts": "“Linked Accounts” refers to optional third-party services connected to TrackGeek via OAuth or similar authentication systems."
+		},
+		"userResponsibilities": {
+			"title": "3. User Responsibilities",
+			"respect": "Users must treat others with respect and must not engage in abusive, harassing, hateful, or discriminatory behavior.",
+			"legal": "Users must ensure that all content complies with applicable Portuguese and European Union laws.",
+			"ip": "Users may not upload content that infringes intellectual property rights or the privacy of others.",
+			"security": "Users are responsible for maintaining the confidentiality of their account credentials and for all activity under their account."
+		},
+		"contentOwnership": {
+			"title": "4. User Content and Ownership",
+			"text": "Users retain ownership of their content. By submitting content to TrackGeek, users grant a non-exclusive, royalty-free, worldwide license to store, display, process, and use such content solely for the purpose of operating, maintaining, and improving the platform."
+		},
+		"linkedAccounts": {
+			"title": "5. Linked Third-Party Accounts",
+			"text": "Linking external third-party services is optional. TrackGeek does not store third-party login credentials and only accesses data explicitly authorized by the user. Use of third-party services is governed by their own terms and policies."
+		},
+		"platformRights": {
+			"title": "6. Platform Moderation and Rights",
+			"text": "TrackGeek reserves the right to remove or moderate content that violates these Terms, suspend or restrict user accounts that abuse the platform, and modify or discontinue any part of the service at any time."
+		},
+		"disclaimer": {
+			"title": "7. Disclaimer of Warranties",
+			"text": "TrackGeek is provided on an “as is” and “as available” basis. As a community project, TrackGeek makes no warranties or guarantees regarding availability, accuracy, reliability, or error-free operation."
+		},
+		"liability": {
+			"title": "8. Limitation of Liability",
+			"text": "To the maximum extent permitted by Portuguese and European Union law, TrackGeek and its contributors shall not be liable for any indirect, incidental, consequential, or special damages arising out of or related to the use of the platform."
+		},
+		"changes": {
+			"title": "9. Changes to These Terms",
+			"text": "These Terms of Service may be updated from time to time. Continued use of TrackGeek after any changes constitutes acceptance of the revised Terms."
+		},
+		"governingLaw": {
+			"title": "10. Governing Law",
+			"text": "These Terms of Service are governed by the laws of Portugal and applicable regulations of the European Union."
+		},
+		"contact": {
+			"title": "Contact",
+			"text": "If you have any questions about these Terms of Service, please contact us at <email>support@trackgeek.net</email>."
+		}
 	}
 }

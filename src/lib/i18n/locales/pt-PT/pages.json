@@ -58,7 +58,7 @@
 	"privacyPolicy": {
 		"title": "Política de Privacidade",
 		"lastUpdated": "Última atualização: {{date}}",
-		"intro": "TrackGeek (\"nós\", \"nosso\", \"nós\") respeita a tua privacidade. Esta Política de Privacidade explica como coletamos, usamos, armazenamos e protegemos os teus dados pessoais quando usas trackgeek.net.",
+		"intro": "TrackGeek (\"nós\") respeita a tua privacidade. Esta Política de Privacidade explica como coletamos, usamos, armazenamos e protegemos os teus dados pessoais quando usas trackgeek.net.",
 		"dataWeCollect.title": "Dados que recolhemos",
 		"dataWeCollect.account": "Quando crias uma conta, coletamos o teu endereço de e-mail, nome de utilizador e avatar.",
 		"dataWeCollect.auth": "A autenticação é fornecida por e-mail com links mágicos e provedores de terceiros, como GitHub, Google e Discord.",
@@ -91,57 +91,68 @@
 		"contact.text": "Se tiveres dúvidas sobre esta Política de Privacidade ou os teus dados, entre em contato conosco pelo <email>privacy@trackgeek.net</email>."
 	},
 	"terms": {
-		"title": "Terms of Service",
-		"lastUpdated": "Last Updated: {{date}}",
+		"title": "Termos de Serviço",
+		"lastUpdated": "Última atualização: {{date}}",
 		"intro": {
-			"title": "1. Introduction",
-			"text": "Welcome to TrackGeek. TrackGeek is a community-driven, non-commercial project developed and maintained by independent contributors. By accessing or using the TrackGeek platform, you agree to these Terms of Service. If you do not agree to these terms, you must not use TrackGeek."
+			"title": "1. Introdução",
+			"text": "Bem-vindo ao TrackGeek. TrackGeek é um projeto orientado pela comunidade, desenvolvido e mantido por colaboradores independentes. Ao acessar ou usar a plataforma TrackGeek, concordas com estes Termos de Serviço. Se não concordares com estes termos, não deves usar o TrackGeek."
 		},
 		"definitions": {
-			"title": "2. Definitions",
-			"trackgeek": "“TrackGeek” refers to the TrackGeek platform, website, software, and related services.",
-			"user": "“User” refers to any individual who creates an account on TrackGeek.",
-			"content": "“Content” means any data submitted by users, including media tracking information, reviews, ratings, text, and metadata.",
-			"linkedAccounts": "“Linked Accounts” refers to optional third-party services connected to TrackGeek via OAuth or similar authentication systems."
+			"title": "2. Definições",
+			"trackgeek": "\"TrackGeek\" refere-se à plataforma, website, software e serviços relacionados do TrackGeek.",
+			"user": "\"Utilizador\" refere-se a qualquer indivíduo que cria uma conta no TrackGeek.",
+			"content": "\"Conteúdo\" significa quaisquer dados enviados por utilizadores, incluindo informações de rastreamento de mídia, análises, notas, texto e metadados.",
+			"linkedAccounts": "\"Contas vinculadas\" refere-se a serviços opcionais de terceiros conectados ao TrackGeek via OAuth ou sistemas de autenticação similares."
 		},
 		"userResponsibilities": {
-			"title": "3. User Responsibilities",
-			"respect": "Users must treat others with respect and must not engage in abusive, harassing, hateful, or discriminatory behavior.",
-			"legal": "Users must ensure that all content complies with applicable Portuguese and European Union laws.",
-			"ip": "Users may not upload content that infringes intellectual property rights or the privacy of others.",
-			"security": "Users are responsible for maintaining the confidentiality of their account credentials and for all activity under their account."
+			"title": "3. Responsabilidades do Utilizador",
+			"respect": "Os utilizadores têm de tratar os outros com respeito e não se podem envolver em comportamentos abusivos, assédio, odiosos ou discriminatórios.",
+			"legal": "Os utilizadores devem assegurar que todos os conteúdos estejam em conformidade com a legislação aplicável em Portugal e na União Europeia.",
+			"ip": "Os utilizadores não podem carregar conteúdo que infrinja os direitos de propriedade intelectual ou a privacidade de outros.",
+			"security": "Os utilizadores são responsáveis por manter a confidencialidade das suas credenciais de conta e por todas as atividades sob sua conta."
 		},
 		"contentOwnership": {
-			"title": "4. User Content and Ownership",
-			"text": "Users retain ownership of their content. By submitting content to TrackGeek, users grant a non-exclusive, royalty-free, worldwide license to store, display, process, and use such content solely for the purpose of operating, maintaining, and improving the platform."
+			"title": "4. Conteúdo do Utilizador e Propriedade",
+			"text": "Os utilizadores mantêm a propriedade do conteúdo deles. Ao apresentar conteúdo ao TrackGeek, utilizadores concedem uma licença não exclusiva, sem royalties em todo o mundo para armazenar, exibir, processar e usar este conteúdo exclusivamente para operar, manter e melhorar a plataforma."
 		},
 		"linkedAccounts": {
-			"title": "5. Linked Third-Party Accounts",
-			"text": "Linking external third-party services is optional. TrackGeek does not store third-party login credentials and only accesses data explicitly authorized by the user. Use of third-party services is governed by their own terms and policies."
+			"title": "5. Contas de terceiros vinculadas",
+			"text": "Vincular serviços externos de terceiros é opcional. O TrackGeek não armazena credenciais de login de terceiros e só acessa dados explicitamente autorizados pelo utilizador. A utilização de serviços de terceiros é regida pelos seus próprios termos e políticas."
 		},
 		"platformRights": {
-			"title": "6. Platform Moderation and Rights",
-			"text": "TrackGeek reserves the right to remove or moderate content that violates these Terms, suspend or restrict user accounts that abuse the platform, and modify or discontinue any part of the service at any time."
+			"title": "6. Moderação e Direitos da Plataforma",
+			"text": "TrackGeek reserva-se o direito de remover ou moderar conteúdo que viola estes Termos, suspender ou restringir contas de utilizador que abusam da plataforma e modificar ou cancelar qualquer parte do serviço a qualquer momento."
 		},
 		"disclaimer": {
-			"title": "7. Disclaimer of Warranties",
-			"text": "TrackGeek is provided on an “as is” and “as available” basis. As a community project, TrackGeek makes no warranties or guarantees regarding availability, accuracy, reliability, or error-free operation."
+			"title": "7. Isenção de Garantia",
+			"text": "TrackGeek é fornecido em uma base de \"como está\" e \"como disponível\". Como um projeto comunitário, TrackGeek não faz garantias nem sobre a disponibilidade, precisão, confiabilidade ou operação livre de erros."
 		},
 		"liability": {
-			"title": "8. Limitation of Liability",
-			"text": "To the maximum extent permitted by Portuguese and European Union law, TrackGeek and its contributors shall not be liable for any indirect, incidental, consequential, or special damages arising out of or related to the use of the platform."
+			"title": "8. Limitação de responsabilidade",
+			"text": "Na máxima extensão permitida pela lei portuguesa e da União Europeia, TrackGeek e os seus contribuintes não serão responsabilizados por qualquer indireto, acidentais, consequentes ou especiais danos ou relacionados ao uso da plataforma."
 		},
 		"changes": {
-			"title": "9. Changes to These Terms",
-			"text": "These Terms of Service may be updated from time to time. Continued use of TrackGeek after any changes constitutes acceptance of the revised Terms."
+			"title": "9. Alterações nestes Termos",
+			"text": "Estes Termos de Serviço podem ser atualizados de tempos em tempos. O uso contínuo do TrackGeek após quaisquer alterações constitui aceitação dos Termos revisados."
 		},
 		"governingLaw": {
-			"title": "10. Governing Law",
-			"text": "These Terms of Service are governed by the laws of Portugal and applicable regulations of the European Union."
+			"title": "10. Lei governativa",
+			"text": "Estes Termos de Serviço são regidos pelas leis de Portugal e pelos regulamentos aplicáveis da União Europeia."
 		},
 		"contact": {
-			"title": "Contact",
-			"text": "If you have any questions about these Terms of Service, please contact us at <email>support@trackgeek.net</email>."
+			"title": "Contacto",
+			"text": "Se tiveres questões sobre estes Termos de Serviço, por favor contacta-nos em <email>support@trackgeek.net</email>"
+		}
+	},
+	"credits": {
+		"description": "TrackGeek is built by an amazing community of developers, designers, translators, and enthusiasts from around the world.",
+		"core": {
+			"title": "Core Team",
+			"description": "The dedicated individuals who maintain and develop TrackGeek's core infrastructure:"
+		},
+		"community": {
+			"title": "Community Contributors",
+			"description": "Everyone who has contributed to TrackGeek through code, translations, support, or alpha testing."
 		}
 	}
 }

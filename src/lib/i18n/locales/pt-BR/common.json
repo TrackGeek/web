@@ -72,5 +72,13 @@
 		"book_other": "Livros",
 		"anime": "Anime",
 		"anime_other": "Animes"
+	},
+	"roles": {
+		"reviewer": "Reviewer",
+		"developer": "Developer",
+		"project-management": "Project Management",
+		"staff": "Staff",
+		"designer": "Designer",
+		"translator": "Translator"
 	}
 }

@@ -143,5 +143,16 @@
 			"title": "Contact",
 			"text": "If you have any questions about these Terms of Service, please contact us at <email>support@trackgeek.net</email>."
 		}
+	},
+	"credits": {
+		"description": "TrackGeek is built by an amazing community of developers, designers, translators, and enthusiasts from around the world.",
+		"core": {
+			"title": "Core Team",
+			"description": "The dedicated individuals who maintain and develop TrackGeek's core infrastructure:"
+		},
+		"community": {
+			"title": "Community Contributors",
+			"description": "Everyone who has contributed to TrackGeek through code, translations, support, or alpha testing."
+		}
 	}
 }

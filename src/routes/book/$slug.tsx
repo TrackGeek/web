@@ -18,7 +18,6 @@ import {
 import { useTranslation } from "react-i18next";
 import { ListItem } from "@/components/details/list";
 import { ReviewItem } from "@/components/details/review";
-import { Grid } from "@/components/layouts/grid.tsx";
 import { BookModal } from "@/components/modals/book";
 import { RefreshData } from "@/components/modals/refresh-data";
 import { Button } from "@/components/ui/button";

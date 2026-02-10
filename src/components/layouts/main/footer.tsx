@@ -84,9 +84,9 @@ export function Footer() {
 						<Link to="/add-data">{t("common:addData")}</Link>
 						<Link to="/">{t("common:about")}</Link>
 						<Link to="/">{t("common:donate")}</Link>
-						<Link to="/">{t("common:credits")}</Link>
+						<Link to="/credits">{t("common:credits")}</Link>
 						<a
-							href="https://crowdin.com/project/trackgeek"
+							href="https://translate.trackgeek.net"
 							target="_blank"
 							rel="noopener noreferrer"
 						>

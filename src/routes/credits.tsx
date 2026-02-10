@@ -1,9 +1,15 @@
 /** biome-ignore-all lint/a11y/useValidAriaRole: it's a component */
+
+import { SiDiscord, SiGithub } from "@icons-pack/react-simple-icons";
 import { useQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { Code, Languages, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ContributorsItem } from "@/components/cards/contributors.tsx";
 import { CoreTeamItem } from "@/components/cards/core-team.tsx";
+import { Grid } from "@/components/layouts/grid.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { cn } from "@/lib/utils.ts";
 
 export const Route = createFileRoute("/credits")({
 	head: () => ({
@@ -78,12 +84,13 @@ function CreditsRoute() {
 				</div>
 
 				<hr className="my-10" />
+
 				<div>
 					<h2 className="text-2xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
 						{t("pages:credits.core.title")}
 					</h2>
 					<p className="text-center">{t("pages:credits.core.description")}</p>
-					<div className="grid-cols-4 grid gap-4 mt-4">
+					<Grid className="gap-4 mt-4">
 						<CoreTeamItem
 							name="Kuriel"
 							url="/user/kuriel"
@@ -102,9 +109,11 @@ function CreditsRoute() {
 							avatarURL="https://i.ibb.co/4Z9wzrbR/image.png"
 							role="designer"
 						/>
-					</div>
+					</Grid>
 				</div>
+
 				<hr className="my-10" />
+
 				<div>
 					<h2 className="text-2xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
 						{t("pages:credits.community.title")}
@@ -112,7 +121,7 @@ function CreditsRoute() {
 					<p className="text-center">
 						{t("pages:credits.community.description")}
 					</p>
-					<div className="grid-cols-10 grid gap-2 mt-4">
+					<Grid minColSize="96px" className="gap-2 mt-4">
 						{loading ? (
 							<p className="text-center col-span-4">{t("common:loading")}</p>
 						) : (
@@ -126,6 +135,106 @@ function CreditsRoute() {
 								/>
 							))
 						)}
+					</Grid>
+				</div>
+
+				<hr className="my-10" />
+
+				<div>
+					<h2 className="text-2xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
+						{t("pages:credits.specialThanks.title")}
+					</h2>
+					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+						{[
+							{
+								title: t("pages:credits.specialThanks.openSource"),
+								description: t(
+									"pages:credits.specialThanks.openSourceDescription",
+								),
+								icon: <Code />,
+								bg: "bg-green-500/20 text-green-500",
+							},
+							{
+								title: t("pages:credits.specialThanks.users"),
+								description: t("pages:credits.specialThanks.usersDescription"),
+								icon: <Users />,
+								bg: "bg-red-500/20 text-red-500",
+							},
+							{
+								title: t("pages:credits.specialThanks.translators"),
+								description: t(
+									"pages:credits.specialThanks.translatorsDescription",
+								),
+								icon: <Languages />,
+								bg: "bg-blue-500/20 text-blue-500",
+							},
+						].map((item) => {
+							return (
+								<div
+									key={item.title}
+									className="p-6 rounded-xl border border-border bg-linear-to-br from-muted/50 to-muted hover:border-primary/50 translate-y-3 hover:-translate-y-1 transition-all duration-300"
+								>
+									<div
+										className={cn(
+											"w-12 h-12 rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform",
+											item.bg,
+										)}
+									>
+										{item.icon}
+									</div>
+									<h3 className="text-lg font-semibold mb-2 text-white">
+										{item.title}
+									</h3>
+									<p className="text-muted-foreground text-sm">
+										{item.description}
+									</p>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+
+				<div className="p-10 sm:px-56 bg-linear-to-br from-muted/50 to-muted my-10 rounded-lg text-white flex flex-col items-center gap-y-3 text-center">
+					<h3 className="text-4xl sm:text-5xl font-extrabold">
+						{t("pages:credits.wantsToContribute.title")}
+					</h3>
+					<p className="text-muted-foreground">
+						{t("pages:credits.wantsToContribute.description")}
+					</p>
+					<div className="flex flex-col sm:flex-row flex-wrap gap-x-3 gap-y-3 mt-5 w-full justify-center">
+						<a
+							href="https://github.com/TrackGeek"
+							target="_blank"
+							rel="noreferrer"
+							className="w-full sm:flex-1"
+						>
+							<Button className="flex flex-wrap h-12 w-full">
+								<SiGithub />
+								{t("pages:landing.heroButton")}
+							</Button>
+						</a>
+						<a
+							href="https://discord.gg/76bcftRnuT"
+							target="_blank"
+							rel="noreferrer"
+							className="w-full sm:flex-1"
+						>
+							<Button className="flex flex-wrap h-12 w-full">
+								<SiDiscord />
+								Discord
+							</Button>
+						</a>
+						<a
+							href="https://translate.trackgeek.net"
+							target="_blank"
+							rel="noreferrer"
+							className="w-full sm:flex-1"
+						>
+							<Button className="flex flex-wrap h-12 w-full">
+								<Languages />
+								{t("common:translate")}
+							</Button>
+						</a>
 					</div>
 				</div>
 			</div>

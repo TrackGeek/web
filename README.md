@@ -11,14 +11,14 @@
 </h4>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react&logoColor=61DAFB">
-  <img src="https://img.shields.io/badge/TypeScript-000000?style=for-the-badge&logo=typescript&logoColor=3178C6">
-  <img src="https://img.shields.io/badge/Vite-000000?style=for-the-badge&logo=vite&logoColor=646CFF">
-  <img src="https://img.shields.io/badge/TailwindCSS-000000?style=for-the-badge&logo=tailwindcss&logoColor=06B6D4">
+  <img src="https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react&logoColor=ffffff">
+  <img src="https://img.shields.io/badge/TypeScript-000000?style=for-the-badge&logo=typescript&logoColor=ffffff">
+  <img src="https://img.shields.io/badge/Vite-000000?style=for-the-badge&logo=vite&logoColor=ffffff">
+  <img src="https://img.shields.io/badge/TailwindCSS-000000?style=for-the-badge&logo=tailwindcss&logoColor=ffffff">
   <br>
-  <img src="https://img.shields.io/badge/Tanstack-000000?style=for-the-badge&logo=react&logoColor=FF4154">
+  <img src="https://img.shields.io/badge/Tanstack-000000?style=for-the-badge&logo=react&logoColor=ffffff">
   <img src="https://img.shields.io/badge/shadcn/ui-000000?style=for-the-badge&logo=shadcnui&logoColor=ffffff">
-  <a href="https://crowdin.com/project/trackgeek"><img src="https://img.shields.io/badge/Crowdin-000000?style=for-the-badge&logo=crowdin&logoColor=ffffff"></a>
+  <a href="https://translate.trackgeek.net"><img src="https://img.shields.io/badge/Crowdin-000000?style=for-the-badge&logo=crowdin&logoColor=ffffff"></a>
 </p>
 
 ## <samp>Features</samp>

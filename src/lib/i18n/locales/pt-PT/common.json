@@ -74,11 +74,11 @@
 		"anime_other": "Animes"
 	},
 	"roles": {
-		"reviewer": "Reviewer",
-		"developer": "Developer",
-		"project-management": "Project Management",
-		"staff": "Staff",
+		"reviewer": "Revisor do GitHub",
+		"developer": "Desenvolvedor",
+		"project-management": "Gestão de Projeto",
+		"staff": "Funcionário",
 		"designer": "Designer",
-		"translator": "Translator"
+		"translator": "Tradutor"
 	}
 }

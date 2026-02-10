@@ -153,6 +153,19 @@
 		"community": {
 			"title": "Community Contributors",
 			"description": "Everyone who has contributed to TrackGeek through code, translations, support, or alpha testing."
+		},
+		"specialThanks": {
+			"title": "Special Thanks to...",
+			"openSource": "Open-source Community",
+			"openSourceDescription": "TrackGeek wouldn't exist without the incredible open-source ecosystem. We're grateful to all the projects and maintainers we build upon.",
+			"users": "Our Users",
+			"usersDescription": "We're so grateful to all the people who use TrackGeek and share their love and ideas with us.",
+			"translators": "Translators",
+			"translatorsDescription": "Thank you to everyone who helps translate TrackGeek into different languages, making it accessible to users worldwide."
+		},
+		"wantsToContribute": {
+			"title": "Want to contribute?",
+			"description": "We're always looking for new contributors to help us build TrackGeek. Whether you're a developer, designer, translator, or just passionate about the project, there's a place for you."
 		}
 	}
 }

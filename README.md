@@ -18,7 +18,6 @@
   <br>
   <img src="https://img.shields.io/badge/Tanstack-000000?style=for-the-badge&logo=react&logoColor=FF4154">
   <img src="https://img.shields.io/badge/shadcn/ui-000000?style=for-the-badge&logo=shadcnui&logoColor=ffffff">
-  <img src="https://img.shields.io/badge/License%20GPL%203.0-000000?style=for-the-badge&logo=gnu&logoColor=ffffff">
   <a href="https://crowdin.com/project/trackgeek"><img src="https://img.shields.io/badge/Crowdin-000000?style=for-the-badge&logo=crowdin&logoColor=ffffff"></a>
 </p>
 

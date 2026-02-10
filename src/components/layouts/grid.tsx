@@ -48,35 +48,3 @@ export function Grid({
 		</div>
 	);
 }
-
-export function Grid8Col({ children, ...props }: Omit<GridProps, "preset">) {
-	return (
-		<Grid preset="8col" {...props}>
-			{children}
-		</Grid>
-	);
-}
-
-export function Grid4Col({ children, ...props }: Omit<GridProps, "preset">) {
-	return (
-		<Grid preset="4col" {...props}>
-			{children}
-		</Grid>
-	);
-}
-
-export function Grid2Col({ children, ...props }: Omit<GridProps, "preset">) {
-	return (
-		<Grid preset="2col" {...props}>
-			{children}
-		</Grid>
-	);
-}
-
-export function Grid1Col({ children, ...props }: Omit<GridProps, "preset">) {
-	return (
-		<Grid preset="1col" {...props}>
-			{children}
-		</Grid>
-	);
-}

@@ -18,7 +18,9 @@ import {
 import { useTranslation } from "react-i18next";
 import { ListItem } from "@/components/details/list";
 import { ReviewItem } from "@/components/details/review";
+import { Grid } from "@/components/layouts/grid.tsx";
 import { BookModal } from "@/components/modals/book";
+import { RefreshData } from "@/components/modals/refresh-data";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -28,7 +30,6 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RefreshData } from "@/components/modals/refresh-data";
 
 export const Route = createFileRoute("/book/$slug")({
 	head: () => ({
@@ -278,7 +279,7 @@ export function BookDetailsRoute() {
 								<h3 className="font-semibold text-card-foreground text-lg mb-4">
 									{t("library:bookCharacteristics")}
 								</h3>
-								<div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
 										<ScanBarcode className="size-5 text-muted-foreground" />
 										<div>
@@ -317,7 +318,7 @@ export function BookDetailsRoute() {
 								<h3 className="font-semibold text-card-foreground text-lg mb-4">
 									{t("library:communityStatistics")}
 								</h3>
-								<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+								<div className="gap-4 grid grid-cols-2 md:grid-cols-4">
 									<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
 										<div className="flex items-center justify-between mb-2">
 											<span className="text-sm font-medium text-muted-foreground">

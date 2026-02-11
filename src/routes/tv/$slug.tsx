@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { DetailsCard } from "@/components/cards/details.tsx";
 import { CastItem } from "@/components/details/cast";
 import { EpisodeItem } from "@/components/details/episode";
 import { ListItem } from "@/components/details/list";
@@ -360,81 +361,50 @@ export function TVShowDetailsPage() {
 									{t("library:tvShowCharacteristics")}
 								</h3>
 								<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<FilePenLine className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:creators")}
-											</p>
-											<p className="font-medium text-card-foreground flex flex-wrap">
-												<Link to="/">Graham Wagner</Link>,
+									<DetailsCard
+										title={t("library:creators")}
+										icon={
+											<FilePenLine className="size-5 text-muted-foreground" />
+										}
+										description={
+											<>
+												<Link to="/">Graham Wagner</Link>,{" "}
 												<Link to="/">Geneva Robertson-Dworet</Link>
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Hash className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:season_other")}
-											</p>
-											<p className="font-medium text-card-foreground">2</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<TvIcon className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:totalEpisodes")}
-											</p>
-											<p className="font-medium text-card-foreground">16</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Languages className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:language")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												English
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Building className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:productionCompanies")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												Amazon Prime Video
-											</p>
-										</div>
-									</div>
-
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Clock className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:runtime")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												14 hours 20 minutes
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<FileType className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:type")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												Scripted
-											</p>
-										</div>
-									</div>
+											</>
+										}
+									/>
+									<DetailsCard
+										title={t("library:season_other")}
+										icon={<Hash className="size-5 text-muted-foreground" />}
+										description={"2"}
+									/>
+									<DetailsCard
+										title={t("library:totalEpisodes")}
+										icon={<TvIcon className="size-5 text-muted-foreground" />}
+										description={"16"}
+									/>
+									<DetailsCard
+										title={t("library:language")}
+										icon={
+											<Languages className="size-5 text-muted-foreground" />
+										}
+										description={"English"}
+									/>
+									<DetailsCard
+										title={t("library:productionCompanies")}
+										icon={<Building className="size-5 text-muted-foreground" />}
+										description={"Amazon Prime Video"}
+									/>
+									<DetailsCard
+										title={t("library:runtime")}
+										icon={<Clock className="size-5 text-muted-foreground" />}
+										description={"14 hours 20 minutes"}
+									/>
+									<DetailsCard
+										title={t("library:type")}
+										icon={<FileType className="size-5 text-muted-foreground" />}
+										description={"Scripted"}
+									/>
 								</div>
 							</div>
 

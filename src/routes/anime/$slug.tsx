@@ -8,14 +8,15 @@ import {
 } from "@icons-pack/react-simple-icons";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+	Antenna,
 	Bookmark,
 	Building,
+	Building2,
 	CheckCircle,
 	CheckSquare,
 	Clock,
 	ExternalLink,
 	FilePenLine,
-	FileType,
 	Hash,
 	Heart,
 	Languages,
@@ -27,7 +28,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-
+import { DetailsCard } from "@/components/cards/details.tsx";
 import {
 	AnimeEpisodeProgress,
 	type SingleSeasonData,
@@ -39,6 +40,7 @@ import { ListItem } from "@/components/details/list";
 import { Relations } from "@/components/details/relations";
 import { ReviewItem } from "@/components/details/review";
 import { EpisodicContentModal } from "@/components/modals/episodic-content";
+import { RefreshData } from "@/components/modals/refresh-data";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -50,7 +52,6 @@ import {
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { RefreshData } from "@/components/modals/refresh-data";
 
 export const Route = createFileRoute("/anime/$slug")({
 	head: () => ({
@@ -351,92 +352,63 @@ function AnimeDetailsRoute() {
 									{t("library:animeCharacteristics")}
 								</h3>
 								<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<FilePenLine className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:type")}
-											</p>
-											<p className="font-medium text-card-foreground">TV</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Hash className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:source")}
-											</p>
-											<p className="font-medium text-card-foreground">Manga</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<TvIcon className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:totalEpisodes")}
-											</p>
-											<p className="font-medium text-card-foreground">12</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<FileType className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:broadcast")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												Fridays at 23:00 (JST)
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Building className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:rating")}
-											</p>
-											<p className="font-medium text-card-foreground">PG-13</p>
-										</div>
-									</div>
-
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Clock className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:runtime")}
-											</p>
-											<p className="font-medium text-card-foreground">24 min</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<FileType className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:studios")}
-											</p>
-											<p className="font-medium text-card-foreground flex-wrap flex">
-												<Link to="/">Aniplex</Link>,<Link to="/">Dentsu</Link>,
-												<Link to="/">Nippon Television Network</Link>,
-												<Link to="/">TOHO animation</Link>,
-												<Link to="/">Shogakukan-Shueisha Productions</Link>,
-												<Link to="/">Sound Team Don Juan</Link>,
-												<Link to="/">Miracle Bus</Link>,
-												<Link to="/">Shogakukan</Link>,
+									<DetailsCard
+										title={t("library:type")}
+										icon={
+											<FilePenLine className="size-5 text-muted-foreground" />
+										}
+										description={"TV"}
+									/>
+									<DetailsCard
+										title={t("library:source")}
+										icon={<Hash className="size-5 text-muted-foreground" />}
+										description={"Manga"}
+									/>
+									<DetailsCard
+										title={t("library:totalEpisodes")}
+										icon={<TvIcon className="size-5 text-muted-foreground" />}
+										description={"12"}
+									/>
+									<DetailsCard
+										title={t("library:broadcast")}
+										icon={<Antenna className="size-5 text-muted-foreground" />}
+										description={"Fridays at 23:00 (JST)"}
+									/>
+									<DetailsCard
+										title={t("library:rating")}
+										icon={<Building className="size-5 text-muted-foreground" />}
+										description={"PG-13"}
+									/>
+									<DetailsCard
+										title={t("library:runtime")}
+										icon={<Clock className="size-5 text-muted-foreground" />}
+										description={"24 min"}
+									/>
+									<DetailsCard
+										title={t("library:studios")}
+										icon={
+											<Building2 className="size-5 text-muted-foreground" />
+										}
+										description={
+											<>
+												<Link to="/">Aniplex</Link>, <Link to="/">Dentsu</Link>,{" "}
+												<Link to="/">Nippon Television Network</Link>,{" "}
+												<Link to="/">TOHO animation</Link>,{" "}
+												<Link to="/">Shogakukan-Shueisha Productions</Link>,{" "}
+												<Link to="/">Sound Team Don Juan</Link>,{" "}
+												<Link to="/">Miracle Bus</Link>,{" "}
+												<Link to="/">Shogakukan</Link>,{" "}
 												<Link to="/">TOHO Music</Link>
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Languages className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:producers")}
-											</p>
-											<p className="font-medium text-card-foreground flex-wrap flex">
-												<Link to="/">Madhouse</Link>
-											</p>
-										</div>
-									</div>
+											</>
+										}
+									/>
+									<DetailsCard
+										title={t("library:producers")}
+										icon={
+											<Languages className="size-5 text-muted-foreground" />
+										}
+										description={<Link to="/">Madhouse</Link>}
+									/>
 								</div>
 							</div>
 

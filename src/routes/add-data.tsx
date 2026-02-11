@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/useAnchorContent: Trans component */
 import { createFileRoute } from "@tanstack/react-router";
 import { AlertCircle } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";

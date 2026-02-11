@@ -6,7 +6,12 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
 
-type RoleType = "reviewer" | "developer" | "designer" | "translator";
+type RoleType =
+	| "reviewer"
+	| "developer"
+	| "designer"
+	| "translator"
+	| "supporter";
 
 interface ContributorsProps {
 	name: string;

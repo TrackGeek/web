@@ -28,6 +28,7 @@ import {
 	XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { DetailsCard } from "@/components/cards/details.tsx";
 import { CastItem } from "@/components/details/cast";
 import { ListItem } from "@/components/details/list";
 import { ReviewItem } from "@/components/details/review";
@@ -328,71 +329,46 @@ export function MovieDetailsRoute() {
 									{t("library:movieCharacteristics")}
 								</h3>
 								<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Clapperboard className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:directors")}
-											</p>
+									<DetailsCard
+										title={t("library:directors")}
+										icon={
+											<Clapperboard className="size-5 text-muted-foreground" />
+										}
+										description={
 											<Link to="/" className="font-medium text-card-foreground">
 												Tom Gormican
 											</Link>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<PiggyBank className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:budget")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												$45,000,000.00
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Ticket className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:revenue")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												$128,328,016.00
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Languages className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:language")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												English
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Building className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:productionCompanies")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												Sony Pictures
-											</p>
-										</div>
-									</div>
-
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Clock className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:runtime")}
-											</p>
-											<p className="font-medium text-card-foreground">1h 40m</p>
-										</div>
-									</div>
+										}
+									/>
+									<DetailsCard
+										title={t("library:budget")}
+										icon={
+											<PiggyBank className="size-5 text-muted-foreground" />
+										}
+										description={"$45,000,000.00"}
+									/>
+									<DetailsCard
+										title={t("library:revenue")}
+										icon={<Ticket className="size-5 text-muted-foreground" />}
+										description={"$128,328,016.00"}
+									/>
+									<DetailsCard
+										title={t("library:language")}
+										icon={
+											<Languages className="size-5 text-muted-foreground" />
+										}
+										description={"English"}
+									/>
+									<DetailsCard
+										title={t("library:productionCompanies")}
+										icon={<Building className="size-5 text-muted-foreground" />}
+										description={"Sony Pictures"}
+									/>
+									<DetailsCard
+										title={t("library:runtime")}
+										icon={<Clock className="size-5 text-muted-foreground" />}
+										description={"1h 40m"}
+									/>
 								</div>
 							</div>
 
@@ -424,7 +400,7 @@ export function MovieDetailsRoute() {
 											72%
 										</p>
 									</div>
-                  
+
 									<div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
 										<div className="flex items-center justify-between mb-2">
 											<span className="text-sm font-medium text-muted-foreground">

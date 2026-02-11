@@ -6,8 +6,7 @@ import {
 	CheckCircle,
 	CheckSquare,
 	ExternalLink,
-	FilePenLine,
-	Hash,
+	FileType,
 	Heart,
 	MoreHorizontal,
 	Notebook,
@@ -18,11 +17,13 @@ import {
 	XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { DetailsCard } from "@/components/cards/details.tsx";
 import { CharacterItem } from "@/components/details/character";
 import { ListItem } from "@/components/details/list";
 import { Relations } from "@/components/details/relations";
 import { ReviewItem } from "@/components/details/review";
 import { MangaModal } from "@/components/modals/manga";
+import { RefreshData } from "@/components/modals/refresh-data";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -32,7 +33,6 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RefreshData } from "@/components/modals/refresh-data";
 
 export const Route = createFileRoute("/manga/$slug")({
 	head: () => ({
@@ -280,67 +280,40 @@ export function MangaDetailsRoute() {
 									{t("library:mangaCharacteristics")}
 								</h3>
 								<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<FilePenLine className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:type")}
-											</p>
-											<p className="font-medium text-card-foreground">Manga</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Hash className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:chapters")}
-											</p>
-											<p className="font-medium text-card-foreground">207</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<SwatchBook className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:volumes")}
-											</p>
-											<p className="font-medium text-card-foreground">23</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<TreePalm className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:themes")}
-											</p>
-											<p className="font-medium text-card-foreground flex-wrap flex">
-												<Link to="/">Historical</Link>
-											</p>
-										</div>
-									</div>
-
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Pen className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:authors")}
-											</p>
-											<p className="font-medium text-card-foreground flex-wrap flex">
-												<Link to="/">Gotouge, Koyoharu</Link>
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Notebook className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:publisher")}
-											</p>
-											<p className="font-medium text-card-foreground flex-wrap flex">
-												<Link to="/">Shounen Jump</Link>
-											</p>
-										</div>
-									</div>
+									<DetailsCard
+										title={t("library:type")}
+										icon={<FileType className="size-5 text-muted-foreground" />}
+										description={"Manga"}
+									/>
+									<DetailsCard
+										title={t("library:chapters")}
+										icon={
+											<BookOpenText className="size-5 text-muted-foreground" />
+										}
+										description={"207"}
+									/>
+									<DetailsCard
+										title={t("library:volumes")}
+										icon={
+											<SwatchBook className="size-5 text-muted-foreground" />
+										}
+										description={"23"}
+									/>
+									<DetailsCard
+										title={t("library:themes")}
+										icon={<TreePalm className="size-5 text-muted-foreground" />}
+										description={<Link to="/">Historical</Link>}
+									/>
+									<DetailsCard
+										title={t("library:authors")}
+										icon={<Pen className="size-5 text-muted-foreground" />}
+										description={<Link to="/">Gotouge, Koyoharu</Link>}
+									/>
+									<DetailsCard
+										title={t("library:publisher")}
+										icon={<Notebook className="size-5 text-muted-foreground" />}
+										description={<Link to="/">Shounen Jump</Link>}
+									/>
 								</div>
 							</div>
 

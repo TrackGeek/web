@@ -16,6 +16,7 @@ import {
 	XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { DetailsCard } from "@/components/cards/details.tsx";
 import { ListItem } from "@/components/details/list";
 import { ReviewItem } from "@/components/details/review";
 import { BookModal } from "@/components/modals/book";
@@ -279,37 +280,23 @@ export function BookDetailsRoute() {
 									{t("library:bookCharacteristics")}
 								</h3>
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<ScanBarcode className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">ISBN 10</p>
-											<p className="font-medium text-card-foreground">
-												6555117737
-											</p>
-										</div>
-									</div>
-
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Barcode className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">ISBN 13</p>
-											<p className="font-medium text-card-foreground">
-												9786555117738
-											</p>
-										</div>
-									</div>
-
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Heart className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:mood")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												Intenso
-											</p>
-										</div>
-									</div>
+									<DetailsCard
+										title="ISBN 10"
+										icon={
+											<ScanBarcode className="size-5 text-muted-foreground" />
+										}
+										description={"6555117737"}
+									/>
+									<DetailsCard
+										title="ISBN 13"
+										icon={<Barcode className="size-5 text-muted-foreground" />}
+										description={"9786555117738"}
+									/>
+									<DetailsCard
+										title={t("library:mood")}
+										icon={<Heart className="size-5 text-muted-foreground" />}
+										description={"Intenso"}
+									/>
 								</div>
 							</div>
 

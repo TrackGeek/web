@@ -167,5 +167,36 @@
 			"title": "Want to contribute?",
 			"description": "We're always looking for new contributors to help us build TrackGeek. Whether you're a developer, designer, translator, or just passionate about the project, there's a place for you."
 		}
+	},
+	"donate": {
+		"description": "Support the site to cover our server payments, development costs, and keep the sites running long into the future and unlock exclusive perks.",
+		"geeks": "The GeekKeepers that make TrackGeek alive",
+		"perks": {
+			"title": "Perks",
+			"description": "These are the perks you can get while supporting the site:",
+			"benefit1": "Exclusive badge",
+			"benefit2": "Hide irrelevant information for you",
+			"benefit3": "Your profile will appear on this page",
+			"benefit4": "Prioritized support from our team",
+			"benefit5": "Customized Stats of your profile",
+			"benefit6": "Early access to new features"
+		},
+		"wantsToDonate": {
+			"title": "Want to donate?",
+			"description": "Please note the minimum donation amount is $1. A massive thanks to anyone who donates, we really appreciate it!"
+		},
+		"modal": {
+			"description": "Choose your donation options below",
+			"type": "Donation Type",
+			"one-time": "One-time",
+			"monthly": "Monthly",
+			"select": "Select Amount",
+			"fixed": "Fixed Amount",
+			"custom": "Custom Amount",
+			"enter": "Enter amount",
+			"method": "Payment Method",
+			"card": "Credit Card",
+			"footer": "Minimum donation is $1. Your support helps us keep TrackGeek running!"
+		}
 	}
 }

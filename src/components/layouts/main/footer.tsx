@@ -82,8 +82,7 @@ export function Footer() {
 						<h3 className="text-accent font-bold">{t("common:community")}</h3>
 
 						<Link to="/add-data">{t("common:addData")}</Link>
-						<Link to="/">{t("common:about")}</Link>
-						<Link to="/">{t("common:donate")}</Link>
+						<Link to="/donate">{t("common:donate")}</Link>
 						<Link to="/credits">{t("common:credits")}</Link>
 						<a
 							href="https://translate.trackgeek.net"

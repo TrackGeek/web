@@ -200,7 +200,7 @@ export function Header() {
 						<Search />
 					</Button>
 				</Link>
-				<Link to="/" className="max-sm:hidden">
+				<Link to="/donate" className="max-sm:hidden">
 					<Button variant={"outline"} className="">
 						<Heart color="red" fill="red" />
 						{t("common:donate")}
@@ -225,7 +225,9 @@ export function Header() {
 									/>
 								) : (
 									<AvatarFallback>
-										{getInitialsFromName(session.data?.user?.name || "John Doe")}
+										{getInitialsFromName(
+											session.data?.user?.name || "John Doe",
+										)}
 									</AvatarFallback>
 								)}
 							</Avatar>

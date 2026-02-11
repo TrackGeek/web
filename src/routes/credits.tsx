@@ -50,6 +50,16 @@ function CreditsRoute() {
 				queryFn: () => fetchRepoContributors("api"),
 				staleTime: 1000 * 60 * 60,
 			},
+			{
+				queryKey: ["contributors", "mobile-android"],
+				queryFn: () => fetchRepoContributors("mobile-android"),
+				staleTime: 1000 * 60 * 60,
+			},
+			{
+				queryKey: ["contributors", "mobile-ios"],
+				queryFn: () => fetchRepoContributors("mobile-ios"),
+				staleTime: 1000 * 60 * 60,
+			},
 		],
 	});
 
@@ -57,8 +67,15 @@ function CreditsRoute() {
 	const contributors = (() => {
 		const webContributors = queries[0].data || [];
 		const apiContributors = queries[1].data || [];
+		const mobileAndroidContributors = queries[2].data || [];
+		const mobileIosContributors = queries[3].data || [];
 
-		const allContributors = [...webContributors, ...apiContributors];
+		const allContributors = [
+			...webContributors,
+			...apiContributors,
+			...mobileAndroidContributors,
+			...mobileIosContributors,
+		] as GitHubContributor[];
 		return Array.from(
 			new Map(
 				allContributors.map((contributor) => [

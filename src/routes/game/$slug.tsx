@@ -48,6 +48,7 @@ import {
 	XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { DetailsCard } from "@/components/cards/details.tsx";
 import { ListItem } from "@/components/details/list";
 import { Relations } from "@/components/details/relations";
 import { ReviewItem } from "@/components/details/review";
@@ -439,85 +440,48 @@ export function GameDetailsRoute() {
 									{t("library:gameCharacteristics")}
 								</h3>
 								<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Code className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:developers")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												Hypixel Studios
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Building2 className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:publishers")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												Hypixel Studios
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Computer className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:platforms")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												Linux, Mac, PC (Microsoft Windows)
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<TreeDeciduous className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:themes")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												Action, Fantasy, Sandbox
-											</p>
-										</div>
-									</div>
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<EthernetPort className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:gameModes")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												Single player, Multiplayer
-											</p>
-										</div>
-									</div>
+									<DetailsCard
+										title={t("library:developers")}
+										icon={<Code className="size-5 text-muted-foreground" />}
+										description={"Hypixel Studios"}
+									/>
+									<DetailsCard
+										title={t("library:publishers")}
+										icon={
+											<Building2 className="size-5 text-muted-foreground" />
+										}
+										description={"Hypixel Studios"}
+									/>
+									<DetailsCard
+										title={t("library:platforms")}
+										icon={<Computer className="size-5 text-muted-foreground" />}
+										description={"Linux, Mac, PC (Microsoft Windows)"}
+									/>
+									<DetailsCard
+										title={t("library:themes")}
+										icon={
+											<TreeDeciduous className="size-5 text-muted-foreground" />
+										}
+										description={"Action, Fantasy, Sandbox"}
+									/>
+									<DetailsCard
+										title={t("library:gameModes")}
+										icon={
+											<EthernetPort className="size-5 text-muted-foreground" />
+										}
+										description={"Single player, Multiplayer"}
+									/>
+									<DetailsCard
+										title={t("library:playerPerspectives")}
+										icon={<Cctv className="size-5 text-muted-foreground" />}
+										description={"First Person, Third Person"}
+									/>
 
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Cctv className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:playerPerspectives")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												First Person, Third Person
-											</p>
-										</div>
-									</div>
-
-									<div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg border border-border">
-										<Bug className="size-5 text-muted-foreground" />
-										<div>
-											<p className="text-sm text-muted-foreground">
-												{t("library:gameEngine")}
-											</p>
-											<p className="font-medium text-card-foreground">
-												Custom C# Engine
-											</p>
-										</div>
-									</div>
+									<DetailsCard
+										title={t("library:gameEngine")}
+										icon={<Bug className="size-5 text-muted-foreground" />}
+										description={"Custom C# Engine"}
+									/>
 								</div>
 							</div>
 

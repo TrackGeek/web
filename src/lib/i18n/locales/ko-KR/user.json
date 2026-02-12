@@ -1,0 +1,18 @@
+{
+	"favorites": "Favorites",
+	"medals": "Medals",
+	"bio": "Bio",
+	"animeList": "Anime List",
+	"mangaList": "Manga List",
+	"gameList": "Game List",
+	"serieList": "Serie List",
+	"movieList": "Movie List",
+	"bookList": "Book List",
+	"overview": "Overview",
+	"entry": "Entry",
+	"entry_plural": "Entries",
+	"follower": "Follower",
+	"follower_plural": "Followers",
+	"following": "Following",
+	"follow": "Follow"
+}

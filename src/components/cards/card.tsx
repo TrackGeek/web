@@ -37,7 +37,7 @@ export function CardItem({
 	synopsis,
 }: CardProps) {
 	return (
-		<>
+		<div>
 			<div className="relative rounded-xl border border-border overflow-hidden aspect-3/4 group">
 				<Link to={url}>
 					<div
@@ -118,6 +118,6 @@ export function CardItem({
 					{title}
 				</p>
 			</Link>
-		</>
+		</div>
 	);
 }

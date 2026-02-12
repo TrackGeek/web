@@ -112,75 +112,6 @@ function DonateRoute() {
 					<p className="text-center">{t("pages:donate.description")}</p>
 				</div>
 
-				<div className="my-10">
-					<h2 className="text-2xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
-						{t("pages:donate.perks.title")}
-					</h2>
-					<p className="text-center">{t("pages:donate.perks.description")}</p>
-					<div className="grid md:grid-cols-2 gap-6">
-						{[
-							{
-								title: "5$",
-								benefits: [
-									t("pages:donate.perks.benefit1"),
-									t("pages:donate.perks.benefit2"),
-									t("pages:donate.perks.benefit3"),
-									t("pages:donate.perks.benefit4"),
-								],
-							},
-							{
-								title: "10$",
-								benefits: [
-									t("pages:donate.perks.benefit5"),
-									t("pages:donate.perks.benefit6"),
-								],
-							},
-						].map((item) => {
-							return (
-								<div
-									key={item.title}
-									className="p-6 rounded-xl border border-border bg-linear-to-br from-muted/50 to-muted hover:border-primary/50 translate-y-3 hover:-translate-y-1 transition-all duration-300"
-								>
-									<h3 className="text-lg font-semibold mb-4 text-white text-center">
-										{item.title}
-									</h3>
-									<ul className="text-muted-foreground text-sm space-y-2">
-										{item.benefits.map((benefit) => (
-											<li key={benefit} className="flex items-start gap-2 mt-1">
-												<span className="text-primary">✓</span>
-												<span>{benefit}</span>
-											</li>
-										))}
-									</ul>
-								</div>
-							);
-						})}
-					</div>
-				</div>
-
-				<hr className="my-10" />
-
-				<div>
-					<h2 className="text-2xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
-						{t("pages:donate.geeks")}
-					</h2>
-					<Grid minColSize="96px" className="gap-2 mt-4">
-						{loading ? (
-							<p className="text-center col-span-4">{t("common:loading")}</p>
-						) : (
-							contributors.map((contributor) => (
-								<ContributorsItem
-									key={contributor.login}
-									name={contributor.login}
-									url={contributor.html_url}
-									avatarURL={contributor.avatar_url}
-									role="supporter"
-								/>
-							))
-						)}
-					</Grid>
-				</div>
-
 				<div className="p-10 sm:px-56 bg-linear-to-br from-muted/50 to-muted my-10 rounded-lg text-white flex flex-col items-center gap-y-3 text-center">
 					<h3 className="text-4xl sm:text-5xl font-extrabold">
 						{t("pages:donate.wantsToDonate.title")}
@@ -349,6 +280,75 @@ function DonateRoute() {
 							</p>
 						</DialogContent>
 					</Dialog>
+				</div>
+
+				<div className="my-10">
+					<h2 className="text-2xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
+						{t("pages:donate.perks.title")}
+					</h2>
+					<p className="text-center">{t("pages:donate.perks.description")}</p>
+					<div className="grid md:grid-cols-2 gap-6">
+						{[
+							{
+								title: "5$",
+								benefits: [
+									t("pages:donate.perks.benefit1"),
+									t("pages:donate.perks.benefit2"),
+									t("pages:donate.perks.benefit3"),
+									t("pages:donate.perks.benefit4"),
+								],
+							},
+							{
+								title: "10$",
+								benefits: [
+									t("pages:donate.perks.benefit5"),
+									t("pages:donate.perks.benefit6"),
+								],
+							},
+						].map((item) => {
+							return (
+								<div
+									key={item.title}
+									className="p-6 rounded-xl border border-border bg-linear-to-br from-muted/50 to-muted hover:border-primary/50 translate-y-3 hover:-translate-y-1 transition-all duration-300"
+								>
+									<h3 className="text-lg font-semibold mb-4 text-white text-center">
+										{item.title}
+									</h3>
+									<ul className="text-muted-foreground text-sm space-y-2">
+										{item.benefits.map((benefit) => (
+											<li key={benefit} className="flex items-start gap-2 mt-1">
+												<span className="text-primary">✓</span>
+												<span>{benefit}</span>
+											</li>
+										))}
+									</ul>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+
+				<hr className="my-10" />
+
+				<div>
+					<h2 className="text-2xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
+						{t("pages:donate.geeks")}
+					</h2>
+					<Grid minColSize="96px" className="gap-2 mt-4">
+						{loading ? (
+							<p className="text-center col-span-4">{t("common:loading")}</p>
+						) : (
+							contributors.map((contributor) => (
+								<ContributorsItem
+									key={contributor.login}
+									name={contributor.login}
+									url={contributor.html_url}
+									avatarURL={contributor.avatar_url}
+									role="supporter"
+								/>
+							))
+						)}
+					</Grid>
 				</div>
 			</div>
 		</div>

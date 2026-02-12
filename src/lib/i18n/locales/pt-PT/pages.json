@@ -155,48 +155,48 @@
 			"description": "Todos os que contribuíram para o TrackGeek através de código, traduções, suporte ou testes alfa."
 		},
 		"specialThanks": {
-			"title": "Special Thanks to...",
-			"openSource": "Open-source Community",
-			"openSourceDescription": "TrackGeek wouldn't exist without the incredible open-source ecosystem. We're grateful to all the projects and maintainers we build upon.",
-			"users": "Our Users",
-			"usersDescription": "We're so grateful to all the people who use TrackGeek and share their love and ideas with us.",
-			"translators": "Translators",
-			"translatorsDescription": "Thank you to everyone who helps translate TrackGeek into different languages, making it accessible to users worldwide."
+			"title": "Agradecimentos especiais para...",
+			"openSource": "Comunidade de código aberto",
+			"openSourceDescription": "TrackGeek não existiria sem o incrível ecossistema de código aberto. Somos gratos a todos os projetos e mantenedores que construímos.",
+			"users": "Nossos Utilizadores",
+			"usersDescription": "Somos muito gratos a todas as pessoas que usam o TrackGeek e compartilham o seu amor e ideias conosco.",
+			"translators": "Tradutores",
+			"translatorsDescription": "Obrigado a todos que ajudam a traduzir o TrackGeek em diferentes idiomas, tornando-o acessível para utilizadores de todo o mundo."
 		},
 		"wantsToContribute": {
-			"title": "Want to contribute?",
-			"description": "We're always looking for new contributors to help us build TrackGeek. Whether you're a developer, designer, translator, or just passionate about the project, there's a place for you."
+			"title": "Deseja contribuir?",
+			"description": "Sempre procuramos novos colaboradores para nos ajudar a construir o TrackGeek. Se és um desenvolvedor, designer, tradutor ou apenas apaixonado pelo projeto, há um lugar para ti."
 		}
 	},
 	"donate": {
-		"description": "Support the site to cover our server payments, development costs, and keep the sites running long into the future and unlock exclusive perks.",
-		"geeks": "The GeekKeepers that make TrackGeek alive",
+		"description": "Apoie o site para cobrir os pagamentos do nosso servidor, custos de desenvolvimento e manter o funcionamento por muito tempo e desbloquear vantagens exclusivas.",
+		"geeks": "Os GeekKeepers que fazem TrackGeek estar vivo",
 		"perks": {
-			"title": "Perks",
-			"description": "These are the perks you can get while supporting the site:",
-			"benefit1": "Exclusive badge",
-			"benefit2": "Hide irrelevant information for you",
-			"benefit3": "Your profile will appear on this page",
-			"benefit4": "Prioritized support from our team",
-			"benefit5": "Customized Stats of your profile",
-			"benefit6": "Early access to new features"
+			"title": "Regalias",
+			"description": "Estas são as regalias que podes obter enquanto apoias o site:",
+			"benefit1": "Medalha Exclusiva",
+			"benefit2": "Ocultar informações irrelevantes para você",
+			"benefit3": "Seu perfil será exibido nesta página",
+			"benefit4": "Suporte priorizado da nossa equipa",
+			"benefit5": "Estatísticas personalizadas do seu perfil",
+			"benefit6": "Acesso antecipado a novos recursos"
 		},
 		"wantsToDonate": {
-			"title": "Want to donate?",
-			"description": "Please note the minimum donation amount is $1. A massive thanks to anyone who donates, we really appreciate it!"
+			"title": "Deseja doar?",
+			"description": "Por favor, note que o valor mínimo de doação é de $1. Um enorme obrigado a qualquer um que doa, nós realmente apreciamos!"
 		},
 		"modal": {
-			"description": "Choose your donation options below",
-			"type": "Donation Type",
-			"one-time": "One-time",
-			"monthly": "Monthly",
-			"select": "Select Amount",
-			"fixed": "Fixed Amount",
-			"custom": "Custom Amount",
-			"enter": "Enter amount",
-			"method": "Payment Method",
-			"card": "Credit Card",
-			"footer": "Minimum donation is $1. Your support helps us keep TrackGeek running!"
+			"description": "Escolha abaixo as suas opções de doação.",
+			"type": "Tipo de Doação",
+			"one-time": "Doação única",
+			"monthly": "Mensal",
+			"select": "Selecionar montante",
+			"fixed": "Valor Fixo",
+			"custom": "Valor Personalizado",
+			"enter": "Insira a quantia",
+			"method": "Método de Pagamento",
+			"card": "Cartão de Crédito",
+			"footer": "Doação mínima é $1. Seu suporte nos ajuda a manter o TrackGeek funcionando!"
 		}
 	}
 }

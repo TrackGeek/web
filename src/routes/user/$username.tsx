@@ -3,15 +3,10 @@ import { useTranslation } from "react-i18next";
 import { CardItem } from "@/components/cards/card";
 import { FeedListFollowing } from "@/components/feed/listFollowing";
 import { Grid } from "@/components/layouts/grid.tsx";
-import {
-	LinkTabs,
-	LinkTabsList,
-	LinkTabsTrigger,
-} from "@/components/ui/link-tabs.tsx";
+import { UserLayout } from "@/components/layouts/user";
 import { CastFavoriteCard } from "@/components/user/CastFavoriteCard.tsx";
 import { MedalIcon } from "@/components/user/MedalIcon.tsx";
 import { StudioCard } from "@/components/user/StudioCard.tsx";
-import { UserProfileHeader } from "@/components/user/UserProfileHeader";
 
 export const Route = createFileRoute("/user/$username")({
 	head: ({ params }) => ({
@@ -134,46 +129,7 @@ export function UserDetailsRoute() {
 	];
 
 	return (
-		<>
-			<UserProfileHeader
-				user={user}
-				medalsCount={medals.length}
-				entriesCount={5}
-			/>
-			<LinkTabs>
-				<LinkTabsList className="flex flex-wrap gap-2 text-sm justify-between mb-5 w-full">
-					<LinkTabsTrigger to={`/user/${username}`}>
-						{t("user:overview")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${username}/anime`}>
-						{t("user:animeList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${username}/book`}>
-						{t("user:bookList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${username}/manga`}>
-						{t("user:mangaList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${username}/game`}>
-						{t("user:gameList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${username}/serie`}>
-						{t("user:serieList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${username}/movie`}>
-						{t("user:movieList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger
-						to={`/user/${username}/reviews`}
-						className="capitalize"
-					>
-						{t("library:reviews")} (1)
-					</LinkTabsTrigger>{" "}
-					<LinkTabsTrigger to={`/user/${username}/screenshots`}>
-						{t("library:screenshots")} (5)
-					</LinkTabsTrigger>
-				</LinkTabsList>
-			</LinkTabs>
+		<UserLayout user={user} medalsCount={medals.length} entriesCount={5}>
 			<div className="flex max-sm:flex-col gap-5">
 				<div className="w-full md:w-1/3 flex flex-col gap-6">
 					<div className="bg-card rounded-2xl shadow-lg p-6">
@@ -383,6 +339,6 @@ export function UserDetailsRoute() {
 					<FeedListFollowing />
 				</div>
 			</div>
-		</>
+		</UserLayout>
 	);
 }

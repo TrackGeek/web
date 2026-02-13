@@ -189,7 +189,7 @@ export function Header() {
 					</DropdownMenuContent>
 				</DropdownMenu>
 
-				<Link to="/feed">
+				<Link to={session.data?.user ? "/feed" : "/"}>
 					<img src="/logo.svg" alt="Logo" className="h-full w-45" />
 				</Link>
 			</div>

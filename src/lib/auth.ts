@@ -15,8 +15,10 @@ export const authClient = createAuthClient({
 		magicLinkClient(),
 		inferAdditionalFields({
 			user: {
-				image: { type: "string", required: false },
-				username: { type: "string" },
+				username: {
+					type: "string",
+					required: true,
+				},
 				profile: {
 					type: "json",
 				},

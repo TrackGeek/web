@@ -4,14 +4,17 @@ import {
 	LinkTabsList,
 	LinkTabsTrigger,
 } from "@/components/ui/link-tabs.tsx";
-import {
-	UserProfileHeader,
-	type UserProfileHeaderProps,
-} from "@/components/user/UserProfileHeader.tsx";
+import { UserProfileHeader } from "@/components/user/UserProfileHeader.tsx";
 
 interface UserLayoutProps {
 	children: React.ReactNode;
-	user: UserProfileHeaderProps;
+	user: {
+		username: string;
+		avatarUrl?: string;
+		bio?: string;
+		followers?: number;
+		following?: number;
+	};
 	medalsCount: number;
 	entriesCount: number;
 }

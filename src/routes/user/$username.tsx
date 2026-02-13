@@ -231,7 +231,7 @@ export function UserDetailsRoute() {
 									{t("common:types.book_other")}
 								</h5>
 								<Grid minColSize={"24px"} className="text-sm">
-									{bookFavorites.map((f) => (
+									{bookFavorites.splice(0, 3).map((f) => (
 										<CardItem
 											key={f.id}
 											title={f.title}
@@ -253,7 +253,7 @@ export function UserDetailsRoute() {
 									{t("common:types.manga_other")}
 								</h5>
 								<Grid minColSize={"24px"} className="text-sm">
-									{mangaFavorites.map((f) => (
+									{mangaFavorites.splice(0, 3).map((f) => (
 										<CardItem
 											key={f.id}
 											title={f.title}
@@ -275,7 +275,7 @@ export function UserDetailsRoute() {
 									{t("common:types.game_other")}
 								</h5>
 								<Grid minColSize={"24px"} className="text-sm">
-									{gameFavorites.map((f) => (
+									{gameFavorites.splice(0, 3).map((f) => (
 										<CardItem
 											key={f.id}
 											title={f.title}
@@ -297,7 +297,7 @@ export function UserDetailsRoute() {
 									{t("common:types.tv_other")}
 								</h5>
 								<Grid minColSize={"24px"} className="text-sm">
-									{serieFavorites.map((f) => (
+									{serieFavorites.splice(0, 3).map((f) => (
 										<CardItem
 											key={f.id}
 											title={f.title}
@@ -319,7 +319,7 @@ export function UserDetailsRoute() {
 									{t("common:types.movie_other")}
 								</h5>
 								<Grid minColSize={"24px"}>
-									{movieFavorites.map((f) => (
+									{movieFavorites.splice(0, 3).map((f) => (
 										<CardItem
 											key={f.id}
 											title={f.title}

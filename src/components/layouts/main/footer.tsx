@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/useAnchorContent: component use */
 import {
 	SiIgdb,
 	SiMyanimelist,
@@ -90,6 +91,20 @@ export function Footer() {
 							rel="noopener noreferrer"
 						>
 							{t("common:translate")}
+						</a>
+						<a
+							href="https://github.com/orgs/TrackGeek/projects/1"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							{t("common:roadmap")}
+						</a>
+						<a
+							href="https://github.com/orgs/TrackGeek/discussions"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							{t("common:feedback")}
 						</a>
 					</div>
 

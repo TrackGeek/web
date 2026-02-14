@@ -91,7 +91,7 @@ function SettingsRoute() {
 
 			formData.append("file", file);
 
-			return api.post(apiEndpoints.profileBanner.post, formData, {
+			return api.patch(apiEndpoints.profileBanner.patch, formData, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},
@@ -127,7 +127,7 @@ function SettingsRoute() {
 
 			formData.append("file", file);
 
-			return api.post(apiEndpoints.profileAvatar.post, formData, {
+			return api.patch(apiEndpoints.profileAvatar.patch, formData, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},

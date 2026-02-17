@@ -4,7 +4,7 @@
 import { SiPaypal } from "@icons-pack/react-simple-icons";
 import { useQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Coffee, CreditCard } from "lucide-react";
+import { Coffee, CreditCard, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ContributorsItem } from "@/components/cards/contributors.tsx";
@@ -90,10 +90,9 @@ function DonateRoute() {
 		const allContributors = [...webContributors] as GitHubContributor[];
 		return Array.from(
 			new Map(
-				allContributors.map((contributor) => [
-					contributor.login.toLowerCase(),
-					contributor,
-				]),
+				allContributors
+					.filter((contributor) => contributor.login)
+					.map((contributor) => [contributor.login.toLowerCase(), contributor]),
 			).values(),
 		)
 			.sort((a, b) => b.contributions - a.contributions)
@@ -111,7 +110,6 @@ function DonateRoute() {
 					</h1>
 					<p className="text-center">{t("pages:donate.description")}</p>
 				</div>
-
 				<div className="p-10 sm:px-56 bg-linear-to-br from-muted/50 to-muted my-10 rounded-lg text-white flex flex-col items-center gap-y-3 text-center">
 					<h3 className="text-4xl sm:text-5xl font-extrabold">
 						{t("pages:donate.wantsToDonate.title")}
@@ -281,7 +279,6 @@ function DonateRoute() {
 						</DialogContent>
 					</Dialog>
 				</div>
-
 				<div className="my-10">
 					<h2 className="text-2xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
 						{t("pages:donate.perks.title")}
@@ -327,9 +324,7 @@ function DonateRoute() {
 						})}
 					</div>
 				</div>
-
 				<hr className="my-10" />
-
 				<div>
 					<h2 className="text-2xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
 						{t("pages:donate.geeks")}
@@ -349,6 +344,25 @@ function DonateRoute() {
 							))
 						)}
 					</Grid>
+				</div>
+
+				<hr className="my-10" />
+
+				<div>
+					<h2 className="text-2xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
+						{t("pages:donate.transparenceReports")}
+					</h2>
+					<a
+						href={"https://drive.proton.me/urls/E1WHSDDQ0M#0zZ3zOelpK8q"}
+						target={"_blank"}
+						rel={"noreferrer"}
+						className="mx-auto w-fit flex items-center justify-center"
+					>
+						<Button className={"mt-4 flex flex-wrap"}>
+							View All
+							<ExternalLink />
+						</Button>
+					</a>
 				</div>
 			</div>
 		</div>

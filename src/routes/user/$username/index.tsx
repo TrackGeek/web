@@ -1,19 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { CardItem } from "@/components/cards/card";
-import { FeedListFollowing } from "@/components/feed/listFollowing";
+import { CardItem } from "@/components/cards/card.tsx";
+import { FeedListFollowing } from "@/components/feed/listFollowing.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
-import {
-	LinkTabs,
-	LinkTabsList,
-	LinkTabsTrigger,
-} from "@/components/ui/link-tabs.tsx";
+import { UserLayout } from "@/components/layouts/user";
 import { CastFavoriteCard } from "@/components/user/CastFavoriteCard.tsx";
 import { MedalIcon } from "@/components/user/MedalIcon.tsx";
 import { StudioCard } from "@/components/user/StudioCard.tsx";
-import { UserProfileHeader } from "@/components/user/UserProfileHeader";
 
-export const Route = createFileRoute("/user/$username")({
+export const Route = createFileRoute("/user/$username/")({
 	head: ({ params }) => ({
 		meta: [{ title: `@${params.username} | TrackGeek` }],
 	}),
@@ -30,7 +25,7 @@ export function UserDetailsRoute() {
 		bio: "Apaixonada por anime, leitora ávida e avaliadora. Gosto de slice-of-life e sci-fi. Escrevo reviews detalhadas e listas de favoritos.",
 		followers: 324,
 		following: 48,
-	};
+	}
 
 	const medals = [
 		{
@@ -45,43 +40,43 @@ export function UserDetailsRoute() {
 		},
 		{ id: "m3", name: "Community Helper", description: "10 helpful reviews" },
 		{ id: "m3", name: "Community Helper", description: "10 helpful reviews" },
-	];
+	]
 
 	const animeFavorites = [
 		{ id: "a1", title: "Attack on Titan", image: "/tv.svg", score: 9 },
 		{ id: "a2", title: "Steins;Gate", image: "/logo.svg", score: 9.5 },
 		{ id: "a3", title: "Cowboy Bebop", image: "/logo.svg", score: 9.3 },
-	];
+	]
 
 	const bookFavorites = [
 		{ id: "b1", title: "Norwegian Wood", image: "/logo.svg", score: 8 },
 		{ id: "b1", title: "Norwegian Wood", image: "/logo.svg", score: 8 },
 		{ id: "b1", title: "Norwegian Wood", image: "/logo.svg", score: 8 },
-	];
+	]
 
 	const mangaFavorites = [
 		{ id: "m1", title: "Berserk", image: "/logo.svg", score: 9.2 },
 		{ id: "m1", title: "Berserk", image: "/logo.svg", score: 9.2 },
 		{ id: "m1", title: "Berserk", image: "/logo.svg", score: 9.2 },
-	];
+	]
 
 	const gameFavorites = [
 		{ id: "g1", title: "The Last of Us", image: "/logo.svg", score: 9.4 },
 		{ id: "g1", title: "The Last of Us", image: "/logo.svg", score: 9.4 },
 		{ id: "g1", title: "The Last of Us", image: "/logo.svg", score: 9.4 },
-	];
+	]
 
 	const serieFavorites = [
 		{ id: "s1", title: "Dark", image: "/logo.svg", score: 8.9 },
 		{ id: "s1", title: "Dark", image: "/logo.svg", score: 8.9 },
 		{ id: "s1", title: "Dark", image: "/logo.svg", score: 8.9 },
-	];
+	]
 
 	const movieFavorites = [
 		{ id: "mv1", title: "Spirited Away", image: "/logo.svg", score: 9.7 },
 		{ id: "mv1", title: "Spirited Away", image: "/logo.svg", score: 9.7 },
 		{ id: "mv1", title: "Spirited Away", image: "/logo.svg", score: 9.7 },
-	];
+	]
 
 	const studios = [
 		{ id: "st1", title: "Studio Ghibli" },
@@ -93,7 +88,7 @@ export function UserDetailsRoute() {
 		{ id: "st1", title: "Studio Ghibli" },
 		{ id: "st2", title: "ufotable" },
 		{ id: "st3", title: "Aniplex" },
-	];
+	]
 	const characters = [
 		{
 			id: "c1",
@@ -123,7 +118,7 @@ export function UserDetailsRoute() {
 				"https://media.themoviedb.org/t/p/w600_and_h900_face/kYRu965Jt11NWWbJ9XtSUOhTkUx.jpg",
 			link: "/anime/1",
 		},
-	];
+	]
 	const staff = [
 		{
 			id: "sf1",
@@ -131,49 +126,10 @@ export function UserDetailsRoute() {
 			image: "/logo.svg",
 			link: "/anime/1",
 		},
-	];
+	]
 
 	return (
-		<>
-			<UserProfileHeader
-				user={user}
-				medalsCount={medals.length}
-				entriesCount={5}
-			/>
-			<LinkTabs>
-				<LinkTabsList className="flex flex-wrap gap-2 text-sm justify-between mb-5 w-full">
-					<LinkTabsTrigger to={`/user/${username}`}>
-						{t("user:overview")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${username}/anime`}>
-						{t("user:animeList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${username}/book`}>
-						{t("user:bookList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${username}/manga`}>
-						{t("user:mangaList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${username}/game`}>
-						{t("user:gameList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${username}/serie`}>
-						{t("user:serieList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${username}/movie`}>
-						{t("user:movieList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger
-						to={`/user/${username}/reviews`}
-						className="capitalize"
-					>
-						{t("library:reviews")} (1)
-					</LinkTabsTrigger>{" "}
-					<LinkTabsTrigger to={`/user/${username}/screenshots`}>
-						{t("library:screenshots")} (5)
-					</LinkTabsTrigger>
-				</LinkTabsList>
-			</LinkTabs>
+		<UserLayout user={user} medalsCount={medals.length} entriesCount={5}>
 			<div className="flex max-sm:flex-col gap-5">
 				<div className="w-full md:w-1/3 flex flex-col gap-6">
 					<div className="bg-card rounded-2xl shadow-lg p-6">
@@ -231,7 +187,7 @@ export function UserDetailsRoute() {
 									{t("common:types.book_other")}
 								</h5>
 								<Grid minColSize={"24px"} className="text-sm">
-									{bookFavorites.map((f) => (
+									{bookFavorites.splice(0, 3).map((f) => (
 										<CardItem
 											key={f.id}
 											title={f.title}
@@ -253,7 +209,7 @@ export function UserDetailsRoute() {
 									{t("common:types.manga_other")}
 								</h5>
 								<Grid minColSize={"24px"} className="text-sm">
-									{mangaFavorites.map((f) => (
+									{mangaFavorites.splice(0, 3).map((f) => (
 										<CardItem
 											key={f.id}
 											title={f.title}
@@ -275,7 +231,7 @@ export function UserDetailsRoute() {
 									{t("common:types.game_other")}
 								</h5>
 								<Grid minColSize={"24px"} className="text-sm">
-									{gameFavorites.map((f) => (
+									{gameFavorites.splice(0, 3).map((f) => (
 										<CardItem
 											key={f.id}
 											title={f.title}
@@ -297,7 +253,7 @@ export function UserDetailsRoute() {
 									{t("common:types.tv_other")}
 								</h5>
 								<Grid minColSize={"24px"} className="text-sm">
-									{serieFavorites.map((f) => (
+									{serieFavorites.splice(0, 3).map((f) => (
 										<CardItem
 											key={f.id}
 											title={f.title}
@@ -319,7 +275,7 @@ export function UserDetailsRoute() {
 									{t("common:types.movie_other")}
 								</h5>
 								<Grid minColSize={"24px"}>
-									{movieFavorites.map((f) => (
+									{movieFavorites.splice(0, 3).map((f) => (
 										<CardItem
 											key={f.id}
 											title={f.title}
@@ -383,6 +339,6 @@ export function UserDetailsRoute() {
 					<FeedListFollowing />
 				</div>
 			</div>
-		</>
-	);
+		</UserLayout>
+	)
 }

@@ -83,7 +83,8 @@ export function Demo() {
 		if (!container) return;
 
 		const toast = document.createElement("div");
-		toast.className = "toast";
+		toast.className =
+			"bg-primary/20 border-border p-3 rounded-lg text-white flex items-center gap-2 mt-2";
 		toast.innerHTML = `<span>${message}</span>`;
 		container.appendChild(toast);
 

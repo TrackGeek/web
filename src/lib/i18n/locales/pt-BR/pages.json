@@ -197,6 +197,8 @@
 			"method": "Método de pagamento",
 			"card": "Cartão de Crédito",
 			"footer": "Doação mínima é de $1. Seu suporte nos ajuda a manter o TrackGeek funcionando!"
-		}
+		},
+		"transparenceReports": "Transparence Reports",
+		"viewAll": "View All"
 	}
 }

@@ -38,23 +38,23 @@ export function UserLayout({
 					<LinkTabsTrigger to={`/user/${user.username}`}>
 						{t("user:overview")}
 					</LinkTabsTrigger>
+					<LinkTabsTrigger to={`/user/${user.username}/movie`}>
+						{t("user:movieList")}
+					</LinkTabsTrigger>
+					<LinkTabsTrigger to={`/user/${user.username}/serie`}>
+						{t("user:serieList")}
+					</LinkTabsTrigger>
 					<LinkTabsTrigger to={`/user/${user.username}/anime`}>
 						{t("user:animeList")}
+					</LinkTabsTrigger>
+					<LinkTabsTrigger to={`/user/${user.username}/game`}>
+						{t("user:gameList")}
 					</LinkTabsTrigger>
 					<LinkTabsTrigger to={`/user/${user.username}/book`}>
 						{t("user:bookList")}
 					</LinkTabsTrigger>
 					<LinkTabsTrigger to={`/user/${user.username}/manga`}>
 						{t("user:mangaList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${user.username}/game`}>
-						{t("user:gameList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${user.username}/serie`}>
-						{t("user:serieList")}
-					</LinkTabsTrigger>
-					<LinkTabsTrigger to={`/user/${user.username}/movie`}>
-						{t("user:movieList")}
 					</LinkTabsTrigger>
 					<LinkTabsTrigger
 						to={`/user/${user.username}/reviews`}

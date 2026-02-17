@@ -14,5 +14,17 @@
 	"follower": "Follower",
 	"follower_plural": "Followers",
 	"following": "Following",
-	"follow": "Follow"
+	"follow": "Follow",
+	"filter": "Filter",
+	"random": "Random",
+	"search": "Search",
+	"sort": {
+		"placeholder": "Sort by:",
+		"popularity": "Popularity",
+		"lastUpdated": "Last Updated",
+		"lastAdded": "Last Added",
+		"rating": "Rating",
+		"releaseDate": "Release Date",
+		"title": "Title"
+	}
 }

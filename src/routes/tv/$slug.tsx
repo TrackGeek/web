@@ -64,6 +64,13 @@ export const Route = createFileRoute("/tv/$slug")({
 	component: TVShowDetailsPage,
 });
 
+/**
+ * Renders the TV show details page including a left info panel and a right tabbed content area.
+ *
+ * The layout includes a sticky left card with poster, list action buttons, a "More options" dialog, status and social links; and a right card with title, rating, tabs for Info/Episodes/Cast/Medias/Reviews/Lists, details cards, episode progress, community statistics, media gallery, and review items.
+ *
+ * @returns The TV show details page element.
+ */
 export function TVShowDetailsPage() {
 	const { slug: _ } = Route.useParams();
 

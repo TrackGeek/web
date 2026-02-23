@@ -20,6 +20,14 @@ export const Route = createFileRoute("/user/$username/reviews/")({
 	component: ReviewsListRoute,
 });
 
+/**
+ * Render the reviews list page for the user identified by the current route's `username` parameter.
+ *
+ * Displays a user summary (avatar, bio, followers/following counts, medals count), a left-side filter panel
+ * (search, type list, sort select), and a main content area containing review items.
+ *
+ * @returns The reviews page JSX element
+ */
 export function ReviewsListRoute() {
 	const { username } = Route.useParams();
 	const { t } = useTranslation();

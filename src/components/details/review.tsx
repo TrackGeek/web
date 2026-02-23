@@ -10,6 +10,16 @@ interface StarRatingProps {
 	iconSize?: "sm" | "md";
 }
 
+/**
+ * Render a five-star visual rating that supports full, half, and empty stars.
+ *
+ * The component treats each star as 2 rating points (so a rating of 10 = 5 full stars,
+ * 9 = 4 full + 1 half, 8 = 4 full, etc.).
+ *
+ * @param rating - Numeric rating from 0 to 10; odd values produce a half star.
+ * @param iconSize - Size variant for the star icons; `"sm"` renders smaller icons, `"md"` (default) renders the standard size.
+ * @returns A horizontal row of five star icons reflecting the provided rating (full, half, or empty).
+ */
 function StarRating({ rating, iconSize = "md" }: StarRatingProps) {
 	const iconClass = iconSize === "sm" ? "w-3 h-3" : "w-4 h-4";
 	return (
@@ -75,6 +85,14 @@ interface ReviewItemProps {
 	reviewSlug?: string;
 }
 
+/**
+ * Builds a prioritized list of criteria translation keys paired with their numeric ratings from a review criteries object.
+ *
+ * The returned list places the preferred keys `language`, `story`, `theme`, and `characters` first (in that order) when present, then appends any remaining keys from the input (excluding the `all` key). Each item's `label` is a translation key formatted as `feed:criteries.<key>`.
+ *
+ * @param criteries - Optional object mapping criteria names to numeric ratings.
+ * @returns An array of objects with `{ label: string; rating: number }` for each present criterion, or an empty array if `criteries` is missing or not an object.
+ */
 function buildCriteriaList(
 	criteries?: ReviewItemProps["criteries"],
 ): { label: string; rating: number }[] {
@@ -108,6 +126,18 @@ function buildCriteriaList(
 	return result;
 }
 
+/**
+ * Render a review card showing author information, criteria-based star ratings, the review text with an optional "read more" action, the formatted date, and like count.
+ *
+ * @param user - Optional author info (name, avatarURL, slug); used when `reviewName` is not provided.
+ * @param reviewText - The review body text to display (may be truncated to three lines with a "read more" action).
+ * @param likes - Number of likes for the review.
+ * @param date - Date of the review; displayed using the current i18n language formatting.
+ * @param criteries - Optional numeric ratings object (e.g., { all, story, language, theme, characters }) used to build and render per-criterion star ratings.
+ * @param reviewName - Optional display name for the review (when provided, user block is not rendered).
+ *
+ * @returns A JSX element containing the complete review card.
+ */
 export function ReviewItem({
 	user,
 	reviewText,

@@ -80,6 +80,13 @@ export const Route = createFileRoute("/game/$slug")({
 	component: GameDetailsRoute,
 });
 
+/**
+ * Renders the Game Details page for a game identified by the route slug.
+ *
+ * Displays a two-column layout containing game metadata and actions (left column) and the main details (right column) including title, rating, tabs for Info/Relations/Reviews/Lists/Screenshots, media carousel, community statistics, and external links.
+ *
+ * @returns The React element for the game details route page.
+ */
 export function GameDetailsRoute() {
 	const { slug: _ } = Route.useParams();
 

@@ -23,14 +23,6 @@ interface LinkTabsListProps extends React.HTMLAttributes<HTMLDivElement> {
 	className?: string;
 }
 
-/**
- * Container for a horizontally scrollable list of link tab triggers.
- *
- * Renders a full-width, rounded div styled for a tab list with horizontal scrolling and hidden vertical overflow. Additional div attributes and children are passed through.
- *
- * @param className - Optional additional class names to apply to the container
- * @returns The rendered div element serving as the link tabs list container
- */
 function LinkTabsList({ className, children, ...props }: LinkTabsListProps) {
 	return (
 		<div
@@ -53,16 +45,6 @@ interface LinkTabsTriggerProps extends React.ComponentProps<typeof Link> {
 	orientation?: "horizontal" | "vertical";
 }
 
-/**
- * A navigational tab trigger rendered as a link that applies active styling based on the current location.
- *
- * @param className - Additional CSS classes to apply to the trigger element.
- * @param to - Destination path or route target for the Link.
- * @param children - Content displayed inside the trigger (label, icon, etc.).
- * @param activeMatchFn - Optional function to determine active state given the current pathname and the `to` value.
- * @param orientation - Layout orientation of the trigger; `"horizontal"` renders inline, `"vertical"` stacks content.
- * @returns A Link element styled as a tab trigger that reflects active/inactive state based on the current location.
- */
 function LinkTabsTrigger({
 	className,
 	to,

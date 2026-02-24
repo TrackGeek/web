@@ -53,14 +53,6 @@ export const Route = createFileRoute("/movie/$slug")({
 	component: MovieDetailsRoute,
 });
 
-/**
- * Render the movie details page for the current route's movie slug.
- *
- * Renders the full details layout including poster, actions, metadata, tabs for
- * info/cast/medias/reviews/lists, and auxiliary dialogs and social links.
- *
- * @returns The React element representing the movie details page.
- */
 export function MovieDetailsRoute() {
 	const { slug: _ } = Route.useParams();
 

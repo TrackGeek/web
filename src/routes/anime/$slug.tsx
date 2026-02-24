@@ -60,13 +60,6 @@ export const Route = createFileRoute("/anime/$slug")({
 	component: AnimeDetailsRoute,
 });
 
-/**
- * Renders the anime details page for a single anime identified by the route slug.
- *
- * Displays a left sidebar with cover art, quick-action buttons, metadata, social links and a modal for advanced options, and a main content area containing the title, rating, tabbed sections (info, relations, episodes, cast, characters, medias, reviews, lists), details cards, episode progress, community statistics and an embedded trailer.
- *
- * @returns The React element for the anime details route page.
- */
 function AnimeDetailsRoute() {
 	const { slug: _ } = Route.useParams();
 

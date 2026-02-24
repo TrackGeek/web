@@ -41,13 +41,6 @@ export const Route = createFileRoute("/manga/$slug")({
 	component: MangaDetailsRoute,
 });
 
-/**
- * Renders the Manga Details route UI, displaying a cover, quick action buttons, metadata, and tabbed content.
- *
- * This component reads the route `slug` parameter and translation strings, and composes the page layout including a cover card with actions and a modal, a main details card with rating and tabs (info, relations, characters, reviews, lists).
- *
- * @returns The JSX element representing the manga details page.
- */
 export function MangaDetailsRoute() {
 	const { slug: _ } = Route.useParams();
 

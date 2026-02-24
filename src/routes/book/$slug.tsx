@@ -38,15 +38,6 @@ export const Route = createFileRoute("/book/$slug")({
 	component: BookDetailsRoute,
 });
 
-/**
- * Renders the Book Details page for a book identified by the route parameter `slug`.
- *
- * Displays the book cover, metadata (title, author, year, rating, genres, synopsis, ISBNs),
- * interactive controls (reading-status buttons, more-options dialog, like button),
- * community statistics, tabs for info/reviews/lists, and a refresh-data control.
- *
- * @returns The JSX element for the book details route. 
- */
 export function BookDetailsRoute() {
 	const { slug: _ } = Route.useParams();
 

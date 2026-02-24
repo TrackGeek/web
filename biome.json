@@ -9,10 +9,7 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": [
-			"**/src/**/*.ts",
-			"**/src/**/*.tsx"
-		]
+		"includes": ["**/src/**/*.ts", "**/src/**/*.tsx"]
 	},
 	"formatter": {
 		"enabled": true,

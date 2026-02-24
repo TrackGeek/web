@@ -1,7 +1,11 @@
 import "@/lib/i18n/config.ts";
 import "@/global.css";
 
-import { createRootRouteWithContext, HeadContent, Outlet } from "@tanstack/react-router";
+import {
+	createRootRouteWithContext,
+	HeadContent,
+	Outlet,
+} from "@tanstack/react-router";
 
 import { RootProvider } from "@/providers";
 import { MainLayout } from "@/components/layouts/main";
@@ -18,14 +22,13 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootLayout() {
 	return (
 		<>
-      <HeadContent />
-    
-      <RootProvider>
-        <MainLayout>
-          
-          <Outlet />
-        </MainLayout>
-      </RootProvider>
-    </>
+			<HeadContent />
+
+			<RootProvider>
+				<MainLayout>
+					<Outlet />
+				</MainLayout>
+			</RootProvider>
+		</>
 	);
 }

@@ -24,8 +24,8 @@ if (!rootElement.innerHTML) {
 	const root = createRoot(rootElement);
 
 	root.render(
-    <StrictMode>
-      <RouterProvider router={router} />
-    </StrictMode>
+		<StrictMode>
+			<RouterProvider router={router} />
+		</StrictMode>,
 	);
 }

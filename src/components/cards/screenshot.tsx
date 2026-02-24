@@ -10,17 +10,11 @@ import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 
 interface ScreenshotProps {
 	title: string;
-	url: string;
 	imageURL: string;
 	images: string[];
 }
 
-export function ScreenshotItem({
-	title,
-	url,
-	imageURL,
-	images,
-}: ScreenshotProps) {
+export function ScreenshotItem({ title, imageURL, images }: ScreenshotProps) {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>

@@ -1,13 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Trans, useTranslation } from "react-i18next";
 
-import { seo } from '@/lib/utils/seo';
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/tos")({
 	head: () => ({
-		meta: [
-      ...seo({ title: "Terms of Service" })
-    ],
+		meta: [...seo({ title: "Terms of Service" })],
 	}),
 	component: TermsRoute,
 });

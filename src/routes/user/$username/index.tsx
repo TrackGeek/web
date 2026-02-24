@@ -7,10 +7,11 @@ import { UserLayout } from "@/components/layouts/user";
 import { CastFavoriteCard } from "@/components/user/CastFavoriteCard.tsx";
 import { MedalIcon } from "@/components/user/MedalIcon.tsx";
 import { StudioCard } from "@/components/user/StudioCard.tsx";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/user/$username/")({
 	head: ({ params }) => ({
-		meta: [{ title: `@${params.username} | TrackGeek` }],
+		meta: [...seo({ title: `@${params.username}` })],
 	}),
 	component: UserDetailsRoute,
 });

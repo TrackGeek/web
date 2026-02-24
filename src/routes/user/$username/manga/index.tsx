@@ -24,6 +24,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select.tsx";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
+import { seo } from "@/lib/utils/seo";
 
 const jikanApi = axios.create({
 	baseURL: "https://api.jikan.moe/v4",
@@ -47,8 +48,8 @@ async function fetchMangaGenres(): Promise<GenreResponse> {
 }
 
 export const Route = createFileRoute("/user/$username/manga/")({
-	head: ({ params }) => ({
-		meta: [{ title: `Manga List | TrackGeek` }],
+	head: () => ({
+		meta: [...seo({ title: "Manga List" })],
 	}),
 	loader: async () => {
 		const genres = await fetchMangaGenres();

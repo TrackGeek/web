@@ -33,10 +33,11 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/manga/$slug")({
 	head: () => ({
-		meta: [{ title: "Manga Details | TrackGeek" }],
+		meta: [...seo({ title: "Manga Details" })],
 	}),
 	component: MangaDetailsRoute,
 });

@@ -10,10 +10,11 @@ import { CoreTeamItem } from "@/components/cards/core-team.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { cn } from "@/lib/utils.ts";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/credits")({
 	head: () => ({
-		meta: [{ title: "Credits | TrackGeek" }],
+		meta: [...seo({ title: "Credits" })],
 	}),
 	component: CreditsRoute,
 });

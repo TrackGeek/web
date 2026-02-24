@@ -14,10 +14,11 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/lab")({
 	head: () => ({
-		meta: [{ title: "Lab | TrackGeek" }],
+		meta: [...seo({ title: "Lab" })],
 	}),
 	component: LabRoute,
 });

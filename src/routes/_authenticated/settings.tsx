@@ -25,10 +25,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth";
 import { SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/_authenticated/settings")({
 	head: () => ({
-		meta: [{ title: "Settings | TrackGeek" }],
+		meta: [...seo({ title: "Settings" })],
 	}),
 	component: SettingsRoute,
 });

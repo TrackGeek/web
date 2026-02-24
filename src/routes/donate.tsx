@@ -19,10 +19,11 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog.tsx";
 import { Input } from "@/components/ui/input.tsx";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/donate")({
 	head: () => ({
-		meta: [{ title: "Donate | TrackGeek" }],
+		meta: [...seo({ title: "Donate" })],
 	}),
 	component: DonateRoute,
 });

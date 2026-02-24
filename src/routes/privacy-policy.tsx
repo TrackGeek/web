@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Trans, useTranslation } from "react-i18next";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/privacy-policy")({
 	head: () => ({
-		meta: [{ title: "Privacy Policy | TrackGeek" }],
+		meta: [...seo({ title: "Privacy Policy" })],
 	}),
 	component: PrivacyPolicyRoute,
 });

@@ -24,10 +24,11 @@ import {
 } from "@/components/ui/select.tsx";
 import { Slider } from "@/components/ui/slider.tsx";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/user/$username/movie/")({
-	head: ({ params }) => ({
-		meta: [{ title: `Movie List | TrackGeek` }],
+	head: () => ({
+		meta: [...seo({ title: "Movie List" })],
 	}),
 	component: MovieListRoute,
 });

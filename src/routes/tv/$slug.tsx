@@ -56,10 +56,11 @@ import {
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/tv/$slug")({
 	head: () => ({
-		meta: [{ title: "TV Show Details | TrackGeek" }],
+		meta: [...seo({ title: "TV Show Details" })],
 	}),
 	component: TVShowDetailsPage,
 });

@@ -4,10 +4,11 @@ import { CTA } from "@/components/sections/cta";
 import { Demo } from "@/components/sections/demo.tsx";
 import { Features } from "@/components/sections/features.tsx";
 import { Hero } from "@/components/sections/hero";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/")({
 	head: () => ({
-		meta: [{ title: "TrackGeek" }],
+		meta: [...seo({ title: "Home" })],
 	}),
 	component: HomeRoute,
 });

@@ -72,10 +72,11 @@ import {
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/game/$slug")({
 	head: () => ({
-		meta: [{ title: "Game Details | TrackGeek" }],
+		meta: [...seo({ title: "Game Details" })],
 	}),
 	component: GameDetailsRoute,
 });

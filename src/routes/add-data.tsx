@@ -8,10 +8,11 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion.tsx";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/add-data")({
 	head: () => ({
-		meta: [{ title: "Add Data | TrackGeek" }],
+		meta: [...seo({ title: "Add Data" })],
 	}),
 	component: AddDataRoute,
 });

@@ -12,10 +12,11 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select.tsx";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/user/$username/reviews/")({
 	head: ({ params }) => ({
-		meta: [{ title: `${params.username}'s Reviews | TrackGeek` }],
+		meta: [...seo({ title: `${params.username}'s Reviews` })],
 	}),
 	component: ReviewsListRoute,
 });

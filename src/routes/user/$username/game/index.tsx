@@ -23,10 +23,11 @@ import {
 	SelectValue,
 } from "@/components/ui/select.tsx";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/user/$username/game/")({
-	head: ({ params }) => ({
-		meta: [{ title: `Game List | TrackGeek` }],
+	head: () => ({
+		meta: [...seo({ title: "Game List" })],
 	}),
 	component: GameListRoute,
 });

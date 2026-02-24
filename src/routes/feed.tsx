@@ -14,10 +14,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/feed")({
 	head: () => ({
-		meta: [{ title: "Feed | TrackGeek" }],
+		meta: [...seo({ title: "Feed" })],
 	}),
 	component: FeedRoute,
 });

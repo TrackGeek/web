@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select.tsx";
 import { Slider } from "@/components/ui/slider.tsx";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
+import { seo } from "@/lib/utils/seo";
 
 const jikanApi = axios.create({
 	baseURL: "https://api.jikan.moe/v4",
@@ -48,8 +49,8 @@ async function fetchBookGenres(): Promise<GenreResponse> {
 }
 
 export const Route = createFileRoute("/user/$username/book/")({
-	head: ({ params }) => ({
-		meta: [{ title: `Book List | TrackGeek` }],
+	head: () => ({
+		meta: [...seo({ title: "Book List" })],
 	}),
 	loader: async () => {
 		const genres = await fetchBookGenres();

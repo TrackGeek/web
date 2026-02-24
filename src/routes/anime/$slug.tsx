@@ -490,7 +490,25 @@ function AnimeDetailsRoute() {
 							<Relations />
 						</TabsContent>
 						<TabsContent value="reviews">
-							<ReviewItem />
+							<ReviewItem
+								user={{
+									name: "John Doe",
+									avatarURL:
+										"https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
+									slug: "john-doe",
+								}}
+								reviewText={
+									"Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
+								}
+								criteries={{
+									language: 5,
+									characters: 4,
+									all: 10,
+									story: 8,
+									theme: 9,
+								}}
+								date={new Date("2023-06-19")}
+							/>
 						</TabsContent>
 						<TabsContent value="lists">
 							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">

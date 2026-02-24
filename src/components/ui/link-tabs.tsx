@@ -28,7 +28,7 @@ function LinkTabsList({ className, children, ...props }: LinkTabsListProps) {
 		<div
 			data-slot="link-tabs-list"
 			className={cn(
-				"border border-border text-malachite-400 bg-card inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px]",
+				"border border-border text-malachite-400 bg-card flex h-9 w-full items-center rounded-lg p-0.75 overflow-y-hidden  overflow-x-auto scroll-smooth",
 				className,
 			)}
 			{...props}
@@ -78,24 +78,4 @@ function LinkTabsTrigger({
 	);
 }
 
-interface LinkTabsContentProps extends React.HTMLAttributes<HTMLDivElement> {
-	className?: string;
-}
-
-function LinkTabsContent({
-	className,
-	children,
-	...props
-}: LinkTabsContentProps) {
-	return (
-		<div
-			data-slot="link-tabs-content"
-			className={cn("flex-1 outline-none", className)}
-			{...props}
-		>
-			{children}
-		</div>
-	);
-}
-
-export { LinkTabs, LinkTabsList, LinkTabsTrigger, LinkTabsContent };
+export { LinkTabs, LinkTabsList, LinkTabsTrigger };

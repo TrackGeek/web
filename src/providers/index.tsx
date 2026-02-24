@@ -23,8 +23,8 @@ export function RootProvider({ children }: ProviderProps) {
 	return (
 		<>
 			{providers.reduceRight(
-				(acc, Provider) => (
-					<Provider>{acc}</Provider>
+				(acc, Provider, index) => (
+					<Provider key={index + 1}>{acc}</Provider>
 				),
 				children,
 			)}

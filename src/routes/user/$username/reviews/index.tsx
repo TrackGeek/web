@@ -48,7 +48,7 @@ export function ReviewsListRoute() {
 	];
 
 	return (
-		<UserLayout user={user} medalsCount={medals.length} entriesCount={5}>
+		<UserLayout user={user} medalsCount={medals.length} entriesCount={2}>
 			<div className="flex max-sm:flex-col gap-5">
 				<div className="w-full md:w-1/4 flex flex-col gap-6">
 					<div className="bg-card rounded-2xl shadow-lg p-6 gap-4 flex flex-col">

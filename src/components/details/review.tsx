@@ -115,21 +115,22 @@ export function ReviewItem({
 	date,
 	criteries,
 	reviewName,
+	reviewSlug,
 }: ReviewItemProps) {
 	const { t, i18n } = useTranslation();
 	const [showReadMore, setShowReadMore] = useState(false);
 	const contentRef = useRef<HTMLParagraphElement>(null);
 
 	useEffect(() => {
-		if (contentRef.current) {
-			const computed = getComputedStyle(contentRef.current);
-			const lineHeight = parseFloat(computed.lineHeight || "0");
-			const contentHeight = contentRef.current.scrollHeight;
-
-			if (lineHeight > 0 && contentHeight > lineHeight * 3 + 1) {
-				setShowReadMore(true);
-			}
+		if (!contentRef.current) {
+			setShowReadMore(false);
+			return;
 		}
+		const computed = getComputedStyle(contentRef.current);
+		const lineHeight = parseFloat(computed.lineHeight || "0");
+		const contentHeight = contentRef.current.scrollHeight;
+		const shouldShow = lineHeight > 0 && contentHeight > lineHeight * 3 + 1;
+		setShowReadMore(shouldShow);
 	}, [reviewText]);
 
 	const criteriaList = buildCriteriaList(criteries);
@@ -143,7 +144,7 @@ export function ReviewItem({
 					<div className="flex flex-col sm:flex-row sm:items-start sm:gap-2 gap-2">
 						{reviewName ? (
 							<Link
-								to={`/`}
+								to={reviewSlug ? `/review/${reviewSlug}` : "/"}
 								className="min-w-0 w-auto shrink-0 hover:text-primary transition-colors"
 							>
 								<p className="font-bold truncate text-sm sm:text-base max-w-48">

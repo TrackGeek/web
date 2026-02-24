@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { Images } from "lucide-react";
 import {
 	Carousel,
@@ -7,12 +6,7 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "@/components/ui/carousel.tsx";
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTrigger,
-} from "../ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 
 interface ScreenshotProps {
 	title: string;
@@ -45,16 +39,15 @@ export function ScreenshotItem({
 							</div>
 						</div>
 					</div>
-					<Link to={url}>
-						<p className="font-bold text-card-foreground mt-2 hover:text-primary transition-colors line-clamp-2">
-							{title}
-						</p>
-					</Link>
+					<p className="font-bold text-card-foreground mt-2 hover:text-primary transition-colors line-clamp-2">
+						{title}
+					</p>
 				</div>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
-				<DialogHeader></DialogHeader>
-
+			<DialogContent
+				className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0"
+				aria-label={"Gallery"}
+			>
 				<Carousel
 					className="w-full px-8 py-6"
 					opts={{
@@ -63,12 +56,12 @@ export function ScreenshotItem({
 					}}
 				>
 					<CarouselContent>
-						{images.map((image) => (
+						{images.map((image, index) => (
 							<CarouselItem key={image}>
 								<img
 									src={image}
-									className="w-full aspect-video"
-									alt="Screenshot"
+									className="w-full aspect-video object-contain"
+									alt={`${title} – screenshot ${index + 1} of ${images.length}`}
 								/>
 							</CarouselItem>
 						))}

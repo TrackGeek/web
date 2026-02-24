@@ -33,7 +33,6 @@ export function ScreenshotsRoute() {
 			description: "1000+ episodes watched",
 		},
 		{ id: "m3", name: "Community Helper", description: "10 helpful reviews" },
-		{ id: "m3", name: "Community Helper", description: "10 helpful reviews" },
 	];
 
 	const gamesWithScreenshots = [
@@ -85,7 +84,7 @@ export function ScreenshotsRoute() {
 					<ScreenshotItem
 						key={f.id}
 						title={f.title}
-						url={"/"}
+						url={`/game/${f.id}`}
 						imageURL={f.image}
 						images={f.images}
 					/>

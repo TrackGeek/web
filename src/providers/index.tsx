@@ -11,9 +11,15 @@ interface ProviderProps {
 }
 
 const providers: ComponentType<ProviderProps>[] = [
-	({ children }) => <TooltipProvider>{children}</TooltipProvider>,
-	({ children }) => <CookiesProvider>{children}</CookiesProvider>,
-	({ children }) => <TanstackQueryProvider>{children}</TanstackQueryProvider>,
+	({ children }) => (
+    <TooltipProvider>{children}</TooltipProvider>
+  ),
+	({ children }) => (
+    <CookiesProvider>{children}</CookiesProvider>
+  ),
+	({ children }) => (
+    <TanstackQueryProvider>{children}</TanstackQueryProvider>
+  ),
 	({ children }) => (
 		<TanstackDevtoolsProvider>{children}</TanstackDevtoolsProvider>
 	),

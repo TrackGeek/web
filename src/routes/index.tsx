@@ -14,18 +14,16 @@ export const Route = createFileRoute("/")({
 
 function HomeRoute() {
 	return (
-		<main className="antialiased flex flex-col">
-			<div className="flex-1">
-				<Hero />
+		<main className="flex flex-col">
+      <Hero />
 
-				<Counter />
+      <Counter />
 
-				<Demo />
+      <Demo />
 
-				<Features />
+      <Features />
 
-				<CTA />
-			</div>
+      <CTA />
 		</main>
 	);
 }

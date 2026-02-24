@@ -1,16 +1,16 @@
 import { Footer } from "../footer";
 import { Header } from "../header";
 
-interface MainLayoutProps {
+interface HomeLayoutProps {
 	children: React.ReactNode;
 }
 
-export function MainLayout({ children }: MainLayoutProps) {
+export function HomeLayout({ children }: HomeLayoutProps) {
 	return (
 		<div className="antialiased bg-background flex flex-col min-h-screen">
 			<Header />
 
-			<div className="flex flex-col grow py-5 px-4 max-w-7xl w-full flex-1 mx-auto">
+			<div className="flex flex-col w-full flex-1">
 				{children}
 			</div>
 

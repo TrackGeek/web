@@ -84,7 +84,6 @@ export function ScreenshotsRoute() {
 					<ScreenshotItem
 						key={f.id}
 						title={f.title}
-						url={`/game/${f.id}`}
 						imageURL={f.image}
 						images={f.images}
 					/>

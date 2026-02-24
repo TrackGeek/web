@@ -11,7 +11,7 @@ import {
 import { RootProvider } from "@/providers";
 import { MainLayout } from "@/components/layouts/main";
 import type { authClient } from "@/lib/auth";
-import { HomeLayout } from '@/components/layouts/home';
+import { HomeLayout } from "@/components/layouts/home";
 
 interface RouterContext {
 	auth: typeof authClient;
@@ -23,7 +23,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootLayout() {
 	const { location } = useRouterState();
-  
+
 	const isHome = location.pathname === "/";
 
 	return (
@@ -32,9 +32,9 @@ function RootLayout() {
 
 			<RootProvider>
 				{isHome ? (
-          <HomeLayout>
-            <Outlet />
-          </HomeLayout>
+					<HomeLayout>
+						<Outlet />
+					</HomeLayout>
 				) : (
 					<MainLayout>
 						<Outlet />

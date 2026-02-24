@@ -15,15 +15,15 @@ export const Route = createFileRoute("/")({
 function HomeRoute() {
 	return (
 		<main className="flex flex-col">
-      <Hero />
+			<Hero />
 
-      <Counter />
+			<Counter />
 
-      <Demo />
+			<Demo />
 
-      <Features />
+			<Features />
 
-      <CTA />
+			<CTA />
 		</main>
 	);
 }

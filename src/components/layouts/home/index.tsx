@@ -10,9 +10,7 @@ export function HomeLayout({ children }: HomeLayoutProps) {
 		<div className="antialiased bg-background flex flex-col min-h-screen">
 			<Header />
 
-			<div className="flex flex-col w-full flex-1">
-				{children}
-			</div>
+			<div className="flex flex-col w-full flex-1">{children}</div>
 
 			<Footer />
 		</div>

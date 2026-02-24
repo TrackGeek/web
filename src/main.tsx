@@ -1,7 +1,7 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { TooltipProvider } from "@/components/ui/tooltip.tsx";
+
 import { authClient } from "./lib/auth";
 import { routeTree } from "./routeTree.gen";
 
@@ -24,10 +24,8 @@ if (!rootElement.innerHTML) {
 	const root = createRoot(rootElement);
 
 	root.render(
-		<TooltipProvider>
-			<StrictMode>
-				<RouterProvider router={router} />
-			</StrictMode>
-		</TooltipProvider>,
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>
 	);
 }

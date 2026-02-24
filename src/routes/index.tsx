@@ -5,27 +5,25 @@ import { Demo } from "@/components/sections/demo.tsx";
 import { Features } from "@/components/sections/features.tsx";
 import { Hero } from "@/components/sections/hero";
 
-function HomeRoute() {
-	return (
-		<main className="antialiased flex flex-col">
-			<div className="flex-1">
-				<Hero />
-
-				<Counter />
-
-				<Demo />
-
-				<Features />
-
-				<CTA />
-			</div>
-		</main>
-	);
-}
-
 export const Route = createFileRoute("/")({
 	head: () => ({
 		meta: [{ title: "TrackGeek" }],
 	}),
 	component: HomeRoute,
 });
+
+function HomeRoute() {
+	return (
+		<main className="flex flex-col">
+			<Hero />
+
+			<Counter />
+
+			<Demo />
+
+			<Features />
+
+			<CTA />
+		</main>
+	);
+}

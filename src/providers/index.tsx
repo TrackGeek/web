@@ -1,22 +1,33 @@
-import type { ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 import { CookiesProvider } from "react-cookie";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 import { Toaster } from "@/components/ui/sonner";
-import { ReactQueryProvider } from "./react-query-provider";
+import { TooltipProvider } from "@/components/ui/tooltip.tsx";
+import { TanstackQueryProvider } from "./tanstack-query-provider";
+import { TanstackDevtoolsProvider } from "./tanstack-devtools-provider";
 
-interface RootProviderProps {
+interface ProviderProps {
 	children: ReactNode;
 }
 
-export function RootProvider({ children }: RootProviderProps) {
+const providers: ComponentType<ProviderProps>[] = [
+	({ children }) => <TooltipProvider>{children}</TooltipProvider>,
+	({ children }) => <CookiesProvider>{children}</CookiesProvider>,
+	({ children }) => <TanstackQueryProvider>{children}</TanstackQueryProvider>,
+	({ children }) => (
+		<TanstackDevtoolsProvider>{children}</TanstackDevtoolsProvider>
+	),
+];
+
+export function RootProvider({ children }: ProviderProps) {
 	return (
 		<>
-			<CookiesProvider>
-				<ReactQueryProvider>{children}</ReactQueryProvider>
-			</CookiesProvider>
-
-			<TanStackRouterDevtools position="bottom-left" />
+			{providers.reduceRight(
+				(acc, Provider, index) => (
+					<Provider key={index + 1}>{acc}</Provider>
+				),
+				children,
+			)}
 
 			<Toaster position="top-center" closeButton />
 		</>

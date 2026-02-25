@@ -13,8 +13,8 @@
 	"notifications": "Notificações",
 	"profile": "Perfil",
 	"credits": "Créditos",
-	"roadmap": "Roadmap",
-	"feedback": "Feedback",
+	"roadmap": "Planejamento",
+	"feedback": "Comentários",
 	"providers": {
 		"IGDBMetadata": "Metadados dos jogos fornecidos por",
 		"TMDBMetadata": "Metadados de filmes e séries fornecidos por",
@@ -82,5 +82,15 @@
 		"designer": "Designer",
 		"translator": "Tradutor",
 		"supporter": "Apoiante"
-	}
+	},
+	"clipboard": {
+		"paste": "Paste from clipboard"
+	},
+	"minEpisodes": "Min Episodes",
+	"minChapters": "Min Chapters",
+	"mostPopular": "Most Popular",
+	"recentlyReleased": "Recently Released",
+	"comingSoon": "Coming Soon",
+	"mostAnticipated": "Most Anticipated",
+	"viewDetails": "View Details"
 }

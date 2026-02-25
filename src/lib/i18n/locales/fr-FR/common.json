@@ -82,5 +82,15 @@
 		"designer": "Designer",
 		"translator": "Translator",
 		"supporter": "Supporter"
-	}
+	},
+	"clipboard": {
+		"paste": "Paste from clipboard"
+	},
+	"minEpisodes": "Min Episodes",
+	"minChapters": "Min Chapters",
+	"mostPopular": "Most Popular",
+	"recentlyReleased": "Recently Released",
+	"comingSoon": "Coming Soon",
+	"mostAnticipated": "Most Anticipated",
+	"viewDetails": "View Details"
 }

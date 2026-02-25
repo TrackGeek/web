@@ -163,7 +163,7 @@ export function Header() {
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
-							<Link to="/" className="cursor-pointer">
+							<Link to="/game" className="cursor-pointer">
 								<Gamepad2 size={18} className="text-white" />
 								{t("common:types.game_other")}
 							</Link>

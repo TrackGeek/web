@@ -351,7 +351,7 @@ function DonateRoute() {
 
 				<div>
 					<h2 className="text-2xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
-						{t("pages:donate.transparenceReports")}
+						{t("pages:donate.transparencyReports")}
 					</h2>
 					<a
 						href={"https://drive.proton.me/urls/E1WHSDDQ0M#0zZ3zOelpK8q"}

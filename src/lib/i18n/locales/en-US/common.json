@@ -82,5 +82,10 @@
 		"designer": "Designer",
 		"translator": "Translator",
 		"supporter": "Supporter"
-	}
+	},
+	"clipboard": {
+		"paste": "Paste from clipboard"
+	},
+	"minEpisodes": "Min Episodes",
+  "minChapters": "Min Chapters",
 }

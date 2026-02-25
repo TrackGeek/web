@@ -30,10 +30,11 @@ function GameRoute() {
 			>
 				<CarouselContent>
 					{games.map((game) => {
-						const keyArt = game.artworks.find(
+						const artworks = Array.isArray(game.artworks) ? game.artworks : [];
+						const keyArt = artworks.find(
 							(a: any) => a.type === "Key art without logo",
 						)?.url;
-						const logoArt = game.artworks.find(
+						const logoArt = artworks.find(
 							(a: any) => a.type === "Game logo (color)",
 						)?.url;
 
@@ -41,7 +42,7 @@ function GameRoute() {
 							<CarouselItem key={game.id}>
 								<div className="relative w-full overflow-hidden rounded-xl border border-border">
 									<img
-										src={keyArt || game.artworks[0]?.url}
+										src={keyArt || artworks[0]?.url || game.coverUrl}
 										className="w-full h-60 md:h-120 object-cover object-top"
 										alt={game.name}
 									/>

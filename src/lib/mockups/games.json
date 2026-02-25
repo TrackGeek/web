@@ -1,0 +1,379 @@
+{
+	"game": {
+		"id": "095dc41b-332a-448f-a6a1-08dee493289c",
+		"igdbId": 52189,
+		"ageRatings": [
+			{
+				"category": "RP",
+				"synopsis": null,
+				"organization": "ESRB"
+			}
+		],
+		"aggregatedRating": null,
+		"aggregatedRatingCount": null,
+		"alternativeNames": [
+			{
+				"name": "GTA 6",
+				"comment": "Acronym",
+				"checksum": "10c6337f-8203-404b-2e12-630fd417a600"
+			},
+			{
+				"name": "Grand Theft Auto 6",
+				"comment": "Numerical",
+				"checksum": "2218f45a-efab-9c4f-11e8-bd8f2d211f04"
+			},
+			{
+				"name": "GTA VI",
+				"comment": "Acronym",
+				"checksum": "b38e432f-52ed-630c-5f26-efed8f3fa540"
+			},
+			{
+				"name": "GTA6",
+				"comment": "Acronym",
+				"checksum": "ebb25079-26f9-b5be-7c52-07288644595e"
+			}
+		],
+		"artworks": [
+			{
+				"url": "https://images.igdb.com/igdb/image/upload/t_1080p/ar4wh8.jpg",
+				"type": "Game logo (color)",
+				"checksum": "fc9716b5-7e84-bf0f-2aaf-e4e279ba8fb3"
+			},
+			{
+				"url": "https://images.igdb.com/igdb/image/upload/t_1080p/ar52fz.jpg",
+				"type": "Key art without logo",
+				"checksum": "06090de9-e5ea-76be-2efc-230ea3f20ba7"
+			},
+			{
+				"url": "https://images.igdb.com/igdb/image/upload/t_1080p/ar52g1.jpg",
+				"type": "Key art with logo",
+				"checksum": "a108b165-e6d9-88e5-8b71-fd4b03424e55"
+			},
+			{
+				"url": "https://images.igdb.com/igdb/image/upload/t_1080p/ar52g0.jpg",
+				"type": "Artwork",
+				"checksum": "4d334008-ac2d-316c-54b6-b376f66dad22"
+			}
+		],
+		"checksum": "6f1166a7-8b74-e648-0608-650b3e9a9584",
+		"bundles": [],
+		"collections": [
+			{
+				"name": "Grand Theft Auto",
+				"slug": "grand-theft-auto",
+				"type": "Series",
+				"checksum": "08e4bea9-d636-9afd-1e56-5c50b4a50dc9"
+			}
+		],
+		"coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co9rwo.jpg",
+		"dlcs": [],
+		"expandedGames": [],
+		"expansions": [],
+		"externalGames": [],
+		"firstReleaseDate": "2026-11-19T00:00:00.000Z",
+		"forks": [],
+		"franchise": {},
+		"franchises": [
+			{
+				"name": "Grand Theft Auto",
+				"slug": "grand-theft-auto",
+				"checksum": "4ccbd7c5-db16-79c4-317e-7c4d83798739"
+			}
+		],
+		"gameEngines": [
+			{
+				"name": "RAGE",
+				"slug": "rage",
+				"checksum": "00259163-fc9b-8263-b625-74dcbb01b3fc"
+			}
+		],
+		"gameLocalizations": [],
+		"gameModes": [
+			{
+				"name": "Single player",
+				"slug": "single-player",
+				"checksum": "1cc07088-c5fb-3cb2-9e68-af6620c18836"
+			},
+			{
+				"name": "Multiplayer",
+				"slug": "multiplayer",
+				"checksum": "3ffef62b-e19f-6bab-d510-98385c06d902"
+			},
+			{
+				"name": "Co-operative",
+				"slug": "co-operative",
+				"checksum": "d154173b-5bdf-5fda-5969-e4c87e135d1a"
+			}
+		],
+		"gameStatus": {},
+		"gameType": {
+			"type": "Main Game",
+			"checksum": "0d2fcd35-9e5b-aaaf-bf20-806697c0d452"
+		},
+		"genres": [
+			{
+				"name": "Shooter",
+				"slug": "shooter",
+				"checksum": "20c255bc-ec2d-c219-34bd-47995b0a79f1"
+			},
+			{
+				"name": "Racing",
+				"slug": "racing",
+				"checksum": "41227287-0a1a-0f14-90f2-05655314e8b4"
+			},
+			{
+				"name": "Adventure",
+				"slug": "adventure",
+				"checksum": "a93a77df-3927-13fa-1d50-5d443cbb695f"
+			}
+		],
+		"hypes": null,
+		"involvedCompanies": [
+			{
+				"porting": false,
+				"checksum": "336231e2-13fb-f2b0-adb5-fd600c931aad",
+				"developer": true,
+				"publisher": true,
+				"supporting": false,
+				"companyName": "Rockstar Games"
+			},
+			{
+				"porting": false,
+				"checksum": "2be89565-dfae-5248-2ad1-68f8eb565fd3",
+				"developer": false,
+				"publisher": true,
+				"supporting": false,
+				"companyName": "Take-Two Interactive"
+			}
+		],
+		"keywords": [
+			{
+				"name": "vehicular combat",
+				"slug": "vehicular-combat",
+				"checksum": "c4552198-9e0a-7d27-5c53-5c9ae51daaa7"
+			},
+			{
+				"name": "bloody",
+				"slug": "bloody",
+				"checksum": "cd6a74ca-7075-bf8e-efd4-63240193bc75"
+			},
+			{
+				"name": "murder",
+				"slug": "murder",
+				"checksum": "67a01ede-1f09-b9bb-6bfc-8854552ce3d9"
+			},
+			{
+				"name": "crime",
+				"slug": "crime",
+				"checksum": "0530d350-70e1-8c5c-7294-56132589e7e1"
+			},
+			{
+				"name": "realistic",
+				"slug": "realistic",
+				"checksum": "d08a3f5a-c83a-569f-311b-bf2e33126af9"
+			},
+			{
+				"name": "human",
+				"slug": "human",
+				"checksum": "455c2d40-34e4-3f38-4c9e-d4a5fe82593d"
+			}
+		],
+		"multiplayerModes": [],
+		"name": "Grand Theft Auto VI",
+		"parentGame": {},
+		"platforms": [
+			{
+				"name": "Xbox Series X|S",
+				"checksum": "296fb992-b6b0-544b-3e58-b50f4e058070"
+			},
+			{
+				"name": "PlayStation 5",
+				"checksum": "53874689-0d86-1098-3299-4e9611491aed"
+			}
+		],
+		"playerPerspectives": [
+			{
+				"name": "First person",
+				"slug": "first-person",
+				"checksum": "d90c79c9-6e5d-b0c9-49fd-3866866b8c9f"
+			},
+			{
+				"name": "Third person",
+				"slug": "third-person",
+				"checksum": "df3218c6-d152-af20-f352-b04f70f43ae5"
+			}
+		],
+		"ports": [],
+		"rating": null,
+		"ratingCount": null,
+		"releaseDates": [
+			{
+				"date": "2026-11-19T00:00:00.000Z"
+			},
+			{
+				"date": "2026-11-19T00:00:00.000Z"
+			}
+		],
+		"remakes": [],
+		"remasters": [],
+		"screenshots": [
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/scwpqj.jpg",
+				"checksum": "2bb016fc-8cc3-58b6-68f5-28398e0bfa1e"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/scpsp7.jpg",
+				"checksum": "212b7e67-1f6c-4fdb-0a90-5d0fbc5756d6"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/scpsp6.jpg",
+				"checksum": "4eeac097-dc7f-682e-850b-6bbb78fb0694"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/scpsp8.jpg",
+				"checksum": "5a467550-e32d-2620-5633-45225087d0e9"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/scpsp9.jpg",
+				"checksum": "e8fb7e62-3fa9-59cb-4395-6cf0f122dd32"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vlj.jpg",
+				"checksum": "abaff474-6bfa-f8c7-f5a7-8888f74385f9"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vlk.jpg",
+				"checksum": "c34acf91-9ba0-fee7-7fea-59db6b53241c"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vll.jpg",
+				"checksum": "a860f70b-4cd4-b25c-a3b3-3aa1acbf0b1b"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vlm.jpg",
+				"checksum": "9208f754-73b2-fb6d-80de-84bb2d299f43"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vln.jpg",
+				"checksum": "2e0777ed-62f6-e7da-4b7a-abe71e83b35e"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vlo.jpg",
+				"checksum": "64f4ec6f-e5cc-45bf-71bb-bd21832b570e"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vlp.jpg",
+				"checksum": "cb5fd847-ee7f-cbe1-aad0-62089a91f7c4"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vlq.jpg",
+				"checksum": "1369fda4-c93c-05ab-20b2-7d5493647dd9"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vlr.jpg",
+				"checksum": "8957b506-2a6f-dead-2d9d-d777a6912c93"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vls.jpg",
+				"checksum": "51b72467-a8d5-824e-d562-3b5dcbae3ca9"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vlt.jpg",
+				"checksum": "ea99e80e-e15c-c0cc-0933-d9c48535d555"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vlu.jpg",
+				"checksum": "81290f7d-1705-06ca-dd8d-c7c211d618f3"
+			},
+			{
+				"imageId": "https://images.igdb.com/igdb/image/upload/t_1080p/sc10vlv.jpg",
+				"checksum": "4fb6afa3-0679-6d6c-6839-7d943646adb9"
+			}
+		],
+		"similarGames": [
+			{
+				"name": "Borderlands 3",
+				"slug": "borderlands-3",
+				"checksum": "53c00fc3-17e1-4bdb-b69b-ef842a5d3a12",
+				"coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co20r3.jpg"
+			},
+			{
+				"name": "Dude Simulator 2",
+				"slug": "dude-simulator-2",
+				"checksum": "93973c04-bbcb-084a-3a10-e3217ddec2d3",
+				"coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/coa93u.jpg"
+			},
+			{
+				"name": "Days Gone",
+				"slug": "days-gone",
+				"checksum": "9a57b60f-39ae-50ef-b084-88bda1c1d57e",
+				"coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co94bn.jpg"
+			},
+			{
+				"name": "Force of Nature",
+				"slug": "force-of-nature",
+				"checksum": "dc5786e8-405d-ea1f-5ac5-4b88b91b95a1",
+				"coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1re9.jpg"
+			},
+			{
+				"name": "Citadel: Forged With Fire",
+				"slug": "citadel-forged-with-fire",
+				"checksum": "54663331-8c0b-3f14-f136-169e761f3238",
+				"coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1ndj.jpg"
+			},
+			{
+				"name": "American Fugitive",
+				"slug": "american-fugitive",
+				"checksum": "f118dde2-0c6a-bee9-59c9-63728c282afa",
+				"coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rdk.jpg"
+			},
+			{
+				"name": "Savage Lands",
+				"slug": "savage-lands",
+				"checksum": "bbab7ffa-ae35-87ca-f6b1-4f982913be10",
+				"coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rg7.jpg"
+			},
+			{
+				"name": "Dude Simulator",
+				"slug": "dude-simulator",
+				"checksum": "e47f0a00-001e-c6a0-1057-c14de49f8fae",
+				"coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/coa93t.jpg"
+			},
+			{
+				"name": "Miscreated",
+				"slug": "miscreated",
+				"checksum": "365a6a3e-6111-ab1b-75d6-47416fd77c2a",
+				"coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3wn0.jpg"
+			},
+			{
+				"name": "Cyberpunk 2077",
+				"slug": "cyberpunk-2077",
+				"checksum": "bf9418af-c49a-8721-c8ff-58e30e4093b0",
+				"coverUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/coaih8.jpg"
+			}
+		],
+		"slug": "grand-theft-auto-vi",
+		"standaloneExpansions": [],
+		"storyline": null,
+		"summary": "Grand Theft Auto VI heads to the state of Leonida, home to the neon-soaked streets of Vice City and beyond in the biggest, most immersive evolution of the Grand Theft Auto series yet.",
+		"totalRating": null,
+		"totalRatingCount": null,
+		"versionParent": {},
+		"versionTitle": null,
+		"videos": [
+			{
+				"name": "Announcement Trailer",
+				"videoId": "https://www.youtube.com/embed/QdBZY2fkU-0",
+				"checksum": "9f59f783-f3f3-1d01-76f0-d11f30f1d85e"
+			},
+			{
+				"name": "Release Date Trailer",
+				"videoId": "https://www.youtube.com/embed/VQRLujxTm3c",
+				"checksum": "639870ce-064c-ca83-2d72-970095b24d43"
+			}
+		],
+		"lastRefreshedAt": "2026-02-25T15:57:45.070Z",
+		"createdAt": "2026-02-25T15:57:45.070Z",
+		"updatedAt": "2026-02-25T15:57:45.070Z"
+	}
+}

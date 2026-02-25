@@ -1,11 +1,10 @@
-import * as React from "react";
 import useEmblaCarousel, {
 	type UseEmblaCarouselType,
 } from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-
-import { cn } from "@/lib/utils";
+import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -175,7 +174,7 @@ function CarouselPrevious({
 	size = "icon",
 	...props
 }: React.ComponentProps<typeof Button>) {
-	const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+	const { orientation, scrollPrev, canScrollPrev, opts } = useCarousel();
 
 	return (
 		<Button
@@ -189,7 +188,7 @@ function CarouselPrevious({
 					: "-top-12 left-1/2 -translate-x-1/2 rotate-90",
 				className,
 			)}
-			disabled={!canScrollPrev}
+			disabled={opts?.loop ? false : !canScrollPrev}
 			onClick={scrollPrev}
 			{...props}
 		>
@@ -205,7 +204,7 @@ function CarouselNext({
 	size = "icon",
 	...props
 }: React.ComponentProps<typeof Button>) {
-	const { orientation, scrollNext, canScrollNext } = useCarousel();
+	const { orientation, scrollNext, canScrollNext, opts } = useCarousel();
 
 	return (
 		<Button
@@ -219,7 +218,7 @@ function CarouselNext({
 					: "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
 				className,
 			)}
-			disabled={!canScrollNext}
+			disabled={opts?.loop ? false : !canScrollNext}
 			onClick={scrollNext}
 			{...props}
 		>

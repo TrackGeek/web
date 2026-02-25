@@ -101,8 +101,7 @@
     font-family: "Archivo", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
-    font-variation-settings:
-    "wdth" 100; 
+    font-variation-settings: "wdth" 100; 
   }
   a {
     @apply text-white hover:text-accent
@@ -126,37 +125,55 @@
   @apply bg-primary rounded-4xl 
 }
 
-        .glass-panel {
-            background: rgba(24, 24, 27, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid hsl(var(--border));
-        }
+.glass-panel {
+  background: rgba(24, 24, 27, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--border));
+}
 
-        #toast-container {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 50;
-            pointer-events: none;
-        }
-        .toast {
-            background: hsl(var(--card));
-            border: 1px solid hsl(var(--border));
-            color: hsl(var(--foreground));
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-            margin-top: 10px;
-            opacity: 0;
-            transform: translateY(20px);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+#toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 50;
+  pointer-events: none;
+}
 
-        .floating-bg {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.1;
-            z-index: -1;
-        }
+.toast {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  margin-top: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.floating-bg {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+  z-index: -1;
+}
+
+/* Custom styles for accessibility button */
+body .asw-menu-btn {
+  width: 42px !important;
+  height: 42px !important;
+  background: #10b981 !important;
+  background-image: none !important;
+  outline-color: #10b981 !important;
+}
+.asw-menu-btn svg {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  min-height: 26px !important;
+  max-width: 26px !important;
+  max-height: 26px !important;
+}

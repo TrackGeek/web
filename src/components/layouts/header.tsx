@@ -195,7 +195,7 @@ export function Header() {
 			</div>
 
 			<div className="flex items-center justify-center gap-3">
-				<Link to="/">
+				<Link to="/search">
 					<Button>
 						<Search />
 					</Button>

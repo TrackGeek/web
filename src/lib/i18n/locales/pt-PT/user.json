@@ -15,16 +15,16 @@
 	"follower_plural": "Seguidores",
 	"following": "Seguindo",
 	"follow": "Seguir",
-	"filter": "Filter",
-	"random": "Random",
-	"search": "Search",
+	"filter": "Filtrar",
+	"random": "Aleatório",
+	"search": "Pesquisar",
 	"sort": {
-		"placeholder": "Sort by:",
-		"popularity": "Popularity",
-		"lastUpdated": "Last Updated",
-		"lastAdded": "Last Added",
-		"rating": "Rating",
-		"releaseDate": "Release Date",
-		"title": "Title"
+		"placeholder": "Ordenar por:",
+		"popularity": "Popularidade",
+		"lastUpdated": "Ultima atualização",
+		"lastAdded": "Adicionado Recentemente",
+		"rating": "Avaliação",
+		"releaseDate": "Data de Lançamento",
+		"title": "Título"
 	}
 }

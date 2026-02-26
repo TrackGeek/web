@@ -10,15 +10,15 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "@/components/ui/carousel.tsx";
-import gamesData from "@/lib/mockups/games.json";
+import animesData from "@/lib/mockups/animes.json";
 
-export const Route = createFileRoute("/game/")({
-	component: GameRoute,
+export const Route = createFileRoute("/anime/")({
+	component: animeRoute,
 });
 
-function GameRoute() {
+function animeRoute() {
 	const { t } = useTranslation();
-	const games = Array.isArray(gamesData) ? gamesData : [gamesData.game];
+	const animes = Array.isArray(animesData) ? animesData : [animesData.anime];
 
 	return (
 		<div className="mx-auto w-full">
@@ -30,47 +30,44 @@ function GameRoute() {
 				}}
 			>
 				<CarouselContent>
-					{games.map((game) => {
-						const artworks = Array.isArray(game.artworks) ? game.artworks : [];
-						const keyArt = artworks.find(
-							(a: any) => a.type === "Key art without logo",
-						)?.url;
-						const logoArt = artworks.find(
-							(a: any) => a.type === "Game logo (color)",
-						)?.url;
+					{animes.map((anime) => {
+						const getYoutubeThumbnail = (url: string) => {
+							if (!url) return null;
+							const match = url.match(/\/embed\/([^/?]+)/);
+							const videoId = match ? match[1] : null;
+							return videoId
+								? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+								: null;
+						};
+
+						const trailerThumbnail = getYoutubeThumbnail(
+							anime.trailer?.embedUrl,
+						);
 
 						return (
-							<CarouselItem key={game.id}>
+							<CarouselItem key={anime.id}>
 								<div className="relative w-full overflow-hidden rounded-xl border border-border">
 									<img
-										src={keyArt || artworks[0]?.url || game.coverUrl}
-										className="w-full h-60 md:h-120 object-cover object-top"
-										alt={game.name}
+										src={trailerThumbnail || anime.imageUrl}
+										className="w-full h-60 md:h-120 object-cover"
+										alt={anime.title}
 									/>
 
 									<div className="absolute inset-0 bg-linear-to-t from-malachite-500/80 via-malachite-500/30 to-transparent" />
 
 									<div className="absolute inset-0 p-8 flex flex-col justify-end gap-4">
-										{logoArt ? (
-											<img
-												src={logoArt.replace(".jpg", ".png")}
-												className="h-24 object-contain self-start drop-shadow-lg"
-												alt={`${game.name} logo`}
-											/>
-										) : (
-											<h2 className="text-4xl font-bold drop-shadow-lg">
-												{game.name}
-											</h2>
-										)}
+										<h2 className="text-4xl font-bold drop-shadow-lg">
+											{anime.title}
+										</h2>
 
 										<div className="max-w-2xl hidden md:block">
 											<p className="text-lg line-clamp-2 text-white/90 drop-shadow-md">
-												{game.summary}
+												{anime.synopsis}
 											</p>
 										</div>
 
 										<Link
-											to={`/game/${game.id}`}
+											to={`/anime/${anime.id}`}
 											className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
 										>
 											{t("common:viewDetails")}
@@ -92,38 +89,38 @@ function GameRoute() {
 			</Carousel>
 			<div className="py-6 space-y-4">
 				<div className="flex items-center justify-between mb-4">
-					<p className="text-2xl font-bold">{t("common:mostPopular")}</p>
+					<p className="text-2xl font-bold">{t("common:topAiring")}</p>
 					<Button>{t("pages:donate.viewAll")}</Button>
 				</div>
 				<Grid minColSize={"120px"} className={"grid-cols-5"}>
-					{games.map((game) => (
+					{animes.map((anime) => (
 						<CardItem
-							title={game.name}
-							url={`/game/${game.id}`}
-							imageURL={game.coverUrl}
-							rating={game.rating}
-							year={new Date(game.releaseDates[0].date).getFullYear()}
-							synopsis={game.summary}
-							mediaType={"game"}
-							key={game.id}
+							title={anime.title}
+							url={`/anime/${anime.id}`}
+							imageURL={anime.imageUrl}
+							rating={anime.rating}
+							year={anime.year}
+							synopsis={anime.background}
+							mediaType={"anime"}
+							key={anime.id}
 						/>
 					))}
 				</Grid>
 				<div className="flex items-center justify-between mb-4">
-					<p className="text-2xl font-bold">{t("common:recentlyReleased")}</p>
+					<p className="text-2xl font-bold">{t("common:recommendations")}</p>{" "}
 					<Button>{t("pages:donate.viewAll")}</Button>
 				</div>
 				<Grid minColSize={"120px"} className={"grid-cols-5"}>
-					{games.map((game) => (
+					{animes.map((anime) => (
 						<CardItem
-							title={game.name}
-							url={`/game/${game.id}`}
-							imageURL={game.coverUrl}
-							rating={game.rating}
-							year={new Date(game.releaseDates[0].date).getFullYear()}
-							synopsis={game.summary}
-							mediaType={"game"}
-							key={game.id}
+							title={anime.title}
+							url={`/anime/${anime.id}`}
+							imageURL={anime.imageUrl}
+							rating={anime.rating}
+							year={anime.year}
+							synopsis={anime.background}
+							mediaType={"anime"}
+							key={anime.id}
 						/>
 					))}
 				</Grid>
@@ -132,34 +129,34 @@ function GameRoute() {
 					<Button>{t("pages:donate.viewAll")}</Button>
 				</div>
 				<Grid minColSize={"120px"} className={"grid-cols-5"}>
-					{games.map((game) => (
+					{animes.map((anime) => (
 						<CardItem
-							title={game.name}
-							url={`/game/${game.id}`}
-							imageURL={game.coverUrl}
-							rating={game.rating}
-							year={new Date(game.releaseDates[0].date).getFullYear()}
-							synopsis={game.summary}
-							mediaType={"game"}
-							key={game.id}
+							title={anime.title}
+							url={`/anime/${anime.id}`}
+							imageURL={anime.imageUrl}
+							rating={anime.rating}
+							year={anime.year}
+							synopsis={anime.background}
+							mediaType={"anime"}
+							key={anime.id}
 						/>
 					))}
 				</Grid>
 				<div className="flex items-center justify-between mb-4">
-					<p className="text-2xl font-bold">{t("common:mostAnticipated")}</p>
+					<p className="text-2xl font-bold">{t("common:topAnime")}</p>
 					<Button>{t("pages:donate.viewAll")}</Button>
 				</div>
 				<Grid minColSize={"120px"} className={"grid-cols-5"}>
-					{games.map((game) => (
+					{animes.map((anime) => (
 						<CardItem
-							title={game.name}
-							url={`/game/${game.id}`}
-							imageURL={game.coverUrl}
-							rating={game.rating}
-							year={new Date(game.releaseDates[0].date).getFullYear()}
-							synopsis={game.summary}
-							mediaType={"game"}
-							key={game.id}
+							title={anime.title}
+							url={`/anime/${anime.id}`}
+							imageURL={anime.imageUrl}
+							rating={anime.rating}
+							year={anime.year}
+							synopsis={anime.background}
+							mediaType={"anime"}
+							key={anime.id}
 						/>
 					))}
 				</Grid>

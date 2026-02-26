@@ -84,13 +84,16 @@
 		"supporter": "Apoiante"
 	},
 	"clipboard": {
-		"paste": "Paste from clipboard"
+		"paste": "Colar da área de transferência"
 	},
-	"minEpisodes": "Min Episodes",
-	"minChapters": "Min Chapters",
-	"mostPopular": "Most Popular",
-	"recentlyReleased": "Recently Released",
-	"comingSoon": "Coming Soon",
-	"mostAnticipated": "Most Anticipated",
-	"viewDetails": "View Details"
+	"minEpisodes": "Mínimo de episódios",
+	"minChapters": "Mínimo de capítulos",
+	"mostPopular": "Mais Popular",
+	"recentlyReleased": "Lançados Recentemente",
+	"comingSoon": "Em Breve ",
+	"mostAnticipated": "Mais Antecipados",
+	"viewDetails": "Ver detalhes",
+	"topAnime": "Top Anime",
+	"topAiring": "Top Airing",
+	"recommendations": "Recommendations"
 }

@@ -13,10 +13,10 @@ import {
 import animesData from "@/lib/mockups/animes.json";
 
 export const Route = createFileRoute("/anime/")({
-	component: animeRoute,
+	component: AnimeRoute,
 });
 
-function animeRoute() {
+function AnimeRoute() {
 	const { t } = useTranslation();
 	const animes = Array.isArray(animesData) ? animesData : [animesData.anime];
 

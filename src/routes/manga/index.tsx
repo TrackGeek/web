@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button.tsx";
 import mangasData from "@/lib/mockups/mangas.json";
 
 export const Route = createFileRoute("/manga/")({
-	component: mangaRoute,
+	component: MangaRoute,
 });
 
-function mangaRoute() {
+function MangaRoute() {
 	const { t } = useTranslation();
 	const mangas = mangasData;
 

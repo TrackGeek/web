@@ -169,7 +169,7 @@ export function Header() {
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
-							<Link to="/" className="cursor-pointer">
+							<Link to="/tv" className="cursor-pointer">
 								<TvMinimalPlay size={18} className="text-white" />
 								{t("common:types.tv_other")}
 							</Link>

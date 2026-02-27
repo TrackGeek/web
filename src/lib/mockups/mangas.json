@@ -1,0 +1,214 @@
+[
+	{
+		"mal_id": 2,
+		"url": "https:\/\/myanimelist.net\/manga\/2\/Berserk",
+		"imageUrl": "https:\/\/cdn.myanimelist.net\/images\/manga\/1\/157897l.jpg",
+		"titles": [
+			{ "type": "Default", "title": "Berserk" },
+			{ "type": "Synonym", "title": "Berserk: The Prototype" },
+			{ "type": "Japanese", "title": "\u30d9\u30eb\u30bb\u30eb\u30af" },
+			{ "type": "English", "title": "Berserk" }
+		],
+		"title": "Berserk",
+		"title_english": "Berserk",
+		"title_japanese": "\u30d9\u30eb\u30bb\u30eb\u30af",
+		"title_synonyms": ["Berserk: The Prototype"],
+		"type": "Manga",
+		"chapters": null,
+		"volumes": null,
+		"status": "Publishing",
+		"publishing": true,
+		"published": {
+			"from": "1989-08-25T00:00:00+00:00",
+			"to": null,
+			"prop": {
+				"from": { "day": 25, "month": 8, "year": 1989 },
+				"to": { "day": null, "month": null, "year": null }
+			},
+			"string": "Aug 25, 1989 to ?"
+		},
+		"score": 9.46,
+		"scored": 9.46,
+		"scored_by": 393511,
+		"rank": 1,
+		"popularity": 1,
+		"members": 786684,
+		"favorites": 137154,
+		"synopsis": "Guts, a former mercenary now known as the Black Swordsman, is out for revenge. After a tumultuous childhood, he finally finds someone he respects and believes he can trust, only to have everything fall apart when this person takes away everything important to Guts for the purpose of fulfilling his own desires. Now marked for death, Guts becomes condemned to a fate in which he is relentlessly pursued by demonic beings.\n\nSetting out on a dreadful quest riddled with misfortune, Guts, armed with a massive sword and monstrous strength, will let nothing stop him, not even death itself, until he is finally able to take the head of the one who stripped him\u2014and his loved one\u2014of their humanity.\n\n[Written by MAL Rewrite]\n\nIncluded one-shot:\nVolume 14: Berserk: The Prototype",
+		"background": "Berserk won the Excellence Award at the sixth Tezuka Osamu Cultural Prize in 2002. As of August 2025, over 70 million copies of the manga are in circulation. The series has been published in English by Dark Horse Comics since November 4, 2003. It has also been released in Argentina, Brazil, Czech Republic, France, Germany, Greece, Hong Kong, Italy, M\u00e9xico, Poland, South Korea, Spain, Taiwan, Thailand, and Turkey. In May 2021, the author Kentaro Miura suddenly died at the age of 54. Chapter 364 of Berserk was published posthumously on September 10, 2021. Miura would often share details about the series' story with his childhood friend and fellow mangaka Kouji Mori. The series resumed on June 24, 2022, with Studio Gaga handling the art and Kouji Mori's supervision.",
+		"authors": [
+			{
+				"mal_id": 1868,
+				"type": "people",
+				"name": "Miura, Kentarou",
+				"url": "https:\/\/myanimelist.net\/people\/1868\/Kentarou_Miura"
+			},
+			{
+				"mal_id": 49592,
+				"type": "people",
+				"name": "Studio Gaga",
+				"url": "https:\/\/myanimelist.net\/people\/49592\/Studio_Gaga"
+			}
+		],
+		"serializations": [
+			{
+				"mal_id": 2,
+				"type": "manga",
+				"name": "Young Animal",
+				"url": "https:\/\/myanimelist.net\/manga\/magazine\/2\/Young_Animal"
+			}
+		],
+		"genres": [
+			{
+				"mal_id": 1,
+				"type": "manga",
+				"name": "Action",
+				"url": "https:\/\/myanimelist.net\/manga\/genre\/1\/Action"
+			},
+			{
+				"mal_id": 2,
+				"type": "manga",
+				"name": "Adventure",
+				"url": "https:\/\/myanimelist.net\/manga\/genre\/2\/Adventure"
+			},
+			{
+				"mal_id": 46,
+				"type": "manga",
+				"name": "Award Winning",
+				"url": "https:\/\/myanimelist.net\/manga\/genre\/46\/Award_Winning"
+			},
+			{
+				"mal_id": 8,
+				"type": "manga",
+				"name": "Drama",
+				"url": "https:\/\/myanimelist.net\/manga\/genre\/8\/Drama"
+			},
+			{
+				"mal_id": 10,
+				"type": "manga",
+				"name": "Fantasy",
+				"url": "https:\/\/myanimelist.net\/manga\/genre\/10\/Fantasy"
+			},
+			{
+				"mal_id": 14,
+				"type": "manga",
+				"name": "Horror",
+				"url": "https:\/\/myanimelist.net\/manga\/genre\/14\/Horror"
+			}
+		],
+		"explicit_genres": [],
+		"themes": [
+			{
+				"mal_id": 58,
+				"type": "manga",
+				"name": "Gore",
+				"url": "https:\/\/myanimelist.net\/manga\/genre\/58\/Gore"
+			},
+			{
+				"mal_id": 38,
+				"type": "manga",
+				"name": "Military",
+				"url": "https:\/\/myanimelist.net\/manga\/genre\/38\/Military"
+			},
+			{
+				"mal_id": 40,
+				"type": "manga",
+				"name": "Psychological",
+				"url": "https:\/\/myanimelist.net\/manga\/genre\/40\/Psychological"
+			}
+		],
+		"demographics": [
+			{
+				"mal_id": 41,
+				"type": "manga",
+				"name": "Seinen",
+				"url": "https:\/\/myanimelist.net\/manga\/genre\/41\/Seinen"
+			}
+		],
+		"relations": [
+			{
+				"relation": "Adaptation",
+				"entry": [
+					{
+						"mal_id": 33,
+						"type": "anime",
+						"name": "Kenpuu Denki Berserk",
+						"url": "https:\/\/myanimelist.net\/anime\/33\/Kenpuu_Denki_Berserk"
+					},
+					{
+						"mal_id": 10218,
+						"type": "anime",
+						"name": "Berserk: Ougon Jidai-hen I - Haou no Tamago",
+						"url": "https:\/\/myanimelist.net\/anime\/10218\/Berserk__Ougon_Jidai-hen_I_-_Haou_no_Tamago"
+					},
+					{
+						"mal_id": 12113,
+						"type": "anime",
+						"name": "Berserk: Ougon Jidai-hen II - Doldrey Kouryaku",
+						"url": "https:\/\/myanimelist.net\/anime\/12113\/Berserk__Ougon_Jidai-hen_II_-_Doldrey_Kouryaku"
+					},
+					{
+						"mal_id": 12115,
+						"type": "anime",
+						"name": "Berserk: Ougon Jidai-hen III - Kourin",
+						"url": "https:\/\/myanimelist.net\/anime\/12115\/Berserk__Ougon_Jidai-hen_III_-_Kourin"
+					},
+					{
+						"mal_id": 32379,
+						"type": "anime",
+						"name": "Berserk",
+						"url": "https:\/\/myanimelist.net\/anime\/32379\/Berserk"
+					},
+					{
+						"mal_id": 34055,
+						"type": "anime",
+						"name": "Berserk 2nd Season",
+						"url": "https:\/\/myanimelist.net\/anime\/34055\/Berserk_2nd_Season"
+					},
+					{
+						"mal_id": 52976,
+						"type": "anime",
+						"name": "Berserk: Ougon Jidai-hen - Memorial Edition",
+						"url": "https:\/\/myanimelist.net\/anime\/52976\/Berserk__Ougon_Jidai-hen_-_Memorial_Edition"
+					}
+				]
+			},
+			{
+				"relation": "Spin-Off",
+				"entry": [
+					{
+						"mal_id": 106677,
+						"type": "manga",
+						"name": "Shousetsu Berserk: Enryuu no Kishi",
+						"url": "https:\/\/myanimelist.net\/manga\/106677\/Shousetsu_Berserk__Enryuu_no_Kishi"
+					}
+				]
+			},
+			{
+				"relation": "Other",
+				"entry": [
+					{
+						"mal_id": 92299,
+						"type": "manga",
+						"name": "Berserk: Shinen no Kami 2",
+						"url": "https:\/\/myanimelist.net\/manga\/92299\/Berserk__Shinen_no_Kami_2"
+					}
+				]
+			}
+		],
+		"external": [
+			{
+				"name": "Official Site",
+				"url": "https:\/\/magazine.younganimal.com\/title\/?id=32"
+			},
+			{
+				"name": "Wikipedia",
+				"url": "http:\/\/ja.wikipedia.org\/wiki\/%E3%83%99%E3%83%AB%E3%82%BB%E3%83%AB%E3%82%AF_%28%E6%BC%AB%E7%94%BB%29"
+			},
+			{
+				"name": "Wikipedia",
+				"url": "https:\/\/en.wikipedia.org\/wiki\/Berserk_(manga)"
+			}
+		]
+	}
+]

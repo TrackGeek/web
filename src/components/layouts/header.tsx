@@ -151,7 +151,7 @@ export function Header() {
 						align="start"
 					>
 						<DropdownMenuItem asChild>
-							<Link to="/" className="cursor-pointer">
+							<Link to="/anime" className="cursor-pointer">
 								<Mountain size={18} className="text-white" />
 								{t("common:types.anime_other")}
 							</Link>
@@ -175,7 +175,7 @@ export function Header() {
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
-							<Link to="/" className="cursor-pointer">
+							<Link to="/manga" className="cursor-pointer">
 								<LibraryBig size={18} className="text-white" />
 								{t("common:types.manga_other")}
 							</Link>

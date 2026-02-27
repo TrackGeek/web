@@ -18,7 +18,7 @@ export const Route = createFileRoute("/anime/")({
 
 function AnimeRoute() {
 	const { t } = useTranslation();
-	const animes = Array.isArray(animesData) ? animesData : [animesData.anime];
+	const animes = animesData;
 
 	return (
 		<div className="mx-auto w-full">
@@ -100,7 +100,7 @@ function AnimeRoute() {
 							imageURL={anime.imageUrl}
 							rating={anime.rating}
 							year={anime.year}
-							synopsis={anime.background}
+							synopsis={anime.synopsis}
 							mediaType={"anime"}
 							key={anime.id}
 						/>
@@ -118,7 +118,7 @@ function AnimeRoute() {
 							imageURL={anime.imageUrl}
 							rating={anime.rating}
 							year={anime.year}
-							synopsis={anime.background}
+							synopsis={anime.synopsis}
 							mediaType={"anime"}
 							key={anime.id}
 						/>
@@ -136,7 +136,7 @@ function AnimeRoute() {
 							imageURL={anime.imageUrl}
 							rating={anime.rating}
 							year={anime.year}
-							synopsis={anime.background}
+							synopsis={anime.synopsis}
 							mediaType={"anime"}
 							key={anime.id}
 						/>
@@ -154,7 +154,7 @@ function AnimeRoute() {
 							imageURL={anime.imageUrl}
 							rating={anime.rating}
 							year={anime.year}
-							synopsis={anime.background}
+							synopsis={anime.synopsis}
 							mediaType={"anime"}
 							key={anime.id}
 						/>

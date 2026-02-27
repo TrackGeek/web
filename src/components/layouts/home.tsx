@@ -1,5 +1,5 @@
-import { Footer } from "../footer";
-import { Header } from "../header";
+import { Footer } from "../shared/footer";
+import { Header } from "../shared/header";
 
 interface HomeLayoutProps {
 	children: React.ReactNode;

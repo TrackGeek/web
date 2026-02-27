@@ -29,9 +29,9 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DetailsCard } from "@/components/cards/details.tsx";
-import { CastItem } from "@/components/details/cast";
-import { ListItem } from "@/components/details/list";
-import { ReviewItem } from "@/components/details/review";
+import { CastItem } from "@/components/pages/details/cast";
+import { ListItem } from "@/components/pages/details/list";
+import { ReviewItem } from "@/components/pages/details/review";
 import { MovieModal } from "@/components/modals/movie";
 import { RefreshData } from "@/components/modals/refresh-data";
 import { Button } from "@/components/ui/button";

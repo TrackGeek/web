@@ -18,10 +18,10 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DetailsCard } from "@/components/cards/details.tsx";
-import { CharacterItem } from "@/components/details/character";
-import { ListItem } from "@/components/details/list";
-import { Relations } from "@/components/details/relations";
-import { ReviewItem } from "@/components/details/review";
+import { CharacterItem } from "@/components/pages/details/character";
+import { ListItem } from "@/components/pages/details/list";
+import { Relations } from "@/components/pages/details/relations";
+import { ReviewItem } from "@/components/pages/details/review";
 import { MangaModal } from "@/components/modals/manga";
 import { RefreshData } from "@/components/modals/refresh-data";
 import { Button } from "@/components/ui/button";

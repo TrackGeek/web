@@ -17,8 +17,8 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DetailsCard } from "@/components/cards/details.tsx";
-import { ListItem } from "@/components/details/list";
-import { ReviewItem } from "@/components/details/review";
+import { ListItem } from "@/components/pages/details/list";
+import { ReviewItem } from "@/components/pages/details/review";
 import { BookModal } from "@/components/modals/book";
 import { RefreshData } from "@/components/modals/refresh-data";
 import { Button } from "@/components/ui/button";

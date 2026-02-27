@@ -32,13 +32,13 @@ import { DetailsCard } from "@/components/cards/details.tsx";
 import {
 	AnimeEpisodeProgress,
 	type SingleSeasonData,
-} from "@/components/details/anime-progress";
-import { CastItem } from "@/components/details/cast";
-import { CharacterItem } from "@/components/details/character";
-import { EpisodeItem } from "@/components/details/episode";
-import { ListItem } from "@/components/details/list";
-import { Relations } from "@/components/details/relations";
-import { ReviewItem } from "@/components/details/review";
+} from "@/components/pages/details/anime-progress";
+import { CastItem } from "@/components/pages/details/cast";
+import { CharacterItem } from "@/components/pages/details/character";
+import { EpisodeItem } from "@/components/pages/details/episode";
+import { ListItem } from "@/components/pages/details/list";
+import { Relations } from "@/components/pages/details/relations";
+import { ReviewItem } from "@/components/pages/details/review";
 import { EpisodicContentModal } from "@/components/modals/episodic-content";
 import { RefreshData } from "@/components/modals/refresh-data";
 import { Button } from "@/components/ui/button";

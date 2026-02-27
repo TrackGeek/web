@@ -29,14 +29,14 @@ import {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DetailsCard } from "@/components/cards/details.tsx";
-import { CastItem } from "@/components/details/cast";
-import { EpisodeItem } from "@/components/details/episode";
-import { ListItem } from "@/components/details/list";
+import { CastItem } from "@/components/pages/details/cast";
+import { EpisodeItem } from "@/components/pages/details/episode";
+import { ListItem } from "@/components/pages/details/list";
 import {
 	EpisodeProgress,
 	type SeasonData,
-} from "@/components/details/progress";
-import { ReviewItem } from "@/components/details/review";
+} from "@/components/pages/details/progress";
+import { ReviewItem } from "@/components/pages/details/review";
 import { EpisodicContentModal } from "@/components/modals/episodic-content";
 import { RefreshData } from "@/components/modals/refresh-data";
 import {

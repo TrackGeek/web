@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { ReviewItem } from "@/components/details/review.tsx";
+import { ReviewItem } from "@/components/pages/details/review";
 import { UserLayout } from "@/components/layouts/user";
 import { Input } from "@/components/ui/input.tsx";
 import { List } from "@/components/ui/list.tsx";

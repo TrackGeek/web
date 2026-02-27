@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Filter, Mountain } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { FeedListFollowing } from "@/components/feed/listFollowing";
-import { StillReading } from "@/components/sidebar/stillReading";
-import { StillWatching } from "@/components/sidebar/stillWatching";
+import { FeedListFollowing } from "@/components/pages/feed/listFollowing";
+import { StillReading } from "@/components/shared/sidebar/still-reading";
+import { StillWatching } from "@/components/shared/sidebar/still-watching";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,

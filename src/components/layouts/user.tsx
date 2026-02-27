@@ -4,7 +4,7 @@ import {
 	LinkTabsList,
 	LinkTabsTrigger,
 } from "@/components/ui/link-tabs.tsx";
-import { UserProfileHeader } from "@/components/user/UserProfileHeader.tsx";
+import { UserProfileHeader } from "@/components/pages/user/user-profile-header";
 
 interface UserLayoutProps {
 	children: React.ReactNode;

@@ -49,9 +49,9 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DetailsCard } from "@/components/cards/details.tsx";
-import { ListItem } from "@/components/details/list";
-import { Relations } from "@/components/details/relations";
-import { ReviewItem } from "@/components/details/review";
+import { ListItem } from "@/components/pages/details/list";
+import { Relations } from "@/components/pages/details/relations";
+import { ReviewItem } from "@/components/pages/details/review";
 import { GameModal } from "@/components/modals/game";
 import { RefreshData } from "@/components/modals/refresh-data";
 import { Button } from "@/components/ui/button";

@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { CardItem } from "@/components/cards/card.tsx";
-import { FeedListFollowing } from "@/components/feed/listFollowing.tsx";
+import { FeedListFollowing } from "@/components/pages/feed/listFollowing";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { UserLayout } from "@/components/layouts/user";
-import { CastFavoriteCard } from "@/components/user/CastFavoriteCard.tsx";
-import { MedalIcon } from "@/components/user/MedalIcon.tsx";
-import { StudioCard } from "@/components/user/StudioCard.tsx";
+import { CastFavoriteCard } from "@/components/pages/user/cast-favorite-card";
+import { MedalIcon } from "@/components/pages/user/medal-icon";
+import { StudioCard } from "@/components/pages/user/studio-card";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/user/$username/")({

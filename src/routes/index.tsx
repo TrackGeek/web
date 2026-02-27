@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Counter } from "@/components/sections/counter";
-import { CTA } from "@/components/sections/cta";
-import { Demo } from "@/components/sections/demo.tsx";
-import { Features } from "@/components/sections/features.tsx";
-import { Hero } from "@/components/sections/hero";
+import { Counter } from "@/components/pages/home/counter";
+import { CTA } from "@/components/pages/home/cta";
+import { Demo } from "@/components/pages/home/demo";
+import { Features } from "@/components/pages/home/features";
+import { Hero } from "@/components/pages/home/hero";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/")({

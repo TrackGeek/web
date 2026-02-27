@@ -19,13 +19,14 @@ export const authClient = createAuthClient({
 			user: {
 				profile: {
 					type: "json",
+          required: false
 				},
 			},
 		}),
 	],
 });
 
-export const { useSession, signIn, signOut, getLastUsedLoginMethod } =
+export const { useSession, signIn, signUp, signOut, getLastUsedLoginMethod } =
 	authClient;
 
 export type Session = typeof authClient.$Infer.Session;

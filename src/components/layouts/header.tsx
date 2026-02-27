@@ -181,7 +181,7 @@ export function Header() {
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
-							<Link to="/" className="cursor-pointer">
+							<Link to="/movie" className="cursor-pointer">
 								<Clapperboard size={18} className="text-white" />
 								{t("common:types.movie_other")}
 							</Link>

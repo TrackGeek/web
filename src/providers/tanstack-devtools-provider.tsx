@@ -13,7 +13,10 @@ export function TanstackDevtoolsProvider({
 	return (
 		<>
 			<TanStackDevtools
-				config={{ position: "bottom-right", theme: "dark" }}
+				config={{
+          position: "bottom-right",
+          theme: "dark"
+        }}
 				plugins={[
 					{
 						name: "TanStack Router",

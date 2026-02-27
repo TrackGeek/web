@@ -53,7 +53,7 @@ function SerieRoute() {
 										</div>
 
 										<Link
-											to={`/serie/${serie.id}`}
+											to={`/tv/${serie.id}`}
 											className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
 										>
 											{t("common:viewDetails")}
@@ -82,7 +82,7 @@ function SerieRoute() {
 					{series.map((serie) => (
 						<CardItem
 							title={serie.name}
-							url={`/serie/${serie.id}`}
+							url={`/tv/${serie.id}`}
 							imageURL={serie.posterUrl}
 							rating={serie.rating || 0}
 							year={new Date(serie.firstAirDate).getFullYear()}
@@ -100,7 +100,7 @@ function SerieRoute() {
 					{series.map((serie) => (
 						<CardItem
 							title={serie.name}
-							url={`/serie/${serie.id}`}
+							url={`/tv/${serie.id}`}
 							imageURL={serie.posterUrl}
 							rating={serie.rating || 0}
 							year={new Date(serie.firstAirDate).getFullYear()}
@@ -120,7 +120,7 @@ function SerieRoute() {
 					{series.map((serie) => (
 						<CardItem
 							title={serie.name}
-							url={`/serie/${serie.id}`}
+							url={`/tv/${serie.id}`}
 							imageURL={serie.posterUrl}
 							rating={serie.rating || 0}
 							year={new Date(serie.firstAirDate).getFullYear()}
@@ -138,7 +138,7 @@ function SerieRoute() {
 					{series.map((serie) => (
 						<CardItem
 							title={serie.name}
-							url={`/serie/${serie.id}`}
+							url={`/tv/${serie.id}`}
 							imageURL={serie.posterUrl}
 							rating={serie.rating || 0}
 							year={new Date(serie.firstAirDate).getFullYear()}

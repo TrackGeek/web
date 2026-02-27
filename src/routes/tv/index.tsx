@@ -75,7 +75,7 @@ function SerieRoute() {
 			</Carousel>
 			<div className="py-6 space-y-4">
 				<div className="flex items-center justify-between mb-4">
-					<p className="text-2xl font-bold">{t("common:trending")}</p>
+					<p className="text-2xl font-bold">{t("feed:trending")}</p>
 					<Button>{t("pages:donate.viewAll")}</Button>
 				</div>
 				<Grid minColSize={"120px"} className={"grid-cols-5"}>

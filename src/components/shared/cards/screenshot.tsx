@@ -5,8 +5,8 @@ import {
 	CarouselItem,
 	CarouselNext,
 	CarouselPrevious,
-} from "@/components/ui/carousel.tsx";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+} from "@/components/ui/carousel";
+import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog";
 
 interface ScreenshotProps {
 	title: string;

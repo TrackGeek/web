@@ -1,15 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { CardItem } from "@/components/cards/card.tsx";
-import { Grid } from "@/components/layouts/grid.tsx";
-import { Button } from "@/components/ui/button.tsx";
+import { CardItem } from "@/components/shared/cards/card";
+import { Grid } from "@/components/layouts/grid";
+import { Button } from "@/components/ui/button";
 import {
 	Carousel,
 	CarouselContent,
 	CarouselItem,
 	CarouselNext,
 	CarouselPrevious,
-} from "@/components/ui/carousel.tsx";
+} from "@/components/ui/carousel";
 import gamesData from "@/lib/mockups/games.json";
 
 export const Route = createFileRoute("/game/")({

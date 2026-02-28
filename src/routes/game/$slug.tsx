@@ -48,12 +48,12 @@ import {
 	XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { DetailsCard } from "@/components/cards/details.tsx";
+import { DetailsCard } from "@/components/shared/cards/details";
 import { ListItem } from "@/components/pages/details/list";
 import { Relations } from "@/components/pages/details/relations";
 import { ReviewItem } from "@/components/pages/details/review";
-import { GameModal } from "@/components/modals/game";
-import { RefreshData } from "@/components/modals/refresh-data";
+import { GameModal } from "@/components/shared/modals/game";
+import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Button } from "@/components/ui/button";
 import {
 	Carousel,

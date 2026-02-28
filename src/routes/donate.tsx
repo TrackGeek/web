@@ -7,9 +7,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Coffee, CreditCard, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ContributorsItem } from "@/components/cards/contributors.tsx";
-import { Grid } from "@/components/layouts/grid.tsx";
-import { Button } from "@/components/ui/button.tsx";
+import { ContributorsItem } from "@/components/cards/contributors";
+import { Grid } from "@/components/layouts/grid";
+import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -17,8 +17,8 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@/components/ui/dialog.tsx";
-import { Input } from "@/components/ui/input.tsx";
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/donate")({

@@ -3,7 +3,7 @@ import { animate } from "animejs";
 import { Book, Film, Gamepad, PencilIcon, Users } from "lucide-react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { cn } from "@/lib/utils.ts";
+import { cn } from "@/lib/utils";
 
 export function Features() {
 	const { t } = useTranslation();

@@ -28,12 +28,12 @@ import {
 	XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { DetailsCard } from "@/components/cards/details.tsx";
+import { DetailsCard } from "@/components/shared/cards/details";
 import { CastItem } from "@/components/pages/details/cast";
 import { ListItem } from "@/components/pages/details/list";
 import { ReviewItem } from "@/components/pages/details/review";
-import { MovieModal } from "@/components/modals/movie";
-import { RefreshData } from "@/components/modals/refresh-data";
+import { MovieModal } from "@/components/shared/modals/movie";
+import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,

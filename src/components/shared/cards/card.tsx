@@ -5,14 +5,14 @@ import { EpisodicContentModal } from "../modals/episodic-content";
 import { GameModal } from "../modals/game";
 import { MangaModal } from "../modals/manga";
 import { MovieModal } from "../modals/movie";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "../ui/dialog";
+} from "../../ui/dialog";
 
 type MediaType = "anime" | "movie" | "tv-show" | "game" | "book" | "manga";
 

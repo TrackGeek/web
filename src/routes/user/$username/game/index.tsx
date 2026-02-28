@@ -1,19 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowLeftRight, Dices, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { CardItem } from "@/components/cards/card.tsx";
-import { Grid } from "@/components/layouts/grid.tsx";
+import { CardItem } from "@/components/shared/cards/card";
+import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/button";
 import {
 	Combobox,
 	ComboboxContent,
 	ComboboxInput,
 	ComboboxItem,
 	ComboboxList,
-} from "@/components/ui/combobox.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { List } from "@/components/ui/list.tsx";
+} from "@/components/ui/combobox";
+import { Input } from "@/components/ui/input";
+import { List } from "@/components/ui/list";
 import {
 	Select,
 	SelectContent,
@@ -21,8 +21,8 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select.tsx";
-import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
+} from "@/components/ui/select";
+import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/user/$username/game/")({

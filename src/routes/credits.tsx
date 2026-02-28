@@ -5,11 +5,11 @@ import { useQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Code, Languages, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { ContributorsItem } from "@/components/cards/contributors.tsx";
-import { CoreTeamItem } from "@/components/cards/core-team.tsx";
-import { Grid } from "@/components/layouts/grid.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { cn } from "@/lib/utils.ts";
+import { ContributorsItem } from "@/components/cards/contributors";
+import { CoreTeamItem } from "@/components/cards/core-team";
+import { Grid } from "@/components/layouts/grid";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/credits")({

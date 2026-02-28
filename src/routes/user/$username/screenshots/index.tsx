@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ScreenshotItem } from "@/components/cards/screenshot.tsx";
-import { Grid } from "@/components/layouts/grid.tsx";
+import { ScreenshotItem } from "@/components/shared/cards/screenshot";
+import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
 
 export const Route = createFileRoute("/user/$username/screenshots/")({

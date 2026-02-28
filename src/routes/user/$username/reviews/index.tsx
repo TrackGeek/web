@@ -2,8 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { ReviewItem } from "@/components/pages/details/review";
 import { UserLayout } from "@/components/layouts/user";
-import { Input } from "@/components/ui/input.tsx";
-import { List } from "@/components/ui/list.tsx";
+import { Input } from "@/components/ui/input";
+import { List } from "@/components/ui/list";
 import {
 	Select,
 	SelectContent,
@@ -11,7 +11,7 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select.tsx";
+} from "@/components/ui/select";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/user/$username/reviews/")({

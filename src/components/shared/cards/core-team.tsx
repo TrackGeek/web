@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { Avatar, AvatarImage } from "@/components/ui/avatar.tsx";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 type RoleType =
 	| "reviewer"

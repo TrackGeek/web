@@ -2,18 +2,18 @@ import { format } from "date-fns";
 import { Calendar1, Plus, Save, Star, Trash } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "../ui/button";
-import { Calendar } from "../ui/calendar";
-import { Checkbox } from "../ui/checkbox";
-import { Field, FieldLabel } from "../ui/field";
-import { Input } from "../ui/input";
+import { Button } from "../../ui/button";
+import { Calendar } from "../../ui/calendar";
+import { Checkbox } from "../../ui/checkbox";
+import { Field, FieldLabel } from "../../ui/field";
+import { Input } from "../../ui/input";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupInput,
 	InputGroupText,
-} from "../ui/input-group";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+} from "../../ui/input-group";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import {
 	Select,
 	SelectContent,
@@ -21,8 +21,8 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "../ui/select";
-import { Textarea } from "../ui/textarea";
+} from "../../ui/select";
+import { Textarea } from "../../ui/textarea";
 
 interface MangaModalProps {
 	mediaData?: any;

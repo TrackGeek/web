@@ -7,7 +7,7 @@ import {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from "@/components/ui/accordion.tsx";
+} from "@/components/ui/accordion";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/add-data")({

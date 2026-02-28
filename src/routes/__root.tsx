@@ -1,4 +1,4 @@
-import "@/lib/i18n/config.ts";
+import "@/lib/i18n/config";
 import "@/global.css";
 
 import {

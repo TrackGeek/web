@@ -1,14 +1,14 @@
 import { ExternalLink, RefreshCcw } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "../ui/dialog";
+} from "../../ui/dialog";
 
 interface RefreshDataProps {
 	sourceURL: string;

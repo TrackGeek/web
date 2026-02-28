@@ -3,7 +3,7 @@ import {
 	LinkTabs,
 	LinkTabsList,
 	LinkTabsTrigger,
-} from "@/components/ui/link-tabs.tsx";
+} from "@/components/ui/link-tabs";
 import { UserProfileHeader } from "@/components/pages/user/user-profile-header";
 
 interface UserLayoutProps {

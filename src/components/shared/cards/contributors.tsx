@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
-import { Avatar, AvatarImage } from "@/components/ui/avatar.tsx";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
-} from "@/components/ui/tooltip.tsx";
+} from "@/components/ui/tooltip";
 
 type RoleType =
 	| "reviewer"

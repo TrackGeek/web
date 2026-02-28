@@ -2,7 +2,7 @@ import type { ComponentType, ReactNode } from "react";
 import { CookiesProvider } from "react-cookie";
 
 import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip.tsx";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { TanstackQueryProvider } from "./tanstack-query-provider";
 import { TanstackDevtoolsProvider } from "./tanstack-devtools-provider";
 

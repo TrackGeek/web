@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DetailsCard } from "@/components/cards/details.tsx";
+import { DetailsCard } from "@/components/cards/details";
 import {
 	AnimeEpisodeProgress,
 	type SingleSeasonData,

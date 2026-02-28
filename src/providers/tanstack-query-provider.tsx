@@ -4,13 +4,9 @@ import type { ReactNode } from "react";
 import { queryClient } from "@/lib/tanstack-query";
 
 interface TanstackQueryProviderProps {
-	children: ReactNode;
+  children: ReactNode;
 }
 
-export function TanstackQueryProvider({
-	children,
-}: TanstackQueryProviderProps) {
-	return (
-		<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-	);
+export function TanstackQueryProvider({ children }: TanstackQueryProviderProps) {
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

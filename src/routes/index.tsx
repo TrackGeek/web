@@ -7,24 +7,24 @@ import { Hero } from "@/components/pages/home/hero";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/")({
-	head: () => ({
-		meta: [...seo({ title: "Home" })],
-	}),
-	component: HomeRoute,
+  head: () => ({
+    meta: [...seo({ title: "Home" })],
+  }),
+  component: HomeRoute,
 });
 
 function HomeRoute() {
-	return (
-		<main className="flex flex-col">
-			<Hero />
+  return (
+    <main className="flex flex-col">
+      <Hero />
 
-			<Counter />
+      <Counter />
 
-			<Demo />
+      <Demo />
 
-			<Features />
+      <Features />
 
-			<CTA />
-		</main>
-	);
+      <CTA />
+    </main>
+  );
 }

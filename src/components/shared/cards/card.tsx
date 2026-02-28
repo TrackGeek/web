@@ -6,118 +6,92 @@ import { GameModal } from "../modals/game";
 import { MangaModal } from "../modals/manga";
 import { MovieModal } from "../modals/movie";
 import { Button } from "../../ui/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "../../ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../ui/dialog";
 
 type MediaType = "anime" | "movie" | "tv-show" | "game" | "book" | "manga";
 
 interface CardProps {
-	title: string;
-	url: string;
-	imageURL: string;
-	rating: number;
-	year: number;
-	synopsis: string;
-	mediaType: MediaType;
-	mediaData?: any;
+  title: string;
+  url: string;
+  imageURL: string;
+  rating: number;
+  year: number;
+  synopsis: string;
+  mediaType: MediaType;
+  mediaData?: any;
 }
 
-export function CardItem({
-	title,
-	url,
-	rating,
-	year,
-	imageURL,
-	mediaType,
-	synopsis,
-}: CardProps) {
-	return (
-		<div>
-			<div className="relative rounded-xl border border-border overflow-hidden aspect-3/4 group">
-				<Link to={url}>
-					<div
-						className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:opacity-80"
-						style={{
-							backgroundImage: `url("${imageURL}")`,
-						}}
-					/>
-				</Link>
+export function CardItem({ title, url, rating, year, imageURL, mediaType, synopsis }: CardProps) {
+  return (
+    <div>
+      <div className="relative rounded-xl border border-border overflow-hidden aspect-3/4 group">
+        <Link to={url}>
+          <div
+            className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:opacity-80"
+            style={{
+              backgroundImage: `url("${imageURL}")`,
+            }}
+          />
+        </Link>
 
-				<Dialog>
-					<DialogTrigger asChild>
-						<Button
-							variant="secondary"
-							size="sm"
-							className="absolute top-1 right-1 bg-black/50 hover:bg-black/70 text-white border-0 backdrop-blur-sm rounded-full p-2 h-8 w-8"
-						>
-							<ChevronDown className="size-4" />
-						</Button>
-					</DialogTrigger>
-					<DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
-						<DialogHeader
-							className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
-							style={{
-								backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${imageURL}")`,
-							}}
-						>
-							<div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
-							<div className="flex flex-row items-center w-full">
-								<img
-									src={imageURL}
-									alt="Cover"
-									className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
-								/>
-								<div className="flex-1 px-6 relative z-10">
-									<DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">
-										{title}
-									</DialogTitle>
-									<div className="flex items-center gap-4 text-white/90 text-sm">
-										<div className="flex items-center gap-1">
-											<Star className="size-4 fill-yellow-400 text-yellow-400" />
-											<span>{rating}</span>
-										</div>
-										<span>•</span>
-										<span>{year}</span>
-									</div>
-									<p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">
-										{synopsis}
-									</p>
-								</div>
-							</div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="absolute top-1 right-1 bg-black/50 hover:bg-black/70 text-white border-0 backdrop-blur-sm rounded-full p-2 h-8 w-8"
+            >
+              <ChevronDown className="size-4" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
+            <DialogHeader
+              className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
+              style={{
+                backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${imageURL}")`,
+              }}
+            >
+              <div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
+              <div className="flex flex-row items-center w-full">
+                <img
+                  src={imageURL}
+                  alt="Cover"
+                  className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
+                />
+                <div className="flex-1 px-6 relative z-10">
+                  <DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">{title}</DialogTitle>
+                  <div className="flex items-center gap-4 text-white/90 text-sm">
+                    <div className="flex items-center gap-1">
+                      <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                      <span>{rating}</span>
+                    </div>
+                    <span>•</span>
+                    <span>{year}</span>
+                  </div>
+                  <p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">{synopsis}</p>
+                </div>
+              </div>
 
-							<div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
-								<Button
-									size="sm"
-									variant="ghost"
-									className="text-white hover:bg-white/10 hover:text-white"
-								>
-									<Heart className="size-6" />
-								</Button>
-							</div>
-						</DialogHeader>
+              <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
+                <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
+                  <Heart className="size-6" />
+                </Button>
+              </div>
+            </DialogHeader>
 
-						<div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
-							{(mediaType === "anime" || mediaType === "tv-show") && (
-								<EpisodicContentModal />
-							)}
-							{mediaType === "movie" && <MovieModal />}
-							{mediaType === "book" && <BookModal />}
-							{mediaType === "game" && <GameModal />}
-							{mediaType === "manga" && <MangaModal />}
-						</div>
-					</DialogContent>
-				</Dialog>
-			</div>
-			<Link to={url}>
-				<p className="font-bold text-card-foreground mt-2 hover:text-primary transition-colors line-clamp-2">
-					{title}
-				</p>
-			</Link>
-		</div>
-	);
+            <div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
+              {(mediaType === "anime" || mediaType === "tv-show") && <EpisodicContentModal />}
+              {mediaType === "movie" && <MovieModal />}
+              {mediaType === "book" && <BookModal />}
+              {mediaType === "game" && <GameModal />}
+              {mediaType === "manga" && <MangaModal />}
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+      <Link to={url}>
+        <p className="font-bold text-card-foreground mt-2 hover:text-primary transition-colors line-clamp-2">{title}</p>
+      </Link>
+    </div>
+  );
 }

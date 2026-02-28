@@ -1,204 +1,204 @@
 {
-	"landing": {
-		"demoTitle": "Seamless and Comprehensive Tracking Experience",
-		"demoDescription": "Try it yourself. Our tracking system is fast and responsive. Click the button on the right side to simulate an episode's progress.",
-		"crossDevice": "Cross-device sync",
-		"notifications": "Release notifications",
-		"progress": "Advanced progress system",
-		"lists": "Custom Lists",
-		"favorites": "Display your top favorites on your profile",
-		"feed": "Feed with multiple views",
-		"upload": "Upload your screenshots and show to your friends",
-		"related": "View related animes, sequels, prequels and franchises",
-		"hideContent": "Hide specific content types",
-		"cleanLayout": "Clean layout",
-		"settings": "Personalized settings for notifications and display.",
-		"watchingNow": "Watching Now",
-		"seasonProgress": "Season Progress",
-		"markEpisode": "Mark Episode {{number}} as Watched",
-		"toastCongrats": "Congrats! You finished this TV show.",
-		"toastMark": "Episode {{number}} marked as watched!",
-		"CTATitle": "Ready to assume the control?",
-		"CTADescription": "Join other geeks organizing your favorite media today!",
-		"CTAButton": "Get Started Free",
-		"alive": "We're alive!",
-		"heroTitle": "Organize your <1>Geek Journey</1>",
-		"heroDescription": "The ultimate tracker for anime, games, movies, TV shows, manga, and books. Discover stats, connect with friends, and never lose track of your progress. Open-source, self-hostable, and free.",
-		"heroButton": "View on GitHub",
-		"featuresTitle": "All your needs in one place",
-		"featuresDescription": "Stop juggling multiple apps and spreadsheets.",
-		"animeManga": "Anime & Manga",
-		"animeMangaDescription": "One of the largest anime and manga catalogs, with access to relations, characters, and detailed information.",
-		"moviesTVShows": "Movies & TV Shows",
-		"moviesTVShowsDescription": "Get access to a rich catalog of movies and TV shows, with franchise views and notifications for new releases or upcoming episodes.",
-		"advancedProgress": "Advanced Progress",
-		"advancedProgressDescription": "Highlight key details of your content, add notes, and write a complete review at the end.",
-		"socialFeed": "Social Feed",
-		"socialFeedDescription": "See what your friends are up to and share your thoughts with them.",
-		"gamesDescription": "A gaming fan who needs to better organize their library? Track playtime, overall game progress, and multiple completion statuses.",
-		"booksDescription": "For the more literary-minded, we offer an option as well. Track pages read and how many times you’ve reread a book."
-	},
-	"addData": {
-		"description": "TrackGeek relies on third-party databases like <tmdb>TMDB</tmdb> (The Movie Database), <mal>MAL</mal> (My Anime List), <hc>HardCover</hc>, <igdb>IGDB</igdb> for its TV show, Movie, Game, Book, Anime and Manga data. If you find that a specific show, game, manga, book, anime or movie is missing from TrackGeek, you can add it to the corresponding database.",
-		"warning": "Please keep in mind that it might take 24 hours to index the data from those sources to be discoverable in search using its Title as we update our search index once every 24 hours.",
-		"forAnimes": "For animes",
-		"forMovies": "For movies",
-		"forGames": "For games",
-		"forBooks": "For books",
-		"forManga": "For manga",
-		"forTVShows": "For TV shows",
-		"createAccount": "Create an <1>account</1>, you'll need an account to contribute.",
-		"fillInfo": "Visit this <1>page</1> to fill in the required information, such as title, release date, cover.",
-		"saveAnime": "Once you've completed the form, click \"Add Anime Series\" at the bottom of the page.",
-		"saveManga": "Once you've completed the form, click \"Add Manga\" at the bottom of the page.",
-		"saveGame": "Once you've completed the form, click \"Create Game\" at the bottom of the page.",
-		"save": "Once you've completed the form, click \"Save\" at the bottom of the page.",
-		"reminder": "Remember that TrackGeek relies on the accuracy and completeness of other databases, so any changes you make will also benefit the entire community."
-	},
-	"privacyPolicy": {
-		"title": "Privacy Policy",
-		"lastUpdated": "Last updated: {{date}}",
-		"intro": "TrackGeek (\"we\", \"our\", \"us\") respects your privacy. This Privacy Policy explains how we collect, use, store, and protect your personal data when you use trackgeek.net.",
-		"dataWeCollect.title": "Data We Collect",
-		"dataWeCollect.account": "When you create an account, we collect your email address, username, and avatar.",
-		"dataWeCollect.auth": "Authentication is provided via magic link email and third-party providers such as GitHub, Google, and Discord.",
-		"dataWeCollect.content": "We store your tracked content, progress, reviews, notes, and related metadata you choose to save.",
-		"dataWeCollect.cookies": "We use technical cookies required for authentication and platform functionality.",
-		"howWeUseData.title": "How We Use Your Data",
-		"howWeUseData.list1": "Provide and maintain the TrackGeek service.",
-		"howWeUseData.list2": "Authenticate users and secure accounts.",
-		"howWeUseData.list3": "Store your tracking data and preferences.",
-		"howWeUseData.list4": "Improve the platform and user experience.",
-		"thirdParties.title": "Third-Party Services",
-		"thirdParties.metadata": "TrackGeek uses third-party APIs (IGDB, TMDB, MyAnimeList, HardCover) only to fetch metadata. No personal user data is shared with these providers.",
-		"thirdParties.analytics": "TrackGeek uses Google Analytics to understand general usage patterns and improve the platform. Analytics data is collected only after user consent and processed in accordance with GDPR requirements, including IP anonymization.",
-		"payments.title": "Donations and Payments",
-		"payments.info": "TrackGeek may offer optional donation tiers via third-party platforms such as Patreon. Payment processing is handled by those platforms, and TrackGeek does not store payment details.",
-		"dataRetention.title": "Data Retention",
-		"dataRetention.text": "We retain your data for as long as your account is active. You may delete your account at any time, and your data will be permanently removed.",
-		"userRights.title": "Your Rights (GDPR)",
-		"userRights.access": "You have the right to access your personal data.",
-		"userRights.export": "You can request an export of your data.",
-		"userRights.delete": "You can delete your account and personal data at any time.",
-		"userRights.rectify": "You can request correction of inaccurate data.",
-		"security.title": "Security",
-		"security.text": "We use industry-standard security measures to protect your data, including encryption and access controls.",
-		"children.title": "Children",
-		"children.text": "TrackGeek is available to all audiences. We do not knowingly collect personal data from children without parental consent where required by law.",
-		"changes.title": "Changes to This Policy",
-		"changes.text": "We may update this Privacy Policy from time to time. Changes will be published on this page with an updated date.",
-		"contact.title": "Contact",
-		"contact.text": "If you have questions about this Privacy Policy or your data, contact us at <email>privacy@trackgeek.net</email>."
-	},
-	"terms": {
-		"title": "Terms of Service",
-		"lastUpdated": "Last Updated: {{date}}",
-		"intro": {
-			"title": "1. Introduction",
-			"text": "Welcome to TrackGeek. TrackGeek is a community-driven, non-commercial project developed and maintained by independent contributors. By accessing or using the TrackGeek platform, you agree to these Terms of Service. If you do not agree to these terms, you must not use TrackGeek."
-		},
-		"definitions": {
-			"title": "2. Definitions",
-			"trackgeek": "“TrackGeek” refers to the TrackGeek platform, website, software, and related services.",
-			"user": "“User” refers to any individual who creates an account on TrackGeek.",
-			"content": "“Content” means any data submitted by users, including media tracking information, reviews, ratings, text, and metadata.",
-			"linkedAccounts": "“Linked Accounts” refers to optional third-party services connected to TrackGeek via OAuth or similar authentication systems."
-		},
-		"userResponsibilities": {
-			"title": "3. User Responsibilities",
-			"respect": "Users must treat others with respect and must not engage in abusive, harassing, hateful, or discriminatory behavior.",
-			"legal": "Users must ensure that all content complies with applicable Portuguese and European Union laws.",
-			"ip": "Users may not upload content that infringes intellectual property rights or the privacy of others.",
-			"security": "Users are responsible for maintaining the confidentiality of their account credentials and for all activity under their account."
-		},
-		"contentOwnership": {
-			"title": "4. User Content and Ownership",
-			"text": "Users retain ownership of their content. By submitting content to TrackGeek, users grant a non-exclusive, royalty-free, worldwide license to store, display, process, and use such content solely for the purpose of operating, maintaining, and improving the platform."
-		},
-		"linkedAccounts": {
-			"title": "5. Linked Third-Party Accounts",
-			"text": "Linking external third-party services is optional. TrackGeek does not store third-party login credentials and only accesses data explicitly authorized by the user. Use of third-party services is governed by their own terms and policies."
-		},
-		"platformRights": {
-			"title": "6. Platform Moderation and Rights",
-			"text": "TrackGeek reserves the right to remove or moderate content that violates these Terms, suspend or restrict user accounts that abuse the platform, and modify or discontinue any part of the service at any time."
-		},
-		"disclaimer": {
-			"title": "7. Disclaimer of Warranties",
-			"text": "TrackGeek is provided on an “as is” and “as available” basis. As a community project, TrackGeek makes no warranties or guarantees regarding availability, accuracy, reliability, or error-free operation."
-		},
-		"liability": {
-			"title": "8. Limitation of Liability",
-			"text": "To the maximum extent permitted by Portuguese and European Union law, TrackGeek and its contributors shall not be liable for any indirect, incidental, consequential, or special damages arising out of or related to the use of the platform."
-		},
-		"changes": {
-			"title": "9. Changes to These Terms",
-			"text": "These Terms of Service may be updated from time to time. Continued use of TrackGeek after any changes constitutes acceptance of the revised Terms."
-		},
-		"governingLaw": {
-			"title": "10. Governing Law",
-			"text": "These Terms of Service are governed by the laws of Portugal and applicable regulations of the European Union."
-		},
-		"contact": {
-			"title": "Contact",
-			"text": "If you have any questions about these Terms of Service, please contact us at <email>support@trackgeek.net</email>."
-		}
-	},
-	"credits": {
-		"description": "TrackGeek is built by an amazing community of developers, designers, translators, and enthusiasts from around the world.",
-		"core": {
-			"title": "Core Team",
-			"description": "The dedicated individuals who maintain and develop TrackGeek's core infrastructure:"
-		},
-		"community": {
-			"title": "Community Contributors",
-			"description": "Everyone who has contributed to TrackGeek through code, translations, support, or alpha testing."
-		},
-		"specialThanks": {
-			"title": "Special Thanks to...",
-			"openSource": "Open-source Community",
-			"openSourceDescription": "TrackGeek wouldn't exist without the incredible open-source ecosystem. We're grateful to all the projects and maintainers we build upon.",
-			"users": "Our Users",
-			"usersDescription": "We're so grateful to all the people who use TrackGeek and share their love and ideas with us.",
-			"translators": "Translators",
-			"translatorsDescription": "Thank you to everyone who helps translate TrackGeek into different languages, making it accessible to users worldwide."
-		},
-		"wantsToContribute": {
-			"title": "Want to contribute?",
-			"description": "We're always looking for new contributors to help us build TrackGeek. Whether you're a developer, designer, translator, or just passionate about the project, there's a place for you."
-		}
-	},
-	"donate": {
-		"description": "Support the site to cover our server payments, development costs, and keep the sites running long into the future and unlock exclusive perks.",
-		"geeks": "The GeekKeepers that make TrackGeek alive",
-		"perks": {
-			"title": "Perks",
-			"description": "These are the perks you can get while supporting the site:",
-			"benefit1": "Exclusive badge",
-			"benefit2": "Hide irrelevant information for you",
-			"benefit3": "Your profile will appear on this page",
-			"benefit4": "Prioritized support from our team",
-			"benefit5": "Customized Stats of your profile",
-			"benefit6": "Early access to new features"
-		},
-		"wantsToDonate": {
-			"title": "Want to donate?",
-			"description": "Please note the minimum donation amount is $1. A massive thanks to anyone who donates, we really appreciate it!"
-		},
-		"modal": {
-			"description": "Choose your donation options below",
-			"type": "Donation Type",
-			"one-time": "One-time",
-			"monthly": "Monthly",
-			"select": "Select Amount",
-			"fixed": "Fixed Amount",
-			"custom": "Custom Amount",
-			"enter": "Enter amount",
-			"method": "Payment Method",
-			"card": "Credit Card",
-			"footer": "Minimum donation is $1. Your support helps us keep TrackGeek running!"
-		},
-		"transparencyReports": "Transparency Reports",
-		"viewAll": "View All"
-	}
+  "landing": {
+    "demoTitle": "Seamless and Comprehensive Tracking Experience",
+    "demoDescription": "Try it yourself. Our tracking system is fast and responsive. Click the button on the right side to simulate an episode's progress.",
+    "crossDevice": "Cross-device sync",
+    "notifications": "Release notifications",
+    "progress": "Advanced progress system",
+    "lists": "Custom Lists",
+    "favorites": "Display your top favorites on your profile",
+    "feed": "Feed with multiple views",
+    "upload": "Upload your screenshots and show to your friends",
+    "related": "View related animes, sequels, prequels and franchises",
+    "hideContent": "Hide specific content types",
+    "cleanLayout": "Clean layout",
+    "settings": "Personalized settings for notifications and display.",
+    "watchingNow": "Watching Now",
+    "seasonProgress": "Season Progress",
+    "markEpisode": "Mark Episode {{number}} as Watched",
+    "toastCongrats": "Congrats! You finished this TV show.",
+    "toastMark": "Episode {{number}} marked as watched!",
+    "CTATitle": "Ready to assume the control?",
+    "CTADescription": "Join other geeks organizing your favorite media today!",
+    "CTAButton": "Get Started Free",
+    "alive": "We're alive!",
+    "heroTitle": "Organize your <1>Geek Journey</1>",
+    "heroDescription": "The ultimate tracker for anime, games, movies, TV shows, manga, and books. Discover stats, connect with friends, and never lose track of your progress. Open-source, self-hostable, and free.",
+    "heroButton": "View on GitHub",
+    "featuresTitle": "All your needs in one place",
+    "featuresDescription": "Stop juggling multiple apps and spreadsheets.",
+    "animeManga": "Anime & Manga",
+    "animeMangaDescription": "One of the largest anime and manga catalogs, with access to relations, characters, and detailed information.",
+    "moviesTVShows": "Movies & TV Shows",
+    "moviesTVShowsDescription": "Get access to a rich catalog of movies and TV shows, with franchise views and notifications for new releases or upcoming episodes.",
+    "advancedProgress": "Advanced Progress",
+    "advancedProgressDescription": "Highlight key details of your content, add notes, and write a complete review at the end.",
+    "socialFeed": "Social Feed",
+    "socialFeedDescription": "See what your friends are up to and share your thoughts with them.",
+    "gamesDescription": "A gaming fan who needs to better organize their library? Track playtime, overall game progress, and multiple completion statuses.",
+    "booksDescription": "For the more literary-minded, we offer an option as well. Track pages read and how many times you’ve reread a book."
+  },
+  "addData": {
+    "description": "TrackGeek relies on third-party databases like <tmdb>TMDB</tmdb> (The Movie Database), <mal>MAL</mal> (My Anime List), <hc>HardCover</hc>, <igdb>IGDB</igdb> for its TV show, Movie, Game, Book, Anime and Manga data. If you find that a specific show, game, manga, book, anime or movie is missing from TrackGeek, you can add it to the corresponding database.",
+    "warning": "Please keep in mind that it might take 24 hours to index the data from those sources to be discoverable in search using its Title as we update our search index once every 24 hours.",
+    "forAnimes": "For animes",
+    "forMovies": "For movies",
+    "forGames": "For games",
+    "forBooks": "For books",
+    "forManga": "For manga",
+    "forTVShows": "For TV shows",
+    "createAccount": "Create an <1>account</1>, you'll need an account to contribute.",
+    "fillInfo": "Visit this <1>page</1> to fill in the required information, such as title, release date, cover.",
+    "saveAnime": "Once you've completed the form, click \"Add Anime Series\" at the bottom of the page.",
+    "saveManga": "Once you've completed the form, click \"Add Manga\" at the bottom of the page.",
+    "saveGame": "Once you've completed the form, click \"Create Game\" at the bottom of the page.",
+    "save": "Once you've completed the form, click \"Save\" at the bottom of the page.",
+    "reminder": "Remember that TrackGeek relies on the accuracy and completeness of other databases, so any changes you make will also benefit the entire community."
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: {{date}}",
+    "intro": "TrackGeek (\"we\", \"our\", \"us\") respects your privacy. This Privacy Policy explains how we collect, use, store, and protect your personal data when you use trackgeek.net.",
+    "dataWeCollect.title": "Data We Collect",
+    "dataWeCollect.account": "When you create an account, we collect your email address, username, and avatar.",
+    "dataWeCollect.auth": "Authentication is provided via magic link email and third-party providers such as GitHub, Google, and Discord.",
+    "dataWeCollect.content": "We store your tracked content, progress, reviews, notes, and related metadata you choose to save.",
+    "dataWeCollect.cookies": "We use technical cookies required for authentication and platform functionality.",
+    "howWeUseData.title": "How We Use Your Data",
+    "howWeUseData.list1": "Provide and maintain the TrackGeek service.",
+    "howWeUseData.list2": "Authenticate users and secure accounts.",
+    "howWeUseData.list3": "Store your tracking data and preferences.",
+    "howWeUseData.list4": "Improve the platform and user experience.",
+    "thirdParties.title": "Third-Party Services",
+    "thirdParties.metadata": "TrackGeek uses third-party APIs (IGDB, TMDB, MyAnimeList, HardCover) only to fetch metadata. No personal user data is shared with these providers.",
+    "thirdParties.analytics": "TrackGeek uses Google Analytics to understand general usage patterns and improve the platform. Analytics data is collected only after user consent and processed in accordance with GDPR requirements, including IP anonymization.",
+    "payments.title": "Donations and Payments",
+    "payments.info": "TrackGeek may offer optional donation tiers via third-party platforms such as Patreon. Payment processing is handled by those platforms, and TrackGeek does not store payment details.",
+    "dataRetention.title": "Data Retention",
+    "dataRetention.text": "We retain your data for as long as your account is active. You may delete your account at any time, and your data will be permanently removed.",
+    "userRights.title": "Your Rights (GDPR)",
+    "userRights.access": "You have the right to access your personal data.",
+    "userRights.export": "You can request an export of your data.",
+    "userRights.delete": "You can delete your account and personal data at any time.",
+    "userRights.rectify": "You can request correction of inaccurate data.",
+    "security.title": "Security",
+    "security.text": "We use industry-standard security measures to protect your data, including encryption and access controls.",
+    "children.title": "Children",
+    "children.text": "TrackGeek is available to all audiences. We do not knowingly collect personal data from children without parental consent where required by law.",
+    "changes.title": "Changes to This Policy",
+    "changes.text": "We may update this Privacy Policy from time to time. Changes will be published on this page with an updated date.",
+    "contact.title": "Contact",
+    "contact.text": "If you have questions about this Privacy Policy or your data, contact us at <email>privacy@trackgeek.net</email>."
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last Updated: {{date}}",
+    "intro": {
+      "title": "1. Introduction",
+      "text": "Welcome to TrackGeek. TrackGeek is a community-driven, non-commercial project developed and maintained by independent contributors. By accessing or using the TrackGeek platform, you agree to these Terms of Service. If you do not agree to these terms, you must not use TrackGeek."
+    },
+    "definitions": {
+      "title": "2. Definitions",
+      "trackgeek": "“TrackGeek” refers to the TrackGeek platform, website, software, and related services.",
+      "user": "“User” refers to any individual who creates an account on TrackGeek.",
+      "content": "“Content” means any data submitted by users, including media tracking information, reviews, ratings, text, and metadata.",
+      "linkedAccounts": "“Linked Accounts” refers to optional third-party services connected to TrackGeek via OAuth or similar authentication systems."
+    },
+    "userResponsibilities": {
+      "title": "3. User Responsibilities",
+      "respect": "Users must treat others with respect and must not engage in abusive, harassing, hateful, or discriminatory behavior.",
+      "legal": "Users must ensure that all content complies with applicable Portuguese and European Union laws.",
+      "ip": "Users may not upload content that infringes intellectual property rights or the privacy of others.",
+      "security": "Users are responsible for maintaining the confidentiality of their account credentials and for all activity under their account."
+    },
+    "contentOwnership": {
+      "title": "4. User Content and Ownership",
+      "text": "Users retain ownership of their content. By submitting content to TrackGeek, users grant a non-exclusive, royalty-free, worldwide license to store, display, process, and use such content solely for the purpose of operating, maintaining, and improving the platform."
+    },
+    "linkedAccounts": {
+      "title": "5. Linked Third-Party Accounts",
+      "text": "Linking external third-party services is optional. TrackGeek does not store third-party login credentials and only accesses data explicitly authorized by the user. Use of third-party services is governed by their own terms and policies."
+    },
+    "platformRights": {
+      "title": "6. Platform Moderation and Rights",
+      "text": "TrackGeek reserves the right to remove or moderate content that violates these Terms, suspend or restrict user accounts that abuse the platform, and modify or discontinue any part of the service at any time."
+    },
+    "disclaimer": {
+      "title": "7. Disclaimer of Warranties",
+      "text": "TrackGeek is provided on an “as is” and “as available” basis. As a community project, TrackGeek makes no warranties or guarantees regarding availability, accuracy, reliability, or error-free operation."
+    },
+    "liability": {
+      "title": "8. Limitation of Liability",
+      "text": "To the maximum extent permitted by Portuguese and European Union law, TrackGeek and its contributors shall not be liable for any indirect, incidental, consequential, or special damages arising out of or related to the use of the platform."
+    },
+    "changes": {
+      "title": "9. Changes to These Terms",
+      "text": "These Terms of Service may be updated from time to time. Continued use of TrackGeek after any changes constitutes acceptance of the revised Terms."
+    },
+    "governingLaw": {
+      "title": "10. Governing Law",
+      "text": "These Terms of Service are governed by the laws of Portugal and applicable regulations of the European Union."
+    },
+    "contact": {
+      "title": "Contact",
+      "text": "If you have any questions about these Terms of Service, please contact us at <email>support@trackgeek.net</email>."
+    }
+  },
+  "credits": {
+    "description": "TrackGeek is built by an amazing community of developers, designers, translators, and enthusiasts from around the world.",
+    "core": {
+      "title": "Core Team",
+      "description": "The dedicated individuals who maintain and develop TrackGeek's core infrastructure:"
+    },
+    "community": {
+      "title": "Community Contributors",
+      "description": "Everyone who has contributed to TrackGeek through code, translations, support, or alpha testing."
+    },
+    "specialThanks": {
+      "title": "Special Thanks to...",
+      "openSource": "Open-source Community",
+      "openSourceDescription": "TrackGeek wouldn't exist without the incredible open-source ecosystem. We're grateful to all the projects and maintainers we build upon.",
+      "users": "Our Users",
+      "usersDescription": "We're so grateful to all the people who use TrackGeek and share their love and ideas with us.",
+      "translators": "Translators",
+      "translatorsDescription": "Thank you to everyone who helps translate TrackGeek into different languages, making it accessible to users worldwide."
+    },
+    "wantsToContribute": {
+      "title": "Want to contribute?",
+      "description": "We're always looking for new contributors to help us build TrackGeek. Whether you're a developer, designer, translator, or just passionate about the project, there's a place for you."
+    }
+  },
+  "donate": {
+    "description": "Support the site to cover our server payments, development costs, and keep the sites running long into the future and unlock exclusive perks.",
+    "geeks": "The GeekKeepers that make TrackGeek alive",
+    "perks": {
+      "title": "Perks",
+      "description": "These are the perks you can get while supporting the site:",
+      "benefit1": "Exclusive badge",
+      "benefit2": "Hide irrelevant information for you",
+      "benefit3": "Your profile will appear on this page",
+      "benefit4": "Prioritized support from our team",
+      "benefit5": "Customized Stats of your profile",
+      "benefit6": "Early access to new features"
+    },
+    "wantsToDonate": {
+      "title": "Want to donate?",
+      "description": "Please note the minimum donation amount is $1. A massive thanks to anyone who donates, we really appreciate it!"
+    },
+    "modal": {
+      "description": "Choose your donation options below",
+      "type": "Donation Type",
+      "one-time": "One-time",
+      "monthly": "Monthly",
+      "select": "Select Amount",
+      "fixed": "Fixed Amount",
+      "custom": "Custom Amount",
+      "enter": "Enter amount",
+      "method": "Payment Method",
+      "card": "Credit Card",
+      "footer": "Minimum donation is $1. Your support helps us keep TrackGeek running!"
+    },
+    "transparencyReports": "Transparency Reports",
+    "viewAll": "View All"
+  }
 }

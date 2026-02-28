@@ -101,15 +101,15 @@
     font-family: "Archivo", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
-    font-variation-settings: "wdth" 100; 
+    font-variation-settings: "wdth" 100;
   }
   a {
-    @apply text-white hover:text-accent
+    @apply text-white hover:text-accent;
   }
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-background
+  @apply bg-background;
 }
 
 ::-webkit-scrollbar {
@@ -122,7 +122,7 @@
 
 /*Giving the thumb a gradient*/
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary rounded-4xl 
+  @apply bg-primary rounded-4xl;
 }
 
 .glass-panel {

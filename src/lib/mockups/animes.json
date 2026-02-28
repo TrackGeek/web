@@ -1,4 +1,5 @@
-[{
+[
+  {
     "aired": {
       "from": "2015-07-05T00:00:00+00:00",
       "prop": {
@@ -28,561 +29,409 @@
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 11352,
         "name": "Kitamura, Tomoyuki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 11385,
         "name": "Kano, Akira",
-        "positions": [
-          "Animation Director",
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 15627,
         "name": "Mori, Hisashi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 19173,
         "name": "Hayashi, Yuuki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 19924,
         "name": "Satou, Michio",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 25501,
         "name": "Kagawa, Hisashi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 28085,
         "name": "Ohno, Tsutomu",
-        "positions": [
-          "Animation Director",
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 36153,
         "name": "Suzuki, Futoshi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 37823,
         "name": "Ochi, Kazuhiro",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 38988,
         "name": "Fukushima, Yoshifumi",
-        "positions": [
-          "Script"
-        ]
+        "positions": ["Script"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 38995,
         "name": "Nishimura, Eiichi",
-        "positions": [
-          "Editing"
-        ]
+        "positions": ["Editing"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 39190,
         "name": "Yamazaki, Hideki",
-        "positions": [
-          "Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 40131,
         "name": "Oonishi, Ryou",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 40450,
         "name": "Mitsuka, Masato",
-        "positions": [
-          "Episode Director",
-          "Storyboard"
-        ]
+        "positions": ["Episode Director", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 40912,
         "name": "Miyai, Kana",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 41129,
         "name": "Tokoro, Toshikatsu",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 41280,
         "name": "Yokoya, Kenta",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 41885,
         "name": "Ibata, Shouta",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 41936,
         "name": "Ogawa, Ichirou",
-        "positions": [
-          "Animation Director"
-        ]
+        "positions": ["Animation Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 42157,
         "name": "Yuki, Shinzou",
-        "positions": [
-          "Background Art"
-        ]
+        "positions": ["Background Art"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 42829,
         "name": "Ikeda, Yumi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 43251,
         "name": "Oonishi, Youichi",
-        "positions": [
-          "Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 44418,
         "name": "Nakano, Akiko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 45479,
         "name": "Sudarehata, Yumi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 47112,
         "name": "Wanibuchi, Kazuhiko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 47411,
         "name": "Karasawa, Yuuichi",
-        "positions": [
-          "Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 47645,
         "name": "Ogawa, Kouji",
-        "positions": [
-          "Episode Director",
-          "Storyboard"
-        ]
+        "positions": ["Episode Director", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 47732,
         "name": "Takamura, Kaoru",
-        "positions": [
-          "Animation Director"
-        ]
+        "positions": ["Animation Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 47908,
         "name": "Nii, Hirotaka",
-        "positions": [
-          "Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 47969,
         "name": "Yamashita, Megumi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 47976,
         "name": "Iwai, Takao",
-        "positions": [
-          "Episode Director",
-          "Storyboard"
-        ]
+        "positions": ["Episode Director", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 48404,
         "name": "Houri, Kouji",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 48837,
         "name": "Higashide, Futoshi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 49099,
         "name": "Hisao, Ayumu",
-        "positions": [
-          "Script"
-        ]
+        "positions": ["Script"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 49745,
         "name": "Yoshitaka, Toshio",
-        "positions": [
-          "Script"
-        ]
+        "positions": ["Script"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 50592,
         "name": "Hatano, Kouhei",
-        "positions": [
-          "Director",
-          "Episode Director",
-          "Storyboard"
-        ]
+        "positions": ["Director", "Episode Director", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 50626,
         "name": "Ichino, Maria",
-        "positions": [
-          "2nd Key Animation",
-          "Key Animation"
-        ]
+        "positions": ["2nd Key Animation", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 52442,
         "name": "Sasakado, Nobuyoshi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 53360,
         "name": "Yoshiyama, Yuu",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 53937,
         "name": "Akizuki, Aya",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 54623,
         "name": "Kawasaki, Rena",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 54870,
         "name": "Majima, Takahiro",
-        "positions": [
-          "Episode Director"
-        ]
+        "positions": ["Episode Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 5659,
         "name": "Matsui, Hitoyuki",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 59630,
         "name": "Aizu, Satsuki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 60753,
         "name": "Tsukuma, Takenori",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 61295,
         "name": "Takeshita, Kenichi",
-        "positions": [
-          "Episode Director"
-        ]
+        "positions": ["Episode Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 61926,
         "name": "Matsumoto, Katsuji",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 61927,
         "name": "Takemori, Yuka",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 61943,
         "name": "Ikai, Kazuyuki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 62022,
         "name": "Hagiwara, Masato",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 62392,
         "name": "Katou, Yoshitaka",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 62442,
         "name": "Morinaka, Masaharu",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 62729,
         "name": "Urata, Yukihiro",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 62844,
         "name": "Iizuka, Youko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 63367,
         "name": "Matsuo, Shunsuke",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 63399,
         "name": "Nakaji, Asuka",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 63431,
         "name": "Nakamura, Shinya",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 65162,
         "name": "Tanaka, Moe",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 65853,
         "name": "Tu, Yong Ce",
-        "positions": [
-          "2nd Key Animation",
-          "Key Animation"
-        ]
+        "positions": ["2nd Key Animation", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 65921,
         "name": "Yamauchi, Naoki",
-        "positions": [
-          "Animation Director"
-        ]
+        "positions": ["Animation Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 66521,
         "name": "Taniguchi, Kousaku",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 67152,
         "name": "Enomoto, Mamoru",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 67542,
         "name": "Washikita, Kyouta",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 67778,
         "name": "Kamata, Hitoshi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 68307,
         "name": "Hiroshima, Hideki",
-        "positions": [
-          "Episode Director"
-        ]
+        "positions": ["Episode Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 68483,
         "name": "Hoshino, Reika",
-        "positions": [
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 68524,
         "name": "Nakao, Yukihiko",
-        "positions": [
-          "Episode Director"
-        ]
+        "positions": ["Episode Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 6936,
         "name": "Kobayashi, Yukari",
-        "positions": [
-          "Assistant Animation Director"
-        ]
+        "positions": ["Assistant Animation Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
@@ -600,959 +449,697 @@
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 70037,
         "name": "Koremoto, Akira",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 70349,
         "name": "Maruyama, Hirokatsu",
-        "positions": [
-          "Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 70368,
         "name": "Iwadare, Mizuki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 70495,
         "name": "Yamada, Kanari",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 70501,
         "name": "Shimazaki, Nozomi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 70720,
         "name": "Usuda, Yoshio",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 71169,
         "name": "Tanaka, Takayuki",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 71653,
         "name": "Numata, Hiroshi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 71774,
         "name": "Higaki, Kenichi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 71805,
         "name": "Hayase, Makiko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 71916,
         "name": "Ooshima, Touya",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 72436,
         "name": "Komura, Yuzuha",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 72587,
         "name": "Satou, Masanori",
-        "positions": [
-          "Episode Director",
-          "Storyboard"
-        ]
+        "positions": ["Episode Director", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 72730,
         "name": "Toriyama, Fuyumi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 72908,
         "name": "Nishikawa, Masato",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73133,
         "name": "Kinoshita, Yui",
-        "positions": [
-          "Animation Director",
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73195,
         "name": "Noji, Kiyoshi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73200,
         "name": "Hong, Beom-seok",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73258,
         "name": "Fukuhara, Keiji",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73288,
         "name": "Abe, Akari",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73289,
         "name": "Satou, Aika",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73356,
         "name": "Kanakubo, Norie",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73361,
         "name": "Hosokawa, Shuuhei",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73396,
         "name": "Ikeda, Tomomi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73478,
         "name": "Narimatsu, Yoshito",
-        "positions": [
-          "Animation Director"
-        ]
+        "positions": ["Animation Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73487,
         "name": "Lee, Ju-hyeon",
-        "positions": [
-          "Animation Director",
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73653,
         "name": "Shima, Arisa",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 73942,
         "name": "Park, Jae-suk",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74069,
         "name": "Muroyama, Shouko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74070,
         "name": "Kinoshita, Yumiko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74127,
         "name": "Kusunoki, Tomoko",
-        "positions": [
-          "Animation Director",
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74162,
         "name": "Fujiwara, Mikio",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74260,
         "name": "Makabe, Tomoyuki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74263,
         "name": "Sakamoto, Nozomi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74264,
         "name": "Shijou, Yukimasa",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74327,
         "name": "Takemoto, Yoshiko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74328,
         "name": "Ushinohama, Yui",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74428,
         "name": "Koyama, Makoto",
-        "positions": [
-          "Script"
-        ]
+        "positions": ["Script"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74744,
         "name": "Tsuji, Miyako",
-        "positions": [
-          "Chief Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Chief Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74775,
         "name": "Ono, Ayumu",
-        "positions": [
-          "Assistant Animation Director",
-          "Episode Director",
-          "Key Animation"
-        ]
+        "positions": ["Assistant Animation Director", "Episode Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74795,
         "name": "Hatanaka, Taichi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74941,
         "name": "Fukushima, Toyoaki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 74983,
         "name": "Kim, Su-ho",
-        "positions": [
-          "Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 75482,
         "name": "Osada, Yuuki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 75483,
         "name": "Aoki, Akihito",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 75748,
         "name": "Ogata, Daisuke",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 75753,
         "name": "Hanazawa, Yuri",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 75855,
         "name": "Tsukino, Mua",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 75960,
         "name": "Aoyagi, Shigemi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 76359,
         "name": "Yoshimoto, Masakazu",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 76592,
         "name": "Namatame, Yasuhiro",
-        "positions": [
-          "Animation Director",
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 77054,
         "name": "Kawasaki, Kouji",
-        "positions": [
-          "Episode Director"
-        ]
+        "positions": ["Episode Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 77094,
         "name": "Yu, Hyo-sang",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 77343,
         "name": "Iwata, Koudai",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 77383,
         "name": "Nozaki, Shinichi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 78215,
         "name": "Hatano, Yoshitsugu",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 78306,
         "name": "Kitagawa, Tomoko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 78307,
         "name": "Murakami, Erina",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 78521,
         "name": "Nikaidou, Atsushi",
-        "positions": [
-          "2nd Key Animation",
-          "Key Animation"
-        ]
+        "positions": ["2nd Key Animation", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 78672,
         "name": "Komatsu, Yui",
-        "positions": [
-          "Episode Director"
-        ]
+        "positions": ["Episode Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 79370,
         "name": "Kobayashi, Ichizou",
-        "positions": [
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 79503,
         "name": "Kim, Shin-woo",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 79516,
         "name": "Matsuzaka, Sadatoshi",
-        "positions": [
-          "Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 79648,
         "name": "Sugiura, Keiichi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 79912,
         "name": "Ootaka, Yuuta",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 80046,
         "name": "Ikeda, Hiroaki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 80098,
         "name": "Hakamada, Yuuji",
-        "positions": [
-          "Animation Director",
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 80103,
         "name": "Sawaki, Midori",
-        "positions": [
-          "Animation Director",
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 80114,
         "name": "Oda, Taeko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 80163,
         "name": "Yamauchi, Aki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 80202,
         "name": "Maruyama, Masahiko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 80737,
         "name": "Hashimoto, Kouhei",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 80811,
         "name": "Satou, Tomoko",
-        "positions": [
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 80852,
         "name": "Yagi, Motoki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 80857,
         "name": "Fukushima, Youko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 80922,
         "name": "Itou, Hiroki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 80937,
         "name": "Matsui, Kyousuke",
-        "positions": [
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 81857,
         "name": "Maita, Yuuya",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 81859,
         "name": "Lee, Woong-jae",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 81966,
         "name": "Hirabayashi, Takashi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 82087,
         "name": "Abe, Sakuya",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 82634,
         "name": "Iwata, Yoshimi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 82657,
         "name": "Nakamura, Junko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 82863,
         "name": "Hoshino, Mamoru",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 83301,
         "name": "Sugawara, Miyuki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 83376,
         "name": "Kim, Bong-duk",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 83435,
         "name": "Hamakawa, Shuujirou",
-        "positions": [
-          "Animation Director"
-        ]
+        "positions": ["Animation Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 83457,
         "name": "Tsugihashi, Yuki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 84315,
         "name": "Teramoto, Satoshi",
-        "positions": [
-          "Producer"
-        ]
+        "positions": ["Producer"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 84344,
         "name": "Shinohara, Hana",
-        "positions": [
-          "Episode Director"
-        ]
+        "positions": ["Episode Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 84422,
         "name": "Chang, Shaowei",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 84557,
         "name": "Kim, Ik-yeon",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 84694,
         "name": "Sokabe, Takashi",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 84698,
         "name": "Yamamoto, Takanori",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 84959,
         "name": "Shin, Young-soon",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 85288,
         "name": "Yamakita, Takahiro",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 85860,
         "name": "Ami, Kou",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 86430,
         "name": "Tezuka, Emi",
-        "positions": [
-          "2nd Key Animation",
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["2nd Key Animation", "Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 86478,
         "name": "Matsuo, Yuu",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 86872,
         "name": "Shimizu, Shintarou",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 86900,
         "name": "Kubo, Mitsuteru",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 87509,
         "name": "Yamazaki, Ai",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 87700,
         "name": "Kitano, Yukihiro",
-        "positions": [
-          "Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 87784,
         "name": "Tanoue, Makoto",
-        "positions": [
-          "Animation Director"
-        ]
+        "positions": ["Animation Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 8804,
         "name": "Shimanuki, Masahiro",
-        "positions": [
-          "Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 88980,
         "name": "Tomiyoshi, Kouki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 89520,
         "name": "Hayashi, Yasuhiro",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 89697,
         "name": "Itou, Hirotaka",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 90182,
         "name": "Sagawa, Naoko",
-        "positions": [
-          "Producer"
-        ]
+        "positions": ["Producer"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 90312,
         "name": "Nakamura, Midori",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 90809,
         "name": "Hironaka, Mika",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 90888,
         "name": "Arukara",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 91248,
         "name": "Usami, Shouhei",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 92641,
         "name": "Kizaki, Yukari",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 9301,
         "name": "Kado, Tomoaki",
-        "positions": [
-          "2nd Key Animation",
-          "Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["2nd Key Animation", "Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
         "malId": 9453,
         "name": "Ooshita, Tomoyuki",
-        "positions": [
-          "2nd Key Animation",
-          "Key Animation"
-        ]
+        "positions": ["2nd Key Animation", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/37565.jpg?s=1dfcf9f93f30bc9e2d0f7b982559958d",
@@ -1570,583 +1157,421 @@
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/42755.jpg?s=b591ace59c452edcff42e37cc6cd9cf6",
         "malId": 21257,
         "name": "Imamura, Takahiro",
-        "positions": [
-          "Episode Director",
-          "Storyboard"
-        ]
+        "positions": ["Episode Director", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/45234.jpg?s=b9fce572e7a9f0f4f116e08b5d5c4276",
         "malId": 11924,
         "name": "Shida, Naotoshi",
-        "positions": [
-          "Key Animation",
-          "Storyboard"
-        ]
+        "positions": ["Key Animation", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/46826.jpg?s=664a392f1c3e8dadde779d6a145c0877",
         "malId": 16685,
         "name": "Chioka, Kimitoshi",
-        "positions": [
-          "Director"
-        ]
+        "positions": ["Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/48316.jpg?s=97b669f3854e0d4add5ef4208fb2c593",
         "malId": 43639,
         "name": "Rossatto, Raphael",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/48916.jpg?s=5883b5d01905172dbfef7d4d39484af6",
         "malId": 42872,
         "name": "Sharp, Nathan",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/53754.jpg?s=c04c9008e0062e410776ad538957f9df",
         "malId": 39022,
         "name": "Murano, Yuuta",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/5638.jpg?s=dd66476d1aa36847827d6bce7259ba32",
         "malId": 8469,
         "name": "Tate, Naoki",
-        "positions": [
-          "Animation Director",
-          "Assistant Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Assistant Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/57980.jpg?s=4be00498189b24587e1b43c6cbaa0d2b",
         "malId": 47670,
         "name": "Watanabe, Koudai",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/58037.jpg?s=e205b904453f01aab62a6d27413c6184",
         "malId": 47889,
         "name": "Hikawa, Kiyoshi",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/58039.jpg?s=fdb60363a608f7e437dca50865153777",
         "malId": 9809,
         "name": "Cruz, Ricardo",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/68622.jpg?s=ee74f7a2bf90745b196f96585b99d683",
         "malId": 57380,
         "name": "Panetto, Anthony",
-        "positions": [
-          "Script"
-        ]
+        "positions": ["Script"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/72454.jpg?s=d4ec29f9fc7d501e80f45a589f991350",
         "malId": 49290,
         "name": "Yatabe, Touko",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/72491.jpg?s=966c60dffc829835023ae8bb28cea7ad",
         "malId": 63125,
         "name": "Sutter, Bruno",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/77639.jpg?s=2f70420806226276cd60bb8f3f653bac",
         "malId": 15799,
         "name": "Hatano, Morio",
-        "positions": [
-          "Director",
-          "Episode Director",
-          "Storyboard"
-        ]
+        "positions": ["Director", "Episode Director", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/80501.jpg?s=ee808f428c434aee43fe003623f6bf0b",
         "malId": 203,
         "name": "Cook, Justin",
-        "positions": [
-          "Producer"
-        ]
+        "positions": ["Producer"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/82440.jpg?s=805fddeb87316f89cf9ec430a561ac7b",
         "malId": 78981,
         "name": "Hoyos, Mercedes",
-        "positions": [
-          "ADR Director"
-        ]
+        "positions": ["ADR Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/84053.jpg?s=8cb00d0d970e6d9d37a6bd6b0288b71a",
         "malId": 27397,
         "name": "Abe, Misao",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/87404.jpg?s=b866e02aaa203c3fea312ebdbfb9bc56",
         "malId": 90891,
         "name": "LACCO TOWER",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/87409.jpg?s=acf07335d57df43ee07a7315ca89990d",
         "malId": 90887,
         "name": "The Collectors",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/87414.jpg?s=82fe8ff8e6c9708adff5daeff9ea1f76",
         "malId": 90885,
         "name": "ROTTENGRAFFTY",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/1/88420.jpg?s=080d977bb8284cbaf74140c7f86b6dfc",
         "malId": 72106,
         "name": "Hattori, Masumi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/36483.jpg?s=6295fbddb2b459fe14c0b1f412ad2fce",
         "malId": 32661,
         "name": "Good Morning America",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/45873.jpg?s=613fe8e8d061244cc9cd04ed00837e7d",
         "malId": 12642,
         "name": "NARASAKI",
-        "positions": [
-          "Theme Song Arrangement"
-        ]
+        "positions": ["Theme Song Arrangement"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/47037.jpg?s=37f4852cc33999c2a55d1986f75b68f2",
         "malId": 19431,
         "name": "Toyotarou",
-        "positions": [
-          "Original Character Design"
-        ]
+        "positions": ["Original Character Design"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/49039.jpg?s=27bb36a23050e9edc232225a721d7e8f",
         "malId": 8698,
         "name": "Kaizawa, Yukio",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/50363.jpg?s=7a520197613b5c446bc057bdb47fc67f",
         "malId": 20058,
         "name": "Shimizu, Junji",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/53612.jpg?s=12c2649180234be7f5af10fa1663c9e7",
         "malId": 12867,
         "name": "Nagamine, Tatsuya",
-        "positions": [
-          "Director",
-          "Episode Director",
-          "Storyboard"
-        ]
+        "positions": ["Director", "Episode Director", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/55240.jpg?s=f550f8fd91da674a6726faf33d39e167",
         "malId": 48925,
         "name": "ONEPIXCEL",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/66270.jpg?s=7f2c4efbe27db65667783e556f59ed52",
         "malId": 26393,
         "name": "Nouel, Antoine",
-        "positions": [
-          "ADR Director"
-        ]
+        "positions": ["ADR Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/74992.jpg?s=3ba6936098f9bcc0477fd549557a685c",
         "malId": 65409,
         "name": "Fujimoto, Kouki",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/77640.jpg?s=204e4fa0fadc6f2bc072c04f88fe5378",
         "malId": 47941,
         "name": "Nakamura, Ryouta",
-        "positions": [
-          "Director",
-          "Episode Director",
-          "Storyboard"
-        ]
+        "positions": ["Director", "Episode Director", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/79466.jpg?s=c4d7b70a54688324e9720ab81cd85f09",
         "malId": 72323,
         "name": "Castro, Cidalia",
-        "positions": [
-          "Theme Song Lyrics"
-        ]
+        "positions": ["Theme Song Lyrics"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/80645.jpg?s=355c6c8332a4c3c06ffad85d40696930",
         "malId": 19842,
         "name": "Yamaguchi, Yuuji",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/81502.jpg?s=33c88217aa6903d4875b93fb3cee36ed",
         "malId": 75472,
         "name": "Mori, Yukinojo",
-        "positions": [
-          "Theme Song Lyrics"
-        ]
+        "positions": ["Theme Song Lyrics"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/87397.jpg?s=cb1b89626cca67a01edc4066ab2e8bb8",
         "malId": 90892,
         "name": "Yoshii, Kazuya",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/87405.jpg?s=8b0148592a636a9dfed8d790eb0e51f8",
         "malId": 90890,
         "name": "Czecho No Republic",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/2/87406.jpg?s=01c58261f4f005d11af4af79fc3f1a67",
         "malId": 90889,
         "name": "Batten Shoujo-tai",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/11246.jpg?s=744c2a1513243ffd302809e5086fe736",
         "malId": 11970,
         "name": "Mendelman, Ami",
-        "positions": [
-          "Theme Song Lyrics",
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Lyrics", "Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/11718.jpg?s=2873518e739f6aa2150f82622db12631",
         "malId": 7491,
         "name": "Kushida, Akira",
-        "positions": [
-          "Inserted Song Performance"
-        ]
+        "positions": ["Inserted Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/12737.jpg?s=d607b085e1268a81136ecc2ebc661b45",
         "malId": 2797,
         "name": "Mori, Takeshi",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/14747.jpg?s=00de0eee0c585f26ac4985b809d70a87",
         "malId": 14339,
         "name": "Tomioka, Atsuhiro",
-        "positions": [
-          "Script"
-        ]
+        "positions": ["Script"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/19913.jpg?s=37f6b1e6a23295acd2433b48467e9579",
         "malId": 11638,
         "name": "Taniguchi, Moriyasu",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/22415.jpg?s=3273fe1af71b6666100b502cb594e8d3",
         "malId": 19926,
         "name": "Satou, Gen",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/24531.jpg?s=2a6f723551d11d118ec219562b3edb2f",
         "malId": 5316,
         "name": "Fukunaga, Gen",
-        "positions": [
-          "Executive Producer"
-        ]
+        "positions": ["Executive Producer"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/40043.jpg?s=0704c0db314d9a911202cb56d0076f99",
         "malId": 1901,
         "name": "Toriyama, Akira",
-        "positions": [
-          "Original Character Design",
-          "Original Creator",
-          "Storyboard"
-        ]
+        "positions": ["Original Character Design", "Original Creator", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/42874.jpg?s=aef91fd9132c86444be351f412b0cfeb",
         "malId": 253,
         "name": "Sabat, Christopher",
-        "positions": [
-          "ADR Director",
-          "Producer"
-        ]
+        "positions": ["ADR Director", "Producer"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/43698.jpg?s=5a3fe1a66fc5fc440f616b3dae441381",
         "malId": 43250,
         "name": "Ishitani, Megumi",
-        "positions": [
-          "Episode Director",
-          "Storyboard"
-        ]
+        "positions": ["Episode Director", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/45489.jpg?s=3e41f0fbe0dcc0939df9f0883cc99511",
         "malId": 40519,
         "name": "Itou, Naoyuki",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/46640.jpg?s=eaf1560b8fc0b3f0445f965c8faa8068",
         "malId": 35461,
         "name": "Iseki, Shuuichi",
-        "positions": [
-          "Animation Director"
-        ]
+        "positions": ["Animation Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/51850.jpg?s=0feffd871abbf8531591797b764a11e2",
         "malId": 47690,
         "name": "Kameda, Seiji",
-        "positions": [
-          "Theme Song Arrangement"
-        ]
+        "positions": ["Theme Song Arrangement"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/53313.jpg?s=9fa0b127ef30a8b4bdaeb384e7350404",
         "malId": 31851,
         "name": "Sumitomo, Norihito",
-        "positions": [
-          "Music"
-        ]
+        "positions": ["Music"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/53748.jpg?s=de79b529bc50d94329772c9125314bc6",
         "malId": 32969,
         "name": "Furuta, Jouji",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/54369.jpg?s=5af124ba3713c33cdcb91760aee5ecd2",
         "malId": 17849,
         "name": "Honda, Yasunori",
-        "positions": [
-          "Sound Director"
-        ]
+        "positions": ["Sound Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/54644.jpg?s=b393c7ca04f2e1304d59c0ec9a42ef8d",
         "malId": 40537,
         "name": "Kakudou, Hiroyuki",
-        "positions": [
-          "Storyboard"
-        ]
+        "positions": ["Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/57904.jpg?s=77955a24277020af709dbc2fe64798a5",
         "malId": 38681,
         "name": "Ootsuka, Ken",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/60262.jpg?s=5c7ea79d6f0cac04c873185e09cb31ae",
         "malId": 7974,
         "name": "Lima, Wellington",
-        "positions": [
-          "ADR Director"
-        ]
+        "positions": ["ADR Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/61222.jpg?s=56480c6e6283f5833eac72fa85e280f9",
         "malId": 8241,
         "name": "Bezerra, Úrsula",
-        "positions": [
-          "ADR Director"
-        ]
+        "positions": ["ADR Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/61649.jpg?s=c725d5165cc786cdf3f942b1a1272ed9",
         "malId": 43991,
         "name": "Milani, Gaby",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/61829.jpg?s=ff67d5849be65fe9d4513402a40fa9d3",
         "malId": 47412,
         "name": "Takahashi, Yuya",
-        "positions": [
-          "Animation Director",
-          "Key Animation"
-        ]
+        "positions": ["Animation Director", "Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/62011.jpg?s=85aa3d673fadd77b07dbfa76fa077a6f",
         "malId": 51363,
         "name": "Karasawa, Kazuya",
-        "positions": [
-          "Episode Director",
-          "Storyboard"
-        ]
+        "positions": ["Episode Director", "Storyboard"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/64954.jpg?s=300e32f837a9290f8448170ab9ae6d0e",
         "malId": 7937,
         "name": "Nakatsuru, Katsuyoshi",
-        "positions": [
-          "Key Animation"
-        ]
+        "positions": ["Key Animation"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/68498.jpg?s=3de3b17beea5590b7f85969262cb0ed3",
         "malId": 7094,
         "name": "Garza, Eduardo",
-        "positions": [
-          "ADR Director",
-          "Dialogue Editing"
-        ]
+        "positions": ["ADR Director", "Dialogue Editing"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/68633.jpg?s=6f323396ad25d0bb5b268c68bb1e5849",
         "malId": 57591,
         "name": "Duclos, Didier",
-        "positions": [
-          "Script"
-        ]
+        "positions": ["Script"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/74638.jpg?s=7f5fd56efee675d65b56bf1c154a10f6",
         "malId": 65072,
         "name": "Herek, Samantha",
-        "positions": [
-          "Assistant Producer"
-        ]
+        "positions": ["Assistant Producer"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/75915.jpg?s=316e3918010e01a30c5754942cde27b9",
         "malId": 1830,
         "name": "Bezerra, Wendel",
-        "positions": [
-          "ADR Director",
-          "Casting Director",
-          "Producer",
-          "Theme Song Lyrics"
-        ]
+        "positions": ["ADR Director", "Casting Director", "Producer", "Theme Song Lyrics"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/80225.jpg?s=9052029e51271bd603f94a90b5c181df",
         "malId": 62869,
         "name": "Rossi, Rodrigo",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/85012.jpg?s=fbef5690e3a75ae413f47130adef7e84",
         "malId": 84900,
         "name": "Lamoureux, Charles",
-        "positions": [
-          "Casting Director"
-        ]
+        "positions": ["Casting Director"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/87403.jpg?s=e9a5420d93c9c30534ad317e1b206ee7",
         "malId": 38026,
         "name": "KEYTALK",
-        "positions": [
-          "Theme Song Arrangement",
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Arrangement", "Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/87410.jpg?s=39fcc5836de28fe255a746a40e77ba0f",
         "malId": 90886,
         "name": "Inoue, Miyu",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       },
       {
         "imageUrl": "https://cdn.myanimelist.net/images/voiceactors/3/88526.jpg?s=bdf1ff7ad59d912b4c476644210eca16",
         "malId": 43669,
         "name": "Fábio, Ricardo",
-        "positions": [
-          "Theme Song Performance"
-        ]
+        "positions": ["Theme Song Performance"]
       }
     ],
     "characters": [
@@ -11022,24 +10447,11 @@
       }
     ],
     "createdAt": "2026-02-26T16:27:51.747Z",
-    "demographics": [
-      "Shounen"
-    ],
+    "demographics": ["Shounen"],
     "duration": "23 min per ep",
     "explicitGenres": [],
-    "external": [
-      "@DB_anime_info",
-      "ANN",
-      "AniDB",
-      "Official Site",
-      "Wikipedia"
-    ],
-    "genres": [
-      "Action",
-      "Adventure",
-      "Comedy",
-      "Fantasy"
-    ],
+    "external": ["@DB_anime_info", "ANN", "AniDB", "Official Site", "Wikipedia"],
+    "genres": ["Action", "Adventure", "Comedy", "Fantasy"],
     "id": "d3a744d5-1ce7-4d20-a9b2-fde229b685ca",
     "imageUrl": "https://cdn.myanimelist.net/images/anime/7/74606.jpg",
     "lastRefreshedAt": "2026-02-26T16:27:51.747Z",
@@ -11155,9 +10567,7 @@
     ],
     "synopsis": "Seven years after the defeat of Majin Buu, Earth is at peace, and its people live free from any dangers lurking in the universe. However, this peace is short-lived; a sleeping threat awakens in the dark reaches of the galaxy: Beerus, the ruthless God of Destruction.\n\nDisturbed by a prophecy that he will be defeated by a \"Super Saiyan God,\" Beerus and his angelic attendant Whis search the universe for this mysterious being. Before long, they reach Earth and encounter Gokuu Son, one of the planet's mightiest warriors, and his powerful friends.\n\n[Written by MAL Rewrite]",
     "theme": null,
-    "themes": [
-      "Martial Arts"
-    ],
+    "themes": ["Martial Arts"],
     "title": "Dragon Ball Super",
     "titles": [
       {
@@ -11611,4 +11021,5 @@
       ]
     },
     "year": 2015
-}]
+  }
+]

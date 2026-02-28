@@ -2,17 +2,17 @@ import { Footer } from "../shared/footer";
 import { Header } from "../shared/header";
 
 interface HomeLayoutProps {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export function HomeLayout({ children }: HomeLayoutProps) {
-	return (
-		<div className="antialiased bg-background flex flex-col min-h-screen">
-			<Header />
+  return (
+    <div className="antialiased bg-background flex flex-col min-h-screen">
+      <Header />
 
-			<div className="flex flex-col w-full flex-1">{children}</div>
+      <div className="flex flex-col w-full flex-1">{children}</div>
 
-			<Footer />
-		</div>
-	);
+      <Footer />
+    </div>
+  );
 }

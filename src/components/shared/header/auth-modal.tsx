@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
 import { Linkedin, Lock, LogIn, Mail, Slack, User } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type JSX } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -27,8 +27,10 @@ import {
   SiFacebook,
   SiGithub,
   SiKick,
+  SiNotion,
   SiReddit,
   SiRoblox,
+  SiSpotify,
   SiTiktok,
   SiTwitch,
   SiX,
@@ -36,21 +38,23 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
 
-const providers: { id: string; icon: React.ElementType | string }[] = [
-  { id: "apple", icon: SiApple },
-  { id: "discord", icon: SiDiscord },
-  { id: "facebook", icon: SiFacebook },
-  { id: "github", icon: SiGithub },
-  { id: "google", icon: "fa7-brands:google" },
-  { id: "kick", icon: SiKick },
-  { id: "reddit", icon: SiReddit },
-  { id: "roblox", icon: SiRoblox },
-  { id: "tiktok", icon: SiTiktok },
-  { id: "twitch", icon: SiTwitch },
-  { id: "twitter", icon: SiX },
-  { id: "slack", icon: Slack },
-  { id: "microsoft", icon: "fluent:store-microsoft-20-filled" },
-  { id: "linkedin", icon: Linkedin },
+const providers: { id: string; icon: JSX.Element; }[] = [
+  { id: "discord", icon: <SiDiscord className="size-6" /> },
+  { id: "github", icon: <SiGithub className="size-5" /> },
+  { id: "google", icon: <Icon className="size-6" icon="fa7-brands:google" /> },
+  { id: "kick", icon: <SiKick className="size-5" /> },
+  { id: "twitch", icon: <SiTwitch className="size-5" /> },
+  { id: "twitter", icon: <SiX className="size-5" /> },
+  { id: "notion", icon: <SiNotion className="size-5" /> },
+  { id: "microsoft", icon: <Icon className="size-6" icon="fluent:store-microsoft-20-filled" /> },
+  { id: "spotify", icon: <SiSpotify className="size-5" /> },
+  { id: "slack", icon: <Slack className="size-5" /> },
+  // { id: "tiktok", icon: <SiTiktok className="size-5" /> },
+  // { id: "roblox", icon: <SiRoblox className="size-5" /> },
+  // { id: "apple", icon: <SiApple className="size-5" /> },
+  // { id: "facebook", icon: <SiFacebook className="size-5" /> },
+  // { id: "reddit", icon: <SiReddit className="size-5" /> },
+  // { id: "linkedin", icon: <Linkedin className="size-5" /> },
 ];
 
 const passwordSchema = z.object({
@@ -213,7 +217,13 @@ export function AuthModal() {
     requestPasswordResetForm.reset();
     requestPasswordResetForm.clearErrors();
 
-    setIsRequestForgotPassword(false);
+    setAuthModalOpen(false);
+
+    setTimeout(() => {
+      if (isRequestForgotPassword) {
+        setIsRequestForgotPassword(false);
+      }
+    }, 500);
   }
 
   useEffect(() => {
@@ -227,6 +237,15 @@ export function AuthModal() {
         if (!open) {
           magicLinkForm.reset();
           magicLinkForm.clearErrors();
+          
+          passwordForm.reset();
+          passwordForm.clearErrors();
+          
+          registerForm.reset();
+          registerForm.clearErrors();
+          
+          requestPasswordResetForm.reset();
+          requestPasswordResetForm.clearErrors();
         }
 
         setAuthModalOpen(open);
@@ -264,7 +283,7 @@ export function AuthModal() {
                   </TabsList>
                 </div>
 
-                <div className="flex items-center justify-center gap-3 flex-wrap">
+                <div className="grid grid-cols-5 gap-2 w-full">
                   {providers
                     .sort((a, b) => a.id.localeCompare(b.id))
                     .map((provider) => (
@@ -276,11 +295,7 @@ export function AuthModal() {
                             className={cn(lastMethod === provider.id && "bg-primary/10 border-primary border-2")}
                             onClick={() => handleLoginWithProvider(provider.id)}
                           >
-                            {typeof provider.icon === "string" ? (
-                              <Icon className="size-4" icon={provider.icon} />
-                            ) : (
-                              <provider.icon className="size-4" />
-                            )}
+                            {provider.icon}
                           </Button>
                         </TooltipTrigger>
 
@@ -332,6 +347,7 @@ export function AuthModal() {
                             {t("auth:password")}
 
                             <button
+                              type='button'
                               className="text-xs text-muted-foreground cursor-pointer text-right"
                               onClick={() => setIsRequestForgotPassword(true)}
                             >

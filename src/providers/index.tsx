@@ -27,7 +27,7 @@ export function RootProvider({ children }: ProviderProps) {
         children,
       )}
 
-      <Toaster position="top-center" closeButton />
+      <Toaster position="top-center" closeButton richColors />
     </>
   );
 }

@@ -1,70 +1,56 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { CardItem } from "@/components/cards/card.tsx";
-import { Grid } from "@/components/layouts/grid.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import {
-	Carousel,
-	CarouselContent,
-	CarouselItem,
-	CarouselNext,
-	CarouselPrevious,
-} from "@/components/ui/carousel.tsx";
+import { CardItem } from "@/components/shared/cards/card";
+import { Grid } from "@/components/layouts/grid";
+import { Button } from "@/components/ui/button";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import animesData from "@/lib/mockups/animes.json";
 
 export const Route = createFileRoute("/anime/")({
-	component: AnimeRoute,
+  component: AnimeRoute,
 });
 
 function AnimeRoute() {
 	const { t } = useTranslation();
 	const animes = animesData;
 
-	return (
-		<div className="mx-auto w-full">
-			<Carousel
-				className="w-full"
-				opts={{
-					loop: true,
-					align: "center",
-				}}
-			>
-				<CarouselContent>
-					{animes.map((anime) => {
-						const getYoutubeThumbnail = (url: string) => {
-							if (!url) return null;
-							const match = url.match(/\/embed\/([^/?]+)/);
-							const videoId = match ? match[1] : null;
-							return videoId
-								? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
-								: null;
-						};
+  return (
+    <div className="mx-auto w-full">
+      <Carousel
+        className="w-full"
+        opts={{
+          loop: true,
+          align: "center",
+        }}
+      >
+        <CarouselContent>
+          {animes.map((anime) => {
+            const getYoutubeThumbnail = (url: string) => {
+              if (!url) return null;
+              const match = url.match(/\/embed\/([^/?]+)/);
+              const videoId = match ? match[1] : null;
+              return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
+            };
 
-						const trailerThumbnail = getYoutubeThumbnail(
-							anime.trailer?.embedUrl,
-						);
+            const trailerThumbnail = getYoutubeThumbnail(anime.trailer?.embedUrl);
 
-						return (
-							<CarouselItem key={anime.id}>
-								<div className="relative w-full overflow-hidden rounded-xl border border-border">
-									<img
-										src={trailerThumbnail || anime.imageUrl}
-										className="w-full h-60 md:h-120 object-cover"
-										alt={anime.title}
-									/>
+            return (
+              <CarouselItem key={anime.id}>
+                <div className="relative w-full overflow-hidden rounded-xl border border-border">
+                  <img
+                    src={trailerThumbnail || anime.imageUrl}
+                    className="w-full h-60 md:h-120 object-cover"
+                    alt={anime.title}
+                  />
 
-									<div className="absolute inset-0 bg-linear-to-t from-malachite-500/80 via-malachite-500/30 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-malachite-500/80 via-malachite-500/30 to-transparent" />
 
-									<div className="absolute inset-0 p-8 flex flex-col justify-end gap-4">
-										<h2 className="text-4xl font-bold drop-shadow-lg">
-											{anime.title}
-										</h2>
+                  <div className="absolute inset-0 p-8 flex flex-col justify-end gap-4">
+                    <h2 className="text-4xl font-bold drop-shadow-lg">{anime.title}</h2>
 
-										<div className="max-w-2xl hidden md:block">
-											<p className="text-lg line-clamp-2 text-white/90 drop-shadow-md">
-												{anime.synopsis}
-											</p>
-										</div>
+                    <div className="max-w-2xl hidden md:block">
+                      <p className="text-lg line-clamp-2 text-white/90 drop-shadow-md">{anime.synopsis}</p>
+                    </div>
 
 										<Link
 											to={`/anime/${anime.id}`}

@@ -101,15 +101,15 @@
     font-family: "Archivo", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
-    font-variation-settings: "wdth" 100; 
+    font-variation-settings: "wdth" 100;
   }
   a {
-    @apply text-white hover:text-accent
+    @apply text-white hover:text-accent;
   }
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-background
+  @apply bg-background;
 }
 
 ::-webkit-scrollbar {
@@ -122,7 +122,7 @@
 
 /*Giving the thumb a gradient*/
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary rounded-4xl 
+  @apply bg-primary rounded-4xl;
 }
 
 .glass-panel {
@@ -159,21 +159,4 @@
   border-radius: 50%;
   opacity: 0.1;
   z-index: -1;
-}
-
-/* Custom styles for accessibility button */
-body .asw-menu-btn {
-  width: 42px !important;
-  height: 42px !important;
-  background: #10b981 !important;
-  background-image: none !important;
-  outline-color: #10b981 !important;
-}
-.asw-menu-btn svg {
-  width: 26px !important;
-  height: 26px !important;
-  min-width: 26px !important;
-  min-height: 26px !important;
-  max-width: 26px !important;
-  max-height: 26px !important;
 }

@@ -7,12 +7,12 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-	plugins: [
-		devtools(),
-		tanstackRouter({ target: "react", autoCodeSplitting: true }),
-		tsconfigPaths({ projects: ["./tsconfig.json"] }),
-		react(),
-		tailwindcss(),
-		viteImage(),
-	],
+  plugins: [
+    devtools(),
+    tanstackRouter({ target: "react", autoCodeSplitting: true }),
+    tsconfigPaths({ projects: ["./tsconfig.json"] }),
+    react(),
+    tailwindcss(),
+    viteImage(),
+  ],
 });

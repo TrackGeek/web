@@ -11,8 +11,8 @@ export const Route = createFileRoute("/anime/")({
 });
 
 function AnimeRoute() {
-  const { t } = useTranslation();
-  const animes = Array.isArray(animesData) ? animesData : [animesData.anime];
+	const { t } = useTranslation();
+	const animes = animesData;
 
   return (
     <div className="mx-auto w-full">
@@ -52,95 +52,101 @@ function AnimeRoute() {
                       <p className="text-lg line-clamp-2 text-white/90 drop-shadow-md">{anime.synopsis}</p>
                     </div>
 
-                    <Link
-                      to={`/anime/${anime.id}`}
-                      className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
-                    >
-                      {t("common:viewDetails")}
-                    </Link>
-                  </div>
-                </div>
-              </CarouselItem>
-            );
-          })}
-        </CarouselContent>
-        <CarouselPrevious variant="default" className="left-4 bg-white border-none hover:bg-white/80 z-10" />
-        <CarouselNext variant="default" className="right-4 bg-white border-none hover:bg-white/80 z-10" />
-      </Carousel>
-      <div className="py-6 space-y-4">
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-2xl font-bold">{t("common:topAiring")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
-        </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {animes.map((anime) => (
-            <CardItem
-              title={anime.title}
-              url={`/anime/${anime.id}`}
-              imageURL={anime.imageUrl}
-              rating={anime.rating}
-              year={anime.year}
-              synopsis={anime.background}
-              mediaType={"anime"}
-              key={anime.id}
-            />
-          ))}
-        </Grid>
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-2xl font-bold">{t("common:recommendations")}</p>{" "}
-          <Button>{t("pages:donate.viewAll")}</Button>
-        </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {animes.map((anime) => (
-            <CardItem
-              title={anime.title}
-              url={`/anime/${anime.id}`}
-              imageURL={anime.imageUrl}
-              rating={anime.rating}
-              year={anime.year}
-              synopsis={anime.background}
-              mediaType={"anime"}
-              key={anime.id}
-            />
-          ))}
-        </Grid>
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
-        </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {animes.map((anime) => (
-            <CardItem
-              title={anime.title}
-              url={`/anime/${anime.id}`}
-              imageURL={anime.imageUrl}
-              rating={anime.rating}
-              year={anime.year}
-              synopsis={anime.background}
-              mediaType={"anime"}
-              key={anime.id}
-            />
-          ))}
-        </Grid>
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-2xl font-bold">{t("common:topAnime")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
-        </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {animes.map((anime) => (
-            <CardItem
-              title={anime.title}
-              url={`/anime/${anime.id}`}
-              imageURL={anime.imageUrl}
-              rating={anime.rating}
-              year={anime.year}
-              synopsis={anime.background}
-              mediaType={"anime"}
-              key={anime.id}
-            />
-          ))}
-        </Grid>
-      </div>
-    </div>
-  );
+										<Link
+											to={`/anime/${anime.id}`}
+											className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
+										>
+											{t("common:viewDetails")}
+										</Link>
+									</div>
+								</div>
+							</CarouselItem>
+						);
+					})}
+				</CarouselContent>
+				<CarouselPrevious
+					variant="default"
+					className="left-4 bg-white border-none hover:bg-white/80 z-10"
+				/>
+				<CarouselNext
+					variant="default"
+					className="right-4 bg-white border-none hover:bg-white/80 z-10"
+				/>
+			</Carousel>
+			<div className="py-6 space-y-4">
+				<div className="flex items-center justify-between mb-4">
+					<p className="text-2xl font-bold">{t("common:topAiring")}</p>
+					<Button>{t("pages:donate.viewAll")}</Button>
+				</div>
+				<Grid minColSize={"120px"} className={"grid-cols-5"}>
+					{animes.map((anime) => (
+						<CardItem
+							title={anime.title}
+							url={`/anime/${anime.id}`}
+							imageURL={anime.imageUrl}
+							rating={anime.rating}
+							year={anime.year}
+							synopsis={anime.synopsis}
+							mediaType={"anime"}
+							key={anime.id}
+						/>
+					))}
+				</Grid>
+				<div className="flex items-center justify-between mb-4">
+					<p className="text-2xl font-bold">{t("common:recommendations")}</p>{" "}
+					<Button>{t("pages:donate.viewAll")}</Button>
+				</div>
+				<Grid minColSize={"120px"} className={"grid-cols-5"}>
+					{animes.map((anime) => (
+						<CardItem
+							title={anime.title}
+							url={`/anime/${anime.id}`}
+							imageURL={anime.imageUrl}
+							rating={anime.rating}
+							year={anime.year}
+							synopsis={anime.synopsis}
+							mediaType={"anime"}
+							key={anime.id}
+						/>
+					))}
+				</Grid>
+				<div className="flex items-center justify-between mb-4">
+					<p className="text-2xl font-bold">{t("common:comingSoon")}</p>
+					<Button>{t("pages:donate.viewAll")}</Button>
+				</div>
+				<Grid minColSize={"120px"} className={"grid-cols-5"}>
+					{animes.map((anime) => (
+						<CardItem
+							title={anime.title}
+							url={`/anime/${anime.id}`}
+							imageURL={anime.imageUrl}
+							rating={anime.rating}
+							year={anime.year}
+							synopsis={anime.synopsis}
+							mediaType={"anime"}
+							key={anime.id}
+						/>
+					))}
+				</Grid>
+				<div className="flex items-center justify-between mb-4">
+					<p className="text-2xl font-bold">{t("common:topAnime")}</p>
+					<Button>{t("pages:donate.viewAll")}</Button>
+				</div>
+				<Grid minColSize={"120px"} className={"grid-cols-5"}>
+					{animes.map((anime) => (
+						<CardItem
+							title={anime.title}
+							url={`/anime/${anime.id}`}
+							imageURL={anime.imageUrl}
+							rating={anime.rating}
+							year={anime.year}
+							synopsis={anime.synopsis}
+							mediaType={"anime"}
+							key={anime.id}
+						/>
+					))}
+				</Grid>
+			</div>
+		</div>
+	);
 }

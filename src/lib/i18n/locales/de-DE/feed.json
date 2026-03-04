@@ -73,5 +73,10 @@
     "mainStoryPlusExtras": "Main Story + Extras",
     "endless": "Endless"
   },
-  "uploadScreenshot": "Drag and drop or <span>choose screenshots</span> to upload"
+  "uploadScreenshot": "Drag and drop or <span>choose screenshots</span> to upload",
+  "addNegative": "Add a Negative Point",
+  "addPositive": "Add a Positive Point",
+  "pros": "Pros",
+  "cons": "Cons",
+  "overall": "Overall"
 }

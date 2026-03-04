@@ -1,0 +1,206 @@
+[
+  {
+    "alternativeTitles": [],
+    "audioSeconds": null,
+    "bookCategoryId": 1,
+    "bookStatus": null,
+    "canonical": null,
+    "compilation": false,
+    "createdAt": "2026-02-28T15:59:45.021Z",
+    "curationStatus": null,
+    "defaultAudioEdition": null,
+    "defaultCoverEdition": {
+      "id": 18408277,
+      "imageUrl": "https://assets.hardcover.app/edition/18408277/a9e8d2b6-3538-42b1-b872-2f5609fc06f7.jpg",
+      "title": "It Ends With Us"
+    },
+    "defaultEbookEdition": {
+      "id": 18408277,
+      "imageUrl": "https://assets.hardcover.app/edition/18408277/a9e8d2b6-3538-42b1-b872-2f5609fc06f7.jpg",
+      "title": "It Ends With Us"
+    },
+    "defaultPhysicalEdition": {
+      "alternativeTitles": [],
+      "id": 18408277,
+      "imageUrl": "https://assets.hardcover.app/edition/18408277/a9e8d2b6-3538-42b1-b872-2f5609fc06f7.jpg",
+      "title": "It Ends With Us"
+    },
+    "description": "Lily hasn't always had it easy, but that's never stopped her from working hard for the life she wants. She's come a long way from the small town in Maine where she grew up--she graduated from college, moved to Boston, and started her own business. So when she feels a spark with a gorgeous neurosurgeon named Ryle Kincaid, everything in Lily's life suddenly seems almost too good to be true. \n\nRyle is assertive, stubborn, maybe even a little arrogant. He's also sensitive, brilliant, and has a total soft spot for Lily. And the way he looks in scrubs certainly doesn't hurt. Lily can't get him out of her head. But Ryle's complete aversion to relationships is disturbing. Even as Lily finds herself becoming the exception to his \"no dating\" rule, she can't help but wonder what made him that way in the first place. \n\nAs questions about her new relationship overwhelm her, so do thoughts of Atlas Corrigan--her first love and a link to the past she left behind. He was her kindred spirit, her protector. When Atlas suddenly reappears, everything Lily has built with Ryle is threatened. \n\nWith this bold and deeply personal novel, Colleen Hoover delivers a heart-wrenching story that breaks exciting new ground for her as a writer. Combining a captivating romance with a cast of all-too-human characters, It Ends With Us is an unforgettable tale of love that comes at the ultimate price\"--",
+    "editions": [
+      {
+        "id": 18408277,
+        "imageUrl": "https://assets.hardcover.app/edition/18408277/a9e8d2b6-3538-42b1-b872-2f5609fc06f7.jpg",
+        "title": "It Ends With Us"
+      },
+      {
+        "id": 30433293,
+        "imageUrl": "https://assets.hardcover.app/external_data/59504543/56b97a952f3ad1fa5a07a237eac15e5e0ed724fe.jpeg",
+        "title": "Τελειώνει με εμάς"
+      },
+      {
+        "id": 30543172,
+        "imageUrl": "https://assets.hardcover.app/edition/30543172/bf396378f7c08e81b10ece9758913d9544599fac.jpeg",
+        "title": "Isto Acaba Aqui"
+      },
+      {
+        "id": 30553669,
+        "imageUrl": "https://assets.hardcover.app/external_data/61195547/127b803f0c059d7ab2babf27cd0cc5354c041337.jpeg",
+        "title": "It Ends With Us"
+      },
+      {
+        "id": 30582192,
+        "imageUrl": "https://assets.hardcover.app/edition/30582192/913064f3-5b85-4416-a64f-4f3e4f5184d7.jpg",
+        "title": "It Ends with Us"
+      },
+      {
+        "id": 30602413,
+        "imageUrl": "https://assets.hardcover.app/edition/30602413/25b46f3b5491c2f5e591d9bf925bc380f79dce4c.jpeg",
+        "title": "It Ends with Us"
+      },
+      {
+        "id": 30659595,
+        "imageUrl": null,
+        "title": "It Ends with Us"
+      },
+      {
+        "id": 30682857,
+        "imageUrl": "https://assets.hardcover.app/edition/30682857/01f3bd441c505e80b6dcf05d399ef0215403fda4.jpeg",
+        "title": "It Ends with Us"
+      },
+      {
+        "id": 30683833,
+        "imageUrl": "https://assets.hardcover.app/edition/30683833/bd86ddf7289139360434a98b4c83612035b8a653.jpeg",
+        "title": "It Ends with Us"
+      },
+      {
+        "id": 30699048,
+        "imageUrl": "https://assets.hardcover.app/external_data/59833290/7ce91c2448ffd9c9be2fe913e0b35d58fef5f60b.jpeg",
+        "title": "Sa nama se završava"
+      },
+      {
+        "id": 30743777,
+        "imageUrl": "https://assets.hardcover.app/edition/30743777/876509aeeabff28fbe611d978b319140f6da3529.jpeg",
+        "title": "Покинь, якщо кохаєш…"
+      },
+      {
+        "id": 30744505,
+        "imageUrl": "https://assets.hardcover.app/edition/30744505/7cbcc6fd49458e727ab4195d56f0e5d55c63a28e.jpeg",
+        "title": "It Ends with Us"
+      },
+      {
+        "id": 30749611,
+        "imageUrl": "https://assets.hardcover.app/edition/30749611/9680b51f43faba978a7db57a9b344a6511706a87.jpeg",
+        "title": "Romper el círculo"
+      },
+      {
+        "id": 30809673,
+        "imageUrl": "https://assets.hardcover.app/edition/30809673/3f217d687a0bc0a044b4eda6228ddcaf2821ac09.jpeg",
+        "title": "Det slutar med oss"
+      },
+      {
+        "id": 30809674,
+        "imageUrl": "https://assets.hardcover.app/external_data/1452642/cc516e9e7ad55ea24b5ebe1eed4396fc9059199c.jpeg",
+        "title": "Det slutar med oss"
+      },
+      {
+        "id": 30832336,
+        "imageUrl": "https://assets.hardcover.app/external_data/59970870/7acce17893a4b0a78f35eadf39da92235904a7d3.jpeg",
+        "title": "Nooit meer"
+      },
+      {
+        "id": 30855897,
+        "imageUrl": "https://assets.hardcover.app/external_data/59994768/54910346fe47acd7e7f02b471e367602929c6331.jpeg",
+        "title": "Se päättyy meihin"
+      },
+      {
+        "id": 30953049,
+        "imageUrl": "https://assets.hardcover.app/edition/30953049/093efba103a9728aaac9d9dd2f6453cc5cc5b1f4.jpeg",
+        "title": "It ends with us. Siamo noi a dire basta"
+      },
+      {
+        "id": 31350684,
+        "imageUrl": "https://assets.hardcover.app/external_data/1452728/daacb65b172636aa7381ce34f93af128b913655d.jpeg",
+        "title": "Nur noch ein einziges Mal"
+      },
+      {
+        "id": 31511863,
+        "imageUrl": "https://assets.hardcover.app/external_data/61291611/94550c8e34516efdaf2de97d1f0b42f077723b6e.jpeg",
+        "title": "It Ends with Us"
+      },
+      {
+        "id": 31596045,
+        "imageUrl": "https://assets.hardcover.app/external_data/61517644/d12794fec5f9f721ece83f5eb8ce698cf2f04c27.jpeg",
+        "title": "It ends with us"
+      },
+      {
+        "id": 31597963,
+        "imageUrl": "https://assets.hardcover.app/edition/31597963/c104b06ab5642d651fe98366b3a3459a29c1358e.jpeg",
+        "title": "It Ends with Us"
+      },
+      {
+        "id": 31692699,
+        "imageUrl": "https://assets.hardcover.app/edition/31692699/3a3141678819bc332ff05e73a01263d7bb1572e9.jpeg",
+        "title": "It Ends With Us - Akhir Di Antara Kita"
+      },
+      {
+        "id": 31761435,
+        "imageUrl": "https://assets.hardcover.app/edition/31761435/23b8aaef22f96718c67586e75cc9a533556b6abc.jpeg",
+        "title": "Romper el círculo"
+      },
+      {
+        "id": 31860071,
+        "imageUrl": "https://assets.hardcover.app/edition/31860071/3ecb3854-9279-4e23-a693-f456905117cc.jpg",
+        "title": "It Ends with Us"
+      },
+      {
+        "id": 31886267,
+        "imageUrl": "https://assets.hardcover.app/books/379737/118946991086195.jpg",
+        "title": "Isto Acaba Aqui"
+      },
+      {
+        "id": 32264125,
+        "imageUrl": "https://assets.hardcover.app/external_data/1238060/124e2d60a2ea58993390c5a83e861f648ea0e78e.jpeg",
+        "title": "Det ender med oss"
+      },
+      {
+        "id": 32543729,
+        "imageUrl": "https://assets.hardcover.app/external_data/2099005/e257e2a6ebddfdfa649c27f0a3b9ab8a32e9557d.jpeg",
+        "title": "É assim que acaba"
+      },
+      {
+        "id": 32565062,
+        "imageUrl": "https://assets.hardcover.app/external_data/2127177/aac935e4f150e30f7f091ba54818a4f2759f5b38.jpeg",
+        "title": "Končí sa to nami"
+      },
+      {
+        "id": 32671031,
+        "imageUrl": "https://assets.hardcover.app/edition/32671031/73e7bf8a68f1834c615c6d379d60c2b2d08ca775.jpeg",
+        "title": "It Ends With Us"
+      }
+    ],
+    "editionsCount": 59,
+    "featuredBookSeries": {
+      "book": {
+        "id": 379737,
+        "imageUrl": "https://assets.hardcover.app/edition/18408277/a9e8d2b6-3538-42b1-b872-2f5609fc06f7.jpg",
+        "title": "It Ends With Us"
+      },
+      "id": 3088
+    },
+    "hardcoverId": 379737,
+    "headline": "Sometimes it is the one who loves you who hurts you the most.",
+    "id": "7cfdcd7b-cf12-4217-8345-b7d5070b6b8b",
+    "imageUrl": "https://assets.hardcover.app/edition/18408277/a9e8d2b6-3538-42b1-b872-2f5609fc06f7.jpg",
+    "lastRefreshedAt": "2026-02-28T15:59:45.021Z",
+    "links": [],
+    "literaryTypeId": 1,
+    "numberOfPages": 352,
+    "releaseDate": "2016-07-22T00:00:00.000Z",
+    "releaseYear": 2016,
+    "slug": "it-ends-with-us",
+    "state": "normalized",
+    "subtitle": "Roman",
+    "title": "It Ends With Us",
+    "updatedAt": "2026-02-28T15:59:45.021Z"
+  }
+]

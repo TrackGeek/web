@@ -10,8 +10,8 @@ import { Input } from "@/components/ui/input.tsx";
 interface ReviewModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  mediaTitle?: string;
-  mediaImage?: string;
+  mediaTitle: string;
+  mediaImage: string;
   ratingCriteria?: Array<{ id: string; label: string }>;
 }
 
@@ -23,7 +23,7 @@ export function ReviewModal({
   ratingCriteria = [
     { id: "gameplay", label: "Gameplay" },
     { id: "graphics", label: "Graphics" },
-    { id: "sound", label: "Áudio" },
+    { id: "sound", label: "Audio" },
     { id: "story", label: "Story" },
   ],
 }: ReviewModalProps) {
@@ -133,7 +133,7 @@ export function ReviewModal({
               <div className="space-y-2 mb-4">
                 {pros.map((pro, index) => (
                   <div
-                    key={pro}
+                    key={`pro-${index}`}
                     className="flex items-center justify-between gap-2 bg-background rounded-md px-3 py-2 border border-border/50"
                   >
                     <span className="text-sm flex-1">{pro}</span>
@@ -169,7 +169,7 @@ export function ReviewModal({
               <div className="space-y-2 mb-4">
                 {cons.map((con, index) => (
                   <div
-                    key={con}
+                    key={`con-${index}`}
                     className="flex items-center justify-between gap-2 bg-background rounded-md px-3 py-2 border border-border/50"
                   >
                     <span className="text-sm flex-1">{con}</span>

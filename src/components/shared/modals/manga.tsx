@@ -18,14 +18,21 @@ interface MangaModalProps {
   onSaveSuccess?: (status: string) => void;
 }
 
-export function MangaModal({ mediaData: _, onStatusChange }: MangaModalProps) {
+export function MangaModal({ mediaData: _, onStatusChange, onSaveSuccess }: MangaModalProps) {
   const [startDate, setStartDate] = useState<Date>();
   const [finishDate, setFinishDate] = useState<Date>();
   const [customLists, setCustomLists] = useState<string[]>(["2026", "Favorites", "Read Later"]);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const { t } = useTranslation();
 
   const toggleCustomList = (list: string) => {
     setCustomLists((prev) => (prev.includes(list) ? prev.filter((l) => l !== list) : [...prev, list]));
+  };
+
+  const handleSave = async () => {
+    if (selectedStatus) {
+      onSaveSuccess?.(selectedStatus);
+    }
   };
 
   return (
@@ -42,7 +49,12 @@ export function MangaModal({ mediaData: _, onStatusChange }: MangaModalProps) {
                 <FieldLabel htmlFor="status" className="text-sm font-medium">
                   {t("library:status")}
                 </FieldLabel>
-                <Select onValueChange={(value) => onStatusChange?.(value)}>
+                <Select
+                  onValueChange={(value) => {
+                    setSelectedStatus(value);
+                    onStatusChange?.(value);
+                  }}
+                >
                   <SelectTrigger className="w-full bg-background">
                     <SelectValue placeholder={t("feed:selectStatus")} />
                   </SelectTrigger>
@@ -193,7 +205,7 @@ export function MangaModal({ mediaData: _, onStatusChange }: MangaModalProps) {
           <Button variant="outline" size="sm">
             {t("feed:cancel")}
           </Button>
-          <Button size="sm" className="gap-2">
+          <Button size="sm" className="gap-2" onClick={handleSave}>
             <Save className="size-4" />
             {t("feed:save")}
           </Button>

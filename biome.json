@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**/*", "!**/node_modules/**", "!**/dist/**", "!**/.tanstack/**"]
+    "includes": ["**/*", "!**/node_modules", "!**/dist", "!**/.tanstack"]
   },
   "formatter": {
     "enabled": true,
@@ -21,6 +21,9 @@
       "recommended": true,
       "style": {
         "useImportType": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off"
       }
     }
   },

@@ -1,12 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Heart, Star } from "lucide-react";
+import { useState } from "react";
+import { Button } from "../../ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../ui/dialog";
 import { BookModal } from "../modals/book";
 import { EpisodicContentModal } from "../modals/episodic-content";
 import { GameModal } from "../modals/game";
 import { MangaModal } from "../modals/manga";
 import { MovieModal } from "../modals/movie";
-import { Button } from "../../ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../ui/dialog";
+import { ReviewModal } from "../modals/review";
 
 type MediaType = "anime" | "movie" | "tv-show" | "game" | "book" | "manga";
 
@@ -21,7 +23,22 @@ interface CardProps {
   mediaData?: any;
 }
 
-export function CardItem({ title, url, rating, year, imageURL, mediaType, synopsis }: CardProps) {
+export function CardItem({ title, url, rating, year, imageURL, mediaType, synopsis, mediaData }: CardProps) {
+  const [mainDialogOpen, setMainDialogOpen] = useState(false);
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [mediaStatus, setMediaStatus] = useState<string | null>(null);
+
+  const handleStatusChange = (status: string) => {
+    setMediaStatus(status);
+  };
+
+  const handleSaveSuccess = (status: string) => {
+    if (status === "completed" || status === "finished" || status === "played") {
+      setMainDialogOpen(false);
+      setReviewDialogOpen(true);
+    }
+  };
+
   return (
     <div>
       <div className="relative rounded-xl border border-border overflow-hidden aspect-3/4 group">
@@ -34,7 +51,7 @@ export function CardItem({ title, url, rating, year, imageURL, mediaType, synops
           />
         </Link>
 
-        <Dialog>
+        <Dialog open={mainDialogOpen} onOpenChange={setMainDialogOpen}>
           <DialogTrigger asChild>
             <Button
               variant="secondary"
@@ -80,15 +97,25 @@ export function CardItem({ title, url, rating, year, imageURL, mediaType, synops
             </DialogHeader>
 
             <div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
-              {(mediaType === "anime" || mediaType === "tv-show") && <EpisodicContentModal />}
-              {mediaType === "movie" && <MovieModal />}
-              {mediaType === "book" && <BookModal />}
-              {mediaType === "game" && <GameModal />}
-              {mediaType === "manga" && <MangaModal />}
+              {(mediaType === "anime" || mediaType === "tv-show") && (
+                <EpisodicContentModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
+              )}
+              {mediaType === "movie" && <MovieModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />}
+              {mediaType === "book" && <BookModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />}
+              {mediaType === "game" && <GameModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />}
+              {mediaType === "manga" && <MangaModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />}
             </div>
           </DialogContent>
         </Dialog>
       </div>
+
+      <ReviewModal
+        open={reviewDialogOpen}
+        onOpenChange={setReviewDialogOpen}
+        mediaTitle={title}
+        mediaImage={imageURL}
+      />
+
       <Link to={url}>
         <p className="font-bold text-card-foreground mt-2 hover:text-primary transition-colors line-clamp-2">{title}</p>
       </Link>

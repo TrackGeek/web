@@ -117,15 +117,6 @@ export const defaultSlashSuggestions: SuggestionOptions<SuggestionItem>["items"]
     },
   },
   {
-    title: "To-do List",
-    description: "Track tasks with a to-do list.",
-    searchTerms: ["todo", "task", "list", "check", "checkbox"],
-    icon: CheckSquareIcon,
-    command: ({ editor, range }) => {
-      editor.chain().focus().deleteRange(range).toggleList("taskList", "taskItem").run();
-    },
-  },
-  {
     title: "Heading 1",
     description: "Big section heading.",
     searchTerms: ["title", "big", "large"],

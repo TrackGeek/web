@@ -14,9 +14,10 @@ import { Textarea } from "../../ui/textarea";
 
 interface EpisodicContentModalProps {
   mediaData?: any;
+  onStatusChange?: (status: string) => void;
 }
 
-export function EpisodicContentModal({ mediaData: _ }: EpisodicContentModalProps) {
+export function EpisodicContentModal({ mediaData: _, onStatusChange }: EpisodicContentModalProps) {
   const [startDate, setStartDate] = useState<Date>();
   const [finishDate, setFinishDate] = useState<Date>();
   const [customLists, setCustomLists] = useState<string[]>(["2026", "Favorites", "Watch Later"]);
@@ -40,7 +41,7 @@ export function EpisodicContentModal({ mediaData: _ }: EpisodicContentModalProps
                 <FieldLabel htmlFor="status" className="text-sm font-medium">
                   {t("library:status")}
                 </FieldLabel>
-                <Select>
+                <Select onValueChange={(value) => onStatusChange?.(value)}>
                   <SelectTrigger className="w-full bg-background">
                     <SelectValue placeholder={t("feed:selectStatus")} />
                   </SelectTrigger>

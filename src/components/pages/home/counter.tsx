@@ -48,7 +48,7 @@ export function Counter() {
       <div className="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
         <div className="stat-item opacity-0">
           <div className="text-4xl font-bold mb-2">
-            <span className="counter" data-target="350">
+            <span className="counter tabular-nums" data-target="350">
               0
             </span>
             k+
@@ -58,7 +58,7 @@ export function Counter() {
 
         <div className="stat-item opacity-0">
           <div className="text-4xl font-bold mb-2">
-            <span className="counter" data-target="1.1">
+            <span className="counter tabular-nums" data-target="1.1">
               0
             </span>
             M+
@@ -68,7 +68,7 @@ export function Counter() {
 
         <div className="stat-item opacity-0">
           <div className="text-4xl font-bold mb-2">
-            <span className="counter" data-target="214">
+            <span className="counter tabular-nums" data-target="214">
               0
             </span>
             k+
@@ -78,7 +78,7 @@ export function Counter() {
 
         <div className="stat-item opacity-0">
           <div className="text-4xl font-bold mb-2">
-            <span className="counter" data-target="1.6">
+            <span className="counter tabular-nums" data-target="1.6">
               0
             </span>
             M+

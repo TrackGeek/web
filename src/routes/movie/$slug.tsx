@@ -28,10 +28,10 @@ import {
   XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { DetailsCard } from "@/components/shared/cards/details";
 import { CastItem } from "@/components/pages/details/cast";
 import { ListItem } from "@/components/pages/details/list";
 import { ReviewItem } from "@/components/pages/details/review";
+import { DetailsCard } from "@/components/shared/cards/details";
 import { MovieModal } from "@/components/shared/modals/movie";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Button } from "@/components/ui/button";
@@ -420,13 +420,6 @@ export function MovieDetailsRoute() {
               </div>
             </TabsContent>
           </Tabs>
-        </div>
-
-        <div className="mt-6 text-center text-sm text-muted-foreground">
-          <p>
-            Nota: O botão "Mais opções" abriria um modal para gerenciar status avançados como "Abandonado", "Revendo",
-            "Pausado", etc.
-          </p>
         </div>
       </div>
     </div>

@@ -48,10 +48,10 @@ import {
   XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { DetailsCard } from "@/components/shared/cards/details";
 import { ListItem } from "@/components/pages/details/list";
 import { Relations } from "@/components/pages/details/relations";
 import { ReviewItem } from "@/components/pages/details/review";
+import { DetailsCard } from "@/components/shared/cards/details";
 import { GameModal } from "@/components/shared/modals/game";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Button } from "@/components/ui/button";
@@ -526,13 +526,6 @@ export function GameDetailsRoute() {
               </div>
             </TabsContent>
           </Tabs>
-        </div>
-
-        <div className="mt-6 text-center text-sm text-muted-foreground">
-          <p>
-            Nota: O botão "Mais opções" abriria um modal para gerenciar status avançados como "Abandonado", "Rejogando",
-            "Pausado", etc. Ainda vai ter "100%", "Main Game", "Main Game + Extras" e "Endless" num novo status
-          </p>
         </div>
       </div>
     </div>

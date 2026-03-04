@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { CardItem } from "@/components/shared/cards/card";
-import { FeedListFollowing } from "@/components/pages/feed/listFollowing";
 import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
+import { FeedListFollowing } from "@/components/pages/feed/listFollowing";
 import { CastFavoriteCard } from "@/components/pages/user/cast-favorite-card";
 import { MedalIcon } from "@/components/pages/user/medal-icon";
 import { StudioCard } from "@/components/pages/user/studio-card";
+import { CardItem } from "@/components/shared/cards/card";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/user/$username/")({
@@ -44,7 +44,7 @@ export function UserDetailsRoute() {
   ];
 
   const animeFavorites = [
-    { id: "a1", title: "Attack on Titan", image: "/tv.svg", score: 9 },
+    { id: "a1", title: "Attack on Titan", image: "/favicon.svg", score: 9 },
     { id: "a2", title: "Steins;Gate", image: "/logo.svg", score: 9.5 },
     { id: "a3", title: "Cowboy Bebop", image: "/logo.svg", score: 9.3 },
   ];

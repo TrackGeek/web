@@ -14,12 +14,15 @@ import { Textarea } from "../../ui/textarea";
 
 interface GameModalProps {
   mediaData?: any;
+  onStatusChange?: (status: string) => void;
+  onSaveSuccess?: (status: string) => void;
 }
 
-export function GameModal({ mediaData: _ }: GameModalProps) {
+export function GameModal({ mediaData: _, onStatusChange, onSaveSuccess }: GameModalProps) {
   const [startDate, setStartDate] = useState<Date>();
   const [finishDate, setFinishDate] = useState<Date>();
   const [customLists, setCustomLists] = useState<string[]>(["2026", "Favorites", "Play Later"]);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const { t } = useTranslation();
 
   const toggleCustomList = (list: string) => {
@@ -28,6 +31,12 @@ export function GameModal({ mediaData: _ }: GameModalProps) {
 
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
+  };
+
+  const handleSave = async () => {
+    if (selectedStatus) {
+      onSaveSuccess?.(selectedStatus);
+    }
   };
 
   return (
@@ -44,7 +53,12 @@ export function GameModal({ mediaData: _ }: GameModalProps) {
                 <FieldLabel htmlFor="status" className="text-sm font-medium">
                   {t("library:status")}
                 </FieldLabel>
-                <Select>
+                <Select
+                  onValueChange={(value) => {
+                    setSelectedStatus(value);
+                    onStatusChange?.(value);
+                  }}
+                >
                   <SelectTrigger className="w-full bg-background">
                     <SelectValue placeholder={t("feed:selectStatus")} />
                   </SelectTrigger>
@@ -230,7 +244,7 @@ export function GameModal({ mediaData: _ }: GameModalProps) {
           <Button variant="outline" size="sm">
             {t("feed:cancel")}
           </Button>
-          <Button size="sm" className="gap-2">
+          <Button size="sm" className="gap-2" onClick={handleSave}>
             <Save className="size-4" />
             {t("feed:save")}
           </Button>

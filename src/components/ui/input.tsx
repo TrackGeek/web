@@ -1,13 +1,12 @@
-import * as React from "react";
-
-import { cn } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   const [shownPassword, setShownPassword] = React.useState(false);
 
   return (
-    <div className="relative">
+    <div className="w-full">
       <input
         type={shownPassword ? "text" : type}
         data-slot="input"

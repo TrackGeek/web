@@ -14,9 +14,11 @@ import { Textarea } from "../../ui/textarea";
 
 interface MangaModalProps {
   mediaData?: any;
+  onStatusChange?: (status: string) => void;
+  onSaveSuccess?: (status: string) => void;
 }
 
-export function MangaModal({ mediaData: _ }: MangaModalProps) {
+export function MangaModal({ mediaData: _, onStatusChange }: MangaModalProps) {
   const [startDate, setStartDate] = useState<Date>();
   const [finishDate, setFinishDate] = useState<Date>();
   const [customLists, setCustomLists] = useState<string[]>(["2026", "Favorites", "Read Later"]);
@@ -40,7 +42,7 @@ export function MangaModal({ mediaData: _ }: MangaModalProps) {
                 <FieldLabel htmlFor="status" className="text-sm font-medium">
                   {t("library:status")}
                 </FieldLabel>
-                <Select>
+                <Select onValueChange={(value) => onStatusChange?.(value)}>
                   <SelectTrigger className="w-full bg-background">
                     <SelectValue placeholder={t("feed:selectStatus")} />
                   </SelectTrigger>

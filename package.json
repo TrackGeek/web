@@ -19,7 +19,6 @@
   "dependencies": {
     "@base-ui/react": "^1.2.0",
     "@dagrejs/dagre": "^2.0.3",
-    "@floating-ui/dom": "^1.7.6",
     "@hookform/resolvers": "^5.2.2",
     "@iconify/react": "^6.0.2",
     "@icons-pack/react-simple-icons": "^13.11.2",
@@ -66,9 +65,6 @@
     "i18next": "^25.7.4",
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-http-backend": "^3.0.2",
-    "lexical": "^0.41.0",
-    "lilac-editor": "^0.1.6",
-    "lodash": "^4.17.23",
     "lowlight": "^3.3.0",
     "lucide-react": "^0.576.0",
     "next-themes": "^0.4.6",

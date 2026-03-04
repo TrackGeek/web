@@ -50,7 +50,6 @@ export function FeedComposer() {
     const json = editor.getJSON();
 
     setContent(json);
-    console.log(JSON.stringify(json));
   };
 
   return (

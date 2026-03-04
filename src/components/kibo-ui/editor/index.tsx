@@ -474,25 +474,6 @@ export const EditorProvider = ({ className, extensions, limit, placeholder, ...p
         color: "var(--border)",
         width: 4,
       },
-      heading: {
-        levels: [1, 2, 3],
-        HTMLAttributes(node: { attrs: { level: number } }) {
-          if (node.attrs.level === 1) {
-            return {
-              class: cn("text-2xl font-bold"),
-            };
-          }
-          if (node.attrs.level === 2) {
-            return {
-              class: cn("text-xl font-bold"),
-            };
-          } else {
-            return {
-              class: cn("text-lg font-bold"),
-            };
-          }
-        },
-      },
       paragraph: {
         HTMLAttributes: {
           class: cn("leading-normal"),
@@ -640,7 +621,7 @@ export const EditorProvider = ({ className, extensions, limit, placeholder, ...p
     TableHeader.configure({
       HTMLAttributes: {
         class: cn(
-          "relative box-border min-w-[1em] border bg-secondary p-1 text-start align-top font-medium font-semibold text-white- bg-primary-foreground",
+          "relative box-border min-w-[1em] border bg-secondary p-1 text-start align-top font-medium font-semibold text-white bg-primary-foreground",
         ),
       },
     }),
@@ -758,13 +739,7 @@ export const EditorNodeText = ({ hideName = false }: Pick<EditorButtonProps, "hi
       hideName={hideName}
       // I feel like there has to be a more efficient way to do this – feel free to PR if you know how!
       icon={TextIcon}
-      isActive={() =>
-        (editor &&
-          !editor.isActive("paragraph") &&
-          !editor.isActive("bulletList") &&
-          !editor.isActive("orderedList")) ??
-        false
-      }
+      isActive={() => editor?.isActive("paragraph") ?? false}
       name="Text"
     />
   );

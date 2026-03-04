@@ -73,5 +73,10 @@
     "mainStoryPlusExtras": "História principal + Extras",
     "endless": "Infinito"
   },
-  "uploadScreenshot": "Arraste e solte ou <span>escolha capturas de tela</span> para enviar"
+  "uploadScreenshot": "Arraste e solte ou <span>escolha capturas de tela</span> para enviar",
+  "addNegative": "Add a Negative Point",
+  "addPositive": "Add a Positive Point",
+  "pros": "Pros",
+  "cons": "Cons",
+  "overall": "Overall"
 }

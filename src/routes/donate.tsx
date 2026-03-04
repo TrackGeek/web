@@ -7,8 +7,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Coffee, CreditCard, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ContributorsItem } from "@/components/cards/contributors";
 import { Grid } from "@/components/layouts/grid";
+import { ContributorsItem } from "@/components/shared/cards/contributors";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

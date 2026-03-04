@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSession } from "@/lib/auth";
-import { UserDropdown } from "./user-dropdown";
 import { AuthModal } from "./auth-modal";
+import { UserDropdown } from "./user-dropdown";
 
 export function Header() {
   const { t } = useTranslation();
@@ -31,37 +31,37 @@ export function Header() {
 
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) min-w-42 rounded-lg" align="start">
             <DropdownMenuItem asChild>
-              <Link to="/" className="cursor-pointer">
+              <Link to="/anime" className="cursor-pointer">
                 <Mountain size={18} className="text-white" />
                 {t("common:types.anime_other")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link to="/" className="cursor-pointer">
+              <Link to="/book" className="cursor-pointer">
                 <Book size={18} className="text-white" />
                 {t("common:types.book_other")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link to="/" className="cursor-pointer">
+              <Link to="/game" className="cursor-pointer">
                 <Gamepad2 size={18} className="text-white" />
                 {t("common:types.game_other")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link to="/" className="cursor-pointer">
+              <Link to="/tv" className="cursor-pointer">
                 <TvMinimalPlay size={18} className="text-white" />
                 {t("common:types.tv_other")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link to="/" className="cursor-pointer">
+              <Link to="/manga" className="cursor-pointer">
                 <LibraryBig size={18} className="text-white" />
                 {t("common:types.manga_other")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link to="/" className="cursor-pointer">
+              <Link to="/movie" className="cursor-pointer">
                 <Clapperboard size={18} className="text-white" />
                 {t("common:types.movie_other")}
               </Link>
@@ -70,7 +70,7 @@ export function Header() {
         </DropdownMenu>
 
         <Link to={session.data?.user ? "/feed" : "/"}>
-          <img src="/logo.svg" alt="Logo" className="h-full w-45" />
+          <img src="/logo.svg" alt="Logo" className="h-10" />
         </Link>
       </div>
 
@@ -81,7 +81,7 @@ export function Header() {
           </Button>
         </Link>
         <Link to="/donate" className="max-sm:hidden">
-          <Button variant={"outline"} className="">
+          <Button variant={"outline"}>
             <Heart color="red" fill="red" />
             {t("common:donate")}
           </Button>

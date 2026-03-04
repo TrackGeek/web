@@ -1,26 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
-import { Linkedin, Lock, LogIn, Mail, Slack, User } from "lucide-react";
-import { useEffect, useState, type JSX } from "react";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
-import z from "zod";
-
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { getLastUsedLoginMethod, requestPasswordReset, signIn, signUp } from "@/lib/auth";
-import { cn } from "@/lib/utils";
 import {
   SiApple,
   SiDiscord,
@@ -35,10 +14,30 @@ import {
   SiTwitch,
   SiX,
 } from "@icons-pack/react-simple-icons";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
+import { Linkedin, Lock, LogIn, Mail, Slack, User } from "lucide-react";
+import { type JSX, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import z from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { getLastUsedLoginMethod, requestPasswordReset, signIn, signUp } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
 
-const providers: { id: string; icon: JSX.Element; }[] = [
+const providers: { id: string; icon: JSX.Element }[] = [
   { id: "discord", icon: <SiDiscord className="size-6" /> },
   { id: "github", icon: <SiGithub className="size-5" /> },
   { id: "google", icon: <Icon className="size-6" icon="fa7-brands:google" /> },
@@ -237,13 +236,13 @@ export function AuthModal() {
         if (!open) {
           magicLinkForm.reset();
           magicLinkForm.clearErrors();
-          
+
           passwordForm.reset();
           passwordForm.clearErrors();
-          
+
           registerForm.reset();
           registerForm.clearErrors();
-          
+
           requestPasswordResetForm.reset();
           requestPasswordResetForm.clearErrors();
         }
@@ -287,7 +286,7 @@ export function AuthModal() {
                   {providers
                     .sort((a, b) => a.id.localeCompare(b.id))
                     .map((provider) => (
-                      <Tooltip>
+                      <Tooltip key={provider.id}>
                         <TooltipTrigger asChild>
                           <Button
                             key={provider.id}
@@ -347,7 +346,7 @@ export function AuthModal() {
                             {t("auth:password")}
 
                             <button
-                              type='button'
+                              type="button"
                               className="text-xs text-muted-foreground cursor-pointer text-right"
                               onClick={() => setIsRequestForgotPassword(true)}
                             >

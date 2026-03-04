@@ -4,8 +4,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Clipboard } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CardItem } from "@/components/shared/cards/card";
 import { Grid } from "@/components/layouts/grid";
+import { CardItem } from "@/components/shared/cards/card";
 import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -233,7 +233,7 @@ function RouteComponent() {
   };
 
   const mockResults = [
-    { id: "1", title: "Result 1", image: "/tv.svg", score: 8.5 },
+    { id: "1", title: "Result 1", image: "/favicon.svg", score: 8.5 },
     { id: "2", title: "Result 2", image: "/logo.svg", score: 9.0 },
     { id: "3", title: "Result 3", image: "/logo.svg", score: 7.8 },
   ];

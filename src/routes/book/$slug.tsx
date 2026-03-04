@@ -16,9 +16,9 @@ import {
   XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { DetailsCard } from "@/components/shared/cards/details";
 import { ListItem } from "@/components/pages/details/list";
 import { ReviewItem } from "@/components/pages/details/review";
+import { DetailsCard } from "@/components/shared/cards/details";
 import { BookModal } from "@/components/shared/modals/book";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Button } from "@/components/ui/button";
@@ -339,13 +339,6 @@ export function BookDetailsRoute() {
               </div>
             </TabsContent>
           </Tabs>
-        </div>
-
-        <div className="mt-6 text-center text-sm text-muted-foreground">
-          <p>
-            Nota: O botão "Mais opções" abriria um modal para gerenciar status avançados como "Abandonado", "Relendo",
-            "Pausado", etc.
-          </p>
         </div>
       </div>
     </div>

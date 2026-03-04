@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import axios from "axios";
 import { ArrowLeftRight, Dices, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { CardItem } from "@/components/shared/cards/card";
 import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
+import { CardItem } from "@/components/shared/cards/card";
 import { Button } from "@/components/ui/button";
 import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
@@ -74,7 +74,7 @@ export function AnimeListRoute() {
   ];
 
   const anime = [
-    { id: "a1", title: "Attack on Titan", image: "/tv.svg", score: 9 },
+    { id: "a1", title: "Attack on Titan", image: "/favicon.svg", score: 9 },
     { id: "a2", title: "Steins;Gate", image: "/logo.svg", score: 9.5 },
     { id: "a3", title: "Cowboy Bebop", image: "/logo.svg", score: 9.3 },
   ];

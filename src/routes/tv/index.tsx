@@ -39,7 +39,8 @@ function SerieRoute() {
                     </div>
 
                     <Link
-                      to={`/tv/${serie.id}`}
+                      to={"/tv/$slug"}
+                      params={{ slug: serie.id }}
                       className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
                     >
                       {t("common:viewDetails")}
@@ -64,7 +65,7 @@ function SerieRoute() {
               title={serie.name}
               url={`/tv/${serie.id}`}
               imageURL={serie.posterUrl}
-              rating={serie.rating || 0}
+              rating={0}
               year={new Date(serie.firstAirDate).getFullYear()}
               synopsis={serie.tagline}
               mediaType={"tv-show"}
@@ -82,7 +83,7 @@ function SerieRoute() {
               title={serie.name}
               url={`/tv/${serie.id}`}
               imageURL={serie.posterUrl}
-              rating={serie.rating || 0}
+              rating={0}
               year={new Date(serie.firstAirDate).getFullYear()}
               synopsis={serie.tagline}
               mediaType={"tv-show"}
@@ -100,7 +101,7 @@ function SerieRoute() {
               title={serie.name}
               url={`/tv/${serie.id}`}
               imageURL={serie.posterUrl}
-              rating={serie.rating || 0}
+              rating={0}
               year={new Date(serie.firstAirDate).getFullYear()}
               synopsis={serie.tagline}
               mediaType={"tv-show"}
@@ -118,7 +119,7 @@ function SerieRoute() {
               title={serie.name}
               url={`/tv/${serie.id}`}
               imageURL={serie.posterUrl}
-              rating={serie.rating || 0}
+              rating={0}
               year={new Date(serie.firstAirDate).getFullYear()}
               synopsis={serie.tagline}
               mediaType={"tv-show"}

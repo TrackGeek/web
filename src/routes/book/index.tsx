@@ -26,7 +26,7 @@ function BookRoute() {
               title={book.title}
               url={`/book/${book.id}`}
               imageURL={book.imageUrl}
-              rating={book.rating || 0}
+              rating={0}
               year={book.releaseYear}
               synopsis={book.description}
               mediaType={"book"}
@@ -44,7 +44,7 @@ function BookRoute() {
               title={book.title}
               url={`/book/${book.id}`}
               imageURL={book.imageUrl}
-              rating={book.rating || 0}
+              rating={0}
               year={book.releaseYear}
               synopsis={book.description}
               mediaType={"book"}

@@ -39,7 +39,8 @@ function MovieRoute() {
                     </div>
 
                     <Link
-                      to={`/movie/${movie.id}`}
+                      to={"/movie/$slug"}
+                      params={{ slug: movie.id }}
                       className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
                     >
                       {t("common:viewDetails")}
@@ -64,7 +65,7 @@ function MovieRoute() {
               title={movie.title}
               url={`/movie/${movie.id}`}
               imageURL={movie.posterUrl}
-              rating={movie.rating || 0}
+              rating={0}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}
               mediaType={"movie"}
@@ -82,7 +83,7 @@ function MovieRoute() {
               title={movie.title}
               url={`/movie/${movie.id}`}
               imageURL={movie.posterUrl}
-              rating={movie.rating || 0}
+              rating={0}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}
               mediaType={"movie"}
@@ -100,7 +101,7 @@ function MovieRoute() {
               title={movie.title}
               url={`/movie/${movie.id}`}
               imageURL={movie.posterUrl}
-              rating={movie.rating || 0}
+              rating={0}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}
               mediaType={"movie"}
@@ -118,7 +119,7 @@ function MovieRoute() {
               title={movie.title}
               url={`/movie/${movie.id}`}
               imageURL={movie.posterUrl}
-              rating={movie.rating || 0}
+              rating={0}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}
               mediaType={"movie"}

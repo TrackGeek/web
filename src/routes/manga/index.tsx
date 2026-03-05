@@ -21,7 +21,7 @@ function MangaRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {mangas.map((manga) => (
+          {mangas.map((manga: any) => (
             <CardItem
               title={manga.title}
               url={`/manga/${manga.id}`}
@@ -39,7 +39,7 @@ function MangaRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {mangas.map((manga) => (
+          {mangas.map((manga: any) => (
             <CardItem
               title={manga.title}
               url={`/manga/${manga.id}`}
@@ -57,7 +57,7 @@ function MangaRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {mangas.map((manga) => (
+          {mangas.map((manga: any) => (
             <CardItem
               title={manga.title}
               url={`/manga/${manga.id}`}
@@ -75,7 +75,7 @@ function MangaRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {mangas.map((manga) => (
+          {mangas.map((manga: any) => (
             <CardItem
               title={manga.title}
               url={`/manga/${manga.id}`}

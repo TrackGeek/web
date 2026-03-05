@@ -13,10 +13,9 @@ import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/search")({
-  head: (ctx) => {
-    const { t } = ctx.useContext();
+  head: () => {
     return {
-      meta: [...seo({ title: t("user:search") })],
+      meta: [...seo({ title: "Search" })],
     };
   },
   component: RouteComponent,
@@ -272,7 +271,6 @@ function RouteComponent() {
             <Clipboard
               className="size-5 absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:text-primary transition"
               onClick={handlePaste}
-              title={t("common:clipboard.paste")}
             />
           </div>
         </div>
@@ -308,7 +306,7 @@ function RouteComponent() {
                     <ComboboxList>
                       {currentGenres.map((genre) => (
                         <ComboboxItem key={genre} value={genre}>
-                          {getGenreLabel(t, genre)}
+                          {getGenreLabel(t as any, genre)}
                         </ComboboxItem>
                       ))}
                     </ComboboxList>
@@ -413,7 +411,7 @@ function RouteComponent() {
                 rating={item.score}
                 year={2024}
                 synopsis={item.title}
-                mediaType={contentType}
+                mediaType={contentType as any}
               />
             ))}
           </Grid>

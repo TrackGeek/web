@@ -58,11 +58,11 @@ function DonateRoute() {
   const handlePayment = () => {
     if (!isValidAmount || !paymentMethod) return;
 
-    const _donationData = {
-      amount: finalAmount,
-      type: donationType,
-      method: paymentMethod,
-    };
+    // const _donationData = {
+    //   amount: finalAmount,
+    //   type: donationType,
+    //   method: paymentMethod,
+    // };
   };
 
   const queries = useQueries({

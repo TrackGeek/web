@@ -100,19 +100,16 @@ function RatingGroupAdvanced({
     lg: "size-6",
   };
 
-  return (
-    <div className="relative">
-      <ToggleGroup
-        type={allowHalf ? "multiple" : "single"}
-        value={[value]}
-        onValueChange={(groupValue) => onValueChange?.(groupValue[groupValue.length - 1] || "0")}
-        size={size}
-        className={cn("gap-0", className)}
-        disabled={disabled}
-        onMouseLeave={handleMouseLeave}
-        {...props}
-      >
-        {indices.map((index) => {
+  const sharedToggleProps = {
+    size,
+    className: cn("gap-0", className),
+    disabled,
+    onMouseLeave: handleMouseLeave,
+    ...props,
+  };
+
+  const renderItems = () =>
+    indices.map((index) => {
           const starValue = index.toString();
           const iconState = getIconState(index);
 
@@ -181,8 +178,33 @@ function RatingGroupAdvanced({
               </ToggleGroupItem>
             </div>
           );
-        })}
-      </ToggleGroup>
+        });
+
+  return (
+    <div className="relative">
+      {allowHalf ? (
+        <ToggleGroup
+          type="multiple"
+          value={[value]}
+          onValueChange={(groupValue: string[]) =>
+            onValueChange?.(groupValue[groupValue.length - 1] || "0")
+          }
+          {...sharedToggleProps}
+        >
+          {renderItems()}
+        </ToggleGroup>
+      ) : (
+        <ToggleGroup
+          type="single"
+          value={value}
+          onValueChange={(groupValue: string) =>
+            onValueChange?.(groupValue || "0")
+          }
+          {...sharedToggleProps}
+        >
+          {renderItems()}
+        </ToggleGroup>
+      )}
     </div>
   );
 }

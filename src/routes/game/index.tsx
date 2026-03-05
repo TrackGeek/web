@@ -56,7 +56,8 @@ function GameRoute() {
                     </div>
 
                     <Link
-                      to={`/game/${game.id}`}
+                      to={"/game/$slug"}
+                      params={{ slug: game.id }}
                       className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
                     >
                       {t("common:viewDetails")}

@@ -147,7 +147,7 @@ export function AnimeListRoute() {
                 <ComboboxList>
                   {genres.data.map((genre) => (
                     <ComboboxItem key={genre.mal_id} value={genre.name}>
-                      {getGenreLabel(t, genre.name)}
+                      {getGenreLabel(t as any, genre.name)}
                     </ComboboxItem>
                   ))}
                 </ComboboxList>

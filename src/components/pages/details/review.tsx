@@ -92,7 +92,7 @@ function buildCriteriaList(criteries?: ReviewItemProps["criteries"]): { label: s
   return result;
 }
 
-export function ReviewItem({ user, reviewText, likes = 0, date, criteries, reviewName, reviewSlug }: ReviewItemProps) {
+export function ReviewItem({ user, reviewText, likes = 0, date, criteries, reviewName }: ReviewItemProps) {
   const { t, i18n } = useTranslation();
   const [showReadMore, setShowReadMore] = useState(false);
   const contentRef = useRef<HTMLParagraphElement>(null);
@@ -118,14 +118,14 @@ export function ReviewItem({ user, reviewText, likes = 0, date, criteries, revie
           <div className="flex flex-col sm:flex-row sm:items-start sm:gap-2 gap-2">
             {reviewName ? (
               <Link
-                to={reviewSlug ? `/review/${reviewSlug}` : "/"}
+                to={"/"}
                 className="min-w-0 w-auto shrink-0 hover:text-primary transition-colors"
               >
                 <p className="font-bold truncate text-sm sm:text-base max-w-48">{reviewName}</p>
               </Link>
             ) : (
               <Link
-                to={`/user/${user?.slug}`}
+                to={"/"}
                 className="inline-flex items-center gap-2 min-w-0 w-auto shrink-0 hover:text-primary transition-colors"
               >
                 <Avatar size="sm">

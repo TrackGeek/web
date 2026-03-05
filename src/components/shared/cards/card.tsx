@@ -23,10 +23,10 @@ interface CardProps {
   mediaData?: any;
 }
 
-export function CardItem({ title, url, rating, year, imageURL, mediaType, synopsis, mediaData }: CardProps) {
+export function CardItem({ title, url, rating, year, imageURL, mediaType, synopsis }: CardProps) {
   const [mainDialogOpen, setMainDialogOpen] = useState(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
-  const [mediaStatus, setMediaStatus] = useState<string | null>(null);
+  const [_mediaStatus, setMediaStatus] = useState<string | null>(null);
 
   const handleStatusChange = (status: string) => {
     setMediaStatus(status);
@@ -98,7 +98,7 @@ export function CardItem({ title, url, rating, year, imageURL, mediaType, synops
 
             <div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
               {(mediaType === "anime" || mediaType === "tv-show") && (
-                <EpisodicContentModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
+                <EpisodicContentModal onStatusChange={handleStatusChange} />
               )}
               {mediaType === "movie" && (
                 <MovieModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />

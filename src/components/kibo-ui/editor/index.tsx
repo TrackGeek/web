@@ -48,7 +48,6 @@ import {
   BoldIcon,
   BoltIcon,
   CheckIcon,
-  CheckSquareIcon,
   ChevronDownIcon,
   CodeIcon,
   ColumnsIcon,

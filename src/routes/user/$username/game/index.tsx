@@ -332,7 +332,7 @@ export function GameListRoute() {
                 <ComboboxList>
                   {genres.map((genre) => (
                     <ComboboxItem key={genre} value={genre} className={"capitalize"}>
-                      {getGenreLabel(t, genre)}
+                      {getGenreLabel(t as any, genre)}
                     </ComboboxItem>
                   ))}
                 </ComboboxList>

@@ -53,7 +53,8 @@ function AnimeRoute() {
                     </div>
 
                     <Link
-                      to={`/anime/${anime.id}`}
+                      to={"/anime/$slug"}
+                      params={{ slug: anime.id }}
                       className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
                     >
                       {t("common:viewDetails")}
@@ -78,7 +79,7 @@ function AnimeRoute() {
               title={anime.title}
               url={`/anime/${anime.id}`}
               imageURL={anime.imageUrl}
-              rating={anime.rating}
+              rating={+anime.rating}
               year={anime.year}
               synopsis={anime.synopsis}
               mediaType={"anime"}
@@ -96,7 +97,7 @@ function AnimeRoute() {
               title={anime.title}
               url={`/anime/${anime.id}`}
               imageURL={anime.imageUrl}
-              rating={anime.rating}
+              rating={+anime.rating}
               year={anime.year}
               synopsis={anime.synopsis}
               mediaType={"anime"}
@@ -114,7 +115,7 @@ function AnimeRoute() {
               title={anime.title}
               url={`/anime/${anime.id}`}
               imageURL={anime.imageUrl}
-              rating={anime.rating}
+              rating={+anime.rating}
               year={anime.year}
               synopsis={anime.synopsis}
               mediaType={"anime"}
@@ -132,7 +133,7 @@ function AnimeRoute() {
               title={anime.title}
               url={`/anime/${anime.id}`}
               imageURL={anime.imageUrl}
-              rating={anime.rating}
+              rating={+anime.rating}
               year={anime.year}
               synopsis={anime.synopsis}
               mediaType={"anime"}

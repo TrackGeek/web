@@ -1,14 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
-import {
-  SiDiscord,
-  SiGithub,
-  SiKick,
-  SiNotion,
-  SiSpotify,
-  SiTwitch,
-  SiX,
-} from "@icons-pack/react-simple-icons";
+import { SiDiscord, SiGithub, SiKick, SiNotion, SiSpotify, SiTwitch, SiX } from "@icons-pack/react-simple-icons";
 import { Lock, LogIn, Mail, Slack, User } from "lucide-react";
 import { type JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

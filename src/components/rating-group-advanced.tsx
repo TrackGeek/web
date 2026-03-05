@@ -110,62 +110,48 @@ function RatingGroupAdvanced({
 
   const renderItems = () =>
     indices.map((index) => {
-          const starValue = index.toString();
-          const iconState = getIconState(index);
+      const starValue = index.toString();
+      const iconState = getIconState(index);
 
-          return (
-            <div key={starValue} className="relative">
-              <ToggleGroupItem
-                value={starValue}
-                aria-label={`${index} rating`}
-                className={cn(
-                  "relative border-0 bg-transparent p-0 hover:bg-transparent data-[state=on]:bg-transparent focus-visible:ring-0",
-                  "hover:scale-110 focus-visible:scale-110 transition-transform ease-out",
-                  (disabled || readOnly) && "pointer-events-none opacity-50",
-                )}
-                disabled={disabled || readOnly}
-              >
-                {allowHalf ? (
-                  <div className="relative">
-                    <div
-                      className="absolute inset-0 w-1/2 z-10 cursor-pointer"
-                      onMouseEnter={() => handleMouseEnter(index, true)}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleClick(index, true);
-                      }}
-                    />
-                    <div
-                      className="absolute inset-0 left-1/2 w-1/2 z-10 cursor-pointer"
-                      onMouseEnter={() => handleMouseEnter(index, false)}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleClick(index, false);
-                      }}
-                    />
+      return (
+        <div key={starValue} className="relative">
+          <ToggleGroupItem
+            value={starValue}
+            aria-label={`${index} rating`}
+            className={cn(
+              "relative border-0 bg-transparent p-0 hover:bg-transparent data-[state=on]:bg-transparent focus-visible:ring-0",
+              "hover:scale-110 focus-visible:scale-110 transition-transform ease-out",
+              (disabled || readOnly) && "pointer-events-none opacity-50",
+            )}
+            disabled={disabled || readOnly}
+          >
+            {allowHalf ? (
+              <div className="relative">
+                <div
+                  className="absolute inset-0 w-1/2 z-10 cursor-pointer"
+                  onMouseEnter={() => handleMouseEnter(index, true)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClick(index, true);
+                  }}
+                />
+                <div
+                  className="absolute inset-0 left-1/2 w-1/2 z-10 cursor-pointer"
+                  onMouseEnter={() => handleMouseEnter(index, false)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClick(index, false);
+                  }}
+                />
+                <div className="relative">
+                  {iconState === "half" ? (
                     <div className="relative">
-                      {iconState === "half" ? (
-                        <div className="relative">
-                          <EmptyIcon className={cn("transition-colors ease-out", sizeClasses[size], colors.empty)} />
-                          <div className="absolute inset-0 overflow-hidden w-1/2">
-                            <FilledIcon
-                              className={cn("transition-colors ease-out", sizeClasses[size], colors.filled)}
-                            />
-                          </div>
-                        </div>
-                      ) : (
-                        <FilledIcon
-                          className={cn(
-                            "transition-colors ease-out",
-                            sizeClasses[size],
-                            iconState === "filled" ? colors.filled : colors.empty,
-                          )}
-                        />
-                      )}
+                      <EmptyIcon className={cn("transition-colors ease-out", sizeClasses[size], colors.empty)} />
+                      <div className="absolute inset-0 overflow-hidden w-1/2">
+                        <FilledIcon className={cn("transition-colors ease-out", sizeClasses[size], colors.filled)} />
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <div onMouseEnter={() => handleMouseEnter(index)}>
+                  ) : (
                     <FilledIcon
                       className={cn(
                         "transition-colors ease-out",
@@ -173,12 +159,24 @@ function RatingGroupAdvanced({
                         iconState === "filled" ? colors.filled : colors.empty,
                       )}
                     />
-                  </div>
-                )}
-              </ToggleGroupItem>
-            </div>
-          );
-        });
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div onMouseEnter={() => handleMouseEnter(index)}>
+                <FilledIcon
+                  className={cn(
+                    "transition-colors ease-out",
+                    sizeClasses[size],
+                    iconState === "filled" ? colors.filled : colors.empty,
+                  )}
+                />
+              </div>
+            )}
+          </ToggleGroupItem>
+        </div>
+      );
+    });
 
   return (
     <div className="relative">
@@ -186,9 +184,7 @@ function RatingGroupAdvanced({
         <ToggleGroup
           type="multiple"
           value={[value]}
-          onValueChange={(groupValue: string[]) =>
-            onValueChange?.(groupValue[groupValue.length - 1] || "0")
-          }
+          onValueChange={(groupValue: string[]) => onValueChange?.(groupValue[groupValue.length - 1] || "0")}
           {...sharedToggleProps}
         >
           {renderItems()}
@@ -197,9 +193,7 @@ function RatingGroupAdvanced({
         <ToggleGroup
           type="single"
           value={value}
-          onValueChange={(groupValue: string) =>
-            onValueChange?.(groupValue || "0")
-          }
+          onValueChange={(groupValue: string) => onValueChange?.(groupValue || "0")}
           {...sharedToggleProps}
         >
           {renderItems()}

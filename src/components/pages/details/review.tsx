@@ -117,10 +117,7 @@ export function ReviewItem({ user, reviewText, likes = 0, date, criteries, revie
         <div className="flex flex-col gap-3">
           <div className="flex flex-col sm:flex-row sm:items-start sm:gap-2 gap-2">
             {reviewName ? (
-              <Link
-                to={"/"}
-                className="min-w-0 w-auto shrink-0 hover:text-primary transition-colors"
-              >
+              <Link to={"/"} className="min-w-0 w-auto shrink-0 hover:text-primary transition-colors">
                 <p className="font-bold truncate text-sm sm:text-base max-w-48">{reviewName}</p>
               </Link>
             ) : (

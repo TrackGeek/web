@@ -49,10 +49,12 @@ export function BookModal({ mediaData: _, onStatusChange, onSaveSuccess }: BookM
                 <FieldLabel htmlFor="status" className="text-sm font-medium">
                   {t("library:status")}
                 </FieldLabel>
-                <Select onValueChange={(value) => {
-                  setSelectedStatus(value);
-                  onStatusChange?.(value);
-                }}>
+                <Select
+                  onValueChange={(value) => {
+                    setSelectedStatus(value);
+                    onStatusChange?.(value);
+                  }}
+                >
                   <SelectTrigger className="w-full bg-background">
                     <SelectValue placeholder={t("feed:selectStatus")} />
                   </SelectTrigger>

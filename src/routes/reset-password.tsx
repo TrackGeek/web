@@ -65,7 +65,7 @@ function RouteComponent() {
     } else {
       toast.success(t("auth:resetPassword.then.success"));
     }
-    
+
     resetPasswordForm.reset();
     resetPasswordForm.clearErrors();
 

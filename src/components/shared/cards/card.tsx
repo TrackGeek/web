@@ -100,10 +100,18 @@ export function CardItem({ title, url, rating, year, imageURL, mediaType, synops
               {(mediaType === "anime" || mediaType === "tv-show") && (
                 <EpisodicContentModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
               )}
-              {mediaType === "movie" && <MovieModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />}
-              {mediaType === "book" && <BookModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />}
-              {mediaType === "game" && <GameModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />}
-              {mediaType === "manga" && <MangaModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />}
+              {mediaType === "movie" && (
+                <MovieModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
+              )}
+              {mediaType === "book" && (
+                <BookModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
+              )}
+              {mediaType === "game" && (
+                <GameModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
+              )}
+              {mediaType === "manga" && (
+                <MangaModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
+              )}
             </div>
           </DialogContent>
         </Dialog>

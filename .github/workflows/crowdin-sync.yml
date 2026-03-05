@@ -3,7 +3,8 @@ permissions: write-all
   
 on:
   push:
-    branches: [develop]
+    branches:
+      - develop
     paths:
       - "src/lib/i18n/locales/en-US/**"
   workflow_dispatch:

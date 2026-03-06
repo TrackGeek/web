@@ -1,5 +1,3 @@
-"use client";
-
 import type { Editor, Range } from "@tiptap/core";
 import { mergeAttributes, Node } from "@tiptap/core";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
@@ -19,18 +17,18 @@ import {
   useCurrentEditor,
 } from "@tiptap/react";
 import { BubbleMenu, type BubbleMenuProps, type FloatingMenuProps } from "@tiptap/react/menus";
-import { Button } from "@/components/ui/button";
-import { Command, CommandEmpty, CommandItem, CommandList } from "@/components/ui/command";
+import { Button } from "@/components/ui/button.tsx";
+import { Command, CommandEmpty, CommandItem, CommandList } from "@/components/ui/command.tsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+} from "@/components/ui/dropdown-menu.tsx";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover.tsx";
+import { Separator } from "@/components/ui/separator.tsx";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip.tsx";
+import { cn } from "@/lib/utils.ts";
 
 export type { Editor, JSONContent } from "@tiptap/react";
 

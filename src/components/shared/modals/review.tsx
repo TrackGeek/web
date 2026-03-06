@@ -2,10 +2,10 @@ import { Check, Plus, Trash2, XIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FeedComposer } from "@/components/pages/feed/composer.tsx";
-import { RatingGroupAdvanced } from "@/components/rating-group-advanced.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog.tsx";
 import { Input } from "@/components/ui/input.tsx";
+import { RatingGroupAdvanced } from "@/components/ui/rating-group-advanced.tsx";
 
 interface ReviewModalProps {
   open: boolean;

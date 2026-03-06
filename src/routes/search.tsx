@@ -1,5 +1,3 @@
-"use client";
-
 import { createFileRoute } from "@tanstack/react-router";
 import { Clipboard } from "lucide-react";
 import { useState } from "react";

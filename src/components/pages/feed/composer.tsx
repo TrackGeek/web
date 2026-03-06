@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { Editor, JSONContent } from "@/components/kibo-ui/editor";
+import type { Editor, JSONContent } from "@/components/ui/editor.tsx";
 import {
   EditorBubbleMenu,
   EditorClearFormatting,
@@ -37,7 +37,7 @@ import {
   EditorTableRowDelete,
   EditorTableRowMenu,
   EditorTableSplitCell,
-} from "@/components/kibo-ui/editor";
+} from "@/components/ui/editor.tsx";
 
 export function FeedComposer() {
   const { t } = useTranslation();

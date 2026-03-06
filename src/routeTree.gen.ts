@@ -33,6 +33,9 @@ import { Route as BookSlugRouteImport } from './routes/book/$slug'
 import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
+import { Route as MovieFranchisesSlugRouteImport } from './routes/movie/franchises/$slug'
+import { Route as GameFranchisesSlugRouteImport } from './routes/game/franchises/$slug'
+import { Route as BookFranchisesSlugRouteImport } from './routes/book/franchises/$slug'
 import { Route as UserUsernameSerieIndexRouteImport } from './routes/user/$username/serie/index'
 import { Route as UserUsernameScreenshotsIndexRouteImport } from './routes/user/$username/screenshots/index'
 import { Route as UserUsernameReviewsIndexRouteImport } from './routes/user/$username/reviews/index'
@@ -161,6 +164,21 @@ const UserUsernameIndexRoute = UserUsernameIndexRouteImport.update({
   path: '/user/$username/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MovieFranchisesSlugRoute = MovieFranchisesSlugRouteImport.update({
+  id: '/movie/franchises/$slug',
+  path: '/movie/franchises/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GameFranchisesSlugRoute = GameFranchisesSlugRouteImport.update({
+  id: '/game/franchises/$slug',
+  path: '/game/franchises/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookFranchisesSlugRoute = BookFranchisesSlugRouteImport.update({
+  id: '/book/franchises/$slug',
+  path: '/book/franchises/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UserUsernameSerieIndexRoute = UserUsernameSerieIndexRouteImport.update({
   id: '/user/$username/serie/',
   path: '/user/$username/serie/',
@@ -227,6 +245,9 @@ export interface FileRoutesByFullPath {
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/book/franchises/$slug': typeof BookFranchisesSlugRoute
+  '/game/franchises/$slug': typeof GameFranchisesSlugRoute
+  '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
   '/user/$username/': typeof UserUsernameIndexRoute
   '/user/$username/anime/': typeof UserUsernameAnimeIndexRoute
   '/user/$username/book/': typeof UserUsernameBookIndexRoute
@@ -260,6 +281,9 @@ export interface FileRoutesByTo {
   '/manga': typeof MangaIndexRoute
   '/movie': typeof MovieIndexRoute
   '/tv': typeof TvIndexRoute
+  '/book/franchises/$slug': typeof BookFranchisesSlugRoute
+  '/game/franchises/$slug': typeof GameFranchisesSlugRoute
+  '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
   '/user/$username': typeof UserUsernameIndexRoute
   '/user/$username/anime': typeof UserUsernameAnimeIndexRoute
   '/user/$username/book': typeof UserUsernameBookIndexRoute
@@ -295,6 +319,9 @@ export interface FileRoutesById {
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/book/franchises/$slug': typeof BookFranchisesSlugRoute
+  '/game/franchises/$slug': typeof GameFranchisesSlugRoute
+  '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
   '/user/$username/': typeof UserUsernameIndexRoute
   '/user/$username/anime/': typeof UserUsernameAnimeIndexRoute
   '/user/$username/book/': typeof UserUsernameBookIndexRoute
@@ -330,6 +357,9 @@ export interface FileRouteTypes {
     | '/manga/'
     | '/movie/'
     | '/tv/'
+    | '/book/franchises/$slug'
+    | '/game/franchises/$slug'
+    | '/movie/franchises/$slug'
     | '/user/$username/'
     | '/user/$username/anime/'
     | '/user/$username/book/'
@@ -363,6 +393,9 @@ export interface FileRouteTypes {
     | '/manga'
     | '/movie'
     | '/tv'
+    | '/book/franchises/$slug'
+    | '/game/franchises/$slug'
+    | '/movie/franchises/$slug'
     | '/user/$username'
     | '/user/$username/anime'
     | '/user/$username/book'
@@ -397,6 +430,9 @@ export interface FileRouteTypes {
     | '/manga/'
     | '/movie/'
     | '/tv/'
+    | '/book/franchises/$slug'
+    | '/game/franchises/$slug'
+    | '/movie/franchises/$slug'
     | '/user/$username/'
     | '/user/$username/anime/'
     | '/user/$username/book/'
@@ -431,6 +467,9 @@ export interface RootRouteChildren {
   MangaIndexRoute: typeof MangaIndexRoute
   MovieIndexRoute: typeof MovieIndexRoute
   TvIndexRoute: typeof TvIndexRoute
+  BookFranchisesSlugRoute: typeof BookFranchisesSlugRoute
+  GameFranchisesSlugRoute: typeof GameFranchisesSlugRoute
+  MovieFranchisesSlugRoute: typeof MovieFranchisesSlugRoute
   UserUsernameIndexRoute: typeof UserUsernameIndexRoute
   UserUsernameAnimeIndexRoute: typeof UserUsernameAnimeIndexRoute
   UserUsernameBookIndexRoute: typeof UserUsernameBookIndexRoute
@@ -612,6 +651,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserUsernameIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/movie/franchises/$slug': {
+      id: '/movie/franchises/$slug'
+      path: '/movie/franchises/$slug'
+      fullPath: '/movie/franchises/$slug'
+      preLoaderRoute: typeof MovieFranchisesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/franchises/$slug': {
+      id: '/game/franchises/$slug'
+      path: '/game/franchises/$slug'
+      fullPath: '/game/franchises/$slug'
+      preLoaderRoute: typeof GameFranchisesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book/franchises/$slug': {
+      id: '/book/franchises/$slug'
+      path: '/book/franchises/$slug'
+      fullPath: '/book/franchises/$slug'
+      preLoaderRoute: typeof BookFranchisesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/user/$username/serie/': {
       id: '/user/$username/serie/'
       path: '/user/$username/serie'
@@ -706,6 +766,9 @@ const rootRouteChildren: RootRouteChildren = {
   MangaIndexRoute: MangaIndexRoute,
   MovieIndexRoute: MovieIndexRoute,
   TvIndexRoute: TvIndexRoute,
+  BookFranchisesSlugRoute: BookFranchisesSlugRoute,
+  GameFranchisesSlugRoute: GameFranchisesSlugRoute,
+  MovieFranchisesSlugRoute: MovieFranchisesSlugRoute,
   UserUsernameIndexRoute: UserUsernameIndexRoute,
   UserUsernameAnimeIndexRoute: UserUsernameAnimeIndexRoute,
   UserUsernameBookIndexRoute: UserUsernameBookIndexRoute,

@@ -70,7 +70,8 @@ export function Header() {
         </DropdownMenu>
 
         <Link to={session.data?.user ? "/feed" : "/"}>
-          <img src="/logo.svg" alt="Logo" className="h-10" />
+          <img src="/logo.svg" alt="Logo" className="h-10 max-sm:hidden" />
+          <img src="/favicon.svg" alt="Logo" className="h-10 sm:hidden" />
         </Link>
       </div>
 

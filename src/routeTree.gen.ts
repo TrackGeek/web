@@ -28,6 +28,7 @@ import { Route as AnimeIndexRouteImport } from './routes/anime/index'
 import { Route as TvSlugRouteImport } from './routes/tv/$slug'
 import { Route as MovieSlugRouteImport } from './routes/movie/$slug'
 import { Route as MangaSlugRouteImport } from './routes/manga/$slug'
+import { Route as ListSlugRouteImport } from './routes/list/$slug'
 import { Route as GameSlugRouteImport } from './routes/game/$slug'
 import { Route as BookSlugRouteImport } from './routes/book/$slug'
 import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
@@ -139,6 +140,11 @@ const MangaSlugRoute = MangaSlugRouteImport.update({
   path: '/manga/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ListSlugRoute = ListSlugRouteImport.update({
+  id: '/list/$slug',
+  path: '/list/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GameSlugRoute = GameSlugRouteImport.update({
   id: '/game/$slug',
   path: '/game/$slug',
@@ -236,6 +242,7 @@ export interface FileRoutesByFullPath {
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
   '/game/$slug': typeof GameSlugRoute
+  '/list/$slug': typeof ListSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
   '/tv/$slug': typeof TvSlugRoute
@@ -272,6 +279,7 @@ export interface FileRoutesByTo {
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
   '/game/$slug': typeof GameSlugRoute
+  '/list/$slug': typeof ListSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
   '/tv/$slug': typeof TvSlugRoute
@@ -310,6 +318,7 @@ export interface FileRoutesById {
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
   '/game/$slug': typeof GameSlugRoute
+  '/list/$slug': typeof ListSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
   '/tv/$slug': typeof TvSlugRoute
@@ -348,6 +357,7 @@ export interface FileRouteTypes {
     | '/anime/$slug'
     | '/book/$slug'
     | '/game/$slug'
+    | '/list/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
     | '/tv/$slug'
@@ -384,6 +394,7 @@ export interface FileRouteTypes {
     | '/anime/$slug'
     | '/book/$slug'
     | '/game/$slug'
+    | '/list/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
     | '/tv/$slug'
@@ -421,6 +432,7 @@ export interface FileRouteTypes {
     | '/anime/$slug'
     | '/book/$slug'
     | '/game/$slug'
+    | '/list/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
     | '/tv/$slug'
@@ -458,6 +470,7 @@ export interface RootRouteChildren {
   AnimeSlugRoute: typeof AnimeSlugRoute
   BookSlugRoute: typeof BookSlugRoute
   GameSlugRoute: typeof GameSlugRoute
+  ListSlugRoute: typeof ListSlugRoute
   MangaSlugRoute: typeof MangaSlugRoute
   MovieSlugRoute: typeof MovieSlugRoute
   TvSlugRoute: typeof TvSlugRoute
@@ -616,6 +629,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MangaSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/list/$slug': {
+      id: '/list/$slug'
+      path: '/list/$slug'
+      fullPath: '/list/$slug'
+      preLoaderRoute: typeof ListSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/game/$slug': {
       id: '/game/$slug'
       path: '/game/$slug'
@@ -757,6 +777,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnimeSlugRoute: AnimeSlugRoute,
   BookSlugRoute: BookSlugRoute,
   GameSlugRoute: GameSlugRoute,
+  ListSlugRoute: ListSlugRoute,
   MangaSlugRoute: MangaSlugRoute,
   MovieSlugRoute: MovieSlugRoute,
   TvSlugRoute: TvSlugRoute,

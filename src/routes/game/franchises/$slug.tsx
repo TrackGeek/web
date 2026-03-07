@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Heart, Share } from "lucide-react";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import gamesData from "@/lib/mockups/games.json";
@@ -25,9 +26,10 @@ function GameFranchiseRoute() {
               alt={game.name}
             />
 
-            <div className="absolute inset-0 bg-linear-to-t from-malachite-500/80 via-malachite-500/30 to-transparent" />
-
-            <div className="absolute inset-0 p-8 flex flex-col justify-end gap-4">
+            <div className="absolute inset-0 bg-linear-to-t from-primary/80 via-primary/30 to-transparent" />
+            <Heart className="absolute top-4 right-14 z-10" />
+            <Share className="absolute top-4 right-4 z-10" />
+            <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end gap-4">
               <h2 className="text-4xl font-bold drop-shadow-lg">{game.name}</h2>
             </div>
           </div>

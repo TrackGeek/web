@@ -1,7 +1,7 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-
+import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { authClient } from "./lib/auth";
 import { routeTree } from "./routeTree.gen";
 
@@ -9,6 +9,9 @@ const router = createRouter({
   routeTree,
   context: {
     auth: authClient,
+  },
+  defaultNotFoundComponent: () => {
+    return <NotFoundComponent />;
   },
 });
 

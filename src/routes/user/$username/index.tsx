@@ -239,7 +239,7 @@ export function UserDetailsRoute() {
                       rating={f.score ?? 0}
                       year={2025}
                       synopsis={f.title}
-                      mediaType={"tv-show"}
+                      mediaType={"tv"}
                     />
                   ))}
                 </Grid>

@@ -24,7 +24,7 @@ function LinkTabsList({ className, children, ...props }: LinkTabsListProps) {
     <div
       data-slot="link-tabs-list"
       className={cn(
-        "border border-border text-malachite-400 bg-card flex h-9 w-full items-center rounded-lg p-0.75 overflow-y-hidden  overflow-x-auto scroll-smooth",
+        "border border-border text-secondary bg-card flex h-9 w-full items-center rounded-lg p-0.75 overflow-y-hidden  overflow-x-auto scroll-smooth",
         className,
       )}
       {...props}
@@ -59,9 +59,9 @@ function LinkTabsTrigger({
       className={cn(
         "cursor-pointer transition-[color,box-shadow] duration-300",
         isActive
-          ? "bg-malachite-900 dark:text-malachite-100 dark:border-input dark:bg-input/30 shadow-sm"
+          ? "bg-secondary-foreground dark:text-malachite-100 dark:border-input dark:bg-input/30 shadow-sm"
           : "text-foreground dark:text-muted-foreground",
-        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring focus-visible:ring-[3px] focus-visible:outline-1 border border-transparent text-malachite-400 dark:text-malachite-400 h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium whitespace-nowrap disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring focus-visible:ring-[3px] focus-visible:outline-1 border border-transparent text-secondary dark:text-secondary h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium whitespace-nowrap disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         orientation === "horizontal" ? "inline-flex" : "flex-col",
         className,
       )}

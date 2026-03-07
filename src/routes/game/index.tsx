@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { CardItem } from "@/components/shared/cards/card";
 import { Grid } from "@/components/layouts/grid";
+import { CardItem } from "@/components/shared/cards/card";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import gamesData from "@/lib/mockups/games.json";
@@ -38,9 +38,9 @@ function GameRoute() {
                     alt={game.name}
                   />
 
-                  <div className="absolute inset-0 bg-linear-to-t from-malachite-500/80 via-malachite-500/30 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-primary/80 via-primary/30 to-transparent" />
 
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end gap-4">
+                  <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end gap-4">
                     {logoArt ? (
                       <img
                         src={logoArt.replace(".jpg", ".png")}

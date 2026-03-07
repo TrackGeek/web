@@ -74,9 +74,9 @@
     "endless": "Infinito"
   },
   "uploadScreenshot": "Arraste e solte ou <span>escolha capturas de tela</span> para enviar",
-  "addNegative": "Add a Negative Point",
-  "addPositive": "Add a Positive Point",
-  "pros": "Pros",
-  "cons": "Cons",
-  "overall": "Overall"
+  "addNegative": "Adicionar um ponto negativo",
+  "addPositive": "Adicionar um ponto positivo",
+  "pros": "Prós",
+  "cons": "Contras",
+  "overall": "No geral"
 }

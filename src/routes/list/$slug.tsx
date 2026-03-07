@@ -18,15 +18,6 @@ export const Route = createFileRoute("/list/$slug")({
 
 type ContentType = "anime" | "manga" | "book" | "game" | "movie" | "tv";
 
-const CONTENT_TYPES: { value: ContentType; labelKey: string }[] = [
-  { value: "anime", labelKey: "common:types.anime" },
-  { value: "manga", labelKey: "common:types.manga" },
-  { value: "book", labelKey: "common:types.book" },
-  { value: "game", labelKey: "common:types.game" },
-  { value: "movie", labelKey: "common:types.movie" },
-  { value: "tv", labelKey: "common:types.tv" },
-];
-
 const GENRE_CONFIG: Record<ContentType, string[]> = {
   anime: [
     "Action",
@@ -215,7 +206,7 @@ const SORT_OPTIONS = [
 function ListRoute() {
   const { t } = useTranslation();
   const { slug } = Route.useParams();
-  const [contentType, setContentType] = useState<ContentType>("movie");
+  const [contentType] = useState<ContentType>("movie");
 
   const currentGenres = GENRE_CONFIG[contentType];
   const currentStatus = STATUS_OPTIONS[contentType];

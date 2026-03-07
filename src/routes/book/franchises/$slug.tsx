@@ -3,7 +3,6 @@ import { Heart, Share } from "lucide-react";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import booksData from "@/lib/mockups/books.json";
-import movies from "@/lib/mockups/movies.json";
 
 export const Route = createFileRoute("/book/franchises/$slug")({
   component: BookFranchisesRoute,

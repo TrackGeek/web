@@ -98,5 +98,7 @@
   "recommendations": "Recommendations",
   "topManga": "Top Manga",
   "startWriting": "Start Writing...",
-  "send": "Send"
+  "send": "Send",
+  "goHome": "Go Home",
+  "notFound": "The page you're looking for might have been <br />moved or doesn't exist."
 }

@@ -23,7 +23,7 @@ function BookFranchisesRoute() {
             <Heart className="absolute top-4 right-14 z-10" />
             <Share className="absolute top-4 right-4 z-10" />
             <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end gap-4">
-              <h2 className="text-4xl font-bold drop-shadow-lg">Heartstopper</h2>
+              <h2 className="text-4xl font-bold drop-shadow-lg">{book.title}</h2>
             </div>
           </div>
         );

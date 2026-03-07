@@ -16,7 +16,7 @@ export const Route = createFileRoute("/list/$slug")({
   component: ListRoute,
 });
 
-type ContentType = "anime" | "manga" | "book" | "game" | "movie" | "tv";
+type ContentType = "anime" | "manga" | "book" | "game" | "movie" | "tv-show";
 
 const GENRE_CONFIG: Record<ContentType, string[]> = {
   anime: [
@@ -391,7 +391,7 @@ function ListRoute() {
               rating={0}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}
-              mediaType={"movie"}
+              mediaType={contentType}
               key={movie.id}
             />
           ))}

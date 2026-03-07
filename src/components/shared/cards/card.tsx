@@ -10,7 +10,7 @@ import { MangaModal } from "../modals/manga";
 import { MovieModal } from "../modals/movie";
 import { ReviewModal } from "../modals/review";
 
-type MediaType = "anime" | "movie" | "tv-show" | "game" | "book" | "manga";
+type MediaType = "anime" | "movie" | "tv" | "game" | "book" | "manga";
 
 interface CardProps {
   title: string;
@@ -97,7 +97,7 @@ export function CardItem({ title, url, rating, year, imageURL, mediaType, synops
             </DialogHeader>
 
             <div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
-              {(mediaType === "anime" || mediaType === "tv-show") && (
+              {(mediaType === "anime" || mediaType === "tv") && (
                 <EpisodicContentModal onStatusChange={handleStatusChange} />
               )}
               {mediaType === "movie" && (

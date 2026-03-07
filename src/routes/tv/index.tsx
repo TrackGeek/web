@@ -68,7 +68,7 @@ function SerieRoute() {
               rating={0}
               year={new Date(serie.firstAirDate).getFullYear()}
               synopsis={serie.tagline}
-              mediaType={"tv-show"}
+              mediaType={"tv"}
               key={serie.id}
             />
           ))}
@@ -86,7 +86,7 @@ function SerieRoute() {
               rating={0}
               year={new Date(serie.firstAirDate).getFullYear()}
               synopsis={serie.tagline}
-              mediaType={"tv-show"}
+              mediaType={"tv"}
               key={serie.id}
             />
           ))}
@@ -104,7 +104,7 @@ function SerieRoute() {
               rating={0}
               year={new Date(serie.firstAirDate).getFullYear()}
               synopsis={serie.tagline}
-              mediaType={"tv-show"}
+              mediaType={"tv"}
               key={serie.id}
             />
           ))}
@@ -122,7 +122,7 @@ function SerieRoute() {
               rating={0}
               year={new Date(serie.firstAirDate).getFullYear()}
               synopsis={serie.tagline}
-              mediaType={"tv-show"}
+              mediaType={"tv"}
               key={serie.id}
             />
           ))}

@@ -16,7 +16,7 @@ export const Route = createFileRoute("/list/$slug")({
   component: ListRoute,
 });
 
-type ContentType = "anime" | "manga" | "book" | "game" | "movie" | "tv-show";
+type ContentType = "anime" | "manga" | "book" | "game" | "movie" | "tv";
 
 const GENRE_CONFIG: Record<ContentType, string[]> = {
   anime: [

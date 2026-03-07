@@ -184,7 +184,7 @@ function AddDataRoute() {
                   </ul>
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="tv-shows">
+              <AccordionItem value="tv">
                 <AccordionTrigger className="bg-linear-to-br from-muted/50 to-muted px-5">
                   {t("pages:addData.forTVShows")}
                 </AccordionTrigger>

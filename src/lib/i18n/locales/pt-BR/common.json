@@ -88,6 +88,7 @@
   },
   "minEpisodes": "Mínimo de episódios",
   "minChapters": "Mínimo de capítulos",
+  "minPages": "Min Pages",
   "mostPopular": "Mais Popular",
   "recentlyReleased": "Lançados Recentemente",
   "comingSoon": "Em Breve",
@@ -99,6 +100,6 @@
   "topManga": "Melhores Mangás",
   "startWriting": "Comece a digitar...",
   "send": "Enviar",
-  "goHome": "Go Home",
-  "notFound": "The page you're looking for might have been <br />moved or doesn't exist."
+  "goHome": "Ir para a página inicial",
+  "notFound": "A página que você está procurando pode ter sido <br />movida ou não existe."
 }

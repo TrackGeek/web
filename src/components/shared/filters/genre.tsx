@@ -190,7 +190,7 @@ export function Genres({ type }: GenresProps) {
       <h5 className="text-md font-semibold text-card-foreground mb-2">{t("library:genres")}</h5>
       <Combobox items={filteredGenres} multiple={true} disabled={loading}>
         <ComboboxInput
-          placeholder={loading ? "Carregando..." : t("library:genres")}
+          placeholder={t(loading ? "common:loading" : "library:genres")}
           showClear
           value={search}
           onChange={(e) => setSearch(e.target.value)}

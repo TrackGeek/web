@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Heart, Share } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Filters } from "@/components/layouts/filters.tsx";
+import { type ContentType, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import { LinkTabs, LinkTabsList, LinkTabsTrigger } from "@/components/ui/link-tabs.tsx";
@@ -12,8 +12,6 @@ import movies from "@/lib/mockups/movies.json";
 export const Route = createFileRoute("/list/$slug")({
   component: ListRoute,
 });
-
-type ContentType = "anime" | "manga" | "book" | "game" | "movie" | "tv";
 
 function ListRoute() {
   const { t } = useTranslation();

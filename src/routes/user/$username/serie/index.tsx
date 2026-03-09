@@ -4,13 +4,14 @@ import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
 import { CardItem } from "@/components/shared/cards/card";
+import { Genres } from "@/components/shared/filters/genre.tsx";
+import { Sort } from "@/components/shared/filters/sort.tsx";
+import { Status } from "@/components/shared/filters/status.tsx";
+import { Year } from "@/components/shared/filters/year.tsx";
 import { Button } from "@/components/ui/button";
-import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { List } from "@/components/ui/list";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/user/$username/serie/")({
@@ -23,25 +24,6 @@ export const Route = createFileRoute("/user/$username/serie/")({
 export function SerieListRoute() {
   const { username } = Route.useParams();
   const { t } = useTranslation();
-
-  const genres = [
-    "Action & Adventure",
-    "Animation",
-    "Comedy",
-    "Crime",
-    "Documentary",
-    "Drama",
-    "Family",
-    "Kids",
-    "Mystery",
-    "News",
-    "Reality",
-    "Sci-Fi & Fantasy",
-    "Soap",
-    "Talk",
-    "War & Politics",
-    "Western",
-  ];
 
   const user = {
     username,
@@ -104,18 +86,7 @@ export function SerieListRoute() {
                 <List key={listName} name={listName} active={listName === t("feed:lists.planning")} />
               ))}
             </div>
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("library:status")} className="w-full" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"notYetAired"}>{t("library:statusAir.notYetAired")}</SelectItem>
-                  <SelectItem value={"currentlyAiring"}>{t("library:statusAir.currentlyAiring")}</SelectItem>
-                  <SelectItem value={"finishedAiring"}>{t("library:statusAir.finishedAiring")}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>{" "}
+            <Status type={"tv"} />
             <div className="flex flex-col gap-2 gap-y-4">
               <p>{t("library:runtime")}</p>
               <Slider defaultValue={[1, 400]} max={400} step={30} />
@@ -124,34 +95,9 @@ export function SerieListRoute() {
                 <Input type={"number"} defaultValue={400} className={"w-16"} min={1} max={400} />
               </div>
             </div>
-            <Combobox items={genres} multiple={true}>
-              <ComboboxInput placeholder={t("library:genres")} showClear readOnly={true} />
-              <ComboboxContent>
-                <ComboboxList>
-                  {genres.map((genre) => (
-                    <ComboboxItem key={genre} value={genre} className={"capitalize"}>
-                      {getGenreLabel(t as any, genre)}
-                    </ComboboxItem>
-                  ))}
-                </ComboboxList>
-              </ComboboxContent>
-            </Combobox>
-            <Input type={"number"} placeholder={`${t(`library:year`)}`} min={1958} max={new Date().getFullYear() + 2} />
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("user:sort.placeholder")} className="w-full" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"title"}>{t("user:sort.title")}</SelectItem>
-                  <SelectItem value={"lastAdded"}>{t("user:sort.lastAdded")}</SelectItem>
-                  <SelectItem value={"lastUpdated"}>{t("user:sort.lastUpdated")}</SelectItem>
-                  <SelectItem value={"rating"}>{t("user:sort.rating")}</SelectItem>
-                  <SelectItem value={"releaseDate"}>{t("user:sort.releaseDate")}</SelectItem>
-                  <SelectItem value={"popularity"}>{t("user:sort.popularity")}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <Genres type={"tv"} />
+            <Year type={"tv"} />
+            <Sort />
           </div>
         </div>
         <Grid minColSize={"128px"} className="flex-1 md:w-2/3 grid grid-cols-1 gap-6">

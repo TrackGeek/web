@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Heart, Share } from "lucide-react";
+import { Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import booksData from "@/lib/mockups/books.json";
@@ -28,20 +29,23 @@ function BookFranchisesRoute() {
           </div>
         );
       })}
-      <Grid minColSize={"120px"} className={"grid-cols-5"}>
-        {books.map((book) => (
-          <CardItem
-            title={book.title}
-            url={`/book/${book.id}`}
-            imageURL={book.imageUrl}
-            rating={0}
-            year={book.releaseYear}
-            synopsis={book.description}
-            mediaType={"book"}
-            key={book.id}
-          />
-        ))}
-      </Grid>
+      <div className="flex max-sm:flex-col gap-5 py-6">
+        <Filters type={"book"} />
+        <Grid minColSize={"120px"} className={"grid-cols-5"}>
+          {books.map((book) => (
+            <CardItem
+              title={book.title}
+              url={`/book/${book.id}`}
+              imageURL={book.imageUrl}
+              rating={0}
+              year={book.releaseYear}
+              synopsis={book.description}
+              mediaType={"book"}
+              key={book.id}
+            />
+          ))}
+        </Grid>
+      </div>
     </div>
   );
 }

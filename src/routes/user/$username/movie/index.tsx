@@ -4,13 +4,14 @@ import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
 import { CardItem } from "@/components/shared/cards/card";
+import { Genres } from "@/components/shared/filters/genre.tsx";
+import { Sort } from "@/components/shared/filters/sort.tsx";
+import { Status } from "@/components/shared/filters/status.tsx";
+import { Year } from "@/components/shared/filters/year.tsx";
 import { Button } from "@/components/ui/button";
-import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { List } from "@/components/ui/list";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/user/$username/movie/")({
@@ -23,28 +24,6 @@ export const Route = createFileRoute("/user/$username/movie/")({
 export function MovieListRoute() {
   const { username } = Route.useParams();
   const { t } = useTranslation();
-
-  const genres = [
-    "Animation",
-    "Adventure",
-    "Cinema TV",
-    "Action",
-    "Comedy",
-    "Drama",
-    "Crime",
-    "Documentary",
-    "Family",
-    "Fantasy",
-    "Western",
-    "War",
-    "History",
-    "Mystery",
-    "Music",
-    "Romance",
-    "Horror",
-    "Science Fiction",
-    "Thriller",
-  ];
 
   const user = {
     username,
@@ -105,17 +84,7 @@ export function MovieListRoute() {
                 <List key={listName} name={listName} active={listName === t("feed:lists.planning")} />
               ))}
             </div>
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("library:status")} className="w-full" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"released"}>{t("library:statusAir.released")}</SelectItem>
-                  <SelectItem value={"unreleased"}>{t("library:statusAir.unreleased")}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>{" "}
+            <Status type={"movie"} />
             <div className="flex flex-col gap-2 gap-y-4">
               <p>{t("library:runtime")}</p>
               <Slider defaultValue={[1, 400]} max={400} step={30} />
@@ -124,34 +93,9 @@ export function MovieListRoute() {
                 <Input type={"number"} defaultValue={400} className={"w-16"} min={1} max={400} />
               </div>
             </div>
-            <Combobox items={genres} multiple={true}>
-              <ComboboxInput placeholder={t("library:genres")} showClear readOnly={true} />
-              <ComboboxContent>
-                <ComboboxList>
-                  {genres.map((genre) => (
-                    <ComboboxItem key={genre} value={genre} className={"capitalize"}>
-                      {getGenreLabel(t as any, genre)}
-                    </ComboboxItem>
-                  ))}
-                </ComboboxList>
-              </ComboboxContent>
-            </Combobox>
-            <Input type={"number"} placeholder={`${t(`library:year`)}`} min={1958} max={new Date().getFullYear() + 2} />
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("user:sort.placeholder")} className="w-full" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"title"}>{t("user:sort.title")}</SelectItem>
-                  <SelectItem value={"lastAdded"}>{t("user:sort.lastAdded")}</SelectItem>
-                  <SelectItem value={"lastUpdated"}>{t("user:sort.lastUpdated")}</SelectItem>
-                  <SelectItem value={"rating"}>{t("user:sort.rating")}</SelectItem>
-                  <SelectItem value={"releaseDate"}>{t("user:sort.releaseDate")}</SelectItem>
-                  <SelectItem value={"popularity"}>{t("user:sort.popularity")}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <Genres type={"movie"} />
+            <Year type={"movie"} />
+            <Sort />
           </div>
         </div>
         <Grid minColSize={"128px"} className="flex-1 md:w-2/3 grid grid-cols-1 gap-6">

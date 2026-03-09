@@ -1,54 +1,28 @@
 import { createFileRoute } from "@tanstack/react-router";
-import axios from "axios";
 import { ArrowLeftRight, Dices, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
 import { CardItem } from "@/components/shared/cards/card";
+import { Genres } from "@/components/shared/filters/genre.tsx";
+import { Sort } from "@/components/shared/filters/sort.tsx";
+import { Status } from "@/components/shared/filters/status.tsx";
+import { Year } from "@/components/shared/filters/year.tsx";
 import { Button } from "@/components/ui/button";
-import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { List } from "@/components/ui/list";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { seo } from "@/lib/utils/seo";
-
-const jikanApi = axios.create({
-  baseURL: "https://api.jikan.moe/v4",
-});
-
-interface Genre {
-  mal_id: number;
-  type: string;
-  name: string;
-  url: string;
-  count: number;
-}
-
-interface GenreResponse {
-  data: Genre[];
-}
-
-async function fetchBookGenres(): Promise<GenreResponse> {
-  const response = await jikanApi.get<GenreResponse>("/genres/anime");
-  return response.data;
-}
 
 export const Route = createFileRoute("/user/$username/book/")({
   head: () => ({
     meta: [...seo({ title: "Book List" })],
   }),
-  loader: async () => {
-    const genres = await fetchBookGenres();
-    return { genres };
-  },
   component: BookListRoute,
 });
 
 export function BookListRoute() {
   const { username } = Route.useParams();
-  const { genres } = Route.useLoaderData();
   const { t } = useTranslation();
 
   const user = {
@@ -112,17 +86,7 @@ export function BookListRoute() {
                 <List key={listName} name={listName} active={listName === t("feed:lists.planning")} />
               ))}
             </div>
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("library:status")} className="w-full" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"released"}>{t("library:statusAir.released")}</SelectItem>
-                  <SelectItem value={"unreleased"}>{t("library:statusAir.unreleased")}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <Status type={"book"} />
             <div className="flex flex-col gap-2 gap-y-4">
               <p>{t("library:page_other")}</p>
               <Slider defaultValue={[1, 60000]} max={60000} step={10} />
@@ -131,34 +95,9 @@ export function BookListRoute() {
                 <Input type={"number"} defaultValue={60000} className={"w-20"} min={1} max={60000} />
               </div>
             </div>
-            <Combobox items={genres.data.map((g) => g.name)} multiple={true}>
-              <ComboboxInput placeholder={t("library:genres")} showClear readOnly={true} />
-              <ComboboxContent>
-                <ComboboxList>
-                  {genres.data.map((genre) => (
-                    <ComboboxItem key={genre.mal_id} value={genre.name}>
-                      {getGenreLabel(t as any, genre.name)}
-                    </ComboboxItem>
-                  ))}
-                </ComboboxList>
-              </ComboboxContent>
-            </Combobox>
-            <Input type={"number"} placeholder={`${t("library:year")}`} min={1950} max={new Date().getFullYear() + 1} />
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("user:sort.placeholder")} className="w-full" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"title"}>{t("user:sort.title")}</SelectItem>
-                  <SelectItem value={"lastAdded"}>{t("user:sort.lastAdded")}</SelectItem>
-                  <SelectItem value={"lastUpdated"}>{t("user:sort.lastUpdated")}</SelectItem>
-                  <SelectItem value={"rating"}>{t("user:sort.rating")}</SelectItem>
-                  <SelectItem value={"releaseDate"}>{t("user:sort.releaseDate")}</SelectItem>
-                  <SelectItem value={"popularity"}>{t("user:sort.popularity")}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <Genres type={"book"} />
+            <Year type={"book"} />
+            <Sort />
           </div>
         </div>
         <Grid minColSize={"128px"} className="flex-1 md:w-2/3 grid grid-cols-1 gap-6">

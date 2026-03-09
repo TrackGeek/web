@@ -19,13 +19,7 @@ export function Year({ type }: { type: ContentType }) {
   return (
     <div>
       <h5 className="text-md font-semibold text-card-foreground mb-2">{t("library:year")}</h5>
-      <Input
-        type="number"
-        placeholder={t("library:year")}
-        min={yearRange.min}
-        max={yearRange.max}
-        className="bg-muted/50"
-      />
+      <Input type="number" placeholder={t("library:year")} min={yearRange.min} max={yearRange.max} />
     </div>
   );
 }

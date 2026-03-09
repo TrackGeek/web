@@ -1,53 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
-import axios from "axios";
 import { ArrowLeftRight, Dices, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
 import { CardItem } from "@/components/shared/cards/card";
+import { Genres } from "@/components/shared/filters/genre.tsx";
+import { MinEpisodes } from "@/components/shared/filters/min-episodes.tsx";
+import { Sort } from "@/components/shared/filters/sort.tsx";
+import { Status } from "@/components/shared/filters/status.tsx";
+import { Year } from "@/components/shared/filters/year.tsx";
 import { Button } from "@/components/ui/button";
-import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { List } from "@/components/ui/list";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { seo } from "@/lib/utils/seo";
-
-const jikanApi = axios.create({
-  baseURL: "https://api.jikan.moe/v4",
-});
-
-interface Genre {
-  mal_id: number;
-  type: string;
-  name: string;
-  url: string;
-  count: number;
-}
-
-interface GenreResponse {
-  data: Genre[];
-}
-
-async function fetchAnimeGenres(): Promise<GenreResponse> {
-  const response = await jikanApi.get<GenreResponse>("/genres/anime");
-  return response.data;
-}
 
 export const Route = createFileRoute("/user/$username/anime/")({
   head: () => ({
     meta: [...seo({ title: "Anime List" })],
   }),
-  loader: async () => {
-    const genres = await fetchAnimeGenres();
-    return { genres };
-  },
   component: AnimeListRoute,
 });
 
 export function AnimeListRoute() {
   const { username } = Route.useParams();
-  const { genres } = Route.useLoaderData();
   const { t } = useTranslation();
 
   const user = {
@@ -111,64 +87,32 @@ export function AnimeListRoute() {
                 <List key={listName} name={listName} active={listName === t("feed:lists.planning")} />
               ))}
             </div>
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("feed:format")} className="w-full" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"tv"}>TV</SelectItem>
-                  <SelectItem value={"movie"}>{t("common:types.movie")}</SelectItem>
-                  <SelectItem value={"ova"}>OVA</SelectItem>
-                  <SelectItem value={"ona"}>ONA</SelectItem>
-                  <SelectItem value={"special"}>{t("library:types.Special")}</SelectItem>
-                  <SelectItem value={"TVSpecial"}>{t("library:types.TVSpecial")}</SelectItem>
-                  <SelectItem value={"music"}>{t("library:types.Music")}</SelectItem>
-                  <SelectItem value={"cm"}>CM</SelectItem>
-                  <SelectItem value={"pv"}>PV</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("library:status")} className="w-full" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"notYetAired"}>{t("library:statusAir.notYetAired")}</SelectItem>
-                  <SelectItem value={"currentlyAiring"}>{t("library:statusAir.currentlyAiring")}</SelectItem>
-                  <SelectItem value={"finishedAiring"}>{t("library:statusAir.finishedAiring")}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <Combobox items={genres.data.map((g) => g.name)} multiple={true}>
-              <ComboboxInput placeholder={t("library:genres")} showClear readOnly={true} />
-              <ComboboxContent>
-                <ComboboxList>
-                  {genres.data.map((genre) => (
-                    <ComboboxItem key={genre.mal_id} value={genre.name}>
-                      {getGenreLabel(t as any, genre.name)}
-                    </ComboboxItem>
-                  ))}
-                </ComboboxList>
-              </ComboboxContent>
-            </Combobox>
-            <Input type={"number"} placeholder={`${t("library:year")}`} min={1950} max={new Date().getFullYear() + 1} />
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("user:sort.placeholder")} className="w-full" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"title"}>{t("user:sort.title")}</SelectItem>
-                  <SelectItem value={"lastAdded"}>{t("user:sort.lastAdded")}</SelectItem>
-                  <SelectItem value={"lastUpdated"}>{t("user:sort.lastUpdated")}</SelectItem>
-                  <SelectItem value={"rating"}>{t("user:sort.rating")}</SelectItem>
-                  <SelectItem value={"releaseDate"}>{t("user:sort.releaseDate")}</SelectItem>
-                  <SelectItem value={"popularity"}>{t("user:sort.popularity")}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <div>
+              <h5 className="text-md font-semibold text-card-foreground mb-2">{t("feed:format")}</h5>
+              <Select>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder={t("feed:format")} className="w-full" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value={"tv"}>TV</SelectItem>
+                    <SelectItem value={"movie"}>{t("common:types.movie")}</SelectItem>
+                    <SelectItem value={"ova"}>OVA</SelectItem>
+                    <SelectItem value={"ona"}>ONA</SelectItem>
+                    <SelectItem value={"special"}>{t("library:types.Special")}</SelectItem>
+                    <SelectItem value={"TVSpecial"}>{t("library:types.TVSpecial")}</SelectItem>
+                    <SelectItem value={"music"}>{t("library:types.Music")}</SelectItem>
+                    <SelectItem value={"cm"}>CM</SelectItem>
+                    <SelectItem value={"pv"}>PV</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <Status type={"anime"} />
+            <Genres type={"anime"} />
+            <Year type={"anime"} />
+            <MinEpisodes />
+            <Sort />
           </div>
         </div>
         <Grid minColSize={"128px"} className="flex-1 md:w-2/3 grid grid-cols-1 gap-6">

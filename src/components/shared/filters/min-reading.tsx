@@ -10,12 +10,7 @@ export function MinReading({ type }: { type: ContentType }) {
       <h5 className="text-md font-semibold text-card-foreground mb-2">
         {t(type === "manga" ? "library:chapters" : "library:page_other")}
       </h5>
-      <Input
-        type="number"
-        placeholder={t(type === "manga" ? "common:minChapters" : "common:minPages")}
-        min={0}
-        className="bg-muted/50"
-      />
+      <Input type="number" placeholder={t(type === "manga" ? "common:minChapters" : "common:minPages")} min={0} />
     </div>
   );
 }

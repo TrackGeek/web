@@ -1,53 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
-import axios from "axios";
 import { ArrowLeftRight, Dices, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { CardItem } from "@/components/shared/cards/card";
 import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
+import { CardItem } from "@/components/shared/cards/card";
+import { Genres } from "@/components/shared/filters/genre.tsx";
+import { MinReading } from "@/components/shared/filters/min-reading.tsx";
+import { Sort } from "@/components/shared/filters/sort.tsx";
+import { Status } from "@/components/shared/filters/status.tsx";
+import { Year } from "@/components/shared/filters/year.tsx";
 import { Button } from "@/components/ui/button";
-import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { List } from "@/components/ui/list";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { seo } from "@/lib/utils/seo";
-
-const jikanApi = axios.create({
-  baseURL: "https://api.jikan.moe/v4",
-});
-
-interface Genre {
-  mal_id: number;
-  type: string;
-  name: string;
-  url: string;
-  count: number;
-}
-
-interface GenreResponse {
-  data: Genre[];
-}
-
-async function fetchMangaGenres(): Promise<GenreResponse> {
-  const response = await jikanApi.get<GenreResponse>("/genres/manga");
-  return response.data;
-}
 
 export const Route = createFileRoute("/user/$username/manga/")({
   head: () => ({
     meta: [...seo({ title: "Manga List" })],
   }),
-  loader: async () => {
-    const genres = await fetchMangaGenres();
-    return { genres };
-  },
   component: MangaListRoute,
 });
 
 export function MangaListRoute() {
   const { username } = Route.useParams();
-  const { genres } = Route.useLoaderData();
   const { t } = useTranslation();
 
   const user = {
@@ -111,64 +87,30 @@ export function MangaListRoute() {
                 <List key={listName} name={listName} active={listName === t("feed:lists.planning")} />
               ))}
             </div>
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("feed:format")} className="w-full" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"manga"}>{t("common:types.manga")}</SelectItem>
-                  <SelectItem value={"manhwa"}>{t("library:types.Manhwa")}</SelectItem>
-                  <SelectItem value={"manhua"}>{t("library:types.Manhua")}</SelectItem>
-                  <SelectItem value={"novel"}>{t("library:types.Novel")}</SelectItem>
-                  <SelectItem value={"lightNovel"}>{t("library:types.LightNovel")}</SelectItem>
-                  <SelectItem value={"oneshot"}>{t("library:types.OneShot")}</SelectItem>
-                  <SelectItem value={"doujinshi"}>{t("library:types.Doujinshi")}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("library:status")} className="w-full" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"notYetPublished"}>{t("library:statusAir.notYetPublished")}</SelectItem>
-                  <SelectItem value={"publishing"}>{t("library:statusAir.publishing")}</SelectItem>
-                  <SelectItem value={"finished"}>{t("library:statusAir.finished")}</SelectItem>
-                  <SelectItem value={"onHiatus"}>{t("library:statusAir.onHiatus")}</SelectItem>
-                  <SelectItem value={"discontinued"}>{t("library:statusAir.discontinued")}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <Combobox items={genres.data.map((g) => g.name)} multiple={true}>
-              <ComboboxInput placeholder={t("library:genres")} showClear readOnly={true} />
-              <ComboboxContent>
-                <ComboboxList>
-                  {genres.data.map((genre) => (
-                    <ComboboxItem key={genre.mal_id} value={genre.name}>
-                      {getGenreLabel(t as any, genre.name)}
-                    </ComboboxItem>
-                  ))}
-                </ComboboxList>
-              </ComboboxContent>
-            </Combobox>
-            <Input type={"number"} placeholder={`${t(`library:year`)}`} min={1950} max={new Date().getFullYear() + 1} />
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={t("user:sort.placeholder")} className="w-full" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"title"}>{t("user:sort.title")}</SelectItem>
-                  <SelectItem value={"lastAdded"}>{t("user:sort.lastAdded")}</SelectItem>
-                  <SelectItem value={"lastUpdated"}>{t("user:sort.lastUpdated")}</SelectItem>
-                  <SelectItem value={"rating"}>{t("user:sort.rating")}</SelectItem>
-                  <SelectItem value={"releaseDate"}>{t("user:sort.releaseDate")}</SelectItem>
-                  <SelectItem value={"popularity"}>{t("user:sort.popularity")}</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <div>
+              <h5 className="text-md font-semibold text-card-foreground mb-2">{t("feed:format")}</h5>
+              <Select>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder={t("feed:format")} className="w-full" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value={"manga"}>{t("common:types.manga")}</SelectItem>
+                    <SelectItem value={"manhwa"}>{t("library:types.Manhwa")}</SelectItem>
+                    <SelectItem value={"manhua"}>{t("library:types.Manhua")}</SelectItem>
+                    <SelectItem value={"novel"}>{t("library:types.Novel")}</SelectItem>
+                    <SelectItem value={"lightNovel"}>{t("library:types.LightNovel")}</SelectItem>
+                    <SelectItem value={"oneshot"}>{t("library:types.OneShot")}</SelectItem>
+                    <SelectItem value={"doujinshi"}>{t("library:types.Doujinshi")}</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <Status type={"manga"} />
+            <Genres type={"manga"} />
+            <Year type={"manga"} />
+            <MinReading type={"manga"} />
+            <Sort />
           </div>
         </div>
         <Grid minColSize={"128px"} className="flex-1 md:w-2/3 grid grid-cols-1 gap-6">

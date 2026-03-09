@@ -1,7 +1,17 @@
+import axios from "axios";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ContentType } from "@/components/layouts/filters.tsx";
 import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox.tsx";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
+
+interface Genre {
+  mal_id: number;
+  type: string;
+  name: string;
+  url: string;
+  count: number;
+}
 
 const GENRE_CONFIG: Record<ContentType, string[]> = {
   anime: [
@@ -93,63 +103,101 @@ const GENRE_CONFIG: Record<ContentType, string[]> = {
     "Quiz/Trivia",
   ],
   movie: [
-    "Action",
-    "Adventure",
     "Animation",
-    "Biography",
+    "Adventure",
+    "Cinema TV",
+    "Action",
     "Comedy",
+    "Drama",
     "Crime",
     "Documentary",
-    "Drama",
+    "Family",
     "Fantasy",
-    "Film-Noir",
-    "Horror",
-    "Musical",
-    "Mystery",
-    "Romance",
-    "Sci-Fi",
-    "Sport",
-    "Thriller",
-    "War",
     "Western",
+    "War",
+    "History",
+    "Mystery",
+    "Music",
+    "Romance",
+    "Horror",
+    "Science Fiction",
+    "Thriller",
   ],
   tv: [
-    "Action",
-    "Adventure",
+    "Action & Adventure",
     "Animation",
-    "Biography",
     "Comedy",
     "Crime",
     "Documentary",
     "Drama",
     "Family",
-    "Fantasy",
-    "History",
-    "Horror",
-    "Music",
+    "Kids",
     "Mystery",
-    "Romance",
-    "Sci-Fi",
-    "Sport",
-    "Talk-Show",
-    "Thriller",
-    "War",
+    "News",
+    "Reality",
+    "Sci-Fi & Fantasy",
+    "Soap",
+    "Talk",
+    "War & Politics",
     "Western",
   ],
 };
 
-export function Genres({ type }: { type: ContentType }) {
-  const { t } = useTranslation();
+const jikanApi = axios.create({
+  baseURL: "https://api.jikan.moe/v4",
+});
 
-  const currentGenres = GENRE_CONFIG[type];
+interface GenresProps {
+  type: ContentType;
+}
+
+export function Genres({ type }: GenresProps) {
+  const { t } = useTranslation();
+  const [search, setSearch] = useState("");
+  const [genres, setGenres] = useState<Genre[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const response = await jikanApi.get(`/genres/${type}`);
+        setGenres(response.data.data);
+      } catch (error) {
+        console.error("Failed to fetch genres:", error);
+        setGenres([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGenres();
+  }, [type]);
+
+  const genreList = useMemo(() => {
+    if (genres.length > 0) {
+      return genres.map((g) => g.name);
+    }
+    return GENRE_CONFIG[type] || [];
+  }, [genres, type]);
+
+  const filteredGenres = useMemo(() => {
+    const query = search.toLowerCase();
+    return genreList.filter((genre) => genre.toLowerCase().includes(query));
+  }, [genreList, search]);
+
   return (
     <div>
       <h5 className="text-md font-semibold text-card-foreground mb-2">{t("library:genres")}</h5>
-      <Combobox items={currentGenres} multiple={true}>
-        <ComboboxInput placeholder={t("library:genres")} showClear readOnly={true} />
+      <Combobox items={filteredGenres} multiple={true} disabled={loading}>
+        <ComboboxInput
+          placeholder={loading ? "Carregando..." : t("library:genres")}
+          showClear
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <ComboboxContent>
           <ComboboxList>
-            {currentGenres.map((genre) => (
+            {filteredGenres.map((genre) => (
               <ComboboxItem key={genre} value={genre}>
                 {getGenreLabel(t as any, genre)}
               </ComboboxItem>

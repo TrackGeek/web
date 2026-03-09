@@ -64,16 +64,16 @@ function MangaRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {mangas.map((manga: any) => (
+          {mangas.map((manga) => (
             <CardItem
               title={manga.title}
-              url={`/manga/${manga.id}`}
+              url={`/manga/${manga.mal_id}`}
               imageURL={manga.imageUrl}
-              rating={manga.rating}
+              rating={manga.rank}
               year={manga.published.prop.from.year}
               synopsis={manga.synopsis}
               mediaType={"manga"}
-              key={manga.id}
+              key={manga.mal_id}
             />
           ))}
         </Grid>
@@ -82,16 +82,16 @@ function MangaRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {mangas.map((manga: any) => (
+          {mangas.map((manga) => (
             <CardItem
               title={manga.title}
-              url={`/manga/${manga.id}`}
+              url={`/manga/${manga.mal_id}`}
               imageURL={manga.imageUrl}
-              rating={manga.rating}
+              rating={manga.rank}
               year={manga.published.prop.from.year}
               synopsis={manga.synopsis}
               mediaType={"manga"}
-              key={manga.id}
+              key={manga.mal_id}
             />
           ))}
         </Grid>
@@ -100,16 +100,16 @@ function MangaRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {mangas.map((manga: any) => (
+          {mangas.map((manga) => (
             <CardItem
               title={manga.title}
-              url={`/manga/${manga.id}`}
+              url={`/manga/${manga.mal_id}`}
               imageURL={manga.imageUrl}
-              rating={manga.rating}
+              rating={manga.rank}
               year={manga.published.prop.from.year}
               synopsis={manga.synopsis}
               mediaType={"manga"}
-              key={manga.id}
+              key={manga.mal_id}
             />
           ))}
         </Grid>
@@ -118,16 +118,16 @@ function MangaRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {mangas.map((manga: any) => (
+          {mangas.map((manga) => (
             <CardItem
               title={manga.title}
-              url={`/manga/${manga.id}`}
+              url={`/manga/${manga.mal_id}`}
               imageURL={manga.imageUrl}
-              rating={manga.rating}
+              rating={manga.rank}
               year={manga.published.prop.from.year}
               synopsis={manga.synopsis}
               mediaType={"manga"}
-              key={manga.id}
+              key={manga.mal_id}
             />
           ))}
         </Grid>

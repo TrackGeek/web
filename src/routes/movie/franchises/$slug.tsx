@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Heart, Share } from "lucide-react";
+import { Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import movies from "@/lib/mockups/movies.json";
@@ -31,20 +32,23 @@ function MovieFranchiseRoute() {
           </div>
         );
       })}
-      <Grid minColSize={"120px"} className={"grid-cols-5 py-6"}>
-        {movies.map((movie) => (
-          <CardItem
-            title={movie.title}
-            url={`/movie/${movie.id}`}
-            imageURL={movie.posterUrl}
-            rating={0}
-            year={new Date(movie.releaseDate).getFullYear()}
-            synopsis={movie.overview}
-            mediaType={"movie"}
-            key={movie.id}
-          />
-        ))}
-      </Grid>
+      <div className="flex max-sm:flex-col gap-5 py-6">
+        <Filters type={"movie"} />
+        <Grid minColSize={"120px"} className={"grid-cols-5"}>
+          {movies.map((movie) => (
+            <CardItem
+              title={movie.title}
+              url={`/movie/${movie.id}`}
+              imageURL={movie.posterUrl}
+              rating={0}
+              year={new Date(movie.releaseDate).getFullYear()}
+              synopsis={movie.overview}
+              mediaType={"movie"}
+              key={movie.id}
+            />
+          ))}
+        </Grid>
+      </div>
     </div>
   );
 }

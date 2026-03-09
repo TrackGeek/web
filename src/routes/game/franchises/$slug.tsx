@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Heart, Share } from "lucide-react";
+import { Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import gamesData from "@/lib/mockups/games.json";
@@ -35,20 +36,23 @@ function GameFranchiseRoute() {
           </div>
         );
       })}
-      <Grid minColSize={"120px"} className={"grid-cols-5 py-6"}>
-        {games.map((game) => (
-          <CardItem
-            title={game.name}
-            url={`/game/${game.id}`}
-            imageURL={game.coverUrl}
-            rating={game.rating}
-            year={new Date(game.releaseDates[0].date).getFullYear()}
-            synopsis={game.summary}
-            mediaType={"game"}
-            key={game.id}
-          />
-        ))}
-      </Grid>
+      <div className="flex max-sm:flex-col gap-5 py-6">
+        <Filters type={"game"} />
+        <Grid minColSize={"120px"} className={"grid-cols-5"}>
+          {games.map((game) => (
+            <CardItem
+              title={game.name}
+              url={`/game/${game.id}`}
+              imageURL={game.coverUrl}
+              rating={game.rating}
+              year={new Date(game.releaseDates[0].date).getFullYear()}
+              synopsis={game.summary}
+              mediaType={"game"}
+              key={game.id}
+            />
+          ))}
+        </Grid>
+      </div>
     </div>
   );
 }

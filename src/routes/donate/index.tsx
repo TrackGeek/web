@@ -390,7 +390,7 @@ function DonateRoute() {
                 className="flex flex-col justify-between p-6 gap-4 rounded-xl border border-border bg-linear-to-br from-muted/50 to-muted hover:border-primary/50 translate-y-3 hover:-translate-y-1 transition-all duration-300"
               >
                 <div className='flex flex-col gap-4'>
-                  <h3 className="text-2xl font-semibold text-white text-center">{perk.name}</h3>
+                  <h3 className="text-2xl font-semibold text-white text-center">{perk.title}</h3>
                   
                   <p className="text-lg font-medium text-primary text-center">
                     {perk.prices.find((price) => price.frequency === donationType)?.value.formatted}

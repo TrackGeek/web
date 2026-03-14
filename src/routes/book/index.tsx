@@ -1,10 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
-import books from "@/lib/mockups/books.json";
+import { api } from "@/lib/api.ts";
 
 export const Route = createFileRoute("/book/")({
   component: BookRoute,
@@ -12,6 +13,16 @@ export const Route = createFileRoute("/book/")({
 
 function BookRoute() {
   const { t } = useTranslation();
+
+  const trendingQuery = useQuery({
+    queryKey: ["book", "trending"],
+    queryFn: () => api.get("/book/top?filter=trending"),
+  }).data?.data.topBooks;
+
+  const comingSoonQuery = useQuery({
+    queryKey: ["book", "comingSoon"],
+    queryFn: () => api.get("/book/top?filter=comingSoon"),
+  }).data?.data.topBooks;
 
   return (
     <div className="mx-auto w-full">
@@ -23,12 +34,12 @@ function BookRoute() {
         }}
       >
         <CarouselContent>
-          {books.map((book) => {
+          {trendingQuery?.slice(0, 3).map((book: any, index: number) => {
             return (
               <CarouselItem key={book.id}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
                   <img
-                    src={"/placeholder/banner-1.webp"}
+                    src={`/placeholder/banner-${index + 1}.webp`}
                     className="w-full h-60 md:h-120 object-cover"
                     alt={book.title}
                   />
@@ -63,8 +74,8 @@ function BookRoute() {
           <p className="text-2xl font-bold">{t("feed:trending")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {books.map((book) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {trendingQuery?.slice(0, 16).map((book: any) => (
             <CardItem
               title={book.title}
               url={`/book/${book.id}`}
@@ -81,8 +92,8 @@ function BookRoute() {
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {books.map((book) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {comingSoonQuery?.slice(0, 16).map((book: any) => (
             <CardItem
               title={book.title}
               url={`/book/${book.id}`}

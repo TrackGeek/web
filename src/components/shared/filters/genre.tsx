@@ -199,7 +199,7 @@ export function Genres({ type }: GenresProps) {
           <ComboboxList>
             {filteredGenres.map((genre) => (
               <ComboboxItem key={genre} value={genre}>
-                {getGenreLabel(t as any, genre)}
+                {getGenreLabel(t, genre)}
               </ComboboxItem>
             ))}
           </ComboboxList>

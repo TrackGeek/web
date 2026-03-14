@@ -1,10 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
-import mangas from "@/lib/mockups/mangas.json";
+import { api } from "@/lib/api.ts";
 
 export const Route = createFileRoute("/manga/")({
   component: MangaRoute,
@@ -12,6 +13,26 @@ export const Route = createFileRoute("/manga/")({
 
 function MangaRoute() {
   const { t } = useTranslation();
+
+  const publishingQuery = useQuery({
+    queryKey: ["manga", "publishing"],
+    queryFn: () => api.get("/manga/top?filter=publishing"),
+  }).data?.data.mangas.items;
+
+  const upcomingQuery = useQuery({
+    queryKey: ["manga", "upcoming"],
+    queryFn: () => api.get("/manga/top?filter=upcoming"),
+  }).data?.data.mangas.items;
+
+  const favoriteQuery = useQuery({
+    queryKey: ["manga", "favorite"],
+    queryFn: () => api.get("/manga/top?filter=favorite"),
+  }).data?.data.mangas.items;
+
+  const recommendationsQuery = useQuery({
+    queryKey: ["manga", "recommendations"],
+    queryFn: () => api.get("/manga/top?filter=bypopularity"),
+  }).data?.data.mangas.items;
 
   return (
     <div className="mx-auto w-full">
@@ -23,12 +44,12 @@ function MangaRoute() {
         }}
       >
         <CarouselContent>
-          {mangas.map((manga) => {
+          {publishingQuery?.slice(0, 3).map((manga: any, index: number) => {
             return (
-              <CarouselItem key={manga.mal_id}>
+              <CarouselItem key={manga.malId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
                   <img
-                    src={"/placeholder/banner-1.webp"}
+                    src={`/placeholder/banner-${index + 1}.webp`}
                     className="w-full h-60 md:h-120 object-cover"
                     alt={manga.title}
                   />
@@ -44,7 +65,7 @@ function MangaRoute() {
 
                     <Link
                       to={"/manga/$slug"}
-                      params={{ slug: manga.mal_id.toString() }}
+                      params={{ slug: manga.malId }}
                       className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
                     >
                       {t("common:viewDetails")}
@@ -63,17 +84,20 @@ function MangaRoute() {
           <p className="text-2xl font-bold">{t("common:topAiring")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {mangas.map((manga) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {publishingQuery?.slice(0, 16).map((manga: any) => (
             <CardItem
               title={manga.title}
-              url={`/manga/${manga.mal_id}`}
-              imageURL={manga.imageUrl}
-              rating={manga.rank}
-              year={manga.published.prop.from.year}
+              url={`/manga/${manga.malId}`}
+              imageURL={manga.imageUrl.replace(
+                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                "/placeholder/cover.webp",
+              )}
+              rating={manga.rating}
+              year={new Date(manga.publishedFrom).getFullYear()}
               synopsis={manga.synopsis}
               mediaType={"manga"}
-              key={manga.mal_id}
+              key={manga.malId}
             />
           ))}
         </Grid>
@@ -81,17 +105,20 @@ function MangaRoute() {
           <p className="text-2xl font-bold">{t("common:recommendations")}</p>{" "}
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {mangas.map((manga) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {recommendationsQuery?.slice(0, 16).map((manga: any) => (
             <CardItem
               title={manga.title}
-              url={`/manga/${manga.mal_id}`}
-              imageURL={manga.imageUrl}
-              rating={manga.rank}
-              year={manga.published.prop.from.year}
+              url={`/manga/${manga.malId}`}
+              imageURL={manga.imageUrl.replace(
+                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                "/placeholder/cover.webp",
+              )}
+              rating={manga.rating}
+              year={new Date(manga.publishedFrom).getFullYear()}
               synopsis={manga.synopsis}
               mediaType={"manga"}
-              key={manga.mal_id}
+              key={manga.malId}
             />
           ))}
         </Grid>
@@ -99,17 +126,20 @@ function MangaRoute() {
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {mangas.map((manga) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {upcomingQuery?.slice(0, 16).map((manga: any) => (
             <CardItem
               title={manga.title}
-              url={`/manga/${manga.mal_id}`}
-              imageURL={manga.imageUrl}
-              rating={manga.rank}
-              year={manga.published.prop.from.year}
+              url={`/manga/${manga.malId}`}
+              imageURL={manga.imageUrl.replace(
+                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                "/placeholder/cover.webp",
+              )}
+              rating={manga.rating}
+              year={new Date(manga.publishedFrom).getFullYear()}
               synopsis={manga.synopsis}
               mediaType={"manga"}
-              key={manga.mal_id}
+              key={manga.malId}
             />
           ))}
         </Grid>
@@ -117,17 +147,20 @@ function MangaRoute() {
           <p className="text-2xl font-bold">{t("common:topManga")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {mangas.map((manga) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {favoriteQuery?.slice(0, 16).map((manga: any) => (
             <CardItem
               title={manga.title}
-              url={`/manga/${manga.mal_id}`}
-              imageURL={manga.imageUrl}
-              rating={manga.rank}
-              year={manga.published.prop.from.year}
+              url={`/manga/${manga.malId}`}
+              imageURL={manga.imageUrl.replace(
+                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                "/placeholder/cover.webp",
+              )}
+              rating={manga.rating}
+              year={new Date(manga.publishedFrom).getFullYear()}
               synopsis={manga.synopsis}
               mediaType={"manga"}
-              key={manga.mal_id}
+              key={manga.malId}
             />
           ))}
         </Grid>

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Book, Clapperboard, Gamepad2, Heart, LibraryBig, Menu, Mountain, Search, TvMinimalPlay } from "lucide-react";
+import { Book, Clapperboard, Gamepad2, Heart, Home, LibraryBig, Menu, Mountain, Newspaper, Search, TvMinimalPlay } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,18 @@ export function Header() {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) min-w-42 rounded-lg" align="start">
+            <DropdownMenuItem asChild>
+              <Link to="/" className="cursor-pointer">
+                <Home size={18} className="text-white" />
+                {t("common:home")}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/feed" className="cursor-pointer">
+                <Newspaper size={18} className="text-white" />
+                {t("common:feed")}
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link to="/anime" className="cursor-pointer">
                 <Mountain size={18} className="text-white" />

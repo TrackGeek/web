@@ -74,10 +74,10 @@ function CreditsRoute() {
       ...mobileIosContributors,
     ] as GitHubContributor[];
     return Array.from(
-      new Map(allContributors.map((contributor) => [contributor.login.toLowerCase(), contributor])).values(),
+      new Map(allContributors.map((contributor) => [contributor.login?.toLowerCase(), contributor])).values(),
     )
       .sort((a, b) => b.contributions - a.contributions)
-      .filter((contributor) => !contributor.login.toLowerCase().includes("bot"));
+      .filter((contributor) => !contributor.login?.toLowerCase().includes("bot"));
   })();
 
   return (

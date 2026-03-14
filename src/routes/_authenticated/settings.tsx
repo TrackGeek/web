@@ -72,7 +72,7 @@ function SettingsRoute() {
 
       formData.append("file", file);
 
-      return api.patch(apiEndpoints.profileBanner.patch, formData, {
+      return api.patch(apiEndpoints.updateProfileBanner, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -90,7 +90,7 @@ function SettingsRoute() {
 
   const deleteBannerMutation = useMutation({
     mutationFn: () => {
-      return api.delete(apiEndpoints.profileBanner.delete);
+      return api.delete(apiEndpoints.deleteProfileBanner);
     },
     onSuccess: async () => {
       await session.refetch();
@@ -108,7 +108,7 @@ function SettingsRoute() {
 
       formData.append("file", file);
 
-      return api.patch(apiEndpoints.profileAvatar.patch, formData, {
+      return api.patch(apiEndpoints.updateProfileAvatar, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -126,7 +126,7 @@ function SettingsRoute() {
 
   const deleteAvatarMutation = useMutation({
     mutationFn: () => {
-      return api.delete(apiEndpoints.profileAvatar.delete);
+      return api.delete(apiEndpoints.deleteProfileAvatar);
     },
     onSuccess: async () => {
       await session.refetch();

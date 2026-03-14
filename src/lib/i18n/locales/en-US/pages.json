@@ -173,13 +173,36 @@
     "geeks": "The GeekKeepers that make TrackGeek alive",
     "perks": {
       "title": "Perks",
-      "description": "These are the perks you can get while supporting the site:",
-      "benefit1": "Exclusive badge",
-      "benefit2": "Hide irrelevant information for you",
-      "benefit3": "Your profile will appear on this page",
-      "benefit4": "Prioritized support from our team",
-      "benefit5": "Customized Stats of your profile",
-      "benefit6": "Early access to new features"
+      "description": "These are the perks you can get while supporting the site.",
+      "get": "Get this perk",
+      "tracker": {
+        "description": "Become a supporter and get recognition across the platform with exclusive cosmetics and priority access.",
+        "benefits": [
+          "Exclusive supporter badge on your profile",
+          "Hide irrelevant content types from your feed",
+          "Your profile will appear on the Donate page",
+          "Prioritized support from our team"
+        ]
+      },
+      "archivist": {
+        "description": "Everything a Tracker gets, plus deeper insight into your stats and early access to what's coming next.",
+        "benefits": [
+          "Everything from Tracker",
+          "Advanced profile stats tailored to your activity",
+          "Early access to upcoming features and experiments",
+          "Priority consideration for feedback and feature requests"
+        ]
+      },
+      "archiveMaster": {
+        "description": "The ultimate supporter tier. Everything an Archivist gets, plus the highest level of recognition on the platform.",
+        "benefits": [
+          "Everything from Archivist",
+          "Exclusive Archive Master badge across the platform",
+          "Stronger influence on roadmap discussions and priorities",
+          "Special recognition on community-facing pages",
+          "Top-tier supporter status within TrackGeek"
+        ]
+      }
     },
     "wantsToDonate": {
       "title": "Want to donate?",

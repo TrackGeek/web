@@ -14,7 +14,6 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as FeedRouteImport } from './routes/feed'
-import { Route as DonateRouteImport } from './routes/donate'
 import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as AddDataRouteImport } from './routes/add-data'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
@@ -23,6 +22,7 @@ import { Route as TvIndexRouteImport } from './routes/tv/index'
 import { Route as MovieIndexRouteImport } from './routes/movie/index'
 import { Route as MangaIndexRouteImport } from './routes/manga/index'
 import { Route as GameIndexRouteImport } from './routes/game/index'
+import { Route as DonateIndexRouteImport } from './routes/donate/index'
 import { Route as BookIndexRouteImport } from './routes/book/index'
 import { Route as AnimeIndexRouteImport } from './routes/anime/index'
 import { Route as TvSlugRouteImport } from './routes/tv/$slug'
@@ -33,7 +33,10 @@ import { Route as GameSlugRouteImport } from './routes/game/$slug'
 import { Route as BookSlugRouteImport } from './routes/book/$slug'
 import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated/billing'
 import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
+import { Route as DonateSuccessIndexRouteImport } from './routes/donate/success/index'
+import { Route as DonateErrorIndexRouteImport } from './routes/donate/error/index'
 import { Route as MovieFranchisesSlugRouteImport } from './routes/movie/franchises/$slug'
 import { Route as GameFranchisesSlugRouteImport } from './routes/game/franchises/$slug'
 import { Route as BookFranchisesSlugRouteImport } from './routes/book/franchises/$slug'
@@ -69,11 +72,6 @@ const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
 const FeedRoute = FeedRouteImport.update({
   id: '/feed',
   path: '/feed',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DonateRoute = DonateRouteImport.update({
-  id: '/donate',
-  path: '/donate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CreditsRoute = CreditsRouteImport.update({
@@ -113,6 +111,11 @@ const MangaIndexRoute = MangaIndexRouteImport.update({
 const GameIndexRoute = GameIndexRouteImport.update({
   id: '/game/',
   path: '/game/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DonateIndexRoute = DonateIndexRouteImport.update({
+  id: '/donate/',
+  path: '/donate/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookIndexRoute = BookIndexRouteImport.update({
@@ -165,9 +168,24 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedBillingRoute = AuthenticatedBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const UserUsernameIndexRoute = UserUsernameIndexRouteImport.update({
   id: '/user/$username/',
   path: '/user/$username/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DonateSuccessIndexRoute = DonateSuccessIndexRouteImport.update({
+  id: '/donate/success/',
+  path: '/donate/success/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DonateErrorIndexRoute = DonateErrorIndexRouteImport.update({
+  id: '/donate/error/',
+  path: '/donate/error/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MovieFranchisesSlugRoute = MovieFranchisesSlugRouteImport.update({
@@ -232,12 +250,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/add-data': typeof AddDataRoute
   '/credits': typeof CreditsRoute
-  '/donate': typeof DonateRoute
   '/feed': typeof FeedRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/tos': typeof TosRoute
+  '/billing': typeof AuthenticatedBillingRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
@@ -248,6 +266,7 @@ export interface FileRoutesByFullPath {
   '/tv/$slug': typeof TvSlugRoute
   '/anime/': typeof AnimeIndexRoute
   '/book/': typeof BookIndexRoute
+  '/donate/': typeof DonateIndexRoute
   '/game/': typeof GameIndexRoute
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
@@ -255,6 +274,8 @@ export interface FileRoutesByFullPath {
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
+  '/donate/error/': typeof DonateErrorIndexRoute
+  '/donate/success/': typeof DonateSuccessIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
   '/user/$username/anime/': typeof UserUsernameAnimeIndexRoute
   '/user/$username/book/': typeof UserUsernameBookIndexRoute
@@ -269,12 +290,12 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/add-data': typeof AddDataRoute
   '/credits': typeof CreditsRoute
-  '/donate': typeof DonateRoute
   '/feed': typeof FeedRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/tos': typeof TosRoute
+  '/billing': typeof AuthenticatedBillingRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
@@ -285,6 +306,7 @@ export interface FileRoutesByTo {
   '/tv/$slug': typeof TvSlugRoute
   '/anime': typeof AnimeIndexRoute
   '/book': typeof BookIndexRoute
+  '/donate': typeof DonateIndexRoute
   '/game': typeof GameIndexRoute
   '/manga': typeof MangaIndexRoute
   '/movie': typeof MovieIndexRoute
@@ -292,6 +314,8 @@ export interface FileRoutesByTo {
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
+  '/donate/error': typeof DonateErrorIndexRoute
+  '/donate/success': typeof DonateSuccessIndexRoute
   '/user/$username': typeof UserUsernameIndexRoute
   '/user/$username/anime': typeof UserUsernameAnimeIndexRoute
   '/user/$username/book': typeof UserUsernameBookIndexRoute
@@ -308,12 +332,12 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/add-data': typeof AddDataRoute
   '/credits': typeof CreditsRoute
-  '/donate': typeof DonateRoute
   '/feed': typeof FeedRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/tos': typeof TosRoute
+  '/_authenticated/billing': typeof AuthenticatedBillingRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
@@ -324,6 +348,7 @@ export interface FileRoutesById {
   '/tv/$slug': typeof TvSlugRoute
   '/anime/': typeof AnimeIndexRoute
   '/book/': typeof BookIndexRoute
+  '/donate/': typeof DonateIndexRoute
   '/game/': typeof GameIndexRoute
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
@@ -331,6 +356,8 @@ export interface FileRoutesById {
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
+  '/donate/error/': typeof DonateErrorIndexRoute
+  '/donate/success/': typeof DonateSuccessIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
   '/user/$username/anime/': typeof UserUsernameAnimeIndexRoute
   '/user/$username/book/': typeof UserUsernameBookIndexRoute
@@ -347,12 +374,12 @@ export interface FileRouteTypes {
     | '/'
     | '/add-data'
     | '/credits'
-    | '/donate'
     | '/feed'
     | '/privacy-policy'
     | '/reset-password'
     | '/search'
     | '/tos'
+    | '/billing'
     | '/settings'
     | '/anime/$slug'
     | '/book/$slug'
@@ -363,6 +390,7 @@ export interface FileRouteTypes {
     | '/tv/$slug'
     | '/anime/'
     | '/book/'
+    | '/donate/'
     | '/game/'
     | '/manga/'
     | '/movie/'
@@ -370,6 +398,8 @@ export interface FileRouteTypes {
     | '/book/franchises/$slug'
     | '/game/franchises/$slug'
     | '/movie/franchises/$slug'
+    | '/donate/error/'
+    | '/donate/success/'
     | '/user/$username/'
     | '/user/$username/anime/'
     | '/user/$username/book/'
@@ -384,12 +414,12 @@ export interface FileRouteTypes {
     | '/'
     | '/add-data'
     | '/credits'
-    | '/donate'
     | '/feed'
     | '/privacy-policy'
     | '/reset-password'
     | '/search'
     | '/tos'
+    | '/billing'
     | '/settings'
     | '/anime/$slug'
     | '/book/$slug'
@@ -400,6 +430,7 @@ export interface FileRouteTypes {
     | '/tv/$slug'
     | '/anime'
     | '/book'
+    | '/donate'
     | '/game'
     | '/manga'
     | '/movie'
@@ -407,6 +438,8 @@ export interface FileRouteTypes {
     | '/book/franchises/$slug'
     | '/game/franchises/$slug'
     | '/movie/franchises/$slug'
+    | '/donate/error'
+    | '/donate/success'
     | '/user/$username'
     | '/user/$username/anime'
     | '/user/$username/book'
@@ -422,12 +455,12 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/add-data'
     | '/credits'
-    | '/donate'
     | '/feed'
     | '/privacy-policy'
     | '/reset-password'
     | '/search'
     | '/tos'
+    | '/_authenticated/billing'
     | '/_authenticated/settings'
     | '/anime/$slug'
     | '/book/$slug'
@@ -438,6 +471,7 @@ export interface FileRouteTypes {
     | '/tv/$slug'
     | '/anime/'
     | '/book/'
+    | '/donate/'
     | '/game/'
     | '/manga/'
     | '/movie/'
@@ -445,6 +479,8 @@ export interface FileRouteTypes {
     | '/book/franchises/$slug'
     | '/game/franchises/$slug'
     | '/movie/franchises/$slug'
+    | '/donate/error/'
+    | '/donate/success/'
     | '/user/$username/'
     | '/user/$username/anime/'
     | '/user/$username/book/'
@@ -461,7 +497,6 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AddDataRoute: typeof AddDataRoute
   CreditsRoute: typeof CreditsRoute
-  DonateRoute: typeof DonateRoute
   FeedRoute: typeof FeedRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -476,6 +511,7 @@ export interface RootRouteChildren {
   TvSlugRoute: typeof TvSlugRoute
   AnimeIndexRoute: typeof AnimeIndexRoute
   BookIndexRoute: typeof BookIndexRoute
+  DonateIndexRoute: typeof DonateIndexRoute
   GameIndexRoute: typeof GameIndexRoute
   MangaIndexRoute: typeof MangaIndexRoute
   MovieIndexRoute: typeof MovieIndexRoute
@@ -483,6 +519,8 @@ export interface RootRouteChildren {
   BookFranchisesSlugRoute: typeof BookFranchisesSlugRoute
   GameFranchisesSlugRoute: typeof GameFranchisesSlugRoute
   MovieFranchisesSlugRoute: typeof MovieFranchisesSlugRoute
+  DonateErrorIndexRoute: typeof DonateErrorIndexRoute
+  DonateSuccessIndexRoute: typeof DonateSuccessIndexRoute
   UserUsernameIndexRoute: typeof UserUsernameIndexRoute
   UserUsernameAnimeIndexRoute: typeof UserUsernameAnimeIndexRoute
   UserUsernameBookIndexRoute: typeof UserUsernameBookIndexRoute
@@ -529,13 +567,6 @@ declare module '@tanstack/react-router' {
       path: '/feed'
       fullPath: '/feed'
       preLoaderRoute: typeof FeedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/donate': {
-      id: '/donate'
-      path: '/donate'
-      fullPath: '/donate'
-      preLoaderRoute: typeof DonateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/credits': {
@@ -592,6 +623,13 @@ declare module '@tanstack/react-router' {
       path: '/game'
       fullPath: '/game/'
       preLoaderRoute: typeof GameIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/donate/': {
+      id: '/donate/'
+      path: '/donate'
+      fullPath: '/donate/'
+      preLoaderRoute: typeof DonateIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/book/': {
@@ -664,11 +702,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/billing': {
+      id: '/_authenticated/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof AuthenticatedBillingRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/user/$username/': {
       id: '/user/$username/'
       path: '/user/$username'
       fullPath: '/user/$username/'
       preLoaderRoute: typeof UserUsernameIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/donate/success/': {
+      id: '/donate/success/'
+      path: '/donate/success'
+      fullPath: '/donate/success/'
+      preLoaderRoute: typeof DonateSuccessIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/donate/error/': {
+      id: '/donate/error/'
+      path: '/donate/error'
+      fullPath: '/donate/error/'
+      preLoaderRoute: typeof DonateErrorIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/movie/franchises/$slug': {
@@ -752,10 +811,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedBillingRoute: AuthenticatedBillingRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
 }
 
@@ -768,7 +829,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AddDataRoute: AddDataRoute,
   CreditsRoute: CreditsRoute,
-  DonateRoute: DonateRoute,
   FeedRoute: FeedRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
@@ -783,6 +843,7 @@ const rootRouteChildren: RootRouteChildren = {
   TvSlugRoute: TvSlugRoute,
   AnimeIndexRoute: AnimeIndexRoute,
   BookIndexRoute: BookIndexRoute,
+  DonateIndexRoute: DonateIndexRoute,
   GameIndexRoute: GameIndexRoute,
   MangaIndexRoute: MangaIndexRoute,
   MovieIndexRoute: MovieIndexRoute,
@@ -790,6 +851,8 @@ const rootRouteChildren: RootRouteChildren = {
   BookFranchisesSlugRoute: BookFranchisesSlugRoute,
   GameFranchisesSlugRoute: GameFranchisesSlugRoute,
   MovieFranchisesSlugRoute: MovieFranchisesSlugRoute,
+  DonateErrorIndexRoute: DonateErrorIndexRoute,
+  DonateSuccessIndexRoute: DonateSuccessIndexRoute,
   UserUsernameIndexRoute: UserUsernameIndexRoute,
   UserUsernameAnimeIndexRoute: UserUsernameAnimeIndexRoute,
   UserUsernameBookIndexRoute: UserUsernameBookIndexRoute,

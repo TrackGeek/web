@@ -1,6 +1,9 @@
 {
   "yes": "yes",
   "no": "no",
+  "billing": "Billing",
+  "home": "Home",
+  "feed": "Feed",
   "donate": "Donate",
   "legal": "Legal",
   "socials": "Social Networks",
@@ -101,5 +104,7 @@
   "startWriting": "Start Writing...",
   "send": "Send",
   "goHome": "Go Home",
-  "notFound": "The page you're looking for might have been <br />moved or doesn't exist."
+  "notFound": "The page you're looking for might have been <br />moved or doesn't exist.",
+  "notLoggedIn": "You need to be logged in.",
+  "somethingWentWrong": "Something went wrong. Please try again later."
 }

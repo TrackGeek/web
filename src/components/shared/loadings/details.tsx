@@ -15,19 +15,15 @@ export function LoadingDetails() {
 
           <Skeleton className="h-10 w-full rounded-lg" />
 
-          {/* Divider */}
           <div className="border-t border-border" />
 
-          {/* Status / Release date cards */}
           <div className="grid grid-cols-2 gap-4">
             <Skeleton className="h-16 rounded-lg" />
             <Skeleton className="h-16 rounded-lg" />
           </div>
 
-          {/* Refresh data row */}
           <Skeleton className="h-8 w-3/4 rounded-md mx-auto" />
 
-          {/* Social icons row */}
           <div className="flex flex-wrap gap-3 items-center justify-center">
             {Array.from({ length: 5 }).map((_, i) => (
               <Skeleton key={i} className="h-5 w-5 rounded-sm" />
@@ -37,7 +33,7 @@ export function LoadingDetails() {
       </div>
 
       <div className="lg:w-2/3">
-        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-5">
+        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-3">
           <Skeleton className="h-10 w-2/3 rounded-md" />
 
           <div className="flex items-center gap-3 pb-4 border-b border-border">

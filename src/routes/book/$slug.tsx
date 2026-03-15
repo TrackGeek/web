@@ -17,6 +17,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Grid } from "@/components/layouts/grid.tsx";
 import { ListItem } from "@/components/pages/details/list";
 import { ReviewItem } from "@/components/pages/details/review";
 import { DetailsCard } from "@/components/shared/cards/details";
@@ -164,7 +165,7 @@ export function BookDetailsRoute() {
 
           <div className="border-t border-border" />
 
-          <div className="grid grid-cols-2 gap-4">
+          <Grid minColSize={"128px"} className="gap-4">
             {book.numberOfPages && (
               <div className="bg-muted/50 p-4 rounded-lg border border-border">
                 <p className="text-sm text-muted-foreground">{t("library:page_other")}</p>
@@ -177,7 +178,7 @@ export function BookDetailsRoute() {
                 <p className="font-semibold text-card-foreground">{book.releaseYear}</p>
               </div>
             )}
-          </div>
+          </Grid>
           <RefreshData sourceURL={`https://hardcover.app/books/${book.slug}`} />
         </div>
       </div>
@@ -273,7 +274,7 @@ export function BookDetailsRoute() {
 
               <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:bookCharacteristics")}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Grid minColSize={"200px"} className="gap-4">
                   <DetailsCard
                     title="ISBN 10"
                     icon={<ScanBarcode className="size-5 text-muted-foreground" />}
@@ -289,7 +290,7 @@ export function BookDetailsRoute() {
                     icon={<Heart className="size-5 text-muted-foreground" />}
                     description={"Intenso"}
                   />
-                </div>
+                </Grid>
               </div>
 
               <div>

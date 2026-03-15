@@ -261,7 +261,7 @@ function AnimeDetailsRoute() {
       </div>
 
       <div className="lg:w-2/3">
-        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-5">
+        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-3">
           <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
             {anime.title}
           </h1>

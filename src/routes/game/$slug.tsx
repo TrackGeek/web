@@ -114,7 +114,7 @@ export function GameDetailsRoute() {
               <div className="grid grid-cols-3 w-full gap-4">
                 <Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
-                    <div className="w-10 h-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
+                    <div className="size-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
                       <Bookmark className="text-purple-400 size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">
@@ -122,31 +122,31 @@ export function GameDetailsRoute() {
                     </p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="text-secondary w-6 h-6" />
+                    <CheckCircle className="text-secondary size-6" />
                   </div>
                 </Button>
 
                 <Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
-                    <div className="w-10 h-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
+                    <div className="size-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
                       <Gamepad className="text-primary size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.playing")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="text-secondary w-6 h-6" />
+                    <CheckCircle className="text-secondary size-6" />
                   </div>
                 </Button>
 
                 <Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
-                    <div className="w-10 h-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
+                    <div className="size-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
                       <CheckSquare className="text-chart-3 size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.played")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="text-secondary w-6 h-6" />
+                    <CheckCircle className="text-secondary size-6" />
                   </div>
                 </Button>
               </div>
@@ -154,7 +154,7 @@ export function GameDetailsRoute() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-                    <MoreHorizontal className="w-5 h-5" />
+                    <MoreHorizontal className="size-5" />
                     <span className="text-sm font-medium">{t("library:moreOptions")}</span>
                   </Button>
                 </DialogTrigger>
@@ -347,24 +347,22 @@ export function GameDetailsRoute() {
       </div>
 
       <div className="lg:w-2/3">
-        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-5">
-          <div>
-            <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-              {game.name}
-            </h1>
-            {game?.franchises[0]?.name && (
-              <div className="flex items-center space-x-2 mt-4">
-                <Box className="size-5 text-muted-foreground" />
-                <Link
-                  to={"/game/franchises/$slug"}
-                  params={{ slug: game?.franchises[0]?.slug }}
-                  className="text-xl text-muted-foreground"
-                >
-                  {game?.franchises[0]?.name}
-                </Link>
-              </div>
-            )}
-          </div>
+        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-3">
+          <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
+            {game.name}
+          </h1>
+          {game?.franchises[0]?.name && (
+            <div className="flex items-center space-x-2">
+              <Box className="size-5 text-muted-foreground" />
+              <Link
+                to={"/game/franchises/$slug"}
+                params={{ slug: game?.franchises[0]?.slug }}
+                className="text-xl text-muted-foreground"
+              >
+                {game?.franchises[0]?.name}
+              </Link>
+            </div>
+          )}
 
           <div className="flex flex-wrap items-center gap-6 border-b border-border">
             {reviews?.total >= 1 && (

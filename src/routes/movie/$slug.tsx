@@ -29,6 +29,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Grid } from "@/components/layouts/grid.tsx";
 import { CastItem } from "@/components/pages/details/cast";
 import { ListItem } from "@/components/pages/details/list";
 import { ReviewItem } from "@/components/pages/details/review";
@@ -181,7 +182,7 @@ export function MovieDetailsRoute() {
 
           <div className="border-t border-border"></div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <Grid minColSize={"128px"} className="gap-4">
             <div className="bg-muted/50 p-4 rounded-lg border border-border">
               <p className="text-sm text-muted-foreground">{t("library:status")}</p>
               <p className="font-semibold text-card-foreground">{getStatusLabel(t, movie.status)}</p>
@@ -192,7 +193,7 @@ export function MovieDetailsRoute() {
                 {new Date(movie.releaseDate as string).getFullYear()}
               </p>
             </div>
-          </div>
+          </Grid>
           <RefreshData sourceURL={`https://www.themoviedb.org/movie/${movie.tmdbId}`} />
           <div className="flex flex-wrap gap-3 items-center justify-center">
             {movie.homepage && (
@@ -239,20 +240,18 @@ export function MovieDetailsRoute() {
       </div>
 
       <div className="lg:w-2/3">
-        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-5">
-          <div>
-            <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-              {movie.title}
-            </h1>
-            {movie?.belongsToCollection?.name && (
-              <div className="flex items-center space-x-2 mt-4">
-                <Box className="size-5 text-muted-foreground" />
-                <a href="/movies-collection/franchise_name" className="text-xl text-muted-foreground">
-                  {movie?.belongsToCollection?.name}
-                </a>
-              </div>
-            )}
-          </div>
+        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-3">
+          <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
+            {movie.title}
+          </h1>
+          {movie?.belongsToCollection?.name && (
+            <div className="flex items-center space-x-2">
+              <Box className="size-5 text-muted-foreground" />
+              <a href="/movies-collection/franchise_name" className="text-xl text-muted-foreground">
+                {movie?.belongsToCollection?.name}
+              </a>
+            </div>
+          )}
 
           <div className="flex flex-wrap items-center gap-6 border-b border-border">
             {reviews?.total >= 1 && (
@@ -321,7 +320,7 @@ export function MovieDetailsRoute() {
 
               <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:movieCharacteristics")}</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <Grid minColSize={"200px"} className="gap-4">
                   <DetailsCard
                     title={t("library:directors")}
                     icon={<Clapperboard className="size-5 text-muted-foreground" />}
@@ -372,7 +371,7 @@ export function MovieDetailsRoute() {
                     icon={<Clock className="size-5 text-muted-foreground" />}
                     description={`${movie.runtime} min`}
                   />
-                </div>
+                </Grid>
               </div>
 
               <div>

@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Grid } from "@/components/layouts/grid.tsx";
 import { CastItem } from "@/components/pages/details/cast";
 import { EpisodeItem } from "@/components/pages/details/episode";
 import { ListItem } from "@/components/pages/details/list";
@@ -217,7 +218,7 @@ export function TVShowDetailsPage() {
 
           <div className="border-t border-border"></div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <Grid minColSize={"128px"} className="gap-4">
             {item.status && (
               <div className="bg-muted/50 p-4 rounded-lg border border-border">
                 <p className="text-sm text-muted-foreground">{t("library:status")}</p>
@@ -232,7 +233,7 @@ export function TVShowDetailsPage() {
                 </p>
               </div>
             )}
-          </div>
+          </Grid>
           <RefreshData sourceURL={`https://www.themoviedb.org/tv/${item.tmdbId}`} />
           <div className="flex flex-wrap gap-3 items-center justify-center">
             {item.homepage && (
@@ -277,16 +278,14 @@ export function TVShowDetailsPage() {
       </div>
 
       <div className="lg:w-2/3">
-        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-5">
-          <div>
-            <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-              {item.name}
-            </h1>
-          </div>
+        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-3">
+          <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
+            {item.name}
+          </h1>
 
           <div className="flex flex-wrap items-center gap-6 border-b border-border">
             {reviews.total >= 1 && (
-              <div className="flex items-center mb-6 space-x-1">
+              <div className="flex items-center mb-3 space-x-1">
                 <div className="flex mr-1">
                   <Star className="size-5 text-chart-3 fill-chart-3" />
                   <Star className="size-5 text-chart-3 fill-chart-3" />
@@ -316,8 +315,8 @@ export function TVShowDetailsPage() {
                 <TabsTrigger value="lists">{t("library:lists")} (30)</TabsTrigger>
               </TabsList>
             </div>
-            <TabsContent value="info">
-              <div className="mb-5">
+            <TabsContent value="info" className={"space-y-5"}>
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:genres")}</h3>
                 <div className="flex flex-wrap gap-2">
                   {item.genres.map((genre: string, index: number) => {
@@ -343,18 +342,18 @@ export function TVShowDetailsPage() {
                 </div>
               </div>
 
-              <div className="mb-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:synopsis")}</h3>
                 <div className="text-muted-foreground leading-relaxed space-y-4">
                   <p>{item.tagline}</p>
                 </div>
               </div>
 
-              <div className="mb-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-4">
                   {t("library:tvShowCharacteristics")}
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <Grid minColSize={"200px"} className="gap-4">
                   {item.createdBy && (
                     <DetailsCard
                       title={t("library:creators")}
@@ -412,7 +411,7 @@ export function TVShowDetailsPage() {
                       description={item.type}
                     />
                   )}
-                </div>
+                </Grid>
               </div>
 
               {isAuthenticated && (
@@ -426,7 +425,7 @@ export function TVShowDetailsPage() {
                 />
               )}
 
-              <div className="my-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">

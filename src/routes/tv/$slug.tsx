@@ -35,6 +35,8 @@ import { ListItem } from "@/components/pages/details/list";
 import { EpisodeProgress, type SeasonData } from "@/components/pages/details/progress";
 import { ReviewItem } from "@/components/pages/details/review";
 import { DetailsCard } from "@/components/shared/cards/details";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { EpisodicContentModal } from "@/components/shared/modals/episodic-content";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -103,8 +105,8 @@ export function TVShowDetailsPage() {
   const rating = 4.2;
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
-  if (isLoading) return <div>A carregar...</div>;
-  if (isError || !item) return <div>Erro ao carregar.</div>;
+  if (isLoading || seasonsData.isLoading || reviewsData.isLoading) return <LoadingDetails />;
+  if (isError || seasonsData.isError || reviewsData.isError || !item) return <ErrorComponent />;
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       <div className="lg:w-1/3">
@@ -284,8 +286,8 @@ export function TVShowDetailsPage() {
 
           <div className="flex flex-wrap items-center gap-6 border-b border-border">
             {reviews.total >= 1 && (
-              <div className="flex items-center mb-6">
-                <div className="flex mr-2">
+              <div className="flex items-center mb-6 space-x-1">
+                <div className="flex mr-1">
                   <Star className="size-5 text-chart-3 fill-chart-3" />
                   <Star className="size-5 text-chart-3 fill-chart-3" />
                   <Star className="size-5 text-chart-3 fill-chart-3" />
@@ -293,7 +295,7 @@ export function TVShowDetailsPage() {
                   <Star className="size-5 text-muted-foreground" />
                 </div>
                 <span className="font-semibold text-card-foreground">{rating}</span>
-                <span className="text-muted-foreground ml-1">
+                <span className="text-muted-foreground">
                   ({reviews.total} {t("library:reviews")})
                 </span>
               </div>

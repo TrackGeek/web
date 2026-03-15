@@ -6,6 +6,7 @@ import {
   SiMyanimelist,
   SiX,
 } from "@icons-pack/react-simple-icons";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Antenna,
@@ -28,6 +29,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Grid } from "@/components/layouts/grid.tsx";
 import { AnimeEpisodeProgress, type SingleSeasonData } from "@/components/pages/details/anime-progress";
 import { CastItem } from "@/components/pages/details/cast";
 import { CharacterItem } from "@/components/pages/details/character";
@@ -36,13 +38,18 @@ import { ListItem } from "@/components/pages/details/list";
 import { Relations } from "@/components/pages/details/relations";
 import { ReviewItem } from "@/components/pages/details/review";
 import { DetailsCard } from "@/components/shared/cards/details";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { EpisodicContentModal } from "@/components/shared/modals/episodic-content";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { api } from "@/lib/api.ts";
+import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
+import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/anime/$slug")({
@@ -53,139 +60,171 @@ export const Route = createFileRoute("/anime/$slug")({
 });
 
 function AnimeDetailsRoute() {
-  const { slug: _ } = Route.useParams();
+  const { slug } = Route.useParams();
 
   const { t } = useTranslation();
   const [mySeason, _setMySeason] = useState<SingleSeasonData>({
     totalEpisodes: 12,
     watchedEpisodes: [1, 2, 3, 4, 5],
   });
-  const synopsis = "Second season of Sousou no Frieren.";
-  const year = "Winter 2026";
-  const imageURL = "https://cdn.myanimelist.net/images/anime/1921/154528l.jpg";
-  const title = "Sousou no Frieren 2nd Season";
   const rating = 4.2;
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["anime", slug],
+    queryFn: () => api.get(`/anime/detail/${slug}`).then(({ data }) => data.anime),
+  });
+  const anime = data;
+
+  const episodesData = useQuery({
+    queryKey: ["animeEpisodes", slug],
+    queryFn: () => api.get(`/anime/detail/${slug}/episode`).then(({ data }) => data.episodes),
+  });
+  const episodes = episodesData?.data;
+
+  const reviewsData = useQuery({
+    queryKey: ["animeReviews", slug],
+    queryFn: () => api.get(`/anime/review/?animeId=${slug}`).then(({ data }) => data.animeReviews),
+  });
+  const reviews = reviewsData?.data;
 
   function handleToggle(ep: number) {
     console.log(ep);
   }
 
+  const session = useSession();
+  const isAuthenticated = !!session?.data?.session;
+  if (isLoading || reviewsData.isLoading) return <LoadingDetails />;
+  if (isError || reviewsData.isError || !anime) return <ErrorComponent />;
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       <div className="lg:w-1/3">
-        <div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 gap-4 flex flex-col">
-          <div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
-            <img src={imageURL} alt="Capa do anime" className="w-full h-auto object-cover" />
+        <div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 flex flex-col gap-4">
+          <div className="w-full mx-auto shadow-xl rounded-lg overflow-hidden">
+            <img
+              src={anime.imageUrl || "/placeholder/cover.webp"}
+              alt="Capa do anime"
+              className="w-full h-auto object-cover"
+            />
           </div>
 
-          <div className="grid grid-cols-3 w-full gap-4">
-            <button
-              type="button"
-              className="w-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20"
-            >
-              <div className="flex flex-col items-center gap-x-4 gap-2">
-                <div className="w-10 h-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
-                  <Bookmark className="text-purple-400" />
-                </div>
-                <p className="font-medium text-card-foreground text-center">{t("feed:lists.planning")}</p>
-              </div>
-              <div className="status-indicator hidden">
-                <CheckCircle className="text-secondary w-6 h-6" />
-              </div>
-            </button>
-
-            <button
-              type="button"
-              className="w-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20"
-            >
-              <div className="flex flex-col items-center gap-x-4 gap-2">
-                <div className="w-10 h-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
-                  <TvMinimalPlay className="text-primary" />
-                </div>
-                <p className="font-medium text-card-foreground text-center">{t("feed:lists.watching")}</p>
-              </div>
-              <div className="status-indicator hidden">
-                <CheckCircle className="text-secondary w-6 h-6" />
-              </div>
-            </button>
-
-            <button
-              type="button"
-              className="w-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20"
-            >
-              <div className="flex flex-col items-center gap-x-4 gap-2">
-                <div className="w-10 h-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
-                  <CheckSquare className="text-chart-3" />
-                </div>
-                <p className="font-medium text-card-foreground text-center">{t("feed:lists.completed")}</p>
-              </div>
-              <div className="status-indicator hidden">
-                <CheckCircle className="text-secondary w-6 h-6" />
-              </div>
-            </button>
-          </div>
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-                <MoreHorizontal className="size-5" />
-                <span className="text-sm font-medium">{t("library:moreOptions")}</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
-              <DialogHeader
-                className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
-                style={{
-                  backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${imageURL}")`,
-                }}
-              >
-                <div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
-                <div className="flex flex-row items-center w-full">
-                  <img
-                    src={imageURL}
-                    alt="Cover"
-                    className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
-                  />
-                  <div className="flex-1 px-6 relative z-10">
-                    <DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">{title}</DialogTitle>
-                    <div className="flex items-center gap-4 text-white/90 text-sm">
-                      <div className="flex items-center gap-1">
-                        <Star className="size-4 fill-yellow-400 text-yellow-400" />
-                        <span>{rating}</span>
-                      </div>
-                      <span>•</span>
-                      <span>{year}</span>
+          {isAuthenticated && (
+            <>
+              <div className="grid grid-cols-3 w-full gap-4">
+                <button
+                  type="button"
+                  className="w-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="size-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
+                      <Bookmark className="text-purple-400" />
                     </div>
-                    <p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">{synopsis}</p>
+                    <p className="font-medium text-card-foreground text-center">{t("feed:lists.planning")}</p>
                   </div>
-                </div>
+                  <div className="status-indicator hidden">
+                    <CheckCircle className="size-6 text-secondary" />
+                  </div>
+                </button>
 
-                <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
-                  <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
-                    <Heart className="size-6" />
-                  </Button>
-                </div>
-              </DialogHeader>
+                <button
+                  type="button"
+                  className="w-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="size-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
+                      <TvMinimalPlay className="text-primary" />
+                    </div>
+                    <p className="font-medium text-card-foreground text-center">{t("feed:lists.watching")}</p>
+                  </div>
+                  <div className="status-indicator hidden">
+                    <CheckCircle className="size-6 text-secondary" />
+                  </div>
+                </button>
 
-              <div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
-                <EpisodicContentModal />
+                <button
+                  type="button"
+                  className="w-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="size-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
+                      <CheckSquare className="text-chart-3" />
+                    </div>
+                    <p className="font-medium text-card-foreground text-center">{t("feed:lists.completed")}</p>
+                  </div>
+                  <div className="status-indicator hidden">
+                    <CheckCircle className="size-6 text-secondary" />
+                  </div>
+                </button>
               </div>
-            </DialogContent>
-          </Dialog>
 
-          <div className="border-t border-border"></div>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="flex bg-transparent items-center justify-center gap-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
+                    <MoreHorizontal className="size-5" />
+                    <span className="text-sm font-medium">{t("library:moreOptions")}</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
+                  <DialogHeader
+                    className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
+                    style={{
+                      backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${anime.imageUrl || "/placeholder/cover.webp"}")`,
+                    }}
+                  >
+                    <div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
+                    <div className="flex flex-row items-center w-full">
+                      <img
+                        src={anime.imageUrl || "/placeholder/cover.webp"}
+                        alt="Cover"
+                        className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
+                      />
+                      <div className="flex-1 px-6 relative z-10 space-y-2">
+                        <DialogTitle className="text-white font-bold text-2xl drop-shadow-lg">
+                          {anime.title}
+                        </DialogTitle>
+                        <div className="flex items-center gap-4 text-white/90 text-sm">
+                          <div className="flex items-center gap-1">
+                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <span>{rating}</span>
+                          </div>
+                          <span>•</span>
+                          {anime.season && anime.year && <span>{`${anime.season} ${anime.year}`}</span>}
+                        </div>
+                        <p className="text-white/80 text-sm max-w-md line-clamp-2">{anime.synopsis}</p>
+                      </div>
+                    </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-muted/50 p-4 rounded-lg border border-border">
-              <p className="text-sm text-muted-foreground">{t("library:status")}</p>
-              <p className="font-semibold text-card-foreground">Currently Airing</p>
-            </div>
-            <div className="bg-muted/50 p-4 rounded-lg border border-border">
-              <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
-              <p className="font-semibold text-card-foreground">{year}</p>
-            </div>
-          </div>
-          <RefreshData sourceURL="https://myanimelist.net/anime/52991/Sousou_no_Frieren" />
+                    <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
+                      <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
+                        <Heart className="size-6" />
+                      </Button>
+                    </div>
+                  </DialogHeader>
+
+                  <div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
+                    <EpisodicContentModal />
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </>
+          )}
+
+          <div className="border-t border-border" />
+
+          <Grid minColSize={"128px"} className="gap-4">
+            {anime.status && (
+              <div className="bg-muted/50 p-4 rounded-lg border border-border">
+                <p className="text-sm text-muted-foreground">{t("library:status")}</p>
+                <p className="font-semibold text-card-foreground">{anime.status}</p>
+              </div>
+            )}
+            {anime.season && anime.year && (
+              <div className="bg-muted/50 p-4 rounded-lg border border-border">
+                <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
+                <p className="font-semibold text-card-foreground capitalize">{`${anime.season} ${anime.year}`}</p>
+              </div>
+            )}
+          </Grid>
+          <RefreshData sourceURL={`https://myanimelist.net/anime/${anime.malId}`} />
           <div className="flex flex-wrap gap-3 items-center justify-center">
             <a href="https://anacondamovie.com/" target="_blank" rel="noopener noreferrer">
               <ExternalLink />
@@ -222,129 +261,155 @@ function AnimeDetailsRoute() {
       </div>
 
       <div className="lg:w-2/3">
-        <div className="bg-card rounded-2xl shadow-lg p-8">
-          <div className="mb-5">
-            <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-              {title}
-            </h1>
+        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-5">
+          <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
+            {anime.title}
+          </h1>
+
+          <div className="flex flex-wrap items-center gap-6 border-b border-border pb-5">
+            {reviews.total >= 1 && (
+              <div className="flex items-center gap-2">
+                <div className="flex">
+                  <Star className="size-5 text-chart-3 fill-chart-3" />
+                  <Star className="size-5 text-chart-3 fill-chart-3" />
+                  <Star className="size-5 text-chart-3 fill-chart-3" />
+                  <Star className="size-5 text-chart-3 fill-chart-3" />
+                  <Star className="size-5 text-muted-foreground" />
+                </div>
+                <span className="font-semibold text-card-foreground">{rating}</span>
+                <span className="text-muted-foreground">
+                  ({reviews.total} {t("library:reviews")})
+                </span>
+              </div>
+            )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 mb-5 pb-6 border-b border-border">
-            <div className="flex items-center">
-              <div className="flex mr-2">
-                <Star className="size-5 text-chart-3 fill-chart-3" />
-                <Star className="size-5 text-chart-3 fill-chart-3" />
-                <Star className="size-5 text-chart-3 fill-chart-3" />
-                <Star className="size-5 text-chart-3 fill-chart-3" />
-                <Star className="size-5 text-muted-foreground" />
-              </div>
-              <span className="font-semibold text-card-foreground">{rating}</span>
-              <span className="text-muted-foreground ml-1">(128.543 {t("library:reviews")})</span>
-            </div>
-          </div>
           <Tabs defaultValue="info">
             <div className="flex items-center justify-between gap-3 mb-2">
               <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
                 <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
                 <TabsTrigger value="relations">{t("library:relations")}</TabsTrigger>
-                <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
+                {!episodesData.isLoading && !episodesData.isError && (
+                  <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
+                )}
                 <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
                 <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
                 <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>
-                <TabsTrigger value="reviews" className="capitalize">
-                  {t("library:reviews")} (125)
-                </TabsTrigger>
+                {reviews.total >= 1 && (
+                  <TabsTrigger value="reviews" className="capitalize">
+                    {t("library:reviews")} ({reviews.total})
+                  </TabsTrigger>
+                )}
                 <TabsTrigger value="lists">{t("library:lists")} (30)</TabsTrigger>
               </TabsList>
             </div>
-            <TabsContent value="info">
-              <div className="mb-5">
+            <TabsContent value="info" className="space-y-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:genres")}</h3>
                 <div className="flex flex-wrap gap-2">
-                  <Link
-                    to="/"
-                    className="px-3 py-1.5 bg-linear-to-r from-purple-500/20 to-purple-500/30 text-purple-400 border border-purple-500/30 rounded-full text-sm font-medium"
-                  >
-                    Aventura
-                  </Link>
-                  <Link
-                    to="/"
-                    className="px-3 py-1.5 bg-linear-to-r from-chart-3/20 to-chart-3/30 text-chart-3 border border-chart-3/30 rounded-full text-sm font-medium"
-                  >
-                    Drama
-                  </Link>
-                  <Link
-                    to="/"
-                    className="px-3 py-1.5 bg-linear-to-r from-chart-3/20 to-chart-3/30 text-chart-3 border border-chart-3/30 rounded-full text-sm font-medium"
-                  >
-                    Fantasy
-                  </Link>
+                  {anime.genres.map((genre: string, index: number) => {
+                    const colors = [
+                      "bg-chart-1/20 text-chart-1 border-chart-1/30 from-chart-1/20 to-chart-1/30",
+                      "bg-chart-2/20 text-chart-2 border-chart-2/30 from-chart-2/20 to-chart-2/30",
+                      "bg-chart-3/20 text-chart-3 border-chart-3/30 from-chart-3/20 to-chart-3/30",
+                      "bg-chart-4/20 text-chart-4 border-chart-4/30 from-chart-4/20 to-chart-4/30",
+                      "bg-chart-5/20 text-chart-5 border-chart-5/30 from-chart-5/20 to-chart-5/30",
+                    ];
+                    const color = colors[index % colors.length];
+
+                    return (
+                      <Link
+                        key={genre}
+                        to="/"
+                        className={`px-3 py-1.5 bg-linear-to-r ${color} border rounded-full text-sm font-medium`}
+                      >
+                        {getGenreLabel(t, genre)}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
 
-              <div className="mb-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:synopsis")}</h3>
-                <div className="text-muted-foreground leading-relaxed space-y-4">
-                  <p>{synopsis}</p>
-                </div>
+                <p className="text-muted-foreground leading-relaxed">{anime.synopsis}</p>
               </div>
 
-              <div className="mb-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:animeCharacteristics")}</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  <DetailsCard
-                    title={t("library:type")}
-                    icon={<FilePenLine className="size-5 text-muted-foreground" />}
-                    description={"TV"}
-                  />
-                  <DetailsCard
-                    title={t("library:source")}
-                    icon={<Hash className="size-5 text-muted-foreground" />}
-                    description={"Manga"}
-                  />
-                  <DetailsCard
-                    title={t("library:totalEpisodes")}
-                    icon={<TvIcon className="size-5 text-muted-foreground" />}
-                    description={"12"}
-                  />
-                  <DetailsCard
-                    title={t("library:broadcast")}
-                    icon={<Antenna className="size-5 text-muted-foreground" />}
-                    description={"Fridays at 23:00 (JST)"}
-                  />
-                  <DetailsCard
-                    title={t("library:rating")}
-                    icon={<Building className="size-5 text-muted-foreground" />}
-                    description={"PG-13"}
-                  />
-                  <DetailsCard
-                    title={t("library:runtime")}
-                    icon={<Clock className="size-5 text-muted-foreground" />}
-                    description={"24 min"}
-                  />
-                  <DetailsCard
-                    title={t("library:studios")}
-                    icon={<Building2 className="size-5 text-muted-foreground" />}
-                    description={
-                      <>
-                        <Link to="/">Aniplex</Link>, <Link to="/">Dentsu</Link>,{" "}
-                        <Link to="/">Nippon Television Network</Link>, <Link to="/">TOHO animation</Link>,{" "}
-                        <Link to="/">Shogakukan-Shueisha Productions</Link>, <Link to="/">Sound Team Don Juan</Link>,{" "}
-                        <Link to="/">Miracle Bus</Link>, <Link to="/">Shogakukan</Link>, <Link to="/">TOHO Music</Link>
-                      </>
-                    }
-                  />
-                  <DetailsCard
-                    title={t("library:producers")}
-                    icon={<Languages className="size-5 text-muted-foreground" />}
-                    description={<Link to="/">Madhouse</Link>}
-                  />
-                </div>
+                <Grid minColSize={"200px"} className="gap-4">
+                  {anime.type && (
+                    <DetailsCard
+                      title={t("library:type")}
+                      icon={<FilePenLine className="size-5 text-muted-foreground" />}
+                      description={anime.type}
+                    />
+                  )}
+                  {anime.source && (
+                    <DetailsCard
+                      title={t("library:source")}
+                      icon={<Hash className="size-5 text-muted-foreground" />}
+                      description={anime.source}
+                    />
+                  )}
+                  {anime.numberOfEpisodes && (
+                    <DetailsCard
+                      title={t("library:totalEpisodes")}
+                      icon={<TvIcon className="size-5 text-muted-foreground" />}
+                      description={anime.numberOfEpisodes}
+                    />
+                  )}
+                  {anime.broadcast.string && (
+                    <DetailsCard
+                      title={t("library:broadcast")}
+                      icon={<Antenna className="size-5 text-muted-foreground" />}
+                      description={anime.broadcast.string}
+                    />
+                  )}
+                  {anime.rating && (
+                    <DetailsCard
+                      title={t("library:rating")}
+                      icon={<Building className="size-5 text-muted-foreground" />}
+                      description={anime.rating}
+                    />
+                  )}
+                  {anime.duration && (
+                    <DetailsCard
+                      title={t("library:runtime")}
+                      icon={<Clock className="size-5 text-muted-foreground" />}
+                      description={anime.duration}
+                    />
+                  )}
+                  {anime.studios.length >= 1 && (
+                    <DetailsCard
+                      title={t("library:studios")}
+                      icon={<Building2 className="size-5 text-muted-foreground" />}
+                      description={anime.studios.map((st: { name: string; malId: number }, index: number) => (
+                        <Link to="/" key={st.malId}>
+                          {st.name}
+                          {index < anime.studios.length - 1 && ", "}
+                        </Link>
+                      ))}
+                    />
+                  )}
+                  {anime.producers.length >= 1 && (
+                    <DetailsCard
+                      title={t("library:producers")}
+                      icon={<Languages className="size-5 text-muted-foreground" />}
+                      description={anime.producers.map((pd: { name: string; malId: number }, index: number) => (
+                        <Link to="/" key={pd.malId}>
+                          {pd.name}
+                          {index < anime.producers.length - 1 && ", "}
+                        </Link>
+                      ))}
+                    />
+                  )}
+                </Grid>
               </div>
 
-              <AnimeEpisodeProgress season={mySeason} onToggle={handleToggle} />
+              {isAuthenticated && <AnimeEpisodeProgress season={mySeason} onToggle={handleToggle} />}
 
-              <div className="my-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
@@ -381,23 +446,34 @@ function AnimeDetailsRoute() {
                 </div>
               </div>
 
-              <iframe
-                src="https://www.youtube-nocookie.com/embed/RH-FcW94z00?enablejsapi=1&wmode=opaque&autoplay=1"
-                allowFullScreen
-                className="w-full aspect-video"
-                title="Trailer"
-              />
+              {anime.trailer.embedUrl && (
+                <iframe
+                  src={anime.trailer.embedUrl.replace("&autoplay=1", "")}
+                  allowFullScreen
+                  className="w-full aspect-video"
+                  title="Trailer"
+                />
+              )}
             </TabsContent>
-            <TabsContent value="episodes">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <EpisodeItem />
-                <EpisodeItem />
-                <EpisodeItem />
-                <EpisodeItem />
-                <EpisodeItem />
-                <EpisodeItem />
-              </div>
-            </TabsContent>
+            {!episodesData.isLoading && !episodesData.isError && (
+              <TabsContent value="episodes">
+                <Grid minColSize={"200px"} className="gap-4">
+                  {episodes
+                    ?.slice()
+                    .sort((a: { malId: number }, b: { malId: number }) => a.malId - b.malId)
+                    .map((episode: { malId: number; title: string; imageUrl: string }) => {
+                      return (
+                        <EpisodeItem
+                          key={episode.malId}
+                          title={episode.title}
+                          number={episode.malId}
+                          imageURL={episode.imageUrl}
+                        />
+                      );
+                    })}
+                </Grid>
+              </TabsContent>
+            )}
             <TabsContent value="relations">
               <Relations />
             </TabsContent>
@@ -427,26 +503,37 @@ function AnimeDetailsRoute() {
               </div>
             </TabsContent>
             <TabsContent value="cast">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <CastItem />
-                <CastItem />
-                <CastItem />
-                <CastItem />
-                <CastItem />
-                <CastItem />
-                <CastItem />
-              </div>
+              <Grid minColSize={"150px"} className="gap-4">
+                {anime.cast?.map((cast: { role: string; name: string; imageUrl: string; positions: string[] }) => {
+                  return (
+                    <CastItem
+                      key={cast.role}
+                      name={cast.name}
+                      character={cast.positions.map((positions) => positions).join(", ") as string}
+                      imageUrl={cast.imageUrl.replace(
+                        "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
+                        "",
+                      )}
+                    />
+                  );
+                })}
+              </Grid>
             </TabsContent>
             <TabsContent value="characters">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <CharacterItem />
-                <CharacterItem />
-                <CharacterItem />
-                <CharacterItem />
-                <CharacterItem />
-                <CharacterItem />
-                <CharacterItem />
-              </div>
+              <Grid minColSize={"150px"} className="gap-4">
+                {anime.characters?.map((character: { name: string; imageUrl: string }) => {
+                  return (
+                    <CharacterItem
+                      key={character.name}
+                      name={character.name}
+                      imageUrl={character.imageUrl.replace(
+                        "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
+                        "",
+                      )}
+                    />
+                  );
+                })}
+              </Grid>
             </TabsContent>
             <TabsContent value="medias">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

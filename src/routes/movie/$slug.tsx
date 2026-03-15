@@ -33,6 +33,8 @@ import { CastItem } from "@/components/pages/details/cast";
 import { ListItem } from "@/components/pages/details/list";
 import { ReviewItem } from "@/components/pages/details/review";
 import { DetailsCard } from "@/components/shared/cards/details";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { MovieModal } from "@/components/shared/modals/movie";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Button } from "@/components/ui/button";
@@ -73,8 +75,8 @@ export function MovieDetailsRoute() {
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
-  if (isLoading) return <div>A carregar...</div>;
-  if (isError || !movie) return <div>Erro ao carregar.</div>;
+  if (isLoading || reviewsData.isLoading) return <LoadingDetails />;
+  if (isError || reviewsData.isError || !movie) return <ErrorComponent />;
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       <div className="lg:w-1/3">
@@ -253,7 +255,7 @@ export function MovieDetailsRoute() {
           </div>
 
           <div className="flex flex-wrap items-center gap-6 border-b border-border">
-            {reviews.total >= 1 && (
+            {reviews?.total >= 1 && (
               <div className="flex items-center mb-5">
                 <div className="flex mr-2">
                   <Star className="size-5 text-chart-3 fill-chart-3" />
@@ -264,7 +266,7 @@ export function MovieDetailsRoute() {
                 </div>
                 <span className="font-semibold text-card-foreground">{rating}</span>
                 <span className="text-muted-foreground ml-1">
-                  ({reviews.total} {t("library:reviews")})
+                  ({reviews?.total} {t("library:reviews")})
                 </span>
               </div>
             )}
@@ -275,16 +277,16 @@ export function MovieDetailsRoute() {
                 <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
                 <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
                 <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>
-                {reviews.total >= 1 && (
+                {reviews?.total >= 1 && (
                   <TabsTrigger value="reviews" className="capitalize">
-                    {t("library:reviews")} ({reviews.total})
+                    {t("library:reviews")} ({reviews?.total})
                   </TabsTrigger>
                 )}
                 <TabsTrigger value="lists">{t("library:lists")} (30)</TabsTrigger>
               </TabsList>
             </div>
-            <TabsContent value="info">
-              <div className="mb-5">
+            <TabsContent value="info" className={"space-y-5"}>
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:genres")}</h3>
                 <div className="flex flex-wrap gap-2">
                   {movie.genres.map((genre: string, index: number) => {
@@ -310,14 +312,14 @@ export function MovieDetailsRoute() {
                 </div>
               </div>
 
-              <div className="mb-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:synopsis")}</h3>
                 <div className="text-muted-foreground leading-relaxed space-y-4">
                   <p>{movie.overview}</p>
                 </div>
               </div>
 
-              <div className="mb-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:movieCharacteristics")}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   <DetailsCard
@@ -347,11 +349,13 @@ export function MovieDetailsRoute() {
                       )}
                     />
                   )}
-                  <DetailsCard
-                    title={t("library:language")}
-                    icon={<Languages className="size-5 text-muted-foreground" />}
-                    description={"English"}
-                  />
+                  {movie?.spokenLanguages[0]?.name && (
+                    <DetailsCard
+                      title={t("library:language")}
+                      icon={<Languages className="size-5 text-muted-foreground" />}
+                      description={movie?.spokenLanguages[0]?.name}
+                    />
+                  )}
                   {movie?.productionCompanies?.length >= 1 && (
                     <DetailsCard
                       title={t("library:productionCompanies")}
@@ -371,7 +375,7 @@ export function MovieDetailsRoute() {
                 </div>
               </div>
 
-              <div className="mb-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">

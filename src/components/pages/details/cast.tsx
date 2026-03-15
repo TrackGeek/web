@@ -1,15 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export function CastItem({
-  imageUrl = "https://media.themoviedb.org/t/p/w132_and_h132_face/59IhgCtiWI5yTfzPhsjzg7GjCjm.jpg",
-  character = "Doug McCallister",
-  name = "Jack Black",
-}: {
-  imageUrl: string;
-  name: string;
-  character: string;
-}) {
+export function CastItem({ imageUrl, character, name }: { imageUrl: string; name: string; character: string }) {
   return (
     <Link to={"/"} className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
       <div className="flex items-center justify-between mb-2">

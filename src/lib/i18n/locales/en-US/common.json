@@ -101,5 +101,7 @@
   "startWriting": "Start Writing...",
   "send": "Send",
   "goHome": "Go Home",
-  "notFound": "The page you're looking for might have been <br />moved or doesn't exist."
+  "notFound": "The page you're looking for might have been <br />moved or doesn't exist.",
+  "internalError": "Uh oh! Don't worry! It's not you - it's us.<br />We're trying to fix the problem. Try again later!",
+  "reportError": "Report error"
 }

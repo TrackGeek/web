@@ -26,8 +26,36 @@ import {
   SiYoutube,
   SiYoutubeHex,
 } from "@icons-pack/react-simple-icons";
+
+const websiteIconMap: Record<
+  string,
+  {
+    icon: ComponentType<SVGProps<SVGSVGElement>>;
+    hex?: string;
+  }
+> = {
+  Steam: { icon: SiSteam, hex: SiSteamHex },
+  Wikipedia: { icon: SiWikipedia },
+  Twitch: { icon: SiTwitch, hex: SiTwitchHex },
+  Subreddit: { icon: SiReddit, hex: SiRedditHex },
+  Discord: { icon: SiDiscord, hex: SiDiscordHex },
+  Playstation: { icon: SiItchdotio, hex: SiItchdotioHex },
+  Xbox: { icon: SiGoogleplay, hex: SiGoogleplayHex },
+  YouTube: { icon: SiYoutube, hex: SiYoutubeHex },
+  Epic: { icon: SiEpicgames, hex: SiEpicgamesHex },
+  "Official Website": { icon: ExternalLink },
+  Twitter: { icon: SiX },
+  Facebook: { icon: SiFacebook, hex: SiFacebookHex },
+  GOG: { icon: SiGogdotcom },
+  Instagram: { icon: SiInstagram, hex: SiInstagramHex },
+  "Community Wiki": { icon: BookSearch },
+  "App Store (iPhone)": { icon: SiAppstore },
+  Bluesky: { icon: SiBluesky, hex: SiBlueskyHex },
+};
+
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { t } from "i18next";
 import {
   Bookmark,
   BookSearch,
@@ -48,6 +76,7 @@ import {
   TreeDeciduous,
   XCircle,
 } from "lucide-react";
+import type { ComponentType, SVGProps } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { ListItem } from "@/components/pages/details/list";
@@ -75,6 +104,83 @@ export const Route = createFileRoute("/game/$slug")({
   }),
   component: GameDetailsRoute,
 });
+
+const LAYOUT = {
+  H_SPACING: 200,
+  V_SPACING: 120,
+  CENTER: { x: 0, y: 0 },
+};
+
+const buildRelationsData = (game: any) => {
+  const nodes: any[] = [];
+  const edges: any[] = [];
+  let nodeId = 0;
+
+  const addNode = (name: string, image: string, link: string, relationship: string, x: number, y: number) => {
+    const id = String(nodeId++);
+    nodes.push({ id, image, name, link, relationShip: relationship, x, y });
+    return id;
+  };
+
+  const columnOffset = (items: any[], index: number) => {
+    const total = items.length;
+    return (index - (total - 1) / 2) * LAYOUT.V_SPACING;
+  };
+
+  const mainId = addNode(game.name, game.coverUrl, `/game/${game.id}`, t("library:relationships.now"), 0, 0);
+
+  const leftRelations = [
+    ...(game.parentGame?.id ? [{ data: game.parentGame, label: t("library:relationships.parent") }] : []),
+    ...(game.prequels?.map((g: any) => ({ data: g, label: t("library:relationships.prequel") })) ?? []),
+  ];
+
+  leftRelations.forEach(({ data, label }, i) => {
+    const y = columnOffset(leftRelations, i);
+    const id = addNode(data.name, data.coverUrl, `/game/${data.id}`, label, -LAYOUT.H_SPACING, y);
+    edges.push({ id: `edge-left-${i}`, source: id, target: mainId });
+  });
+
+  const rightRelations = [
+    ...(game.expandedGames?.map((g: any) => ({ data: g, label: t("library:relationships.expandedGame") })) ?? []),
+    ...(game.sequels?.map((g: any) => ({ data: g, label: t("library:relationships.sequel") })) ?? []),
+    ...(game.dlcs?.map((g: any) => ({ data: g, label: t("library:relationships.dlc") })) ?? []),
+    ...(game.expansions?.map((g: any) => ({ data: g, label: t("library:relationships.expansion") })) ?? []),
+    ...(game.ports?.map((g: any) => ({ data: g, label: t("library:relationships.port") })) ?? []),
+  ];
+
+  rightRelations.forEach(({ data, label }, i) => {
+    const y = columnOffset(rightRelations, i);
+    const id = addNode(data.name, data.coverUrl, `/game/${data.id}`, label, LAYOUT.H_SPACING, y);
+    edges.push({ id: `edge-right-${i}`, source: mainId, target: id });
+  });
+
+  const bottomRelations = [
+    ...(game.remakes?.map((g: any) => ({ data: g, label: t("library:relationships.remake") })) ?? []),
+    ...(game.remasters?.map((g: any) => ({ data: g, label: t("library:relationships.remaster") })) ?? []),
+  ];
+
+  bottomRelations.forEach(({ data, label }, i) => {
+    const x = columnOffset(bottomRelations, i);
+    const id = addNode(data.name, data.coverUrl, `/game/${data.id}`, label, x, LAYOUT.V_SPACING * 2);
+    edges.push({ id: `edge-bottom-${i}`, source: id, target: mainId });
+  });
+
+  const bundles = game.bundles ?? [];
+  bundles.forEach((data: any, i: number) => {
+    const x = columnOffset(bundles, i);
+    const id = addNode(
+      data.name,
+      data.coverUrl,
+      `/game/${data.id}`,
+      t("library:relationships.bundle"),
+      x,
+      -LAYOUT.V_SPACING * 2,
+    );
+    edges.push({ id: `edge-top-${i}`, source: mainId, target: id });
+  });
+
+  return { nodes, edges };
+};
 
 export function GameDetailsRoute() {
   const { slug } = Route.useParams();
@@ -231,117 +337,23 @@ export function GameDetailsRoute() {
           </Grid>
           <RefreshData sourceURL={`https://www.igdb.com/games/${game.slug}`} />
           <div className="flex flex-wrap gap-3 items-center justify-center">
-            <a href="https://anacondamovie.com/" target="_blank" rel="noopener noreferrer">
-              <ExternalLink />
-            </a>
-            <a href="https://anacondamovie.com/" target="_blank" rel="noopener noreferrer">
-              <BookSearch />
-            </a>
-            <a
-              href="https://steam.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiSteamHex}]`)}
-            >
-              <SiSteam />
-            </a>
-            <a
-              href="https://epicgames.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiEpicgamesHex}]`)}
-            >
-              <SiEpicgames />
-            </a>
-            <a href="https://gog.com/" target="_blank" rel="noopener noreferrer">
-              <SiGogdotcom />
-            </a>
-            <a
-              href="https://itch.io/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiItchdotioHex}]`)}
-            >
-              <SiItchdotio />
-            </a>
-            <a
-              href="https://googleplay.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiGoogleplayHex}]`)}
-            >
-              <SiGoogleplay />
-            </a>
-            <a href="https://applestore.com/" target="_blank" rel="noopener noreferrer">
-              <SiAppstore />
-            </a>
-            <a
-              href="https://instagram.com/theanacondamovie/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiInstagramHex}]`)}
-            >
-              <SiInstagram />
-            </a>
-            <a
-              href="https://www.facebook.com/AnacondaMovie"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiFacebookHex}]`)}
-            >
-              <SiFacebook />
-            </a>
-            <a
-              href="https://x.com/Anaconda_Movie"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-white`)}
-            >
-              <SiX />
-            </a>{" "}
-            <a
-              href="https://discord.gg/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiDiscordHex}]`)}
-            >
-              <SiDiscord />
-            </a>
-            <a
-              href="https://youtube.com/@"
-              target="_blank"
-              className={cn(`hover:text-[${SiYoutubeHex}]`)}
-              rel="noopener"
-            >
-              <SiYoutube />
-            </a>
-            <a
-              href="https://twitch.tv/@"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiTwitchHex}]`)}
-            >
-              <SiTwitch />
-            </a>
-            <a
-              href="https://reddit.com/@"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiRedditHex}]`)}
-            >
-              <SiReddit />
-            </a>
-            <a
-              href="https://bsky.app/@"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiBlueskyHex}]`)}
-            >
-              <SiBluesky />
-            </a>
-            <a href="https://wikipedia.com/Anaconda_Movie" target="_blank" rel="noopener noreferrer">
-              <SiWikipedia />
-            </a>
+            {game.websites?.map((website: { name: string; url: string }, idx: number) => {
+              const iconData = websiteIconMap[website.name];
+              if (!iconData) return null;
+
+              const Icon = iconData.icon;
+              const hoverClass = iconData.hex
+                ? `hover:text-[${iconData.hex}]`
+                : website.name === "Official Website"
+                  ? "hover:text-foreground"
+                  : "hover:text-white";
+
+              return (
+                <a key={idx} href={website.url} target="_blank" rel="noopener noreferrer" className={cn(hoverClass)}>
+                  <Icon />
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -456,7 +468,7 @@ export function GameDetailsRoute() {
                   <DetailsCard
                     title={t("library:themes")}
                     icon={<TreeDeciduous className="size-5 text-muted-foreground" />}
-                    description={game.keywords.map((k: { name: string }) => k.name).join(", ")}
+                    description={game.themes.join(", ")}
                   />
                   <DetailsCard
                     title={t("library:gameModes")}
@@ -563,7 +575,7 @@ export function GameDetailsRoute() {
               </div>
             </TabsContent>
             <TabsContent value="relations">
-              <Relations />
+              <Relations nodes={buildRelationsData(game).nodes} edges={buildRelationsData(game).edges} />
             </TabsContent>
             <TabsContent value="screenshots">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

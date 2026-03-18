@@ -1,10 +1,13 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
 import { CardItem } from "@/components/shared/cards/card";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import animesData from "@/lib/mockups/animes.json";
+import { api } from "@/lib/api";
 
 export const Route = createFileRoute("/anime/")({
   component: AnimeRoute,
@@ -12,7 +15,54 @@ export const Route = createFileRoute("/anime/")({
 
 function AnimeRoute() {
   const { t } = useTranslation();
-  const animes = animesData;
+
+  const {
+    data: topAiringData,
+    isLoading: topAiringLoading,
+    isError: topAiringError,
+  } = useQuery({
+    queryKey: ["anime", "top", "airing"],
+    queryFn: () => api.get("/anime/top?filter=airing"),
+  });
+
+  const topAiring = topAiringData?.data.animes.items;
+
+  const {
+    data: recommendationsData,
+    isLoading: recommendationsLoading,
+    isError: recommendationsError,
+  } = useQuery({
+    queryKey: ["anime", "recommendations"],
+    queryFn: () => api.get("/anime/top?filter=bypopularity"),
+  });
+
+  const recommendations = recommendationsData?.data.animes.items;
+
+  const {
+    data: comingSoonData,
+    isLoading: comingSoonLoading,
+    isError: comingSoonError,
+  } = useQuery({
+    queryKey: ["anime", "top", "comingSoon"],
+    queryFn: () => api.get("/anime/top?filter=upcoming"),
+  });
+
+  const comingSoon = comingSoonData?.data.animes.items;
+
+  const {
+    data: topQueryData,
+    isLoading: topQueryLoading,
+    isError: topQueryError,
+  } = useQuery({
+    queryKey: ["anime", "top", "anime"],
+    queryFn: () => api.get("/anime/top?filter=favorite"),
+  });
+
+  const topQuery = topQueryData?.data.animes.items;
+
+  if (topQueryError || comingSoonError || recommendationsError || topAiringError) return <ErrorComponent />;
+
+  if (topQueryLoading || comingSoonLoading || recommendationsLoading || topAiringLoading) return <LoadingFeatured />;
 
   return (
     <div className="mx-auto w-full">
@@ -24,7 +74,7 @@ function AnimeRoute() {
         }}
       >
         <CarouselContent>
-          {animes.map((anime) => {
+          {topAiring?.slice(0, 3).map((anime: any) => {
             const getYoutubeThumbnail = (url: string) => {
               if (!url) return null;
               const match = url.match(/\/embed\/([^/?]+)/);
@@ -32,10 +82,10 @@ function AnimeRoute() {
               return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
             };
 
-            const trailerThumbnail = getYoutubeThumbnail(anime.trailer?.embedUrl);
+            const trailerThumbnail = getYoutubeThumbnail(anime.trailerUrl);
 
             return (
-              <CarouselItem key={anime.id}>
+              <CarouselItem key={anime.malId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
                   <img
                     src={trailerThumbnail || anime.imageUrl}
@@ -54,7 +104,7 @@ function AnimeRoute() {
 
                     <Link
                       to={"/anime/$slug"}
-                      params={{ slug: anime.id }}
+                      params={{ slug: anime.malId }}
                       className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
                     >
                       {t("common:viewDetails")}
@@ -73,17 +123,20 @@ function AnimeRoute() {
           <p className="text-2xl font-bold">{t("common:topAiring")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {animes.map((anime) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {topAiring?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
-              url={`/anime/${anime.id}`}
-              imageURL={anime.imageUrl}
+              url={`/anime/${anime.malId}`}
+              imageURL={anime.imageUrl.replace(
+                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                "/placeholder/cover.webp",
+              )}
               rating={+anime.rating}
-              year={anime.year}
+              year={new Date(anime.airedFrom).getFullYear()}
               synopsis={anime.synopsis}
               mediaType={"anime"}
-              key={anime.id}
+              key={anime.malId}
             />
           ))}
         </Grid>
@@ -91,17 +144,20 @@ function AnimeRoute() {
           <p className="text-2xl font-bold">{t("common:recommendations")}</p>{" "}
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {animes.map((anime) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {recommendations?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
-              url={`/anime/${anime.id}`}
-              imageURL={anime.imageUrl}
+              url={`/anime/${anime.malId}`}
+              imageURL={anime.imageUrl.replace(
+                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                "/placeholder/cover.webp",
+              )}
               rating={+anime.rating}
-              year={anime.year}
+              year={new Date(anime.airedFrom).getFullYear()}
               synopsis={anime.synopsis}
               mediaType={"anime"}
-              key={anime.id}
+              key={anime.malId}
             />
           ))}
         </Grid>
@@ -109,17 +165,20 @@ function AnimeRoute() {
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {animes.map((anime) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {comingSoon?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
-              url={`/anime/${anime.id}`}
-              imageURL={anime.imageUrl}
+              url={`/anime/${anime.malId}`}
+              imageURL={anime.imageUrl.replace(
+                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                "/placeholder/cover.webp",
+              )}
               rating={+anime.rating}
-              year={anime.year}
+              year={new Date(anime.airedFrom).getFullYear()}
               synopsis={anime.synopsis}
               mediaType={"anime"}
-              key={anime.id}
+              key={anime.malId}
             />
           ))}
         </Grid>
@@ -127,17 +186,20 @@ function AnimeRoute() {
           <p className="text-2xl font-bold">{t("common:topAnime")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {animes.map((anime) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {topQuery?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
-              url={`/anime/${anime.id}`}
-              imageURL={anime.imageUrl}
+              url={`/anime/${anime.malId}`}
+              imageURL={anime.imageUrl.replace(
+                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                "/placeholder/cover.webp",
+              )}
               rating={+anime.rating}
-              year={anime.year}
+              year={new Date(anime.airedFrom).getFullYear()}
               synopsis={anime.synopsis}
               mediaType={"anime"}
-              key={anime.id}
+              key={anime.malId}
             />
           ))}
         </Grid>

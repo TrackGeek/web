@@ -1,10 +1,14 @@
+import ViteImage from "@son426/vite-image/react";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
-import series from "@/lib/mockups/series.json";
+import { api } from "@/lib/api.ts";
 
 export const Route = createFileRoute("/tv/")({
   component: SerieRoute,
@@ -12,6 +16,55 @@ export const Route = createFileRoute("/tv/")({
 
 function SerieRoute() {
   const { t } = useTranslation();
+
+  const {
+    data: airingData,
+    isLoading: airingLoading,
+    isError: airingError,
+  } = useQuery({
+    queryKey: ["tv", "airing"],
+    queryFn: () => api.get("/tv/top?filter=airing"),
+  });
+
+  const airing = airingData?.data.topTVShows;
+
+  const {
+    data: upcomingData,
+    isLoading: upcomingLoading,
+    isError: upcomingError,
+  } = useQuery({
+    queryKey: ["tv", "upcoming"],
+    queryFn: () => api.get("/tv/top?filter=upcoming"),
+  });
+
+  const upcoming = upcomingData?.data.topTVShows;
+
+  const {
+    data: trendingData,
+    isLoading: trendingLoading,
+    isError: trendingError,
+  } = useQuery({
+    queryKey: ["tv", "trending"],
+    queryFn: () => api.get("/tv/top?filter=trending"),
+  });
+
+  const trending = trendingData?.data.topTVShows;
+
+  const {
+    data: popularData,
+    isLoading: popularLoading,
+    isError: popularError,
+  } = useQuery({
+    queryKey: ["tv", "popular"],
+    queryFn: () => api.get("/tv/top?filter=popular"),
+  });
+
+  const popular = popularData?.data.topTVShows;
+
+  if (airingError || upcomingError || trendingError || popularError) return <ErrorComponent />;
+
+  if (airingLoading || upcomingLoading || trendingLoading || popularLoading)
+    return <LoadingFeatured numberOfSections={4} />;
 
   return (
     <div className="mx-auto w-full">
@@ -23,11 +76,20 @@ function SerieRoute() {
         }}
       >
         <CarouselContent>
-          {series.map((serie) => {
+          {airing?.slice(0, 3).map((serie: any) => {
             return (
-              <CarouselItem key={serie.id}>
+              <CarouselItem key={serie.tmdbId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
-                  <img src={serie.backdropUrl} className="w-full h-60 md:h-120 object-cover" alt={serie.name} />
+                  <ViteImage
+                    src={{
+                      src: serie.backdropUrl,
+                      blurDataURL: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH",
+                      height: 240,
+                      width: 1920,
+                    }}
+                    className="w-full h-60 md:h-120 object-cover"
+                    alt={serie.name}
+                  />
 
                   <div className="absolute inset-0 bg-linear-to-t from-primary/80 via-primary/30 to-transparent" />
 
@@ -40,7 +102,7 @@ function SerieRoute() {
 
                     <Link
                       to={"/tv/$slug"}
-                      params={{ slug: serie.id }}
+                      params={{ slug: serie.tmdbId }}
                       className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
                     >
                       {t("common:viewDetails")}
@@ -59,17 +121,17 @@ function SerieRoute() {
           <p className="text-2xl font-bold">{t("feed:trending")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {series.map((serie) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {trending?.slice(0, 16).map((serie: any) => (
             <CardItem
               title={serie.name}
-              url={`/tv/${serie.id}`}
+              url={`/tv/${serie.tmdbId}`}
               imageURL={serie.posterUrl}
-              rating={0}
+              rating={serie.rating}
               year={new Date(serie.firstAirDate).getFullYear()}
               synopsis={serie.tagline}
               mediaType={"tv"}
-              key={serie.id}
+              key={serie.tmdbId}
             />
           ))}
         </Grid>
@@ -77,17 +139,17 @@ function SerieRoute() {
           <p className="text-2xl font-bold">{t("common:mostPopular")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {series.map((serie) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {popular?.slice(0, 16).map((serie: any) => (
             <CardItem
               title={serie.name}
-              url={`/tv/${serie.id}`}
+              url={`/tv/${serie.tmdbId}`}
               imageURL={serie.posterUrl}
-              rating={0}
+              rating={serie.rating}
               year={new Date(serie.firstAirDate).getFullYear()}
               synopsis={serie.tagline}
               mediaType={"tv"}
-              key={serie.id}
+              key={serie.tmdbId}
             />
           ))}
         </Grid>
@@ -95,17 +157,17 @@ function SerieRoute() {
           <p className="text-2xl font-bold">{t("library:statusAir.currentlyAiring")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {series.map((serie) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {airing?.slice(0, 16).map((serie: any) => (
             <CardItem
               title={serie.name}
-              url={`/tv/${serie.id}`}
+              url={`/tv/${serie.tmdbId}`}
               imageURL={serie.posterUrl}
-              rating={0}
+              rating={serie.rating}
               year={new Date(serie.firstAirDate).getFullYear()}
               synopsis={serie.tagline}
               mediaType={"tv"}
-              key={serie.id}
+              key={serie.tmdbId}
             />
           ))}
         </Grid>
@@ -113,17 +175,17 @@ function SerieRoute() {
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {series.map((serie) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {upcoming?.slice(0, 16).map((serie: any) => (
             <CardItem
               title={serie.name}
-              url={`/tv/${serie.id}`}
+              url={`/tv/${serie.tmdbId}`}
               imageURL={serie.posterUrl}
-              rating={0}
+              rating={serie.rating}
               year={new Date(serie.firstAirDate).getFullYear()}
               synopsis={serie.tagline}
               mediaType={"tv"}
-              key={serie.id}
+              key={serie.tmdbId}
             />
           ))}
         </Grid>

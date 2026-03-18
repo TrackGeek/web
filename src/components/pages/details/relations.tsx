@@ -5,67 +5,30 @@ import {
   Position,
   ReactFlow,
   ReactFlowProvider,
+  useEdgesState,
   useNodesInitialized,
+  useNodesState,
   useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { Link } from "@tanstack/react-router";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-const nodes = [
-  {
-    id: "manga",
-    type: "custom",
-    position: { x: 0, y: -200 },
-    data: {
-      image: "https://cdn.myanimelist.net/images/manga/3/232121l.jpg",
-      name: "Sousou no Frieren",
-      link: "/manga/sousou-no-frieren",
-      relationShip: "Manga - Source",
-    },
-  },
-  {
-    id: "prequel",
-    type: "custom",
-    position: { x: -200, y: 0 },
-    data: {
-      image: "https://cdn.myanimelist.net/images/anime/1015/138006l.jpg",
-      name: "Sousou no Frieren",
-      link: "/anime/sousou-no-frieren",
-      relationShip: "Prequel",
-    },
-    default: true,
-  },
-  {
-    id: "n1",
-    type: "custom",
-    position: { x: 0, y: 0 },
-    data: {
-      image: "https://cdn.myanimelist.net/images/anime/1921/154528l.jpg",
-      name: "Sousou no Frieren 2nd Season",
-      link: "/anime/sousou-no-frieren-2nd-season",
-      relationShip: "Now",
-    },
-    default: true,
-  },
-  {
-    id: "n2",
-    type: "custom",
-    position: { x: 200, y: 0 },
-    data: {
-      image: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b206425-WOwXsfDbHZwb.jpg",
-      name: "Sousou no Frieren 3rd Season",
-      link: "/anime/sousou-no-frieren-3rd-season",
-      relationShip: "Sequel",
-    },
-  },
-];
+interface NodeData {
+  id: string;
+  image: string;
+  name: string;
+  link: string;
+  relationShip: string;
+  x?: number;
+  y?: number;
+}
 
-const edges = [
-  { id: "n1-n2", source: "n1", target: "n2", className: "edge-path" },
-  { id: "prequel-n2", source: "prequel", target: "n1", className: "edge-path" },
-  { id: "manga-n1", source: "manga", target: "n1", className: "edge-path" },
-];
+interface EdgesData {
+  id: string;
+  source: string;
+  target: string;
+}
 
 export function Card({ data }: any) {
   return (
@@ -87,106 +50,83 @@ export function Card({ data }: any) {
             {data.relationShip}
           </p>
         </div>
-        <Handle type="target" position={Position.Left} className="w-3! h-3! bg-primary! border-2 border-background" />
-        <Handle type="source" position={Position.Right} className="w-3! h-3! bg-primary! border-2 border-background" />
-        <Handle type="source" position={Position.Bottom} className="w-3! h-3! bg-primary! border-2 border-background" />
-        <Handle type="source" position={Position.Top} className="w-3! h-3! bg-primary! border-2 border-background" />
+        <Handle
+          type={"target"}
+          position={Position.Left}
+          className="w-3! h-3! bg-primary! border-2 border-background opacity-0"
+        />
+        <Handle
+          type={"source"}
+          position={Position.Right}
+          className="w-3! h-3! bg-primary! border-2 border-background opacity-0"
+        />
+        <Handle
+          type={"source"}
+          position={Position.Bottom}
+          className="w-3! h-3! bg-primary! border-2 border-background opacity-0"
+        />
+        <Handle
+          type={"source"}
+          position={Position.Top}
+          className="w-3! h-3! bg-primary! border-2 border-background opacity-0"
+        />
       </div>
     </Link>
   );
 }
 
-const organizeNodes = (nodes: any[], edges: any[], centerNodeId: string) => {
-  const levels = new Map();
-  const visited = new Set();
+interface FlowProps {
+  nodes: NodeData[];
+  edges: EdgesData[];
+}
 
-  const queue = [{ id: centerNodeId, level: 0 }];
-  visited.add(centerNodeId);
-  levels.set(centerNodeId, 0);
-
-  while (queue.length > 0) {
-    const { id, level } = queue.shift()!;
-
-    const connectedEdges = edges.filter((edge) => edge.source === id || edge.target === id);
-
-    for (const edge of connectedEdges) {
-      const neighborId = edge.source === id ? edge.target : edge.source;
-      if (!visited.has(neighborId)) {
-        visited.add(neighborId);
-        levels.set(neighborId, level + 1);
-        queue.push({ id: neighborId, level: level + 1 });
-      }
-    }
-  }
-
-  const maxLevel = Math.max(...Array.from(levels.values()));
-  const organizedNodes = [...nodes];
-
-  organizedNodes.forEach((node) => {
-    const level = levels.get(node.id) ?? 0;
-    const isCenter = node.id === centerNodeId;
-
-    if (isCenter) {
-      node.position = { x: 0, y: 0 };
-    } else {
-      const levelNodes = organizedNodes.filter((n) => levels.get(n.id) === level);
-      const index = levelNodes.findIndex((n) => n.id === node.id);
-      const spacing = 350;
-      const baseX = (level - maxLevel / 2) * 400;
-
-      node.position = {
-        x: baseX + (index - levelNodes.length / 2) * spacing,
-        y: (level - maxLevel / 2) * 250,
-      };
-    }
-  });
-
-  return organizedNodes;
-};
-
-function Flow() {
-  const { fitView, setNodes, setEdges } = useReactFlow();
+function Flow({ nodes: initialNodes, edges: initialEdges }: FlowProps) {
+  const { fitView } = useReactFlow();
   const nodesInitialized = useNodesInitialized();
   const hasOrganized = useRef(false);
 
-  const findCenterNode = useCallback(() => {
-    return nodes.find((node) => node.data.relationShip === "Now")?.id || "n1";
-  }, []);
+  const [nodes, setNodes] = useNodesState([]);
+  const [edges, setEdges] = useEdgesState<Edge>([]);
 
   useEffect(() => {
-    if (nodesInitialized && !hasOrganized.current) {
-      const centerNodeId = findCenterNode();
-      const organizedNodes = organizeNodes(nodes, edges, centerNodeId);
+    const formatted = initialNodes.map((node) => ({
+      id: node.id,
+      type: "custom",
+      position: { x: node.x ?? 0, y: node.y ?? 0 },
+      data: {
+        image: node.image,
+        name: node.name,
+        link: node.link,
+        relationShip: node.relationShip,
+      },
+    }));
+    setNodes(formatted as never[]);
 
-      setNodes(organizedNodes);
-
-      const styledEdges = edges.map((edge) => ({
+    setEdges(
+      initialEdges.map((edge) => ({
         ...edge,
         type: "smoothstep",
         style: { stroke: "#64748b", strokeWidth: 2 },
         animated: true,
-        className: "z-0",
-        markerEnd: {
-          type: "arrowclosed",
-          color: "#64748b",
-        },
-      }));
+        markerEnd: { type: "arrowclosed", color: "#64748b" },
+      })),
+    );
+  }, [initialNodes, initialEdges, setNodes, setEdges]);
 
-      setEdges(styledEdges as Edge[]);
-
-      setTimeout(() => {
-        fitView({ padding: 0.3, duration: 800 });
-      }, 100);
-
+  useEffect(() => {
+    if (nodesInitialized && !hasOrganized.current) {
       hasOrganized.current = true;
+      setTimeout(() => fitView({ padding: 0.3, duration: 800 }), 100);
     }
-  }, [nodesInitialized, fitView, setNodes, setEdges, findCenterNode]);
+  }, [nodesInitialized, fitView]);
 
   return (
     <div className="w-full aspect-video relative">
       <ReactFlow
         nodes={nodes}
         edges={edges}
+        onNodesChange={() => {}}
+        onEdgesChange={() => {}}
         nodeTypes={{ custom: Card }}
         nodesDraggable={false}
         nodesConnectable={false}
@@ -196,55 +136,24 @@ function Flow() {
         fitViewOptions={{ padding: 0.3 }}
         minZoom={0.1}
         maxZoom={1.5}
-        defaultViewport={{ zoom: 1.3, x: 0, y: 0 }}
+        proOptions={{ hideAttribution: true }}
         defaultEdgeOptions={{
           type: "smoothstep",
           style: { stroke: "#64748b", strokeWidth: 2 },
           animated: true,
-          className: "z-0",
-          markerEnd: {
-            type: "arrowclosed",
-            color: "#64748b",
-          },
+          markerEnd: { type: "arrowclosed", color: "#64748b" },
         }}
-        proOptions={{ hideAttribution: true }}
       >
         <Background gap={16} size={1} color="#e2e8f0" className="bg-background" />
       </ReactFlow>
-
-      <style>{`
-        .react-flow__edges {
-          z-index: 0 !important;
-        }
-        .react-flow__nodes {
-          z-index: 1 !important;
-        }
-        .react-flow__handle {
-          z-index: 2 !important;
-        }
-        .edge-path {
-          stroke-width: 2;
-          stroke: #64748b;
-        }
-        .react-flow__edge-path {
-          stroke-width: 2;
-        }
-        .react-flow__edge.animated path {
-          stroke-dasharray: 5;
-          animation: dashdraw 0.5s linear infinite;
-        }
-        @keyframes dashdraw {
-          from { stroke-dashoffset: 10; }
-        }
-      `}</style>
     </div>
   );
 }
 
-export function Relations() {
+export function Relations({ nodes, edges }: FlowProps) {
   return (
     <ReactFlowProvider>
-      <Flow />
+      <Flow nodes={nodes} edges={edges} />
     </ReactFlowProvider>
   );
 }

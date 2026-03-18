@@ -1,21 +1,17 @@
 import { Link } from "@tanstack/react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export function CastItem() {
+export function CastItem({ imageUrl, character, name }: { imageUrl: string; name: string; character: string }) {
   return (
     <Link to={"/"} className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
       <div className="flex items-center justify-between mb-2">
         <Avatar className="w-full aspect-square h-full rounded-2xl">
-          <AvatarImage
-            src="https://media.themoviedb.org/t/p/w132_and_h132_face/59IhgCtiWI5yTfzPhsjzg7GjCjm.jpg"
-            alt="Avatar of "
-            className="object-cover aspect-3/4 h-full"
-          />
-          <AvatarFallback className="rounded-lg">Book Title</AvatarFallback>
+          <AvatarImage src={imageUrl} alt={`Avatar of ${name}`} className="object-cover aspect-3/4 h-full" />
+          <AvatarFallback className="rounded-lg">{name}</AvatarFallback>
         </Avatar>
       </div>
-      <p className="text-card-foreground font-bold text-center">Jack Black</p>
-      <p className="text-muted-foreground text-center">Doug McCallister</p>
+      <p className="text-card-foreground font-bold text-center">{name}</p>
+      <p className="text-muted-foreground text-center">{character}</p>
     </Link>
   );
 }

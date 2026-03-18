@@ -1,10 +1,13 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
 import { CardItem } from "@/components/shared/cards/card";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import gamesData from "@/lib/mockups/games.json";
+import { api } from "@/lib/api.ts";
 
 export const Route = createFileRoute("/game/")({
   component: GameRoute,
@@ -12,7 +15,55 @@ export const Route = createFileRoute("/game/")({
 
 function GameRoute() {
   const { t } = useTranslation();
-  const games = Array.isArray(gamesData) ? gamesData : [gamesData.game];
+
+  const {
+    data: popularData,
+    isLoading: popularLoading,
+    isError: popularError,
+  } = useQuery({
+    queryKey: ["game", "popular"],
+    queryFn: () => api.get("/game/top?filter=popular"),
+  });
+
+  const popular = popularData?.data.topGames;
+
+  const {
+    data: comingSoonData,
+    isLoading: comingSoonLoading,
+    isError: comingSoonError,
+  } = useQuery({
+    queryKey: ["game", "coming"],
+    queryFn: () => api.get("/game/top?filter=coming"),
+  });
+
+  const comingSoon = comingSoonData?.data.topGames;
+
+  const {
+    data: anticipatedData,
+    isLoading: anticipatedLoading,
+    isError: anticipatedError,
+  } = useQuery({
+    queryKey: ["game", "antecipated"],
+    queryFn: () => api.get("/game/top?filter=antecipated"),
+  });
+
+  const anticipated = anticipatedData?.data.topGames;
+
+  const {
+    data: recentlyReleasedData,
+    isLoading: recentlyReleasedLoading,
+    isError: recentlyReleasedError,
+  } = useQuery({
+    queryKey: ["game", "recentlyReleased"],
+    queryFn: () => api.get("/game/top?filter=recentlyReleased"),
+  });
+
+  const recentlyReleased = recentlyReleasedData?.data.topGames;
+
+  if (popularError || comingSoonError || anticipatedError || recentlyReleasedError) return <ErrorComponent />;
+
+  if (popularLoading || comingSoonLoading || anticipatedLoading || recentlyReleasedLoading)
+    return <LoadingFeatured numberOfSections={4} />;
 
   return (
     <div className="mx-auto w-full">
@@ -24,7 +75,7 @@ function GameRoute() {
         }}
       >
         <CarouselContent>
-          {games.map((game) => {
+          {popular?.slice(0, 3).map((game: any) => {
             const artworks = Array.isArray(game.artworks) ? game.artworks : [];
             const keyArt = artworks.find((a: any) => a.type === "Key art without logo")?.url;
             const logoArt = artworks.find((a: any) => a.type === "Game logo (color)")?.url;
@@ -76,17 +127,17 @@ function GameRoute() {
           <p className="text-2xl font-bold">{t("common:mostPopular")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {games.map((game) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {popular?.slice(0, 16).map((game: any) => (
             <CardItem
               title={game.name}
-              url={`/game/${game.id}`}
+              url={`/game/${game.igdbId}`}
               imageURL={game.coverUrl}
               rating={game.rating}
-              year={new Date(game.releaseDates[0].date).getFullYear()}
+              year={new Date(game.firstReleaseDate).getFullYear()}
               synopsis={game.summary}
               mediaType={"game"}
-              key={game.id}
+              key={game.igdbId}
             />
           ))}
         </Grid>
@@ -94,17 +145,17 @@ function GameRoute() {
           <p className="text-2xl font-bold">{t("common:recentlyReleased")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {games.map((game) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {recentlyReleased?.slice(0, 16).map((game: any) => (
             <CardItem
               title={game.name}
-              url={`/game/${game.id}`}
+              url={`/game/${game.igdbId}`}
               imageURL={game.coverUrl}
               rating={game.rating}
-              year={new Date(game.releaseDates[0].date).getFullYear()}
+              year={new Date(game.firstReleaseDate).getFullYear()}
               synopsis={game.summary}
               mediaType={"game"}
-              key={game.id}
+              key={game.igdbId}
             />
           ))}
         </Grid>
@@ -112,17 +163,17 @@ function GameRoute() {
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {games.map((game) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {comingSoon?.slice(0, 16).map((game: any) => (
             <CardItem
               title={game.name}
-              url={`/game/${game.id}`}
+              url={`/game/${game.igdbId}`}
               imageURL={game.coverUrl}
               rating={game.rating}
-              year={new Date(game.releaseDates[0].date).getFullYear()}
+              year={new Date(game.firstReleaseDate).getFullYear()}
               synopsis={game.summary}
               mediaType={"game"}
-              key={game.id}
+              key={game.igdbId}
             />
           ))}
         </Grid>
@@ -130,17 +181,17 @@ function GameRoute() {
           <p className="text-2xl font-bold">{t("common:mostAnticipated")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {games.map((game) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {anticipated?.slice(0, 16).map((game: any) => (
             <CardItem
               title={game.name}
-              url={`/game/${game.id}`}
+              url={`/game/${game.igdbId}`}
               imageURL={game.coverUrl}
               rating={game.rating}
-              year={new Date(game.releaseDates[0].date).getFullYear()}
+              year={new Date(game.firstReleaseDate).getFullYear()}
               synopsis={game.summary}
               mediaType={"game"}
-              key={game.id}
+              key={game.igdbId}
             />
           ))}
         </Grid>

@@ -20,9 +20,11 @@ export default defineConfig({
     rolldownOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes("node_modules")) {
-            return id.toString().split("node_modules/")[1].split("/")[0].toString();
-          }
+          if (!id.includes("node_modules")) return;
+          const [, pkgPath = ""] = id.split(/node_modules[\\/]/);
+          const [scopeOrName, maybeName] = pkgPath.split(/[\\/]/);
+          if (!scopeOrName) return;
+          return scopeOrName.startsWith("@") && maybeName ? `${scopeOrName}/${maybeName}` : scopeOrName;
         },
       },
     },

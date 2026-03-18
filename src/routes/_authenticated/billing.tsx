@@ -11,6 +11,7 @@ import {
   Calendar,
   CreditCard,
   ExternalLink,
+  Loader2,
   Receipt,
   Sparkles,
 } from "lucide-react";
@@ -215,7 +216,7 @@ function SubscriptionCard({
             <p className="text-sm text-muted-foreground">
               {t("pages:billing.subscription.plan")}
             </p>
-            <p className="font-medium">{subscription.product.title}</p>
+            <p className="font-medium">{subscription.product.name}</p>
           </div>
 
           <div className="space-y-1">
@@ -253,6 +254,7 @@ function SubscriptionCard({
             onClick={() => setCancelOpen(true)}
             disabled={isCancelling || subscription.status !== "active"}
           >
+            {isCancelling && <Loader2 className="animate-spin" />}
             {t("pages:billing.subscription.cancel")}
           </Button>
         </div>
@@ -298,25 +300,21 @@ function PaymentDetailDialog({
       value: t(`pages:billing.payments.frequencies.${payment.frequency}`),
     },
     {
-      label: t("pages:billing.detail.subtotal"),
-      value: formatCurrency(payment.subtotalValue, payment.currency),
-    },
-    ...(payment.discountValue
-      ? [
-          {
-            label: t("pages:billing.detail.discount"),
-            value: `- ${formatCurrency(payment.discountValue, payment.currency)}`,
-          },
-        ]
-      : []),
-    {
       label: t("pages:billing.detail.total"),
-      value: formatCurrency(payment.totalValue, payment.currency),
+      value: formatCurrency(payment.value, payment.currency),
     },
     {
       label: t("pages:billing.detail.currency"),
       value: payment.currency.toUpperCase(),
     },
+     ...(payment.status === "Pending"
+      ? [
+          {
+            label: t("pages:billing.detail.expiredAt"),
+            value: format(new Date(payment.expiredAt), "dd/MM/yyyy HH:mm"),
+          },
+        ]
+      : []),
     {
       label: t("pages:billing.detail.date"),
       value: format(new Date(payment.createdAt), "dd/MM/yyyy HH:mm"),
@@ -343,7 +341,7 @@ function PaymentDetailDialog({
           ))}
         </div>
 
-        {payment.stripeInvoiceUrl && (
+        {payment.status === 'Succeeded' && payment.stripeInvoiceUrl && (
           <>
             <Separator />
             <Button variant="outline" size="sm" asChild className="w-full">
@@ -354,6 +352,22 @@ function PaymentDetailDialog({
               >
                 <ExternalLink className="size-4" />
                 {t("pages:billing.detail.viewInvoice")}
+              </a>
+            </Button>
+          </>
+        )}
+        
+        {payment.status === 'Pending' && payment.stripeCheckoutSessionUrl && (
+          <>
+            <Separator />
+            <Button variant="outline" size="sm" asChild className="w-full">
+              <a
+                href={payment.stripeCheckoutSessionUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ExternalLink className="size-4" />
+                {t("pages:billing.detail.viewCheckoutSession")}
               </a>
             </Button>
           </>
@@ -425,7 +439,7 @@ function BillingRoute() {
         ),
         cell: (info) => format(new Date(info.getValue()), "dd/MM/yyyy HH:mm:ss"),
       }),
-      columnHelper.accessor("totalValue", {
+      columnHelper.accessor("value", {
         header: () => t("pages:billing.payments.columns.amount"),
         cell: (info) =>
           formatCurrency(info.getValue(), info.row.original.currency),

@@ -177,15 +177,17 @@
       "get": "Get this perk",
       "items": {
         "Tracker": {
+          "name": "Tracker",
           "description": "Become a supporter and get recognition across the platform with exclusive cosmetics and priority access.",
           "benefits": [
             "Exclusive supporter badge on your profile",
-            "Hide irrelevant content types from your feed",
+            "Hide irrelevant content types for you",
             "Your profile will appear on the Donate page",
             "Prioritized support from our team"
           ]
         },
         "Archivist": {
+          "name": "Archivist",
           "description": "Everything a Tracker gets, plus deeper insight into your stats and early access to what's coming next.",
           "benefits": [
             "Everything from Tracker",
@@ -195,9 +197,11 @@
           ]
         },
         "ArchiveMaster": {
+          "name": "Archive Master",
           "description": "The ultimate supporter tier. Everything an Archivist gets, plus the highest level of recognition on the platform.",
           "benefits": [
             "Everything from Archivist",
+            "Avatar decorations and colors for your profile",
             "Exclusive Archive Master badge across the platform",
             "Stronger influence on roadmap discussions and priorities",
             "Special recognition on community-facing pages",
@@ -292,9 +296,10 @@
       "total": "Total",
       "currency": "Currency",
       "date": "Date",
+      "expiredAt": "Expired At",
       "invoice": "Invoice",
       "viewInvoice": "View Invoice",
-      "checkoutSession": "Checkout Session"
+      "viewCheckoutSession": "View Checkout Session"
     }
   }
 }

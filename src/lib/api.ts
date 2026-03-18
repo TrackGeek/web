@@ -7,50 +7,42 @@ export const api = axios.create({
   headers: {
     "X-TrackGeek-Language": window?.localStorage?.getItem(LANGUAGE_TOKEN) ?? DEFAULT_LANGUAGE,
     "X-TrackGeek-Version": "1.0.0",
-    "X-TrackGeek-Platform": "web",
-    "X-TrackGeek-Source": "website",
-    "X-TrackGeek-UTM": new URLSearchParams(window.location.search).get("utm_source") ?? "direct",
   }
 });
 
 export namespace ApiTypes {
-  export type PaymentType = "Donate" | "Perk";
-  
   export type PaymentFrequency = "Monthly" | "OneTime";
   
-  export interface Product {
-    id: string;
-    title: string;
-    enum: string;
-    description: string;
-    imageUrl: string | null;
-    prices: {
-      id: string;
-      frequency: PaymentFrequency;
-      value: {
-        raw: number;
-        formatted: string;
-        currency: string;
-        discount: {
-          promotionCodeId: string;
-          discountedRaw: number;
-          discountedFormatted: string;
-          percentage: number | null;
-        } | null;
-      };
-    }[]
+  export interface PriceValue {
+    raw: number;
+    formatted: string;
+    currency: string;
   }
   
-  export interface GetProductsResponse {
-    products: Product[];
+  export interface Price {
+    id: string;
+    productId: string;
+    value: {
+      converted: PriceValue;
+      original: PriceValue;
+    };
+  }
+  
+  export type Perk = Price & {
+    name: String;
+  }
+  
+  export interface GetPricesResponse {
+    prices: Price[];
+  }
+  
+  export interface GetPerksResponse {
+    perks: Perk[];
   }
   
   export interface CreatePaymentRequest {
-    type: PaymentType;
-    productId: string;
-    priceId?: string;
-    frequency?: PaymentFrequency;
-    value?: number;
+    frequency: PaymentFrequency;
+    value: number;
   }
   
   export interface CreatePaymentResponse {
@@ -65,27 +57,30 @@ export namespace ApiTypes {
       id: string;
       status: string;
       renewsAt: string;
-      product: Product;
-      price: {
-        raw: number;
-        formatted: string;
-        currency: string;
-      }
+      product: {
+        id: string;
+        name: string;
+      };
+      price: PriceValue;
     };
   }
+  
+  export interface GetCurrencyResponse {
+    currency: string;
+  }
+  
+  export type PaymentStatus = "Pending" | "Succeeded" | "Failed";
   
   export interface Payment {
     id: string;
     name: string;
-    subtotalValue: number;
-    discountValue: number | null;
-    totalValue: number;
+    value: number;
     currency: string;
-    status: "Pending" | "Succeeded" | "Failed";
+    status: PaymentStatus;
     frequency: PaymentFrequency;
     stripeInvoiceUrl: string | null;
+    stripeCheckoutSessionUrl: string;
     stripePaymentIntentId: string | null;
-    stripePromotionCodeId: string | null;
     stripeCheckoutSessionId: string;
     stripeCustomerId: string;
     stripeProductId: string;
@@ -123,7 +118,9 @@ export namespace ApiTypes {
 }
 
 export const apiEndpoints = {
-  getProducts: "/stripe/product",
+  getCurrency: "/stripe/currency",
+  getPrices: "/stripe/price",
+  getPerks: "/perk",
   getCurrentSubscription: "/stripe/subscription",
   cancelCurrentSubscription: "/stripe/subscription",
   createPayment: "/payment",

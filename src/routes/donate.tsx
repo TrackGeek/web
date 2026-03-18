@@ -56,7 +56,6 @@ function DonateRoute() {
   const [amountType, setAmountType] = useState<"fixed" | "custom">("fixed");
   const [selectedAmount, setSelectedAmount] = useState<number>(5);
   const [isDonateModalOpen, setIsDonateModalOpen] = useState(false);
-  const [selectedPerkId, setSelectedPerkId] = useState<string | null>(null);
   
   const createDonatePaymentForm = useForm<CreateDonatePaymentFormData>({
     resolver: zodResolver(createDonatePaymentSchema),
@@ -92,8 +91,17 @@ function DonateRoute() {
     setIsDonateModalOpen(isOpen);
   };
   
-  const [contributorsQuery, productsQuery] = useQueries({
+  const [currencyQuery, contributorsQuery, perksQuery] = useQueries({
     queries: [
+      {
+        queryKey: ["currency"],
+        queryFn: async () => {
+          return api
+            .get<ApiTypes.GetCurrencyResponse>(apiEndpoints.getCurrency)
+            .then((response) => response.data);
+        },
+        staleTime: 1000 * 60 * 60,
+      },
       {
         queryKey: ["contributors", "web"],
         queryFn: async () => {
@@ -104,10 +112,10 @@ function DonateRoute() {
         staleTime: 1000 * 60 * 60,
       },
       {
-        queryKey: ["products"],
+        queryKey: ["perks"],
         queryFn: async () => {
           return api
-            .get<ApiTypes.GetProductsResponse>(apiEndpoints.getProducts)
+            .get<ApiTypes.GetPerksResponse>(apiEndpoints.getPerks)
             .then((response) => response.data);
         },
         staleTime: 1000 * 60 * 60,
@@ -115,6 +123,12 @@ function DonateRoute() {
     ],
   });
   
+  const currencySymbol = currencyQuery.data?.currency
+    ? new Intl.NumberFormat('en', { style: 'currency', currency: currencyQuery.data.currency })
+        .formatToParts(0)
+        .find(p => p.type === 'currency')?.value ?? '€'
+    : '€';
+
   const createPaymentMutation = useMutation({
     mutationFn: async (data: ApiTypes.CreatePaymentRequest) => {
       return api
@@ -138,46 +152,8 @@ function DonateRoute() {
 
     return Array.from(uniqueContributors.values()).sort((a, b) => b.contributions - a.contributions);
   }, [contributorsQuery.data]);
-
-  const perks = useMemo(
-    () => (productsQuery.data?.products ?? []).filter((product) => product.enum !== "Donate"),
-    [productsQuery.data?.products],
-  );
   
-  async function handlePerkSelect(perk: ApiTypes.Product) {
-    if (!session?.data?.session) {
-      toast.error(t("common:notLoggedIn"));
-      
-      return;
-    }
-
-    setSelectedPerkId(perk.id);
-    
-    try {
-      const { payment } = await createPaymentMutation.mutateAsync({
-        type: "Perk",
-        priceId: perk.prices.find((price) => price.frequency === donationType)!.id,
-        productId: perk.id,
-        frequency: donationType,
-      });
-      
-      window.location.href = payment.url;
-    } catch (error) {
-      console.error(error);
-      
-      toast.error(t("common:somethingWentWrong"));
-      
-      setSelectedPerkId(null);
-    }
-  }
-  
-  async function handleDonate() {
-    if (!productsQuery.data?.products || productsQuery?.data?.products?.length === 0) {
-      toast.error(t("common:somethingWentWrong"));
-      
-      return;
-    }
-    
+  async function handleDonate() {   
     if (!session?.data?.session) {
       toast.error(t("common:notLoggedIn"));
       
@@ -192,19 +168,10 @@ function DonateRoute() {
       }
     }
     
-    try {
-      const donateProduct = productsQuery.data?.products.find((product) => product.enum === "Donate");
-      
-      if (!donateProduct) {
-        toast.error(t("common:somethingWentWrong"));
-        
-        return;
-      }
-      
+    try {  
       const { payment } = await createPaymentMutation.mutateAsync({
-        type: "Donate",
+        frequency: donationType,
         value: Math.round(finalAmount * 100),
-        productId: donateProduct.id,
       });
       
       window.location.href = payment.url;
@@ -248,78 +215,100 @@ function DonateRoute() {
                   {t("pages:donate.modal.description")}
                 </DialogDescription>
               </DialogHeader>
-
-              <div>
-                <div className="flex gap-3 mb-4">
-                  <Button
-                    onClick={() => {
-                      setAmountType("fixed");
-                      createDonatePaymentForm.clearErrors("value");
-                    }}
-                    className={`flex-1 h-12 py-3 px-4 rounded-lg font-medium transition-all ${
-                      amountType === "fixed"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground hover:bg-muted/80"
-                    }`}
-                  >
-                    {t("pages:donate.modal.fixed")}
-                  </Button>
-                  
-                  <Button
-                    onClick={() => setAmountType("custom")}
-                    className={`flex-1 h-12 py-3 px-4 rounded-lg font-medium transition-all ${
-                      amountType === "custom"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground hover:bg-muted/80"
-                    }`}
-                  >
-                    {t("pages:donate.modal.custom")}
-                  </Button>
-                </div>
-
-                {amountType === "fixed" ? (
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                    {fixedAmounts.map((amount) => (
-                      <Button
-                        key={amount}
-                        onClick={() => setSelectedAmount(amount)}
-                        className={`h-12 py-3 px-4 rounded-lg font-semibold transition-all ${
-                          selectedAmount === amount
-                            ? "bg-primary text-primary-foreground border-2 border-primary"
-                            : "bg-muted text-muted-foreground hover:bg-muted/80 border-2 border-transparent"
-                        }`}
-                      >
-                        €{amount}
-                      </Button>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <Coins className="size-5 shrink-0 text-primary" />
-                    
-                    <Input
-                      type="number"
-                      min="1"
-                      step="0.01"
-                      placeholder={t("pages:donate.modal.enter")}
-                      {...createDonatePaymentForm.register("value", {
-                        valueAsNumber: true,
-                      })}
-                      className="flex-1"
-                    />
-                  </div>
-                )}
-
-                {amountType === "custom" && createDonatePaymentForm.formState.errors.value ? (
-                  <p className="mt-2 text-sm text-destructive">
-                    {createDonatePaymentForm.formState.errors.value.message}
-                  </p>
-                ) : null}
+              
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => setDonationType("OneTime")}
+                  className={`flex-1 h-12 rounded-lg font-medium transition-all ${
+                    donationType === "OneTime"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  }`}
+                >
+                  {t("pages:donate.modal.one-time")}
+                </Button>
+                
+                <Button
+                  onClick={() => setDonationType("Monthly")}
+                  className={`flex-1 h-12 rounded-lg font-medium transition-all ${
+                    donationType === "Monthly"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  }`}
+                >
+                  {t("pages:donate.modal.monthly")}
+                </Button>
               </div>
+      
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => {
+                    setAmountType("fixed");
+                    createDonatePaymentForm.clearErrors("value");
+                  }}
+                  className={`flex-1 h-12 py-3 px-4 rounded-lg font-medium transition-all ${
+                    amountType === "fixed"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  }`}
+                >
+                  {t("pages:donate.modal.fixed")}
+                </Button>
+                
+                <Button
+                  onClick={() => setAmountType("custom")}
+                  className={`flex-1 h-12 py-3 px-4 rounded-lg font-medium transition-all ${
+                    amountType === "custom"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  }`}
+                >
+                  {t("pages:donate.modal.custom")}
+                </Button>
+              </div>
+
+              {amountType === "fixed" ? (
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  {fixedAmounts.map((amount) => (
+                    <Button
+                      key={amount}
+                      onClick={() => setSelectedAmount(amount)}
+                      className={`h-12 py-3 px-4 rounded-lg font-semibold transition-all ${
+                        selectedAmount === amount
+                          ? "bg-primary text-primary-foreground border-2 border-primary"
+                          : "bg-muted text-muted-foreground hover:bg-muted/80 border-2 border-transparent"
+                      }`}
+                    >
+                      {currencySymbol} {amount}
+                    </Button>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Coins className="size-5 shrink-0 text-primary" />
+                  
+                  <Input
+                    type="number"
+                    min="1"
+                    step="0.01"
+                    placeholder={t("pages:donate.modal.enter")}
+                    {...createDonatePaymentForm.register("value", {
+                      valueAsNumber: true,
+                    })}
+                    className="flex-1"
+                  />
+                </div>
+              )}
+
+              {amountType === "custom" && createDonatePaymentForm.formState.errors.value ? (
+                <p className="mt-2 text-sm text-destructive">
+                  {createDonatePaymentForm.formState.errors.value.message}
+                </p>
+              ) : null}
 
               <div className="bg-muted/50 rounded-lg p-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-primary">€{(isValidAmount ? finalAmount : 0)?.toLocaleString()}</span>
+                  <span className="text-2xl font-bold text-primary">{currencySymbol} {(isValidAmount ? finalAmount : 0)?.toLocaleString()}</span>
                 </div>
               </div>
 
@@ -328,7 +317,7 @@ function DonateRoute() {
                 disabled={!isValidAmount || createPaymentMutation.isPending}
                 className="w-full py-3 text-md font-semibold"
               >
-                {t("common:donate")} €{(isValidAmount ? finalAmount : 0)?.toLocaleString()}
+                {t("common:donate")} {currencySymbol} {(isValidAmount ? finalAmount : 0)?.toLocaleString()}
               </Button>
 
               <p className="text-xs text-muted-foreground text-center">{t("pages:donate.modal.footer")}</p>
@@ -346,34 +335,8 @@ function DonateRoute() {
         
         <p className="text-center">{t("pages:donate.perks.description")}</p>
         
-        <div className="mt-4 flex justify-center">
-          <div className="flex w-full max-w-md gap-3">
-            <Button
-              onClick={() => setDonationType("OneTime")}
-              className={`flex-1 h-12 rounded-lg font-medium transition-all ${
-                donationType === "OneTime"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
-              }`}
-            >
-              {t("pages:donate.modal.one-time")}
-            </Button>
-            
-            <Button
-              onClick={() => setDonationType("Monthly")}
-              className={`flex-1 h-12 rounded-lg font-medium transition-all ${
-                donationType === "Monthly"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
-              }`}
-            >
-              {t("pages:donate.modal.monthly")}
-            </Button>
-          </div>
-        </div>
-        
         <div className="grid md:grid-cols-3 gap-6">
-          {productsQuery.isLoading && (
+          {perksQuery.isLoading && (
             <>
               <Skeleton className="w-full h-100 rounded-lg" />
               <Skeleton className="w-full h-100 rounded-lg" />
@@ -381,84 +344,35 @@ function DonateRoute() {
             </>
           )}
           
-          {perks.length > 0 && perks
-            .map((perk) => {
-              const isLoading = createPaymentMutation.isPending && selectedPerkId === perk.id
-              const selectedPrice = perk.prices.find((price) => price.frequency === donationType);
-              const discount = selectedPrice?.value.discount;
+          {perksQuery.data?.perks && perksQuery.data?.perks?.length > 0 && perksQuery.data?.perks?.map((perk) => (
+            <div
+              key={perk.id}
+              className="flex flex-col justify-between p-6 gap-4 rounded-xl border border-border bg-linear-to-br from-muted/50 to-muted hover:border-primary/50 translate-y-3 hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className='flex flex-col gap-4'>
+                <h3 className="text-2xl font-semibold text-white text-center">
+                  {t(`pages:donate.perks.items.${perk.name}.name`)}
+                </h3>
 
-              const userTier = session.data?.user?.tier;
-              const hasTier = !!userTier;
+                <p className="text-lg font-medium text-primary text-center">
+                  {perk.value.converted.formatted}
+                </p>
               
-              const userTierIndex = hasTier
-                ? perks.findIndex((existingPerk) => existingPerk.enum === userTier)
-                : -1;
+                <p className="text-muted-foreground text-sm">
+                  {t(`pages:donate.perks.items.${perk.name}.description`)}
+                </p>
                 
-              const currentPerkIndex = perks.findIndex((existingPerk) => existingPerk.id === perk.id);
-              const hasCurrentOrLowerTier = hasTier && userTierIndex >= 0 && currentPerkIndex >= 0
-                ? userTierIndex >= currentPerkIndex
-                : userTier === perk.enum;
-              
-              return (
-                <div
-                  key={perk.id}
-                  className="flex flex-col justify-between p-6 gap-4 rounded-xl border border-border bg-linear-to-br from-muted/50 to-muted hover:border-primary/50 translate-y-3 hover:-translate-y-1 transition-all duration-300"
-                >
-                  <div className='flex flex-col gap-4'>
-                    <h3 className="text-2xl font-semibold text-white text-center">{perk.title}</h3>
-
-                    {!hasCurrentOrLowerTier && (
-                      <>
-                        {discount ? (
-                          <div className="flex flex-col items-center gap-1 text-center">
-                            <p className="text-lg font-medium text-primary">
-                              {discount.discountedFormatted}
-                              {discount.percentage !== null ? ` (${discount.percentage}% OFF)` : ""}
-                            </p>
-
-                            <p className="text-sm text-muted-foreground line-through">
-                              {selectedPrice?.value.formatted}
-                            </p>
-                          </div>
-                        ) : (
-                          <p className="text-lg font-medium text-primary text-center">
-                            {selectedPrice?.value.formatted}
-                          </p>
-                        )}
-                      </>
-                    )}
-                  
-                    <p className="text-muted-foreground text-sm">
-                      {t(`pages:donate.perks.items.${perk.enum}.description`)}
-                    </p>
-                    
-                    <div className="flex flex-col text-muted-foreground text-sm space-y-2">
-                      {(t(`pages:donate.perks.items.${perk.enum}.benefits`, { returnObjects: true }) as string[]).map((benefit, i) => (
-                        <div key={i} className="flex items-center gap-2">
-                          <Check className="size-5 shrink-0 text-primary" />
-                          <span>{benefit}</span>
-                        </div>
-                      ))}
+                <div className="flex flex-col text-muted-foreground text-sm space-y-2">
+                  {(t(`pages:donate.perks.items.${perk.name}.benefits`, { returnObjects: true }) as string[]).map((benefit, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <Check className="size-5 shrink-0 text-primary" />
+                      <span>{benefit}</span>
                     </div>
-                  </div>
-                  
-                  <Button
-                    className="mt-8 w-full py-2 text-sm font-semibold"
-                    onClick={() => handlePerkSelect(perk)}
-                    disabled={isLoading || hasCurrentOrLowerTier}
-                  >
-                    {
-                      hasCurrentOrLowerTier
-                        ? t("common:alreadyObtained")
-                          : hasTier  
-                        ? t("common:upgrade") 
-                          : t("pages:donate.perks.get")
-                    }
-                  </Button>
+                  ))}
                 </div>
-              )
-            })
-          }
+              </div>
+            </div>
+          ))}
         </div>
       </div>
       

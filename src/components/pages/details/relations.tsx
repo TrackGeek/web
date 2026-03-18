@@ -1,5 +1,6 @@
 import {
   Background,
+  type Edge,
   Handle,
   Position,
   ReactFlow,
@@ -85,7 +86,7 @@ function Flow({ nodes: initialNodes, edges: initialEdges }: FlowProps) {
   const hasOrganized = useRef(false);
 
   const [nodes, setNodes] = useNodesState([]);
-  const [edges, setEdges] = useEdgesState([]);
+  const [edges, setEdges] = useEdgesState<Edge>([]);
 
   useEffect(() => {
     const formatted = initialNodes.map((node) => ({
@@ -108,7 +109,7 @@ function Flow({ nodes: initialNodes, edges: initialEdges }: FlowProps) {
         style: { stroke: "#64748b", strokeWidth: 2 },
         animated: true,
         markerEnd: { type: "arrowclosed", color: "#64748b" },
-      })) as never[],
+      })),
     );
   }, [initialNodes, initialEdges, setNodes, setEdges]);
 

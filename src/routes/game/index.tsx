@@ -3,6 +3,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
 import { CardItem } from "@/components/shared/cards/card";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { api } from "@/lib/api.ts";
@@ -14,25 +16,54 @@ export const Route = createFileRoute("/game/")({
 function GameRoute() {
   const { t } = useTranslation();
 
-  const popularQuery = useQuery({
+  const {
+    data: popularData,
+    isLoading: popularLoading,
+    isError: popularError,
+  } = useQuery({
     queryKey: ["game", "popular"],
     queryFn: () => api.get("/game/top?filter=popular"),
-  }).data?.data.topGames;
+  });
 
-  const comingQuery = useQuery({
+  const popular = popularData?.data.topGames;
+
+  const {
+    data: comingSoonData,
+    isLoading: comingSoonLoading,
+    isError: comingSoonError,
+  } = useQuery({
     queryKey: ["game", "coming"],
     queryFn: () => api.get("/game/top?filter=coming"),
-  }).data?.data.topGames;
+  });
 
-  const antecipatedQuery = useQuery({
+  const comingSoon = comingSoonData?.data.topGames;
+
+  const {
+    data: anticipatedData,
+    isLoading: anticipatedLoading,
+    isError: anticipatedError,
+  } = useQuery({
     queryKey: ["game", "antecipated"],
     queryFn: () => api.get("/game/top?filter=antecipated"),
-  }).data?.data.topGames;
+  });
 
-  const recentlyReleasedQuery = useQuery({
+  const anticipated = anticipatedData?.data.topGames;
+
+  const {
+    data: recentlyReleasedData,
+    isLoading: recentlyReleasedLoading,
+    isError: recentlyReleasedError,
+  } = useQuery({
     queryKey: ["game", "recentlyReleased"],
     queryFn: () => api.get("/game/top?filter=recentlyReleased"),
-  }).data?.data.topGames;
+  });
+
+  const recentlyReleased = recentlyReleasedData?.data.topGames;
+
+  if (popularError || comingSoonError || anticipatedError || recentlyReleasedError) return <ErrorComponent />;
+
+  if (popularLoading || comingSoonLoading || anticipatedLoading || recentlyReleasedLoading)
+    return <LoadingFeatured numberOfSections={4} />;
 
   return (
     <div className="mx-auto w-full">
@@ -44,7 +75,7 @@ function GameRoute() {
         }}
       >
         <CarouselContent>
-          {popularQuery?.slice(0, 3).map((game: any) => {
+          {popular?.slice(0, 3).map((game: any) => {
             const artworks = Array.isArray(game.artworks) ? game.artworks : [];
             const keyArt = artworks.find((a: any) => a.type === "Key art without logo")?.url;
             const logoArt = artworks.find((a: any) => a.type === "Game logo (color)")?.url;
@@ -97,7 +128,7 @@ function GameRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {popularQuery?.slice(0, 16).map((game: any) => (
+          {popular?.slice(0, 16).map((game: any) => (
             <CardItem
               title={game.name}
               url={`/game/${game.igdbId}`}
@@ -115,7 +146,7 @@ function GameRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {recentlyReleasedQuery?.slice(0, 16).map((game: any) => (
+          {recentlyReleased?.slice(0, 16).map((game: any) => (
             <CardItem
               title={game.name}
               url={`/game/${game.igdbId}`}
@@ -133,7 +164,7 @@ function GameRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {comingQuery?.slice(0, 16).map((game: any) => (
+          {comingSoon?.slice(0, 16).map((game: any) => (
             <CardItem
               title={game.name}
               url={`/game/${game.igdbId}`}
@@ -151,7 +182,7 @@ function GameRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {antecipatedQuery?.slice(0, 16).map((game: any) => (
+          {anticipated?.slice(0, 16).map((game: any) => (
             <CardItem
               title={game.name}
               url={`/game/${game.igdbId}`}

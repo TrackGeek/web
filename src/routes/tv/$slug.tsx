@@ -368,7 +368,7 @@ export function TVShowDetailsPage() {
                   {t("library:tvShowCharacteristics")}
                 </h3>
                 <Grid minColSize={"200px"} className="gap-4">
-                  {item.createdBy && (
+                  {item?.createdBy.length >= 1 && (
                     <DetailsCard
                       title={t("library:creators")}
                       icon={<FilePenLine className="size-5 text-muted-foreground" />}
@@ -415,7 +415,7 @@ export function TVShowDetailsPage() {
                     <DetailsCard
                       title={t("library:runtime")}
                       icon={<Clock className="size-5 text-muted-foreground" />}
-                      description={"14 hours 20 minutes"}
+                      description={`${item?.episodeRuntime[0]} minutes`}
                     />
                   )}
                   {item.type && (

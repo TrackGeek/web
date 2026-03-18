@@ -1,30 +1,19 @@
 import {
   SiAppstore,
   SiBluesky,
-  SiBlueskyHex,
   SiDiscord,
-  SiDiscordHex,
   SiEpicgames,
-  SiEpicgamesHex,
   SiFacebook,
-  SiFacebookHex,
   SiGogdotcom,
   SiGoogleplay,
-  SiGoogleplayHex,
   SiInstagram,
-  SiInstagramHex,
   SiItchdotio,
-  SiItchdotioHex,
   SiReddit,
-  SiRedditHex,
   SiSteam,
-  SiSteamHex,
   SiTwitch,
-  SiTwitchHex,
   SiWikipedia,
   SiX,
   SiYoutube,
-  SiYoutubeHex,
 } from "@icons-pack/react-simple-icons";
 
 const websiteIconMap: Record<
@@ -34,23 +23,23 @@ const websiteIconMap: Record<
     hex?: string;
   }
 > = {
-  Steam: { icon: SiSteam, hex: SiSteamHex },
+  Steam: { icon: SiSteam },
   Wikipedia: { icon: SiWikipedia },
-  Twitch: { icon: SiTwitch, hex: SiTwitchHex },
-  Subreddit: { icon: SiReddit, hex: SiRedditHex },
-  Discord: { icon: SiDiscord, hex: SiDiscordHex },
-  Playstation: { icon: SiItchdotio, hex: SiItchdotioHex },
-  Xbox: { icon: SiGoogleplay, hex: SiGoogleplayHex },
-  YouTube: { icon: SiYoutube, hex: SiYoutubeHex },
-  Epic: { icon: SiEpicgames, hex: SiEpicgamesHex },
+  Twitch: { icon: SiTwitch },
+  Subreddit: { icon: SiReddit },
+  Discord: { icon: SiDiscord },
+  Playstation: { icon: SiItchdotio },
+  Xbox: { icon: SiGoogleplay },
+  YouTube: { icon: SiYoutube },
+  Epic: { icon: SiEpicgames },
   "Official Website": { icon: ExternalLink },
   Twitter: { icon: SiX },
-  Facebook: { icon: SiFacebook, hex: SiFacebookHex },
+  Facebook: { icon: SiFacebook },
   GOG: { icon: SiGogdotcom },
-  Instagram: { icon: SiInstagram, hex: SiInstagramHex },
+  Instagram: { icon: SiInstagram },
   "Community Wiki": { icon: BookSearch },
   "App Store (iPhone)": { icon: SiAppstore },
-  Bluesky: { icon: SiBluesky, hex: SiBlueskyHex },
+  Bluesky: { icon: SiBluesky },
 };
 
 import { useQuery } from "@tanstack/react-query";
@@ -94,7 +83,6 @@ import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { api } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
-import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { seo } from "@/lib/utils/seo";
 
@@ -342,14 +330,15 @@ export function GameDetailsRoute() {
               if (!iconData) return null;
 
               const Icon = iconData.icon;
-              const hoverClass = iconData.hex
-                ? `hover:text-[${iconData.hex}]`
-                : website.name === "Official Website"
-                  ? "hover:text-foreground"
-                  : "hover:text-white";
 
               return (
-                <a key={idx} href={website.url} target="_blank" rel="noopener noreferrer" className={cn(hoverClass)}>
+                <a
+                  key={idx}
+                  href={website.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={"hover:text-foreground"}
+                >
                   <Icon />
                 </a>
               );
@@ -397,7 +386,18 @@ export function GameDetailsRoute() {
             <div className="flex items-center justify-between gap-3 mb-2">
               <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
                 <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-                <TabsTrigger value="relations">{t("library:relations")}</TabsTrigger>
+                {(game.parentGame?.id ||
+                  (game.prequels?.length ?? 0) > 0 ||
+                  (game.expandedGames?.length ?? 0) > 0 ||
+                  (game.sequels?.length ?? 0) > 0 ||
+                  (game.dlcs?.length ?? 0) > 0 ||
+                  (game.expansions?.length ?? 0) > 0 ||
+                  (game.ports?.length ?? 0) > 0 ||
+                  (game.remakes?.length ?? 0) > 0 ||
+                  (game.remasters?.length ?? 0) > 0 ||
+                  (game.bundles?.length ?? 0) > 0) && (
+                  <TabsTrigger value="relations">{t("library:relations")}</TabsTrigger>
+                )}
                 {reviews?.total >= 1 && (
                   <TabsTrigger value="reviews" className="capitalize">
                     {t("library:reviews")} ({reviews?.total})

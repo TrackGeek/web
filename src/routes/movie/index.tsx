@@ -3,6 +3,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
 import { api } from "@/lib/api.ts";
@@ -14,25 +16,54 @@ export const Route = createFileRoute("/movie/")({
 function MovieRoute() {
   const { t } = useTranslation();
 
-  const airingQuery = useQuery({
+  const {
+    data: airingData,
+    isLoading: airingLoading,
+    isError: airingError,
+  } = useQuery({
     queryKey: ["movie", "airing"],
     queryFn: () => api.get("/movie/top?filter=airing"),
-  }).data?.data.movies;
+  });
 
-  const upcomingQuery = useQuery({
+  const airing = airingData?.data.movies;
+
+  const {
+    data: upcomingData,
+    isLoading: upcomingLoading,
+    isError: upcomingError,
+  } = useQuery({
     queryKey: ["movie", "upcoming"],
     queryFn: () => api.get("/movie/top?filter=upcoming"),
-  }).data?.data.movies;
+  });
 
-  const trendingQuery = useQuery({
+  const upcoming = upcomingData?.data.movies;
+
+  const {
+    data: trendingData,
+    isLoading: trendingLoading,
+    isError: trendingError,
+  } = useQuery({
     queryKey: ["movie", "trending"],
     queryFn: () => api.get("/movie/top?filter=trending"),
-  }).data?.data.movies;
+  });
 
-  const popularQuery = useQuery({
+  const trending = trendingData?.data.movies;
+
+  const {
+    data: popularData,
+    isLoading: popularLoading,
+    isError: popularError,
+  } = useQuery({
     queryKey: ["movie", "popular"],
     queryFn: () => api.get("/movie/top?filter=popular"),
-  }).data?.data.movies;
+  });
+
+  const popular = popularData?.data.movies;
+
+  if (airingError || upcomingError || trendingError || popularError) return <ErrorComponent />;
+
+  if (airingLoading || upcomingLoading || trendingLoading || popularLoading)
+    return <LoadingFeatured numberOfSections={4} />;
 
   return (
     <div className="mx-auto w-full">
@@ -44,7 +75,7 @@ function MovieRoute() {
         }}
       >
         <CarouselContent>
-          {airingQuery?.slice(0, 3).map((movie: any) => {
+          {airing?.slice(0, 3).map((movie: any) => {
             return (
               <CarouselItem key={movie.tmdbId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
@@ -81,7 +112,7 @@ function MovieRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {trendingQuery?.slice(0, 16).map((movie: any) => (
+          {trending?.slice(0, 16).map((movie: any) => (
             <CardItem
               title={movie.name}
               url={`/movie/${movie.tmdbId}`}
@@ -99,7 +130,7 @@ function MovieRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {popularQuery?.slice(0, 16).map((movie: any) => (
+          {popular?.slice(0, 16).map((movie: any) => (
             <CardItem
               title={movie.name}
               url={`/movie/${movie.tmdbId}`}
@@ -117,7 +148,7 @@ function MovieRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {airingQuery?.slice(0, 16).map((movie: any) => (
+          {airing?.slice(0, 16).map((movie: any) => (
             <CardItem
               title={movie.name}
               url={`/movie/${movie.tmdbId}`}
@@ -135,7 +166,7 @@ function MovieRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {upcomingQuery?.slice(0, 16).map((movie: any) => (
+          {upcoming?.slice(0, 16).map((movie: any) => (
             <CardItem
               title={movie.name}
               url={`/movie/${movie.tmdbId}`}

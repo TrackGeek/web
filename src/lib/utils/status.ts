@@ -27,7 +27,7 @@ export function formatStatusKey(statusName: string): string {
  */
 export function getStatusLabel(t: TFunction<"translation", undefined>, statusName: string): string {
   const statusKey = formatStatusKey(statusName);
-  const translationKey = `library:statussList.${statusKey}`;
+  const translationKey = `library:statusAir.${statusKey}`;
 
   return t(translationKey, statusName);
 }

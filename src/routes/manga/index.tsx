@@ -3,6 +3,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingFeatured } from "@/components/shared/loadings/featured";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
 import { api } from "@/lib/api.ts";
@@ -13,26 +15,54 @@ export const Route = createFileRoute("/manga/")({
 
 function MangaRoute() {
   const { t } = useTranslation();
-
-  const publishingQuery = useQuery({
+  const {
+    data: publishingData,
+    isLoading: publishingLoading,
+    isError: publishingError,
+  } = useQuery({
     queryKey: ["manga", "publishing"],
     queryFn: () => api.get("/manga/top?filter=publishing"),
-  }).data?.data.mangas.items;
+  });
 
-  const upcomingQuery = useQuery({
+  const publishing = publishingData?.data.mangas.items;
+
+  const {
+    data: upcomingData,
+    isLoading: upcomingLoading,
+    isError: upcomingError,
+  } = useQuery({
     queryKey: ["manga", "upcoming"],
     queryFn: () => api.get("/manga/top?filter=upcoming"),
-  }).data?.data.mangas.items;
+  });
 
-  const favoriteQuery = useQuery({
+  const upcoming = upcomingData?.data.mangas.items;
+
+  const {
+    data: favoriteData,
+    isLoading: favoriteLoading,
+    isError: favoriteError,
+  } = useQuery({
     queryKey: ["manga", "favorite"],
     queryFn: () => api.get("/manga/top?filter=favorite"),
-  }).data?.data.mangas.items;
+  });
 
-  const recommendationsQuery = useQuery({
+  const favorite = favoriteData?.data.mangas.items;
+
+  const {
+    data: recommendationsData,
+    isLoading: recommendationsLoading,
+    isError: recommendationsError,
+  } = useQuery({
     queryKey: ["manga", "recommendations"],
     queryFn: () => api.get("/manga/top?filter=bypopularity"),
-  }).data?.data.mangas.items;
+  });
+
+  const recommendations = recommendationsData?.data.mangas.items;
+
+  if (publishingError || upcomingError || favoriteError || recommendationsError) return <ErrorComponent />;
+
+  if (publishingLoading || upcomingLoading || favoriteLoading || recommendationsLoading)
+    return <LoadingFeatured numberOfSections={4} />;
 
   return (
     <div className="mx-auto w-full">
@@ -44,7 +74,7 @@ function MangaRoute() {
         }}
       >
         <CarouselContent>
-          {publishingQuery?.slice(0, 3).map((manga: any, index: number) => {
+          {publishing?.slice(0, 3).map((manga: any, index: number) => {
             return (
               <CarouselItem key={manga.malId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
@@ -85,7 +115,7 @@ function MangaRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {publishingQuery?.slice(0, 16).map((manga: any) => (
+          {publishing?.slice(0, 16).map((manga: any) => (
             <CardItem
               title={manga.title}
               url={`/manga/${manga.malId}`}
@@ -106,7 +136,7 @@ function MangaRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {recommendationsQuery?.slice(0, 16).map((manga: any) => (
+          {recommendations?.slice(0, 16).map((manga: any) => (
             <CardItem
               title={manga.title}
               url={`/manga/${manga.malId}`}
@@ -127,7 +157,7 @@ function MangaRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {upcomingQuery?.slice(0, 16).map((manga: any) => (
+          {upcoming?.slice(0, 16).map((manga: any) => (
             <CardItem
               title={manga.title}
               url={`/manga/${manga.malId}`}
@@ -148,7 +178,7 @@ function MangaRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {favoriteQuery?.slice(0, 16).map((manga: any) => (
+          {favorite?.slice(0, 16).map((manga: any) => (
             <CardItem
               title={manga.title}
               url={`/manga/${manga.malId}`}

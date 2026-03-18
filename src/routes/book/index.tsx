@@ -3,6 +3,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
 import { api } from "@/lib/api.ts";
@@ -14,15 +16,31 @@ export const Route = createFileRoute("/book/")({
 function BookRoute() {
   const { t } = useTranslation();
 
-  const trendingQuery = useQuery({
+  const {
+    data: trendingData,
+    isLoading: trendingLoading,
+    isError: trendingError,
+  } = useQuery({
     queryKey: ["book", "trending"],
     queryFn: () => api.get("/book/top?filter=trending"),
-  }).data?.data.topBooks;
+  });
 
-  const comingSoonQuery = useQuery({
+  const trendingQuery = trendingData?.data.topBooks;
+
+  const {
+    data: comingSoonData,
+    isLoading: comingSoonLoading,
+    isError: comingSoonError,
+  } = useQuery({
     queryKey: ["book", "comingSoon"],
     queryFn: () => api.get("/book/top?filter=comingSoon"),
-  }).data?.data.topBooks;
+  });
+
+  const comingSoonQuery = comingSoonData?.data.topBooks;
+
+  if (comingSoonError || trendingError) return <ErrorComponent />;
+
+  if (trendingLoading || comingSoonLoading) return <LoadingFeatured numberOfSections={2} />;
 
   return (
     <div className="mx-auto w-full">

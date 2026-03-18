@@ -3,6 +3,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
 import { CardItem } from "@/components/shared/cards/card";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { api } from "@/lib/api";
@@ -14,25 +16,53 @@ export const Route = createFileRoute("/anime/")({
 function AnimeRoute() {
   const { t } = useTranslation();
 
-  const topAiringQuery = useQuery({
+  const {
+    data: topAiringData,
+    isLoading: topAiringLoading,
+    isError: topAiringError,
+  } = useQuery({
     queryKey: ["anime", "top", "airing"],
     queryFn: () => api.get("/anime/top?filter=airing"),
-  }).data?.data.animes.items;
+  });
 
-  const recommendationsQuery = useQuery({
+  const topAiring = topAiringData?.data.animes.items;
+
+  const {
+    data: recommendationsData,
+    isLoading: recommendationsLoading,
+    isError: recommendationsError,
+  } = useQuery({
     queryKey: ["anime", "recommendations"],
     queryFn: () => api.get("/anime/top?filter=bypopularity"),
-  }).data?.data.animes.items;
+  });
 
-  const comingSoonQuery = useQuery({
+  const recommendations = recommendationsData?.data.animes.items;
+
+  const {
+    data: comingSoonData,
+    isLoading: comingSoonLoading,
+    isError: comingSoonError,
+  } = useQuery({
     queryKey: ["anime", "top", "comingSoon"],
     queryFn: () => api.get("/anime/top?filter=upcoming"),
-  }).data?.data.animes.items;
+  });
 
-  const topQuery = useQuery({
+  const comingSoon = comingSoonData?.data.animes.items;
+
+  const {
+    data: topQueryData,
+    isLoading: topQueryLoading,
+    isError: topQueryError,
+  } = useQuery({
     queryKey: ["anime", "top", "anime"],
     queryFn: () => api.get("/anime/top?filter=favorite"),
-  }).data?.data.animes.items;
+  });
+
+  const topQuery = topQueryData?.data.animes.items;
+
+  if (topQueryError || comingSoonError || recommendationsError || topAiringError) return <ErrorComponent />;
+
+  if (topQueryLoading || comingSoonLoading || recommendationsLoading || topAiringLoading) return <LoadingFeatured />;
 
   return (
     <div className="mx-auto w-full">
@@ -44,7 +74,7 @@ function AnimeRoute() {
         }}
       >
         <CarouselContent>
-          {topAiringQuery?.slice(0, 3).map((anime: any) => {
+          {topAiring?.slice(0, 3).map((anime: any) => {
             const getYoutubeThumbnail = (url: string) => {
               if (!url) return null;
               const match = url.match(/\/embed\/([^/?]+)/);
@@ -94,7 +124,7 @@ function AnimeRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {topAiringQuery?.slice(0, 16).map((anime: any) => (
+          {topAiring?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
               url={`/anime/${anime.malId}`}
@@ -115,7 +145,7 @@ function AnimeRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {recommendationsQuery?.slice(0, 16).map((anime: any) => (
+          {recommendations?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
               url={`/anime/${anime.malId}`}
@@ -136,7 +166,7 @@ function AnimeRoute() {
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {comingSoonQuery?.slice(0, 16).map((anime: any) => (
+          {comingSoon?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
               url={`/anime/${anime.malId}`}

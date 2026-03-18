@@ -521,7 +521,7 @@ function AnimeDetailsRoute() {
               </TabsContent>
             )}
             <TabsContent value="relations">
-              <Relations />
+              <Relations nodes={[]} edges={[]} />
             </TabsContent>
             <TabsContent value="reviews">
               <ReviewItem

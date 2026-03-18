@@ -575,7 +575,10 @@ export function GameDetailsRoute() {
               </div>
             </TabsContent>
             <TabsContent value="relations">
-              <Relations nodes={buildRelationsData(game).nodes} edges={buildRelationsData(game).edges} />
+              {(() => {
+                const { nodes, edges } = buildRelationsData(game);
+                return <Relations nodes={nodes} edges={edges} />;
+              })()}
             </TabsContent>
             <TabsContent value="screenshots">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -258,7 +258,7 @@ export function MangaDetailsRoute() {
 
                 if (manga.malId) {
                   links.push({
-                    href: `https://myanimelist.net/anime/${manga.malId}`,
+                    href: `https://myanimelist.net/manga/${manga.malId}`,
                     key: "mal",
                     icon: <SiMyanimelist />,
                   });

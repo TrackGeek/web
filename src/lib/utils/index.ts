@@ -18,10 +18,3 @@ export function getInitialsFromName(name: string): string {
 
   return firstInitial + lastInitial;
 }
-
-export function openPopup(url: string, width = 600, height = 400): Window | null {
-  const left = (window.innerWidth - width) / 2;
-  const top = (window.innerHeight - height) / 2;
-
-  return window.open(url, "popup", `width=${width},height=${height},left=${left},top=${top}`);
-}

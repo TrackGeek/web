@@ -28,6 +28,7 @@ import {
   Trash,
   XCircle,
 } from "lucide-react";
+import type { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CastItem } from "@/components/pages/details/cast";
@@ -201,40 +202,52 @@ export function MovieDetailsRoute() {
                 <ExternalLink />
               </a>
             )}
-            <a
-              href="https://instagram.com/theanacondamovie/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiInstagramHex}]`)}
-            >
-              <SiInstagram />
-            </a>
-            <a
-              href="https://www.facebook.com/AnacondaMovie"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiFacebookHex}]`)}
-            >
-              <SiFacebook />
-            </a>
-            <a
-              href="https://x.com/Anaconda_Movie"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-white`)}
-            >
-              <SiX />
-            </a>
-            {movie.imdbId && (
-              <a
-                href={`https://www.imdb.com/title/${movie.imdbId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(`hover:text-[${SiImdbHex}]`, "my-1 mr-1")}
-              >
-                <SiImdb />
-              </a>
-            )}
+            {(() => {
+              const ext = movie?.external || ({} as Record<string, any>);
+              const links: { href: string; key: string; className?: string; icon: ReactElement }[] = [];
+
+              if (ext.instagram_id) {
+                links.push({
+                  href: `https://instagram.com/${ext.instagram_id}`,
+                  key: "instagram",
+                  className: cn(`hover:text-[${SiInstagramHex}]`),
+                  icon: <SiInstagram />,
+                });
+              }
+
+              if (ext.facebook_id) {
+                links.push({
+                  href: `https://www.facebook.com/${ext.facebook_id}`,
+                  key: "facebook",
+                  className: cn(`hover:text-[${SiFacebookHex}]`),
+                  icon: <SiFacebook />,
+                });
+              }
+
+              if (ext.twitter_id) {
+                links.push({
+                  href: `https://x.com/${ext.twitter_id}`,
+                  key: "x",
+                  className: cn("hover:text-white"),
+                  icon: <SiX />,
+                });
+              }
+
+              if (movie.imdbId) {
+                links.push({
+                  href: `https://www.imdb.com/title/${movie.imdbId}`,
+                  key: "imdb",
+                  className: cn(`hover:text-[${SiImdbHex}]`, "my-0.5"),
+                  icon: <SiImdb />,
+                });
+              }
+
+              return links.map((l) => (
+                <a key={l.key} href={l.href} target="_blank" rel="noopener noreferrer" className={l.className}>
+                  {l.icon}
+                </a>
+              ));
+            })()}
           </div>
         </div>
       </div>
@@ -247,7 +260,10 @@ export function MovieDetailsRoute() {
           {movie?.belongsToCollection?.name && (
             <div className="flex items-center space-x-2">
               <Box className="size-5 text-muted-foreground" />
-              <a href="/movies-collection/franchise_name" className="text-xl text-muted-foreground">
+              <a
+                href={`/movies-collection/${movie?.belongsToCollection?.id}`}
+                className="text-xl text-muted-foreground"
+              >
                 {movie?.belongsToCollection?.name}
               </a>
             </div>
@@ -275,7 +291,7 @@ export function MovieDetailsRoute() {
               <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
                 <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
                 <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
-                <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>
+                {movie.backdrops.length >= 1 && <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>}
                 {reviews?.total >= 1 && (
                   <TabsTrigger value="reviews" className="capitalize">
                     {t("library:reviews")} ({reviews?.total})
@@ -330,7 +346,7 @@ export function MovieDetailsRoute() {
                       </Link>
                     }
                   />
-                  {movie.budget && (
+                  {movie.budget > 0 && (
                     <DetailsCard
                       title={t("library:budget")}
                       icon={<PiggyBank className="size-5 text-muted-foreground" />}
@@ -339,7 +355,7 @@ export function MovieDetailsRoute() {
                       )}
                     />
                   )}
-                  {movie.revenue && (
+                  {movie.revenue > 0 && (
                     <DetailsCard
                       title={t("library:revenue")}
                       icon={<Ticket className="size-5 text-muted-foreground" />}
@@ -366,11 +382,13 @@ export function MovieDetailsRoute() {
                         .join(", ")}
                     />
                   )}
-                  <DetailsCard
-                    title={t("library:runtime")}
-                    icon={<Clock className="size-5 text-muted-foreground" />}
-                    description={`${movie.runtime} min`}
-                  />
+                  {movie.runtime > 0 && (
+                    <DetailsCard
+                      title={t("library:runtime")}
+                      icon={<Clock className="size-5 text-muted-foreground" />}
+                      description={`${movie.runtime} min`}
+                    />
+                  )}
                 </Grid>
               </div>
 
@@ -411,12 +429,14 @@ export function MovieDetailsRoute() {
                 </div>
               </div>
 
-              <iframe
-                src="https://youtube.com/embed/az8M5Mai0X4"
-                allowFullScreen
-                className="w-full aspect-video"
-                title="Trailer"
-              />
+              {movie.trailerId && (
+                <iframe
+                  src={`https://youtube.com/embed/${movie.trailerId}`}
+                  allowFullScreen
+                  className="w-full aspect-video"
+                  title="Trailer"
+                />
+              )}
             </TabsContent>
             <TabsContent value="reviews">
               <ReviewItem
@@ -457,28 +477,17 @@ export function MovieDetailsRoute() {
                 })}
               </div>
             </TabsContent>
-            <TabsContent value="medias">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/1pi3gH590JGNsFO0ngAoiyKacA7.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/7VgSwKz420hI9sqXiXpGCViBq2C.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/9pOh1eQ0bjbFiBGqT3mYaeRPLru.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/1ysgMpzp4ftZBiCT8k7rq6R2obv.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/y342NhmRhXNbxhxWQbYv65bvf4C.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/kLApBgtLOfpCdT9bJWfRVCcRYMY.jpg" alt="" />
-                </ImageZoom>
-              </div>
-            </TabsContent>
+            {movie.backdrops.length >= 1 && (
+              <TabsContent value="medias">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {movie.backdrops?.map((url: string, i: number) => (
+                    <ImageZoom key={i}>
+                      <img src={url} alt={"Backdrop"} />
+                    </ImageZoom>
+                  ))}
+                </div>
+              </TabsContent>
+            )}
           </Tabs>
         </div>
       </div>

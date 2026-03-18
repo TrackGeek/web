@@ -1,4 +1,13 @@
-import { SiWikipedia } from "@icons-pack/react-simple-icons";
+import {
+  SiFacebook,
+  SiFacebookHex,
+  SiInstagram,
+  SiInstagramHex,
+  SiMyanimelist,
+  SiWikipedia,
+  SiWikipediaHex,
+  SiX,
+} from "@icons-pack/react-simple-icons";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
@@ -35,6 +44,7 @@ import { api } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { seo } from "@/lib/utils/seo";
+import { cn } from "@/lib/utils.ts";
 
 export const Route = createFileRoute("/manga/$slug")({
   head: () => ({
@@ -184,14 +194,84 @@ export function MangaDetailsRoute() {
             </div>
           </Grid>
           <RefreshData sourceURL={manga.url} />
-          <div className="flex flex-wrap gap-3 items-center justify-center">
-            <a href="https://anacondamovie.com/" target="_blank" rel="noopener noreferrer">
-              <ExternalLink />
-            </a>
-            <a href="https://www.imdb.com/title/tt4900148" target="_blank" rel="noopener noreferrer">
-              <SiWikipedia />
-            </a>
-          </div>
+          {manga.external.length >= 1 && (
+            <div className="flex flex-wrap gap-3 items-center justify-center">
+              {(() => {
+                const extArr = manga.external || [];
+                const links: any[] = [];
+
+                extArr.forEach((e: { url: string; name: string }, i: number) => {
+                  const name = (e.name || "").toLowerCase();
+                  const url = e.url;
+
+                  if (/official/i.test(name)) {
+                    links.push({ href: url, key: `official-${i}`, icon: <ExternalLink /> });
+                    return;
+                  }
+
+                  if (name.includes("instagram")) {
+                    links.push({
+                      href: url,
+                      key: `instagram-${i}`,
+                      className: cn(`hover:text-[${SiInstagramHex}]`),
+                      icon: <SiInstagram />,
+                    });
+                    return;
+                  }
+
+                  if (name.includes("facebook")) {
+                    links.push({
+                      href: url,
+                      key: `facebook-${i}`,
+                      className: cn(`hover:text-[${SiFacebookHex}]`),
+                      icon: <SiFacebook />,
+                    });
+                    return;
+                  }
+
+                  if (name.startsWith("@")) {
+                    links.push({ href: url, key: `twitter-${i}`, className: cn("hover:text-white"), icon: <SiX /> });
+                    return;
+                  }
+
+                  if (name.includes("ann")) {
+                    links.push({
+                      href: url,
+                      key: `ann-${i}`,
+                      icon: <img src={"/icons/ann.svg"} alt={"ANN Logo"} className="size-6" />,
+                    });
+                    return;
+                  }
+
+                  if (name.includes("wikipedia")) {
+                    links.push({
+                      href: url,
+                      key: `wikipedia-${i}`,
+                      className: cn(`hover:text-[${SiWikipediaHex}]`),
+                      icon: <SiWikipedia />,
+                    });
+                    return;
+                  }
+
+                  links.push({ href: url, key: `link-${i}`, icon: <ExternalLink /> });
+                });
+
+                if (manga.malId) {
+                  links.push({
+                    href: `https://myanimelist.net/anime/${manga.malId}`,
+                    key: "mal",
+                    icon: <SiMyanimelist />,
+                  });
+                }
+
+                return links.map((l) => (
+                  <a key={l.key} href={l.href} target="_blank" rel="noopener noreferrer" className={l.className}>
+                    {l.icon}
+                  </a>
+                ));
+              })()}
+            </div>
+          )}
         </div>
       </div>
 

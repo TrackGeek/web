@@ -27,7 +27,7 @@ import {
   TvMinimalPlay,
   XCircle,
 } from "lucide-react";
-import { useState } from "react";
+import { type ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CastItem } from "@/components/pages/details/cast";
@@ -241,38 +241,52 @@ export function TVShowDetailsPage() {
                 <ExternalLink />
               </a>
             )}
-            <a
-              href="https://instagram.com/theanacondamovie/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiInstagramHex}]`)}
-            >
-              <SiInstagram />
-            </a>
-            <a
-              href="https://www.facebook.com/AnacondaMovie"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiFacebookHex}]`)}
-            >
-              <SiFacebook />
-            </a>
-            <a
-              href="https://x.com/Anaconda_Movie"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-white`)}
-            >
-              <SiX />
-            </a>
-            <a
-              href="https://www.imdb.com/title/tt4900148"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiImdbHex}]`, "my-1 mr-1")}
-            >
-              <SiImdb />
-            </a>
+            {(() => {
+              const ext = item?.external || ({} as Record<string, any>);
+              const links: { href: string; key: string; className?: string; icon: ReactElement }[] = [];
+
+              if (ext.instagram_id) {
+                links.push({
+                  href: `https://instagram.com/${ext.instagram_id}`,
+                  key: "instagram",
+                  className: cn(`hover:text-[${SiInstagramHex}]`),
+                  icon: <SiInstagram />,
+                });
+              }
+
+              if (ext.facebook_id) {
+                links.push({
+                  href: `https://www.facebook.com/${ext.facebook_id}`,
+                  key: "facebook",
+                  className: cn(`hover:text-[${SiFacebookHex}]`),
+                  icon: <SiFacebook />,
+                });
+              }
+
+              if (ext.twitter_id) {
+                links.push({
+                  href: `https://x.com/${ext.twitter_id}`,
+                  key: "x",
+                  className: cn("hover:text-white"),
+                  icon: <SiX />,
+                });
+              }
+
+              if (ext.imdb_id) {
+                links.push({
+                  href: `https://www.imdb.com/title/${ext.imdb_id}`,
+                  key: "imdb",
+                  className: cn(`hover:text-[${SiImdbHex}]`, "my-0.5"),
+                  icon: <SiImdb />,
+                });
+              }
+
+              return links.map((l) => (
+                <a key={l.key} href={l.href} target="_blank" rel="noopener noreferrer" className={l.className}>
+                  {l.icon}
+                </a>
+              ));
+            })()}
           </div>
         </div>
       </div>
@@ -306,7 +320,7 @@ export function TVShowDetailsPage() {
                 <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
                 <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
                 <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
-                <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>
+                {item.backdrops.length >= 1 && <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>}
                 {reviews.total >= 1 && (
                   <TabsTrigger value="reviews" className="capitalize">
                     {t("library:reviews")} ({reviews.total})
@@ -462,12 +476,14 @@ export function TVShowDetailsPage() {
                 </div>
               </div>
 
-              <iframe
-                src="https://youtube.com/embed/0kQ8i2FpRDk"
-                allowFullScreen
-                className="w-full aspect-video"
-                title="Trailer"
-              />
+              {item.trailerId && (
+                <iframe
+                  src={`https://youtube.com/embed/${item.trailerId}`}
+                  allowFullScreen
+                  className="w-full aspect-video"
+                  title="Trailer"
+                />
+              )}
             </TabsContent>
             <TabsContent value="episodes">
               <Accordion type="single" collapsible defaultValue="item-1">
@@ -531,28 +547,17 @@ export function TVShowDetailsPage() {
                 })}
               </div>
             </TabsContent>
-            <TabsContent value="medias">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/zLyuE8viLa6g9NELI5JFETlQoJm.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/beADML9mJgtTGnmXR6nbdAVdoqC.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/k7sjr8AgGfK8uKwTZ4pB2h1pTQB.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/kd9lR1lJrUZMpuNEaNhaM9N3TOW.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/w5PzqjBhUlJHpRyhBRHvEdkJ0iK.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/cJ3cm8GwUmUvWXnMIbwlmC6trGf.jpg" alt="" />
-                </ImageZoom>
-              </div>
-            </TabsContent>
+            {item.backdrops.length >= 1 && (
+              <TabsContent value="medias">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {item.backdrops?.map((url: string, i: number) => (
+                    <ImageZoom key={i}>
+                      <img src={url} alt="Backdrop" />
+                    </ImageZoom>
+                  ))}
+                </div>
+              </TabsContent>
+            )}
           </Tabs>
         </div>
       </div>

@@ -4,6 +4,8 @@ import {
   SiInstagram,
   SiInstagramHex,
   SiMyanimelist,
+  SiWikipedia,
+  SiWikipediaHex,
   SiX,
 } from "@icons-pack/react-simple-icons";
 import { useQuery } from "@tanstack/react-query";
@@ -44,7 +46,6 @@ import { EpisodicContentModal } from "@/components/shared/modals/episodic-conten
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { api } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
@@ -225,38 +226,84 @@ function AnimeDetailsRoute() {
             )}
           </Grid>
           <RefreshData sourceURL={`https://myanimelist.net/anime/${anime.malId}`} />
-          <div className="flex flex-wrap gap-3 items-center justify-center">
-            <a href="https://anacondamovie.com/" target="_blank" rel="noopener noreferrer">
-              <ExternalLink />
-            </a>
-            <a
-              href="https://instagram.com/theanacondamovie/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiInstagramHex}]`)}
-            >
-              <SiInstagram />
-            </a>
-            <a
-              href="https://www.facebook.com/AnacondaMovie"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiFacebookHex}]`)}
-            >
-              <SiFacebook />
-            </a>
-            <a
-              href="https://x.com/Anaconda_Movie"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-white`)}
-            >
-              <SiX />
-            </a>
-            <a href="https://www.imdb.com/title/tt4900148" target="_blank" rel="noopener noreferrer">
-              <SiMyanimelist />
-            </a>
-          </div>
+          {anime.external.length >= 1 && (
+            <div className="flex flex-wrap gap-3 items-center justify-center">
+              {(() => {
+                const extArr = anime.external || [];
+                const links: any[] = [];
+
+                extArr.forEach((e: { url: string; name: string }, i: number) => {
+                  const name = (e.name || "").toLowerCase();
+                  const url = e.url;
+
+                  if (/official/i.test(name)) {
+                    links.push({ href: url, key: `official-${i}`, icon: <ExternalLink /> });
+                    return;
+                  }
+
+                  if (name.includes("instagram")) {
+                    links.push({
+                      href: url,
+                      key: `instagram-${i}`,
+                      className: cn(`hover:text-[${SiInstagramHex}]`),
+                      icon: <SiInstagram />,
+                    });
+                    return;
+                  }
+
+                  if (name.includes("facebook")) {
+                    links.push({
+                      href: url,
+                      key: `facebook-${i}`,
+                      className: cn(`hover:text-[${SiFacebookHex}]`),
+                      icon: <SiFacebook />,
+                    });
+                    return;
+                  }
+
+                  if (name.startsWith("@")) {
+                    links.push({ href: url, key: `twitter-${i}`, className: cn("hover:text-white"), icon: <SiX /> });
+                    return;
+                  }
+
+                  if (name.includes("ann")) {
+                    links.push({
+                      href: url,
+                      key: `ann-${i}`,
+                      icon: <img src={"/icons/ann.svg"} alt={"ANN Logo"} className="size-6" />,
+                    });
+                    return;
+                  }
+
+                  if (name.includes("wikipedia")) {
+                    links.push({
+                      href: url,
+                      key: `wikipedia-${i}`,
+                      className: cn(`hover:text-[${SiWikipediaHex}]`),
+                      icon: <SiWikipedia />,
+                    });
+                    return;
+                  }
+
+                  links.push({ href: url, key: `link-${i}`, icon: <ExternalLink /> });
+                });
+
+                if (anime.malId) {
+                  links.push({
+                    href: `https://myanimelist.net/anime/${anime.malId}`,
+                    key: "mal",
+                    icon: <SiMyanimelist />,
+                  });
+                }
+
+                return links.map((l) => (
+                  <a key={l.key} href={l.href} target="_blank" rel="noopener noreferrer" className={l.className}>
+                    {l.icon}
+                  </a>
+                ));
+              })()}
+            </div>
+          )}
         </div>
       </div>
 
@@ -294,7 +341,6 @@ function AnimeDetailsRoute() {
                 )}
                 <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
                 <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
-                <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>
                 {reviews.total >= 1 && (
                   <TabsTrigger value="reviews" className="capitalize">
                     {t("library:reviews")} ({reviews.total})
@@ -534,28 +580,6 @@ function AnimeDetailsRoute() {
                   );
                 })}
               </Grid>
-            </TabsContent>
-            <TabsContent value="medias">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/zLyuE8viLa6g9NELI5JFETlQoJm.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/beADML9mJgtTGnmXR6nbdAVdoqC.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/k7sjr8AgGfK8uKwTZ4pB2h1pTQB.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/kd9lR1lJrUZMpuNEaNhaM9N3TOW.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/w5PzqjBhUlJHpRyhBRHvEdkJ0iK.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/cJ3cm8GwUmUvWXnMIbwlmC6trGf.jpg" alt="" />
-                </ImageZoom>
-              </div>
             </TabsContent>
           </Tabs>
         </div>

@@ -28,7 +28,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip.tsx";
-import { cn } from "@/lib/utils.ts";
+import { cn } from "@/lib/utils";
 
 export type { Editor, JSONContent } from "@tiptap/react";
 

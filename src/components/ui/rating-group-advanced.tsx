@@ -1,7 +1,7 @@
 import { HeartIcon, StarIcon } from "lucide-react";
 import * as React from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
-import { cn } from "@/lib/utils.ts";
+import { cn } from "@/lib/utils";
 
 interface RatingGroupAdvancedProps {
   value?: string;

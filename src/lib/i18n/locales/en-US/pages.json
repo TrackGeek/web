@@ -175,33 +175,35 @@
       "title": "Perks",
       "description": "These are the perks you can get while supporting the site.",
       "get": "Get this perk",
-      "tracker": {
-        "description": "Become a supporter and get recognition across the platform with exclusive cosmetics and priority access.",
-        "benefits": [
-          "Exclusive supporter badge on your profile",
-          "Hide irrelevant content types from your feed",
-          "Your profile will appear on the Donate page",
-          "Prioritized support from our team"
-        ]
-      },
-      "archivist": {
-        "description": "Everything a Tracker gets, plus deeper insight into your stats and early access to what's coming next.",
-        "benefits": [
-          "Everything from Tracker",
-          "Advanced profile stats tailored to your activity",
-          "Early access to upcoming features and experiments",
-          "Priority consideration for feedback and feature requests"
-        ]
-      },
-      "archiveMaster": {
-        "description": "The ultimate supporter tier. Everything an Archivist gets, plus the highest level of recognition on the platform.",
-        "benefits": [
-          "Everything from Archivist",
-          "Exclusive Archive Master badge across the platform",
-          "Stronger influence on roadmap discussions and priorities",
-          "Special recognition on community-facing pages",
-          "Top-tier supporter status within TrackGeek"
-        ]
+      "items": {
+        "Tracker": {
+          "description": "Become a supporter and get recognition across the platform with exclusive cosmetics and priority access.",
+          "benefits": [
+            "Exclusive supporter badge on your profile",
+            "Hide irrelevant content types from your feed",
+            "Your profile will appear on the Donate page",
+            "Prioritized support from our team"
+          ]
+        },
+        "Archivist": {
+          "description": "Everything a Tracker gets, plus deeper insight into your stats and early access to what's coming next.",
+          "benefits": [
+            "Everything from Tracker",
+            "Advanced profile stats tailored to your activity",
+            "Early access to upcoming features and experiments",
+            "Priority consideration for feedback and feature requests"
+          ]
+        },
+        "ArchiveMaster": {
+          "description": "The ultimate supporter tier. Everything an Archivist gets, plus the highest level of recognition on the platform.",
+          "benefits": [
+            "Everything from Archivist",
+            "Exclusive Archive Master badge across the platform",
+            "Stronger influence on roadmap discussions and priorities",
+            "Special recognition on community-facing pages",
+            "Top-tier supporter status within TrackGeek"
+          ]
+        }
       }
     },
     "wantsToDonate": {
@@ -222,6 +224,77 @@
       "footer": "Minimum donation is $1. Your support helps us keep TrackGeek running!"
     },
     "transparencyReports": "Transparency Reports",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "success": {
+      "title": "Thank you for your support!",
+      "description": "Your donation has been processed successfully. We really appreciate your contribution to keeping TrackGeek alive."
+    },
+    "error": {
+      "title": "Payment failed",
+      "description": "Something went wrong while processing your payment. Please try again or contact us if the problem persists."
+    }
+  },
+  "billing": {
+    "title": "Billing",
+    "subscription": {
+      "title": "Subscription",
+      "description": "Manage your current subscription plan.",
+      "plan": "Plan",
+      "status": "Status",
+      "price": "Price",
+      "renewsAt": "Renews at",
+      "cancel": "Cancel Subscription",
+      "cancelConfirm": "Are you sure you want to cancel your subscription? You will lose access to your perks at the end of the current billing period.",
+      "cancelBack": "Go Back",
+      "cancelConfirmButton": "Yes, Cancel",
+      "cancelSuccess": "Your subscription has been cancelled successfully.",
+      "cancelError": "Failed to cancel your subscription. Please try again.",
+      "noSubscription": "No active subscription",
+      "noSubscriptionDescription": "You don't have an active subscription. Support TrackGeek and unlock exclusive perks!",
+      "subscribe": "View Plans",
+      "statuses": {
+        "active": "Active",
+        "canceled": "Cancelled",
+        "past_due": "Past Due",
+        "unpaid": "Unpaid",
+        "trialing": "Trialing"
+      }
+    },
+    "payments": {
+      "title": "Payment History",
+      "description": "View all your past payments and transactions.",
+      "empty": "No payments yet",
+      "emptyDescription": "You haven't made any payments yet.",
+      "columns": {
+        "name": "Description",
+        "date": "Date",
+        "amount": "Amount",
+        "status": "Status",
+        "frequency": "Type"
+      },
+      "statuses": {
+        "Pending": "Pending",
+        "Succeeded": "Succeeded",
+        "Failed": "Failed"
+      },
+      "frequencies": {
+        "OneTime": "One-time",
+        "Monthly": "Monthly"
+      }
+    },
+    "detail": {
+      "title": "Payment Details",
+      "name": "Description",
+      "status": "Status",
+      "frequency": "Type",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "total": "Total",
+      "currency": "Currency",
+      "date": "Date",
+      "invoice": "Invoice",
+      "viewInvoice": "View Invoice",
+      "checkoutSession": "Checkout Session"
+    }
   }
 }

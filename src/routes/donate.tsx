@@ -24,7 +24,7 @@ import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export const Route = createFileRoute("/donate/")({
+export const Route = createFileRoute("/donate")({
   head: () => ({
     meta: [...seo({ title: "Donate" })],
   }),
@@ -115,18 +115,10 @@ function DonateRoute() {
     ],
   });
   
-  const createPerkPaymentMutation = useMutation({
-    mutationFn: async (data: ApiTypes.CreatePerkPaymentRequest) => {
+  const createPaymentMutation = useMutation({
+    mutationFn: async (data: ApiTypes.CreatePaymentRequest) => {
       return api
-        .post<ApiTypes.CreatePerkPaymentResponse>(apiEndpoints.createPerkPayment, data)
-        .then((response) => response.data);
-    },
-  });
-  
-  const createDonatePaymentMutation = useMutation({
-    mutationFn: async (data: ApiTypes.CreateDonatePaymentRequest) => {
-      return api
-        .post<ApiTypes.CreateDonatePaymentResponse>(apiEndpoints.createDonatePayment, data)
+        .post<ApiTypes.CreatePaymentResponse>(apiEndpoints.createPayment, data)
         .then((response) => response.data);
     },
   });
@@ -146,6 +138,11 @@ function DonateRoute() {
 
     return Array.from(uniqueContributors.values()).sort((a, b) => b.contributions - a.contributions);
   }, [contributorsQuery.data]);
+
+  const perks = useMemo(
+    () => (productsQuery.data?.products ?? []).filter((product) => product.enum !== "Donate"),
+    [productsQuery.data?.products],
+  );
   
   async function handlePerkSelect(perk: ApiTypes.Product) {
     if (!session?.data?.session) {
@@ -157,7 +154,8 @@ function DonateRoute() {
     setSelectedPerkId(perk.id);
     
     try {
-      const { payment } = await createPerkPaymentMutation.mutateAsync({
+      const { payment } = await createPaymentMutation.mutateAsync({
+        type: "Perk",
         priceId: perk.prices.find((price) => price.frequency === donationType)!.id,
         productId: perk.id,
         frequency: donationType,
@@ -195,7 +193,7 @@ function DonateRoute() {
     }
     
     try {
-      const donateProduct = productsQuery.data?.products.find((product) => product.name === "donate");
+      const donateProduct = productsQuery.data?.products.find((product) => product.enum === "Donate");
       
       if (!donateProduct) {
         toast.error(t("common:somethingWentWrong"));
@@ -203,7 +201,8 @@ function DonateRoute() {
         return;
       }
       
-      const { payment } = await createDonatePaymentMutation.mutateAsync({
+      const { payment } = await createPaymentMutation.mutateAsync({
+        type: "Donate",
         value: Math.round(finalAmount * 100),
         productId: donateProduct.id,
       });
@@ -290,7 +289,7 @@ function DonateRoute() {
                             : "bg-muted text-muted-foreground hover:bg-muted/80 border-2 border-transparent"
                         }`}
                       >
-                        ${amount}
+                        €{amount}
                       </Button>
                     ))}
                   </div>
@@ -320,16 +319,16 @@ function DonateRoute() {
 
               <div className="bg-muted/50 rounded-lg p-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-primary">${(isValidAmount ? finalAmount : 0)?.toLocaleString()}</span>
+                  <span className="text-2xl font-bold text-primary">€{(isValidAmount ? finalAmount : 0)?.toLocaleString()}</span>
                 </div>
               </div>
 
               <Button
                 onClick={handleDonate}
-                disabled={!isValidAmount || createDonatePaymentMutation.isPending}
+                disabled={!isValidAmount || createPaymentMutation.isPending}
                 className="w-full py-3 text-md font-semibold"
               >
-                {t("common:donate")} ${ (isValidAmount ? finalAmount : 0)?.toLocaleString() }
+                {t("common:donate")} €{(isValidAmount ? finalAmount : 0)?.toLocaleString()}
               </Button>
 
               <p className="text-xs text-muted-foreground text-center">{t("pages:donate.modal.footer")}</p>
@@ -382,43 +381,83 @@ function DonateRoute() {
             </>
           )}
           
-          {productsQuery.data?.products && productsQuery.data?.products?.length > 0 && productsQuery.data?.products
-            .filter(product => product.name !== "donate")
-            .map((perk) => (
-              <div
-                key={perk.id}
-                className="flex flex-col justify-between p-6 gap-4 rounded-xl border border-border bg-linear-to-br from-muted/50 to-muted hover:border-primary/50 translate-y-3 hover:-translate-y-1 transition-all duration-300"
-              >
-                <div className='flex flex-col gap-4'>
-                  <h3 className="text-2xl font-semibold text-white text-center">{perk.title}</h3>
-                  
-                  <p className="text-lg font-medium text-primary text-center">
-                    {perk.prices.find((price) => price.frequency === donationType)?.value.formatted}
-                  </p>
+          {perks.length > 0 && perks
+            .map((perk) => {
+              const isLoading = createPaymentMutation.isPending && selectedPerkId === perk.id
+              const selectedPrice = perk.prices.find((price) => price.frequency === donationType);
+              const discount = selectedPrice?.value.discount;
+
+              const userTier = session.data?.user?.tier;
+              const hasTier = !!userTier;
+              
+              const userTierIndex = hasTier
+                ? perks.findIndex((existingPerk) => existingPerk.enum === userTier)
+                : -1;
                 
-                  <p className="text-muted-foreground text-sm">
-                    {t(`pages:donate.perks.${perk.name}.description`)}
-                  </p>
-                  
-                  <div className="flex flex-col text-muted-foreground text-sm space-y-2">
-                    {(t(`pages:donate.perks.${perk.name}.benefits`, { returnObjects: true }) as string[]).map((benefit, i) => (
-                      <div key={i} className="flex items-center gap-2">
-                        <Check className="size-5 shrink-0 text-primary" />
-                        <span>{benefit}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                <Button
-                  className="mt-8 w-full py-2 text-sm font-semibold"
-                  onClick={() => handlePerkSelect(perk)}
-                  disabled={createPerkPaymentMutation.isPending && selectedPerkId === perk.id}
+              const currentPerkIndex = perks.findIndex((existingPerk) => existingPerk.id === perk.id);
+              const hasCurrentOrLowerTier = hasTier && userTierIndex >= 0 && currentPerkIndex >= 0
+                ? userTierIndex >= currentPerkIndex
+                : userTier === perk.enum;
+              
+              return (
+                <div
+                  key={perk.id}
+                  className="flex flex-col justify-between p-6 gap-4 rounded-xl border border-border bg-linear-to-br from-muted/50 to-muted hover:border-primary/50 translate-y-3 hover:-translate-y-1 transition-all duration-300"
                 >
-                  {t("pages:donate.perks.get")}
-                </Button>
-              </div>
-            ))
+                  <div className='flex flex-col gap-4'>
+                    <h3 className="text-2xl font-semibold text-white text-center">{perk.title}</h3>
+
+                    {!hasCurrentOrLowerTier && (
+                      <>
+                        {discount ? (
+                          <div className="flex flex-col items-center gap-1 text-center">
+                            <p className="text-lg font-medium text-primary">
+                              {discount.discountedFormatted}
+                              {discount.percentage !== null ? ` (${discount.percentage}% OFF)` : ""}
+                            </p>
+
+                            <p className="text-sm text-muted-foreground line-through">
+                              {selectedPrice?.value.formatted}
+                            </p>
+                          </div>
+                        ) : (
+                          <p className="text-lg font-medium text-primary text-center">
+                            {selectedPrice?.value.formatted}
+                          </p>
+                        )}
+                      </>
+                    )}
+                  
+                    <p className="text-muted-foreground text-sm">
+                      {t(`pages:donate.perks.items.${perk.enum}.description`)}
+                    </p>
+                    
+                    <div className="flex flex-col text-muted-foreground text-sm space-y-2">
+                      {(t(`pages:donate.perks.items.${perk.enum}.benefits`, { returnObjects: true }) as string[]).map((benefit, i) => (
+                        <div key={i} className="flex items-center gap-2">
+                          <Check className="size-5 shrink-0 text-primary" />
+                          <span>{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <Button
+                    className="mt-8 w-full py-2 text-sm font-semibold"
+                    onClick={() => handlePerkSelect(perk)}
+                    disabled={isLoading || hasCurrentOrLowerTier}
+                  >
+                    {
+                      hasCurrentOrLowerTier
+                        ? t("common:alreadyObtained")
+                          : hasTier  
+                        ? t("common:upgrade") 
+                          : t("pages:donate.perks.get")
+                    }
+                  </Button>
+                </div>
+              )
+            })
           }
         </div>
       </div>

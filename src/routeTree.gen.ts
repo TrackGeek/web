@@ -33,6 +33,7 @@ import { Route as GameSlugRouteImport } from './routes/game/$slug'
 import { Route as BookSlugRouteImport } from './routes/book/$slug'
 import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated/billing'
 import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
 import { Route as MovieFranchisesSlugRouteImport } from './routes/movie/franchises/$slug'
 import { Route as GameFranchisesSlugRouteImport } from './routes/game/franchises/$slug'
@@ -45,6 +46,8 @@ import { Route as UserUsernameMangaIndexRouteImport } from './routes/user/$usern
 import { Route as UserUsernameGameIndexRouteImport } from './routes/user/$username/game/index'
 import { Route as UserUsernameBookIndexRouteImport } from './routes/user/$username/book/index'
 import { Route as UserUsernameAnimeIndexRouteImport } from './routes/user/$username/anime/index'
+import { Route as AuthenticatedDonateSuccessIndexRouteImport } from './routes/_authenticated/donate/success/index'
+import { Route as AuthenticatedDonateErrorIndexRouteImport } from './routes/_authenticated/donate/error/index'
 
 const TosRoute = TosRouteImport.update({
   id: '/tos',
@@ -165,6 +168,11 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedBillingRoute = AuthenticatedBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const UserUsernameIndexRoute = UserUsernameIndexRouteImport.update({
   id: '/user/$username/',
   path: '/user/$username/',
@@ -227,6 +235,18 @@ const UserUsernameAnimeIndexRoute = UserUsernameAnimeIndexRouteImport.update({
   path: '/user/$username/anime/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDonateSuccessIndexRoute =
+  AuthenticatedDonateSuccessIndexRouteImport.update({
+    id: '/donate/success/',
+    path: '/donate/success/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedDonateErrorIndexRoute =
+  AuthenticatedDonateErrorIndexRouteImport.update({
+    id: '/donate/error/',
+    path: '/donate/error/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -238,6 +258,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/tos': typeof TosRoute
+  '/billing': typeof AuthenticatedBillingRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
@@ -256,6 +277,8 @@ export interface FileRoutesByFullPath {
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
   '/user/$username/': typeof UserUsernameIndexRoute
+  '/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
+  '/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
   '/user/$username/anime/': typeof UserUsernameAnimeIndexRoute
   '/user/$username/book/': typeof UserUsernameBookIndexRoute
   '/user/$username/game/': typeof UserUsernameGameIndexRoute
@@ -275,6 +298,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/tos': typeof TosRoute
+  '/billing': typeof AuthenticatedBillingRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
@@ -293,6 +317,8 @@ export interface FileRoutesByTo {
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
   '/user/$username': typeof UserUsernameIndexRoute
+  '/donate/error': typeof AuthenticatedDonateErrorIndexRoute
+  '/donate/success': typeof AuthenticatedDonateSuccessIndexRoute
   '/user/$username/anime': typeof UserUsernameAnimeIndexRoute
   '/user/$username/book': typeof UserUsernameBookIndexRoute
   '/user/$username/game': typeof UserUsernameGameIndexRoute
@@ -314,6 +340,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/search': typeof SearchRoute
   '/tos': typeof TosRoute
+  '/_authenticated/billing': typeof AuthenticatedBillingRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
@@ -332,6 +359,8 @@ export interface FileRoutesById {
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
   '/user/$username/': typeof UserUsernameIndexRoute
+  '/_authenticated/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
+  '/_authenticated/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
   '/user/$username/anime/': typeof UserUsernameAnimeIndexRoute
   '/user/$username/book/': typeof UserUsernameBookIndexRoute
   '/user/$username/game/': typeof UserUsernameGameIndexRoute
@@ -353,6 +382,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/search'
     | '/tos'
+    | '/billing'
     | '/settings'
     | '/anime/$slug'
     | '/book/$slug'
@@ -371,6 +401,8 @@ export interface FileRouteTypes {
     | '/game/franchises/$slug'
     | '/movie/franchises/$slug'
     | '/user/$username/'
+    | '/donate/error/'
+    | '/donate/success/'
     | '/user/$username/anime/'
     | '/user/$username/book/'
     | '/user/$username/game/'
@@ -390,6 +422,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/search'
     | '/tos'
+    | '/billing'
     | '/settings'
     | '/anime/$slug'
     | '/book/$slug'
@@ -408,6 +441,8 @@ export interface FileRouteTypes {
     | '/game/franchises/$slug'
     | '/movie/franchises/$slug'
     | '/user/$username'
+    | '/donate/error'
+    | '/donate/success'
     | '/user/$username/anime'
     | '/user/$username/book'
     | '/user/$username/game'
@@ -428,6 +463,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/search'
     | '/tos'
+    | '/_authenticated/billing'
     | '/_authenticated/settings'
     | '/anime/$slug'
     | '/book/$slug'
@@ -446,6 +482,8 @@ export interface FileRouteTypes {
     | '/game/franchises/$slug'
     | '/movie/franchises/$slug'
     | '/user/$username/'
+    | '/_authenticated/donate/error/'
+    | '/_authenticated/donate/success/'
     | '/user/$username/anime/'
     | '/user/$username/book/'
     | '/user/$username/game/'
@@ -664,6 +702,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/billing': {
+      id: '/_authenticated/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof AuthenticatedBillingRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/user/$username/': {
       id: '/user/$username/'
       path: '/user/$username'
@@ -748,15 +793,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserUsernameAnimeIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/donate/success/': {
+      id: '/_authenticated/donate/success/'
+      path: '/donate/success'
+      fullPath: '/donate/success/'
+      preLoaderRoute: typeof AuthenticatedDonateSuccessIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/donate/error/': {
+      id: '/_authenticated/donate/error/'
+      path: '/donate/error'
+      fullPath: '/donate/error/'
+      preLoaderRoute: typeof AuthenticatedDonateErrorIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedDonateErrorIndexRoute: typeof AuthenticatedDonateErrorIndexRoute
+  AuthenticatedDonateSuccessIndexRoute: typeof AuthenticatedDonateSuccessIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedBillingRoute: AuthenticatedBillingRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedDonateErrorIndexRoute: AuthenticatedDonateErrorIndexRoute,
+  AuthenticatedDonateSuccessIndexRoute: AuthenticatedDonateSuccessIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

@@ -73,16 +73,16 @@ Clone the project
 git clone https://github.com/TrackGeek/web.git
 ```
 
-Fill the .env with the variables from .env.example
-
-```bash
-cp .env.example .env
-```
-
 Go to the project directory
 
 ```bash
 cd web
+```
+
+Fill the .env with the variables from .env.example
+
+```bash
+cp .env.example .env
 ```
 
 Install dependencies

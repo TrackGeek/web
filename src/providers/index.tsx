@@ -1,5 +1,6 @@
 import type { ComponentType, ReactNode } from "react";
 import { CookiesProvider } from "react-cookie";
+import { NuqsAdapter } from "nuqs/adapters/tanstack-router";
 
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +12,7 @@ interface ProviderProps {
 }
 
 const providers: ComponentType<ProviderProps>[] = [
+  ({ children }) => <NuqsAdapter>{children}</NuqsAdapter>,
   ({ children }) => <TooltipProvider>{children}</TooltipProvider>,
   ({ children }) => <CookiesProvider>{children}</CookiesProvider>,
   ({ children }) => <TanstackQueryProvider>{children}</TanstackQueryProvider>,

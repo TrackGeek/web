@@ -1,6 +1,6 @@
 import ViteImage from "@son426/vite-image/react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Bell, LogOut, Settings, User } from "lucide-react";
+import { Bell, LogOut, Settings, User, CreditCard } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
@@ -67,6 +67,13 @@ export function UserDropdown() {
           <Link to="/" className="cursor-pointer">
             <Bell size={18} className="text-white" />
             {t("common:notifications")}
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link to="/billing" className="cursor-pointer">
+            <CreditCard size={18} className="text-white" />
+            {t("common:billing")}
           </Link>
         </DropdownMenuItem>
 

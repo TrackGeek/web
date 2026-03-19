@@ -17,6 +17,18 @@ export const authClient = createAuthClient({
     magicLinkClient(),
     inferAdditionalFields({
       user: {
+        tier: {
+          type: "string",
+          required: false,
+        },
+        tierStartedAt: {
+          type: "string",
+          required: false,
+        },
+        role: {
+          type: "string",
+          required: false,
+        },
         profile: {
           type: "json",
           required: false,

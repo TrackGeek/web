@@ -1,10 +1,13 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
-import movies from "@/lib/mockups/movies.json";
+import { api } from "@/lib/api.ts";
 
 export const Route = createFileRoute("/movie/")({
   component: MovieRoute,
@@ -12,6 +15,55 @@ export const Route = createFileRoute("/movie/")({
 
 function MovieRoute() {
   const { t } = useTranslation();
+
+  const {
+    data: airingData,
+    isLoading: airingLoading,
+    isError: airingError,
+  } = useQuery({
+    queryKey: ["movie", "airing"],
+    queryFn: () => api.get("/movie/top?filter=airing"),
+  });
+
+  const airing = airingData?.data.movies;
+
+  const {
+    data: upcomingData,
+    isLoading: upcomingLoading,
+    isError: upcomingError,
+  } = useQuery({
+    queryKey: ["movie", "upcoming"],
+    queryFn: () => api.get("/movie/top?filter=upcoming"),
+  });
+
+  const upcoming = upcomingData?.data.movies;
+
+  const {
+    data: trendingData,
+    isLoading: trendingLoading,
+    isError: trendingError,
+  } = useQuery({
+    queryKey: ["movie", "trending"],
+    queryFn: () => api.get("/movie/top?filter=trending"),
+  });
+
+  const trending = trendingData?.data.movies;
+
+  const {
+    data: popularData,
+    isLoading: popularLoading,
+    isError: popularError,
+  } = useQuery({
+    queryKey: ["movie", "popular"],
+    queryFn: () => api.get("/movie/top?filter=popular"),
+  });
+
+  const popular = popularData?.data.movies;
+
+  if (airingError || upcomingError || trendingError || popularError) return <ErrorComponent />;
+
+  if (airingLoading || upcomingLoading || trendingLoading || popularLoading)
+    return <LoadingFeatured numberOfSections={4} />;
 
   return (
     <div className="mx-auto w-full">
@@ -23,16 +75,16 @@ function MovieRoute() {
         }}
       >
         <CarouselContent>
-          {movies.map((movie) => {
+          {airing?.slice(0, 3).map((movie: any) => {
             return (
-              <CarouselItem key={movie.id}>
+              <CarouselItem key={movie.tmdbId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
-                  <img src={movie.backdropUrl} className="w-full h-60 md:h-120 object-cover" alt={movie.title} />
+                  <img src={movie.backdropUrl} className="w-full h-60 md:h-120 object-cover" alt={movie.name} />
 
                   <div className="absolute inset-0 bg-linear-to-t from-primary/80 via-primary/30 to-transparent" />
 
                   <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end gap-4">
-                    <h2 className="text-4xl font-bold drop-shadow-lg">{movie.title}</h2>
+                    <h2 className="text-4xl font-bold drop-shadow-lg">{movie.name}</h2>
 
                     <div className="max-w-2xl hidden md:block">
                       <p className="text-lg line-clamp-2 text-white/90 drop-shadow-md">{movie.overview}</p>
@@ -40,7 +92,7 @@ function MovieRoute() {
 
                     <Link
                       to={"/movie/$slug"}
-                      params={{ slug: movie.id }}
+                      params={{ slug: movie.tmdbId }}
                       className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
                     >
                       {t("common:viewDetails")}
@@ -59,17 +111,17 @@ function MovieRoute() {
           <p className="text-2xl font-bold">{t("feed:trending")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {movies.map((movie) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {trending?.slice(0, 16).map((movie: any) => (
             <CardItem
-              title={movie.title}
-              url={`/movie/${movie.id}`}
+              title={movie.name}
+              url={`/movie/${movie.tmdbId}`}
               imageURL={movie.posterUrl}
-              rating={0}
+              rating={movie.rating}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}
               mediaType={"movie"}
-              key={movie.id}
+              key={movie.tmdbId}
             />
           ))}
         </Grid>
@@ -77,17 +129,17 @@ function MovieRoute() {
           <p className="text-2xl font-bold">{t("common:mostPopular")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {movies.map((movie) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {popular?.slice(0, 16).map((movie: any) => (
             <CardItem
-              title={movie.title}
-              url={`/movie/${movie.id}`}
+              title={movie.name}
+              url={`/movie/${movie.tmdbId}`}
               imageURL={movie.posterUrl}
-              rating={0}
+              rating={movie.rating}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}
               mediaType={"movie"}
-              key={movie.id}
+              key={movie.tmdbId}
             />
           ))}
         </Grid>
@@ -95,17 +147,17 @@ function MovieRoute() {
           <p className="text-2xl font-bold">{t("library:statusAir.currentlyAiring")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {movies.map((movie) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {airing?.slice(0, 16).map((movie: any) => (
             <CardItem
-              title={movie.title}
-              url={`/movie/${movie.id}`}
+              title={movie.name}
+              url={`/movie/${movie.tmdbId}`}
               imageURL={movie.posterUrl}
-              rating={0}
+              rating={movie.rating}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}
               mediaType={"movie"}
-              key={movie.id}
+              key={movie.tmdbId}
             />
           ))}
         </Grid>
@@ -113,17 +165,17 @@ function MovieRoute() {
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
           <Button>{t("pages:donate.viewAll")}</Button>
         </div>
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {movies.map((movie) => (
+        <Grid minColSize={"128px"} className={"grid-cols-5"}>
+          {upcoming?.slice(0, 16).map((movie: any) => (
             <CardItem
-              title={movie.title}
-              url={`/movie/${movie.id}`}
+              title={movie.name}
+              url={`/movie/${movie.tmdbId}`}
               imageURL={movie.posterUrl}
-              rating={0}
+              rating={movie.rating}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}
               mediaType={"movie"}
-              key={movie.id}
+              key={movie.tmdbId}
             />
           ))}
         </Grid>

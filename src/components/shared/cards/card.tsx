@@ -1,3 +1,4 @@
+import ViteImage from "@son426/vite-image/react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Heart, Star } from "lucide-react";
 import { useState } from "react";
@@ -70,8 +71,8 @@ export function CardItem({ title, url, rating, year, imageURL, mediaType, synops
             >
               <div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
               <div className="flex flex-row items-center w-full">
-                <img
-                  src={imageURL}
+                <ViteImage
+                  src={{ src: imageURL, blurDataURL: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH", height: 160, width: 112 }}
                   alt="Cover"
                   className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
                 />

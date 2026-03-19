@@ -1,6 +1,5 @@
 import type { Editor, Range } from "@tiptap/core";
 import { mergeAttributes, Node } from "@tiptap/core";
-import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { TaskItem, TaskList } from "@tiptap/extension-list";
 import Subscript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
@@ -37,7 +36,6 @@ import Heading from "@tiptap/extension-heading";
 import StarterKit from "@tiptap/starter-kit";
 import Suggestion, { type SuggestionOptions } from "@tiptap/suggestion";
 import Fuse from "fuse.js";
-import { all, createLowlight } from "lowlight";
 import {
   ArrowDownIcon,
   ArrowLeftIcon,
@@ -356,9 +354,6 @@ const Slash = Node.create<SlashOptions>({
   },
 });
 
-// Create a lowlight instance with all languages loaded
-const lowlight = createLowlight(all);
-
 type EditorSlashMenuProps = {
   items: SuggestionItem[];
   command: (item: SuggestionItem) => void;
@@ -426,7 +421,11 @@ export type EditorProviderProps = TiptapEditorProviderProps & {
 export const EditorProvider = ({ className, extensions, limit, placeholder, ...props }: EditorProviderProps) => {
   const defaultExtensions = [
     StarterKit.configure({
-      codeBlock: false,
+      codeBlock: {
+        HTMLAttributes: {
+          class: cn("rounded-md border p-4 text-sm", "bg-muted font-mono", "overflow-x-auto"),
+        },
+      },
       bulletList: {
         HTMLAttributes: {
           class: cn("list-outside list-disc pl-4"),
@@ -495,29 +494,6 @@ export const EditorProvider = ({ className, extensions, limit, placeholder, ...p
     }),
     CharacterCount.configure({
       limit,
-    }),
-    CodeBlockLowlight.configure({
-      lowlight,
-      HTMLAttributes: {
-        class: cn(
-          "rounded-md border p-4 text-sm",
-          "bg-background text-foreground",
-          "[&_.hljs-doctag]:text-[#d73a49] [&_.hljs-keyword]:text-[#d73a49] [&_.hljs-meta_.hljs-keyword]:text-[#d73a49] [&_.hljs-template-tag]:text-[#d73a49] [&_.hljs-template-variable]:text-[#d73a49] [&_.hljs-type]:text-[#d73a49] [&_.hljs-variable.language_]:text-[#d73a49]",
-          "[&_.hljs-title.class_.inherited__]:text-[#6f42c1] [&_.hljs-title.class_]:text-[#6f42c1] [&_.hljs-title.function_]:text-[#6f42c1] [&_.hljs-title]:text-[#6f42c1]",
-          "[&_.hljs-attr]:text-[#005cc5] [&_.hljs-attribute]:text-[#005cc5] [&_.hljs-literal]:text-[#005cc5] [&_.hljs-meta]:text-[#005cc5] [&_.hljs-number]:text-[#005cc5] [&_.hljs-operator]:text-[#005cc5] [&_.hljs-selector-attr]:text-[#005cc5] [&_.hljs-selector-class]:text-[#005cc5] [&_.hljs-selector-id]:text-[#005cc5] [&_.hljs-variable]:text-[#005cc5]",
-          "[&_.hljs-meta_.hljs-string]:text-primary [&_.hljs-regexp]:text-primary [&_.hljs-string]:text-primary",
-          "[&_.hljs-built_in]:text-[#e36209] [&_.hljs-symbol]:text-[#e36209]",
-          "[&_.hljs-code]:text-[#6a737d] [&_.hljs-comment]:text-[#6a737d] [&_.hljs-formula]:text-[#6a737d]",
-          "[&_.hljs-name]:text-[#22863a] [&_.hljs-quote]:text-[#22863a] [&_.hljs-selector-pseudo]:text-[#22863a] [&_.hljs-selector-tag]:text-[#22863a]",
-          "[&_.hljs-subst]:text-[#24292e]",
-          "[&_.hljs-section]:font-bold [&_.hljs-section]:text-[#005cc5]",
-          "[&_.hljs-bullet]:text-[#735c0f]",
-          "[&_.hljs-emphasis]:text-[#24292e] [&_.hljs-emphasis]:italic",
-          "[&_.hljs-strong]:font-bold [&_.hljs-strong]:text-[#24292e]",
-          "[&_.hljs-addition]:bg-[#f0fff4] [&_.hljs-addition]:text-[#22863a]",
-          "[&_.hljs-deletion]:bg-[#ffeef0] [&_.hljs-deletion]:text-[#b31d28]",
-        ),
-      },
     }),
     Superscript,
     Subscript,
@@ -1669,51 +1645,4 @@ export const EditorTableFix = () => {
       </TooltipContent>
     </Tooltip>
   );
-};
-
-export type EditorCharacterCountProps = {
-  children: ReactNode;
-  className?: string;
-};
-
-export const EditorCharacterCount = {
-  Characters({ children, className }: EditorCharacterCountProps) {
-    const { editor } = useCurrentEditor();
-
-    if (!editor) {
-      return null;
-    }
-
-    return (
-      <div
-        className={cn(
-          "absolute right-4 bottom-4 rounded-md border bg-background p-2 text-muted-foreground text-sm shadow",
-          className,
-        )}
-      >
-        {children}
-        {editor.storage.characterCount.characters()}
-      </div>
-    );
-  },
-
-  Words({ children, className }: EditorCharacterCountProps) {
-    const { editor } = useCurrentEditor();
-
-    if (!editor) {
-      return null;
-    }
-
-    return (
-      <div
-        className={cn(
-          "absolute right-4 bottom-4 rounded-md border bg-background p-2 text-muted-foreground text-sm shadow",
-          className,
-        )}
-      >
-        {children}
-        {editor.storage.characterCount.words()}
-      </div>
-    );
-  },
 };

@@ -7,6 +7,7 @@ import {
   SiInstagramHex,
   SiX,
 } from "@icons-pack/react-simple-icons";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Bookmark,
@@ -26,14 +27,17 @@ import {
   TvMinimalPlay,
   XCircle,
 } from "lucide-react";
-import { useState } from "react";
+import { type ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Grid } from "@/components/layouts/grid.tsx";
 import { CastItem } from "@/components/pages/details/cast";
 import { EpisodeItem } from "@/components/pages/details/episode";
 import { ListItem } from "@/components/pages/details/list";
 import { EpisodeProgress, type SeasonData } from "@/components/pages/details/progress";
 import { ReviewItem } from "@/components/pages/details/review";
 import { DetailsCard } from "@/components/shared/cards/details";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { EpisodicContentModal } from "@/components/shared/modals/episodic-content";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -41,8 +45,12 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { api } from "@/lib/api.ts";
+import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
+import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { seo } from "@/lib/utils/seo";
+import { getStatusLabel } from "@/lib/utils/status.ts";
 
 export const Route = createFileRoute("/tv/$slug")({
   head: () => ({
@@ -52,7 +60,7 @@ export const Route = createFileRoute("/tv/$slug")({
 });
 
 export function TVShowDetailsPage() {
-  const { slug: _ } = Route.useParams();
+  const { slug } = Route.useParams();
 
   const { t } = useTranslation();
   const [mySeasons, _setMySeasons] = useState<SeasonData[]>([
@@ -77,179 +85,234 @@ export function TVShowDetailsPage() {
     console.log(season, ep);
   }
 
-  const synopsis =
-    "The story of haves and have-nots in a world in which there's almost nothing left to have. 200 years after the apocalypse, the gentle denizens of luxury fallout shelters are forced to return to the irradiated hellscape their ancestors left behind — and are shocked to discover an incredibly complex, gleefully weird, and highly violent universe waiting for them.";
-  const year = "2024";
-  const imageURL = "https://www.themoviedb.org/t/p/w1280/c15BtJxCXMrISLVmysdsnZUPQft.jpg";
-  const title = "Fallout";
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["tv", slug],
+    queryFn: () => api.get(`/tv/detail/${slug}`).then(({ data }) => data.tvShow),
+  });
+  const item = data;
+
+  const seasonsData = useQuery({
+    queryKey: ["tvSeason", slug],
+    queryFn: () => api.get(`/tv/detail/${slug}/season`).then(({ data }) => data.seasons),
+  });
+  const seasons = seasonsData?.data;
+
+  const reviewsData = useQuery({
+    queryKey: ["tvReviews", slug],
+    queryFn: () => api.get(`/tv/review/?tvShowId=${slug}`).then(({ data }) => data.tvShowReviews),
+  });
+  const reviews = reviewsData?.data;
+
   const rating = 4.2;
+  const session = useSession();
+  const isAuthenticated = !!session?.data?.session;
+  if (isLoading || seasonsData.isLoading || reviewsData.isLoading) return <LoadingDetails />;
+  if (isError || seasonsData.isError || reviewsData.isError || !item) return <ErrorComponent />;
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       <div className="lg:w-1/3">
         <div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 gap-4 flex flex-col">
           <div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
-            <img src={imageURL} alt="Capa da série" className="w-full h-auto object-cover" />
+            <img
+              src={item.posterUrl || "/placeholder/cover.webp"}
+              alt={`${item.name} Cover`}
+              className="w-full h-auto object-cover"
+            />
           </div>
 
-          <div className="grid grid-cols-3 w-full gap-4">
-            <Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20">
-              <div className="flex flex-col items-center gap-x-4 gap-2">
-                <div className="w-10 h-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
-                  <Bookmark className="text-purple-400 size-6" />
-                </div>
-                <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.planning")}</p>
-              </div>
-              <div className="status-indicator hidden">
-                <CheckCircle className="text-secondary w-6 h-6" />
-              </div>
-            </Button>
-
-            <Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20">
-              <div className="flex flex-col items-center gap-x-4 gap-2">
-                <div className="w-10 h-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
-                  <TvMinimalPlay className="text-primary size-6" />
-                </div>
-                <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.watching")}</p>
-              </div>
-              <div className="status-indicator hidden">
-                <CheckCircle className="text-secondary w-6 h-6" />
-              </div>
-            </Button>
-
-            <Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20">
-              <div className="flex flex-col items-center gap-x-4 gap-2">
-                <div className="w-10 h-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
-                  <CheckSquare className="text-chart-3 size-6" />
-                </div>
-                <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.completed")}</p>
-              </div>
-              <div className="status-indicator hidden">
-                <CheckCircle className="text-secondary w-6 h-6" />
-              </div>
-            </Button>
-          </div>
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-                <MoreHorizontal className="w-5 h-5" />
-                <span className="text-sm font-medium">{t("library:moreOptions")}</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
-              <DialogHeader
-                className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
-                style={{
-                  backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${imageURL}")`,
-                }}
-              >
-                <div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
-                <div className="flex flex-row items-center w-full">
-                  <img
-                    src={imageURL}
-                    alt="Cover"
-                    className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
-                  />
-                  <div className="flex-1 px-6 relative z-10">
-                    <DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">{title}</DialogTitle>
-                    <div className="flex items-center gap-4 text-white/90 text-sm">
-                      <div className="flex items-center gap-1">
-                        <Star className="size-4 fill-yellow-400 text-yellow-400" />
-                        <span>{rating}</span>
-                      </div>
-                      <span>•</span>
-                      <span>{year}</span>
+          {isAuthenticated && (
+            <>
+              <div className="grid grid-cols-3 w-full gap-4">
+                <Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20">
+                  <div className="flex flex-col items-center gap-x-4 gap-2">
+                    <div className="w-10 h-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
+                      <Bookmark className="text-purple-400 size-6" />
                     </div>
-                    <p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">{synopsis}</p>
+                    <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.planning")}</p>
                   </div>
-                </div>
+                  <div className="status-indicator hidden">
+                    <CheckCircle className="text-secondary w-6 h-6" />
+                  </div>
+                </Button>
 
-                <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
-                  <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
-                    <Heart className="size-6" />
-                  </Button>
-                </div>
-              </DialogHeader>
+                <Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20">
+                  <div className="flex flex-col items-center gap-x-4 gap-2">
+                    <div className="w-10 h-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
+                      <TvMinimalPlay className="text-primary size-6" />
+                    </div>
+                    <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.watching")}</p>
+                  </div>
+                  <div className="status-indicator hidden">
+                    <CheckCircle className="text-secondary w-6 h-6" />
+                  </div>
+                </Button>
 
-              <div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
-                <EpisodicContentModal />
+                <Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20">
+                  <div className="flex flex-col items-center gap-x-4 gap-2">
+                    <div className="w-10 h-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
+                      <CheckSquare className="text-chart-3 size-6" />
+                    </div>
+                    <p className="font-medium text-card-foreground text-center text-base">
+                      {t("feed:lists.completed")}
+                    </p>
+                  </div>
+                  <div className="status-indicator hidden">
+                    <CheckCircle className="text-secondary w-6 h-6" />
+                  </div>
+                </Button>
               </div>
-            </DialogContent>
-          </Dialog>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
+                    <MoreHorizontal className="w-5 h-5" />
+                    <span className="text-sm font-medium">{t("library:moreOptions")}</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
+                  <DialogHeader
+                    className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
+                    style={{
+                      backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${item.posterUrl}")`,
+                    }}
+                  >
+                    <div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
+                    <div className="flex flex-row items-center w-full">
+                      <img
+                        src={item.posterUrl}
+                        alt="Cover"
+                        className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
+                      />
+                      <div className="flex-1 px-6 relative z-10">
+                        <DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">
+                          {item.name}
+                        </DialogTitle>
+                        <div className="flex items-center gap-4 text-white/90 text-sm">
+                          <div className="flex items-center gap-1">
+                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <span>{rating}</span>
+                          </div>
+                          <span>•</span>
+                          <span>
+                            {new Date(item.firstAirDate).getFullYear()} - {new Date(item.lastAirDate).getFullYear()}
+                          </span>
+                        </div>
+                        <p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">{item.tagline}</p>
+                      </div>
+                    </div>
+
+                    <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
+                      <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
+                        <Heart className="size-6" />
+                      </Button>
+                    </div>
+                  </DialogHeader>
+
+                  <div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
+                    <EpisodicContentModal />
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </>
+          )}
 
           <div className="border-t border-border"></div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-muted/50 p-4 rounded-lg border border-border">
-              <p className="text-sm text-muted-foreground">{t("library:status")}</p>
-              <p className="font-semibold text-card-foreground">Returning</p>
-            </div>
-            <div className="bg-muted/50 p-4 rounded-lg border border-border">
-              <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
-              <p className="font-semibold text-card-foreground">{year}</p>
-            </div>
-          </div>
-          <RefreshData sourceURL="https://www.themoviedb.org/tv/106379-fallout" />
+          <Grid minColSize={"128px"} className="gap-4">
+            {item.status && (
+              <div className="bg-muted/50 p-4 rounded-lg border border-border">
+                <p className="text-sm text-muted-foreground">{t("library:status")}</p>
+                <p className="font-semibold text-card-foreground">{getStatusLabel(t, item.status)}</p>
+              </div>
+            )}
+            {item.firstAirDate && item.lastAirDate && (
+              <div className="bg-muted/50 p-4 rounded-lg border border-border">
+                <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
+                <p className="font-semibold text-card-foreground">
+                  {new Date(item.firstAirDate).getFullYear()} - {new Date(item.lastAirDate).getFullYear()}
+                </p>
+              </div>
+            )}
+          </Grid>
+          <RefreshData sourceURL={`https://www.themoviedb.org/tv/${item.tmdbId}`} />
           <div className="flex flex-wrap gap-3 items-center justify-center">
-            <a href="https://anacondamovie.com/" target="_blank" rel="noopener noreferrer">
-              <ExternalLink />
-            </a>
-            <a
-              href="https://instagram.com/theanacondamovie/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiInstagramHex}]`)}
-            >
-              <SiInstagram />
-            </a>
-            <a
-              href="https://www.facebook.com/AnacondaMovie"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiFacebookHex}]`)}
-            >
-              <SiFacebook />
-            </a>
-            <a
-              href="https://x.com/Anaconda_Movie"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-white`)}
-            >
-              <SiX />
-            </a>
-            <a
-              href="https://www.imdb.com/title/tt4900148"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(`hover:text-[${SiImdbHex}]`, "my-1 mr-1")}
-            >
-              <SiImdb />
-            </a>
+            {item.homepage && (
+              <a href={item.homepage} target="_blank" rel="noopener noreferrer">
+                <ExternalLink />
+              </a>
+            )}
+            {(() => {
+              const ext = item?.external || ({} as Record<string, any>);
+              const links: { href: string; key: string; className?: string; icon: ReactElement }[] = [];
+
+              if (ext.instagram_id) {
+                links.push({
+                  href: `https://instagram.com/${ext.instagram_id}`,
+                  key: "instagram",
+                  className: cn(`hover:text-[${SiInstagramHex}]`),
+                  icon: <SiInstagram />,
+                });
+              }
+
+              if (ext.facebook_id) {
+                links.push({
+                  href: `https://www.facebook.com/${ext.facebook_id}`,
+                  key: "facebook",
+                  className: cn(`hover:text-[${SiFacebookHex}]`),
+                  icon: <SiFacebook />,
+                });
+              }
+
+              if (ext.twitter_id) {
+                links.push({
+                  href: `https://x.com/${ext.twitter_id}`,
+                  key: "x",
+                  className: cn("hover:text-white"),
+                  icon: <SiX />,
+                });
+              }
+
+              if (ext.imdb_id) {
+                links.push({
+                  href: `https://www.imdb.com/title/${ext.imdb_id}`,
+                  key: "imdb",
+                  className: cn(`hover:text-[${SiImdbHex}]`, "my-0.5"),
+                  icon: <SiImdb />,
+                });
+              }
+
+              return links.map((l) => (
+                <a key={l.key} href={l.href} target="_blank" rel="noopener noreferrer" className={l.className}>
+                  {l.icon}
+                </a>
+              ));
+            })()}
           </div>
         </div>
       </div>
 
       <div className="lg:w-2/3">
-        <div className="bg-card rounded-2xl shadow-lg p-8">
-          <div className="mb-5">
-            <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-              {title}
-            </h1>
-          </div>
+        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-3">
+          <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
+            {item.name}
+          </h1>
 
-          <div className="flex flex-wrap items-center gap-6 mb-5 pb-6 border-b border-border">
-            <div className="flex items-center">
-              <div className="flex mr-2">
-                <Star className="size-5 text-chart-3 fill-chart-3" />
-                <Star className="size-5 text-chart-3 fill-chart-3" />
-                <Star className="size-5 text-chart-3 fill-chart-3" />
-                <Star className="size-5 text-chart-3 fill-chart-3" />
-                <Star className="size-5 text-muted-foreground" />
+          <div className="flex flex-wrap items-center gap-6 border-b border-border">
+            {reviews.total >= 1 && (
+              <div className="flex items-center mb-3 space-x-1">
+                <div className="flex mr-1">
+                  <Star className="size-5 text-chart-3 fill-chart-3" />
+                  <Star className="size-5 text-chart-3 fill-chart-3" />
+                  <Star className="size-5 text-chart-3 fill-chart-3" />
+                  <Star className="size-5 text-chart-3 fill-chart-3" />
+                  <Star className="size-5 text-muted-foreground" />
+                </div>
+                <span className="font-semibold text-card-foreground">{rating}</span>
+                <span className="text-muted-foreground">
+                  ({reviews.total} {t("library:reviews")})
+                </span>
               </div>
-              <span className="font-semibold text-card-foreground">{rating}</span>
-              <span className="text-muted-foreground ml-1">(128.543 {t("library:reviews")})</span>
-            </div>
+            )}
           </div>
           <Tabs defaultValue="info">
             <div className="flex items-center justify-between gap-3 mb-2">
@@ -257,108 +320,126 @@ export function TVShowDetailsPage() {
                 <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
                 <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
                 <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
-                <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>
-                <TabsTrigger value="reviews" className="capitalize">
-                  {t("library:reviews")} (125)
-                </TabsTrigger>
+                {item.backdrops.length >= 1 && <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>}
+                {reviews.total >= 1 && (
+                  <TabsTrigger value="reviews" className="capitalize">
+                    {t("library:reviews")} ({reviews.total})
+                  </TabsTrigger>
+                )}
                 <TabsTrigger value="lists">{t("library:lists")} (30)</TabsTrigger>
               </TabsList>
             </div>
-            <TabsContent value="info">
-              <div className="mb-5">
+            <TabsContent value="info" className={"space-y-5"}>
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:genres")}</h3>
                 <div className="flex flex-wrap gap-2">
-                  <Link
-                    to="/"
-                    className="px-3 py-1.5 bg-linear-to-r from-chart-1/20 to-chart-1/30 text-chart-1 border border-chart-1/30 rounded-full text-sm font-medium"
-                  >
-                    Ação
-                  </Link>
-                  <Link
-                    to="/"
-                    className="px-3 py-1.5 bg-linear-to-r from-purple-500/20 to-purple-500/30 text-purple-400 border border-purple-500/30 rounded-full text-sm font-medium"
-                  >
-                    Aventura
-                  </Link>
-                  <Link
-                    to="/"
-                    className="px-3 py-1.5 bg-linear-to-r from-chart-3/20 to-chart-3/30 text-chart-3 border border-chart-3/30 rounded-full text-sm font-medium"
-                  >
-                    Sci-fi
-                  </Link>
-                  <Link
-                    to="/"
-                    className="px-3 py-1.5 bg-linear-to-r from-chart-3/20 to-chart-3/30 text-chart-3 border border-chart-3/30 rounded-full text-sm font-medium"
-                  >
-                    Fantasy
-                  </Link>
+                  {item.genres.map((genre: string, index: number) => {
+                    const colors = [
+                      "bg-chart-1/20 text-chart-1 border-chart-1/30 from-chart-1/20 to-chart-1/30",
+                      "bg-chart-2/20 text-chart-2 border-chart-2/30 from-chart-2/20 to-chart-2/30",
+                      "bg-chart-3/20 text-chart-3 border-chart-3/30 from-chart-3/20 to-chart-3/30",
+                      "bg-chart-4/20 text-chart-4 border-chart-4/30 from-chart-4/20 to-chart-4/30",
+                      "bg-chart-5/20 text-chart-5 border-chart-5/30 from-chart-5/20 to-chart-5/30",
+                    ];
+                    const color = colors[index % colors.length];
+
+                    return (
+                      <Link
+                        key={genre}
+                        to="/"
+                        className={`px-3 py-1.5 bg-linear-to-r ${color} border rounded-full text-sm font-medium`}
+                      >
+                        {getGenreLabel(t, genre)}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
 
-              <div className="mb-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:synopsis")}</h3>
                 <div className="text-muted-foreground leading-relaxed space-y-4">
-                  <p>{synopsis}</p>
+                  <p>{item.tagline}</p>
                 </div>
               </div>
 
-              <div className="mb-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-4">
                   {t("library:tvShowCharacteristics")}
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  <DetailsCard
-                    title={t("library:creators")}
-                    icon={<FilePenLine className="size-5 text-muted-foreground" />}
-                    description={
-                      <>
-                        <Link to="/">Graham Wagner</Link>, <Link to="/">Geneva Robertson-Dworet</Link>
-                      </>
-                    }
-                  />
-                  <DetailsCard
-                    title={t("library:season_other")}
-                    icon={<Hash className="size-5 text-muted-foreground" />}
-                    description={"2"}
-                  />
-                  <DetailsCard
-                    title={t("library:totalEpisodes")}
-                    icon={<TvIcon className="size-5 text-muted-foreground" />}
-                    description={"16"}
-                  />
-                  <DetailsCard
-                    title={t("library:language")}
-                    icon={<Languages className="size-5 text-muted-foreground" />}
-                    description={"English"}
-                  />
-                  <DetailsCard
-                    title={t("library:productionCompanies")}
-                    icon={<Building className="size-5 text-muted-foreground" />}
-                    description={"Amazon Prime Video"}
-                  />
-                  <DetailsCard
-                    title={t("library:runtime")}
-                    icon={<Clock className="size-5 text-muted-foreground" />}
-                    description={"14 hours 20 minutes"}
-                  />
-                  <DetailsCard
-                    title={t("library:type")}
-                    icon={<FileType className="size-5 text-muted-foreground" />}
-                    description={"Scripted"}
-                  />
-                </div>
+                <Grid minColSize={"200px"} className="gap-4">
+                  {item?.createdBy.length >= 1 && (
+                    <DetailsCard
+                      title={t("library:creators")}
+                      icon={<FilePenLine className="size-5 text-muted-foreground" />}
+                      description={item.createdBy
+                        .map((cb: { name: string }) => {
+                          return cb.name;
+                        })
+                        .join(", ")}
+                    />
+                  )}
+                  {item.numberOfSeasons && (
+                    <DetailsCard
+                      title={t("library:season_other")}
+                      icon={<Hash className="size-5 text-muted-foreground" />}
+                      description={item.numberOfSeasons}
+                    />
+                  )}
+                  {item.numberOfEpisodes && (
+                    <DetailsCard
+                      title={t("library:totalEpisodes")}
+                      icon={<TvIcon className="size-5 text-muted-foreground" />}
+                      description={item.numberOfEpisodes}
+                    />
+                  )}
+                  {item.originalLanguage && (
+                    <DetailsCard
+                      title={t("library:language")}
+                      icon={<Languages className="size-5 text-muted-foreground" />}
+                      description={item.originalLanguage}
+                    />
+                  )}
+                  {item?.productionCompanies?.length >= 1 && (
+                    <DetailsCard
+                      title={t("library:productionCompanies")}
+                      icon={<Building className="size-5 text-muted-foreground" />}
+                      description={item.productionCompanies
+                        .map((pc: { name: string }) => {
+                          return pc.name;
+                        })
+                        .join(", ")}
+                    />
+                  )}
+                  {item?.episodeRuntime?.length >= 1 && (
+                    <DetailsCard
+                      title={t("library:runtime")}
+                      icon={<Clock className="size-5 text-muted-foreground" />}
+                      description={`${item?.episodeRuntime[0]} minutes`}
+                    />
+                  )}
+                  {item.type && (
+                    <DetailsCard
+                      title={t("library:type")}
+                      icon={<FileType className="size-5 text-muted-foreground" />}
+                      description={item.type}
+                    />
+                  )}
+                </Grid>
               </div>
 
-              <EpisodeProgress
-                seasons={mySeasons}
-                defaultSeason={1}
-                seasonCustomNames={{
-                  0: t("library:specials"),
-                }}
-                onToggle={handleToggle}
-              />
+              {isAuthenticated && (
+                <EpisodeProgress
+                  seasons={mySeasons}
+                  defaultSeason={1}
+                  seasonCustomNames={{
+                    0: t("library:specials"),
+                  }}
+                  onToggle={handleToggle}
+                />
+              )}
 
-              <div className="my-5">
+              <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
@@ -395,49 +476,36 @@ export function TVShowDetailsPage() {
                 </div>
               </div>
 
-              <iframe
-                src="https://youtube.com/embed/0kQ8i2FpRDk"
-                allowFullScreen
-                className="w-full aspect-video"
-                title="Trailer"
-              />
+              {item.trailerId && (
+                <iframe
+                  src={`https://youtube.com/embed/${item.trailerId}`}
+                  allowFullScreen
+                  className="w-full aspect-video"
+                  title="Trailer"
+                />
+              )}
             </TabsContent>
             <TabsContent value="episodes">
               <Accordion type="single" collapsible defaultValue="item-1">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger className="cursor-pointer">
-                    <h3 className="font-semibold text-card-foreground text-lg mb-3">
-                      {t("library:season", { count: 1 })} 1
-                    </h3>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <EpisodeItem />
-                      <EpisodeItem />
-                      <EpisodeItem />
-                      <EpisodeItem />
-                      <EpisodeItem />
-                      <EpisodeItem />
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger className="cursor-pointer">
-                    <h3 className="font-semibold text-card-foreground text-lg mb-3">
-                      {t("library:season", { count: 1 })} 2
-                    </h3>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <EpisodeItem />
-                      <EpisodeItem />
-                      <EpisodeItem />
-                      <EpisodeItem />
-                      <EpisodeItem />
-                      <EpisodeItem />
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
+                {seasons.map((season: any) => (
+                  <AccordionItem key={season.id} value={`item-${season.seasonNumber}`}>
+                    <AccordionTrigger className="cursor-pointer">
+                      <h3 className="font-semibold text-card-foreground text-lg mb-3">{season.name}</h3>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {season.episodes.map((episode: { episodeNumber: number; name: string; stillUrl: string }) => (
+                          <EpisodeItem
+                            key={episode.episodeNumber}
+                            title={episode.name}
+                            number={episode.episodeNumber}
+                            imageURL={episode.stillUrl}
+                          />
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
               </Accordion>
             </TabsContent>
             <TabsContent value="reviews">
@@ -467,37 +535,29 @@ export function TVShowDetailsPage() {
             </TabsContent>
             <TabsContent value="cast">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <CastItem />
-                <CastItem />
-                <CastItem />
-                <CastItem />
-                <CastItem />
-                <CastItem />
-                <CastItem />
+                {item.cast?.map((cast: { character: string; name: string; profileUrl: string }) => {
+                  return (
+                    <CastItem
+                      key={cast.character}
+                      name={cast.name}
+                      character={cast.character}
+                      imageUrl={cast.profileUrl}
+                    />
+                  );
+                })}
               </div>
             </TabsContent>
-            <TabsContent value="medias">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/zLyuE8viLa6g9NELI5JFETlQoJm.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/beADML9mJgtTGnmXR6nbdAVdoqC.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/k7sjr8AgGfK8uKwTZ4pB2h1pTQB.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/kd9lR1lJrUZMpuNEaNhaM9N3TOW.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/w5PzqjBhUlJHpRyhBRHvEdkJ0iK.jpg" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://image.tmdb.org/t/p/original/cJ3cm8GwUmUvWXnMIbwlmC6trGf.jpg" alt="" />
-                </ImageZoom>
-              </div>
-            </TabsContent>
+            {item.backdrops.length >= 1 && (
+              <TabsContent value="medias">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {item.backdrops?.map((url: string, i: number) => (
+                    <ImageZoom key={i}>
+                      <img src={url} alt="Backdrop" />
+                    </ImageZoom>
+                  ))}
+                </div>
+              </TabsContent>
+            )}
           </Tabs>
         </div>
       </div>

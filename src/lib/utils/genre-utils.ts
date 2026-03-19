@@ -1,3 +1,11 @@
+import type { TFunction } from "i18next";
+
+/**
+ * Convert the genre name to camelCase
+ * @example
+ * formatGenreKey("Boys Love") => "boysLove"
+ * formatGenreKey("Science Fiction") => "scienceFiction"
+ */
 export function formatGenreKey(genreName: string): string {
   const words = genreName.split(" ");
   const formatted = words
@@ -12,7 +20,12 @@ export function formatGenreKey(genreName: string): string {
   return formatted;
 }
 
-export function getGenreLabel(t: (key: string, defaultValue?: string) => string, genreName: string): string {
+/**
+ * Get the genre label with fallback to the original name
+ * @example
+ * getGenreLabel(t, "Boys Love") => "Boys Love" (if found) or "Boys Love" (fallback)
+ */
+export function getGenreLabel(t: TFunction<"translation", undefined>, genreName: string): string {
   const genreKey = formatGenreKey(genreName);
   const translationKey = `library:genresList.${genreKey}`;
 

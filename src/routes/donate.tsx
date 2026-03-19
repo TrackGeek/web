@@ -1,6 +1,6 @@
 import { useMutation, useQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { ExternalLink, Check, Coffee, Coins } from "lucide-react";
+import { ExternalLink, Check, Coffee, Coins, Loader2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ContributorsItem } from "@/components/shared/cards/contributors";
@@ -317,7 +317,11 @@ function DonateRoute() {
                 disabled={!isValidAmount || createPaymentMutation.isPending}
                 className="w-full py-3 text-md font-semibold"
               >
-                {t("common:donate")} {currencySymbol} {(isValidAmount ? finalAmount : 0)?.toLocaleString()}
+                {createPaymentMutation.isPending ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <>{t("common:donate")} {currencySymbol} {(isValidAmount ? finalAmount : 0)?.toLocaleString()}</>
+                )}
               </Button>
 
               <p className="text-xs text-muted-foreground text-center">{t("pages:donate.modal.footer")}</p>

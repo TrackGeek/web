@@ -69,7 +69,7 @@ export function UserDropdown() {
             {t("common:notifications")}
           </Link>
         </DropdownMenuItem>
-        
+
         <DropdownMenuItem asChild>
           <Link to="/billing" className="cursor-pointer">
             <CreditCard size={18} className="text-white" />

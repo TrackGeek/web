@@ -1,58 +1,20 @@
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { format } from "date-fns";
-import {
-  Calendar,
-  CreditCard,
-  ExternalLink,
-  Loader2,
-  Receipt,
-  Sparkles,
-} from "lucide-react";
+import { Calendar, CreditCard, ExternalLink, Loader2, Receipt, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryState } from "nuqs";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { seo } from "@/lib/utils/seo";
 
@@ -84,11 +46,7 @@ function PaymentStatusBadge({ status }: { status: ApiTypes.Payment["status"] }) 
     Failed: "destructive",
   };
 
-  return (
-    <Badge variant={variantMap[status] ?? "secondary"}>
-      {t(`pages:billing.payments.statuses.${status}`)}
-    </Badge>
-  );
+  return <Badge variant={variantMap[status] ?? "secondary"}>{t(`pages:billing.payments.statuses.${status}`)}</Badge>;
 }
 
 function CancelSubscriptionDialog({
@@ -109,20 +67,13 @@ function CancelSubscriptionDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{t("pages:billing.subscription.cancel")}</DialogTitle>
-          <DialogDescription>
-            {t("pages:billing.subscription.cancelConfirm")}
-          </DialogDescription>
+          <DialogDescription>{t("pages:billing.subscription.cancelConfirm")}</DialogDescription>
         </DialogHeader>
         <div className="flex justify-end gap-2">
           <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>
             {t("pages:billing.subscription.cancelBack")}
           </Button>
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={onConfirm}
-            disabled={isPending}
-          >
+          <Button variant="destructive" size="sm" onClick={onConfirm} disabled={isPending}>
             {t("pages:billing.subscription.cancelConfirmButton")}
           </Button>
         </div>
@@ -190,9 +141,7 @@ function SubscriptionCard({
                 <CreditCard />
               </EmptyMedia>
               <EmptyTitle>{t("pages:billing.subscription.noSubscription")}</EmptyTitle>
-              <EmptyDescription>
-                {t("pages:billing.subscription.noSubscriptionDescription")}
-              </EmptyDescription>
+              <EmptyDescription>{t("pages:billing.subscription.noSubscriptionDescription")}</EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <Button asChild>
@@ -217,35 +166,25 @@ function SubscriptionCard({
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">
-              {t("pages:billing.subscription.plan")}
-            </p>
+            <p className="text-sm text-muted-foreground">{t("pages:billing.subscription.plan")}</p>
             <p className="font-medium">{subscription.product.name}</p>
           </div>
 
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">
-              {t("pages:billing.subscription.status")}
-            </p>
+            <p className="text-sm text-muted-foreground">{t("pages:billing.subscription.status")}</p>
             <Badge variant={subscription.status === "active" ? "success" : "warning"}>
               {t(`pages:billing.subscription.statuses.${subscription.status}`)}
             </Badge>
           </div>
 
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">
-              {t("pages:billing.subscription.price")}
-            </p>
+            <p className="text-sm text-muted-foreground">{t("pages:billing.subscription.price")}</p>
             <p className="font-medium">{subscription.price.formatted}</p>
           </div>
 
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">
-              {t("pages:billing.subscription.renewsAt")}
-            </p>
-            <p className="font-medium">
-              {format(new Date(subscription.renewsAt), "dd/MM/yyyy")}
-            </p>
+            <p className="text-sm text-muted-foreground">{t("pages:billing.subscription.renewsAt")}</p>
+            <p className="font-medium">{format(new Date(subscription.renewsAt), "dd/MM/yyyy")}</p>
           </div>
         </div>
 
@@ -363,15 +302,11 @@ function PaymentDetailDialog({
               ))}
             </div>
 
-            {payment?.status === 'Succeeded' && payment.stripeInvoiceUrl && (
+            {payment?.status === "Succeeded" && payment.stripeInvoiceUrl && (
               <>
                 <Separator />
                 <Button variant="outline" size="sm" asChild className="w-full">
-                  <a
-                    href={payment.stripeInvoiceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={payment.stripeInvoiceUrl} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="size-4" />
                     {t("pages:billing.detail.viewInvoice")}
                   </a>
@@ -379,15 +314,11 @@ function PaymentDetailDialog({
               </>
             )}
 
-            {payment?.status === 'Pending' && payment.stripeCheckoutSessionUrl && (
+            {payment?.status === "Pending" && payment.stripeCheckoutSessionUrl && (
               <>
                 <Separator />
                 <Button variant="outline" size="sm" asChild className="w-full">
-                  <a
-                    href={payment.stripeCheckoutSessionUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={payment.stripeCheckoutSessionUrl} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="size-4" />
                     {t("pages:billing.detail.viewCheckoutSession")}
                   </a>
@@ -413,18 +344,14 @@ function BillingRoute() {
         queryKey: ["subscription"],
         queryFn: () =>
           api
-            .get<ApiTypes.GetCurrentSubscriptionResponse>(
-              apiEndpoints.getCurrentSubscription,
-            )
+            .get<ApiTypes.GetCurrentSubscriptionResponse>(apiEndpoints.getCurrentSubscription)
             .then((response) => response.data),
         staleTime: 1000 * 60 * 60,
       },
       {
         queryKey: ["payments"],
         queryFn: () =>
-          api
-            .get<ApiTypes.GetPaymentsResponse>(apiEndpoints.getPayments)
-            .then((response) => response.data),
+          api.get<ApiTypes.GetPaymentsResponse>(apiEndpoints.getPayments).then((response) => response.data),
         staleTime: 1000 * 60 * 60,
       },
     ],
@@ -464,8 +391,7 @@ function BillingRoute() {
       }),
       columnHelper.accessor("value", {
         header: () => t("pages:billing.payments.columns.amount"),
-        cell: (info) =>
-          formatCurrency(info.getValue(), info.row.original.currency),
+        cell: (info) => formatCurrency(info.getValue(), info.row.original.currency),
       }),
       columnHelper.accessor("frequency", {
         header: () => t("pages:billing.payments.columns.frequency"),
@@ -516,9 +442,7 @@ function BillingRoute() {
                   <Receipt />
                 </EmptyMedia>
                 <EmptyTitle>{t("pages:billing.payments.empty")}</EmptyTitle>
-                <EmptyDescription>
-                  {t("pages:billing.payments.emptyDescription")}
-                </EmptyDescription>
+                <EmptyDescription>{t("pages:billing.payments.emptyDescription")}</EmptyDescription>
               </EmptyHeader>
             </Empty>
           ) : (
@@ -528,12 +452,7 @@ function BillingRoute() {
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                       </TableHead>
                     ))}
                   </TableRow>
@@ -549,12 +468,7 @@ function BillingRoute() {
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
+                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                     ))}
                   </TableRow>
                 ))}
@@ -566,7 +480,9 @@ function BillingRoute() {
 
       <PaymentDetailDialog
         paymentId={paymentId}
-        onOpenChange={(open) => { if (!open) setPaymentId(null); }}
+        onOpenChange={(open) => {
+          if (!open) setPaymentId(null);
+        }}
       />
     </div>
   );

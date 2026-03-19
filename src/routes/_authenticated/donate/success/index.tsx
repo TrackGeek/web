@@ -3,7 +3,7 @@ import { HomeIcon, HeartIcon } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
-import { seo } from '@/lib/utils/seo';
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/_authenticated/donate/success/")({
   head: () => ({

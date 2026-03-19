@@ -7,7 +7,7 @@ import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({
   routeTree,
-  defaultPreload: 'intent',
+  defaultPreload: "intent",
   scrollRestoration: true,
   context: {
     auth: authClient,

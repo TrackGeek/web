@@ -5,12 +5,7 @@ interface SeoOptions {
   keywords?: string;
 }
 
-export const seo = ({
-  title,
-  description,
-  keywords,
-  image,
-}: SeoOptions) => ([
+export const seo = ({ title, description, keywords, image }: SeoOptions) => [
   { title: `TrackGeek » ${title}` },
   { name: "description", content: description },
   { name: "keywords", content: keywords },
@@ -28,4 +23,4 @@ export const seo = ({
         { name: "og:image", content: image },
       ]
     : []),
-])
+];

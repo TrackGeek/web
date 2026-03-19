@@ -1,5 +1,17 @@
 import { Link } from "@tanstack/react-router";
-import { Book, Clapperboard, Gamepad2, Heart, Home, LibraryBig, Menu, Mountain, Newspaper, Search, TvMinimalPlay } from "lucide-react";
+import {
+  Book,
+  Clapperboard,
+  Gamepad2,
+  Heart,
+  Home,
+  LibraryBig,
+  Menu,
+  Mountain,
+  Newspaper,
+  Search,
+  TvMinimalPlay,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";

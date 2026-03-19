@@ -112,7 +112,7 @@ export namespace ApiTypes {
     payments: PaginatedResponse<Payment>;
   }
 
-  export interface GetPaymentDetailResponse {
+  export interface GetPaymentDetailsResponse {
     payment: Payment;
   }
 }
@@ -125,7 +125,7 @@ export const apiEndpoints = {
   cancelCurrentSubscription: "/stripe/subscription",
   createPayment: "/payment",
   getPayments: "/payment",
-  getPaymentByCheckoutSessionId: (checkoutSessionId: string) => `/payment/detail/${checkoutSessionId}`,
+  getPaymentDetails: (id: string) => `/payment/detail/${id}`,
   updateProfileAvatar: "/profile/avatar",
   deleteProfileAvatar: "/profile/avatar",
   updateProfileBanner: "/profile/banner",

@@ -2,5 +2,9 @@
 	"editor.formatOnSave": true,
 	"biome.enabled": true,
 	"editor.defaultFormatter": "biomejs.biome",
-	"deepscan.enable": true
+	"deepscan.enable": true,
+  "files.exclude": {
+    "**/locales/[!e]*": true,
+    "**/locales/e[!n]*": true
+  },
 }

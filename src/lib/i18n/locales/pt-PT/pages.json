@@ -173,13 +173,42 @@
     "geeks": "Os GeekKeepers que fazem TrackGeek estar vivo",
     "perks": {
       "title": "Regalias",
-      "description": "Estas são as regalias que podes obter enquanto apoias o site:",
-      "benefit1": "Medalha Exclusiva",
-      "benefit2": "Ocultar informações irrelevantes para você",
-      "benefit3": "Seu perfil será exibido nesta página",
-      "benefit4": "Suporte priorizado da nossa equipa",
-      "benefit5": "Estatísticas personalizadas do seu perfil",
-      "benefit6": "Acesso antecipado a novos recursos"
+      "description": "These are the perks you can get while supporting the site.",
+      "get": "Get this perk",
+      "items": {
+        "Tracker": {
+          "name": "Tracker",
+          "description": "Become a supporter and get recognition across the platform with exclusive cosmetics and priority access.",
+          "benefits": [
+            "Exclusive supporter badge on your profile",
+            "Hide irrelevant content types for you",
+            "Your profile will appear on the Donate page",
+            "Prioritized support from our team"
+          ]
+        },
+        "Archivist": {
+          "name": "Archivist",
+          "description": "Everything a Tracker gets, plus deeper insight into your stats and early access to what's coming next.",
+          "benefits": [
+            "Everything from Tracker",
+            "Advanced profile stats tailored to your activity",
+            "Early access to upcoming features and experiments",
+            "Priority consideration for feedback and feature requests"
+          ]
+        },
+        "ArchiveMaster": {
+          "name": "Archive Master",
+          "description": "The ultimate supporter tier. Everything an Archivist gets, plus the highest level of recognition on the platform.",
+          "benefits": [
+            "Everything from Archivist",
+            "Avatar decorations and colors for your profile",
+            "Exclusive Archive Master badge across the platform",
+            "Stronger influence on roadmap discussions and priorities",
+            "Special recognition on community-facing pages",
+            "Top-tier supporter status within TrackGeek"
+          ]
+        }
+      }
     },
     "wantsToDonate": {
       "title": "Deseja doar?",
@@ -199,6 +228,78 @@
       "footer": "Doação mínima é $1. Seu suporte nos ajuda a manter o TrackGeek funcionando!"
     },
     "transparencyReports": "Relatórios de Transparência",
-    "viewAll": "Ver Tudo"
+    "viewAll": "Ver Tudo",
+    "success": {
+      "title": "Thank you for your support!",
+      "description": "Your donation has been processed successfully. We really appreciate your contribution to keeping TrackGeek alive."
+    },
+    "error": {
+      "title": "Payment failed",
+      "description": "Something went wrong while processing your payment. Please try again or contact us if the problem persists."
+    }
+  },
+  "billing": {
+    "title": "Billing",
+    "subscription": {
+      "title": "Subscription",
+      "description": "Manage your current subscription plan.",
+      "plan": "Plan",
+      "status": "Status",
+      "price": "Price",
+      "renewsAt": "Renews at",
+      "cancel": "Cancel Subscription",
+      "cancelConfirm": "Are you sure you want to cancel your subscription? You will lose access to your perks at the end of the current billing period.",
+      "cancelBack": "Go Back",
+      "cancelConfirmButton": "Yes, Cancel",
+      "cancelSuccess": "Your subscription has been cancelled successfully.",
+      "cancelError": "Failed to cancel your subscription. Please try again.",
+      "noSubscription": "No active subscription",
+      "noSubscriptionDescription": "You don't have an active subscription. Support TrackGeek and unlock exclusive perks!",
+      "subscribe": "View Plans",
+      "statuses": {
+        "active": "Active",
+        "canceled": "Cancelled",
+        "past_due": "Past Due",
+        "unpaid": "Unpaid",
+        "trialing": "Trialing"
+      }
+    },
+    "payments": {
+      "title": "Payment History",
+      "description": "View all your past payments and transactions.",
+      "empty": "No payments yet",
+      "emptyDescription": "You haven't made any payments yet.",
+      "columns": {
+        "name": "Description",
+        "date": "Date",
+        "amount": "Amount",
+        "status": "Status",
+        "frequency": "Type"
+      },
+      "statuses": {
+        "Pending": "Pending",
+        "Succeeded": "Succeeded",
+        "Failed": "Failed"
+      },
+      "frequencies": {
+        "OneTime": "One-time",
+        "Monthly": "Monthly"
+      }
+    },
+    "detail": {
+      "title": "Payment Details",
+      "name": "Description",
+      "status": "Status",
+      "frequency": "Type",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "total": "Total",
+      "currency": "Currency",
+      "date": "Date",
+      "expiredAt": "Expired At",
+      "invoice": "Invoice",
+      "viewInvoice": "View Invoice",
+      "viewCheckoutSession": "View Checkout Session"
+    }
   }
 }

@@ -1,0 +1,10 @@
+{
+  "contributor": {
+    "name": "Contributor",
+    "description": "Awarded for contributing to the project."
+  },
+  "staff": {
+    "name": "Staff",
+    "description": "Awarded to staff members for their dedication and hard work."
+  }
+}

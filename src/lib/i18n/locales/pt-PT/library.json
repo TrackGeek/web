@@ -83,7 +83,10 @@
     "fork": "Bifurcação",
     "expandedGame": "Jogo expandido",
     "pack": "Pacote",
-    "update": "Atualização"
+    "update": "Atualização",
+    "now": "Now",
+    "parent": "Parent",
+    "bundle": "Bundle"
   },
   "types": {
     "Music": "Música",

@@ -29,7 +29,7 @@ export namespace ApiTypes {
   }
 
   export type Perk = Price & {
-    name: String;
+    name: string;
   };
 
   export interface GetPricesResponse {

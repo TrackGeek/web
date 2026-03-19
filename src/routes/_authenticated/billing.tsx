@@ -1,4 +1,4 @@
-import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   createColumnHelper,
@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useQueryState } from "nuqs";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -58,6 +59,9 @@ import { seo } from "@/lib/utils/seo";
 export const Route = createFileRoute("/_authenticated/billing")({
   head: () => ({
     meta: [...seo({ title: "Billing" })],
+  }),
+  validateSearch: (search): { paymentId?: string } => ({
+    ...(search.paymentId ? { paymentId: search.paymentId as string } : {}),
   }),
   component: BillingRoute,
 });
@@ -274,102 +278,122 @@ function SubscriptionCard({
 }
 
 function PaymentDetailDialog({
-  payment,
-  open,
+  paymentId,
   onOpenChange,
 }: {
-  payment: ApiTypes.Payment | null;
-  open: boolean;
+  paymentId: string | null;
   onOpenChange: (open: boolean) => void;
 }) {
   const { t } = useTranslation();
 
-  if (!payment) return null;
+  const { data, isLoading } = useQuery({
+    queryKey: ["payments", paymentId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetPaymentDetailsResponse>(apiEndpoints.getPaymentDetails(paymentId!))
+        .then((response) => response.data),
+    staleTime: 1000 * 60 * 60,
+    enabled: !!paymentId,
+  });
 
-  const rows = [
-    {
-      label: t("pages:billing.detail.name"),
-      value: payment.name,
-    },
-    {
-      label: t("pages:billing.detail.status"),
-      value: <PaymentStatusBadge status={payment.status} />,
-    },
-    {
-      label: t("pages:billing.detail.frequency"),
-      value: t(`pages:billing.payments.frequencies.${payment.frequency}`),
-    },
-    {
-      label: t("pages:billing.detail.total"),
-      value: formatCurrency(payment.value, payment.currency),
-    },
-    {
-      label: t("pages:billing.detail.currency"),
-      value: payment.currency.toUpperCase(),
-    },
-     ...(payment.status === "Pending"
-      ? [
-          {
-            label: t("pages:billing.detail.expiredAt"),
-            value: format(new Date(payment.expiredAt), "dd/MM/yyyy HH:mm"),
-          },
-        ]
-      : []),
-    {
-      label: t("pages:billing.detail.date"),
-      value: format(new Date(payment.createdAt), "dd/MM/yyyy HH:mm"),
-    },
-  ];
+  const payment = data?.payment;
+
+  const rows = payment
+    ? [
+        {
+          label: t("pages:billing.detail.name"),
+          value: payment.name,
+        },
+        {
+          label: t("pages:billing.detail.status"),
+          value: <PaymentStatusBadge status={payment.status} />,
+        },
+        {
+          label: t("pages:billing.detail.frequency"),
+          value: t(`pages:billing.payments.frequencies.${payment.frequency}`),
+        },
+        {
+          label: t("pages:billing.detail.total"),
+          value: formatCurrency(payment.value, payment.currency),
+        },
+        {
+          label: t("pages:billing.detail.currency"),
+          value: payment.currency.toUpperCase(),
+        },
+        ...(payment.status === "Pending"
+          ? [
+              {
+                label: t("pages:billing.detail.expiredAt"),
+                value: format(new Date(payment.expiredAt), "dd/MM/yyyy HH:mm"),
+              },
+            ]
+          : []),
+        {
+          label: t("pages:billing.detail.date"),
+          value: format(new Date(payment.createdAt), "dd/MM/yyyy HH:mm"),
+        },
+      ]
+    : [];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={!!paymentId} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Receipt className="size-5" />
             {t("pages:billing.detail.title")}
           </DialogTitle>
-          <DialogDescription>{payment.name}</DialogDescription>
+          {payment && <DialogDescription>{payment.name}</DialogDescription>}
         </DialogHeader>
 
-        <div className="space-y-3">
-          {rows.map((row) => (
-            <div key={row.label} className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">{row.label}</span>
-              <span className="text-sm font-medium">{row.value}</span>
+        {isLoading ? (
+          <div className="space-y-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={i} className="h-5 w-full" />
+            ))}
+          </div>
+        ) : (
+          <>
+            <div className="space-y-3">
+              {rows.map((row) => (
+                <div key={row.label} className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">{row.label}</span>
+                  <span className="text-sm font-medium">{row.value}</span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        {payment.status === 'Succeeded' && payment.stripeInvoiceUrl && (
-          <>
-            <Separator />
-            <Button variant="outline" size="sm" asChild className="w-full">
-              <a
-                href={payment.stripeInvoiceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ExternalLink className="size-4" />
-                {t("pages:billing.detail.viewInvoice")}
-              </a>
-            </Button>
-          </>
-        )}
-        
-        {payment.status === 'Pending' && payment.stripeCheckoutSessionUrl && (
-          <>
-            <Separator />
-            <Button variant="outline" size="sm" asChild className="w-full">
-              <a
-                href={payment.stripeCheckoutSessionUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ExternalLink className="size-4" />
-                {t("pages:billing.detail.viewCheckoutSession")}
-              </a>
-            </Button>
+            {payment?.status === 'Succeeded' && payment.stripeInvoiceUrl && (
+              <>
+                <Separator />
+                <Button variant="outline" size="sm" asChild className="w-full">
+                  <a
+                    href={payment.stripeInvoiceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ExternalLink className="size-4" />
+                    {t("pages:billing.detail.viewInvoice")}
+                  </a>
+                </Button>
+              </>
+            )}
+
+            {payment?.status === 'Pending' && payment.stripeCheckoutSessionUrl && (
+              <>
+                <Separator />
+                <Button variant="outline" size="sm" asChild className="w-full">
+                  <a
+                    href={payment.stripeCheckoutSessionUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ExternalLink className="size-4" />
+                    {t("pages:billing.detail.viewCheckoutSession")}
+                  </a>
+                </Button>
+              </>
+            )}
           </>
         )}
       </DialogContent>
@@ -381,8 +405,7 @@ function BillingRoute() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const [selectedPayment, setSelectedPayment] = useState<ApiTypes.Payment | null>(null);
-  const [detailOpen, setDetailOpen] = useState(false);
+  const [paymentId, setPaymentId] = useQueryState("paymentId");
 
   const [subscriptionQuery, paymentsQuery] = useQueries({
     queries: [
@@ -522,8 +545,7 @@ function BillingRoute() {
                     key={row.id}
                     className="cursor-pointer"
                     onClick={() => {
-                      setSelectedPayment(row.original);
-                      setDetailOpen(true);
+                      setPaymentId(row.original.id);
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (
@@ -543,9 +565,8 @@ function BillingRoute() {
       </Card>
 
       <PaymentDetailDialog
-        payment={selectedPayment}
-        open={detailOpen}
-        onOpenChange={setDetailOpen}
+        paymentId={paymentId}
+        onOpenChange={(open) => { if (!open) setPaymentId(null); }}
       />
     </div>
   );

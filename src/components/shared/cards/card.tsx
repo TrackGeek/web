@@ -74,7 +74,7 @@ export function CardItem({ title, url, rating, year, imageURL, mediaType, synops
                 <ViteImage
                   src={{ src: imageURL, blurDataURL: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH", height: 160, width: 112 }}
                   alt="Cover"
-                  className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
+                  className="w-28! h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
                 />
                 <div className="flex-1 px-6 relative z-10">
                   <DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">{title}</DialogTitle>

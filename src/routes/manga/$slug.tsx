@@ -44,7 +44,7 @@ import { api } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { seo } from "@/lib/utils/seo";
-import { cn } from "@/lib/utils.ts";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/manga/$slug")({
   head: () => ({

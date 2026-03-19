@@ -1,6 +1,9 @@
 {
   "yes": "sim",
   "no": "não",
+  "billing": "Billing",
+  "home": "Home",
+  "feed": "Feed",
   "donate": "Doar",
   "legal": "Legal",
   "socials": "Redes Sociais",
@@ -8,6 +11,9 @@
   "addData": "Adicionar dados",
   "privacy": "Política de Privacidade",
   "terms": "Termos de Serviço",
+  "get": "Get",
+  "upgrade": "Upgrade",
+  "alreadyObtained": "Already obtained",
   "translate": "Traduzir",
   "settings": "Configurações",
   "notifications": "Notificações",
@@ -88,7 +94,7 @@
   },
   "minEpisodes": "Mínimo de episódios",
   "minChapters": "Mínimo de capítulos",
-  "minPages": "Min Pages",
+  "minPages": "Mínimo de páginas",
   "mostPopular": "Mais Popular",
   "recentlyReleased": "Lançados Recentemente",
   "comingSoon": "Em Breve",
@@ -101,5 +107,9 @@
   "startWriting": "Comece a digitar...",
   "send": "Enviar",
   "goHome": "Ir para a página inicial",
-  "notFound": "A página que você está procurando pode ter sido <br />movida ou não existe."
+  "notFound": "A página que você está procurando pode ter sido <br />movida ou não existe.",
+  "notLoggedIn": "You need to be logged in.",
+  "somethingWentWrong": "Something went wrong. Please try again later.",
+  "internalError": "Uh oh! Don't worry! It's not you - it's us.<br />We're trying to fix the problem. Try again later!",
+  "reportError": "Report error"
 }

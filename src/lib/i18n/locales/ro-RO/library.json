@@ -83,7 +83,10 @@
     "fork": "Fork",
     "expandedGame": "Expanded Game",
     "pack": "Pack",
-    "update": "Update"
+    "update": "Update",
+    "now": "Now",
+    "parent": "Parent",
+    "bundle": "Bundle"
   },
   "types": {
     "Music": "Music",

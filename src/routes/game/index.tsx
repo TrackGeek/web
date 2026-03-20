@@ -25,7 +25,7 @@ function GameRoute() {
     queryFn: () => api.get("/game/top?filter=popular"),
   });
 
-  const popular = popularData?.data.topGames;
+  const popular = popularData?.data.topGames.items;
 
   const {
     data: comingSoonData,
@@ -36,7 +36,7 @@ function GameRoute() {
     queryFn: () => api.get("/game/top?filter=coming"),
   });
 
-  const comingSoon = comingSoonData?.data.topGames;
+  const comingSoon = comingSoonData?.data.topGames.items;
 
   const {
     data: anticipatedData,
@@ -47,7 +47,7 @@ function GameRoute() {
     queryFn: () => api.get("/game/top?filter=antecipated"),
   });
 
-  const anticipated = anticipatedData?.data.topGames;
+  const anticipated = anticipatedData?.data.topGames.items;
 
   const {
     data: recentlyReleasedData,
@@ -58,7 +58,7 @@ function GameRoute() {
     queryFn: () => api.get("/game/top?filter=recentlyReleased"),
   });
 
-  const recentlyReleased = recentlyReleasedData?.data.topGames;
+  const recentlyReleased = recentlyReleasedData?.data.topGames.items;
 
   if (popularError || comingSoonError || anticipatedError || recentlyReleasedError) return <ErrorComponent />;
 
@@ -125,7 +125,9 @@ function GameRoute() {
       <div className="py-6 space-y-4">
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:mostPopular")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/game/popular"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {popular?.slice(0, 16).map((game: any) => (
@@ -143,7 +145,9 @@ function GameRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:recentlyReleased")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/game/recent"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {recentlyReleased?.slice(0, 16).map((game: any) => (
@@ -161,7 +165,9 @@ function GameRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/game/upcoming"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {comingSoon?.slice(0, 16).map((game: any) => (
@@ -179,7 +185,9 @@ function GameRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:mostAnticipated")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/game/antecipated"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {anticipated?.slice(0, 16).map((game: any) => (

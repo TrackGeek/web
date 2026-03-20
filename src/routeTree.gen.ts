@@ -35,6 +35,10 @@ import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated/billing'
 import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
+import { Route as MangaUpcomingIndexRouteImport } from './routes/manga/upcoming/index'
+import { Route as MangaTopIndexRouteImport } from './routes/manga/top/index'
+import { Route as MangaRecommendationsIndexRouteImport } from './routes/manga/recommendations/index'
+import { Route as MangaPublishingIndexRouteImport } from './routes/manga/publishing/index'
 import { Route as GameUpcomingIndexRouteImport } from './routes/game/upcoming/index'
 import { Route as GameRecentIndexRouteImport } from './routes/game/recent/index'
 import { Route as GamePopularIndexRouteImport } from './routes/game/popular/index'
@@ -186,6 +190,27 @@ const AuthenticatedBillingRoute = AuthenticatedBillingRouteImport.update({
 const UserUsernameIndexRoute = UserUsernameIndexRouteImport.update({
   id: '/user/$username/',
   path: '/user/$username/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MangaUpcomingIndexRoute = MangaUpcomingIndexRouteImport.update({
+  id: '/manga/upcoming/',
+  path: '/manga/upcoming/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MangaTopIndexRoute = MangaTopIndexRouteImport.update({
+  id: '/manga/top/',
+  path: '/manga/top/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MangaRecommendationsIndexRoute =
+  MangaRecommendationsIndexRouteImport.update({
+    id: '/manga/recommendations/',
+    path: '/manga/recommendations/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MangaPublishingIndexRoute = MangaPublishingIndexRouteImport.update({
+  id: '/manga/publishing/',
+  path: '/manga/publishing/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GameUpcomingIndexRoute = GameUpcomingIndexRouteImport.update({
@@ -347,6 +372,10 @@ export interface FileRoutesByFullPath {
   '/game/popular/': typeof GamePopularIndexRoute
   '/game/recent/': typeof GameRecentIndexRoute
   '/game/upcoming/': typeof GameUpcomingIndexRoute
+  '/manga/publishing/': typeof MangaPublishingIndexRoute
+  '/manga/recommendations/': typeof MangaRecommendationsIndexRoute
+  '/manga/top/': typeof MangaTopIndexRoute
+  '/manga/upcoming/': typeof MangaUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
   '/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
@@ -397,6 +426,10 @@ export interface FileRoutesByTo {
   '/game/popular': typeof GamePopularIndexRoute
   '/game/recent': typeof GameRecentIndexRoute
   '/game/upcoming': typeof GameUpcomingIndexRoute
+  '/manga/publishing': typeof MangaPublishingIndexRoute
+  '/manga/recommendations': typeof MangaRecommendationsIndexRoute
+  '/manga/top': typeof MangaTopIndexRoute
+  '/manga/upcoming': typeof MangaUpcomingIndexRoute
   '/user/$username': typeof UserUsernameIndexRoute
   '/donate/error': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success': typeof AuthenticatedDonateSuccessIndexRoute
@@ -449,6 +482,10 @@ export interface FileRoutesById {
   '/game/popular/': typeof GamePopularIndexRoute
   '/game/recent/': typeof GameRecentIndexRoute
   '/game/upcoming/': typeof GameUpcomingIndexRoute
+  '/manga/publishing/': typeof MangaPublishingIndexRoute
+  '/manga/recommendations/': typeof MangaRecommendationsIndexRoute
+  '/manga/top/': typeof MangaTopIndexRoute
+  '/manga/upcoming/': typeof MangaUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
   '/_authenticated/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/_authenticated/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
@@ -501,6 +538,10 @@ export interface FileRouteTypes {
     | '/game/popular/'
     | '/game/recent/'
     | '/game/upcoming/'
+    | '/manga/publishing/'
+    | '/manga/recommendations/'
+    | '/manga/top/'
+    | '/manga/upcoming/'
     | '/user/$username/'
     | '/donate/error/'
     | '/donate/success/'
@@ -551,6 +592,10 @@ export interface FileRouteTypes {
     | '/game/popular'
     | '/game/recent'
     | '/game/upcoming'
+    | '/manga/publishing'
+    | '/manga/recommendations'
+    | '/manga/top'
+    | '/manga/upcoming'
     | '/user/$username'
     | '/donate/error'
     | '/donate/success'
@@ -602,6 +647,10 @@ export interface FileRouteTypes {
     | '/game/popular/'
     | '/game/recent/'
     | '/game/upcoming/'
+    | '/manga/publishing/'
+    | '/manga/recommendations/'
+    | '/manga/top/'
+    | '/manga/upcoming/'
     | '/user/$username/'
     | '/_authenticated/donate/error/'
     | '/_authenticated/donate/success/'
@@ -652,6 +701,10 @@ export interface RootRouteChildren {
   GamePopularIndexRoute: typeof GamePopularIndexRoute
   GameRecentIndexRoute: typeof GameRecentIndexRoute
   GameUpcomingIndexRoute: typeof GameUpcomingIndexRoute
+  MangaPublishingIndexRoute: typeof MangaPublishingIndexRoute
+  MangaRecommendationsIndexRoute: typeof MangaRecommendationsIndexRoute
+  MangaTopIndexRoute: typeof MangaTopIndexRoute
+  MangaUpcomingIndexRoute: typeof MangaUpcomingIndexRoute
   UserUsernameIndexRoute: typeof UserUsernameIndexRoute
   UserUsernameAnimeIndexRoute: typeof UserUsernameAnimeIndexRoute
   UserUsernameBookIndexRoute: typeof UserUsernameBookIndexRoute
@@ -845,6 +898,34 @@ declare module '@tanstack/react-router' {
       path: '/user/$username'
       fullPath: '/user/$username/'
       preLoaderRoute: typeof UserUsernameIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manga/upcoming/': {
+      id: '/manga/upcoming/'
+      path: '/manga/upcoming'
+      fullPath: '/manga/upcoming/'
+      preLoaderRoute: typeof MangaUpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manga/top/': {
+      id: '/manga/top/'
+      path: '/manga/top'
+      fullPath: '/manga/top/'
+      preLoaderRoute: typeof MangaTopIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manga/recommendations/': {
+      id: '/manga/recommendations/'
+      path: '/manga/recommendations'
+      fullPath: '/manga/recommendations/'
+      preLoaderRoute: typeof MangaRecommendationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manga/publishing/': {
+      id: '/manga/publishing/'
+      path: '/manga/publishing'
+      fullPath: '/manga/publishing/'
+      preLoaderRoute: typeof MangaPublishingIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/game/upcoming/': {
@@ -1066,6 +1147,10 @@ const rootRouteChildren: RootRouteChildren = {
   GamePopularIndexRoute: GamePopularIndexRoute,
   GameRecentIndexRoute: GameRecentIndexRoute,
   GameUpcomingIndexRoute: GameUpcomingIndexRoute,
+  MangaPublishingIndexRoute: MangaPublishingIndexRoute,
+  MangaRecommendationsIndexRoute: MangaRecommendationsIndexRoute,
+  MangaTopIndexRoute: MangaTopIndexRoute,
+  MangaUpcomingIndexRoute: MangaUpcomingIndexRoute,
   UserUsernameIndexRoute: UserUsernameIndexRoute,
   UserUsernameAnimeIndexRoute: UserUsernameAnimeIndexRoute,
   UserUsernameBookIndexRoute: UserUsernameBookIndexRoute,

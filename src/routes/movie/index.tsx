@@ -25,7 +25,7 @@ function MovieRoute() {
     queryFn: () => api.get("/movie/top?filter=airing"),
   });
 
-  const airing = airingData?.data.movies;
+  const airing = airingData?.data.movies.items;
 
   const {
     data: upcomingData,
@@ -36,7 +36,7 @@ function MovieRoute() {
     queryFn: () => api.get("/movie/top?filter=upcoming"),
   });
 
-  const upcoming = upcomingData?.data.movies;
+  const upcoming = upcomingData?.data.movies.items;
 
   const {
     data: trendingData,
@@ -47,7 +47,7 @@ function MovieRoute() {
     queryFn: () => api.get("/movie/top?filter=trending"),
   });
 
-  const trending = trendingData?.data.movies;
+  const trending = trendingData?.data.movies.items;
 
   const {
     data: popularData,
@@ -58,7 +58,7 @@ function MovieRoute() {
     queryFn: () => api.get("/movie/top?filter=popular"),
   });
 
-  const popular = popularData?.data.movies;
+  const popular = popularData?.data.movies.items;
 
   if (airingError || upcomingError || trendingError || popularError) return <ErrorComponent />;
 
@@ -109,14 +109,16 @@ function MovieRoute() {
       <div className="py-6 space-y-4">
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("feed:trending")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/movie/trending"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {trending?.slice(0, 16).map((movie: any) => (
             <CardItem
               title={movie.name}
               url={`/movie/${movie.tmdbId}`}
-              imageURL={movie.posterUrl}
+              imageURL={movie.posterUrl || "/placeholder/cover.webp"}
               rating={movie.rating}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}
@@ -127,14 +129,16 @@ function MovieRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:mostPopular")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/movie/popular"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {popular?.slice(0, 16).map((movie: any) => (
             <CardItem
               title={movie.name}
               url={`/movie/${movie.tmdbId}`}
-              imageURL={movie.posterUrl}
+              imageURL={movie.posterUrl || "/placeholder/cover.webp"}
               rating={movie.rating}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}
@@ -145,14 +149,16 @@ function MovieRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("library:statusAir.currentlyAiring")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/movie/airing"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {airing?.slice(0, 16).map((movie: any) => (
             <CardItem
               title={movie.name}
               url={`/movie/${movie.tmdbId}`}
-              imageURL={movie.posterUrl}
+              imageURL={movie.posterUrl || "/placeholder/cover.webp"}
               rating={movie.rating}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}
@@ -163,14 +169,16 @@ function MovieRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/movie/upcoming"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {upcoming?.slice(0, 16).map((movie: any) => (
             <CardItem
               title={movie.name}
               url={`/movie/${movie.tmdbId}`}
-              imageURL={movie.posterUrl}
+              imageURL={movie.posterUrl || "/placeholder/cover.webp"}
               rating={movie.rating}
               year={new Date(movie.releaseDate).getFullYear()}
               synopsis={movie.overview}

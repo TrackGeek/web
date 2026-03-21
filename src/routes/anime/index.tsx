@@ -121,19 +121,23 @@ function AnimeRoute() {
       <div className="py-6 space-y-4">
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:topAiring")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/anime/airing"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {topAiring?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
               url={`/anime/${anime.malId}`}
-              imageURL={anime.imageUrl.replace(
-                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-                "/placeholder/cover.webp",
-              )}
+              imageURL={
+                (anime.imageUrl ?? "").replace(
+                  "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                  "/placeholder/cover.webp",
+                ) || "/placeholder/cover.webp"
+              }
               rating={+anime.rating}
-              year={new Date(anime.airedFrom).getFullYear()}
+              year={anime.airedFrom ? new Date(anime.airedFrom).getFullYear() : undefined}
               synopsis={anime.synopsis}
               mediaType={"anime"}
               key={anime.malId}
@@ -142,19 +146,23 @@ function AnimeRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:recommendations")}</p>{" "}
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/anime/recommendations"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {recommendations?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
               url={`/anime/${anime.malId}`}
-              imageURL={anime.imageUrl.replace(
-                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-                "/placeholder/cover.webp",
-              )}
+              imageURL={
+                (anime.imageUrl ?? "").replace(
+                  "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                  "/placeholder/cover.webp",
+                ) || "/placeholder/cover.webp"
+              }
               rating={+anime.rating}
-              year={new Date(anime.airedFrom).getFullYear()}
+              year={anime.airedFrom ? new Date(anime.airedFrom).getFullYear() : undefined}
               synopsis={anime.synopsis}
               mediaType={"anime"}
               key={anime.malId}
@@ -163,19 +171,23 @@ function AnimeRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/anime/upcoming"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {comingSoon?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
               url={`/anime/${anime.malId}`}
-              imageURL={anime.imageUrl.replace(
-                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-                "/placeholder/cover.webp",
-              )}
+              imageURL={
+                (anime.imageUrl ?? "").replace(
+                  "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                  "/placeholder/cover.webp",
+                ) || "/placeholder/cover.webp"
+              }
               rating={+anime.rating}
-              year={new Date(anime.airedFrom).getFullYear()}
+              year={anime.airedFrom ? new Date(anime.airedFrom).getFullYear() : undefined}
               synopsis={anime.synopsis}
               mediaType={"anime"}
               key={anime.malId}
@@ -184,19 +196,23 @@ function AnimeRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:topAnime")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/anime/top"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {topQuery?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
               url={`/anime/${anime.malId}`}
-              imageURL={anime.imageUrl.replace(
-                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-                "/placeholder/cover.webp",
-              )}
+              imageURL={
+                (anime.imageUrl ?? "").replace(
+                  "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                  "/placeholder/cover.webp",
+                ) || "/placeholder/cover.webp"
+              }
               rating={+anime.rating}
-              year={new Date(anime.airedFrom).getFullYear()}
+              year={anime.airedFrom ? new Date(anime.airedFrom).getFullYear() : undefined}
               synopsis={anime.synopsis}
               mediaType={"anime"}
               key={anime.malId}

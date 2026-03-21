@@ -177,7 +177,7 @@ function CreditsRoute() {
                 >
                   <div
                     className={cn(
-                      "w-12 h-12 rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform",
+                      "size-12 rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform",
                       item.bg,
                     )}
                   >

@@ -90,21 +90,21 @@ export function MovieDetailsRoute() {
           {isAuthenticated && (
             <>
               <div className="grid grid-cols-3 w-full gap-4">
-                <Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20">
+                <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
-                    <div className="w-10 h-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
+                    <div className="size-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
                       <Bookmark className="text-purple-400 size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.planning")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="text-secondary w-6 h-6" />
+                    <CheckCircle className="text-secondary size-6" />
                   </div>
                 </Button>
 
-                <Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20">
+                <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
-                    <div className="w-10 h-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
+                    <div className="size-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
                       <CheckSquare className="text-chart-3 size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">
@@ -112,19 +112,19 @@ export function MovieDetailsRoute() {
                     </p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="text-secondary w-6 h-6" />
+                    <CheckCircle className="text-secondary size-6" />
                   </div>
                 </Button>
 
-                <Button className="w-full h-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-5 transition-all duration-300 bg-card hover:bg-chart-5/20">
+                <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-5 transition-all duration-300 bg-card hover:bg-chart-5/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
-                    <div className="w-10 h-10 rounded-full bg-linear-to-r from-chart-5/20 to-red-500/20 flex items-center justify-center border border-chart-5/30">
+                    <div className="size-10 rounded-full bg-linear-to-r from-chart-5/20 to-red-500/20 flex items-center justify-center border border-chart-5/30">
                       <Trash className="text-chart-5 size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.dropped")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="text-secondary w-6 h-6" />
+                    <CheckCircle className="text-secondary size-6" />
                   </div>
                 </Button>
               </div>

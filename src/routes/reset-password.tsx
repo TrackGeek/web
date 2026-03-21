@@ -73,7 +73,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="w-full h-full my-40 flex items-center justify-center">
+    <div className="size-full my-40 flex items-center justify-center">
       <div className="max-w-md w-full flex flex-col border-border border bg-card rounded-2xl p-6 col-span-1">
         <Field className="gap-2">
           <FieldLabel>{t("auth:resetPassword.title")}</FieldLabel>

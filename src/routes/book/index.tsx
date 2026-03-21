@@ -25,7 +25,7 @@ function BookRoute() {
     queryFn: () => api.get("/book/top?filter=trending"),
   });
 
-  const trendingQuery = trendingData?.data.topBooks;
+  const trendingQuery = trendingData?.data.topBooks.items;
 
   const {
     data: comingSoonData,
@@ -36,7 +36,7 @@ function BookRoute() {
     queryFn: () => api.get("/book/top?filter=comingSoon"),
   });
 
-  const comingSoonQuery = comingSoonData?.data.topBooks;
+  const comingSoonQuery = comingSoonData?.data.topBooks.items;
 
   if (comingSoonError || trendingError) return <ErrorComponent />;
 
@@ -90,7 +90,9 @@ function BookRoute() {
       <div className="space-y-4 py-6">
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("feed:trending")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/book/trending"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {trendingQuery?.slice(0, 16).map((book: any) => (
@@ -108,7 +110,9 @@ function BookRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/book/upcoming"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {comingSoonQuery?.slice(0, 16).map((book: any) => (

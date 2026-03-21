@@ -26,7 +26,7 @@ function SerieRoute() {
     queryFn: () => api.get("/tv/top?filter=airing"),
   });
 
-  const airing = airingData?.data.topTVShows;
+  const airing = airingData?.data.topTVShows.items;
 
   const {
     data: upcomingData,
@@ -37,7 +37,7 @@ function SerieRoute() {
     queryFn: () => api.get("/tv/top?filter=upcoming"),
   });
 
-  const upcoming = upcomingData?.data.topTVShows;
+  const upcoming = upcomingData?.data.topTVShows.items;
 
   const {
     data: trendingData,
@@ -48,7 +48,7 @@ function SerieRoute() {
     queryFn: () => api.get("/tv/top?filter=trending"),
   });
 
-  const trending = trendingData?.data.topTVShows;
+  const trending = trendingData?.data.topTVShows.items;
 
   const {
     data: popularData,
@@ -59,7 +59,7 @@ function SerieRoute() {
     queryFn: () => api.get("/tv/top?filter=popular"),
   });
 
-  const popular = popularData?.data.topTVShows;
+  const popular = popularData?.data.topTVShows.items;
 
   if (airingError || upcomingError || trendingError || popularError) return <ErrorComponent />;
 
@@ -119,75 +119,103 @@ function SerieRoute() {
       <div className="py-6 space-y-4">
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("feed:trending")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/tv/trending"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {trending?.slice(0, 16).map((serie: any) => (
-            <CardItem
-              title={serie.name}
-              url={`/tv/${serie.tmdbId}`}
-              imageURL={serie.posterUrl}
-              rating={serie.rating}
-              year={new Date(serie.firstAirDate).getFullYear()}
-              synopsis={serie.tagline}
-              mediaType={"tv"}
-              key={serie.tmdbId}
-            />
-          ))}
+          {trending?.slice(0, 16).map((serie: any) => {
+            const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
+            const airYear =
+              firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;
+            return (
+              <CardItem
+                title={serie.name}
+                url={`/tv/${serie.tmdbId}`}
+                imageURL={serie.posterUrl || "/placeholder/cover.webp"}
+                rating={serie.rating}
+                year={airYear}
+                synopsis={serie.tagline}
+                mediaType={"tv"}
+                key={serie.tmdbId}
+              />
+            );
+          })}
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:mostPopular")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/tv/popular"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {popular?.slice(0, 16).map((serie: any) => (
-            <CardItem
-              title={serie.name}
-              url={`/tv/${serie.tmdbId}`}
-              imageURL={serie.posterUrl}
-              rating={serie.rating}
-              year={new Date(serie.firstAirDate).getFullYear()}
-              synopsis={serie.tagline}
-              mediaType={"tv"}
-              key={serie.tmdbId}
-            />
-          ))}
+          {popular?.slice(0, 16).map((serie: any) => {
+            const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
+            const airYear =
+              firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;
+            return (
+              <CardItem
+                title={serie.name}
+                url={`/tv/${serie.tmdbId}`}
+                imageURL={serie.posterUrl || "/placeholder/cover.webp"}
+                rating={serie.rating}
+                year={airYear}
+                synopsis={serie.tagline}
+                mediaType={"tv"}
+                key={serie.tmdbId}
+              />
+            );
+          })}
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("library:statusAir.currentlyAiring")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/tv/airing"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {airing?.slice(0, 16).map((serie: any) => (
-            <CardItem
-              title={serie.name}
-              url={`/tv/${serie.tmdbId}`}
-              imageURL={serie.posterUrl}
-              rating={serie.rating}
-              year={new Date(serie.firstAirDate).getFullYear()}
-              synopsis={serie.tagline}
-              mediaType={"tv"}
-              key={serie.tmdbId}
-            />
-          ))}
+          {airing?.slice(0, 16).map((serie: any) => {
+            const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
+            const airYear =
+              firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;
+            return (
+              <CardItem
+                title={serie.name}
+                url={`/tv/${serie.tmdbId}`}
+                imageURL={serie.posterUrl || "/placeholder/cover.webp"}
+                rating={serie.rating}
+                year={airYear}
+                synopsis={serie.tagline}
+                mediaType={"tv"}
+                key={serie.tmdbId}
+              />
+            );
+          })}
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/tv/upcoming"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {upcoming?.slice(0, 16).map((serie: any) => (
-            <CardItem
-              title={serie.name}
-              url={`/tv/${serie.tmdbId}`}
-              imageURL={serie.posterUrl}
-              rating={serie.rating}
-              year={new Date(serie.firstAirDate).getFullYear()}
-              synopsis={serie.tagline}
-              mediaType={"tv"}
-              key={serie.tmdbId}
-            />
-          ))}
+          {upcoming?.slice(0, 16).map((serie: any) => {
+            const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
+            const airYear =
+              firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;
+            return (
+              <CardItem
+                title={serie.name}
+                url={`/tv/${serie.tmdbId}`}
+                imageURL={serie.posterUrl || "/placeholder/cover.webp"}
+                rating={serie.rating}
+                year={airYear}
+                synopsis={serie.tagline}
+                mediaType={"tv"}
+                key={serie.tmdbId}
+              />
+            );
+          })}
         </Grid>
       </div>
     </div>

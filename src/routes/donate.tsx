@@ -1,16 +1,15 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { ExternalLink, Check, Coffee, Coins, Loader2 } from "lucide-react";
+import axios from "axios";
+import { Check, Coffee, Coins, ExternalLink, Loader2 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import z from "zod";
 import { ContributorsItem } from "@/components/shared/cards/contributors";
 import { Button } from "@/components/ui/button";
-import { seo } from "@/lib/utils/seo";
-import axios from "axios";
-import { api, apiEndpoints, type ApiTypes } from "@/lib/api";
-import { useSession } from "@/lib/auth";
-import { toast } from "sonner";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
   DialogContent,
@@ -20,9 +19,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Skeleton } from "@/components/ui/skeleton";
+import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
+import { useSession } from "@/lib/auth";
+import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/donate")({
   head: () => ({
@@ -381,9 +381,9 @@ function DonateRoute() {
         <div className="flex flex-wrap items-center justify-center gap-4">
           {contributorsQuery.isPending && (
             <>
-              <Skeleton className="w-24 h-24 rounded-full" />
+              <Skeleton className="size-24 rounded-full" />
 
-              <Skeleton className="w-24 h-24 rounded-full" />
+              <Skeleton className="size-24 rounded-full" />
             </>
           )}
 

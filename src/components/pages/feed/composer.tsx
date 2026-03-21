@@ -54,7 +54,7 @@ export function FeedComposer() {
 
   return (
     <EditorProvider
-      className="h-full w-full overflow-y-auto rounded-2xl border bg-card px-4 py-3 pr-26"
+      className="size-full overflow-y-auto rounded-2xl border bg-card px-4 py-3 pr-26"
       content={content}
       onUpdate={handleUpdate}
       placeholder={t("common:startWriting")}

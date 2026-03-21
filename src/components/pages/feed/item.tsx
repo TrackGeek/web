@@ -1,6 +1,6 @@
+import { Link } from "@tanstack/react-router";
 import { Heart, MessageCircle } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
-import { Link } from "@tanstack/react-router";
 
 interface TempUser {
   name: string;
@@ -43,7 +43,7 @@ export function FeedItem({ profile, item }: feedItemProps) {
             <Link to={"/"}>
               <img
                 src={profile.avatarURL}
-                className="w-8 h-8 shrink-0 rounded-full object-cover"
+                className="size-8 shrink-0 rounded-full object-cover"
                 alt={`Avatar of ${profile.name}`}
               />
             </Link>
@@ -54,11 +54,11 @@ export function FeedItem({ profile, item }: feedItemProps) {
 
           <div className="flex items-center gap-3">
             <div className="flex gap-1.5 items-center">
-              <Heart className="w-4 h-4" />
+              <Heart className="size-4" />
               <p className="text-muted-foreground">{item.likes}</p>
             </div>
             <div className="flex gap-1.5 items-center">
-              <MessageCircle className="w-4 h-4" />
+              <MessageCircle className="size-4" />
               <p className="text-muted-foreground">{item.likes}</p>
             </div>
           </div>

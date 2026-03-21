@@ -35,6 +35,28 @@ import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated/billing'
 import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
+import { Route as TvUpcomingIndexRouteImport } from './routes/tv/upcoming/index'
+import { Route as TvTrendingIndexRouteImport } from './routes/tv/trending/index'
+import { Route as TvPopularIndexRouteImport } from './routes/tv/popular/index'
+import { Route as TvAiringIndexRouteImport } from './routes/tv/airing/index'
+import { Route as MovieUpcomingIndexRouteImport } from './routes/movie/upcoming/index'
+import { Route as MovieTrendingIndexRouteImport } from './routes/movie/trending/index'
+import { Route as MoviePopularIndexRouteImport } from './routes/movie/popular/index'
+import { Route as MovieAiringIndexRouteImport } from './routes/movie/airing/index'
+import { Route as MangaUpcomingIndexRouteImport } from './routes/manga/upcoming/index'
+import { Route as MangaTopIndexRouteImport } from './routes/manga/top/index'
+import { Route as MangaRecommendationsIndexRouteImport } from './routes/manga/recommendations/index'
+import { Route as MangaPublishingIndexRouteImport } from './routes/manga/publishing/index'
+import { Route as GameUpcomingIndexRouteImport } from './routes/game/upcoming/index'
+import { Route as GameRecentIndexRouteImport } from './routes/game/recent/index'
+import { Route as GamePopularIndexRouteImport } from './routes/game/popular/index'
+import { Route as GameAntecipatedIndexRouteImport } from './routes/game/antecipated/index'
+import { Route as BookUpcomingIndexRouteImport } from './routes/book/upcoming/index'
+import { Route as BookTrendingIndexRouteImport } from './routes/book/trending/index'
+import { Route as AnimeUpcomingIndexRouteImport } from './routes/anime/upcoming/index'
+import { Route as AnimeTopIndexRouteImport } from './routes/anime/top/index'
+import { Route as AnimeRecommendationsIndexRouteImport } from './routes/anime/recommendations/index'
+import { Route as AnimeAiringIndexRouteImport } from './routes/anime/airing/index'
 import { Route as MovieFranchisesSlugRouteImport } from './routes/movie/franchises/$slug'
 import { Route as GameFranchisesSlugRouteImport } from './routes/game/franchises/$slug'
 import { Route as BookFranchisesSlugRouteImport } from './routes/book/franchises/$slug'
@@ -178,6 +200,118 @@ const UserUsernameIndexRoute = UserUsernameIndexRouteImport.update({
   path: '/user/$username/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TvUpcomingIndexRoute = TvUpcomingIndexRouteImport.update({
+  id: '/tv/upcoming/',
+  path: '/tv/upcoming/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvTrendingIndexRoute = TvTrendingIndexRouteImport.update({
+  id: '/tv/trending/',
+  path: '/tv/trending/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvPopularIndexRoute = TvPopularIndexRouteImport.update({
+  id: '/tv/popular/',
+  path: '/tv/popular/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvAiringIndexRoute = TvAiringIndexRouteImport.update({
+  id: '/tv/airing/',
+  path: '/tv/airing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MovieUpcomingIndexRoute = MovieUpcomingIndexRouteImport.update({
+  id: '/movie/upcoming/',
+  path: '/movie/upcoming/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MovieTrendingIndexRoute = MovieTrendingIndexRouteImport.update({
+  id: '/movie/trending/',
+  path: '/movie/trending/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviePopularIndexRoute = MoviePopularIndexRouteImport.update({
+  id: '/movie/popular/',
+  path: '/movie/popular/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MovieAiringIndexRoute = MovieAiringIndexRouteImport.update({
+  id: '/movie/airing/',
+  path: '/movie/airing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MangaUpcomingIndexRoute = MangaUpcomingIndexRouteImport.update({
+  id: '/manga/upcoming/',
+  path: '/manga/upcoming/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MangaTopIndexRoute = MangaTopIndexRouteImport.update({
+  id: '/manga/top/',
+  path: '/manga/top/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MangaRecommendationsIndexRoute =
+  MangaRecommendationsIndexRouteImport.update({
+    id: '/manga/recommendations/',
+    path: '/manga/recommendations/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const MangaPublishingIndexRoute = MangaPublishingIndexRouteImport.update({
+  id: '/manga/publishing/',
+  path: '/manga/publishing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GameUpcomingIndexRoute = GameUpcomingIndexRouteImport.update({
+  id: '/game/upcoming/',
+  path: '/game/upcoming/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GameRecentIndexRoute = GameRecentIndexRouteImport.update({
+  id: '/game/recent/',
+  path: '/game/recent/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GamePopularIndexRoute = GamePopularIndexRouteImport.update({
+  id: '/game/popular/',
+  path: '/game/popular/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GameAntecipatedIndexRoute = GameAntecipatedIndexRouteImport.update({
+  id: '/game/antecipated/',
+  path: '/game/antecipated/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookUpcomingIndexRoute = BookUpcomingIndexRouteImport.update({
+  id: '/book/upcoming/',
+  path: '/book/upcoming/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookTrendingIndexRoute = BookTrendingIndexRouteImport.update({
+  id: '/book/trending/',
+  path: '/book/trending/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnimeUpcomingIndexRoute = AnimeUpcomingIndexRouteImport.update({
+  id: '/anime/upcoming/',
+  path: '/anime/upcoming/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnimeTopIndexRoute = AnimeTopIndexRouteImport.update({
+  id: '/anime/top/',
+  path: '/anime/top/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnimeRecommendationsIndexRoute =
+  AnimeRecommendationsIndexRouteImport.update({
+    id: '/anime/recommendations/',
+    path: '/anime/recommendations/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AnimeAiringIndexRoute = AnimeAiringIndexRouteImport.update({
+  id: '/anime/airing/',
+  path: '/anime/airing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MovieFranchisesSlugRoute = MovieFranchisesSlugRouteImport.update({
   id: '/movie/franchises/$slug',
   path: '/movie/franchises/$slug',
@@ -276,6 +410,28 @@ export interface FileRoutesByFullPath {
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
+  '/anime/airing/': typeof AnimeAiringIndexRoute
+  '/anime/recommendations/': typeof AnimeRecommendationsIndexRoute
+  '/anime/top/': typeof AnimeTopIndexRoute
+  '/anime/upcoming/': typeof AnimeUpcomingIndexRoute
+  '/book/trending/': typeof BookTrendingIndexRoute
+  '/book/upcoming/': typeof BookUpcomingIndexRoute
+  '/game/antecipated/': typeof GameAntecipatedIndexRoute
+  '/game/popular/': typeof GamePopularIndexRoute
+  '/game/recent/': typeof GameRecentIndexRoute
+  '/game/upcoming/': typeof GameUpcomingIndexRoute
+  '/manga/publishing/': typeof MangaPublishingIndexRoute
+  '/manga/recommendations/': typeof MangaRecommendationsIndexRoute
+  '/manga/top/': typeof MangaTopIndexRoute
+  '/manga/upcoming/': typeof MangaUpcomingIndexRoute
+  '/movie/airing/': typeof MovieAiringIndexRoute
+  '/movie/popular/': typeof MoviePopularIndexRoute
+  '/movie/trending/': typeof MovieTrendingIndexRoute
+  '/movie/upcoming/': typeof MovieUpcomingIndexRoute
+  '/tv/airing/': typeof TvAiringIndexRoute
+  '/tv/popular/': typeof TvPopularIndexRoute
+  '/tv/trending/': typeof TvTrendingIndexRoute
+  '/tv/upcoming/': typeof TvUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
   '/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
@@ -316,6 +472,28 @@ export interface FileRoutesByTo {
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
+  '/anime/airing': typeof AnimeAiringIndexRoute
+  '/anime/recommendations': typeof AnimeRecommendationsIndexRoute
+  '/anime/top': typeof AnimeTopIndexRoute
+  '/anime/upcoming': typeof AnimeUpcomingIndexRoute
+  '/book/trending': typeof BookTrendingIndexRoute
+  '/book/upcoming': typeof BookUpcomingIndexRoute
+  '/game/antecipated': typeof GameAntecipatedIndexRoute
+  '/game/popular': typeof GamePopularIndexRoute
+  '/game/recent': typeof GameRecentIndexRoute
+  '/game/upcoming': typeof GameUpcomingIndexRoute
+  '/manga/publishing': typeof MangaPublishingIndexRoute
+  '/manga/recommendations': typeof MangaRecommendationsIndexRoute
+  '/manga/top': typeof MangaTopIndexRoute
+  '/manga/upcoming': typeof MangaUpcomingIndexRoute
+  '/movie/airing': typeof MovieAiringIndexRoute
+  '/movie/popular': typeof MoviePopularIndexRoute
+  '/movie/trending': typeof MovieTrendingIndexRoute
+  '/movie/upcoming': typeof MovieUpcomingIndexRoute
+  '/tv/airing': typeof TvAiringIndexRoute
+  '/tv/popular': typeof TvPopularIndexRoute
+  '/tv/trending': typeof TvTrendingIndexRoute
+  '/tv/upcoming': typeof TvUpcomingIndexRoute
   '/user/$username': typeof UserUsernameIndexRoute
   '/donate/error': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success': typeof AuthenticatedDonateSuccessIndexRoute
@@ -358,6 +536,28 @@ export interface FileRoutesById {
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
+  '/anime/airing/': typeof AnimeAiringIndexRoute
+  '/anime/recommendations/': typeof AnimeRecommendationsIndexRoute
+  '/anime/top/': typeof AnimeTopIndexRoute
+  '/anime/upcoming/': typeof AnimeUpcomingIndexRoute
+  '/book/trending/': typeof BookTrendingIndexRoute
+  '/book/upcoming/': typeof BookUpcomingIndexRoute
+  '/game/antecipated/': typeof GameAntecipatedIndexRoute
+  '/game/popular/': typeof GamePopularIndexRoute
+  '/game/recent/': typeof GameRecentIndexRoute
+  '/game/upcoming/': typeof GameUpcomingIndexRoute
+  '/manga/publishing/': typeof MangaPublishingIndexRoute
+  '/manga/recommendations/': typeof MangaRecommendationsIndexRoute
+  '/manga/top/': typeof MangaTopIndexRoute
+  '/manga/upcoming/': typeof MangaUpcomingIndexRoute
+  '/movie/airing/': typeof MovieAiringIndexRoute
+  '/movie/popular/': typeof MoviePopularIndexRoute
+  '/movie/trending/': typeof MovieTrendingIndexRoute
+  '/movie/upcoming/': typeof MovieUpcomingIndexRoute
+  '/tv/airing/': typeof TvAiringIndexRoute
+  '/tv/popular/': typeof TvPopularIndexRoute
+  '/tv/trending/': typeof TvTrendingIndexRoute
+  '/tv/upcoming/': typeof TvUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
   '/_authenticated/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/_authenticated/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
@@ -400,6 +600,28 @@ export interface FileRouteTypes {
     | '/book/franchises/$slug'
     | '/game/franchises/$slug'
     | '/movie/franchises/$slug'
+    | '/anime/airing/'
+    | '/anime/recommendations/'
+    | '/anime/top/'
+    | '/anime/upcoming/'
+    | '/book/trending/'
+    | '/book/upcoming/'
+    | '/game/antecipated/'
+    | '/game/popular/'
+    | '/game/recent/'
+    | '/game/upcoming/'
+    | '/manga/publishing/'
+    | '/manga/recommendations/'
+    | '/manga/top/'
+    | '/manga/upcoming/'
+    | '/movie/airing/'
+    | '/movie/popular/'
+    | '/movie/trending/'
+    | '/movie/upcoming/'
+    | '/tv/airing/'
+    | '/tv/popular/'
+    | '/tv/trending/'
+    | '/tv/upcoming/'
     | '/user/$username/'
     | '/donate/error/'
     | '/donate/success/'
@@ -440,6 +662,28 @@ export interface FileRouteTypes {
     | '/book/franchises/$slug'
     | '/game/franchises/$slug'
     | '/movie/franchises/$slug'
+    | '/anime/airing'
+    | '/anime/recommendations'
+    | '/anime/top'
+    | '/anime/upcoming'
+    | '/book/trending'
+    | '/book/upcoming'
+    | '/game/antecipated'
+    | '/game/popular'
+    | '/game/recent'
+    | '/game/upcoming'
+    | '/manga/publishing'
+    | '/manga/recommendations'
+    | '/manga/top'
+    | '/manga/upcoming'
+    | '/movie/airing'
+    | '/movie/popular'
+    | '/movie/trending'
+    | '/movie/upcoming'
+    | '/tv/airing'
+    | '/tv/popular'
+    | '/tv/trending'
+    | '/tv/upcoming'
     | '/user/$username'
     | '/donate/error'
     | '/donate/success'
@@ -481,6 +725,28 @@ export interface FileRouteTypes {
     | '/book/franchises/$slug'
     | '/game/franchises/$slug'
     | '/movie/franchises/$slug'
+    | '/anime/airing/'
+    | '/anime/recommendations/'
+    | '/anime/top/'
+    | '/anime/upcoming/'
+    | '/book/trending/'
+    | '/book/upcoming/'
+    | '/game/antecipated/'
+    | '/game/popular/'
+    | '/game/recent/'
+    | '/game/upcoming/'
+    | '/manga/publishing/'
+    | '/manga/recommendations/'
+    | '/manga/top/'
+    | '/manga/upcoming/'
+    | '/movie/airing/'
+    | '/movie/popular/'
+    | '/movie/trending/'
+    | '/movie/upcoming/'
+    | '/tv/airing/'
+    | '/tv/popular/'
+    | '/tv/trending/'
+    | '/tv/upcoming/'
     | '/user/$username/'
     | '/_authenticated/donate/error/'
     | '/_authenticated/donate/success/'
@@ -521,6 +787,28 @@ export interface RootRouteChildren {
   BookFranchisesSlugRoute: typeof BookFranchisesSlugRoute
   GameFranchisesSlugRoute: typeof GameFranchisesSlugRoute
   MovieFranchisesSlugRoute: typeof MovieFranchisesSlugRoute
+  AnimeAiringIndexRoute: typeof AnimeAiringIndexRoute
+  AnimeRecommendationsIndexRoute: typeof AnimeRecommendationsIndexRoute
+  AnimeTopIndexRoute: typeof AnimeTopIndexRoute
+  AnimeUpcomingIndexRoute: typeof AnimeUpcomingIndexRoute
+  BookTrendingIndexRoute: typeof BookTrendingIndexRoute
+  BookUpcomingIndexRoute: typeof BookUpcomingIndexRoute
+  GameAntecipatedIndexRoute: typeof GameAntecipatedIndexRoute
+  GamePopularIndexRoute: typeof GamePopularIndexRoute
+  GameRecentIndexRoute: typeof GameRecentIndexRoute
+  GameUpcomingIndexRoute: typeof GameUpcomingIndexRoute
+  MangaPublishingIndexRoute: typeof MangaPublishingIndexRoute
+  MangaRecommendationsIndexRoute: typeof MangaRecommendationsIndexRoute
+  MangaTopIndexRoute: typeof MangaTopIndexRoute
+  MangaUpcomingIndexRoute: typeof MangaUpcomingIndexRoute
+  MovieAiringIndexRoute: typeof MovieAiringIndexRoute
+  MoviePopularIndexRoute: typeof MoviePopularIndexRoute
+  MovieTrendingIndexRoute: typeof MovieTrendingIndexRoute
+  MovieUpcomingIndexRoute: typeof MovieUpcomingIndexRoute
+  TvAiringIndexRoute: typeof TvAiringIndexRoute
+  TvPopularIndexRoute: typeof TvPopularIndexRoute
+  TvTrendingIndexRoute: typeof TvTrendingIndexRoute
+  TvUpcomingIndexRoute: typeof TvUpcomingIndexRoute
   UserUsernameIndexRoute: typeof UserUsernameIndexRoute
   UserUsernameAnimeIndexRoute: typeof UserUsernameAnimeIndexRoute
   UserUsernameBookIndexRoute: typeof UserUsernameBookIndexRoute
@@ -716,6 +1004,160 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserUsernameIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tv/upcoming/': {
+      id: '/tv/upcoming/'
+      path: '/tv/upcoming'
+      fullPath: '/tv/upcoming/'
+      preLoaderRoute: typeof TvUpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv/trending/': {
+      id: '/tv/trending/'
+      path: '/tv/trending'
+      fullPath: '/tv/trending/'
+      preLoaderRoute: typeof TvTrendingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv/popular/': {
+      id: '/tv/popular/'
+      path: '/tv/popular'
+      fullPath: '/tv/popular/'
+      preLoaderRoute: typeof TvPopularIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv/airing/': {
+      id: '/tv/airing/'
+      path: '/tv/airing'
+      fullPath: '/tv/airing/'
+      preLoaderRoute: typeof TvAiringIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movie/upcoming/': {
+      id: '/movie/upcoming/'
+      path: '/movie/upcoming'
+      fullPath: '/movie/upcoming/'
+      preLoaderRoute: typeof MovieUpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movie/trending/': {
+      id: '/movie/trending/'
+      path: '/movie/trending'
+      fullPath: '/movie/trending/'
+      preLoaderRoute: typeof MovieTrendingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movie/popular/': {
+      id: '/movie/popular/'
+      path: '/movie/popular'
+      fullPath: '/movie/popular/'
+      preLoaderRoute: typeof MoviePopularIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movie/airing/': {
+      id: '/movie/airing/'
+      path: '/movie/airing'
+      fullPath: '/movie/airing/'
+      preLoaderRoute: typeof MovieAiringIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manga/upcoming/': {
+      id: '/manga/upcoming/'
+      path: '/manga/upcoming'
+      fullPath: '/manga/upcoming/'
+      preLoaderRoute: typeof MangaUpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manga/top/': {
+      id: '/manga/top/'
+      path: '/manga/top'
+      fullPath: '/manga/top/'
+      preLoaderRoute: typeof MangaTopIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manga/recommendations/': {
+      id: '/manga/recommendations/'
+      path: '/manga/recommendations'
+      fullPath: '/manga/recommendations/'
+      preLoaderRoute: typeof MangaRecommendationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manga/publishing/': {
+      id: '/manga/publishing/'
+      path: '/manga/publishing'
+      fullPath: '/manga/publishing/'
+      preLoaderRoute: typeof MangaPublishingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/upcoming/': {
+      id: '/game/upcoming/'
+      path: '/game/upcoming'
+      fullPath: '/game/upcoming/'
+      preLoaderRoute: typeof GameUpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/recent/': {
+      id: '/game/recent/'
+      path: '/game/recent'
+      fullPath: '/game/recent/'
+      preLoaderRoute: typeof GameRecentIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/popular/': {
+      id: '/game/popular/'
+      path: '/game/popular'
+      fullPath: '/game/popular/'
+      preLoaderRoute: typeof GamePopularIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/antecipated/': {
+      id: '/game/antecipated/'
+      path: '/game/antecipated'
+      fullPath: '/game/antecipated/'
+      preLoaderRoute: typeof GameAntecipatedIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book/upcoming/': {
+      id: '/book/upcoming/'
+      path: '/book/upcoming'
+      fullPath: '/book/upcoming/'
+      preLoaderRoute: typeof BookUpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book/trending/': {
+      id: '/book/trending/'
+      path: '/book/trending'
+      fullPath: '/book/trending/'
+      preLoaderRoute: typeof BookTrendingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anime/upcoming/': {
+      id: '/anime/upcoming/'
+      path: '/anime/upcoming'
+      fullPath: '/anime/upcoming/'
+      preLoaderRoute: typeof AnimeUpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anime/top/': {
+      id: '/anime/top/'
+      path: '/anime/top'
+      fullPath: '/anime/top/'
+      preLoaderRoute: typeof AnimeTopIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anime/recommendations/': {
+      id: '/anime/recommendations/'
+      path: '/anime/recommendations'
+      fullPath: '/anime/recommendations/'
+      preLoaderRoute: typeof AnimeRecommendationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anime/airing/': {
+      id: '/anime/airing/'
+      path: '/anime/airing'
+      fullPath: '/anime/airing/'
+      preLoaderRoute: typeof AnimeAiringIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/movie/franchises/$slug': {
       id: '/movie/franchises/$slug'
       path: '/movie/franchises/$slug'
@@ -855,6 +1297,28 @@ const rootRouteChildren: RootRouteChildren = {
   BookFranchisesSlugRoute: BookFranchisesSlugRoute,
   GameFranchisesSlugRoute: GameFranchisesSlugRoute,
   MovieFranchisesSlugRoute: MovieFranchisesSlugRoute,
+  AnimeAiringIndexRoute: AnimeAiringIndexRoute,
+  AnimeRecommendationsIndexRoute: AnimeRecommendationsIndexRoute,
+  AnimeTopIndexRoute: AnimeTopIndexRoute,
+  AnimeUpcomingIndexRoute: AnimeUpcomingIndexRoute,
+  BookTrendingIndexRoute: BookTrendingIndexRoute,
+  BookUpcomingIndexRoute: BookUpcomingIndexRoute,
+  GameAntecipatedIndexRoute: GameAntecipatedIndexRoute,
+  GamePopularIndexRoute: GamePopularIndexRoute,
+  GameRecentIndexRoute: GameRecentIndexRoute,
+  GameUpcomingIndexRoute: GameUpcomingIndexRoute,
+  MangaPublishingIndexRoute: MangaPublishingIndexRoute,
+  MangaRecommendationsIndexRoute: MangaRecommendationsIndexRoute,
+  MangaTopIndexRoute: MangaTopIndexRoute,
+  MangaUpcomingIndexRoute: MangaUpcomingIndexRoute,
+  MovieAiringIndexRoute: MovieAiringIndexRoute,
+  MoviePopularIndexRoute: MoviePopularIndexRoute,
+  MovieTrendingIndexRoute: MovieTrendingIndexRoute,
+  MovieUpcomingIndexRoute: MovieUpcomingIndexRoute,
+  TvAiringIndexRoute: TvAiringIndexRoute,
+  TvPopularIndexRoute: TvPopularIndexRoute,
+  TvTrendingIndexRoute: TvTrendingIndexRoute,
+  TvUpcomingIndexRoute: TvUpcomingIndexRoute,
   UserUsernameIndexRoute: UserUsernameIndexRoute,
   UserUsernameAnimeIndexRoute: UserUsernameAnimeIndexRoute,
   UserUsernameBookIndexRoute: UserUsernameBookIndexRoute,

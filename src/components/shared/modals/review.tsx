@@ -141,7 +141,7 @@ export function ReviewModal({
                       variant="destructive"
                       size="sm"
                       onClick={() => handleRemovePro(index)}
-                      className="h-6 w-6 p-0"
+                      className="size-6 p-0"
                     >
                       <Trash2 className="size-3" />
                     </Button>
@@ -177,7 +177,7 @@ export function ReviewModal({
                       variant="destructive"
                       size="sm"
                       onClick={() => handleRemoveCon(index)}
-                      className="h-6 w-6 p-0"
+                      className="size-6 p-0"
                     >
                       <Trash2 className="size-3" />
                     </Button>

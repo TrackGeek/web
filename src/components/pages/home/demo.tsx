@@ -106,7 +106,7 @@ export function Demo() {
       <section className="py-24 relative overflow-hidden">
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-16">
           <div className="lg:w-1/2 space-y-6 demo-text opacity-0">
-            <div className="w-12 h-12 rounded-lg bg-primary/20 text-primary flex items-center justify-center text-xl mb-4">
+            <div className="size-12 rounded-lg bg-primary/20 text-primary flex items-center justify-center text-xl mb-4">
               <Wand />
             </div>
             <h2 className="text-3xl font-bold tracking-tight">{t("pages:landing.demoTitle")}</h2>

@@ -157,7 +157,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col border-border border bg-card rounded-2xl p-6 col-span-1">
         <Field className="gap-2">
           <FieldLabel>
-            <Image className="h-6 w-6" />
+            <Image className="size-6" />
 
             {t("settings:avatar.title")}
           </FieldLabel>
@@ -166,9 +166,9 @@ function SettingsRoute() {
 
           <div className="flex items-center justify-center gap-2 h-55">
             {session.data?.user?.profile?.avatarUrl ? (
-              <div className="w-55 h-55 relative">
+              <div className="size-55 relative">
                 <ViteImage
-                  className="w-full h-full rounded-lg border-accent border"
+                  className="size-full rounded-lg border-accent border"
                   src={{
                     src: session.data?.user?.profile.avatarUrl,
                     blurDataURL: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH",
@@ -179,7 +179,7 @@ function SettingsRoute() {
 
                 {(deleteAvatarMutation.isPending || uploadAvatarMutation.isPending) && (
                   <div className="absolute inset-0 bg-black/50 rounded-lg flex flex-col justify-center items-center gap-2">
-                    <Icon icon="eos-icons:loading" className="w-8 h-8 text-white animate-spin" />
+                    <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
                   </div>
                 )}
 
@@ -190,7 +190,7 @@ function SettingsRoute() {
                       className="absolute top-2 right-10 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
                       onClick={() => avatarInputRef.current?.click()}
                     >
-                      <Upload className="w-4 h-4 text-white" />
+                      <Upload className="size-4 text-white" />
                     </button>
 
                     <button
@@ -198,7 +198,7 @@ function SettingsRoute() {
                       className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
                       onClick={() => deleteAvatarMutation.mutate()}
                     >
-                      <CircleX className="w-4 h-4 text-white" />
+                      <CircleX className="size-4 text-white" />
                     </button>
                   </>
                 )}
@@ -206,18 +206,18 @@ function SettingsRoute() {
             ) : (
               // biome-ignore lint/a11y/noStaticElementInteractions: false positive
               <div
-                className="w-55 h-55 rounded-lg cursor-pointer relative"
+                className="size-55 rounded-lg cursor-pointer relative"
                 style={{ backgroundColor: session.data?.user?.profile?.color }}
                 onClick={() => avatarInputRef.current?.click()}
                 onKeyDown={() => avatarInputRef.current?.click()}
               >
                 {uploadAvatarMutation.isPending ? (
-                  <div className="w-full h-full flex flex-col justify-center items-center gap-2">
-                    <Icon icon="eos-icons:loading" className="w-8 h-8 text-white animate-spin" />
+                  <div className="size-full flex flex-col justify-center items-center gap-2">
+                    <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
                   </div>
                 ) : (
-                  <div className="w-full h-full flex flex-col justify-center items-center gap-2">
-                    <Upload className="w-8 h-8 text-white/70" />
+                  <div className="size-full flex flex-col justify-center items-center gap-2">
+                    <Upload className="size-8 text-white/70" />
 
                     <span className="text-white/70">{t("settings:avatar.upload.title")}</span>
                   </div>
@@ -239,7 +239,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col border-border border bg-card rounded-2xl p-6 col-span-2">
         <Field className="gap-2">
           <FieldLabel>
-            <Image className="h-6 w-6" />
+            <Image className="size-6" />
 
             {t("settings:banner.title")}
           </FieldLabel>
@@ -248,9 +248,9 @@ function SettingsRoute() {
 
           <div className="flex items-center gap-2 h-55">
             {session.data?.user?.profile?.bannerUrl ? (
-              <div className="w-full h-full relative">
+              <div className="size-full relative">
                 <ViteImage
-                  className="w-full h-full rounded-lg border-accent border"
+                  className="size-full rounded-lg border-accent border"
                   src={{
                     src: session.data?.user?.profile.bannerUrl,
                     blurDataURL: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH",
@@ -261,7 +261,7 @@ function SettingsRoute() {
 
                 {(deleteBannerMutation.isPending || uploadBannerMutation.isPending) && (
                   <div className="absolute inset-0 bg-black/50 rounded-lg flex flex-col justify-center items-center gap-2">
-                    <Icon icon="eos-icons:loading" className="w-8 h-8 text-white animate-spin" />
+                    <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
                   </div>
                 )}
 
@@ -272,7 +272,7 @@ function SettingsRoute() {
                       className="absolute top-2 right-10 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
                       onClick={() => bannerInputRef.current?.click()}
                     >
-                      <Upload className="w-4 h-4 text-white" />
+                      <Upload className="size-4 text-white" />
                     </button>
 
                     <button
@@ -280,7 +280,7 @@ function SettingsRoute() {
                       className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
                       onClick={() => deleteBannerMutation.mutate()}
                     >
-                      <CircleX className="w-4 h-4 text-white" />
+                      <CircleX className="size-4 text-white" />
                     </button>
                   </>
                 )}
@@ -288,18 +288,18 @@ function SettingsRoute() {
             ) : (
               // biome-ignore lint/a11y/noStaticElementInteractions: false positive
               <div
-                className="w-full h-full rounded-lg cursor-pointer relative"
+                className="size-full rounded-lg cursor-pointer relative"
                 style={{ backgroundColor: session.data?.user?.profile?.color }}
                 onClick={() => bannerInputRef.current?.click()}
                 onKeyDown={() => bannerInputRef.current?.click()}
               >
                 {uploadBannerMutation.isPending ? (
-                  <div className="w-full h-full flex flex-col justify-center items-center gap-2">
-                    <Icon icon="eos-icons:loading" className="w-8 h-8 text-white animate-spin" />
+                  <div className="size-full flex flex-col justify-center items-center gap-2">
+                    <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
                   </div>
                 ) : (
-                  <div className="w-full h-full flex flex-col justify-center items-center gap-2">
-                    <Upload className="w-8 h-8 text-white/70" />
+                  <div className="size-full flex flex-col justify-center items-center gap-2">
+                    <Upload className="size-8 text-white/70" />
 
                     <span className="text-white/70">{t("settings:banner.upload.title")}</span>
                   </div>
@@ -321,7 +321,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-2xl p-6 col-span-3">
         <Field className="gap-2">
           <FieldLabel>
-            <User className="h-6 w-6" />
+            <User className="size-6" />
 
             {t("settings:profile.title")}
           </FieldLabel>
@@ -359,7 +359,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-2xl p-6 col-span-3">
         <Field className="gap-2">
           <FieldLabel>
-            <Palette className="h-6 w-6" />
+            <Palette className="size-6" />
 
             {t("settings:color.title")}
           </FieldLabel>
@@ -371,7 +371,7 @@ function SettingsRoute() {
               <button
                 type="button"
                 key={color}
-                className="w-10 h-10 rounded-full border-2 border-transparent hover:border-accent transition"
+                className="size-10 rounded-full border-2 border-transparent hover:border-accent transition"
                 style={{ backgroundColor: color }}
                 onClick={() => {}}
               />
@@ -397,7 +397,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-2xl p-6 col-span-3">
         <Field className="gap-2">
           <FieldLabel>
-            <Settings className="h-6 w-6" />
+            <Settings className="size-6" />
 
             {t("settings:preferrences.title")}
           </FieldLabel>

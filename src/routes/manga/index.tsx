@@ -111,8 +111,10 @@ function MangaRoute() {
       </Carousel>
       <div className="space-y-4 py-6">
         <div className="flex items-center justify-between mb-4">
-          <p className="text-2xl font-bold">{t("common:topAiring")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <p className="text-2xl font-bold">{t("library:statusAir.publishing")}</p>
+          <Link to={"/manga/publishing"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {publishing?.slice(0, 16).map((manga: any) => (
@@ -132,8 +134,10 @@ function MangaRoute() {
           ))}
         </Grid>
         <div className="flex items-center justify-between mb-4">
-          <p className="text-2xl font-bold">{t("common:recommendations")}</p>{" "}
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <p className="text-2xl font-bold">{t("common:recommendations")}</p>
+          <Link to={"/manga/recommendations"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {recommendations?.slice(0, 16).map((manga: any) => (
@@ -154,7 +158,9 @@ function MangaRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/manga/upcoming"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {upcoming?.slice(0, 16).map((manga: any) => (
@@ -175,7 +181,9 @@ function MangaRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:topManga")}</p>
-          <Button>{t("pages:donate.viewAll")}</Button>
+          <Link to={"/manga/top"}>
+            <Button>{t("pages:donate.viewAll")}</Button>
+          </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {favorite?.slice(0, 16).map((manga: any) => (

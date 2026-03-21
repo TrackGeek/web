@@ -1,5 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Filter, Mountain } from "lucide-react";
+import {
+  Book,
+  Clapperboard,
+  Filter,
+  Gamepad2,
+  LibraryBig,
+  Mountain,
+  Newspaper,
+  Star,
+  TvMinimalPlay,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { FeedListFollowing } from "@/components/pages/feed/listFollowing";
@@ -13,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
+import { useSession } from "@/lib/auth.ts";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/feed")({
@@ -24,15 +34,17 @@ export const Route = createFileRoute("/feed")({
 });
 
 function FeedRoute() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
+  const session = useSession();
+  const isAuthenticated = !!session?.data?.session;
   return (
     <div className="flex max-sm:flex-col gap-5">
       <div className="flex flex-col md:w-2/3">
-        <Tabs defaultValue="following">
+        <Tabs defaultValue={isAuthenticated ? "following" : "global"}>
           <div className="flex items-center justify-between gap-3 mb-2">
             <TabsList className="md:w-2/4">
-              <TabsTrigger value="following">{t("feed:following")}</TabsTrigger>
+              {isAuthenticated && <TabsTrigger value="following">{t("feed:following")}</TabsTrigger>}
               <TabsTrigger value="global">{t("feed:global")}</TabsTrigger>
               <TabsTrigger value="trending">{t("feed:trending")}</TabsTrigger>
             </TabsList>
@@ -43,17 +55,47 @@ function FeedRoute() {
                 </Button>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) rounded-lg" align="end">
+              <DropdownMenuContent className="rounded-lg capitalize" align="end">
+                <DropdownMenuCheckboxItem checked>
+                  <Star size={18} className="text-white" />
+                  {t("library:reviews")}
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem checked>
+                  <Newspaper size={18} className="text-white" />
+                  {t("user:entry_plural")}
+                </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked>
                   <Mountain size={18} className="text-white" />
                   {t("common:types.anime_other")}
                 </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem checked>
+                  <Book size={18} className="text-white" />
+                  {t("common:types.book_other")}
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem checked>
+                  <Gamepad2 size={18} className="text-white" />
+                  {t("common:types.game_other")}
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem checked>
+                  <TvMinimalPlay size={18} className="text-white" />
+                  {t("common:types.tv_other")}
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem checked>
+                  <LibraryBig size={18} className="text-white" />
+                  {t("common:types.manga_other")}
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem checked>
+                  <Clapperboard size={18} className="text-white" />
+                  {t("common:types.movie_other")}
+                </DropdownMenuCheckboxItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <TabsContent value="following">
-            <FeedListFollowing />
-          </TabsContent>
+          {isAuthenticated && (
+            <TabsContent value="following">
+              <FeedListFollowing />
+            </TabsContent>
+          )}
           <TabsContent value="global"></TabsContent>
           <TabsContent value="trending"></TabsContent>
         </Tabs>
@@ -103,21 +145,6 @@ function FeedRoute() {
             },
           ]}
         />
-        <select
-          className="p-2 border rounded-md"
-          value={i18n.language}
-          onChange={(e) => {
-            i18n.changeLanguage(e.target.value);
-
-            localStorage.setItem(LANGUAGE_TOKEN, e.target.value);
-          }}
-        >
-          {SUPPORTED_LANGUAGES.map((lang) => (
-            <option key={lang.id} value={lang.id}>
-              {t(lang.name)}
-            </option>
-          ))}
-        </select>
       </div>
     </div>
   );

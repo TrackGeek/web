@@ -130,18 +130,24 @@ function GameRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {popular?.slice(0, 16).map((game: any) => (
-            <CardItem
-              title={game.name}
-              url={`/game/${game.igdbId}`}
-              imageURL={game.coverUrl}
-              rating={game.rating}
-              year={new Date(game.firstReleaseDate).getFullYear()}
-              synopsis={game.summary}
-              mediaType={"game"}
-              key={game.igdbId}
-            />
-          ))}
+          {popular?.slice(0, 16).map((game: any) => {
+            const releaseDate = game.firstReleaseDate ? new Date(game.firstReleaseDate) : null;
+            const releaseYear =
+              releaseDate && !Number.isNaN(releaseDate.getTime()) ? releaseDate.getFullYear() : undefined;
+
+            return (
+              <CardItem
+                title={game.name}
+                url={`/game/${game.igdbId}`}
+                imageURL={game.coverUrl}
+                rating={game.rating}
+                year={releaseYear}
+                synopsis={game.summary}
+                mediaType={"game"}
+                key={game.igdbId}
+              />
+            );
+          })}
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:recentlyReleased")}</p>
@@ -150,18 +156,24 @@ function GameRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {recentlyReleased?.slice(0, 16).map((game: any) => (
-            <CardItem
-              title={game.name}
-              url={`/game/${game.igdbId}`}
-              imageURL={game.coverUrl}
-              rating={game.rating}
-              year={new Date(game.firstReleaseDate).getFullYear()}
-              synopsis={game.summary}
-              mediaType={"game"}
-              key={game.igdbId}
-            />
-          ))}
+          {recentlyReleased?.slice(0, 16).map((game: any) => {
+            const releaseDate = game.firstReleaseDate ? new Date(game.firstReleaseDate) : null;
+            const releaseYear =
+              releaseDate && !Number.isNaN(releaseDate.getTime()) ? releaseDate.getFullYear() : undefined;
+
+            return (
+              <CardItem
+                title={game.name}
+                url={`/game/${game.igdbId}`}
+                imageURL={game.coverUrl}
+                rating={game.rating}
+                year={releaseYear}
+                synopsis={game.summary}
+                mediaType={"game"}
+                key={game.igdbId}
+              />
+            );
+          })}
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
@@ -170,18 +182,24 @@ function GameRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {comingSoon?.slice(0, 16).map((game: any) => (
-            <CardItem
-              title={game.name}
-              url={`/game/${game.igdbId}`}
-              imageURL={game.coverUrl}
-              rating={game.rating}
-              year={new Date(game.firstReleaseDate).getFullYear()}
-              synopsis={game.summary}
-              mediaType={"game"}
-              key={game.igdbId}
-            />
-          ))}
+          {comingSoon?.slice(0, 16).map((game: any) => {
+            const releaseDate = game.firstReleaseDate ? new Date(game.firstReleaseDate) : null;
+            const releaseYear =
+              releaseDate && !Number.isNaN(releaseDate.getTime()) ? releaseDate.getFullYear() : undefined;
+
+            return (
+              <CardItem
+                title={game.name}
+                url={`/game/${game.igdbId}`}
+                imageURL={game.coverUrl}
+                rating={game.rating}
+                year={releaseYear}
+                synopsis={game.summary}
+                mediaType={"game"}
+                key={game.igdbId}
+              />
+            );
+          })}
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:mostAnticipated")}</p>
@@ -190,18 +208,24 @@ function GameRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {anticipated?.slice(0, 16).map((game: any) => (
-            <CardItem
-              title={game.name}
-              url={`/game/${game.igdbId}`}
-              imageURL={game.coverUrl}
-              rating={game.rating}
-              year={new Date(game.firstReleaseDate).getFullYear()}
-              synopsis={game.summary}
-              mediaType={"game"}
-              key={game.igdbId}
-            />
-          ))}
+          {anticipated?.slice(0, 16).map((game: any) => {
+            const releaseDate = game.firstReleaseDate ? new Date(game.firstReleaseDate) : null;
+            const releaseYear =
+              releaseDate && !Number.isNaN(releaseDate.getTime()) ? releaseDate.getFullYear() : undefined;
+
+            return (
+              <CardItem
+                title={game.name}
+                url={`/game/${game.igdbId}`}
+                imageURL={game.coverUrl}
+                rating={game.rating}
+                year={releaseYear}
+                synopsis={game.summary}
+                mediaType={"game"}
+                key={game.igdbId}
+              />
+            );
+          })}
         </Grid>
       </div>
     </div>

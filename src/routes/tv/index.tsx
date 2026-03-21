@@ -124,18 +124,23 @@ function SerieRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {trending?.slice(0, 16).map((serie: any) => (
-            <CardItem
-              title={serie.name}
-              url={`/tv/${serie.tmdbId}`}
-              imageURL={serie.posterUrl || "/placeholder/cover.webp"}
-              rating={serie.rating}
-              year={new Date(serie.firstAirDate).getFullYear()}
-              synopsis={serie.tagline}
-              mediaType={"tv"}
-              key={serie.tmdbId}
-            />
-          ))}
+          {trending?.slice(0, 16).map((serie: any) => {
+            const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
+            const airYear =
+              firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;
+            return (
+              <CardItem
+                title={serie.name}
+                url={`/tv/${serie.tmdbId}`}
+                imageURL={serie.posterUrl || "/placeholder/cover.webp"}
+                rating={serie.rating}
+                year={airYear}
+                synopsis={serie.tagline}
+                mediaType={"tv"}
+                key={serie.tmdbId}
+              />
+            );
+          })}
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:mostPopular")}</p>
@@ -144,18 +149,23 @@ function SerieRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {popular?.slice(0, 16).map((serie: any) => (
-            <CardItem
-              title={serie.name}
-              url={`/tv/${serie.tmdbId}`}
-              imageURL={serie.posterUrl || "/placeholder/cover.webp"}
-              rating={serie.rating}
-              year={new Date(serie.firstAirDate).getFullYear()}
-              synopsis={serie.tagline}
-              mediaType={"tv"}
-              key={serie.tmdbId}
-            />
-          ))}
+          {popular?.slice(0, 16).map((serie: any) => {
+            const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
+            const airYear =
+              firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;
+            return (
+              <CardItem
+                title={serie.name}
+                url={`/tv/${serie.tmdbId}`}
+                imageURL={serie.posterUrl || "/placeholder/cover.webp"}
+                rating={serie.rating}
+                year={airYear}
+                synopsis={serie.tagline}
+                mediaType={"tv"}
+                key={serie.tmdbId}
+              />
+            );
+          })}
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("library:statusAir.currentlyAiring")}</p>
@@ -164,18 +174,23 @@ function SerieRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {airing?.slice(0, 16).map((serie: any) => (
-            <CardItem
-              title={serie.name}
-              url={`/tv/${serie.tmdbId}`}
-              imageURL={serie.posterUrl || "/placeholder/cover.webp"}
-              rating={serie.rating}
-              year={new Date(serie.firstAirDate).getFullYear()}
-              synopsis={serie.tagline}
-              mediaType={"tv"}
-              key={serie.tmdbId}
-            />
-          ))}
+          {airing?.slice(0, 16).map((serie: any) => {
+            const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
+            const airYear =
+              firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;
+            return (
+              <CardItem
+                title={serie.name}
+                url={`/tv/${serie.tmdbId}`}
+                imageURL={serie.posterUrl || "/placeholder/cover.webp"}
+                rating={serie.rating}
+                year={airYear}
+                synopsis={serie.tagline}
+                mediaType={"tv"}
+                key={serie.tmdbId}
+              />
+            );
+          })}
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
@@ -184,18 +199,23 @@ function SerieRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {upcoming?.slice(0, 16).map((serie: any) => (
-            <CardItem
-              title={serie.name}
-              url={`/tv/${serie.tmdbId}`}
-              imageURL={serie.posterUrl || "/placeholder/cover.webp"}
-              rating={serie.rating}
-              year={new Date(serie.firstAirDate).getFullYear()}
-              synopsis={serie.tagline}
-              mediaType={"tv"}
-              key={serie.tmdbId}
-            />
-          ))}
+          {upcoming?.slice(0, 16).map((serie: any) => {
+            const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
+            const airYear =
+              firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;
+            return (
+              <CardItem
+                title={serie.name}
+                url={`/tv/${serie.tmdbId}`}
+                imageURL={serie.posterUrl || "/placeholder/cover.webp"}
+                rating={serie.rating}
+                year={airYear}
+                synopsis={serie.tagline}
+                mediaType={"tv"}
+                key={serie.tmdbId}
+              />
+            );
+          })}
         </Grid>
       </div>
     </div>

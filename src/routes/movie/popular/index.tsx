@@ -45,7 +45,7 @@ function PopularMovieRoute() {
             url={`/movie/${movie.tmdbId}`}
             imageURL={movie.posterUrl || "/placeholder/cover.webp"}
             rating={movie.rating}
-            year={new Date(movie.releaseDate).getFullYear()}
+            year={movie.releaseDate ? new Date(movie.releaseDate).getFullYear() : undefined}
             synopsis={movie.overview}
             mediaType={"movie"}
             key={movie.tmdbId}

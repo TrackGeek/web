@@ -39,18 +39,23 @@ function UpcomingTVShowRoute() {
     <div className="mx-auto w-full py-6 space-y-4">
       <p className="text-2xl font-bold mb-4">{t("common:comingSoon")}</p>
       <Grid minColSize={"128px"} className={"grid-cols-5"}>
-        {tvShows?.map((serie: any) => (
-          <CardItem
-            title={serie.name}
-            url={`/tv/${serie.tmdbId}`}
-            imageURL={serie.posterUrl || "/placeholder/cover.webp"}
-            rating={serie.rating}
-            year={new Date(serie.firstAirDate).getFullYear()}
-            synopsis={serie.tagline}
-            mediaType={"tv"}
-            key={serie.tmdbId}
-          />
-        ))}
+        {tvShows?.map((serie: any) => {
+          const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
+          const airYear =
+            firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;
+          return (
+            <CardItem
+              title={serie.name}
+              url={`/tv/${serie.tmdbId}`}
+              imageURL={serie.posterUrl || "/placeholder/cover.webp"}
+              rating={serie.rating}
+              year={airYear}
+              synopsis={serie.tagline}
+              mediaType={"tv"}
+              key={serie.tmdbId}
+            />
+          );
+        })}
       </Grid>
       <div ref={sentinelRef} className="h-px" />
       {isFetchingNextPage && <LoadingFiltered />}

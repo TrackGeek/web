@@ -39,18 +39,24 @@ function AntecipatedGameRoute() {
     <div className="mx-auto w-full py-6 space-y-4">
       <p className="text-2xl font-bold mb-4">{t("common:mostAnticipated")}</p>
       <Grid minColSize={"128px"} className={"grid-cols-5"}>
-        {games?.map((game: any) => (
-          <CardItem
-            title={game.name}
-            url={`/game/${game.igdbId}`}
-            imageURL={game.coverUrl}
-            rating={game.rating}
-            year={new Date(game.firstReleaseDate).getFullYear()}
-            synopsis={game.summary}
-            mediaType={"game"}
-            key={game.igdbId}
-          />
-        ))}
+        {games?.map((game: any) => {
+          const releaseDate = game.firstReleaseDate ? new Date(game.firstReleaseDate) : null;
+          const releaseYear =
+            releaseDate && !Number.isNaN(releaseDate.getTime()) ? releaseDate.getFullYear() : undefined;
+
+          return (
+            <CardItem
+              title={game.name}
+              url={`/game/${game.igdbId}`}
+              imageURL={game.coverUrl}
+              rating={game.rating}
+              year={releaseYear}
+              synopsis={game.summary}
+              mediaType={"game"}
+              key={game.igdbId}
+            />
+          );
+        })}
       </Grid>
       <div ref={sentinelRef} className="h-px" />
       {isFetchingNextPage && <LoadingFiltered />}

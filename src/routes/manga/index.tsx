@@ -111,7 +111,7 @@ function MangaRoute() {
       </Carousel>
       <div className="space-y-4 py-6">
         <div className="flex items-center justify-between mb-4">
-          <p className="text-2xl font-bold">{t("common:topAiring")}</p>
+          <p className="text-2xl font-bold">{t("library:statusAir.publishing")}</p>
           <Link to={"/manga/publishing"}>
             <Button>{t("pages:donate.viewAll")}</Button>
           </Link>

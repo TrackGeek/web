@@ -19,7 +19,7 @@ interface CardProps {
   url: string;
   imageURL: string;
   rating: number;
-  year: number;
+  year: number | undefined;
   synopsis: string;
   mediaType: MediaType;
   mediaData?: any;

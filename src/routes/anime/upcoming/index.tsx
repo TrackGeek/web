@@ -43,12 +43,14 @@ function UpcomingAnimeRoute() {
           <CardItem
             title={anime.title}
             url={`/anime/${anime.malId}`}
-            imageURL={anime.imageUrl.replace(
-              "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-              "/placeholder/cover.webp",
-            )}
+            imageURL={
+              (anime.imageUrl ?? "").replace(
+                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                "/placeholder/cover.webp",
+              ) || "/placeholder/cover.webp"
+            }
             rating={+anime.rating}
-            year={new Date(anime.airedFrom).getFullYear()}
+            year={anime.airedFrom ? new Date(anime.airedFrom).getFullYear() : undefined}
             synopsis={anime.synopsis}
             mediaType={"anime"}
             key={anime.malId}

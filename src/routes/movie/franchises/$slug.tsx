@@ -41,7 +41,7 @@ function MovieFranchiseRoute() {
               url={`/movie/${movie.id}`}
               imageURL={movie.posterUrl}
               rating={0}
-              year={new Date(movie.releaseDate).getFullYear()}
+              year={movie.releaseDate ? new Date(movie.releaseDate).getFullYear() : undefined}
               synopsis={movie.overview}
               mediaType={"movie"}
               key={movie.id}

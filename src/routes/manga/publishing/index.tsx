@@ -37,7 +37,7 @@ function PublishingMangaRoute() {
 
   return (
     <div className="mx-auto w-full py-6 space-y-4">
-      <p className="text-2xl font-bold mb-4">{t("common:topAiring")}</p>
+      <p className="text-2xl font-bold mb-4">{t("library:statusAir.publishing")}</p>
       <Grid minColSize={"128px"} className={"grid-cols-5"}>
         {mangas?.map((manga: any) => (
           <CardItem

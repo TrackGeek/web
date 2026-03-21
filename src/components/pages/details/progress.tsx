@@ -97,7 +97,7 @@ export function EpisodeProgress({ seasons, defaultSeason, seasonCustomNames = {}
                 key={episode}
                 onClick={() => onToggle(currentSeasonData.seasonNumber, episode)}
                 className={cn(
-                  "group relative flex items-center justify-center w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200 border cursor-pointer",
+                  "group relative flex items-center justify-center size-10 rounded-lg text-sm font-medium transition-all duration-200 border cursor-pointer",
                   watched
                     ? "bg-primary text-primary-foreground border-primary shadow-sm"
                     : "bg-background border-border text-muted-foreground hover:border-primary/50 hover:text-primary hover:shadow-sm",

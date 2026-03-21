@@ -11,7 +11,7 @@ interface StarRatingProps {
 }
 
 function StarRating({ rating, iconSize = "md" }: StarRatingProps) {
-  const iconClass = iconSize === "sm" ? "w-3 h-3" : "w-4 h-4";
+  const iconClass = iconSize === "sm" ? "size-3" : "size-4";
   return (
     <div className="flex gap-0.5">
       {[...Array(5)].map((_, index) => {

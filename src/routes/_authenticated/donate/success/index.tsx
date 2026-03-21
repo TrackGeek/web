@@ -16,7 +16,7 @@ function RouteComponent() {
   const { t } = useTranslation();
 
   return (
-    <div className="relative flex h-full w-full items-center justify-center overflow-hidden grow">
+    <div className="relative flex size-full items-center justify-center overflow-hidden grow">
       <Empty>
         <EmptyHeader>
           <EmptyTitle className="mask-b-from-20% mask-b-to-80% font-extrabold text-9xl text-primary">

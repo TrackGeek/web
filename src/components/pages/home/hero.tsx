@@ -62,7 +62,7 @@ export function Hero() {
     <section className="relative pt-20 pb-32 overflow-hidden">
       <div className="container mx-auto px-4 text-center relative z-10">
         <div className="inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 text-sm font-medium text-secondary mb-8 hero-badge opacity-0 translate-y-4">
-          <span className="flex h-2 w-2 rounded-full bg-green-500 mr-2"></span>
+          <span className="flex size-2 rounded-full bg-green-500 mr-2"></span>
           {t("pages:landing.alive")}
         </div>
 
@@ -95,10 +95,10 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none z-0 hidden lg:block">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-full pointer-events-none z-0 hidden lg:block">
         <div className="hero-card absolute top-[10%] left-[10%] w-64 p-4 rounded-xl border border-border bg-card shadow-2xl opacity-0 transform -rotate-6">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+            <div className="size-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
               <Ghost />
             </div>
             <div>
@@ -115,7 +115,7 @@ export function Hero() {
 
         <div className="hero-card absolute top-[20%] right-[10%] w-64 p-4 rounded-xl border border-border bg-card shadow-2xl opacity-0 transform rotate-[4deg]">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
+            <div className="size-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
               <Gamepad />
             </div>
             <div>
@@ -136,7 +136,7 @@ export function Hero() {
 
         <div className="hero-card absolute bottom-[15%] left-[20%] w-64 p-4 rounded-xl border border-border bg-card shadow-2xl opacity-0 transform -rotate-3">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400">
+            <div className="size-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400">
               <Book />
             </div>
             <div>

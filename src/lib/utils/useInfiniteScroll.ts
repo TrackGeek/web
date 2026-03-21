@@ -9,7 +9,7 @@ export function useInfiniteScroll(onIntersect: () => void, enabled: boolean) {
   useEffect(() => {
     const el = ref.current;
     if (!el || !enabled) {
-      hasTriggered.current = true;
+      hasTriggered.current = false;
       return;
     }
 

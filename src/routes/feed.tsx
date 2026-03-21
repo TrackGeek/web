@@ -41,7 +41,7 @@ function FeedRoute() {
   return (
     <div className="flex max-sm:flex-col gap-5">
       <div className="flex flex-col md:w-2/3">
-        <Tabs defaultValue="following">
+        <Tabs defaultValue={isAuthenticated ? "following" : "global"}>
           <div className="flex items-center justify-between gap-3 mb-2">
             <TabsList className="md:w-2/4">
               {isAuthenticated && <TabsTrigger value="following">{t("feed:following")}</TabsTrigger>}

@@ -84,9 +84,9 @@
     "expandedGame": "Jogo Expandido",
     "pack": "Pacote",
     "update": "Atualização",
-    "now": "Now",
-    "parent": "Parent",
-    "bundle": "Bundle"
+    "now": "Agora",
+    "parent": "Parente",
+    "bundle": "Pacote"
   },
   "types": {
     "Music": "Música",

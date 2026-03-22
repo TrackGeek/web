@@ -248,7 +248,7 @@
       "price": "Price",
       "renewsAt": "Renews at",
       "cancel": "Cancel Subscription",
-      "cancelConfirm": "Are you sure you want to cancel your subscription? You will lose access to your perks at the end of the current billing period.",
+      "cancelConfirm": "Are you sure you want to cancel your subscription?",
       "cancelBack": "Go Back",
       "cancelConfirmButton": "Yes, Cancel",
       "cancelSuccess": "Your subscription has been cancelled successfully.",

@@ -173,39 +173,39 @@
     "geeks": "Os GeekKeepers que tornam o TrackGeek vivo",
     "perks": {
       "title": "Benefícios",
-      "description": "These are the perks you can get while supporting the site.",
-      "get": "Get this perk",
+      "description": "Esses são os benefícios que você pode obter ao apoiar o site.",
+      "get": "Obter esta regalia",
       "items": {
         "Tracker": {
-          "name": "Tracker",
-          "description": "Become a supporter and get recognition across the platform with exclusive cosmetics and priority access.",
+          "name": "Rastreador",
+          "description": "Torne-se um apoiador e obtenha reconhecimento através da plataforma com cosméticos exclusivos e acesso prioritário.",
           "benefits": [
-            "Exclusive supporter badge on your profile",
-            "Hide irrelevant content types for you",
-            "Your profile will appear on the Donate page",
-            "Prioritized support from our team"
+            "Emblema exclusivo de apoiador em seu perfil",
+            "Ocultar tipos de conteúdo irrelevante para você",
+            "O seu perfil aparecerá na página Doar",
+            "Suporte priorizado da nossa equipe"
           ]
         },
         "Archivist": {
-          "name": "Archivist",
-          "description": "Everything a Tracker gets, plus deeper insight into your stats and early access to what's coming next.",
+          "name": "Arquivista",
+          "description": "Tudo o que um Rastreador obtém, além de uma visão mais profunda das suas estatísticas e acesso antecipado ao que está por vir.",
           "benefits": [
-            "Everything from Tracker",
-            "Advanced profile stats tailored to your activity",
-            "Early access to upcoming features and experiments",
-            "Priority consideration for feedback and feature requests"
+            "Tudo do Rastreador",
+            "Estatísticas avançadas de perfil personalizadas à sua atividade",
+            "Acesso antecipado aos próximos recursos e experimentos",
+            "Atribuição prioritária de comentários e solicitações de recursos"
           ]
         },
         "ArchiveMaster": {
-          "name": "Archive Master",
-          "description": "The ultimate supporter tier. Everything an Archivist gets, plus the highest level of recognition on the platform.",
+          "name": "Mestre do Arquivo",
+          "description": "O nível definitivo do apoiador. Tudo que um Arquivista ganha, mais o nível mais alto de reconhecimento na plataforma.",
           "benefits": [
-            "Everything from Archivist",
-            "Avatar decorations and colors for your profile",
-            "Exclusive Archive Master badge across the platform",
-            "Stronger influence on roadmap discussions and priorities",
-            "Special recognition on community-facing pages",
-            "Top-tier supporter status within TrackGeek"
+            "Tudo do Arquivista",
+            "Cores e decorações de avatar para seu perfil",
+            "Medalha Mestre de Arquivo Exclusivo em toda a plataforma",
+            "Maior influência nas discussões e prioridades do planejamento",
+            "Reconhecimento especial em páginas voltadas para a comunidade",
+            "Estado do apoiador superior dentro do TrackGeek"
           ]
         }
       }
@@ -230,76 +230,76 @@
     "transparencyReports": "Relatórios de Transparência",
     "viewAll": "Ver tudo",
     "success": {
-      "title": "Thank you for your support!",
-      "description": "Your donation has been processed successfully. We really appreciate your contribution to keeping TrackGeek alive."
+      "title": "Muito obrigado pelo seu apoio!",
+      "description": "Sua doação foi processada com sucesso. Nós realmente apreciamos sua contribuição para manter o TrackGeek vivo."
     },
     "error": {
-      "title": "Payment failed",
-      "description": "Something went wrong while processing your payment. Please try again or contact us if the problem persists."
+      "title": "Falha no pagamento",
+      "description": "Algo deu errado ao processar seu pagamento. Por favor, tente novamente ou entre em contato conosco se o problema persistir."
     }
   },
   "billing": {
-    "title": "Billing",
+    "title": "Faturamento",
     "subscription": {
-      "title": "Subscription",
-      "description": "Manage your current subscription plan.",
-      "plan": "Plan",
-      "status": "Status",
-      "price": "Price",
-      "renewsAt": "Renews at",
-      "cancel": "Cancel Subscription",
-      "cancelConfirm": "Are you sure you want to cancel your subscription? You will lose access to your perks at the end of the current billing period.",
-      "cancelBack": "Go Back",
-      "cancelConfirmButton": "Yes, Cancel",
-      "cancelSuccess": "Your subscription has been cancelled successfully.",
-      "cancelError": "Failed to cancel your subscription. Please try again.",
-      "noSubscription": "No active subscription",
-      "noSubscriptionDescription": "You don't have an active subscription. Support TrackGeek and unlock exclusive perks!",
-      "subscribe": "View Plans",
+      "title": "Assinatura",
+      "description": "Gerencie seu plano de assinatura atual.",
+      "plan": "Plano",
+      "status": "Estado",
+      "price": "Preço",
+      "renewsAt": "Renovar em",
+      "cancel": "Cancelar Assinatura",
+      "cancelConfirm": "Are you sure you want to cancel your subscription?",
+      "cancelBack": "Voltar atrás",
+      "cancelConfirmButton": "Sim, cancelar",
+      "cancelSuccess": "Sua assinatura foi cancelada com sucesso.",
+      "cancelError": "Falha ao cancelar sua assinatura. Tente novamente.",
+      "noSubscription": "Sem assinatura ativa",
+      "noSubscriptionDescription": "Você não tem uma assinatura ativa. Suporte TrackGeek e desbloqueie vantagens exclusivas!",
+      "subscribe": "Ver Planos",
       "statuses": {
-        "active": "Active",
-        "canceled": "Cancelled",
-        "past_due": "Past Due",
-        "unpaid": "Unpaid",
-        "trialing": "Trialing"
+        "active": "Ativo",
+        "canceled": "Cancelado",
+        "past_due": "Vencido",
+        "unpaid": "Não pago",
+        "trialing": "Em teste"
       }
     },
     "payments": {
-      "title": "Payment History",
-      "description": "View all your past payments and transactions.",
-      "empty": "No payments yet",
-      "emptyDescription": "You haven't made any payments yet.",
+      "title": "Histórico de Pagamentos",
+      "description": "Veja todos os seus pagamentos e transações anteriores.",
+      "empty": "Não há pagamentos ainda!",
+      "emptyDescription": "Você ainda não fez nenhum pagamento.",
       "columns": {
-        "name": "Description",
-        "date": "Date",
-        "amount": "Amount",
-        "status": "Status",
-        "frequency": "Type"
+        "name": "Descrição",
+        "date": "Data",
+        "amount": "Quantidade",
+        "status": "Estado",
+        "frequency": "Tipo"
       },
       "statuses": {
-        "Pending": "Pending",
-        "Succeeded": "Succeeded",
-        "Failed": "Failed"
+        "Pending": "Pendente",
+        "Succeeded": "Sucesso",
+        "Failed": "Falha"
       },
       "frequencies": {
-        "OneTime": "One-time",
-        "Monthly": "Monthly"
+        "OneTime": "Doação única",
+        "Monthly": "Mensalmente"
       }
     },
     "detail": {
-      "title": "Payment Details",
-      "name": "Description",
-      "status": "Status",
-      "frequency": "Type",
+      "title": "Detalhes de Pagamento",
+      "name": "Descrição",
+      "status": "Estado",
+      "frequency": "Tipo",
       "subtotal": "Subtotal",
-      "discount": "Discount",
+      "discount": "Desconto",
       "total": "Total",
-      "currency": "Currency",
-      "date": "Date",
-      "expiredAt": "Expired At",
-      "invoice": "Invoice",
-      "viewInvoice": "View Invoice",
-      "viewCheckoutSession": "View Checkout Session"
+      "currency": "Moeda",
+      "date": "Data",
+      "expiredAt": "Valido até",
+      "invoice": "Nota Fiscal",
+      "viewInvoice": "Ver Nota Fiscal",
+      "viewCheckoutSession": "Ver Sessão de Checkout"
     }
   }
 }

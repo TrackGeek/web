@@ -1,8 +1,8 @@
 {
   "yes": "sim",
   "no": "não",
-  "billing": "Billing",
-  "home": "Home",
+  "billing": "Faturação",
+  "home": "Início",
   "feed": "Feed",
   "donate": "Doar",
   "legal": "Jurídico",
@@ -11,9 +11,9 @@
   "addData": "Adicionar dados",
   "privacy": "Política de Privacidade",
   "terms": "Termos de Serviço",
-  "get": "Get",
-  "upgrade": "Upgrade",
-  "alreadyObtained": "Already obtained",
+  "get": "Obter",
+  "upgrade": "Atualizar",
+  "alreadyObtained": "Já obtido",
   "translate": "Traduzir",
   "settings": "Configurações",
   "notifications": "Notificações",
@@ -108,8 +108,8 @@
   "send": "Enviar",
   "goHome": "Voltar à Página Inicial",
   "notFound": "A página que procuras pode ter sido <br />movida ou não existe.",
-  "notLoggedIn": "You need to be logged in.",
-  "somethingWentWrong": "Something went wrong. Please try again later.",
-  "internalError": "Uh oh! Don't worry! It's not you - it's us.<br />We're trying to fix the problem. Try again later!",
-  "reportError": "Report error"
+  "notLoggedIn": "Precisas estar conectado.",
+  "somethingWentWrong": "Algo correu mal. Por favor, tente mais tarde.",
+  "internalError": "Uh oh! Não te preocupes! Não és tu - somos nós.<br />Nós já estamos a tentar corrigir o problema. Tenta novamente mais tarde!",
+  "reportError": "Comunicar erro"
 }

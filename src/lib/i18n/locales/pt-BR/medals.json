@@ -1,10 +1,10 @@
 {
   "contributor": {
-    "name": "Contributor",
-    "description": "Awarded for contributing to the project."
+    "name": "Contribuidor",
+    "description": "Concedido por contribuir para o projeto."
   },
   "staff": {
-    "name": "Staff",
-    "description": "Awarded to staff members for their dedication and hard work."
+    "name": "Equipe",
+    "description": "Concedido aos membros da equipe pela sua dedicação e trabalho árduo."
   }
 }

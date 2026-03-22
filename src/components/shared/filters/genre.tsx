@@ -143,41 +143,37 @@ const GENRE_CONFIG: Record<ContentType, string[]> = {
   ],
 };
 
-const jikanApi = axios.create({
-  baseURL: "https://api.jikan.moe/v4",
-});
+const jikanApi = axios.create({ baseURL: "https://api.jikan.moe/v4" });
 
 interface GenresProps {
   type: ContentType;
+  value?: string[];
+  onChange?: (value: string[] | undefined) => void;
 }
 
-export function Genres({ type }: GenresProps) {
+export function Genres({ type, value = [], onChange }: GenresProps) {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const fetchGenres = async () => {
       try {
         const response = await jikanApi.get(`/genres/${type}`);
         setGenres(response.data.data);
-      } catch (error) {
-        console.error("Failed to fetch genres:", error);
+      } catch {
         setGenres([]);
       } finally {
         setLoading(false);
       }
     };
-
     fetchGenres();
   }, [type]);
 
   const genreList = useMemo(() => {
-    if (genres.length > 0) {
-      return genres.map((g) => g.name);
-    }
-    return GENRE_CONFIG[type] || [];
+    return genres.length > 0 ? genres.map((g) => g.name) : (GENRE_CONFIG[type] ?? []);
   }, [genres, type]);
 
   const filteredGenres = useMemo(() => {
@@ -185,10 +181,14 @@ export function Genres({ type }: GenresProps) {
     return genreList.filter((genre) => genre.toLowerCase().includes(query));
   }, [genreList, search]);
 
+  const handleChange = (selected: string[]) => {
+    onChange?.(selected.length > 0 ? selected : undefined);
+  };
+
   return (
     <div>
       <h5 className="text-md font-semibold text-card-foreground mb-2">{t("library:genres")}</h5>
-      <Combobox items={filteredGenres} multiple={true} disabled={loading}>
+      <Combobox items={filteredGenres} multiple={true} disabled={loading} value={value} onValueChange={handleChange}>
         <ComboboxInput
           placeholder={t(loading ? "common:loading" : "library:genres")}
           showClear

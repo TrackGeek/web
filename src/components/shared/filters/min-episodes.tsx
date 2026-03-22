@@ -1,13 +1,24 @@
 import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input.tsx";
 
-export function MinEpisodes() {
+interface MinEpisodesProps {
+  value?: number;
+  onChange?: (value: number | undefined) => void;
+}
+
+export function MinEpisodes({ value, onChange }: MinEpisodesProps) {
   const { t } = useTranslation();
 
   return (
     <div>
       <h5 className="text-md font-semibold text-card-foreground mb-2">{t("library:episode_other")}</h5>
-      <Input type="number" placeholder={t("common:minEpisodes")} min={0} />
+      <Input
+        type="number"
+        placeholder={t("common:minEpisodes")}
+        min={0}
+        value={value ?? ""}
+        onChange={(e) => onChange?.(e.target.value ? Number(e.target.value) : undefined)}
+      />
     </div>
   );
 }

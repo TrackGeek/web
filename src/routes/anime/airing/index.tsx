@@ -52,6 +52,7 @@ function AiringAnimeRoute() {
             rating={+anime.rating}
             year={anime.airedFrom ? new Date(anime.airedFrom).getFullYear() : undefined}
             synopsis={anime.synopsis}
+            isAdult={anime.isAdult}
             mediaType={"anime"}
             key={anime.malId}
           />

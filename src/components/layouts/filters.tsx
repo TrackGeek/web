@@ -9,7 +9,23 @@ import { Year } from "@/components/shared/filters/year.tsx";
 
 export type ContentType = "anime" | "manga" | "book" | "game" | "movie" | "tv";
 
-export function Filters({ type }: { type: ContentType }) {
+export type FilterParams = {
+  status?: string;
+  genres?: string[];
+  year?: string;
+  sort?: string;
+  gameModes?: string[];
+  minEpisodes?: number;
+  minReading?: number;
+};
+
+interface FiltersProps {
+  type: ContentType;
+  values: FilterParams;
+  onChange: (patch: Partial<FilterParams>) => void;
+}
+
+export function Filters({ type, values, onChange }: FiltersProps) {
   const { t } = useTranslation();
 
   return (
@@ -17,19 +33,23 @@ export function Filters({ type }: { type: ContentType }) {
       <div className="bg-card rounded-2xl shadow-lg p-6 gap-4 flex flex-col">
         <h5 className="text-md font-semibold text-card-foreground">{t("user:filter")}</h5>
 
-        <Status type={type} />
+        <Status type={type} value={values.status} onChange={(v) => onChange({ status: v })} />
 
-        <Genres type={type} />
+        <Genres type={type} value={values.genres} onChange={(v) => onChange({ genres: v })} />
 
-        <Year type={type} />
+        <Year type={type} value={values.year} onChange={(v) => onChange({ year: v })} />
 
-        <Sort />
+        <Sort value={values.sort} onChange={(v) => onChange({ sort: v })} />
 
-        {type === "game" && <GameModes />}
+        {type === "game" && <GameModes value={values.gameModes} onChange={(v) => onChange({ gameModes: v })} />}
 
-        {(type === "anime" || type === "tv") && <MinEpisodes />}
+        {(type === "anime" || type === "tv") && (
+          <MinEpisodes value={values.minEpisodes} onChange={(v) => onChange({ minEpisodes: v })} />
+        )}
 
-        {(type === "manga" || type === "book") && <MinReading type={type} />}
+        {(type === "manga" || type === "book") && (
+          <MinReading type={type} value={values.minReading} onChange={(v) => onChange({ minReading: v })} />
+        )}
       </div>
     </div>
   );

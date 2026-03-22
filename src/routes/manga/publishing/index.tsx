@@ -50,6 +50,7 @@ function PublishingMangaRoute() {
             rating={manga.rating}
             year={new Date(manga.publishedFrom).getFullYear()}
             synopsis={manga.synopsis}
+            isAdult={manga.isAdult}
             mediaType={"manga"}
             key={manga.malId}
           />

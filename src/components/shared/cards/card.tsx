@@ -2,7 +2,9 @@ import ViteImage from "@son426/vite-image/react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Heart, Star } from "lucide-react";
 import { useState } from "react";
+import { ConfirmDeleteItem } from "@/components/shared/modals/delete.tsx";
 import { useSession } from "@/lib/auth.ts";
+import { cn } from "@/lib/utils";
 import { Button } from "../../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../ui/dialog";
 import { BookModal } from "../modals/book";
@@ -23,12 +25,30 @@ interface CardProps {
   synopsis: string;
   mediaType: MediaType;
   mediaData?: any;
+  isAdult?: boolean;
+  progress?: number;
+  total?: number;
+  key: string;
 }
 
-export function CardItem({ title, url, rating, year, imageURL, mediaType, synopsis }: CardProps) {
+export function CardItem({
+  title,
+  url,
+  rating,
+  year,
+  imageURL,
+  mediaType,
+  synopsis,
+  isAdult = false,
+  progress,
+  total,
+  key,
+}: CardProps) {
   const [mainDialogOpen, setMainDialogOpen] = useState(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [thrashDialogOpen, setThrashDialogOpen] = useState(false);
   const [_mediaStatus, setMediaStatus] = useState<string | null>(null);
+  const [currentProgress, setCurrentProgress] = useState(progress ?? 0);
 
   const handleStatusChange = (status: string) => {
     setMediaStatus(status);
@@ -41,19 +61,40 @@ export function CardItem({ title, url, rating, year, imageURL, mediaType, synops
     }
   };
 
+  const handleProgressIncrement = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (total === undefined || currentProgress < total) {
+      setCurrentProgress((prev) => prev + 1);
+    }
+    if (currentProgress + 1 === total) {
+      setReviewDialogOpen(true);
+    }
+  };
+
+  const showProgress = progress !== undefined && total !== undefined;
+
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
+
   return (
-    <div>
-      <div className="relative rounded-xl border border-border overflow-hidden aspect-3/4 group">
+    <div className="space-y-2">
+      <div className="relative rounded-lg border border-border overflow-hidden aspect-3/4 group">
         <Link to={url}>
           <div
-            className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:opacity-80"
-            style={{
-              backgroundImage: `url("${imageURL}")`,
-            }}
+            className={cn(
+              "absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:opacity-80",
+              isAdult && "blur-md group-hover:blur-none",
+            )}
+            style={{ backgroundImage: `url("${imageURL}")` }}
           />
         </Link>
+
+        {isAdult && (
+          <Button variant="destructive" size="xs" className="absolute top-1 left-1 group-hover:opacity-0">
+            NSFW
+          </Button>
+        )}
 
         {isAuthenticated && (
           <Dialog open={mainDialogOpen} onOpenChange={setMainDialogOpen}>
@@ -121,19 +162,41 @@ export function CardItem({ title, url, rating, year, imageURL, mediaType, synops
             </DialogContent>
           </Dialog>
         )}
+
+        {isAuthenticated && showProgress && (
+          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-auto flex items-center gap-1.5 bg-primary-foreground/65 backdrop-blur-sm rounded-full px-2.5 py-1 border border-primary/15">
+            <span className="text-xs font-medium text-white/90">
+              {currentProgress}/{total}
+            </span>
+            <Button
+              onClick={handleProgressIncrement}
+              className="size-5 px-0 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-white text-sm leading-none hover:bg-primary/30 transition-colors"
+            >
+              +
+            </Button>
+          </div>
+        )}
       </div>
 
       {isAuthenticated && (
-        <ReviewModal
-          open={reviewDialogOpen}
-          onOpenChange={setReviewDialogOpen}
-          mediaTitle={title}
-          mediaImage={imageURL}
-        />
+        <>
+          <ReviewModal
+            open={reviewDialogOpen}
+            onOpenChange={setReviewDialogOpen}
+            mediaTitle={title}
+            mediaImage={imageURL}
+          />
+          <ConfirmDeleteItem
+            open={thrashDialogOpen}
+            onOpenChange={setThrashDialogOpen}
+            mediaType={mediaType}
+            id={key}
+          />
+        </>
       )}
 
       <Link to={url}>
-        <p className="font-bold text-card-foreground mt-2 hover:text-primary transition-colors line-clamp-2">{title}</p>
+        <p className="font-bold text-card-foreground hover:text-primary transition-colors line-clamp-2">{title}</p>
       </Link>
     </div>
   );

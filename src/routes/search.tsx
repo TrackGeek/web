@@ -192,7 +192,7 @@ function RouteComponent() {
                     }
                     synopsis={item.synopsis ?? item.description}
                     isAdult={item.isAdult}
-                    mediaType={contentType as any}
+                    mediaType={contentType}
                   />
                 ))}
               </Grid>

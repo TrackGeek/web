@@ -10,7 +10,7 @@ const SORT_OPTIONS = [
   { value: "popularity", labelKey: "user:sort.popularity" },
 ];
 
-const CLEAR_VALUE = "__clear__";
+const CLEAR_VALUE = "title";
 
 interface SortProps {
   value?: string;
@@ -29,7 +29,6 @@ export function Sort({ value, onChange }: SortProps) {
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value={CLEAR_VALUE}>{t("common:all")}</SelectItem>
             {SORT_OPTIONS.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {t(option.labelKey)}

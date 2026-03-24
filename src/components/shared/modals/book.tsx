@@ -1,7 +1,10 @@
+import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Calendar1, Plus, Save, Star, Trash } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { api } from "@/lib/api.ts";
+import { useSession } from "@/lib/auth.ts";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";
@@ -23,6 +26,28 @@ export function BookModal({ mediaData: _, onStatusChange, onSaveSuccess }: BookM
   const [finishDate, setFinishDate] = useState<Date>();
   const [customLists, setCustomLists] = useState<string[]>(["2026", "Favorites", "Read Later"]);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const [newListInput, setNewListInput] = useState<string | null>(null);
+
+  const session = useSession();
+  const createListMutation = useMutation({
+    mutationFn: async (name: string) => {
+      await api.post("/list", {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, userId: session?.data?.user?.id, type: "Book" }),
+      });
+    },
+  });
+
+  const handleAddList = () => setNewListInput("");
+
+  const handleNewListBlur = () => {
+    if (newListInput?.trim()) {
+      const trimmed = newListInput.trim();
+      setCustomLists((prev) => [...prev, trimmed]);
+      createListMutation.mutate(trimmed);
+    }
+    setNewListInput(null);
+  };
   const { t } = useTranslation();
 
   const toggleCustomList = (list: string) => {
@@ -162,7 +187,7 @@ export function BookModal({ mediaData: _, onStatusChange, onSaveSuccess }: BookM
           <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-semibold text-foreground">{t("feed:customLists")}</h3>
-              <Button variant="ghost" size="sm" className="h-6 px-2">
+              <Button variant="ghost" size="sm" className="h-6 px-2" onClick={handleAddList}>
                 <Plus className="size-3" />
               </Button>
             </div>
@@ -179,6 +204,32 @@ export function BookModal({ mediaData: _, onStatusChange, onSaveSuccess }: BookM
                   </FieldLabel>
                 </Field>
               ))}
+              {customLists.slice(3).map((list) => (
+                <Field key={list} orientation="horizontal">
+                  <Checkbox
+                    id={list}
+                    checked={customLists.includes(list)}
+                    onCheckedChange={() => toggleCustomList(list)}
+                  />
+                  <FieldLabel htmlFor={list} className="cursor-pointer text-sm">
+                    {list}
+                  </FieldLabel>
+                </Field>
+              ))}
+              {newListInput !== null && (
+                <Field orientation="horizontal">
+                  <Checkbox checked={false} disabled />
+                  <Input
+                    autoFocus
+                    value={newListInput}
+                    onChange={(e) => setNewListInput(e.target.value)}
+                    onBlur={handleNewListBlur}
+                    onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+                    placeholder={t("feed:newList")}
+                    className="h-6 text-sm bg-background px-2 py-0"
+                  />
+                </Field>
+              )}
             </div>
           </div>
         </div>

@@ -1,8 +1,8 @@
 import ViteImage from "@son426/vite-image/react";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Heart, Star } from "lucide-react";
 import { useState } from "react";
-import { ConfirmDeleteItem } from "@/components/shared/modals/delete.tsx";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
 import { Button } from "../../ui/button";
@@ -42,11 +42,9 @@ export function CardItem({
   isAdult = false,
   progress,
   total,
-  key,
 }: CardProps) {
   const [mainDialogOpen, setMainDialogOpen] = useState(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
-  const [thrashDialogOpen, setThrashDialogOpen] = useState(false);
   const [_mediaStatus, setMediaStatus] = useState<string | null>(null);
   const [currentProgress, setCurrentProgress] = useState(progress ?? 0);
 
@@ -61,7 +59,22 @@ export function CardItem({
     }
   };
 
-  const handleProgressIncrement = (e) => {
+  const { data, isFetching, refetch } = useQuery({
+    queryKey: ["media-detail", mediaType, url],
+    queryFn: async () => {
+      // futura chamada à API
+      return true;
+    },
+    enabled: mainDialogOpen,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const handleDialogOpen = (open: boolean) => {
+    setMainDialogOpen(open);
+    if (open) refetch();
+  };
+
+  const handleProgressIncrement = (e: { preventDefault: () => void; stopPropagation: () => void }) => {
     e.preventDefault();
     e.stopPropagation();
     if (total === undefined || currentProgress < total) {
@@ -97,7 +110,7 @@ export function CardItem({
         )}
 
         {isAuthenticated && (
-          <Dialog open={mainDialogOpen} onOpenChange={setMainDialogOpen}>
+          <Dialog open={mainDialogOpen} onOpenChange={handleDialogOpen}>
             <DialogTrigger asChild>
               <Button
                 variant="secondary"
@@ -144,7 +157,7 @@ export function CardItem({
 
               <div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
                 {(mediaType === "anime" || mediaType === "tv") && (
-                  <EpisodicContentModal onStatusChange={handleStatusChange} />
+                  <EpisodicContentModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
                 )}
                 {mediaType === "movie" && (
                   <MovieModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
@@ -179,20 +192,12 @@ export function CardItem({
       </div>
 
       {isAuthenticated && (
-        <>
-          <ReviewModal
-            open={reviewDialogOpen}
-            onOpenChange={setReviewDialogOpen}
-            mediaTitle={title}
-            mediaImage={imageURL}
-          />
-          <ConfirmDeleteItem
-            open={thrashDialogOpen}
-            onOpenChange={setThrashDialogOpen}
-            mediaType={mediaType}
-            id={key}
-          />
-        </>
+        <ReviewModal
+          open={reviewDialogOpen}
+          onOpenChange={setReviewDialogOpen}
+          mediaTitle={title}
+          mediaImage={imageURL}
+        />
       )}
 
       <Link to={url}>

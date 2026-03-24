@@ -1,18 +1,18 @@
-import { useTranslation } from "react-i18next";
-import type { ContentType } from "@/components/layouts/filters.tsx";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
+import {useTranslation} from "react-i18next";
+import type {ContentType} from "@/components/layouts/filters.tsx";
+import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 
 const STATUS_OPTIONS: Record<ContentType, { value: string; labelKey: string }[]> = {
   anime: [
-    { value: "notYetAired", labelKey: "library:statusAir.notYetAired" },
-    { value: "currentlyAiring", labelKey: "library:statusAir.currentlyAiring" },
-    { value: "finishedAiring", labelKey: "library:statusAir.finishedAiring" },
+    {value: "upcoming", labelKey: "library:statusAir.notYetAired"},
+    {value: "airing", labelKey: "library:statusAir.currentlyAiring"},
+    {value: "complete", labelKey: "library:statusAir.finishedAiring"},
   ],
   manga: [
-    { value: "notYetPublished", labelKey: "library:statusAir.notYetPublished" },
+    {value: "upcoming", labelKey: "library:statusAir.notYetPublished"},
     { value: "publishing", labelKey: "library:statusAir.publishing" },
-    { value: "finished", labelKey: "library:statusAir.finished" },
-    { value: "onHiatus", labelKey: "library:statusAir.onHiatus" },
+    {value: "complete", labelKey: "library:statusAir.finished"},
+    {value: "hiatus", labelKey: "library:statusAir.onHiatus"},
     { value: "discontinued", labelKey: "library:statusAir.discontinued" },
   ],
   book: [

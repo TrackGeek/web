@@ -2,7 +2,9 @@ import ViteImage from "@son426/vite-image/react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Heart, Star } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { ContentType } from "@/components/layouts/filters.tsx";
+import { api } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
 import { Button } from "../../ui/button";
@@ -14,8 +16,6 @@ import { MangaModal } from "../modals/manga";
 import { MovieModal } from "../modals/movie";
 import { ReviewModal } from "../modals/review";
 
-type MediaType = "anime" | "movie" | "tv" | "game" | "book" | "manga";
-
 interface CardProps {
   title: string;
   url: string;
@@ -23,7 +23,7 @@ interface CardProps {
   rating: number;
   year: number | undefined;
   synopsis: string;
-  mediaType: MediaType;
+  mediaType: ContentType;
   mediaData?: any;
   isAdult?: boolean;
   progress?: number;
@@ -42,32 +42,58 @@ export function CardItem({
   isAdult = false,
   progress,
   total,
+  key,
 }: CardProps) {
   const [mainDialogOpen, setMainDialogOpen] = useState(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [_mediaStatus, setMediaStatus] = useState<string | null>(null);
   const [currentProgress, setCurrentProgress] = useState(progress ?? 0);
+  const [currentReviewId, setCurrentReviewId] = useState<string | undefined>(undefined);
+  const [id, setId] = useState<string | undefined>(undefined);
 
   const handleStatusChange = (status: string) => {
     setMediaStatus(status);
   };
 
-  const handleSaveSuccess = (status: string) => {
+  const handleSaveSuccess = (status: string, reviewId?: string) => {
     if (status === "completed" || status === "finished" || status === "played") {
+      setCurrentReviewId(reviewId);
       setMainDialogOpen(false);
       setReviewDialogOpen(true);
     }
   };
 
+  function getIDFromType(page: any, contentType: ContentType): string {
+    const data = page?.data;
+    switch (contentType) {
+      case "anime":
+        return data?.anime.id;
+      case "manga":
+        return data?.manga.id;
+      case "book":
+        return data?.book.id;
+      case "game":
+        return data?.game.id;
+      case "movie":
+        return data?.movie.id;
+      case "tv":
+        return data?.tvShow.id;
+    }
+  }
+
   const { data, isFetching, refetch } = useQuery({
-    queryKey: ["media-detail", mediaType, url],
-    queryFn: async () => {
-      // futura chamada à API
-      return true;
-    },
+    queryKey: ["media-detail", mediaType, key],
+    queryFn: () => api.get(`/${mediaType}/detail/${url.split("/").pop()}`),
     enabled: mainDialogOpen,
     staleTime: 1000 * 60 * 5,
   });
+
+  useEffect(() => {
+    if (!isFetching && data) {
+      const id = getIDFromType(data, mediaType);
+      setId(id);
+    }
+  }, [isFetching, data, mediaType]);
 
   const handleDialogOpen = (open: boolean) => {
     setMainDialogOpen(open);
@@ -166,7 +192,7 @@ export function CardItem({
                   <BookModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
                 )}
                 {mediaType === "game" && (
-                  <GameModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
+                  <GameModal gameId={id} onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
                 )}
                 {mediaType === "manga" && (
                   <MangaModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
@@ -197,6 +223,7 @@ export function CardItem({
           onOpenChange={setReviewDialogOpen}
           mediaTitle={title}
           mediaImage={imageURL}
+          reviewId={currentReviewId}
         />
       )}
 

@@ -184,7 +184,7 @@ export function GameDetailsRoute() {
 
   const reviewsData = useQuery({
     queryKey: ["gameReviews", slug],
-    queryFn: () => api.get(`/game/review/?gameId=${slug}`).then(({ data }) => data.gameReviews),
+    queryFn: () => api.get(`/game/review/?gameId=${game.id}`).then(({ data }) => data.gameReviews),
   });
   const reviews = reviewsData?.data;
 

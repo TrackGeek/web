@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Clipboard } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { type FilterParams, Filters } from "@/components/layouts/filters.tsx";
+import { type ContentType, type FilterParams, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid";
 import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
@@ -21,8 +21,6 @@ export const Route = createFileRoute("/search")({
   }),
   component: RouteComponent,
 });
-
-type ContentType = "anime" | "manga" | "book" | "game" | "movie" | "tv";
 
 const CONTENT_TYPES: { value: ContentType; labelKey: string }[] = [
   { value: "anime", labelKey: "common:types.anime" },

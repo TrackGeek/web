@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import { Check, Plus, Trash2, XIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -6,12 +7,14 @@ import { Button } from "@/components/ui/button.tsx";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { RatingGroupAdvanced } from "@/components/ui/rating-group-advanced.tsx";
+import { api } from "@/lib/api.ts";
 
 interface ReviewModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   mediaTitle: string;
   mediaImage: string;
+  reviewId?: string;
   ratingCriteria?: Array<{ id: string; label: string }>;
 }
 
@@ -20,6 +23,7 @@ export function ReviewModal({
   onOpenChange,
   mediaTitle = "Media Title",
   mediaImage,
+  reviewId,
   ratingCriteria = [
     { id: "gameplay", label: "Gameplay" },
     { id: "graphics", label: "Graphics" },
@@ -36,6 +40,18 @@ export function ReviewModal({
   const [cons, setCons] = useState<string[]>([]);
   const [newPro, setNewPro] = useState("");
   const [newCon, setNewCon] = useState("");
+
+  const updateReviewMutation = useMutation({
+    mutationFn: async (payload: Record<string, unknown>) => {
+      try {
+        const { data } = await api.patch(`/game/review/${reviewId}`, payload);
+        return data;
+      } catch (error) {
+        console.error("API Error:", error);
+        throw error;
+      }
+    },
+  });
 
   const handleAddPro = () => {
     if (newPro.trim()) {
@@ -63,13 +79,17 @@ export function ReviewModal({
     setCriteriaRatings((prev) => ({ ...prev, [criteriaId]: value }));
   };
 
-  const handleSubmit = () => {
-    console.log({
-      overallRating,
-      criteriaRatings,
-      pros,
-      cons,
+  const handleSubmit = async () => {
+    if (!reviewId) return;
+
+    await updateReviewMutation.mutateAsync({
+      overall: Number(overallRating),
+      gameplay: Number(criteriaRatings.gameplay),
+      graphics: Number(criteriaRatings.graphics),
+      sound: Number(criteriaRatings.sound),
+      story: Number(criteriaRatings.story),
     });
+
     onOpenChange(false);
   };
 
@@ -206,8 +226,8 @@ export function ReviewModal({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             {t("feed:cancel")}
           </Button>
-          <Button onClick={handleSubmit} className="gap-2">
-            {t("feed:save")}
+          <Button onClick={handleSubmit} className="gap-2" disabled={updateReviewMutation.isPending || !reviewId}>
+            {updateReviewMutation.isPending ? t("feed:saving") : t("feed:save")}
           </Button>
         </div>
       </DialogContent>

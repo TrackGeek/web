@@ -2,7 +2,7 @@ import ViteImage from "@son426/vite-image/react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Heart, Star } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { ContentType } from "@/components/layouts/filters.tsx";
 import { api } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
@@ -31,6 +31,8 @@ interface CardProps {
   key: string;
 }
 
+const COMPLETED_STATUSES = new Set(["played", "completed", "finished"]);
+
 export function CardItem({
   title,
   url,
@@ -46,40 +48,21 @@ export function CardItem({
 }: CardProps) {
   const [mainDialogOpen, setMainDialogOpen] = useState(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
-  const [_mediaStatus, setMediaStatus] = useState<string | null>(null);
+  const [pendingReviewId, setPendingReviewId] = useState<string | undefined>(undefined);
+
+  const [pendingModalData, setPendingModalData] = useState<{
+    status: string;
+    reviewId?: string;
+    startDate?: Date;
+    endDate?: Date;
+  } | null>(null);
+
   const [currentProgress, setCurrentProgress] = useState(progress ?? 0);
-  const [currentReviewId, setCurrentReviewId] = useState<string | undefined>(undefined);
-  const [id, setId] = useState<string | undefined>(undefined);
 
-  const handleStatusChange = (status: string) => {
-    setMediaStatus(status);
-  };
+  const session = useSession();
+  const isAuthenticated = !!session?.data?.session;
 
-  const handleSaveSuccess = (status: string, reviewId?: string) => {
-    if (status === "completed" || status === "finished" || status === "played") {
-      setCurrentReviewId(reviewId);
-      setMainDialogOpen(false);
-      setReviewDialogOpen(true);
-    }
-  };
-
-  function getIDFromType(page: any, contentType: ContentType): string {
-    const data = page?.data;
-    switch (contentType) {
-      case "anime":
-        return data?.anime.id;
-      case "manga":
-        return data?.manga.id;
-      case "book":
-        return data?.book.id;
-      case "game":
-        return data?.game.id;
-      case "movie":
-        return data?.movie.id;
-      case "tv":
-        return data?.tvShow.id;
-    }
-  }
+  const [modalOpenedAt, setModalOpenedAt] = useState<Date | null>(null);
 
   const { data, isFetching, refetch } = useQuery({
     queryKey: ["media-detail", mediaType, key],
@@ -88,33 +71,70 @@ export function CardItem({
     staleTime: 1000 * 60 * 5,
   });
 
-  useEffect(() => {
-    if (!isFetching && data) {
-      const id = getIDFromType(data, mediaType);
-      setId(id);
+  const getIDFromType = (page: any, contentType: ContentType): string | undefined => {
+    const d = page?.data;
+    switch (contentType) {
+      case "anime":
+        return d?.anime?.id;
+      case "manga":
+        return d?.manga?.id;
+      case "book":
+        return d?.book?.id;
+      case "game":
+        return d?.game?.id;
+      case "movie":
+        return d?.movie?.id;
+      case "tv":
+        return d?.tvShow?.id;
     }
-  }, [isFetching, data, mediaType]);
+  };
+
+  const mediaId = !isFetching && data ? getIDFromType(data, mediaType) : undefined;
 
   const handleDialogOpen = (open: boolean) => {
     setMainDialogOpen(open);
-    if (open) refetch();
+    if (open) {
+      setModalOpenedAt((prev) => prev ?? new Date());
+      refetch();
+    }
   };
 
-  const handleProgressIncrement = (e: { preventDefault: () => void; stopPropagation: () => void }) => {
+  const handleModalSave = (status: string, reviewId?: string) => {
+    const isCompleted = COMPLETED_STATUSES.has(status);
+
+    setPendingModalData({
+      status,
+      reviewId,
+      startDate: modalOpenedAt ?? new Date(),
+      endDate: isCompleted ? new Date() : undefined,
+    });
+    setPendingReviewId(reviewId);
+
+    setMainDialogOpen(false);
+    if (isCompleted) setReviewDialogOpen(true);
+  };
+
+  const handleReviewSubmit = () => {
+    setReviewDialogOpen(false);
+    setPendingModalData(null);
+    setModalOpenedAt(null);
+  };
+
+  const handleProgressIncrement = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
     if (total === undefined || currentProgress < total) {
-      setCurrentProgress((prev) => prev + 1);
-    }
-    if (currentProgress + 1 === total) {
-      setReviewDialogOpen(true);
+      const next = currentProgress + 1;
+      setCurrentProgress(next);
+
+      if (next === total) {
+        setReviewDialogOpen(true);
+      }
     }
   };
 
   const showProgress = progress !== undefined && total !== undefined;
-
-  const session = useSession();
-  const isAuthenticated = !!session?.data?.session;
 
   return (
     <div className="space-y-2">
@@ -146,7 +166,8 @@ export function CardItem({
                 <ChevronDown className="size-4" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
+
+            <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0" aria-dialog={synopsis}>
               <DialogHeader
                 className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
                 style={{
@@ -183,39 +204,37 @@ export function CardItem({
 
               <div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
                 {(mediaType === "anime" || mediaType === "tv") && (
-                  <EpisodicContentModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
+                  <EpisodicContentModal onSaveSuccess={handleModalSave} />
                 )}
-                {mediaType === "movie" && (
-                  <MovieModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
-                )}
-                {mediaType === "book" && (
-                  <BookModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
-                )}
+                {mediaType === "movie" && <MovieModal onSaveSuccess={handleModalSave} />}
+                {mediaType === "book" && <BookModal onSaveSuccess={handleModalSave} />}
                 {mediaType === "game" && (
-                  <GameModal gameId={id} onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
+                  <GameModal
+                    gameId={mediaId}
+                    initialStartDate={modalOpenedAt ?? undefined}
+                    onSaveSuccess={handleModalSave}
+                  />
                 )}
-                {mediaType === "manga" && (
-                  <MangaModal onStatusChange={handleStatusChange} onSaveSuccess={handleSaveSuccess} />
-                )}
+                {mediaType === "manga" && <MangaModal onSaveSuccess={handleModalSave} />}
               </div>
             </DialogContent>
           </Dialog>
         )}
-
-        {isAuthenticated && showProgress && (
-          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-auto flex items-center gap-1.5 bg-primary-foreground/65 backdrop-blur-sm rounded-full px-2.5 py-1 border border-primary/15">
-            <span className="text-xs font-medium text-white/90">
-              {currentProgress}/{total}
-            </span>
-            <Button
-              onClick={handleProgressIncrement}
-              className="size-5 px-0 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-white text-sm leading-none hover:bg-primary/30 transition-colors"
-            >
-              +
-            </Button>
-          </div>
-        )}
       </div>
+
+      {isAuthenticated && showProgress && (
+        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-auto flex items-center gap-1.5 bg-primary-foreground/65 backdrop-blur-sm rounded-full px-2.5 py-1 border border-primary/15">
+          <span className="text-xs font-medium text-white/90">
+            {currentProgress}/{total}
+          </span>
+          <Button
+            onClick={handleProgressIncrement}
+            className="size-5 px-0 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-white text-sm leading-none hover:bg-primary/30 transition-colors"
+          >
+            +
+          </Button>
+        </div>
+      )}
 
       {isAuthenticated && (
         <ReviewModal
@@ -223,7 +242,8 @@ export function CardItem({
           onOpenChange={setReviewDialogOpen}
           mediaTitle={title}
           mediaImage={imageURL}
-          reviewId={currentReviewId}
+          reviewId={pendingReviewId}
+          onSubmit={handleReviewSubmit}
         />
       )}
 

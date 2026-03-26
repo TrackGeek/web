@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { Calendar1, Image, Plus, Save, Star, Trash, X } from "lucide-react";
 import { type DragEvent, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useGameProgress, useGameReview, useUploadImage } from "@/hooks/game.ts";
+import { useGameReview, useUploadImage } from "@/hooks/game.ts";
 import { api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { Button } from "../../ui/button";
@@ -25,13 +25,13 @@ interface PendingScreenshot {
 
 interface GameModalProps {
   gameId?: string;
-  mediaData?: any;
+  initialStartDate?: Date;
   onStatusChange?: (status: string) => void;
   onSaveSuccess?: (status: string, reviewId?: string) => void;
 }
 
-export function GameModal({ gameId, mediaData: _, onStatusChange, onSaveSuccess }: GameModalProps) {
-  const [startDate, setStartDate] = useState<Date>();
+export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSuccess }: GameModalProps) {
+  const [startDate, setStartDate] = useState<Date | undefined>(initialStartDate);
   const [finishDate, setFinishDate] = useState<Date>();
   const [customLists, setCustomLists] = useState<string[]>(["2026", "Favorites", "Play Later"]);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
@@ -46,8 +46,6 @@ export function GameModal({ gameId, mediaData: _, onStatusChange, onSaveSuccess 
 
   const session = useSession();
   const userId = session?.data?.user?.id;
-
-  useGameProgress(userId, gameId);
 
   const gameReviewMutation = useGameReview();
   const uploadImageMutation = useUploadImage();
@@ -105,8 +103,9 @@ export function GameModal({ gameId, mediaData: _, onStatusChange, onSaveSuccess 
 
   const handleSave = async () => {
     if (!selectedStatus || !userId || !gameId) return;
+    console.log(userId, gameId);
 
-    if (selectedStatus === "played") {
+    if (selectedStatus === "played" || selectedStatus === "replayed") {
       const review = await gameReviewMutation.mutateAsync({
         gameId,
         userId,
@@ -155,6 +154,8 @@ export function GameModal({ gameId, mediaData: _, onStatusChange, onSaveSuccess 
                   onValueChange={(value) => {
                     setSelectedStatus(value);
                     onStatusChange?.(value);
+
+                    if ((value === "played" || value === "replayed") && !finishDate) setFinishDate(new Date());
                   }}
                 >
                   <SelectTrigger className="w-full bg-background">
@@ -443,7 +444,7 @@ export function GameModal({ gameId, mediaData: _, onStatusChange, onSaveSuccess 
           <Button variant="outline" size="sm">
             {t("feed:cancel")}
           </Button>
-          <Button size="sm" className="gap-2" onClick={handleSave} disabled={isSaving || !selectedStatus}>
+          <Button size="sm" className="gap-2" onClick={handleSave} disabled={isSaving || !selectedStatus || !gameId}>
             <Save className="size-4" />
             {isSaving ? t("feed:saving") : t("feed:save")}
           </Button>

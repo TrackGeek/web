@@ -16,6 +16,7 @@ interface ReviewModalProps {
   mediaImage: string;
   reviewId?: string;
   ratingCriteria?: Array<{ id: string; label: string }>;
+  onSubmit?: () => void;
 }
 
 export function ReviewModal({
@@ -24,6 +25,7 @@ export function ReviewModal({
   mediaTitle = "Media Title",
   mediaImage,
   reviewId,
+  onSubmit,
   ratingCriteria = [
     { id: "gameplay", label: "Gameplay" },
     { id: "graphics", label: "Graphics" },
@@ -91,6 +93,7 @@ export function ReviewModal({
     });
 
     onOpenChange(false);
+    onSubmit?.();
   };
 
   return (

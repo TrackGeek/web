@@ -44,6 +44,9 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // IN BUILD
+  console.log(selectedCompletion);
+
   const session = useSession();
   const userId = session?.data?.user?.id;
 
@@ -292,13 +295,20 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
             </div>
           </div>
 
-          {/** biome-ignore lint/a11y/noStaticElementInteractions: false positive */}
+          {/** biome-ignore lint/a11y/useSemanticElements: false */}
           <div
+            role={"button"}
+            tabIndex={0}
             className="flex flex-col justify-center rounded-md border mt-2 border-dashed border-input px-6 py-8 text-muted-foreground cursor-pointer"
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
-            onKeyDown={() => fileInputRef.current?.click()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                fileInputRef.current?.click();
+              }
+            }}
           >
             <Image className="mx-auto size-12" aria-hidden={true} />
             <p className="relative text-sm font-medium text-center mt-2">

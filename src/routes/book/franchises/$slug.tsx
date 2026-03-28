@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Heart, Share } from "lucide-react";
-import { Filters } from "@/components/layouts/filters.tsx";
+import { useCallback, useState } from "react";
+import { type FilterParams, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import booksData from "@/lib/mockups/books.json";
@@ -12,6 +13,12 @@ export const Route = createFileRoute("/book/franchises/$slug")({
 function BookFranchisesRoute() {
   const { slug: _ } = Route.useParams();
   const books = booksData;
+
+  const [filters, setFilters] = useState<FilterParams>({});
+
+  const handleFilterChange = useCallback((patch: Partial<FilterParams>) => {
+    setFilters((prev) => ({ ...prev, ...patch }));
+  }, []);
 
   return (
     <div className="mx-auto w-full space-y-4">
@@ -33,7 +40,7 @@ function BookFranchisesRoute() {
         );
       })}
       <div className="flex max-sm:flex-col gap-5 py-6">
-        <Filters type={"book"} />
+        <Filters values={filters} onChange={handleFilterChange} type={"book"} />
         <Grid minColSize={"120px"} className={"grid-cols-5"}>
           {books.map((book) => (
             <CardItem

@@ -34,19 +34,24 @@ export function MangaModal({ mediaData: _, onStatusChange, onSaveSuccess }: Mang
   const createListMutation = useMutation({
     mutationFn: async (name: string) => {
       await api.post("/list", {
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, userId: session?.data?.user?.id, type: "Manga" }),
+        name,
+        userId: session?.data?.user?.id,
+        type: "Manga",
       });
     },
   });
 
   const handleAddList = () => setNewListInput("");
 
-  const handleNewListBlur = () => {
+  const handleNewListBlur = async () => {
     if (newListInput?.trim()) {
       const trimmed = newListInput.trim();
+      if (!session?.data?.user?.id) {
+        setNewListInput(null);
+        return;
+      }
+      await createListMutation.mutateAsync(trimmed);
       setCustomLists((prev) => [...prev, trimmed]);
-      createListMutation.mutate(trimmed);
     }
     setNewListInput(null);
   };

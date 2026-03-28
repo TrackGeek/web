@@ -1,12 +1,12 @@
 import ViteImage from "@son426/vite-image/react";
-import {createFileRoute} from "@tanstack/react-router";
-import {Eye, EyeOff, Film, Heart, Share2} from "lucide-react";
-import {useState} from "react";
-import {useTranslation} from "react-i18next";
-import {CommentThread} from "@/components/pages/feed/comment-thread.tsx";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Button} from "@/components/ui/button";
-import {RatingGroupAdvanced} from "@/components/ui/rating-group-advanced.tsx";
+import { createFileRoute } from "@tanstack/react-router";
+import { Eye, EyeOff, Film, Heart, Share2 } from "lucide-react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { CommentThread } from "@/components/pages/feed/comment-thread.tsx";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { RatingGroupAdvanced } from "@/components/ui/rating-group-advanced.tsx";
 
 export const Route = createFileRoute("/review/$id")({
   component: RouteComponent,

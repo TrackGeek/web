@@ -1,19 +1,19 @@
-import { useMutation } from "@tanstack/react-query";
-import { format } from "date-fns";
-import { Calendar1, Plus, Save, Star, Trash } from "lucide-react";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { api } from "@/lib/api.ts";
-import { useSession } from "@/lib/auth.ts";
-import { Button } from "../../ui/button";
-import { Calendar } from "../../ui/calendar";
-import { Checkbox } from "../../ui/checkbox";
-import { Field, FieldLabel } from "../../ui/field";
-import { Input } from "../../ui/input";
-import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "../../ui/input-group";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
-import { Textarea } from "../../ui/textarea";
+import {useMutation} from "@tanstack/react-query";
+import {format} from "date-fns";
+import {Calendar1, Plus, Save, Star, Trash} from "lucide-react";
+import {useState} from "react";
+import {useTranslation} from "react-i18next";
+import {api} from "@/lib/api.ts";
+import {useSession} from "@/lib/auth.ts";
+import {Button} from "../../ui/button";
+import {Calendar} from "../../ui/calendar";
+import {Checkbox} from "../../ui/checkbox";
+import {Field, FieldLabel} from "../../ui/field";
+import {Input} from "../../ui/input";
+import {InputGroup, InputGroupAddon, InputGroupInput, InputGroupText} from "../../ui/input-group";
+import {Popover, PopoverContent, PopoverTrigger} from "../../ui/popover";
+import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "../../ui/select";
+import {Textarea} from "../../ui/textarea";
 
 interface EpisodicContentModalProps {
   mediaData?: any;
@@ -34,8 +34,9 @@ export function EpisodicContentModal({ mediaData: _, onStatusChange, onSaveSucce
   const createListMutation = useMutation({
     mutationFn: async (name: string) => {
       await api.post("/list", {
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, userId: session?.data?.user?.id, type: "TVShow" }),
+        name,
+        userId: session?.data?.user?.id,
+        type: "TVShow",
       });
     },
   });

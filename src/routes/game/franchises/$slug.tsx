@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Heart, Share } from "lucide-react";
-import { Filters } from "@/components/layouts/filters.tsx";
+import { useCallback, useState } from "react";
+import { type FilterParams, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import gamesData from "@/lib/mockups/games.json";
@@ -12,6 +13,12 @@ export const Route = createFileRoute("/game/franchises/$slug")({
 function GameFranchiseRoute() {
   const { slug: _ } = Route.useParams();
   const games = Array.isArray(gamesData) ? gamesData : [gamesData.game];
+
+  const [filters, setFilters] = useState<FilterParams>({});
+
+  const handleFilterChange = useCallback((patch: Partial<FilterParams>) => {
+    setFilters((prev) => ({ ...prev, ...patch }));
+  }, []);
 
   return (
     <div className="mx-auto w-full">
@@ -40,7 +47,7 @@ function GameFranchiseRoute() {
         );
       })}
       <div className="flex max-sm:flex-col gap-5 py-6">
-        <Filters type={"game"} />
+        <Filters values={filters} onChange={handleFilterChange} type={"game"} />
         <Grid minColSize={"120px"} className={"grid-cols-5"}>
           {games.map((game) => (
             <CardItem

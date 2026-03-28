@@ -1,11 +1,11 @@
-import { useTranslation } from "react-i18next";
-import { GameModes } from "@/components/shared/filters/game-modes.tsx";
-import { Genres } from "@/components/shared/filters/genre.tsx";
+import {useTranslation} from "react-i18next";
+import {GameModes} from "@/components/shared/filters/game-modes.tsx";
+import {Genres} from "@/components/shared/filters/genre.tsx";
 // import { MinEpisodes } from "@/components/shared/filters/min-episodes.tsx";
 // import { MinReading } from "@/components/shared/filters/min-reading.tsx";
-import { Sort } from "@/components/shared/filters/sort.tsx";
-import { Status } from "@/components/shared/filters/status.tsx";
-import { Year } from "@/components/shared/filters/year.tsx";
+import {Sort} from "@/components/shared/filters/sort.tsx";
+import {Status} from "@/components/shared/filters/status.tsx";
+import {Year} from "@/components/shared/filters/year.tsx";
 
 export type ContentType = "anime" | "manga" | "book" | "game" | "movie" | "tv";
 
@@ -15,6 +15,7 @@ export type FilterParams = {
   year?: string;
   sort?: string;
   gameModes?: string[];
+  platforms?: string[];
   minEpisodes?: number;
   minReading?: number;
 };
@@ -41,7 +42,9 @@ export function Filters({ type, values, onChange }: FiltersProps) {
 
         <Sort value={values.sort} onChange={(v) => onChange({ sort: v })} />
 
-        {type === "game" && <GameModes value={values.gameModes} onChange={(v) => onChange({ gameModes: v })} />}
+        {type === "game" && (
+          <GameModes value={values.gameModes} platforms={values.platforms} onChange={(v) => onChange(v)} />
+        )}
 
         {/*(type === "anime" || type === "tv") && (
           <MinEpisodes value={values.minEpisodes} onChange={(v) => onChange({ minEpisodes: v })} />

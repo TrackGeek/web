@@ -1,6 +1,6 @@
-import { useTranslation } from "react-i18next";
-import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox.tsx";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
+import {useTranslation} from "react-i18next";
+import {Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList} from "@/components/ui/combobox.tsx";
+import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 
 const PLATFORMS = [
   "Nintendo Switch 2",
@@ -210,9 +210,9 @@ const PLATFORMS = [
 const CLEAR_VALUE = "__clear__";
 
 interface GameModesProps {
-  value?: string;
+  value?: string[];
   platforms?: string[];
-  onChange?: (patch: { gameMode?: string; platforms?: string[] }) => void;
+  onChange?: (patch: { gameModes?: string[]; platforms?: string[] }) => void;
 }
 
 export function GameModes({ value, platforms = [], onChange }: GameModesProps) {
@@ -223,8 +223,8 @@ export function GameModes({ value, platforms = [], onChange }: GameModesProps) {
       <div>
         <h5 className="text-md font-semibold text-card-foreground mb-2">{t("library:gameModes")}</h5>
         <Select
-          value={value ?? CLEAR_VALUE}
-          onValueChange={(v) => onChange?.({ gameMode: v === CLEAR_VALUE ? undefined : v })}
+          value={value?.[0] ?? CLEAR_VALUE}
+          onValueChange={(v) => onChange?.({ gameModes: v === CLEAR_VALUE ? undefined : [v] })}
         >
           <SelectTrigger className="w-full">
             <SelectValue placeholder={t("library:gameModes")} />

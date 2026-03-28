@@ -28,7 +28,6 @@ interface CardProps {
   isAdult?: boolean;
   progress?: number;
   total?: number;
-  key: string;
 }
 
 const COMPLETED_STATUSES = new Set(["played", "completed", "finished"]);
@@ -44,7 +43,6 @@ export function CardItem({
   isAdult = false,
   progress,
   total,
-  key,
 }: CardProps) {
   const [mainDialogOpen, setMainDialogOpen] = useState(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
@@ -64,9 +62,14 @@ export function CardItem({
 
   const [modalOpenedAt, setModalOpenedAt] = useState<Date | null>(null);
 
+  const detailId = url.split("/").pop();
+
+  // IN BUILD
+  console.log(pendingModalData);
+
   const { data, isFetching, refetch } = useQuery({
-    queryKey: ["media-detail", mediaType, key],
-    queryFn: () => api.get(`/${mediaType}/detail/${url.split("/").pop()}`),
+    queryKey: ["media-detail", mediaType, detailId],
+    queryFn: () => api.get(`/${mediaType}/detail/${detailId}`),
     enabled: mainDialogOpen,
     staleTime: 1000 * 60 * 5,
   });

@@ -39,47 +39,14 @@ function SpoilerTag({ children }: { children: string }) {
   );
 }
 
-function CriteriaRating({ label, value, max = 5 }: { label: string; value: number; max?: number }) {
-  return (
-    <div className="bg-muted/30 rounded-lg p-3 space-y-2">
-      <div className="flex justify-between items-center">
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</span>
-        <span className="text-xs font-semibold tabular-nums">{value}</span>
-      </div>
-      <div className="flex gap-1">
-        {[...Array(max)].map((_, i) => {
-          const full = i < Math.floor(value);
-          const half = !full && i < value;
-          return (
-            <div key={i} className="h-1 flex-1 rounded-full overflow-hidden bg-primary-foreground">
-              {full && <div className="h-full w-full bg-primary" />}
-              {half && <div className="h-full w-1/2 bg-primary" />}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 function RouteComponent() {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(234);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleLike = () => {
     setLiked(!liked);
     setLikeCount(liked ? likeCount - 1 : likeCount + 1);
   };
-
-  const criteriaRatings = {
-    story: 2.5,
-    animation: 5,
-    sound: 4,
-    characters: 4.5,
-  };
-
-  const overallRating = 4.5;
 
   const { t } = useTranslation();
 

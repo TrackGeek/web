@@ -1,19 +1,19 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import { Clipboard } from "lucide-react";
-import { useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { type ContentType, type FilterParams, Filters } from "@/components/layouts/filters.tsx";
-import { Grid } from "@/components/layouts/grid";
-import { CardItem } from "@/components/shared/cards/card";
-import { ErrorComponent } from "@/components/shared/error.tsx";
-import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { api } from "@/lib/api";
-import { seo } from "@/lib/utils/seo";
-import { useDebounce } from "@/lib/utils/useDebounce.ts";
-import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
+import {useInfiniteQuery} from "@tanstack/react-query";
+import {createFileRoute} from "@tanstack/react-router";
+import {Clipboard} from "lucide-react";
+import {useCallback, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {type ContentType, type FilterParams, Filters} from "@/components/layouts/filters.tsx";
+import {Grid} from "@/components/layouts/grid";
+import {CardItem} from "@/components/shared/cards/card";
+import {ErrorComponent} from "@/components/shared/error.tsx";
+import {LoadingFiltered} from "@/components/shared/loadings/filtered.tsx";
+import {Input} from "@/components/ui/input";
+import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {api} from "@/lib/api";
+import {seo} from "@/lib/utils/seo";
+import {useDebounce} from "@/lib/utils/useDebounce.ts";
+import {useInfiniteScroll} from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/search")({
   head: () => ({
@@ -182,7 +182,7 @@ function RouteComponent() {
                         "/placeholder/cover.webp",
                       ) || "/placeholder/cover.webp"
                     }
-                    rating={item.rating != null ? +item.rating : undefined}
+                    rating={item.rating}
                     year={
                       (item.airedFrom ?? item.releasedAt ?? item.publishedAt)
                         ? new Date(item.airedFrom ?? item.releasedAt ?? item.publishedAt).getFullYear()

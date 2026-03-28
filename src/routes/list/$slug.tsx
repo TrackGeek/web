@@ -1,9 +1,9 @@
 import ViteImage from "@son426/vite-image/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Heart, Share } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { type ContentType, Filters } from "@/components/layouts/filters.tsx";
+import { type ContentType, type FilterParams, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import { LinkTabs, LinkTabsList, LinkTabsTrigger } from "@/components/ui/link-tabs.tsx";
@@ -16,7 +16,13 @@ export const Route = createFileRoute("/list/$slug")({
 function ListRoute() {
   const { t } = useTranslation();
   const { slug } = Route.useParams();
+
   const [contentType] = useState<ContentType>("movie");
+  const [filters, setFilters] = useState<FilterParams>({});
+
+  const handleFilterChange = useCallback((patch: Partial<FilterParams>) => {
+    setFilters((prev) => ({ ...prev, ...patch }));
+  }, []);
 
   const user = {
     avatarUrl: "https://github.com/shadcn.png",
@@ -67,7 +73,7 @@ function ListRoute() {
         </LinkTabsList>
       </LinkTabs>
       <div className="flex max-sm:flex-col gap-5 py-6">
-        <Filters type={contentType} />
+        <Filters values={filters} onChange={handleFilterChange} type={contentType} />
         <Grid minColSize={"120px"} className="flex-1 md:w-2/3 grid gap-6">
           {movies.map((movie) => (
             <CardItem

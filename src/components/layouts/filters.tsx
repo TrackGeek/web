@@ -1,11 +1,10 @@
-import {useTranslation} from "react-i18next";
-import {GameModes} from "@/components/shared/filters/game-modes.tsx";
-import {Genres} from "@/components/shared/filters/genre.tsx";
-// import { MinEpisodes } from "@/components/shared/filters/min-episodes.tsx";
+import { useTranslation } from "react-i18next";
+import { GameModes } from "@/components/shared/filters/game-modes.tsx";
+import { Genres } from "@/components/shared/filters/genre.tsx"; // import { MinEpisodes } from "@/components/shared/filters/min-episodes.tsx";
 // import { MinReading } from "@/components/shared/filters/min-reading.tsx";
-import {Sort} from "@/components/shared/filters/sort.tsx";
-import {Status} from "@/components/shared/filters/status.tsx";
-import {Year} from "@/components/shared/filters/year.tsx";
+import { Sort } from "@/components/shared/filters/sort.tsx";
+import { Status } from "@/components/shared/filters/status.tsx";
+import { Year } from "@/components/shared/filters/year.tsx";
 
 export type ContentType = "anime" | "manga" | "book" | "game" | "movie" | "tv";
 

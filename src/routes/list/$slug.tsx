@@ -1,9 +1,9 @@
 import ViteImage from "@son426/vite-image/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Heart, Share } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { type ContentType, Filters } from "@/components/layouts/filters.tsx";
+import { type ContentType, type FilterParams, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import { LinkTabs, LinkTabsList, LinkTabsTrigger } from "@/components/ui/link-tabs.tsx";
@@ -16,7 +16,13 @@ export const Route = createFileRoute("/list/$slug")({
 function ListRoute() {
   const { t } = useTranslation();
   const { slug } = Route.useParams();
+
   const [contentType] = useState<ContentType>("movie");
+  const [filters, setFilters] = useState<FilterParams>({});
+
+  const handleFilterChange = useCallback((patch: Partial<FilterParams>) => {
+    setFilters((prev) => ({ ...prev, ...patch }));
+  }, []);
 
   const user = {
     avatarUrl: "https://github.com/shadcn.png",
@@ -29,7 +35,10 @@ function ListRoute() {
           <div className="relative w-full overflow-hidden rounded-xl border border-border" key={movie.id}>
             <img src={movie.backdropUrl} className="w-full h-60 md:h-100 object-cover" alt={movie.title} />
 
-            <div className="absolute inset-0 bg-linear-to-t from-primary/80 via-primary/30 to-transparent" />
+            <div
+              className="absolute inset-0 bg-linear-to-t from-primary-foreground/80 via-primary-foreground/30
+ to-transparent"
+            />
             <Heart className="absolute top-4 right-14 z-10" />
             <Share className="absolute top-4 right-4 z-10" />
             <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end gap-4">
@@ -64,7 +73,7 @@ function ListRoute() {
         </LinkTabsList>
       </LinkTabs>
       <div className="flex max-sm:flex-col gap-5 py-6">
-        <Filters type={contentType} />
+        <Filters values={filters} onChange={handleFilterChange} type={contentType} />
         <Grid minColSize={"120px"} className="flex-1 md:w-2/3 grid gap-6">
           {movies.map((movie) => (
             <CardItem

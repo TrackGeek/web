@@ -94,8 +94,8 @@ function AnimeDetailsRoute() {
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
-  if (isLoading || reviewsData.isLoading) return <LoadingDetails />;
-  if (isError || reviewsData.isError || !anime) return <ErrorComponent />;
+  if (isLoading) return <LoadingDetails />;
+  if (isError || !anime) return <ErrorComponent />;
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       <div className="lg:w-1/3">
@@ -314,7 +314,7 @@ function AnimeDetailsRoute() {
           </h1>
 
           <div className="flex flex-wrap items-center gap-6 border-b border-border pb-5">
-            {reviews.total >= 1 && (
+            {!reviewsData.isLoading && !reviewsData.isError && reviews.total >= 1 && (
               <div className="flex items-center gap-2">
                 <div className="flex">
                   <Star className="size-5 text-chart-3 fill-chart-3" />
@@ -341,7 +341,7 @@ function AnimeDetailsRoute() {
                 )}
                 <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
                 <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
-                {reviews.total >= 1 && (
+                {!reviewsData.isLoading && !reviewsData.isError && reviews.total >= 1 && (
                   <TabsTrigger value="reviews" className="capitalize">
                     {t("library:reviews")} ({reviews.total})
                   </TabsTrigger>
@@ -513,7 +513,10 @@ function AnimeDetailsRoute() {
                           key={episode.malId}
                           title={episode.title}
                           number={episode.malId}
-                          imageURL={episode.imageUrl}
+                          imageURL={episode.imageUrl.replace(
+                            "https://myanimelist.net/images/icon-banned-youtube.png",
+                            "/placeholder/banner-1.webp",
+                          )}
                         />
                       );
                     })}
@@ -523,26 +526,28 @@ function AnimeDetailsRoute() {
             <TabsContent value="relations">
               <Relations nodes={[]} edges={[]} />
             </TabsContent>
-            <TabsContent value="reviews">
-              <ReviewItem
-                user={{
-                  name: "John Doe",
-                  avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
-                  slug: "john-doe",
-                }}
-                reviewText={
-                  "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
-                }
-                criteries={{
-                  language: 5,
-                  characters: 4,
-                  all: 10,
-                  story: 8,
-                  theme: 9,
-                }}
-                date={new Date("2023-06-19")}
-              />
-            </TabsContent>
+            {!reviewsData.isLoading && !reviewsData.isError && reviews.total >= 1 && (
+              <TabsContent value="reviews">
+                <ReviewItem
+                  user={{
+                    name: "John Doe",
+                    avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
+                    slug: "john-doe",
+                  }}
+                  reviewText={
+                    "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
+                  }
+                  criteries={{
+                    language: 5,
+                    characters: 4,
+                    all: 10,
+                    story: 8,
+                    theme: 9,
+                  }}
+                  date={new Date("2023-06-19")}
+                />
+              </TabsContent>
+            )}
             <TabsContent value="lists">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <ListItem />

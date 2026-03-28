@@ -11,15 +11,27 @@ const YEAR_RANGES: Record<ContentType, { min: number; max: number }> = {
   tv: { min: 1927, max: new Date().getFullYear() + 2 },
 };
 
-export function Year({ type }: { type: ContentType }) {
-  const { t } = useTranslation();
+interface YearProps {
+  type: ContentType;
+  value?: string;
+  onChange?: (value: string | undefined) => void;
+}
 
+export function Year({ type, value, onChange }: YearProps) {
+  const { t } = useTranslation();
   const yearRange = YEAR_RANGES[type];
 
   return (
     <div>
       <h5 className="text-md font-semibold text-card-foreground mb-2">{t("library:year")}</h5>
-      <Input type="number" placeholder={t("library:year")} min={yearRange.min} max={yearRange.max} />
+      <Input
+        type="number"
+        placeholder={t("library:year")}
+        min={yearRange.min}
+        max={yearRange.max}
+        value={value ?? ""}
+        onChange={(e) => onChange?.(e.target.value || undefined)}
+      />
     </div>
   );
 }

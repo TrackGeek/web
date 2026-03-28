@@ -4,15 +4,15 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 
 const STATUS_OPTIONS: Record<ContentType, { value: string; labelKey: string }[]> = {
   anime: [
-    { value: "notYetAired", labelKey: "library:statusAir.notYetAired" },
-    { value: "currentlyAiring", labelKey: "library:statusAir.currentlyAiring" },
-    { value: "finishedAiring", labelKey: "library:statusAir.finishedAiring" },
+    { value: "upcoming", labelKey: "library:statusAir.notYetAired" },
+    { value: "airing", labelKey: "library:statusAir.currentlyAiring" },
+    { value: "complete", labelKey: "library:statusAir.finishedAiring" },
   ],
   manga: [
-    { value: "notYetPublished", labelKey: "library:statusAir.notYetPublished" },
+    { value: "upcoming", labelKey: "library:statusAir.notYetPublished" },
     { value: "publishing", labelKey: "library:statusAir.publishing" },
-    { value: "finished", labelKey: "library:statusAir.finished" },
-    { value: "onHiatus", labelKey: "library:statusAir.onHiatus" },
+    { value: "complete", labelKey: "library:statusAir.finished" },
+    { value: "hiatus", labelKey: "library:statusAir.onHiatus" },
     { value: "discontinued", labelKey: "library:statusAir.discontinued" },
   ],
   book: [
@@ -34,21 +34,28 @@ const STATUS_OPTIONS: Record<ContentType, { value: string; labelKey: string }[]>
   ],
 };
 
-export function Status({ type }: { type: ContentType }) {
-  const { t } = useTranslation();
+const CLEAR_VALUE = "__clear__";
 
-  const currentStatus = STATUS_OPTIONS[type];
+interface StatusProps {
+  type: ContentType;
+  value?: string;
+  onChange?: (value: string | undefined) => void;
+}
+
+export function Status({ type, value, onChange }: StatusProps) {
+  const { t } = useTranslation();
 
   return (
     <div>
       <h5 className="text-md font-semibold text-card-foreground mb-2">{t("library:status")}</h5>
-      <Select>
+      <Select value={value ?? CLEAR_VALUE} onValueChange={(v) => onChange?.(v === CLEAR_VALUE ? undefined : v)}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder={t("library:status")} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {currentStatus.map((option) => (
+            <SelectItem value={CLEAR_VALUE}>{t("common:all")}</SelectItem>
+            {STATUS_OPTIONS[type].map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {t(option.labelKey)}
               </SelectItem>

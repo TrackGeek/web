@@ -1,7 +1,10 @@
+import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Calendar1, Plus, Save, Star, Trash } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { api } from "@/lib/api.ts";
+import { useSession } from "@/lib/auth.ts";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";
@@ -15,16 +18,48 @@ import { Textarea } from "../../ui/textarea";
 interface EpisodicContentModalProps {
   mediaData?: any;
   onStatusChange?: (status: string) => void;
+  onSaveSuccess?: (status: string) => void;
 }
 
-export function EpisodicContentModal({ mediaData: _, onStatusChange }: EpisodicContentModalProps) {
+export function EpisodicContentModal({ mediaData: _, onStatusChange, onSaveSuccess }: EpisodicContentModalProps) {
   const [startDate, setStartDate] = useState<Date>();
   const [finishDate, setFinishDate] = useState<Date>();
   const [customLists, setCustomLists] = useState<string[]>(["2026", "Favorites", "Watch Later"]);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const [newListInput, setNewListInput] = useState<string | null>(null);
+
+  const session = useSession();
   const { t } = useTranslation();
+
+  const createListMutation = useMutation({
+    mutationFn: async (name: string) => {
+      await api.post("/list", {
+        name,
+        userId: session?.data?.user?.id,
+        type: "TVShow",
+      });
+    },
+  });
+
+  const handleAddList = () => setNewListInput("");
+
+  const handleNewListBlur = () => {
+    if (newListInput?.trim()) {
+      const trimmed = newListInput.trim();
+      setCustomLists((prev) => [...prev, trimmed]);
+      createListMutation.mutate(trimmed);
+    }
+    setNewListInput(null);
+  };
 
   const toggleCustomList = (list: string) => {
     setCustomLists((prev) => (prev.includes(list) ? prev.filter((l) => l !== list) : [...prev, list]));
+  };
+
+  const handleSave = async () => {
+    if (selectedStatus) {
+      onSaveSuccess?.(selectedStatus);
+    }
   };
 
   return (
@@ -41,7 +76,12 @@ export function EpisodicContentModal({ mediaData: _, onStatusChange }: EpisodicC
                 <FieldLabel htmlFor="status" className="text-sm font-medium">
                   {t("library:status")}
                 </FieldLabel>
-                <Select onValueChange={(value) => onStatusChange?.(value)}>
+                <Select
+                  onValueChange={(value) => {
+                    setSelectedStatus(value);
+                    onStatusChange?.(value);
+                  }}
+                >
                   <SelectTrigger className="w-full bg-background">
                     <SelectValue placeholder={t("feed:selectStatus")} />
                   </SelectTrigger>
@@ -143,13 +183,13 @@ export function EpisodicContentModal({ mediaData: _, onStatusChange }: EpisodicC
         <div className="space-y-4">
           <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
             <h3 className="font-semibold text-foreground mb-3">{t("feed:notes")}</h3>
-            <Textarea placeholder={t("feed:notesPlaceholder")} className="min-h-[100px] bg-background resize-none" />
+            <Textarea placeholder={t("feed:notesPlaceholder")} className="min-h-25 bg-background resize-none" />
           </div>
 
           <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-semibold text-foreground">{t("feed:customLists")}</h3>
-              <Button variant="ghost" size="sm" className="h-6 px-2">
+              <Button variant="ghost" size="sm" className="h-6 px-2" onClick={handleAddList}>
                 <Plus className="size-3" />
               </Button>
             </div>
@@ -166,6 +206,32 @@ export function EpisodicContentModal({ mediaData: _, onStatusChange }: EpisodicC
                   </FieldLabel>
                 </Field>
               ))}
+              {customLists.slice(3).map((list) => (
+                <Field key={list} orientation="horizontal">
+                  <Checkbox
+                    id={list}
+                    checked={customLists.includes(list)}
+                    onCheckedChange={() => toggleCustomList(list)}
+                  />
+                  <FieldLabel htmlFor={list} className="cursor-pointer text-sm">
+                    {list}
+                  </FieldLabel>
+                </Field>
+              ))}
+              {newListInput !== null && (
+                <Field orientation="horizontal">
+                  <Checkbox checked={false} disabled />
+                  <Input
+                    autoFocus
+                    value={newListInput}
+                    onChange={(e) => setNewListInput(e.target.value)}
+                    onBlur={handleNewListBlur}
+                    onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+                    placeholder={t("feed:newList")}
+                    className="h-6 text-sm bg-background px-2 py-0"
+                  />
+                </Field>
+              )}
             </div>
           </div>
         </div>
@@ -180,7 +246,7 @@ export function EpisodicContentModal({ mediaData: _, onStatusChange }: EpisodicC
           <Button variant="outline" size="sm">
             {t("feed:cancel")}
           </Button>
-          <Button size="sm" className="gap-2">
+          <Button size="sm" className="gap-2" onClick={handleSave}>
             <Save className="size-4" />
             {t("feed:save")}
           </Button>

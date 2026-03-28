@@ -89,7 +89,10 @@ function GameRoute() {
                     alt={game.name}
                   />
 
-                  <div className="absolute inset-0 bg-linear-to-t from-primary/80 via-primary/30 to-transparent" />
+                  <div
+                    className="absolute inset-0 bg-linear-to-t from-primary-foreground/80 via-primary-foreground/30
+ to-transparent"
+                  />
 
                   <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end gap-4">
                     {logoArt ? (

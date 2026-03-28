@@ -84,7 +84,10 @@ function MangaRoute() {
                     alt={manga.title}
                   />
 
-                  <div className="absolute inset-0 bg-linear-to-t from-primary/80 via-primary/30 to-transparent" />
+                  <div
+                    className="absolute inset-0 bg-linear-to-t from-primary-foreground/80 via-primary-foreground/30
+ to-transparent"
+                  />
 
                   <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end gap-4">
                     <h2 className="text-4xl font-bold drop-shadow-lg">{manga.title}</h2>
@@ -128,6 +131,7 @@ function MangaRoute() {
               rating={manga.rating}
               year={new Date(manga.publishedFrom).getFullYear()}
               synopsis={manga.synopsis}
+              isAdult={manga.isAdult}
               mediaType={"manga"}
               key={manga.malId}
             />
@@ -151,6 +155,7 @@ function MangaRoute() {
               rating={manga.rating}
               year={new Date(manga.publishedFrom).getFullYear()}
               synopsis={manga.synopsis}
+              isAdult={manga.isAdult}
               mediaType={"manga"}
               key={manga.malId}
             />
@@ -174,6 +179,7 @@ function MangaRoute() {
               rating={manga.rating}
               year={new Date(manga.publishedFrom).getFullYear()}
               synopsis={manga.synopsis}
+              isAdult={manga.isAdult}
               mediaType={"manga"}
               key={manga.malId}
             />
@@ -197,6 +203,7 @@ function MangaRoute() {
               rating={manga.rating}
               year={new Date(manga.publishedFrom).getFullYear()}
               synopsis={manga.synopsis}
+              isAdult={manga.isAdult}
               mediaType={"manga"}
               key={manga.malId}
             />

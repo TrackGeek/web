@@ -93,7 +93,7 @@ function AnimeRoute() {
                     alt={anime.title}
                   />
 
-                  <div className="absolute inset-0 bg-linear-to-t from-primary/80 via-primary/30 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-primary-foreground/80 via-primary-foreground/30 to-transparent" />
 
                   <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end gap-4">
                     <h2 className="text-4xl font-bold drop-shadow-lg">{anime.title}</h2>
@@ -139,6 +139,7 @@ function AnimeRoute() {
               rating={+anime.rating}
               year={anime.airedFrom ? new Date(anime.airedFrom).getFullYear() : undefined}
               synopsis={anime.synopsis}
+              isAdult={anime.isAdult}
               mediaType={"anime"}
               key={anime.malId}
             />
@@ -164,6 +165,7 @@ function AnimeRoute() {
               rating={+anime.rating}
               year={anime.airedFrom ? new Date(anime.airedFrom).getFullYear() : undefined}
               synopsis={anime.synopsis}
+              isAdult={anime.isAdult}
               mediaType={"anime"}
               key={anime.malId}
             />
@@ -189,6 +191,7 @@ function AnimeRoute() {
               rating={+anime.rating}
               year={anime.airedFrom ? new Date(anime.airedFrom).getFullYear() : undefined}
               synopsis={anime.synopsis}
+              isAdult={anime.isAdult}
               mediaType={"anime"}
               key={anime.malId}
             />
@@ -214,6 +217,7 @@ function AnimeRoute() {
               rating={+anime.rating}
               year={anime.airedFrom ? new Date(anime.airedFrom).getFullYear() : undefined}
               synopsis={anime.synopsis}
+              isAdult={anime.isAdult}
               mediaType={"anime"}
               key={anime.malId}
             />

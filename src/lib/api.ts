@@ -130,4 +130,9 @@ export const apiEndpoints = {
   deleteProfileAvatar: "/profile/avatar",
   updateProfileBanner: "/profile/banner",
   deleteProfileBanner: "/profile/banner",
+  uploadImage: "/upload/image",
+  gameReviewScreenshot: "/game/review/screenshot",
+  gameReview: "/game/review",
+  gameProgress: "/game/progress",
+  getGameDetails: (id: string) => `/game/detail/${id}`,
 };

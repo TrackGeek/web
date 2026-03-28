@@ -111,5 +111,6 @@
   "notLoggedIn": "Precisas estar conectado.",
   "somethingWentWrong": "Algo correu mal. Por favor, tente mais tarde.",
   "internalError": "Uh oh! Não te preocupes! Não és tu - somos nós.<br />Nós já estamos a tentar corrigir o problema. Tenta novamente mais tarde!",
-  "reportError": "Comunicar erro"
+  "reportError": "Comunicar erro",
+  "all": "All"
 }

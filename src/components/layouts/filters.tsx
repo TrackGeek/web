@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { GameModes } from "@/components/shared/filters/game-modes.tsx";
 import { Genres } from "@/components/shared/filters/genre.tsx";
-import { MinEpisodes } from "@/components/shared/filters/min-episodes.tsx";
-import { MinReading } from "@/components/shared/filters/min-reading.tsx";
+// import { MinEpisodes } from "@/components/shared/filters/min-episodes.tsx";
+// import { MinReading } from "@/components/shared/filters/min-reading.tsx";
 import { Sort } from "@/components/shared/filters/sort.tsx";
 import { Status } from "@/components/shared/filters/status.tsx";
 import { Year } from "@/components/shared/filters/year.tsx";
@@ -43,13 +43,13 @@ export function Filters({ type, values, onChange }: FiltersProps) {
 
         {type === "game" && <GameModes value={values.gameModes} onChange={(v) => onChange({ gameModes: v })} />}
 
-        {(type === "anime" || type === "tv") && (
+        {/*(type === "anime" || type === "tv") && (
           <MinEpisodes value={values.minEpisodes} onChange={(v) => onChange({ minEpisodes: v })} />
-        )}
+        ) */}
 
-        {(type === "manga" || type === "book") && (
+        {/*(type === "manga" || type === "book") && (
           <MinReading type={type} value={values.minReading} onChange={(v) => onChange({ minReading: v })} />
-        )}
+        )*/}
       </div>
     </div>
   );

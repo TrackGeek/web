@@ -5,7 +5,7 @@ import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
 import { CardItem } from "@/components/shared/cards/card";
 import { Genres } from "@/components/shared/filters/genre.tsx";
-import { MinEpisodes } from "@/components/shared/filters/min-episodes.tsx";
+// import { MinEpisodes } from "@/components/shared/filters/min-episodes.tsx";
 import { Sort } from "@/components/shared/filters/sort.tsx";
 import { Status } from "@/components/shared/filters/status.tsx";
 import { Year } from "@/components/shared/filters/year.tsx";
@@ -111,7 +111,9 @@ export function AnimeListRoute() {
             <Status type={"anime"} />
             <Genres type={"anime"} />
             <Year type={"anime"} />
-            <MinEpisodes />
+            {
+              //<MinEpisodes />
+            }
             <Sort />
           </div>
         </div>

@@ -27,7 +27,10 @@ function GameFranchiseRoute() {
               alt={game.name}
             />
 
-            <div className="absolute inset-0 bg-linear-to-t from-primary/80 via-primary/30 to-transparent" />
+            <div
+              className="absolute inset-0 bg-linear-to-t from-primary-foreground/80 via-primary-foreground/30
+ to-transparent"
+            />
             <Heart className="absolute top-4 right-14 z-10" />
             <Share className="absolute top-4 right-4 z-10" />
             <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end gap-4">

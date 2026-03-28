@@ -36,7 +36,7 @@ export function RefreshData({ sourceURL }: RefreshDataProps) {
               {t("feed:cancel")}
             </Button>
             <div className="flex gap-2">
-              <a href={sourceURL} target="_blank">
+              <a href={sourceURL} target="_blank" rel="noopener">
                 <Button size="sm" className="gap-2">
                   <ExternalLink className="size-4" />
                   {t("library:refreshDataModal.checkSource")}

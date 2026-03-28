@@ -134,4 +134,5 @@ export const apiEndpoints = {
   gameReviewScreenshot: "/game/review/screenshot",
   gameReview: "/game/review",
   gameProgress: "/game/progress",
+  getGameDetails: (id: string) => `/game/detail/${id}`,
 };

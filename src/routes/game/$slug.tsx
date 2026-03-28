@@ -15,33 +15,6 @@ import {
   SiX,
   SiYoutube,
 } from "@icons-pack/react-simple-icons";
-
-const websiteIconMap: Record<
-  string,
-  {
-    icon: ComponentType<SVGProps<SVGSVGElement>>;
-    hex?: string;
-  }
-> = {
-  Steam: { icon: SiSteam },
-  Wikipedia: { icon: SiWikipedia },
-  Twitch: { icon: SiTwitch },
-  Subreddit: { icon: SiReddit },
-  Discord: { icon: SiDiscord },
-  Playstation: { icon: SiItchdotio },
-  Xbox: { icon: SiGoogleplay },
-  YouTube: { icon: SiYoutube },
-  Epic: { icon: SiEpicgames },
-  "Official Website": { icon: ExternalLink },
-  Twitter: { icon: SiX },
-  Facebook: { icon: SiFacebook },
-  GOG: { icon: SiGogdotcom },
-  Instagram: { icon: SiInstagram },
-  "Community Wiki": { icon: BookSearch },
-  "App Store (iPhone)": { icon: SiAppstore },
-  Bluesky: { icon: SiBluesky },
-};
-
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { t } from "i18next";
@@ -81,10 +54,36 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { api } from "@/lib/api.ts";
+import { api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { seo } from "@/lib/utils/seo";
+
+const websiteIconMap: Record<
+  string,
+  {
+    icon: ComponentType<SVGProps<SVGSVGElement>>;
+    hex?: string;
+  }
+> = {
+  Steam: { icon: SiSteam },
+  Wikipedia: { icon: SiWikipedia },
+  Twitch: { icon: SiTwitch },
+  Subreddit: { icon: SiReddit },
+  Discord: { icon: SiDiscord },
+  Playstation: { icon: SiItchdotio },
+  Xbox: { icon: SiGoogleplay },
+  YouTube: { icon: SiYoutube },
+  Epic: { icon: SiEpicgames },
+  "Official Website": { icon: ExternalLink },
+  Twitter: { icon: SiX },
+  Facebook: { icon: SiFacebook },
+  GOG: { icon: SiGogdotcom },
+  Instagram: { icon: SiInstagram },
+  "Community Wiki": { icon: BookSearch },
+  "App Store (iPhone)": { icon: SiAppstore },
+  Bluesky: { icon: SiBluesky },
+};
 
 export const Route = createFileRoute("/game/$slug")({
   head: () => ({
@@ -178,15 +177,24 @@ export function GameDetailsRoute() {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["game", slug],
-    queryFn: () => api.get(`/game/detail/${slug}`).then(({ data }) => data.game),
+    queryFn: () => api.get(apiEndpoints.getGameDetails(slug)).then(({ data }) => data.game),
   });
   const game = data;
 
   const reviewsData = useQuery({
     queryKey: ["gameReviews", slug],
-    queryFn: () => api.get(`/game/review/?gameId=${game.id}`).then(({ data }) => data.gameReviews),
+    queryFn: () => api.get(`${apiEndpoints.gameReview}/?gameId=${game.id}`).then(({ data }) => data.gameReviews),
+    enabled: !!game,
   });
   const reviews = reviewsData?.data;
+
+  const screenshotsData = useQuery({
+    queryKey: ["gameScreenshots", slug],
+    queryFn: () =>
+      api.get(`${apiEndpoints.gameReviewScreenshot}/?gameId=${game.id}`).then(({ data }) => data.screenshots),
+    enabled: !!game,
+  });
+  const screenshots = screenshotsData?.data;
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
@@ -404,7 +412,11 @@ export function GameDetailsRoute() {
                   </TabsTrigger>
                 )}
                 <TabsTrigger value="lists">{t("library:lists")} (30)</TabsTrigger>
-                <TabsTrigger value="screenshots">{t("library:screenshots")} (67)</TabsTrigger>
+                {!screenshotsData.isLoading && !screenshotsData.isError && (
+                  <TabsTrigger value="screenshots">
+                    {t("library:screenshots")} ({screenshots?.length ?? 0})
+                  </TabsTrigger>
+                )}
               </TabsList>
             </div>
             <TabsContent value="info" className={"space-y-5"}>
@@ -580,25 +592,17 @@ export function GameDetailsRoute() {
                 return <Relations nodes={nodes} edges={edges} />;
               })()}
             </TabsContent>
-            <TabsContent value="screenshots">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <ImageZoom>
-                  <img src="https://images.igdb.com/igdb/image/upload/t_720p/sc5rij.webp" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://images.igdb.com/igdb/image/upload/t_720p/sc5rii.webp" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://images.igdb.com/igdb/image/upload/t_720p/sc5rim.webp" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://images.igdb.com/igdb/image/upload/t_720p/sc5rin.webp" alt="" />
-                </ImageZoom>
-                <ImageZoom>
-                  <img src="https://images.igdb.com/igdb/image/upload/t_720p/sc5riq.webp" alt="" />
-                </ImageZoom>
-              </div>
-            </TabsContent>
+            {!screenshotsData.isLoading && !screenshotsData.isError && (
+              <TabsContent value="screenshots">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {screenshots?.map((screenshot: { checksum: string; imageId: string }) => (
+                    <ImageZoom key={screenshot.checksum}>
+                      <img src={screenshot.imageId} alt="" />
+                    </ImageZoom>
+                  ))}
+                </div>
+              </TabsContent>
+            )}
           </Tabs>
         </div>
       </div>

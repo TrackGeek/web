@@ -5,7 +5,7 @@ import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
 import { CardItem } from "@/components/shared/cards/card";
 import { Genres } from "@/components/shared/filters/genre.tsx";
-import { MinReading } from "@/components/shared/filters/min-reading.tsx";
+// import { MinReading } from "@/components/shared/filters/min-reading.tsx";
 import { Sort } from "@/components/shared/filters/sort.tsx";
 import { Status } from "@/components/shared/filters/status.tsx";
 import { Year } from "@/components/shared/filters/year.tsx";
@@ -109,7 +109,9 @@ export function MangaListRoute() {
             <Status type={"manga"} />
             <Genres type={"manga"} />
             <Year type={"manga"} />
-            <MinReading type={"manga"} />
+            {
+              // <MinReading type={"manga"} />
+            }
             <Sort />
           </div>
         </div>

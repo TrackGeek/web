@@ -79,5 +79,16 @@
   "pros": "Pros",
   "cons": "Cons",
   "overall": "Overall",
-  "newList": "New list"
+  "newList": "New list",
+  "spoiler": "Spoiler",
+  "comment": "Comment",
+  "newest": "Newest",
+  "share": "Share",
+  "report": "Report",
+  "replyTo": "Reply to {{username}}",
+  "reply": "Reply",
+  "hideReplies": "Hide Replies",
+  "showReplies": "Show {{number}} replies",
+  "comments": "Comments",
+  "top": "Top"
 }

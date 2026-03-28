@@ -26,6 +26,8 @@ import { Route as GameIndexRouteImport } from './routes/game/index'
 import { Route as BookIndexRouteImport } from './routes/book/index'
 import { Route as AnimeIndexRouteImport } from './routes/anime/index'
 import { Route as TvSlugRouteImport } from './routes/tv/$slug'
+import { Route as ReviewIdRouteImport } from './routes/review/$id'
+import { Route as PostIdRouteImport } from './routes/post/$id'
 import { Route as MovieSlugRouteImport } from './routes/movie/$slug'
 import { Route as MangaSlugRouteImport } from './routes/manga/$slug'
 import { Route as ListSlugRouteImport } from './routes/list/$slug'
@@ -153,6 +155,16 @@ const AnimeIndexRoute = AnimeIndexRouteImport.update({
 const TvSlugRoute = TvSlugRouteImport.update({
   id: '/tv/$slug',
   path: '/tv/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewIdRoute = ReviewIdRouteImport.update({
+  id: '/review/$id',
+  path: '/review/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PostIdRoute = PostIdRouteImport.update({
+  id: '/post/$id',
+  path: '/post/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MovieSlugRoute = MovieSlugRouteImport.update({
@@ -400,6 +412,8 @@ export interface FileRoutesByFullPath {
   '/list/$slug': typeof ListSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
+  '/post/$id': typeof PostIdRoute
+  '/review/$id': typeof ReviewIdRoute
   '/tv/$slug': typeof TvSlugRoute
   '/anime/': typeof AnimeIndexRoute
   '/book/': typeof BookIndexRoute
@@ -462,6 +476,8 @@ export interface FileRoutesByTo {
   '/list/$slug': typeof ListSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
+  '/post/$id': typeof PostIdRoute
+  '/review/$id': typeof ReviewIdRoute
   '/tv/$slug': typeof TvSlugRoute
   '/anime': typeof AnimeIndexRoute
   '/book': typeof BookIndexRoute
@@ -526,6 +542,8 @@ export interface FileRoutesById {
   '/list/$slug': typeof ListSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
+  '/post/$id': typeof PostIdRoute
+  '/review/$id': typeof ReviewIdRoute
   '/tv/$slug': typeof TvSlugRoute
   '/anime/': typeof AnimeIndexRoute
   '/book/': typeof BookIndexRoute
@@ -590,6 +608,8 @@ export interface FileRouteTypes {
     | '/list/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
+    | '/post/$id'
+    | '/review/$id'
     | '/tv/$slug'
     | '/anime/'
     | '/book/'
@@ -652,6 +672,8 @@ export interface FileRouteTypes {
     | '/list/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
+    | '/post/$id'
+    | '/review/$id'
     | '/tv/$slug'
     | '/anime'
     | '/book'
@@ -715,6 +737,8 @@ export interface FileRouteTypes {
     | '/list/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
+    | '/post/$id'
+    | '/review/$id'
     | '/tv/$slug'
     | '/anime/'
     | '/book/'
@@ -777,6 +801,8 @@ export interface RootRouteChildren {
   ListSlugRoute: typeof ListSlugRoute
   MangaSlugRoute: typeof MangaSlugRoute
   MovieSlugRoute: typeof MovieSlugRoute
+  PostIdRoute: typeof PostIdRoute
+  ReviewIdRoute: typeof ReviewIdRoute
   TvSlugRoute: typeof TvSlugRoute
   AnimeIndexRoute: typeof AnimeIndexRoute
   BookIndexRoute: typeof BookIndexRoute
@@ -939,6 +965,20 @@ declare module '@tanstack/react-router' {
       path: '/tv/$slug'
       fullPath: '/tv/$slug'
       preLoaderRoute: typeof TvSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/review/$id': {
+      id: '/review/$id'
+      path: '/review/$id'
+      fullPath: '/review/$id'
+      preLoaderRoute: typeof ReviewIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/post/$id': {
+      id: '/post/$id'
+      path: '/post/$id'
+      fullPath: '/post/$id'
+      preLoaderRoute: typeof PostIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/movie/$slug': {
@@ -1287,6 +1327,8 @@ const rootRouteChildren: RootRouteChildren = {
   ListSlugRoute: ListSlugRoute,
   MangaSlugRoute: MangaSlugRoute,
   MovieSlugRoute: MovieSlugRoute,
+  PostIdRoute: PostIdRoute,
+  ReviewIdRoute: ReviewIdRoute,
   TvSlugRoute: TvSlugRoute,
   AnimeIndexRoute: AnimeIndexRoute,
   BookIndexRoute: BookIndexRoute,

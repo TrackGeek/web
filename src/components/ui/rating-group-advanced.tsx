@@ -119,9 +119,10 @@ function RatingGroupAdvanced({
             className={cn(
               "relative border-0 bg-transparent p-0 hover:bg-transparent data-[state=on]:bg-transparent focus-visible:ring-0",
               "hover:scale-110 focus-visible:scale-110 transition-transform ease-out",
-              (disabled || readOnly) && "pointer-events-none opacity-50",
+              (disabled || readOnly) && "pointer-events-none",
+              disabled && "opacity-50",
             )}
-            disabled={disabled || readOnly}
+            disabled={disabled}
           >
             {allowHalf ? (
               <div className="relative">

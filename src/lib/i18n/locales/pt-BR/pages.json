@@ -248,7 +248,7 @@
       "price": "Preço",
       "renewsAt": "Renovar em",
       "cancel": "Cancelar Assinatura",
-      "cancelConfirm": "Are you sure you want to cancel your subscription?",
+      "cancelConfirm": "Tem certeza que deseja cancelar sua assinatura?",
       "cancelBack": "Voltar atrás",
       "cancelConfirmButton": "Sim, cancelar",
       "cancelSuccess": "Sua assinatura foi cancelada com sucesso.",

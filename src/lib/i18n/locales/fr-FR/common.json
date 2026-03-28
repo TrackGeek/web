@@ -111,5 +111,6 @@
   "notLoggedIn": "You need to be logged in.",
   "somethingWentWrong": "Something went wrong. Please try again later.",
   "internalError": "Uh oh! Don't worry! It's not you - it's us.<br />We're trying to fix the problem. Try again later!",
-  "reportError": "Report error"
+  "reportError": "Report error",
+  "all": "All"
 }

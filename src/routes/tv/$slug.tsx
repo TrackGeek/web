@@ -35,6 +35,7 @@ import { EpisodeItem } from "@/components/pages/details/episode";
 import { ListItem } from "@/components/pages/details/list";
 import { EpisodeProgress, type SeasonData } from "@/components/pages/details/progress";
 import { ReviewItem } from "@/components/pages/details/review";
+import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
@@ -53,14 +54,30 @@ import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
 
 export const Route = createFileRoute("/tv/$slug")({
-  head: () => ({
-    meta: [...seo({ title: "TV Show Details" })],
-  }),
+  loader: async ({ params }) => {
+    const item = await api.get(`/tv/detail/${params.slug}`).then(({ data }) => data.tvShow);
+    return { item };
+  },
+  head: ({ loaderData }) => {
+    const item = loaderData?.item;
+    return {
+      meta: [
+        ...seo({
+          title: item?.name ? item.name : "TV Show Details",
+          description: item?.tagline ?? item?.tagline ?? undefined,
+          image: item?.posterUrl ?? undefined,
+        }),
+      ],
+    };
+  },
   component: TVShowDetailsPage,
+  errorComponent: ErrorComponent,
+  notFoundComponent: NotFoundComponent,
 });
 
 export function TVShowDetailsPage() {
   const { slug } = Route.useParams();
+  const { item: loaderItem } = Route.useLoaderData();
 
   const { t } = useTranslation();
   const [mySeasons, _setMySeasons] = useState<SeasonData[]>([
@@ -88,6 +105,7 @@ export function TVShowDetailsPage() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["tv", slug],
     queryFn: () => api.get(`/tv/detail/${slug}`).then(({ data }) => data.tvShow),
+    initialData: loaderItem,
   });
   const item = data;
 
@@ -347,6 +365,7 @@ export function TVShowDetailsPage() {
                       <Link
                         key={genre}
                         to="/"
+                        search={{ landing: "true " }}
                         className={`px-3 py-1.5 bg-linear-to-r ${color} border rounded-full text-sm font-medium`}
                       >
                         {getGenreLabel(t, genre)}

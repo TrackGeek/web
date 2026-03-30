@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/manga/recommendations/")({
   component: RecommendationsMangaRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Manga Recommendations",
+        description:
+          "Manga recommendations based on others otakus. Discover hidden gems, trending Manhwa, and classic series tailored to your reading history and favorite genres.",
+      }),
+    ],
+  }),
 });
 
 function RecommendationsMangaRoute() {

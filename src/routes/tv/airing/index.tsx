@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/tv/airing/")({
   component: AiringTVShowRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Airing TV Shows",
+        description:
+          "Track TV episodes airing today. Get real-time schedules, countdowns, and never miss a new episode of your favorite ongoing series and reality shows.",
+      }),
+    ],
+  }),
 });
 
 function AiringTVShowRoute() {

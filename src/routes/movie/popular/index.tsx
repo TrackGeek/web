@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/movie/popular/")({
   component: PopularMovieRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Popular Movies",
+        description:
+          "Explore the most watched movies this month. From box office hits to streaming sensations, stay updated on what the global community is watching.",
+      }),
+    ],
+  }),
 });
 
 function PopularMovieRoute() {

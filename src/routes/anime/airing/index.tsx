@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/anime/airing/")({
   component: AiringAnimeRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Airing Anime",
+        description:
+          "Track the latest airing anime this season. Get real-time updates, episode schedules, and stay up to date with the most popular ongoing series.",
+      }),
+    ],
+  }),
 });
 
 function AiringAnimeRoute() {

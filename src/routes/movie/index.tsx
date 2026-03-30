@@ -8,9 +8,19 @@ import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
 import { api } from "@/lib/api.ts";
+import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/movie/")({
   component: MovieRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Movies",
+        description:
+          "The ultimate movie tracker and watchlist manager. Organize your film library, discover personalized recommendations, and analyze your viewing stats.",
+      }),
+    ],
+  }),
 });
 
 function MovieRoute() {

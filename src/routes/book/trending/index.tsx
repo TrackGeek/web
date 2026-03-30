@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/book/trending/")({
   component: TrendingBookRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Trending Books",
+        description:
+          "Discover the books everyone is talking about. Explore the latest viral hits, BookTok favorites, and trending titles across fiction, sci-fi, and romance.",
+      }),
+    ],
+  }),
 });
 
 function TrendingBookRoute() {

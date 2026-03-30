@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card.tsx";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api.ts";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/game/upcoming/")({
   component: UpcomingGameRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Upcoming Games",
+        description:
+          "Your complete video game release calendar. Stay ahead with launch dates, countdowns, and platform announcements for every upcoming game this year.",
+      }),
+    ],
+  }),
 });
 
 function UpcomingGameRoute() {

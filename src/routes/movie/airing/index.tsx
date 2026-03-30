@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/movie/airing/")({
   component: AiringMovieRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Airing Movies",
+        description:
+          "See what's playing in theaters right now. Get showtimes, trailers, and track the latest cinematic releases from major studios and indie creators.",
+      }),
+    ],
+  }),
 });
 
 function AiringMovieRoute() {

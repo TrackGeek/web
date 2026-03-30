@@ -44,6 +44,7 @@ import { Grid } from "@/components/layouts/grid.tsx";
 import { ListItem } from "@/components/pages/details/list";
 import { Relations } from "@/components/pages/details/relations";
 import { ReviewItem } from "@/components/pages/details/review";
+import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
@@ -86,10 +87,25 @@ const websiteIconMap: Record<
 };
 
 export const Route = createFileRoute("/game/$slug")({
-  head: () => ({
-    meta: [...seo({ title: "Game Details" })],
-  }),
+  loader: async ({ params }) => {
+    const game = await api.get(apiEndpoints.getGameDetails(params.slug)).then(({ data }) => data.game);
+    return { game };
+  },
+  head: ({ loaderData }) => {
+    const game = loaderData?.game;
+    return {
+      meta: [
+        ...seo({
+          title: game?.name ? game.name : "Game Details",
+          description: game?.summary ?? undefined,
+          image: game?.coverUrl ?? undefined,
+        }),
+      ],
+    };
+  },
   component: GameDetailsRoute,
+  errorComponent: ErrorComponent,
+  notFoundComponent: NotFoundComponent,
 });
 
 const LAYOUT = {
@@ -171,6 +187,7 @@ const buildRelationsData = (game: any) => {
 
 export function GameDetailsRoute() {
   const { slug } = Route.useParams();
+  const { game: loaderGame } = Route.useLoaderData();
 
   const rating = 4.2;
   const { t } = useTranslation();
@@ -178,6 +195,7 @@ export function GameDetailsRoute() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["game", slug],
     queryFn: () => api.get(apiEndpoints.getGameDetails(slug)).then(({ data }) => data.game),
+    initialData: loaderGame,
   });
   const game = data;
 
@@ -437,6 +455,7 @@ export function GameDetailsRoute() {
                       <Link
                         key={genre.name}
                         to="/"
+                        search={{ landing: "true" }}
                         className={`px-3 py-1.5 bg-linear-to-r ${color} border rounded-full text-sm font-medium`}
                       >
                         {getGenreLabel(t, genre.name)}

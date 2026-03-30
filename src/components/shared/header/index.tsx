@@ -43,7 +43,7 @@ export function Header() {
 
           <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) min-w-42 rounded-lg" align="start">
             <DropdownMenuItem asChild>
-              <Link to="/" className="cursor-pointer">
+              <Link to="/" className="cursor-pointer" search={{ landing: "true" }}>
                 <Home size={18} className="text-white" />
                 {t("common:home")}
               </Link>

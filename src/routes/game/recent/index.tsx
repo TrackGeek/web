@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card.tsx";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api.ts";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/game/recent/")({
   component: RecentGameRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Recent Games",
+        description:
+          "Just released and ready to play. Browse the latest game launches, day-one reviews, and recently added titles to your favorite platforms and subscription services.",
+      }),
+    ],
+  }),
 });
 
 function RecentGameRoute() {

@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card.tsx";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api.ts";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/game/antecipated/")({
   component: AntecipatedGameRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Antecipated Games",
+        description:
+          "Keep track of the most hyped titles coming to PS5, Xbox Series X, and Switch 2. Follow the road to GTA VI, The Elder Scrolls 6, and the biggest triple-A releases.",
+      }),
+    ],
+  }),
 });
 
 function AntecipatedGameRoute() {

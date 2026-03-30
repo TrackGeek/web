@@ -8,9 +8,19 @@ import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { api } from "@/lib/api.ts";
+import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/game/")({
   component: GameRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Games",
+        description:
+          "The ultimate video game database and backlog manager. Track your progress, sync your library, and discover new adventures across PC, console, and mobile.",
+      }),
+    ],
+  }),
 });
 
 function GameRoute() {

@@ -8,9 +8,19 @@ import { LoadingFeatured } from "@/components/shared/loadings/featured";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
 import { api } from "@/lib/api.ts";
+import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/manga/")({
   component: MangaRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Mangas",
+        description:
+          'Your complete manga and manhwa tracker. Organize your library, manage your "To-Read" list, and follow your favorite authors in one open-source dashboard.',
+      }),
+    ],
+  }),
 });
 
 function MangaRoute() {

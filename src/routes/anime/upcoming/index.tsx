@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/anime/upcoming/")({
   component: UpcomingAnimeRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Upcoming Anime",
+        description:
+          "Never miss a premiere. Check out the upcoming anime releases, countdowns, and trailers for the next seasons. Plan your future watchlist now.",
+      }),
+    ],
+  }),
 });
 
 function UpcomingAnimeRoute() {

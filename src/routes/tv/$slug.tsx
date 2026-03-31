@@ -7,7 +7,7 @@ import {
   SiInstagramHex,
   SiX,
 } from "@icons-pack/react-simple-icons";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Bookmark,
@@ -102,30 +102,36 @@ export function TVShowDetailsPage() {
     console.log(season, ep);
   }
 
-  const { data, isLoading, isError } = useQuery({
+  const tvQuery = useQuery({
     queryKey: ["tv", slug],
     queryFn: () => api.get(`/tv/detail/${slug}`).then(({ data }) => data.tvShow),
     initialData: loaderItem,
   });
-  const item = data;
 
-  const seasonsData = useQuery({
-    queryKey: ["tvSeason", slug],
-    queryFn: () => api.get(`/tv/detail/${slug}/season`).then(({ data }) => data.seasons),
-  });
-  const seasons = seasonsData?.data;
+  const item = tvQuery.data;
 
-  const reviewsData = useQuery({
-    queryKey: ["tvReviews", slug],
-    queryFn: () => api.get(`/tv/review/?tvShowId=${slug}`).then(({ data }) => data.tvShowReviews),
+  const [seasonsQuery, reviewsQuery] = useQueries({
+    queries: [
+      {
+        queryKey: ["tvSeason", slug],
+        queryFn: () => api.get(`/tv/detail/${slug}/season`).then(({ data }) => data.seasons),
+      },
+      {
+        queryKey: ["tvReviews", item.id],
+        queryFn: () => api.get(`/tv/review/?tvShowId=${item.id}`).then(({ data }) => data.tvShowReviews),
+        enabled: !!item?.id,
+      },
+    ],
   });
-  const reviews = reviewsData?.data;
+
+  const seasons = seasonsQuery.data;
+  const reviews = reviewsQuery.data;
 
   const rating = 4.2;
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
-  if (isLoading || seasonsData.isLoading || reviewsData.isLoading) return <LoadingDetails />;
-  if (isError || seasonsData.isError || reviewsData.isError || !item) return <ErrorComponent />;
+  if (tvQuery.isLoading || seasonsQuery.isLoading || reviewsQuery.isLoading) return <LoadingDetails />;
+  if (tvQuery.isError || seasonsQuery.isError || reviewsQuery.isError || !item) return <ErrorComponent />;
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       <div className="lg:w-1/3">

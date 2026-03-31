@@ -8,7 +8,7 @@ import {
   SiWikipediaHex,
   SiX,
 } from "@icons-pack/react-simple-icons";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Antenna,
@@ -84,24 +84,33 @@ function AnimeDetailsRoute() {
   });
   const rating = 4.2;
 
-  const { data, isLoading, isError } = useQuery({
+  const {
+    data: anime,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["anime", slug],
     queryFn: () => api.get(`/anime/detail/${slug}`).then(({ data }) => data.anime),
     initialData: loaderAnime,
   });
-  const anime = data;
 
-  const episodesData = useQuery({
-    queryKey: ["animeEpisodes", slug],
-    queryFn: () => api.get(`/anime/detail/${slug}/episode`).then(({ data }) => data.episodes.items),
+  const [episodesQuery, reviewsQuery] = useQueries({
+    queries: [
+      {
+        queryKey: ["animeEpisodes", slug],
+        queryFn: () => api.get(`/anime/detail/${slug}/episode`).then(({ data }) => data.episodes.items),
+        enabled: !!anime,
+      },
+      {
+        queryKey: ["animeReviews", anime?.id],
+        queryFn: () => api.get(`/anime/review/?animeId=${anime?.id}`).then(({ data }) => data.animeReviews),
+        enabled: !!anime?.id,
+      },
+    ],
   });
-  const episodes = episodesData?.data;
 
-  const reviewsData = useQuery({
-    queryKey: ["animeReviews", slug],
-    queryFn: () => api.get(`/anime/review/?animeId=${slug}`).then(({ data }) => data.animeReviews),
-  });
-  const reviews = reviewsData?.data;
+  const episodes = episodesQuery.data;
+  const reviews = reviewsQuery.data;
 
   function handleToggle(ep: number) {
     console.log(ep);
@@ -329,7 +338,7 @@ function AnimeDetailsRoute() {
           </h1>
 
           <div className="flex flex-wrap items-center gap-6 border-b border-border pb-5">
-            {!reviewsData.isLoading && !reviewsData.isError && reviews.total >= 1 && (
+            {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews.total >= 1 && (
               <div className="flex items-center gap-2">
                 <div className="flex">
                   <Star className="size-5 text-chart-3 fill-chart-3" />
@@ -351,12 +360,12 @@ function AnimeDetailsRoute() {
               <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
                 <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
                 <TabsTrigger value="relations">{t("library:relations")}</TabsTrigger>
-                {!episodesData.isLoading && !episodesData.isError && (
+                {!episodesQuery.isLoading && !episodesQuery.isError && episodes > 0 && (
                   <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
                 )}
                 <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
                 <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
-                {!reviewsData.isLoading && !reviewsData.isError && reviews.total >= 1 && (
+                {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews.total >= 1 && (
                   <TabsTrigger value="reviews" className="capitalize">
                     {t("library:reviews")} ({reviews.total})
                   </TabsTrigger>
@@ -517,7 +526,7 @@ function AnimeDetailsRoute() {
                 />
               )}
             </TabsContent>
-            {!episodesData.isLoading && !episodesData.isError && (
+            {!episodesQuery.isLoading && !episodesQuery.isError && episodes > 0 && (
               <TabsContent value="episodes">
                 <Grid minColSize={"200px"} className="gap-4">
                   {episodes
@@ -541,7 +550,7 @@ function AnimeDetailsRoute() {
             <TabsContent value="relations">
               <Relations nodes={[]} edges={[]} />
             </TabsContent>
-            {!reviewsData.isLoading && !reviewsData.isError && reviews.total >= 1 && (
+            {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews.total >= 1 && (
               <TabsContent value="reviews">
                 <ReviewItem
                   user={{

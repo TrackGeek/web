@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/movie/trending/")({
   component: TrendingMovieRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Trending Movies",
+        description:
+          "Discover the movies trending today. Viral hits, award-season contenders, and the most discussed films across social media and critics' circles.",
+      }),
+    ],
+  }),
 });
 
 function TrendingMovieRoute() {

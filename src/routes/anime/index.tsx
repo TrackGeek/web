@@ -8,9 +8,19 @@ import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/anime/")({
   component: AnimeRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Animes",
+        description:
+          "Your ultimate anime database. Discover, track, and organize your favorite series and movies. Manage your progress and explore thousands of titles in one place.",
+      }),
+    ],
+  }),
 });
 
 function AnimeRoute() {

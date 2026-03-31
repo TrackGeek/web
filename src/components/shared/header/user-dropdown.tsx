@@ -1,6 +1,6 @@
 import ViteImage from "@son426/vite-image/react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Bell, LogOut, Settings, User, CreditCard } from "lucide-react";
+import { Bell, CreditCard, LogOut, Settings, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
@@ -64,7 +64,7 @@ export function UserDropdown() {
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link to="/" className="cursor-pointer">
+          <Link to="/" search={{ landing: "true" }} className="cursor-pointer">
             <Bell size={18} className="text-white" />
             {t("common:notifications")}
           </Link>
@@ -94,7 +94,7 @@ export function UserDropdown() {
               await signOut({
                 fetchOptions: {
                   onSuccess: () => {
-                    navigate({ to: "/" });
+                    navigate({ to: "/", search: { landing: "true" } });
 
                     toast.success(t("auth:logoutSuccessful"));
                   },

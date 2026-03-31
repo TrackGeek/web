@@ -6,10 +6,19 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/manga/upcoming/")({
   component: UpcomingMangaRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Publishing Mangas",
+        description: "Stay ahead of the release calendar. Track upcoming manga volumes and new series premieres.",
+      }),
+    ],
+  }),
 });
 
 function UpcomingMangaRoute() {

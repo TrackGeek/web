@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { ListItem } from "@/components/pages/details/list";
 import { ReviewItem } from "@/components/pages/details/review";
+import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
@@ -33,27 +34,45 @@ import { useSession } from "@/lib/auth.ts";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/book/$slug")({
-  head: () => ({
-    meta: [...seo({ title: "Book Details" })],
-  }),
+  loader: async ({ params }) => {
+    const book = await api.get(`/book/detail/${params.slug}`).then(({ data }) => data.book);
+    return { book };
+  },
+  head: ({ loaderData }) => {
+    const book = loaderData?.book;
+    const authors = book?.contributions?.map((c: { author: { name: string } }) => c.author.name).join(", ");
+
+    return {
+      meta: [
+        ...seo({
+          title: book?.title ? book.title : "Book Details",
+          description: book?.description ? `${authors ? `${authors} · ` : ""}${book.description}` : undefined,
+          image: book?.imageUrl ?? undefined,
+        }),
+      ],
+    };
+  },
   component: BookDetailsRoute,
+  errorComponent: ErrorComponent,
+  notFoundComponent: NotFoundComponent,
 });
 
-export function BookDetailsRoute() {
+function BookDetailsRoute() {
   const { slug } = Route.useParams();
-
+  const { book: loaderBook } = Route.useLoaderData();
   const { t } = useTranslation();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["book", slug],
     queryFn: () => api.get(`/book/detail/${slug}`).then(({ data }) => data.book),
+    initialData: loaderBook,
   });
   const book = data;
   const rating = 4.2;
 
   const reviewsData = useQuery({
     queryKey: ["bookReviews", slug],
-    queryFn: () => api.get(`/book/review/?bookId=${slug}`).then(({ data }) => data.bookReviews),
+    queryFn: () => api.get(`/book/review/?bookId=${book.id}`).then(({ data }) => data.bookReviews),
   });
   const reviews = reviewsData?.data;
 
@@ -192,7 +211,7 @@ export function BookDetailsRoute() {
             <User className="size-5 text-muted-foreground" />
             {book.contributions.map((contribution: { author: { id: string; name: string } }, index: number) => (
               <span key={contribution.author.id}>
-                <Link to={`/`} className="text-xl text-muted-foreground">
+                <Link to={`/`} search={{ landing: "true" }} className="text-xl text-muted-foreground">
                   {contribution.author.name}
                 </Link>
                 {index < book.contributions.length - 1 && ", "}
@@ -201,13 +220,13 @@ export function BookDetailsRoute() {
           </div>
           <div className="flex items-center gap-2">
             <BookCopy className="size-5 text-muted-foreground" />
-            <Link to={"/"} className="text-xl text-muted-foreground">
+            <Link to={"/"} search={{ landing: "true" }} className="text-xl text-muted-foreground">
               series_names (can be hidden if not exists)
             </Link>
           </div>
 
           <div className="flex flex-wrap items-center gap-6 pb-5 border-b border-border">
-            {reviews.total >= 1 && (
+            {!reviewsData.isLoading && !reviewsData.isError && reviews.total >= 1 && (
               <div className="flex items-center gap-2">
                 <div className="flex">
                   <Star className="size-5 text-chart-3 fill-chart-3" />
@@ -351,26 +370,28 @@ export function BookDetailsRoute() {
                 </div>
               </div>
             </TabsContent>
-            <TabsContent value="reviews">
-              <ReviewItem
-                user={{
-                  name: "John Doe",
-                  avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
-                  slug: "john-doe",
-                }}
-                reviewText={
-                  "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
-                }
-                criteries={{
-                  language: 5,
-                  characters: 4,
-                  all: 10,
-                  story: 8,
-                  theme: 9,
-                }}
-                date={new Date("2023-06-19")}
-              />
-            </TabsContent>
+            {!reviewsData.isLoading && !reviewsData.isError && reviews.total >= 1 && (
+              <TabsContent value="reviews">
+                <ReviewItem
+                  user={{
+                    name: "John Doe",
+                    avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
+                    slug: "john-doe",
+                  }}
+                  reviewText={
+                    "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
+                  }
+                  criteries={{
+                    language: 5,
+                    characters: 4,
+                    all: 10,
+                    story: 8,
+                    theme: 9,
+                  }}
+                  date={new Date("2023-06-19")}
+                />
+              </TabsContent>
+            )}
             <TabsContent value="lists">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <ListItem />

@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/manga/publishing/")({
   component: PublishingMangaRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Publishing Mangas",
+        description:
+          "Track currently publishing manga. Get real-time updates on new chapters for Jujutsu Kaisen, One Piece, and the latest hits from Shonen Jump and Seinen magazines.",
+      }),
+    ],
+  }),
 });
 
 function PublishingMangaRoute() {

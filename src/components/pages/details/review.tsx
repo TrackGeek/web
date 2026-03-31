@@ -117,12 +117,17 @@ export function ReviewItem({ user, reviewText, likes = 0, date, criteries, revie
         <div className="flex flex-col gap-3">
           <div className="flex flex-col sm:flex-row sm:items-start sm:gap-2 gap-2">
             {reviewName ? (
-              <Link to={"/"} className="min-w-0 w-auto shrink-0 hover:text-primary transition-colors">
+              <Link
+                to={"/"}
+                search={{ landing: "true" }}
+                className="min-w-0 w-auto shrink-0 hover:text-primary transition-colors"
+              >
                 <p className="font-bold truncate text-sm sm:text-base max-w-48">{reviewName}</p>
               </Link>
             ) : (
               <Link
                 to={"/"}
+                search={{ landing: "true" }}
                 className="inline-flex items-center gap-2 min-w-0 w-auto shrink-0 hover:text-primary transition-colors"
               >
                 <Avatar size="sm">
@@ -167,7 +172,11 @@ export function ReviewItem({ user, reviewText, likes = 0, date, criteries, revie
           {showReadMore && (
             <>
               <div className="absolute bottom-0 left-0 right-0 h-12 bg-linear-to-t from-card via-card/95 to-transparent pointer-events-none z-15" />
-              <Link to={"/"} className="absolute bottom-0 right-0 flex justify-end p-2 cursor-pointer z-20">
+              <Link
+                to={"/"}
+                search={{ landing: "true" }}
+                className="absolute bottom-0 right-0 flex justify-end p-2 cursor-pointer z-20"
+              >
                 <Button className="text-xs sm:text-sm text-primary hover:text-primary/80 font-medium transition-colors bg-primary-foreground/80 hover:bg-primary-foreground backdrop-blur-sm rounded-full px-2">
                   {t("library:readMore")}
                 </Button>

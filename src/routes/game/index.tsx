@@ -8,9 +8,19 @@ import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { api } from "@/lib/api.ts";
+import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/game/")({
   component: GameRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Games",
+        description:
+          "The ultimate video game database and backlog manager. Track your progress, sync your library, and discover new adventures across PC, console, and mobile.",
+      }),
+    ],
+  }),
 });
 
 function GameRoute() {
@@ -43,7 +53,7 @@ function GameRoute() {
     isLoading: anticipatedLoading,
     isError: anticipatedError,
   } = useQuery({
-    queryKey: ["game", "antecipated"],
+    queryKey: ["game", "anticipated"],
     queryFn: () => api.get("/game/top?filter=antecipated"),
   });
 
@@ -206,7 +216,7 @@ function GameRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:mostAnticipated")}</p>
-          <Link to={"/game/antecipated"}>
+          <Link to={"/game/anticipated"}>
             <Button>{t("pages:donate.viewAll")}</Button>
           </Link>
         </div>

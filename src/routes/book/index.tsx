@@ -8,9 +8,19 @@ import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
 import { api } from "@/lib/api.ts";
+import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/book/")({
   component: BookRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Books",
+        description:
+          "Your personal digital library. Track your reading progress, manage your TBR pile, and view detailed stats of your reading habits and favorite genres.",
+      }),
+    ],
+  }),
 });
 
 function BookRoute() {

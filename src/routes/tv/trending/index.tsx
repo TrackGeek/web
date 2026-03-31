@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/tv/trending/")({
   component: TrendingTVShowRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Trending TV Shows",
+        description:
+          "See which series are viral this week. Stay updated on the most discussed TV shows, new season premieres, and social media hits you can't miss.",
+      }),
+    ],
+  }),
 });
 
 function TrendingTVShowRoute() {

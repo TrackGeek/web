@@ -9,9 +9,19 @@ import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
 import { api } from "@/lib/api.ts";
+import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/tv/")({
   component: SerieRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Airing TV Shows",
+        description:
+          "The ultimate TV show tracker and episode manager. Organize your watch history, discover new series, and sync your progress across all streaming platforms.",
+      }),
+    ],
+  }),
 });
 
 function SerieRoute() {

@@ -1,5 +1,5 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
-import { HomeIcon, HeartIcon } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { HeartIcon, HomeIcon } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
@@ -32,7 +32,7 @@ function RouteComponent() {
         <EmptyContent>
           <div className="flex gap-2">
             <Button asChild>
-              <Link to="/">
+              <Link to="/" search={{ landing: "true" }}>
                 <HomeIcon data-icon="inline-start" />
                 {t("common:goHome")}
               </Link>

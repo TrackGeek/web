@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/tv/upcoming/")({
   component: UpcomingTVShowRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Upcoming TV Shows",
+        description:
+          "Your TV release calendar. Follow the countdown for new series premieres, highly anticipated season returns, and upcoming streaming originals.",
+      }),
+    ],
+  }),
 });
 
 function UpcomingTVShowRoute() {

@@ -93,6 +93,7 @@ function TermsRoute() {
               parent="p"
               i18nKey="pages:terms.contact.text"
               components={{
+                // biome-ignore lint/a11y/useAnchorContent: This is a mailto link, so the content is the email address itself
                 email: <a href="mailto:support@trackgeek.net" className="underline" />,
               }}
             />

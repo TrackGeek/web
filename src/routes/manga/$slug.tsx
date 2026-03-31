@@ -32,6 +32,7 @@ import { CharacterItem } from "@/components/pages/details/character";
 import { ListItem } from "@/components/pages/details/list";
 import { Relations } from "@/components/pages/details/relations";
 import { ReviewItem } from "@/components/pages/details/review";
+import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
@@ -42,19 +43,35 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { api } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
+import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { seo } from "@/lib/utils/seo";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/manga/$slug")({
-  head: () => ({
-    meta: [...seo({ title: "Manga Details" })],
-  }),
+  loader: async ({ params }) => {
+    const manga = await api.get(`/manga/detail/${params.slug}`).then(({ data }) => data.manga);
+    return { manga };
+  },
+  head: ({ loaderData }) => {
+    const manga = loaderData?.manga;
+    return {
+      meta: [
+        ...seo({
+          title: manga?.title ? manga.title : "Manga Details",
+          description: manga?.synopsis ?? undefined,
+          image: manga?.imageUrl ?? undefined,
+        }),
+      ],
+    };
+  },
   component: MangaDetailsRoute,
+  errorComponent: ErrorComponent,
+  notFoundComponent: NotFoundComponent,
 });
 
 export function MangaDetailsRoute() {
   const { slug } = Route.useParams();
+  const { manga: loaderManga } = Route.useLoaderData();
 
   const rating = 4.2;
   const { t } = useTranslation();
@@ -62,12 +79,13 @@ export function MangaDetailsRoute() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["manga", slug],
     queryFn: () => api.get(`/manga/detail/${slug}`).then(({ data }) => data.manga),
+    initialData: loaderManga,
   });
   const manga = data;
 
   const reviewsData = useQuery({
     queryKey: ["mangaReviews", slug],
-    queryFn: () => api.get(`/manga/review/?mangaId=${slug}`).then(({ data }) => data.mangaReviews),
+    queryFn: () => api.get(`/manga/review/?mangaId=${manga.id}`).then(({ data }) => data.mangaReviews),
   });
   const reviews = reviewsData?.data;
 
@@ -331,6 +349,7 @@ export function MangaDetailsRoute() {
                       <Link
                         key={genre}
                         to="/"
+                        search={{ landing: "true" }}
                         className={`px-3 py-1.5 bg-linear-to-r ${color} border rounded-full text-sm font-medium`}
                       >
                         {getGenreLabel(t, genre)}
@@ -375,7 +394,9 @@ export function MangaDetailsRoute() {
                       icon={<TreePalm className="size-5 text-muted-foreground" />}
                       description={manga.themes.map((theme: string, index: number) => (
                         <span key={theme}>
-                          <Link to="/">{getGenreLabel(t, theme)}</Link>
+                          <Link to="/" search={{ landing: "true" }}>
+                            {getGenreLabel(t, theme)}
+                          </Link>
                           {index < manga.themes.length - 1 && ", "}
                         </span>
                       ))}
@@ -386,7 +407,7 @@ export function MangaDetailsRoute() {
                       title={t("library:authors")}
                       icon={<Pen className="size-5 text-muted-foreground" />}
                       description={manga.authors.map((au: { name: string; malId: number }, index: number) => (
-                        <Link to="/" key={au.malId}>
+                        <Link to="/" key={au.malId} search={{ landing: "true " }}>
                           {au.name}
                           {index < manga.authors.length - 1 && "; "}
                         </Link>
@@ -398,7 +419,7 @@ export function MangaDetailsRoute() {
                       title={t("library:publisher")}
                       icon={<Notebook className="size-5 text-muted-foreground" />}
                       description={manga.serializations.map((sz: { name: string; malId: number }, index: number) => (
-                        <Link to="/" key={sz.malId}>
+                        <Link to="/" key={sz.malId} search={{ landing: "true" }}>
                           {sz.name}
                           {index < manga.serializations.length - 1 && ", "}
                         </Link>

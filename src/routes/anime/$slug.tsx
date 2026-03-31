@@ -54,15 +54,29 @@ import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/anime/$slug")({
-  head: () => ({
-    meta: [...seo({ title: "Anime Details" })],
-  }),
+  loader: async ({ params }) => {
+    const anime = await api.get(`/anime/detail/${params.slug}`).then(({ data }) => data.anime);
+    return { anime };
+  },
+  head: ({ loaderData }) => {
+    const anime = loaderData?.anime;
+    return {
+      meta: [
+        ...seo({
+          title: anime?.title ? anime.title : "Anime Details",
+          description: anime?.synopsis ?? undefined,
+          image: anime?.imageUrl ?? undefined,
+        }),
+      ],
+    };
+  },
   component: AnimeDetailsRoute,
+  errorComponent: ErrorComponent,
 });
 
 function AnimeDetailsRoute() {
   const { slug } = Route.useParams();
-
+  const { anime: loaderAnime } = Route.useLoaderData();
   const { t } = useTranslation();
   const [mySeason, _setMySeason] = useState<SingleSeasonData>({
     totalEpisodes: 12,
@@ -73,12 +87,13 @@ function AnimeDetailsRoute() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["anime", slug],
     queryFn: () => api.get(`/anime/detail/${slug}`).then(({ data }) => data.anime),
+    initialData: loaderAnime,
   });
   const anime = data;
 
   const episodesData = useQuery({
     queryKey: ["animeEpisodes", slug],
-    queryFn: () => api.get(`/anime/detail/${slug}/episode`).then(({ data }) => data.episodes),
+    queryFn: () => api.get(`/anime/detail/${slug}/episode`).then(({ data }) => data.episodes.items),
   });
   const episodes = episodesData?.data;
 
@@ -367,6 +382,7 @@ function AnimeDetailsRoute() {
                       <Link
                         key={genre}
                         to="/"
+                        search={{ landing: "true" }}
                         className={`px-3 py-1.5 bg-linear-to-r ${color} border rounded-full text-sm font-medium`}
                       >
                         {getGenreLabel(t, genre)}
@@ -431,7 +447,7 @@ function AnimeDetailsRoute() {
                       title={t("library:studios")}
                       icon={<Building2 className="size-5 text-muted-foreground" />}
                       description={anime.studios.map((st: { name: string; malId: number }, index: number) => (
-                        <Link to="/" key={st.malId}>
+                        <Link to="/" key={st.malId} search={{ landing: "true" }}>
                           {st.name}
                           {index < anime.studios.length - 1 && ", "}
                         </Link>
@@ -443,7 +459,7 @@ function AnimeDetailsRoute() {
                       title={t("library:producers")}
                       icon={<Languages className="size-5 text-muted-foreground" />}
                       description={anime.producers.map((pd: { name: string; malId: number }, index: number) => (
-                        <Link to="/" key={pd.malId}>
+                        <Link to="/" key={pd.malId} search={{ landing: "true" }}>
                           {pd.name}
                           {index < anime.producers.length - 1 && ", "}
                         </Link>
@@ -505,7 +521,6 @@ function AnimeDetailsRoute() {
               <TabsContent value="episodes">
                 <Grid minColSize={"200px"} className="gap-4">
                   {episodes
-                    ?.slice()
                     .sort((a: { malId: number }, b: { malId: number }) => a.malId - b.malId)
                     .map((episode: { malId: number; title: string; imageUrl: string }) => {
                       return (

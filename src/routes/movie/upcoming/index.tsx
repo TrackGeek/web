@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/movie/upcoming/")({
   component: UpcomingMovieRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Upcoming Movies",
+        description:
+          "Your movie release calendar. Follow the countdown for highly anticipated blockbusters, sequels, and new original films coming soon to theaters.",
+      }),
+    ],
+  }),
 });
 
 function UpcomingMovieRoute() {

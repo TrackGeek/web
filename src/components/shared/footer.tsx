@@ -10,7 +10,7 @@ export function Footer() {
     <footer className="bg-border/30 backdrop-blur border-t border-border w-full px-3 md:px-10 py-6">
       <div className="flex flex-col lg:flex-row md:items-center justify-between gap-8">
         <div className="flex flex-col justify-center gap-3">
-          <Link to="/">
+          <Link to="/" search={{ landing: "true" }}>
             <img src="/logo.svg" alt="Logo" className="h-full w-45" />
           </Link>
           <div className="flex flex-col gap-1">

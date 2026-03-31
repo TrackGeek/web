@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/book/upcoming/")({
   component: UpcomingBookRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Upcoming Books",
+        description:
+          "Be the first to read the most anticipated books. Stay updated on new releases, pre-order dates, and upcoming sequels from your favorite authors.",
+      }),
+    ],
+  }),
 });
 
 function UpcomingBookRoute() {

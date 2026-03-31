@@ -1,7 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { resetPassword } from "@/lib/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
 import { createFileRoute, redirect } from "@tanstack/react-router";
@@ -10,6 +6,10 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import z from "zod";
+import { Button } from "@/components/ui/button";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { resetPassword } from "@/lib/auth";
 
 const resetPasswordSchema = z
   .object({
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/reset-password")({
   },
   beforeLoad: ({ search }) => {
     if (!search.token) {
-      throw redirect({ to: "/" });
+      throw redirect({ to: "/", search: { landing: "true" } });
     }
   },
 });
@@ -69,7 +69,7 @@ function RouteComponent() {
     resetPasswordForm.reset();
     resetPasswordForm.clearErrors();
 
-    navigate({ to: "/" });
+    navigate({ to: "/", search: { landing: "true" } });
   }
 
   return (

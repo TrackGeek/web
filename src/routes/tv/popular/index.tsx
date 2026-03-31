@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/tv/popular/")({
   component: PopularTVShowRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Popular TV Shows",
+        description:
+          "Discover the most-watched TV shows right now. Explore top-rated series across Netflix, HBO, Disney+, and cable networks according to the community.",
+      }),
+    ],
+  }),
 });
 
 function PopularTVShowRoute() {

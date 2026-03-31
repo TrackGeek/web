@@ -52,7 +52,7 @@ import { Route as MangaPublishingIndexRouteImport } from './routes/manga/publish
 import { Route as GameUpcomingIndexRouteImport } from './routes/game/upcoming/index'
 import { Route as GameRecentIndexRouteImport } from './routes/game/recent/index'
 import { Route as GamePopularIndexRouteImport } from './routes/game/popular/index'
-import { Route as GameAntecipatedIndexRouteImport } from './routes/game/antecipated/index'
+import { Route as GameAnticipatedIndexRouteImport } from './routes/game/anticipated/index'
 import { Route as BookUpcomingIndexRouteImport } from './routes/book/upcoming/index'
 import { Route as BookTrendingIndexRouteImport } from './routes/book/trending/index'
 import { Route as AnimeUpcomingIndexRouteImport } from './routes/anime/upcoming/index'
@@ -288,9 +288,9 @@ const GamePopularIndexRoute = GamePopularIndexRouteImport.update({
   path: '/game/popular/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GameAntecipatedIndexRoute = GameAntecipatedIndexRouteImport.update({
-  id: '/game/antecipated/',
-  path: '/game/antecipated/',
+const GameAnticipatedIndexRoute = GameAnticipatedIndexRouteImport.update({
+  id: '/game/anticipated/',
+  path: '/game/anticipated/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookUpcomingIndexRoute = BookUpcomingIndexRouteImport.update({
@@ -430,7 +430,7 @@ export interface FileRoutesByFullPath {
   '/anime/upcoming/': typeof AnimeUpcomingIndexRoute
   '/book/trending/': typeof BookTrendingIndexRoute
   '/book/upcoming/': typeof BookUpcomingIndexRoute
-  '/game/antecipated/': typeof GameAntecipatedIndexRoute
+  '/game/anticipated/': typeof GameAnticipatedIndexRoute
   '/game/popular/': typeof GamePopularIndexRoute
   '/game/recent/': typeof GameRecentIndexRoute
   '/game/upcoming/': typeof GameUpcomingIndexRoute
@@ -494,7 +494,7 @@ export interface FileRoutesByTo {
   '/anime/upcoming': typeof AnimeUpcomingIndexRoute
   '/book/trending': typeof BookTrendingIndexRoute
   '/book/upcoming': typeof BookUpcomingIndexRoute
-  '/game/antecipated': typeof GameAntecipatedIndexRoute
+  '/game/anticipated': typeof GameAnticipatedIndexRoute
   '/game/popular': typeof GamePopularIndexRoute
   '/game/recent': typeof GameRecentIndexRoute
   '/game/upcoming': typeof GameUpcomingIndexRoute
@@ -560,7 +560,7 @@ export interface FileRoutesById {
   '/anime/upcoming/': typeof AnimeUpcomingIndexRoute
   '/book/trending/': typeof BookTrendingIndexRoute
   '/book/upcoming/': typeof BookUpcomingIndexRoute
-  '/game/antecipated/': typeof GameAntecipatedIndexRoute
+  '/game/anticipated/': typeof GameAnticipatedIndexRoute
   '/game/popular/': typeof GamePopularIndexRoute
   '/game/recent/': typeof GameRecentIndexRoute
   '/game/upcoming/': typeof GameUpcomingIndexRoute
@@ -626,7 +626,7 @@ export interface FileRouteTypes {
     | '/anime/upcoming/'
     | '/book/trending/'
     | '/book/upcoming/'
-    | '/game/antecipated/'
+    | '/game/anticipated/'
     | '/game/popular/'
     | '/game/recent/'
     | '/game/upcoming/'
@@ -690,7 +690,7 @@ export interface FileRouteTypes {
     | '/anime/upcoming'
     | '/book/trending'
     | '/book/upcoming'
-    | '/game/antecipated'
+    | '/game/anticipated'
     | '/game/popular'
     | '/game/recent'
     | '/game/upcoming'
@@ -755,7 +755,7 @@ export interface FileRouteTypes {
     | '/anime/upcoming/'
     | '/book/trending/'
     | '/book/upcoming/'
-    | '/game/antecipated/'
+    | '/game/anticipated/'
     | '/game/popular/'
     | '/game/recent/'
     | '/game/upcoming/'
@@ -819,7 +819,7 @@ export interface RootRouteChildren {
   AnimeUpcomingIndexRoute: typeof AnimeUpcomingIndexRoute
   BookTrendingIndexRoute: typeof BookTrendingIndexRoute
   BookUpcomingIndexRoute: typeof BookUpcomingIndexRoute
-  GameAntecipatedIndexRoute: typeof GameAntecipatedIndexRoute
+  GameAnticipatedIndexRoute: typeof GameAnticipatedIndexRoute
   GamePopularIndexRoute: typeof GamePopularIndexRoute
   GameRecentIndexRoute: typeof GameRecentIndexRoute
   GameUpcomingIndexRoute: typeof GameUpcomingIndexRoute
@@ -1149,11 +1149,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GamePopularIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/game/antecipated/': {
-      id: '/game/antecipated/'
-      path: '/game/antecipated'
-      fullPath: '/game/antecipated/'
-      preLoaderRoute: typeof GameAntecipatedIndexRouteImport
+    '/game/anticipated/': {
+      id: '/game/anticipated/'
+      path: '/game/anticipated'
+      fullPath: '/game/anticipated/'
+      preLoaderRoute: typeof GameAnticipatedIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/book/upcoming/': {
@@ -1345,7 +1345,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnimeUpcomingIndexRoute: AnimeUpcomingIndexRoute,
   BookTrendingIndexRoute: BookTrendingIndexRoute,
   BookUpcomingIndexRoute: BookUpcomingIndexRoute,
-  GameAntecipatedIndexRoute: GameAntecipatedIndexRoute,
+  GameAnticipatedIndexRoute: GameAnticipatedIndexRoute,
   GamePopularIndexRoute: GamePopularIndexRoute,
   GameRecentIndexRoute: GameRecentIndexRoute,
   GameUpcomingIndexRoute: GameUpcomingIndexRoute,

@@ -34,6 +34,7 @@ import { Grid } from "@/components/layouts/grid.tsx";
 import { CastItem } from "@/components/pages/details/cast";
 import { ListItem } from "@/components/pages/details/list";
 import { ReviewItem } from "@/components/pages/details/review";
+import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
@@ -51,18 +52,35 @@ import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
 
 export const Route = createFileRoute("/movie/$slug")({
-  head: () => ({
-    meta: [...seo({ title: "Movie Details" })],
-  }),
+  loader: async ({ params }) => {
+    const movie = await api.get(`/movie/detail/${params.slug}`).then(({ data }) => data.movie);
+    return { movie };
+  },
+  head: ({ loaderData }) => {
+    const movie = loaderData?.movie;
+    return {
+      meta: [
+        ...seo({
+          title: movie?.title ? movie.title : "Movie Details",
+          description: movie?.overview ?? undefined,
+          image: movie?.posterUrl ?? undefined,
+        }),
+      ],
+    };
+  },
   component: MovieDetailsRoute,
+  errorComponent: ErrorComponent,
+  notFoundComponent: NotFoundComponent,
 });
 
 export function MovieDetailsRoute() {
   const { slug } = Route.useParams();
+  const { movie: loaderMovie } = Route.useLoaderData();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["movie", slug],
     queryFn: () => api.get(`/movie/detail/${slug}`).then(({ data }) => data.movie),
+    initialData: loaderMovie,
   });
   const movie = data;
 
@@ -318,6 +336,7 @@ export function MovieDetailsRoute() {
                       <Link
                         key={genre}
                         to="/"
+                        search={{ landing: "true" }}
                         className={`px-3 py-1.5 bg-linear-to-r ${color} border rounded-full text-sm font-medium`}
                       >
                         {getGenreLabel(t, genre)}
@@ -341,7 +360,7 @@ export function MovieDetailsRoute() {
                     title={t("library:directors")}
                     icon={<Clapperboard className="size-5 text-muted-foreground" />}
                     description={
-                      <Link to="/" className="font-medium text-card-foreground">
+                      <Link to="/" search={{ landing: "true" }} className="font-medium text-card-foreground">
                         Tom Gormican
                       </Link>
                     }

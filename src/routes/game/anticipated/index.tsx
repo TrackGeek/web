@@ -6,17 +6,27 @@ import { CardItem } from "@/components/shared/cards/card.tsx";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api.ts";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
-export const Route = createFileRoute("/game/antecipated/")({
-  component: AntecipatedGameRoute,
+export const Route = createFileRoute("/game/anticipated/")({
+  component: AnticipatedGameRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Anticipated Games",
+        description:
+          "Keep track of the most hyped titles coming to PS5, Xbox Series X, and Switch 2. Follow the road to GTA VI, The Elder Scrolls 6, and the biggest triple-A releases.",
+      }),
+    ],
+  }),
 });
 
-function AntecipatedGameRoute() {
+function AnticipatedGameRoute() {
   const { t } = useTranslation();
 
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["game", "infiniteAntecipated"],
+    queryKey: ["game", "infiniteAnticipated"],
     queryFn: ({ pageParam }) => {
       const url = pageParam === 1 ? "/game/top?filter=antecipated" : `/game/top?filter=antecipated&page=${pageParam}`;
       return api.get(url);

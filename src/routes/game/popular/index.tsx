@@ -6,10 +6,20 @@ import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { api } from "@/lib/api";
+import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/game/popular/")({
   component: PopularGameRoute,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Popular Games",
+        description:
+          "See what the world is playing right now. Check out the top-selling titles, trending multiplayer games like Marathon, and the most played indie hits this month.",
+      }),
+    ],
+  }),
 });
 
 function PopularGameRoute() {

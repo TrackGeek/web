@@ -338,7 +338,7 @@ function AnimeDetailsRoute() {
           </h1>
 
           <div className="flex flex-wrap items-center gap-6 border-b border-border pb-5">
-            {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews.total >= 1 && (
+            {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews?.total >= 1 && (
               <div className="flex items-center gap-2">
                 <div className="flex">
                   <Star className="size-5 text-chart-3 fill-chart-3" />
@@ -360,12 +360,12 @@ function AnimeDetailsRoute() {
               <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
                 <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
                 <TabsTrigger value="relations">{t("library:relations")}</TabsTrigger>
-                {!episodesQuery.isLoading && !episodesQuery.isError && episodes > 0 && (
+                {!episodesQuery.isLoading && !episodesQuery.isError && episodes?.length > 0 && (
                   <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
                 )}
                 <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
                 <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
-                {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews.total >= 1 && (
+                {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews?.total >= 1 && (
                   <TabsTrigger value="reviews" className="capitalize">
                     {t("library:reviews")} ({reviews.total})
                   </TabsTrigger>
@@ -526,7 +526,7 @@ function AnimeDetailsRoute() {
                 />
               )}
             </TabsContent>
-            {!episodesQuery.isLoading && !episodesQuery.isError && episodes > 0 && (
+            {!episodesQuery.isLoading && !episodesQuery.isError && episodes?.length > 0 && (
               <TabsContent value="episodes">
                 <Grid minColSize={"200px"} className="gap-4">
                   {episodes
@@ -550,7 +550,7 @@ function AnimeDetailsRoute() {
             <TabsContent value="relations">
               <Relations nodes={[]} edges={[]} />
             </TabsContent>
-            {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews.total >= 1 && (
+            {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews?.total >= 1 && (
               <TabsContent value="reviews">
                 <ReviewItem
                   user={{

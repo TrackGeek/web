@@ -88,7 +88,7 @@ export function MangaDetailsRoute() {
     queryFn: () => api.get(`/manga/review/?mangaId=${manga.id}`).then(({ data }) => data.mangaReviews),
     enabled: !!manga?.id,
   });
-  const reviews = reviewsData?.data;
+  const reviews = reviewsData?.data ?? { total: 0 };
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;

@@ -207,10 +207,10 @@ export function GameDetailsRoute() {
         enabled: !!game?.id,
       },
       {
-        queryKey: ["gameScreenshots", slug],
+        queryKey: ["gameScreenshots", game?.id],
         queryFn: () =>
           api.get(`${apiEndpoints.gameReviewScreenshot}/?gameId=${game?.id}`).then(({ data }) => data.screenshots),
-        enabled: !!game,
+        enabled: !!game?.id,
       },
     ],
   });

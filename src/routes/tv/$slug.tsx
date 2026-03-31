@@ -117,8 +117,8 @@ export function TVShowDetailsPage() {
         queryFn: () => api.get(`/tv/detail/${slug}/season`).then(({ data }) => data.seasons),
       },
       {
-        queryKey: ["tvReviews", item.id],
-        queryFn: () => api.get(`/tv/review/?tvShowId=${item.id}`).then(({ data }) => data.tvShowReviews),
+        queryKey: ["tvReviews", item?.id],
+        queryFn: () => api.get(`/tv/review/?tvShowId=${item?.id}`).then(({ data }) => data.tvShowReviews),
         enabled: !!item?.id,
       },
     ],

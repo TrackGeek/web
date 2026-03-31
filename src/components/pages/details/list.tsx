@@ -4,7 +4,11 @@ import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } fr
 
 export function ListItem() {
   return (
-    <Link to={"/"} className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
+    <Link
+      to={"/"}
+      search={{ landing: "true" }}
+      className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border"
+    >
       <div className="flex items-center justify-between mb-2">
         <AvatarGroup className="items-center -space-x-3 overflow-x-hidden">
           <Avatar className="aspect-3/4 h-max w-16 rounded-md">
@@ -36,7 +40,7 @@ export function ListItem() {
       </div>
       <p className="text-card-foreground font-bold">The Human Shadow: True Crime</p>
       <div className="flex justify-between items-center mt-2">
-        <Link to={"/"} className="flex gap-1 items-center">
+        <Link to={"/"} search={{ landing: "true" }} className="flex gap-1 items-center">
           <Avatar size="sm">
             <AvatarImage src="https://assets.hardcover.app/editions/30399846/4434002844651.jpg"></AvatarImage>
           </Avatar>

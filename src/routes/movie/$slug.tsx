@@ -336,7 +336,7 @@ export function MovieDetailsRoute() {
                       <Link
                         key={genre}
                         to="/"
-                        search={{ landing: "true " }}
+                        search={{ landing: "true" }}
                         className={`px-3 py-1.5 bg-linear-to-r ${color} border rounded-full text-sm font-medium`}
                       >
                         {getGenreLabel(t, genre)}
@@ -360,7 +360,7 @@ export function MovieDetailsRoute() {
                     title={t("library:directors")}
                     icon={<Clapperboard className="size-5 text-muted-foreground" />}
                     description={
-                      <Link to="/" search={{ landing: "true " }} className="font-medium text-card-foreground">
+                      <Link to="/" search={{ landing: "true" }} className="font-medium text-card-foreground">
                         Tom Gormican
                       </Link>
                     }

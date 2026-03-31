@@ -7,14 +7,14 @@ export const Route = createFileRoute("/_authenticated")({
       const session = await context.auth.getSession();
 
       if (!session?.data?.session) {
-        throw redirect({ to: "/" });
+        throw redirect({ to: "/", search: { landing: "true" } });
       }
 
       return { session };
     } catch (error) {
       console.error(error);
 
-      throw redirect({ to: "/" });
+      throw redirect({ to: "/", search: { landing: "true" } });
     }
   },
   component: () => <Outlet />,

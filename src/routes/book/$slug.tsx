@@ -78,8 +78,8 @@ function BookDetailsRoute() {
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
-  if (isLoading) return <LoadingDetails />;
-  if (isError || !book) return <ErrorComponent />;
+  if (isLoading || reviewsData.isLoading) return <LoadingDetails />;
+  if (isError || reviewsData.isError || !book) return <ErrorComponent />;
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       <div className="lg:w-1/3">
@@ -226,7 +226,7 @@ function BookDetailsRoute() {
           </div>
 
           <div className="flex flex-wrap items-center gap-6 pb-5 border-b border-border">
-            {!reviewsData.isLoading && !reviewsData.isError && reviews.length >= 1 && (
+            {!reviewsData.isLoading && !reviewsData.isError && reviews.total >= 1 && (
               <div className="flex items-center gap-2">
                 <div className="flex">
                   <Star className="size-5 text-chart-3 fill-chart-3" />
@@ -370,7 +370,7 @@ function BookDetailsRoute() {
                 </div>
               </div>
             </TabsContent>
-            {!reviewsData.isLoading && !reviewsData.isError && reviews.length >= 1 && (
+            {!reviewsData.isLoading && !reviewsData.isError && reviews.total >= 1 && (
               <TabsContent value="reviews">
                 <ReviewItem
                   user={{

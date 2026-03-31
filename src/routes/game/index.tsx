@@ -53,7 +53,7 @@ function GameRoute() {
     isLoading: anticipatedLoading,
     isError: anticipatedError,
   } = useQuery({
-    queryKey: ["game", "antecipated"],
+    queryKey: ["game", "anticipated"],
     queryFn: () => api.get("/game/top?filter=antecipated"),
   });
 
@@ -216,7 +216,7 @@ function GameRoute() {
         </Grid>
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:mostAnticipated")}</p>
-          <Link to={"/game/antecipated"}>
+          <Link to={"/game/anticipated"}>
             <Button>{t("pages:donate.viewAll")}</Button>
           </Link>
         </div>

@@ -16,7 +16,7 @@ export const Route = createFileRoute("/manga/recommendations/")({
       ...seo({
         title: "Manga Recommendations",
         description:
-          "Manga recommendations based on others otakus. Discover hidden gems, trending Manhwa, and classic series tailored to your reading history and favorite genres.",
+          "Manga recommendations based on other otaku readers. Discover hidden gems, trending Manhwa, and classic series tailored to your reading history and favorite genres.",
       }),
     ],
   }),

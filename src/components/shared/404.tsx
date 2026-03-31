@@ -19,7 +19,7 @@ export function NotFoundComponent() {
         <EmptyContent>
           <div className="flex gap-2">
             <Button asChild>
-              <Link to="/">
+              <Link to="/" search={{ landing: "true" }}>
                 <HomeIcon data-icon="inline-start" />
                 {t("common:goHome")}
               </Link>

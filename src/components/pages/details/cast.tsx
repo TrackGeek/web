@@ -3,7 +3,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function CastItem({ imageUrl, character, name }: { imageUrl: string; name: string; character: string }) {
   return (
-    <Link to={"/"} className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
+    <Link
+      to={"/"}
+      search={{ landing: "true" }}
+      className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border"
+    >
       <div className="flex items-center justify-between mb-2">
         <Avatar className="w-full aspect-square h-full rounded-2xl">
           <AvatarImage src={imageUrl} alt={`Avatar of ${name}`} className="object-cover aspect-3/4 h-full" />

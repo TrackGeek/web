@@ -12,6 +12,7 @@ export function FavoriteCard({ item }: { item: FavoriteItem }) {
   return (
     <Link
       to="/"
+      search={{ landing: "true" }}
       className={cn("bg-card rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-shadow")}
     >
       <img src={item.image} alt={item.title} className="w-full h-44 object-cover" />

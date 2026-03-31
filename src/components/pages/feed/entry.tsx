@@ -24,14 +24,18 @@ export function FeedEntry({ profile, item }: feedEntryProps) {
   const { i18n } = useTranslation();
   return (
     <div className="flex w-full max-h-28">
-      <Link to={"/"} className="w-auto max-w-20">
+      <Link to={"/"} search={{ landing: "true" }} className="w-auto max-w-20">
         <img src={item.coverURL} className="size-full object-contain rounded-l-2xl" alt="" />
       </Link>
 
       <div className="flex flex-1 px-4 py-3 bg-card border-y border-r border-border rounded-r-2xl justify-between items-start">
         <div className="flex flex-col items-start justify-between gap-3 ml-0 shrink-0 h-full">
           <div className="flex flex-col">
-            <Link to={"/"} className="font-bold hover:text-primary transition-colors truncate">
+            <Link
+              to={"/"}
+              search={{ landing: "true" }}
+              className="font-bold hover:text-primary transition-colors truncate"
+            >
               {profile.name}
             </Link>
             <span className="text-muted-foreground text-sm capitalize">
@@ -40,7 +44,7 @@ export function FeedEntry({ profile, item }: feedEntryProps) {
             <p className="text-sm line-clamp-2 text-foreground/90">{item.content}</p>
           </div>
           <div className="flex items-center gap-3">
-            <Link to={"/"}>
+            <Link to={"/"} search={{ landing: "true" }}>
               <img
                 src={profile.avatarURL}
                 className="size-8 shrink-0 rounded-full object-cover"

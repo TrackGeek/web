@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -26,31 +26,30 @@ export const Route = createFileRoute("/book/")({
 function BookRoute() {
   const { t } = useTranslation();
 
-  const {
-    data: trendingData,
-    isLoading: trendingLoading,
-    isError: trendingError,
-  } = useQuery({
-    queryKey: ["book", "trending"],
-    queryFn: () => api.get("/book/top?filter=trending"),
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ["book", "trending"],
+        queryFn: () => api.get("/book/top?filter=trending"),
+      },
+      {
+        queryKey: ["book", "comingSoon"],
+        queryFn: () => api.get("/book/top?filter=comingSoon"),
+      },
+    ],
   });
 
-  const trendingQuery = trendingData?.data.topBooks.items;
+  const isLoading = results.some((r) => r.isLoading);
+  const isError = results.some((r) => r.isError);
 
-  const {
-    data: comingSoonData,
-    isLoading: comingSoonLoading,
-    isError: comingSoonError,
-  } = useQuery({
-    queryKey: ["book", "comingSoon"],
-    queryFn: () => api.get("/book/top?filter=comingSoon"),
-  });
+  const [trendingResult, comingSoonResult] = results;
 
-  const comingSoonQuery = comingSoonData?.data.topBooks.items;
+  const trendingQuery = trendingResult.data?.data.topBooks.items;
+  const comingSoonQuery = comingSoonResult.data?.data.topBooks.items;
 
-  if (comingSoonError || trendingError) return <ErrorComponent />;
+  if (isError) return <ErrorComponent />;
 
-  if (trendingLoading || comingSoonLoading) return <LoadingFeatured numberOfSections={2} />;
+  if (isLoading) return <LoadingFeatured numberOfSections={2} />;
 
   return (
     <div className="mx-auto w-full">

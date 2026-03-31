@@ -1,5 +1,5 @@
 import ViteImage from "@son426/vite-image/react";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -27,54 +27,40 @@ export const Route = createFileRoute("/tv/")({
 function SerieRoute() {
   const { t } = useTranslation();
 
-  const {
-    data: airingData,
-    isLoading: airingLoading,
-    isError: airingError,
-  } = useQuery({
-    queryKey: ["tv", "airing"],
-    queryFn: () => api.get("/tv/top?filter=airing"),
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ["tv", "airing"],
+        queryFn: () => api.get("/tv/top?filter=airing"),
+      },
+      {
+        queryKey: ["tv", "upcoming"],
+        queryFn: () => api.get("/tv/top?filter=upcoming"),
+      },
+      {
+        queryKey: ["tv", "trending"],
+        queryFn: () => api.get("/tv/top?filter=trending"),
+      },
+      {
+        queryKey: ["tv", "popular"],
+        queryFn: () => api.get("/tv/top?filter=popular"),
+      },
+    ],
   });
 
-  const airing = airingData?.data.topTVShows.items;
+  const isLoading = results.some((r) => r.isLoading);
+  const isError = results.some((r) => r.isError);
 
-  const {
-    data: upcomingData,
-    isLoading: upcomingLoading,
-    isError: upcomingError,
-  } = useQuery({
-    queryKey: ["tv", "upcoming"],
-    queryFn: () => api.get("/tv/top?filter=upcoming"),
-  });
+  const [airingResult, upcomingResult, trendingResult, popularResult] = results;
 
-  const upcoming = upcomingData?.data.topTVShows.items;
+  const airing = airingResult.data?.data.topTVShows.items;
+  const upcoming = upcomingResult.data?.data.topTVShows.items;
+  const trending = trendingResult.data?.data.topTVShows.items;
+  const popular = popularResult.data?.data.topTVShows.items;
 
-  const {
-    data: trendingData,
-    isLoading: trendingLoading,
-    isError: trendingError,
-  } = useQuery({
-    queryKey: ["tv", "trending"],
-    queryFn: () => api.get("/tv/top?filter=trending"),
-  });
+  if (isError) return <ErrorComponent />;
 
-  const trending = trendingData?.data.topTVShows.items;
-
-  const {
-    data: popularData,
-    isLoading: popularLoading,
-    isError: popularError,
-  } = useQuery({
-    queryKey: ["tv", "popular"],
-    queryFn: () => api.get("/tv/top?filter=popular"),
-  });
-
-  const popular = popularData?.data.topTVShows.items;
-
-  if (airingError || upcomingError || trendingError || popularError) return <ErrorComponent />;
-
-  if (airingLoading || upcomingLoading || trendingLoading || popularLoading)
-    return <LoadingFeatured numberOfSections={4} />;
+  if (isLoading) return <LoadingFeatured numberOfSections={4} />;
 
   return (
     <div className="mx-auto w-full">

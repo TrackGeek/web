@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -25,54 +25,40 @@ export const Route = createFileRoute("/manga/")({
 
 function MangaRoute() {
   const { t } = useTranslation();
-  const {
-    data: publishingData,
-    isLoading: publishingLoading,
-    isError: publishingError,
-  } = useQuery({
-    queryKey: ["manga", "publishing"],
-    queryFn: () => api.get("/manga/top?filter=publishing"),
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ["manga", "publishing"],
+        queryFn: () => api.get("/manga/top?filter=publishing"),
+      },
+      {
+        queryKey: ["manga", "upcoming"],
+        queryFn: () => api.get("/manga/top?filter=upcoming"),
+      },
+      {
+        queryKey: ["manga", "favorite"],
+        queryFn: () => api.get("/manga/top?filter=favorite"),
+      },
+      {
+        queryKey: ["manga", "recommendations"],
+        queryFn: () => api.get("/manga/top?filter=bypopularity"),
+      },
+    ],
   });
 
-  const publishing = publishingData?.data.mangas.items;
+  const isLoading = results.some((r) => r.isLoading);
+  const isError = results.some((r) => r.isError);
 
-  const {
-    data: upcomingData,
-    isLoading: upcomingLoading,
-    isError: upcomingError,
-  } = useQuery({
-    queryKey: ["manga", "upcoming"],
-    queryFn: () => api.get("/manga/top?filter=upcoming"),
-  });
+  const [publishingResult, upcomingResult, favoriteResult, recommendationsResult] = results;
 
-  const upcoming = upcomingData?.data.mangas.items;
+  const publishing = publishingResult.data?.data.mangas.items;
+  const upcoming = upcomingResult.data?.data.mangas.items;
+  const favorite = favoriteResult.data?.data.mangas.items;
+  const recommendations = recommendationsResult.data?.data.mangas.items;
 
-  const {
-    data: favoriteData,
-    isLoading: favoriteLoading,
-    isError: favoriteError,
-  } = useQuery({
-    queryKey: ["manga", "favorite"],
-    queryFn: () => api.get("/manga/top?filter=favorite"),
-  });
+  if (isError) return <ErrorComponent />;
 
-  const favorite = favoriteData?.data.mangas.items;
-
-  const {
-    data: recommendationsData,
-    isLoading: recommendationsLoading,
-    isError: recommendationsError,
-  } = useQuery({
-    queryKey: ["manga", "recommendations"],
-    queryFn: () => api.get("/manga/top?filter=bypopularity"),
-  });
-
-  const recommendations = recommendationsData?.data.mangas.items;
-
-  if (publishingError || upcomingError || favoriteError || recommendationsError) return <ErrorComponent />;
-
-  if (publishingLoading || upcomingLoading || favoriteLoading || recommendationsLoading)
-    return <LoadingFeatured numberOfSections={4} />;
+  if (isLoading) return <LoadingFeatured numberOfSections={4} />;
 
   return (
     <div className="mx-auto w-full">

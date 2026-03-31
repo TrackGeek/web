@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
@@ -26,53 +26,40 @@ export const Route = createFileRoute("/anime/")({
 function AnimeRoute() {
   const { t } = useTranslation();
 
-  const {
-    data: topAiringData,
-    isLoading: topAiringLoading,
-    isError: topAiringError,
-  } = useQuery({
-    queryKey: ["anime", "top", "airing"],
-    queryFn: () => api.get("/anime/top?filter=airing"),
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ["anime", "top", "airing"],
+        queryFn: () => api.get("/anime/top?filter=airing"),
+      },
+      {
+        queryKey: ["anime", "recommendations"],
+        queryFn: () => api.get("/anime/top?filter=bypopularity"),
+      },
+      {
+        queryKey: ["anime", "top", "comingSoon"],
+        queryFn: () => api.get("/anime/top?filter=upcoming"),
+      },
+      {
+        queryKey: ["anime", "top", "anime"],
+        queryFn: () => api.get("/anime/top?filter=favorite"),
+      },
+    ],
   });
 
-  const topAiring = topAiringData?.data.animes.items;
+  const isLoading = results.some((r) => r.isLoading);
+  const isError = results.some((r) => r.isError);
 
-  const {
-    data: recommendationsData,
-    isLoading: recommendationsLoading,
-    isError: recommendationsError,
-  } = useQuery({
-    queryKey: ["anime", "recommendations"],
-    queryFn: () => api.get("/anime/top?filter=bypopularity"),
-  });
+  const [topAiringResult, recommendationsResult, comingSoonResult, topQueryResult] = results;
 
-  const recommendations = recommendationsData?.data.animes.items;
+  const topAiring = topAiringResult.data?.data.animes.items;
+  const recommendations = recommendationsResult.data?.data.animes.items;
+  const comingSoon = comingSoonResult.data?.data.animes.items;
+  const topQuery = topQueryResult.data?.data.animes.items;
 
-  const {
-    data: comingSoonData,
-    isLoading: comingSoonLoading,
-    isError: comingSoonError,
-  } = useQuery({
-    queryKey: ["anime", "top", "comingSoon"],
-    queryFn: () => api.get("/anime/top?filter=upcoming"),
-  });
+  if (isError) return <ErrorComponent />;
 
-  const comingSoon = comingSoonData?.data.animes.items;
-
-  const {
-    data: topQueryData,
-    isLoading: topQueryLoading,
-    isError: topQueryError,
-  } = useQuery({
-    queryKey: ["anime", "top", "anime"],
-    queryFn: () => api.get("/anime/top?filter=favorite"),
-  });
-
-  const topQuery = topQueryData?.data.animes.items;
-
-  if (topQueryError || comingSoonError || recommendationsError || topAiringError) return <ErrorComponent />;
-
-  if (topQueryLoading || comingSoonLoading || recommendationsLoading || topAiringLoading) return <LoadingFeatured />;
+  if (isLoading) return <LoadingFeatured />;
 
   return (
     <div className="mx-auto w-full">

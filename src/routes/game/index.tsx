@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
@@ -26,54 +26,40 @@ export const Route = createFileRoute("/game/")({
 function GameRoute() {
   const { t } = useTranslation();
 
-  const {
-    data: popularData,
-    isLoading: popularLoading,
-    isError: popularError,
-  } = useQuery({
-    queryKey: ["game", "popular"],
-    queryFn: () => api.get("/game/top?filter=popular"),
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ["game", "popular"],
+        queryFn: () => api.get("/game/top?filter=popular"),
+      },
+      {
+        queryKey: ["game", "coming"],
+        queryFn: () => api.get("/game/top?filter=coming"),
+      },
+      {
+        queryKey: ["game", "anticipated"],
+        queryFn: () => api.get("/game/top?filter=antecipated"),
+      },
+      {
+        queryKey: ["game", "recentlyReleased"],
+        queryFn: () => api.get("/game/top?filter=recentlyReleased"),
+      },
+    ],
   });
 
-  const popular = popularData?.data.topGames.items;
+  const isLoading = results.some((r) => r.isLoading);
+  const isError = results.some((r) => r.isError);
 
-  const {
-    data: comingSoonData,
-    isLoading: comingSoonLoading,
-    isError: comingSoonError,
-  } = useQuery({
-    queryKey: ["game", "coming"],
-    queryFn: () => api.get("/game/top?filter=coming"),
-  });
+  const [popularResult, comingSoonResult, anticipatedResult, recentlyReleasedResult] = results;
 
-  const comingSoon = comingSoonData?.data.topGames.items;
+  const popular = popularResult.data?.data.topGames.items;
+  const comingSoon = comingSoonResult.data?.data.topGames.items;
+  const anticipated = anticipatedResult.data?.data.topGames.items;
+  const recentlyReleased = recentlyReleasedResult.data?.data.topGames.items;
 
-  const {
-    data: anticipatedData,
-    isLoading: anticipatedLoading,
-    isError: anticipatedError,
-  } = useQuery({
-    queryKey: ["game", "anticipated"],
-    queryFn: () => api.get("/game/top?filter=antecipated"),
-  });
+  if (isError) return <ErrorComponent />;
 
-  const anticipated = anticipatedData?.data.topGames.items;
-
-  const {
-    data: recentlyReleasedData,
-    isLoading: recentlyReleasedLoading,
-    isError: recentlyReleasedError,
-  } = useQuery({
-    queryKey: ["game", "recentlyReleased"],
-    queryFn: () => api.get("/game/top?filter=recentlyReleased"),
-  });
-
-  const recentlyReleased = recentlyReleasedData?.data.topGames.items;
-
-  if (popularError || comingSoonError || anticipatedError || recentlyReleasedError) return <ErrorComponent />;
-
-  if (popularLoading || comingSoonLoading || anticipatedLoading || recentlyReleasedLoading)
-    return <LoadingFeatured numberOfSections={4} />;
+  if (isLoading) return <LoadingFeatured numberOfSections={4} />;
 
   return (
     <div className="mx-auto w-full">

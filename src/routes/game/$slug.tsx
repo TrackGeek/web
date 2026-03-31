@@ -15,7 +15,7 @@ import {
   SiX,
   SiYoutube,
 } from "@icons-pack/react-simple-icons";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { t } from "i18next";
 import {
@@ -199,25 +199,29 @@ export function GameDetailsRoute() {
   });
   const game = data;
 
-  const reviewsData = useQuery({
-    queryKey: ["gameReviews", slug],
-    queryFn: () => api.get(`${apiEndpoints.gameReview}/?gameId=${game.id}`).then(({ data }) => data.gameReviews),
-    enabled: !!game,
+  const [reviewsQuery, screenshotsQuery] = useQueries({
+    queries: [
+      {
+        queryKey: ["gameReviews", game?.id],
+        queryFn: () => api.get(`${apiEndpoints.gameReview}/?gameId=${game?.id}`).then(({ data }) => data.gameReviews),
+        enabled: !!game?.id,
+      },
+      {
+        queryKey: ["gameScreenshots", game?.id],
+        queryFn: () =>
+          api.get(`${apiEndpoints.gameReviewScreenshot}/?gameId=${game?.id}`).then(({ data }) => data.screenshots),
+        enabled: !!game?.id,
+      },
+    ],
   });
-  const reviews = reviewsData?.data;
 
-  const screenshotsData = useQuery({
-    queryKey: ["gameScreenshots", slug],
-    queryFn: () =>
-      api.get(`${apiEndpoints.gameReviewScreenshot}/?gameId=${game.id}`).then(({ data }) => data.screenshots),
-    enabled: !!game,
-  });
-  const screenshots = screenshotsData?.data;
+  const reviews = reviewsQuery.data;
+  const screenshots = screenshotsQuery.data;
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
-  if (isLoading || reviewsData.isLoading) return <LoadingDetails />;
-  if (isError || reviewsData.isError || !game) return <ErrorComponent />;
+  if (isLoading || reviewsQuery.isLoading) return <LoadingDetails />;
+  if (isError || reviewsQuery.isError || !game) return <ErrorComponent />;
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       <div className="lg:w-1/3">
@@ -430,7 +434,7 @@ export function GameDetailsRoute() {
                   </TabsTrigger>
                 )}
                 <TabsTrigger value="lists">{t("library:lists")} (30)</TabsTrigger>
-                {!screenshotsData.isLoading && !screenshotsData.isError && (
+                {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
                   <TabsTrigger value="screenshots">
                     {t("library:screenshots")} ({screenshots?.length ?? 0})
                   </TabsTrigger>
@@ -611,7 +615,7 @@ export function GameDetailsRoute() {
                 return <Relations nodes={nodes} edges={edges} />;
               })()}
             </TabsContent>
-            {!screenshotsData.isLoading && !screenshotsData.isError && (
+            {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
               <TabsContent value="screenshots">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {screenshots?.map((screenshot: { checksum: string; imageId: string }) => (

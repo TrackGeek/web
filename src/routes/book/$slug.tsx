@@ -71,10 +71,11 @@ function BookDetailsRoute() {
   const rating = 4.2;
 
   const reviewsData = useQuery({
-    queryKey: ["bookReviews", slug],
+    queryKey: ["bookReviews", book.id],
     queryFn: () => api.get(`/book/review/?bookId=${book.id}`).then(({ data }) => data.bookReviews),
+    enabled: !!book?.id,
   });
-  const reviews = reviewsData?.data;
+  const reviews = reviewsData?.data ?? { total: 0 };
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;

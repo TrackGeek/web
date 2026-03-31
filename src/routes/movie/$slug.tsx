@@ -85,8 +85,9 @@ export function MovieDetailsRoute() {
   const movie = data;
 
   const reviewsData = useQuery({
-    queryKey: ["movieReviews", slug],
-    queryFn: () => api.get(`/movie/review/?movieId=${slug}`).then(({ data }) => data.movieReviews),
+    queryKey: ["movieReviews", movie.id],
+    queryFn: () => api.get(`/movie/review/?movieId=${movie.id}`).then(({ data }) => data.movieReviews),
+    enabled: !!movie?.id,
   });
   const reviews = reviewsData?.data;
 

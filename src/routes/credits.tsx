@@ -77,6 +77,7 @@ function CreditsRoute() {
       new Map(allContributors.map((contributor) => [contributor.login?.toLowerCase(), contributor])).values(),
     )
       .sort((a, b) => b.contributions - a.contributions)
+      .filter((contributor) => contributor.login)
       .filter((contributor) => !contributor.login?.toLowerCase().includes("bot"));
   })();
 

@@ -40,7 +40,7 @@ export function ListItem() {
       </div>
       <p className="text-card-foreground font-bold">The Human Shadow: True Crime</p>
       <div className="flex justify-between items-center mt-2">
-        <Link to={"/"} search={{ landing: "true" }} className="flex gap-1 items-center">
+        <Link to={"/user/$username"} params={{ username: "johndoe" }} className="flex gap-1 items-center">
           <Avatar size="sm">
             <AvatarImage src="https://assets.hardcover.app/editions/30399846/4434002844651.jpg"></AvatarImage>
           </Avatar>

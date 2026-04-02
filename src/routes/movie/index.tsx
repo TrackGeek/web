@@ -7,7 +7,7 @@ import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
-import { api } from "@/lib/api.ts";
+import { api, apiEndpoints } from "@/lib/api.ts";
 import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/movie/")({
@@ -30,19 +30,19 @@ function MovieRoute() {
     queries: [
       {
         queryKey: ["movie", "airing"],
-        queryFn: () => api.get("/movie/top?filter=airing"),
+        queryFn: () => api.get(apiEndpoints.getMovieAiring),
       },
       {
         queryKey: ["movie", "upcoming"],
-        queryFn: () => api.get("/movie/top?filter=upcoming"),
+        queryFn: () => api.get(apiEndpoints.getMovieUpcoming),
       },
       {
         queryKey: ["movie", "trending"],
-        queryFn: () => api.get("/movie/top?filter=trending"),
+        queryFn: () => api.get(apiEndpoints.getMovieTrending),
       },
       {
         queryKey: ["movie", "popular"],
-        queryFn: () => api.get("/movie/top?filter=popular"),
+        queryFn: () => api.get(apiEndpoints.getMoviePopular),
       },
     ],
   });

@@ -7,7 +7,7 @@ import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFeatured } from "@/components/shared/loadings/featured";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
-import { api } from "@/lib/api.ts";
+import { api, apiEndpoints } from "@/lib/api.ts";
 import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/manga/")({
@@ -29,19 +29,19 @@ function MangaRoute() {
     queries: [
       {
         queryKey: ["manga", "publishing"],
-        queryFn: () => api.get("/manga/top?filter=publishing"),
+        queryFn: () => api.get(apiEndpoints.getMangaPublishing),
       },
       {
         queryKey: ["manga", "upcoming"],
-        queryFn: () => api.get("/manga/top?filter=upcoming"),
+        queryFn: () => api.get(apiEndpoints.getMangaUpcoming),
       },
       {
         queryKey: ["manga", "favorite"],
-        queryFn: () => api.get("/manga/top?filter=favorite"),
+        queryFn: () => api.get(apiEndpoints.getMangaFavorite),
       },
       {
         queryKey: ["manga", "recommendations"],
-        queryFn: () => api.get("/manga/top?filter=bypopularity"),
+        queryFn: () => api.get(apiEndpoints.getMangaRecommendations),
       },
     ],
   });

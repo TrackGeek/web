@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { Calendar1, Plus, Save, Star, Trash } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { api } from "@/lib/api.ts";
+import { api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
@@ -33,7 +33,7 @@ export function MangaModal({ mediaData: _, onStatusChange, onSaveSuccess }: Mang
 
   const createListMutation = useMutation({
     mutationFn: async (name: string) => {
-      await api.post("/list", {
+      await api.post(apiEndpoints.list, {
         name,
         userId: session?.data?.user?.id,
         type: "Manga",

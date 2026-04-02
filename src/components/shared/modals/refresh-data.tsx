@@ -6,9 +6,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 
 interface RefreshDataProps {
   sourceURL: string;
+  onSubmit?: () => void;
 }
 
-export function RefreshData({ sourceURL }: RefreshDataProps) {
+export function RefreshData({ sourceURL, onSubmit }: RefreshDataProps) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   return (
@@ -47,6 +48,7 @@ export function RefreshData({ sourceURL }: RefreshDataProps) {
                 className="gap-2"
                 onClick={() => {
                   setOpen(false);
+                  onSubmit?.();
                 }}
               >
                 <RefreshCcw className="size-4" />

@@ -7,7 +7,7 @@ import {
   SiInstagramHex,
   SiX,
 } from "@icons-pack/react-simple-icons";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Bookmark,
@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import type { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CastItem } from "@/components/pages/details/cast";
 import { ListItem } from "@/components/pages/details/list";
@@ -44,7 +45,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { api } from "@/lib/api.ts";
+import { api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils";
@@ -53,7 +54,7 @@ import { getStatusLabel } from "@/lib/utils/status.ts";
 
 export const Route = createFileRoute("/movie/$slug")({
   loader: async ({ params }) => {
-    const movie = await api.get(`/movie/detail/${params.slug}`).then(({ data }) => data.movie);
+    const movie = await api.get(apiEndpoints.getMovieDetails(params.slug)).then(({ data }) => data.movie);
     return { movie };
   },
   head: ({ loaderData }) => {
@@ -79,20 +80,34 @@ export function MovieDetailsRoute() {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["movie", slug],
-    queryFn: () => api.get(`/movie/detail/${slug}`).then(({ data }) => data.movie),
+    queryFn: () => api.get(apiEndpoints.getMovieDetails(slug)).then(({ data }) => data.movie),
     initialData: loaderMovie,
   });
   const movie = data;
 
   const reviewsData = useQuery({
     queryKey: ["movieReviews", movie.id],
-    queryFn: () => api.get(`/movie/review/?movieId=${movie.id}`).then(({ data }) => data.movieReviews),
+    queryFn: () => api.get(`${apiEndpoints.movieReview}/?movieId=${movie.id}`).then(({ data }) => data.movieReviews),
     enabled: !!movie?.id,
   });
   const reviews = reviewsData?.data;
 
   const rating = 4.2;
   const { t } = useTranslation();
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: () => {
+      return api.post(apiEndpoints.refreshMovieData, { id: Number(slug) });
+    },
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: ["movie", slug] });
+    },
+    onError: () => {
+      return toast.error(t("api:MOVIE_ALREADY_REFRESHED"));
+    },
+  });
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
@@ -214,7 +229,12 @@ export function MovieDetailsRoute() {
               </p>
             </div>
           </Grid>
-          <RefreshData sourceURL={`https://www.themoviedb.org/movie/${movie.tmdbId}`} />
+          <RefreshData
+            sourceURL={`https://www.themoviedb.org/movie/${movie.tmdbId}`}
+            onSubmit={() => {
+              mutation.mutate();
+            }}
+          />
           <div className="flex flex-wrap gap-3 items-center justify-center">
             {movie.homepage && (
               <a href={movie.homepage} target="_blank" rel="noopener noreferrer">

@@ -8,7 +8,7 @@ import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
-import { api } from "@/lib/api.ts";
+import { api, apiEndpoints } from "@/lib/api.ts";
 import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/tv/")({
@@ -31,19 +31,19 @@ function SerieRoute() {
     queries: [
       {
         queryKey: ["tv", "airing"],
-        queryFn: () => api.get("/tv/top?filter=airing"),
+        queryFn: () => api.get(apiEndpoints.getTvShowAiring),
       },
       {
         queryKey: ["tv", "upcoming"],
-        queryFn: () => api.get("/tv/top?filter=upcoming"),
+        queryFn: () => api.get(apiEndpoints.getTvShowUpcoming),
       },
       {
         queryKey: ["tv", "trending"],
-        queryFn: () => api.get("/tv/top?filter=trending"),
+        queryFn: () => api.get(apiEndpoints.getTvShowTrending),
       },
       {
         queryKey: ["tv", "popular"],
-        queryFn: () => api.get("/tv/top?filter=popular"),
+        queryFn: () => api.get(apiEndpoints.getTvShowPopular),
       },
     ],
   });

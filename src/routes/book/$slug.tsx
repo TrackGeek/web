@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   BarChart3,
@@ -17,6 +17,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { ListItem } from "@/components/pages/details/list";
 import { ReviewItem } from "@/components/pages/details/review";
@@ -29,13 +30,13 @@ import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { api } from "@/lib/api.ts";
+import { api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/book/$slug")({
   loader: async ({ params }) => {
-    const book = await api.get(`/book/detail/${params.slug}`).then(({ data }) => data.book);
+    const book = await api.get(apiEndpoints.getBookDetails(params.slug)).then(({ data }) => data.book);
     return { book };
   },
   head: ({ loaderData }) => {
@@ -64,7 +65,7 @@ function BookDetailsRoute() {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["book", slug],
-    queryFn: () => api.get(`/book/detail/${slug}`).then(({ data }) => data.book),
+    queryFn: () => api.get(apiEndpoints.getBookDetails(slug)).then(({ data }) => data.book),
     initialData: loaderBook,
   });
   const book = data;
@@ -72,10 +73,24 @@ function BookDetailsRoute() {
 
   const reviewsData = useQuery({
     queryKey: ["bookReviews", book.id],
-    queryFn: () => api.get(`/book/review/?bookId=${book.id}`).then(({ data }) => data.bookReviews),
+    queryFn: () => api.get(`${apiEndpoints.bookReview}/?bookId=${book.id}`).then(({ data }) => data.bookReviews),
     enabled: !!book?.id,
   });
   const reviews = reviewsData?.data ?? { total: 0 };
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: () => {
+      return api.post(apiEndpoints.refreshBookData, { hardcoverId: Number(slug) });
+    },
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: ["book", slug] });
+    },
+    onError: () => {
+      return toast.error(t("api:BOOK_ALREADY_REFRESHED"));
+    },
+  });
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
@@ -199,7 +214,12 @@ function BookDetailsRoute() {
               </div>
             )}
           </Grid>
-          <RefreshData sourceURL={`https://hardcover.app/books/${book.slug}`} />
+          <RefreshData
+            sourceURL={`https://hardcover.app/books/${book.slug}`}
+            onSubmit={() => {
+              mutation.mutate();
+            }}
+          />
         </div>
       </div>
 

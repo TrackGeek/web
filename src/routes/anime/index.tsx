@@ -7,7 +7,7 @@ import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { api } from "@/lib/api";
+import { api, apiEndpoints } from "@/lib/api";
 import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/anime/")({
@@ -30,19 +30,19 @@ function AnimeRoute() {
     queries: [
       {
         queryKey: ["anime", "top", "airing"],
-        queryFn: () => api.get("/anime/top?filter=airing"),
+        queryFn: () => api.get(apiEndpoints.getAnimeAiring),
       },
       {
         queryKey: ["anime", "recommendations"],
-        queryFn: () => api.get("/anime/top?filter=bypopularity"),
+        queryFn: () => api.get(apiEndpoints.getAnimeRecommendations),
       },
       {
         queryKey: ["anime", "top", "comingSoon"],
-        queryFn: () => api.get("/anime/top?filter=upcoming"),
+        queryFn: () => api.get(apiEndpoints.getAnimeComingSoon),
       },
       {
         queryKey: ["anime", "top", "anime"],
-        queryFn: () => api.get("/anime/top?filter=favorite"),
+        queryFn: () => api.get(apiEndpoints.getAnimeTop),
       },
     ],
   });

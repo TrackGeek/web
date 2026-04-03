@@ -55,7 +55,7 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
 
   const createListMutation = useMutation({
     mutationFn: async (name: string) => {
-      const { data } = await api.post("/list", {
+      const { data } = await api.post(apiEndpoints.list, {
         name,
         userId,
         type: "Game",

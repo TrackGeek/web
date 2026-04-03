@@ -7,7 +7,7 @@ import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
-import { api } from "@/lib/api.ts";
+import { api, apiEndpoints } from "@/lib/api.ts";
 import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/book/")({
@@ -30,11 +30,11 @@ function BookRoute() {
     queries: [
       {
         queryKey: ["book", "trending"],
-        queryFn: () => api.get("/book/top?filter=trending"),
+        queryFn: () => api.get(apiEndpoints.getBookTrending),
       },
       {
         queryKey: ["book", "comingSoon"],
-        queryFn: () => api.get("/book/top?filter=comingSoon"),
+        queryFn: () => api.get(apiEndpoints.getBookComingSoon),
       },
     ],
   });

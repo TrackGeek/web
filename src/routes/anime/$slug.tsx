@@ -8,7 +8,7 @@ import {
   SiWikipediaHex,
   SiX,
 } from "@icons-pack/react-simple-icons";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Antenna,
@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { AnimeEpisodeProgress, type SingleSeasonData } from "@/components/pages/details/anime-progress";
 import { CastItem } from "@/components/pages/details/cast";
@@ -47,7 +48,7 @@ import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { api } from "@/lib/api.ts";
+import { api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils";
@@ -55,7 +56,7 @@ import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/anime/$slug")({
   loader: async ({ params }) => {
-    const anime = await api.get(`/anime/detail/${params.slug}`).then(({ data }) => data.anime);
+    const anime = await api.get(apiEndpoints.getAnimeDetails(params.slug)).then(({ data }) => data.anime);
     return { anime };
   },
   head: ({ loaderData }) => {
@@ -90,7 +91,7 @@ function AnimeDetailsRoute() {
     isError,
   } = useQuery({
     queryKey: ["anime", slug],
-    queryFn: () => api.get(`/anime/detail/${slug}`).then(({ data }) => data.anime),
+    queryFn: () => api.get(apiEndpoints.getAnimeDetails(slug)).then(({ data }) => data.anime),
     initialData: loaderAnime,
   });
 
@@ -98,15 +99,30 @@ function AnimeDetailsRoute() {
     queries: [
       {
         queryKey: ["animeEpisodes", slug],
-        queryFn: () => api.get(`/anime/detail/${slug}/episode`).then(({ data }) => data.episodes.items),
+        queryFn: () => api.get(apiEndpoints.getAnimeEpisodeDetails(slug)).then(({ data }) => data.episodes.items),
         enabled: !!anime,
       },
       {
         queryKey: ["animeReviews", anime?.id],
-        queryFn: () => api.get(`/anime/review/?animeId=${anime?.id}`).then(({ data }) => data.animeReviews),
+        queryFn: () =>
+          api.get(`${apiEndpoints.animeReview}/?animeId=${anime?.id}`).then(({ data }) => data.animeReviews),
         enabled: !!anime?.id,
       },
     ],
+  });
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: () => {
+      return api.post(apiEndpoints.refreshAnimeData, { malId: Number(slug) });
+    },
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: ["anime", slug] });
+    },
+    onError: () => {
+      return toast.error(t("api:ANIME_ALREADY_REFRESHED"));
+    },
   });
 
   const episodes = episodesQuery.data;
@@ -249,7 +265,12 @@ function AnimeDetailsRoute() {
               </div>
             )}
           </Grid>
-          <RefreshData sourceURL={`https://myanimelist.net/anime/${anime.malId}`} />
+          <RefreshData
+            sourceURL={`https://myanimelist.net/anime/${anime.malId}`}
+            onSubmit={() => {
+              mutation.mutate();
+            }}
+          />
           {anime.external.length >= 1 && (
             <div className="flex flex-wrap gap-3 items-center justify-center">
               {(() => {

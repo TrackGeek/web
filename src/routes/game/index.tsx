@@ -7,7 +7,7 @@ import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { api } from "@/lib/api.ts";
+import { api, apiEndpoints } from "@/lib/api.ts";
 import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/game/")({
@@ -30,19 +30,19 @@ function GameRoute() {
     queries: [
       {
         queryKey: ["game", "popular"],
-        queryFn: () => api.get("/game/top?filter=popular"),
+        queryFn: () => api.get(apiEndpoints.getGamePopular),
       },
       {
         queryKey: ["game", "coming"],
-        queryFn: () => api.get("/game/top?filter=coming"),
+        queryFn: () => api.get(apiEndpoints.getGameComing),
       },
       {
         queryKey: ["game", "anticipated"],
-        queryFn: () => api.get("/game/top?filter=antecipated"),
+        queryFn: () => api.get(apiEndpoints.getGameAnticipated),
       },
       {
         queryKey: ["game", "recentlyReleased"],
-        queryFn: () => api.get("/game/top?filter=recentlyReleased"),
+        queryFn: () => api.get(apiEndpoints.getGameRecentlyReleased),
       },
     ],
   });

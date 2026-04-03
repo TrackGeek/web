@@ -7,7 +7,7 @@ import {
   SiInstagramHex,
   SiX,
 } from "@icons-pack/react-simple-icons";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Bookmark,
@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { type ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CastItem } from "@/components/pages/details/cast";
 import { EpisodeItem } from "@/components/pages/details/episode";
@@ -46,7 +47,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { api } from "@/lib/api.ts";
+import { api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
@@ -55,7 +56,7 @@ import { getStatusLabel } from "@/lib/utils/status.ts";
 
 export const Route = createFileRoute("/tv/$slug")({
   loader: async ({ params }) => {
-    const item = await api.get(`/tv/detail/${params.slug}`).then(({ data }) => data.tvShow);
+    const item = await api.get(apiEndpoints.getTvShowDetails(params.slug)).then(({ data }) => data.tvShow);
     return { item };
   },
   head: ({ loaderData }) => {
@@ -104,7 +105,7 @@ export function TVShowDetailsPage() {
 
   const tvQuery = useQuery({
     queryKey: ["tv", slug],
-    queryFn: () => api.get(`/tv/detail/${slug}`).then(({ data }) => data.tvShow),
+    queryFn: () => api.get(apiEndpoints.getTvShowDetails(slug)).then(({ data }) => data.tvShow),
     initialData: loaderItem,
   });
 
@@ -114,11 +115,12 @@ export function TVShowDetailsPage() {
     queries: [
       {
         queryKey: ["tvSeason", slug],
-        queryFn: () => api.get(`/tv/detail/${slug}/season`).then(({ data }) => data.seasons),
+        queryFn: () => api.get(apiEndpoints.getTvShowSeasonDetails(slug)).then(({ data }) => data.seasons),
       },
       {
         queryKey: ["tvReviews", item?.id],
-        queryFn: () => api.get(`/tv/review/?tvShowId=${item?.id}`).then(({ data }) => data.tvShowReviews),
+        queryFn: () =>
+          api.get(`${apiEndpoints.tvShowReview}/?tvShowId=${item?.id}`).then(({ data }) => data.tvShowReviews),
         enabled: !!item?.id,
       },
     ],
@@ -128,6 +130,19 @@ export function TVShowDetailsPage() {
   const reviews = reviewsQuery.data;
 
   const rating = 4.2;
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: () => {
+      return api.post(apiEndpoints.refreshTvShowData, { tmdbId: Number(slug) });
+    },
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: ["tv", slug] });
+    },
+    onError: () => {
+      return toast.error(t("api:TV_SHOW_ALREADY_REFRESHED"));
+    },
+  });
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
   if (tvQuery.isLoading || seasonsQuery.isLoading || reviewsQuery.isLoading) return <LoadingDetails />;
@@ -258,7 +273,12 @@ export function TVShowDetailsPage() {
               </div>
             )}
           </Grid>
-          <RefreshData sourceURL={`https://www.themoviedb.org/tv/${item.tmdbId}`} />
+          <RefreshData
+            sourceURL={`https://www.themoviedb.org/tv/${item.tmdbId}`}
+            onSubmit={() => {
+              mutation.mutate();
+            }}
+          />
           <div className="flex flex-wrap gap-3 items-center justify-center">
             {item.homepage && (
               <a href={item.homepage} target="_blank" rel="noopener noreferrer">

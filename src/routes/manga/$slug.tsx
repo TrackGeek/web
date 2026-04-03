@@ -8,7 +8,7 @@ import {
   SiWikipediaHex,
   SiX,
 } from "@icons-pack/react-simple-icons";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Bookmark,
@@ -27,6 +27,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CharacterItem } from "@/components/pages/details/character";
 import { ListItem } from "@/components/pages/details/list";
@@ -41,7 +42,7 @@ import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { api } from "@/lib/api.ts";
+import { api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
@@ -49,7 +50,7 @@ import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/manga/$slug")({
   loader: async ({ params }) => {
-    const manga = await api.get(`/manga/detail/${params.slug}`).then(({ data }) => data.manga);
+    const manga = await api.get(apiEndpoints.getMangaDetails(params.slug)).then(({ data }) => data.manga);
     return { manga };
   },
   head: ({ loaderData }) => {
@@ -78,17 +79,31 @@ export function MangaDetailsRoute() {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["manga", slug],
-    queryFn: () => api.get(`/manga/detail/${slug}`).then(({ data }) => data.manga),
+    queryFn: () => api.get(apiEndpoints.getMangaDetails(slug)).then(({ data }) => data.manga),
     initialData: loaderManga,
   });
   const manga = data;
 
   const reviewsData = useQuery({
     queryKey: ["mangaReviews", manga.id],
-    queryFn: () => api.get(`/manga/review/?mangaId=${manga.id}`).then(({ data }) => data.mangaReviews),
+    queryFn: () => api.get(`${apiEndpoints.mangaReview}/?mangaId=${manga.id}`).then(({ data }) => data.mangaReviews),
     enabled: !!manga?.id,
   });
   const reviews = reviewsData?.data ?? { total: 0 };
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: () => {
+      return api.post(apiEndpoints.refreshMangaData, { malId: Number(slug) });
+    },
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: ["manga", slug] });
+    },
+    onError: () => {
+      return toast.error(t("api:MANGA_ALREADY_REFRESHED"));
+    },
+  });
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
@@ -212,7 +227,12 @@ export function MangaDetailsRoute() {
               <p className="font-semibold text-card-foreground">{manga.published.string}</p>
             </div>
           </Grid>
-          <RefreshData sourceURL={manga.url} />
+          <RefreshData
+            sourceURL={manga.url}
+            onSubmit={() => {
+              mutation.mutate();
+            }}
+          />
           {manga.external.length >= 1 && (
             <div className="flex flex-wrap gap-3 items-center justify-center">
               {(() => {

@@ -15,7 +15,7 @@ import {
   SiX,
   SiYoutube,
 } from "@icons-pack/react-simple-icons";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { t } from "i18next";
 import {
@@ -40,6 +40,7 @@ import {
 } from "lucide-react";
 import type { ComponentType, SVGProps } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { ListItem } from "@/components/pages/details/list";
 import { Relations } from "@/components/pages/details/relations";
@@ -215,6 +216,20 @@ export function GameDetailsRoute() {
     ],
   });
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: () => {
+      return api.post(apiEndpoints.refreshGameData, { igdbId: Number(slug) });
+    },
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: ["game", slug] });
+    },
+    onError: () => {
+      return toast.error(t("api:GAME_ALREADY_REFRESHED"));
+    },
+  });
+
   const reviews = reviewsQuery.data;
   const screenshots = screenshotsQuery.data;
 
@@ -353,7 +368,12 @@ export function GameDetailsRoute() {
               </p>
             </div>
           </Grid>
-          <RefreshData sourceURL={`https://www.igdb.com/games/${game.slug}`} />
+          <RefreshData
+            sourceURL={`https://www.igdb.com/games/${game.slug}`}
+            onSubmit={() => {
+              mutation.mutate();
+            }}
+          />
           <div className="flex flex-wrap gap-3 items-center justify-center">
             {game.websites?.map((website: { name: string; url: string }, idx: number) => {
               const iconData = websiteIconMap[website.name];

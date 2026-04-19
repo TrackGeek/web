@@ -55,7 +55,7 @@
     "@tiptap/suggestion": "^3.20.1",
     "@xyflow/react": "^12.10.1",
     "animejs": "^4.3.6",
-    "axios": "^1.13.5",
+    "axios": "^1.15.0",
     "better-auth": "^1.4.18",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

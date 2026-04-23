@@ -78,6 +78,7 @@
     "react-hook-form": "^7.71.2",
     "react-i18next": "^16.5.8",
     "react-medium-image-zoom": "^5.4.1",
+    "react-skeletonify": "^1.2.0",
     "react-spinners": "^0.17.0",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",

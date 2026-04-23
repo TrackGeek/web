@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
 import { SiDiscord, SiGithub, SiKick, SiNotion, SiSpotify, SiTwitch, SiX } from "@icons-pack/react-simple-icons";
-import { Lock, LogIn, Mail, Slack, User } from "lucide-react";
+import { Lock, LogIn, Mail, User } from "lucide-react";
 import { type JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -34,7 +34,7 @@ const providers: { id: string; icon: JSX.Element }[] = [
   { id: "notion", icon: <SiNotion className="size-5" /> },
   { id: "microsoft", icon: <Icon className="size-6" icon="fluent:store-microsoft-20-filled" /> },
   { id: "spotify", icon: <SiSpotify className="size-5" /> },
-  { id: "slack", icon: <Slack className="size-5" /> },
+  { id: "slack", icon: <Icon className="size-5" icon="mdi:slack" /> },
   // { id: "tiktok", icon: <SiTiktok className="size-5" /> },
   // { id: "roblox", icon: <SiRoblox className="size-5" /> },
   // { id: "apple", icon: <SiApple className="size-5" /> },

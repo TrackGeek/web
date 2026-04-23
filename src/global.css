@@ -106,6 +106,16 @@
   a {
     @apply text-white hover:text-accent;
   }
+  .asw-menu-btn svg {
+    @apply size-7! min-w-7! min-h-7! max-w-7! max-h-7!;
+  }
+  body .asw-menu-btn {
+    @apply size-10! bg-primary! bg-none!;
+  }
+  .asw-menu,
+  .asw-widget {
+    --asw-primary: var(--color-malachite-500) !important;
+  }
 }
 
 ::-webkit-scrollbar-track {

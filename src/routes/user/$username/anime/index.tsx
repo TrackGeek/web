@@ -22,7 +22,7 @@ export const Route = createFileRoute("/user/$username/anime/")({
   component: AnimeListRoute,
 });
 
-export function AnimeListRoute() {
+function AnimeListRoute() {
   const { username } = Route.useParams();
   const { t } = useTranslation();
 

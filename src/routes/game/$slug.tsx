@@ -186,7 +186,7 @@ const buildRelationsData = (game: any) => {
   return { nodes, edges };
 };
 
-export function GameDetailsRoute() {
+function GameDetailsRoute() {
   const { slug } = Route.useParams();
   const { game: loaderGame } = Route.useLoaderData();
 

@@ -70,7 +70,7 @@ export const Route = createFileRoute("/manga/$slug")({
   notFoundComponent: NotFoundComponent,
 });
 
-export function MangaDetailsRoute() {
+function MangaDetailsRoute() {
   const { slug } = Route.useParams();
   const { manga: loaderManga } = Route.useLoaderData();
 

@@ -21,7 +21,7 @@ export const Route = createFileRoute("/user/$username/game/")({
   component: GameListRoute,
 });
 
-export function GameListRoute() {
+function GameListRoute() {
   const { username } = Route.useParams();
   const { t } = useTranslation();
 

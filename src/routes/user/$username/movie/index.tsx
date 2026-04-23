@@ -21,7 +21,7 @@ export const Route = createFileRoute("/user/$username/movie/")({
   component: MovieListRoute,
 });
 
-export function MovieListRoute() {
+function MovieListRoute() {
   const { username } = Route.useParams();
   const { t } = useTranslation();
 

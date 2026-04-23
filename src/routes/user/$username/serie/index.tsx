@@ -21,7 +21,7 @@ export const Route = createFileRoute("/user/$username/serie/")({
   component: SerieListRoute,
 });
 
-export function SerieListRoute() {
+function SerieListRoute() {
   const { username } = Route.useParams();
   const { t } = useTranslation();
 

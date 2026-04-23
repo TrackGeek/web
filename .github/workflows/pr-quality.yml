@@ -18,12 +18,6 @@ jobs:
           # General Settings
           max-failures: 4
 
-          # PR Branch Checks
-          allowed-target-branches: "next"
-          blocked-target-branches: ""
-          allowed-source-branches: ""
-          blocked-source-branches: ""
-
           # PR Quality Checks
           max-negative-reactions: 0
           require-maintainer-can-modify: true

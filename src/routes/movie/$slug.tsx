@@ -74,7 +74,7 @@ export const Route = createFileRoute("/movie/$slug")({
   notFoundComponent: NotFoundComponent,
 });
 
-export function MovieDetailsRoute() {
+function MovieDetailsRoute() {
   const { slug } = Route.useParams();
   const { movie: loaderMovie } = Route.useLoaderData();
 

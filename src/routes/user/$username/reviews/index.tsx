@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { ReviewItem } from "@/components/pages/details/review";
 import { UserLayout } from "@/components/layouts/user";
+import { ReviewItem } from "@/components/pages/details/review";
 import { Input } from "@/components/ui/input";
 import { List } from "@/components/ui/list";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -14,7 +14,7 @@ export const Route = createFileRoute("/user/$username/reviews/")({
   component: ReviewsListRoute,
 });
 
-export function ReviewsListRoute() {
+function ReviewsListRoute() {
   const { username } = Route.useParams();
   const { t } = useTranslation();
 

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ScreenshotItem } from "@/components/shared/cards/screenshot";
 import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
+import { ScreenshotItem } from "@/components/shared/cards/screenshot";
 
 export const Route = createFileRoute("/user/$username/screenshots/")({
   head: ({ params }) => ({
@@ -10,7 +10,7 @@ export const Route = createFileRoute("/user/$username/screenshots/")({
   component: ScreenshotsRoute,
 });
 
-export function ScreenshotsRoute() {
+function ScreenshotsRoute() {
   const { username } = Route.useParams();
 
   const user = {

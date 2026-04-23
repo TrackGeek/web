@@ -22,7 +22,7 @@ export const Route = createFileRoute("/user/$username/manga/")({
   component: MangaListRoute,
 });
 
-export function MangaListRoute() {
+function MangaListRoute() {
   const { username } = Route.useParams();
   const { t } = useTranslation();
 

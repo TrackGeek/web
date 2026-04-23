@@ -16,7 +16,7 @@ export const Route = createFileRoute("/user/$username/")({
   component: UserDetailsRoute,
 });
 
-export function UserDetailsRoute() {
+function UserDetailsRoute() {
   const { username } = Route.useParams();
   const { t } = useTranslation();
 

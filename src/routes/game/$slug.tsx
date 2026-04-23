@@ -111,7 +111,7 @@ export const Route = createFileRoute("/game/$slug")({
 
 const LAYOUT = {
   H_SPACING: 200,
-  V_SPACING: 120,
+  V_SPACING: 180,
   CENTER: { x: 0, y: 0 },
 };
 
@@ -186,7 +186,7 @@ const buildRelationsData = (game: any) => {
   return { nodes, edges };
 };
 
-export function GameDetailsRoute() {
+function GameDetailsRoute() {
   const { slug } = Route.useParams();
   const { game: loaderGame } = Route.useLoaderData();
 

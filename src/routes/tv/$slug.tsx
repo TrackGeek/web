@@ -76,7 +76,7 @@ export const Route = createFileRoute("/tv/$slug")({
   notFoundComponent: NotFoundComponent,
 });
 
-export function TVShowDetailsPage() {
+function TVShowDetailsPage() {
   const { slug } = Route.useParams();
   const { item: loaderItem } = Route.useLoaderData();
 

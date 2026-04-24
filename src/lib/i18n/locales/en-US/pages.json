@@ -324,12 +324,24 @@
       "backloggdLimitedExport": "Import available; export is limited."
     },
     "criteria": {
-      "anime": { "label": "Anime" },
-      "manga": { "label": "Manga" },
-      "books": { "label": "Books" },
-      "games": { "label": "Games" },
-      "movies": { "label": "Movies" },
-      "series": { "label": "Series" },
+      "anime": {
+        "label": "Anime"
+      },
+      "manga": {
+        "label": "Manga"
+      },
+      "books": {
+        "label": "Books"
+      },
+      "games": {
+        "label": "Games"
+      },
+      "movies": {
+        "label": "Movies"
+      },
+      "series": {
+        "label": "Series"
+      },
       "granular-progress": {
         "label": "Granular progress",
         "description": "Granular progress per episode/chapter/entry."

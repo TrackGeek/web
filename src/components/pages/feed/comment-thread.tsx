@@ -150,13 +150,12 @@ function CommentInput({
 
   return (
     isAuthenticated && (
-      <div
+      <form
         className={cn(
           "relative rounded-xl border bg-card backdrop-blur-sm transition-all duration-200",
           isFocused ? "border-primary/50 ring-4 ring-primary/5 shadow-lg" : "border-border/40",
           className,
         )}
-        role="form"
         aria-label="Comment input"
       >
         <div className="p-4">
@@ -216,7 +215,7 @@ function CommentInput({
             </Button>
           </div>
         </div>
-      </div>
+      </form>
     )
   );
 }
@@ -479,7 +478,7 @@ export function CommentThread() {
   const { t } = useTranslation();
 
   return (
-    <div className="w-full mx-auto space-y-2" role="region" aria-label="Comments section">
+    <section className="w-full mx-auto space-y-2" aria-label="Comments section">
       <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {announcement}
       </div>
@@ -488,7 +487,7 @@ export function CommentThread() {
         <h2 className="text-xl font-semibold tracking-tight" id="comments-heading">
           {t("feed:comments")}
         </h2>
-        <div className="flex items-center gap-2" role="group" aria-label="Sort comments">
+        <fieldset className="flex items-center gap-2" aria-label="Sort comments">
           <Button
             variant="ghost"
             size="sm"
@@ -509,12 +508,12 @@ export function CommentThread() {
           >
             {t("feed:top")}
           </Button>
-        </div>
+        </fieldset>
       </div>
 
       <CommentInput onSubmit={handleAddComment} />
 
-      <div className="space-y-2 pt-2" role="list" aria-label={t("feed:comment")}>
+      <div className="space-y-2 pt-2">
         <AnimatePresence mode="popLayout">
           {comments.map((comment) => (
             <CommentItem
@@ -527,6 +526,6 @@ export function CommentThread() {
           ))}
         </AnimatePresence>
       </div>
-    </div>
+    </section>
   );
 }

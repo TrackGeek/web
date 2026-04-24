@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
-import { Heart, MessageCircle } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 
 interface TempUser {
@@ -58,11 +58,11 @@ export function FeedItem({ profile, item }: feedItemProps) {
 
           <div className="flex items-center gap-3">
             <div className="flex gap-1.5 items-center">
-              <Heart className="size-4" />
+              <Icon icon={"lucide:heart"} className="size-4" />
               <p className="text-muted-foreground">{item.likes}</p>
             </div>
             <div className="flex gap-1.5 items-center">
-              <MessageCircle className="size-4" />
+              <Icon icon={"lucide:message-circle"} className="size-4" />
               <p className="text-muted-foreground">{item.likes}</p>
             </div>
           </div>

@@ -1,6 +1,6 @@
+import { Icon } from "@iconify/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Clipboard } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type ContentType, type FilterParams, Filters } from "@/components/layouts/filters.tsx";
@@ -155,7 +155,8 @@ function RouteComponent() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <Clipboard
+            <Icon
+              icon={"lucide:clipboard"}
               className="size-5 absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:text-primary transition"
               onClick={handlePaste}
             />

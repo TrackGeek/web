@@ -1,6 +1,5 @@
-import { SiDragonframe } from "@icons-pack/react-simple-icons";
+import { Icon } from "@iconify/react";
 import { animate } from "animejs";
-import { Book, Film, Gamepad, PencilIcon, Users } from "lucide-react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
@@ -48,37 +47,37 @@ export function Features() {
             {
               title: t("pages:landing.moviesTVShows"),
               description: t("pages:landing.moviesTVShowsDescription"),
-              icon: <Film />,
+              icon: <Icon icon={"lucide:film"} />,
               bg: "bg-pink-500/20 text-pink-500",
             },
             {
               title: t("pages:landing.animeManga"),
               description: t("pages:landing.animeMangaDescription"),
-              icon: <SiDragonframe />,
+              icon: <Icon icon={"fluent-emoji-high-contrast:japanese-castle"} />,
               bg: "bg-purple-500/20 text-purple-500",
             },
             {
               title: t("common:types.game_other"),
               description: t("pages:landing.gamesDescription"),
-              icon: <Gamepad />,
+              icon: <Icon icon={"lucide:gamepad"} />,
               bg: "bg-blue-500/20 text-blue-500",
             },
             {
               title: t("common:types.book_other"),
               description: t("pages:landing.booksDescription"),
-              icon: <Book />,
+              icon: <Icon icon={"lucide:book"} />,
               bg: "bg-yellow-500/20 text-yellow-500",
             },
             {
               title: t("pages:landing.advancedProgress"),
               description: t("pages:landing.advancedProgressDescription"),
-              icon: <PencilIcon />,
+              icon: <Icon icon={"lucide:pencil"} />,
               bg: "bg-green-500/20 text-green-500",
             },
             {
               title: t("pages:landing.socialFeed"),
               description: t("pages:landing.socialFeedDescription"),
-              icon: <Users />,
+              icon: <Icon icon={"lucide:users"} />,
               bg: "bg-red-500/20 text-red-500",
             },
           ].map((item) => {

@@ -1,4 +1,4 @@
-import { Images } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog";
 
@@ -22,7 +22,7 @@ export function ScreenshotItem({ title, imageURL, images }: ScreenshotProps) {
             />
             <div className="absolute inset-0 bg-black/40 transition-all duration-300 group-hover:opacity-0 opacity-100 flex items-center justify-center">
               <div className="flex items-center gap-2 text-white">
-                <Images size={48} />
+                <Icon icon={"lucide:images"} className={"size-12"} />
                 <span className="font-semibold text-2xl">{images.length}</span>
               </div>
             </div>

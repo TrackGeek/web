@@ -1,5 +1,5 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
-import { HomeIcon, XCircleIcon } from "lucide-react";
+import { Icon } from "@iconify/react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Trans, useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
@@ -20,7 +20,7 @@ function RouteComponent() {
       <Empty>
         <EmptyHeader>
           <EmptyTitle className="mask-b-from-20% mask-b-to-80% font-extrabold text-9xl text-destructive">
-            <XCircleIcon className="size-24" />
+            <Icon icon={"lucide:x-circle"} className="size-24" />
           </EmptyTitle>
           <EmptyTitle className="text-2xl font-bold text-white">
             <Trans i18nKey={"pages:donate.error.title"} />
@@ -33,7 +33,7 @@ function RouteComponent() {
           <div className="flex gap-2">
             <Button asChild>
               <Link to="/donate">
-                <HomeIcon data-icon="inline-start" />
+                <Icon icon={"lucide:home"} data-icon="inline-start" />
                 {t("common:donate")}
               </Link>
             </Button>

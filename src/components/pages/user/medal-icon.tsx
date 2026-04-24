@@ -1,4 +1,4 @@
-import { Star } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export function MedalIcon({ name, description }: { name: string; description?: string }) {
@@ -6,7 +6,7 @@ export function MedalIcon({ name, description }: { name: string; description?: s
     <Tooltip>
       <TooltipTrigger asChild>
         <div className="w-full rounded-md bg-muted/30 flex items-center justify-center aspect-square">
-          <Star className="w-full text-yellow-400" />
+          <Icon icon={"lucide:star"} className="w-full text-yellow-400" />
         </div>
       </TooltipTrigger>
       <TooltipContent className="bg-muted">

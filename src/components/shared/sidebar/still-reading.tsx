@@ -1,7 +1,7 @@
-import clsx from "clsx";
-import { Plus } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
+import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 
 interface TempItem {
   coverURL: string;
@@ -36,7 +36,7 @@ export function StillReading({ items }: Items) {
               <p>
                 {item.page} / {item.totalPages}
               </p>
-              <Plus className="cursor-pointer" />
+              <Icon icon={"lucide:plus"} className="cursor-pointer" />
             </div>
           </div>
         ))}

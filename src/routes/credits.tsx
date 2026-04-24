@@ -1,9 +1,8 @@
 /** biome-ignore-all lint/a11y/useValidAriaRole: it's a component */
 
-import { SiDiscord, SiGithub } from "@icons-pack/react-simple-icons";
+import { Icon } from "@iconify/react";
 import { useQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Code, Languages, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
 import { ContributorsItem } from "@/components/shared/cards/contributors";
@@ -155,19 +154,19 @@ function CreditsRoute() {
               {
                 title: t("pages:credits.specialThanks.openSource"),
                 description: t("pages:credits.specialThanks.openSourceDescription"),
-                icon: <Code />,
+                icon: <Icon icon={"lucide:code"} />,
                 bg: "bg-green-500/20 text-green-500",
               },
               {
                 title: t("pages:credits.specialThanks.users"),
                 description: t("pages:credits.specialThanks.usersDescription"),
-                icon: <Users />,
+                icon: <Icon icon={"lucide:users"} />,
                 bg: "bg-red-500/20 text-red-500",
               },
               {
                 title: t("pages:credits.specialThanks.translators"),
                 description: t("pages:credits.specialThanks.translatorsDescription"),
-                icon: <Languages />,
+                icon: <Icon icon={"lucide:languages"} />,
                 bg: "bg-blue-500/20 text-blue-500",
               },
             ].map((item) => {
@@ -198,19 +197,19 @@ function CreditsRoute() {
           <div className="flex flex-col sm:flex-row flex-wrap gap-x-3 gap-y-3 mt-5 w-full justify-center">
             <a href="https://github.com/TrackGeek" target="_blank" rel="noreferrer" className="w-full sm:flex-1">
               <Button className="flex flex-wrap h-12 w-full">
-                <SiGithub />
+                <Icon icon={"simple-icons:github"} />
                 {t("pages:landing.heroButton")}
               </Button>
             </a>
             <a href="https://discord.gg/76bcftRnuT" target="_blank" rel="noreferrer" className="w-full sm:flex-1">
               <Button className="flex flex-wrap h-12 w-full">
-                <SiDiscord />
+                <Icon icon={"simple-icons:discord"} />
                 Discord
               </Button>
             </a>
             <a href="https://translate.trackgeek.net" target="_blank" rel="noreferrer" className="w-full sm:flex-1">
               <Button className="flex flex-wrap h-12 w-full">
-                <Languages />
+                <Icon icon={"lucide:languages"} />
                 {t("common:translate")}
               </Button>
             </a>

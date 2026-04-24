@@ -1,4 +1,5 @@
-import { AlertTriangle, Check, X } from "lucide-react";
+import { Icon } from "@iconify/react";
+import { useTranslation } from "react-i18next";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import type { ComparisonSupport } from "@/lib/comparison.config";
 
@@ -8,24 +9,32 @@ interface ComparisonCellProps {
 }
 
 export function ComparisonCell({ support, note }: ComparisonCellProps) {
+  const { t } = useTranslation();
+
   if (support === "yes") {
-    return <Check className="size-4 text-emerald-500" aria-label="Supported" />;
+    return (
+      <Icon icon={"lucide:check"} className="size-4 text-emerald-500" aria-label={t("pages:compare.support.yes")} />
+    );
   }
 
   if (support === "no") {
-    return <X className="size-4 text-rose-500" aria-label="Not supported" />;
+    return <Icon icon={"lucide:x"} className="size-4 text-rose-500" aria-label={t("pages:compare.support.no")} />;
   }
 
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className="inline-flex cursor-help items-center gap-1 text-amber-400" aria-label="Partially supported">
-            <AlertTriangle className="size-4" />
-          </span>
+          <button
+            type="button"
+            className="inline-flex cursor-help items-center gap-1 text-amber-400"
+            aria-label={t("pages:compare.support.partial")}
+          >
+            <Icon icon={"lucide:alert-triangle"} className="size-4" />
+          </button>
         </TooltipTrigger>
         <TooltipContent side="top" className="max-w-48 text-center">
-          {note ?? "Partially supported."}
+          {note ? t(note, { defaultValue: note }) : t("pages:compare.support.partialDescription")}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

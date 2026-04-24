@@ -1,32 +1,6 @@
-import {
-  SiFacebook,
-  SiFacebookHex,
-  SiImdb,
-  SiImdbHex,
-  SiInstagram,
-  SiInstagramHex,
-  SiX,
-} from "@icons-pack/react-simple-icons";
+import { Icon } from "@iconify/react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  Bookmark,
-  Building,
-  CheckCircle,
-  CheckSquare,
-  Clock,
-  ExternalLink,
-  FilePenLine,
-  FileType,
-  Hash,
-  Heart,
-  Languages,
-  MoreHorizontal,
-  Star,
-  TvIcon,
-  TvMinimalPlay,
-  XCircle,
-} from "lucide-react";
 import { type ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -165,38 +139,38 @@ function TVShowDetailsPage() {
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
-                      <Bookmark className="text-purple-400 size-6" />
+                      <Icon icon={"lucide:bookmark"} className="text-purple-400 size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.planning")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="text-secondary size-6" />
+                    <Icon icon={"lucide:check-circle"} className="text-secondary size-6" />
                   </div>
                 </Button>
 
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
-                      <TvMinimalPlay className="text-primary size-6" />
+                      <Icon icon={"lucide:tv-minimal-play"} className="text-primary size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.watching")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="text-secondary size-6" />
+                    <Icon icon={"lucide:check-circle"} className="text-secondary size-6" />
                   </div>
                 </Button>
 
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
-                      <CheckSquare className="text-chart-3 size-6" />
+                      <Icon icon={"lucide:check-square"} className="text-chart-3 size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">
                       {t("feed:lists.completed")}
                     </p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="text-secondary size-6" />
+                    <Icon icon={"lucide:check-circle"} className="text-secondary size-6" />
                   </div>
                 </Button>
               </div>
@@ -204,7 +178,7 @@ function TVShowDetailsPage() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-                    <MoreHorizontal className="w-5 h-5" />
+                    <Icon icon={"lucide:more-horizontal"} className="w-5 h-5" />
                     <span className="text-sm font-medium">{t("library:moreOptions")}</span>
                   </Button>
                 </DialogTrigger>
@@ -228,7 +202,7 @@ function TVShowDetailsPage() {
                         </DialogTitle>
                         <div className="flex items-center gap-4 text-white/90 text-sm">
                           <div className="flex items-center gap-1">
-                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <Icon icon={"lucide:star"} className="size-4 fill-yellow-400 text-yellow-400" />
                             <span>{rating}</span>
                           </div>
                           <span>•</span>
@@ -242,7 +216,7 @@ function TVShowDetailsPage() {
 
                     <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
                       <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
-                        <Heart className="size-6" />
+                        <Icon icon={"lucide:heart"} className="size-6" />
                       </Button>
                     </div>
                   </DialogHeader>
@@ -282,7 +256,7 @@ function TVShowDetailsPage() {
           <div className="flex flex-wrap gap-3 items-center justify-center">
             {item.homepage && (
               <a href={item.homepage} target="_blank" rel="noopener noreferrer">
-                <ExternalLink />
+                <Icon icon={"lucide:external-link"} />
               </a>
             )}
             {(() => {
@@ -293,8 +267,8 @@ function TVShowDetailsPage() {
                 links.push({
                   href: `https://instagram.com/${ext.instagram_id}`,
                   key: "instagram",
-                  className: cn(`hover:text-[${SiInstagramHex}]`),
-                  icon: <SiInstagram />,
+                  className: cn(`hover:text-[#FF0069]`),
+                  icon: <Icon icon={"simple-icons:instagram"} />,
                 });
               }
 
@@ -302,8 +276,8 @@ function TVShowDetailsPage() {
                 links.push({
                   href: `https://www.facebook.com/${ext.facebook_id}`,
                   key: "facebook",
-                  className: cn(`hover:text-[${SiFacebookHex}]`),
-                  icon: <SiFacebook />,
+                  className: cn(`hover:text-[#0866FF]`),
+                  icon: <Icon icon={"simple-icons:facebook"} />,
                 });
               }
 
@@ -312,7 +286,7 @@ function TVShowDetailsPage() {
                   href: `https://x.com/${ext.twitter_id}`,
                   key: "x",
                   className: cn("hover:text-white"),
-                  icon: <SiX />,
+                  icon: <Icon icon={"simple-icons:x"} />,
                 });
               }
 
@@ -320,8 +294,8 @@ function TVShowDetailsPage() {
                 links.push({
                   href: `https://www.imdb.com/title/${ext.imdb_id}`,
                   key: "imdb",
-                  className: cn(`hover:text-[${SiImdbHex}]`, "my-0.5"),
-                  icon: <SiImdb />,
+                  className: cn(`hover:text-[#F5C518]`, "my-0.5"),
+                  icon: <Icon icon={"simple-icons:imdb"} />,
                 });
               }
 
@@ -345,11 +319,11 @@ function TVShowDetailsPage() {
             {reviews.total >= 1 && (
               <div className="flex items-center mb-3 space-x-1">
                 <div className="flex mr-1">
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-muted-foreground" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
                 </div>
                 <span className="font-semibold text-card-foreground">{rating}</span>
                 <span className="text-muted-foreground">
@@ -416,7 +390,7 @@ function TVShowDetailsPage() {
                   {item?.createdBy.length >= 1 && (
                     <DetailsCard
                       title={t("library:creators")}
-                      icon={<FilePenLine className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:file-pen-line"} className="size-5 text-muted-foreground" />}
                       description={item.createdBy
                         .map((cb: { name: string }) => {
                           return cb.name;
@@ -427,28 +401,28 @@ function TVShowDetailsPage() {
                   {item.numberOfSeasons && (
                     <DetailsCard
                       title={t("library:season_other")}
-                      icon={<Hash className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:hash"} className="size-5 text-muted-foreground" />}
                       description={item.numberOfSeasons}
                     />
                   )}
                   {item.numberOfEpisodes && (
                     <DetailsCard
                       title={t("library:totalEpisodes")}
-                      icon={<TvIcon className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:tv"} className="size-5 text-muted-foreground" />}
                       description={item.numberOfEpisodes}
                     />
                   )}
                   {item.originalLanguage && (
                     <DetailsCard
                       title={t("library:language")}
-                      icon={<Languages className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:languages"} className="size-5 text-muted-foreground" />}
                       description={item.originalLanguage}
                     />
                   )}
                   {item?.productionCompanies?.length >= 1 && (
                     <DetailsCard
                       title={t("library:productionCompanies")}
-                      icon={<Building className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:building"} className="size-5 text-muted-foreground" />}
                       description={item.productionCompanies
                         .map((pc: { name: string }) => {
                           return pc.name;
@@ -459,14 +433,14 @@ function TVShowDetailsPage() {
                   {item?.episodeRuntime?.length >= 1 && (
                     <DetailsCard
                       title={t("library:runtime")}
-                      icon={<Clock className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:clock"} className="size-5 text-muted-foreground" />}
                       description={`${item?.episodeRuntime[0]} minutes`}
                     />
                   )}
                   {item.type && (
                     <DetailsCard
                       title={t("library:type")}
-                      icon={<FileType className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:file-type"} className="size-5 text-muted-foreground" />}
                       description={item.type}
                     />
                   )}
@@ -490,7 +464,7 @@ function TVShowDetailsPage() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.planning")}</span>
-                      <Bookmark className="size-5 text-purple-400" />
+                      <Icon icon={"lucide:bookmark"} className="size-5 text-purple-400" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">5%</p>
                   </div>
@@ -498,7 +472,7 @@ function TVShowDetailsPage() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.watching")}</span>
-                      <TvMinimalPlay className="size-5 text-chart-1" />
+                      <Icon icon={"lucide:tv-minimal-play"} className="size-5 text-chart-1" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">15%</p>
                   </div>
@@ -506,7 +480,7 @@ function TVShowDetailsPage() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.completed")}</span>
-                      <CheckCircle className="size-5 text-secondary" />
+                      <Icon icon={"lucide:check-circle"} className="size-5 text-secondary" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">72%</p>
                   </div>
@@ -514,7 +488,7 @@ function TVShowDetailsPage() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.dropped")}</span>
-                      <XCircle className="size-5 text-destructive" />
+                      <Icon icon={"lucide:x-circle"} className="size-5 text-destructive" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">8%</p>
                   </div>

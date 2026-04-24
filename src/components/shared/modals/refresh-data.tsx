@@ -1,4 +1,4 @@
-import { ExternalLink, RefreshCcw } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../ui/button";
@@ -39,7 +39,7 @@ export function RefreshData({ sourceURL, onSubmit }: RefreshDataProps) {
             <div className="flex gap-2">
               <a href={sourceURL} target="_blank" rel="noopener">
                 <Button size="sm" className="gap-2">
-                  <ExternalLink className="size-4" />
+                  <Icon icon={"lucide:external-link"} className="size-4" />
                   {t("library:refreshDataModal.checkSource")}
                 </Button>
               </a>
@@ -51,7 +51,7 @@ export function RefreshData({ sourceURL, onSubmit }: RefreshDataProps) {
                   onSubmit?.();
                 }}
               >
-                <RefreshCcw className="size-4" />
+                <Icon icon={"lucide:refresh-ccw"} className="size-4" />
                 {t("library:refreshDataModal.refreshInfoButton")}
               </Button>
             </div>

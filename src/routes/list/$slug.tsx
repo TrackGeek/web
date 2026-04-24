@@ -1,6 +1,6 @@
+import { Icon } from "@iconify/react";
 import ViteImage from "@son426/vite-image/react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Heart, Share } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type ContentType, type FilterParams, Filters } from "@/components/layouts/filters.tsx";
@@ -39,8 +39,8 @@ function ListRoute() {
               className="absolute inset-0 bg-linear-to-t from-primary-foreground/80 via-primary-foreground/30
  to-transparent"
             />
-            <Heart className="absolute top-4 right-14 z-10" />
-            <Share className="absolute top-4 right-4 z-10" />
+            <Icon icon={"lucide:heart"} className="absolute top-4 right-14 z-10" />
+            <Icon icon={"lucide:share"} className="absolute top-4 right-4 z-10" />
             <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end gap-4">
               <h2 className="text-4xl font-bold drop-shadow-lg">{movie.title}</h2>
 

@@ -1,31 +1,6 @@
-import {
-  SiFacebook,
-  SiFacebookHex,
-  SiInstagram,
-  SiInstagramHex,
-  SiMyanimelist,
-  SiWikipedia,
-  SiWikipediaHex,
-  SiX,
-} from "@icons-pack/react-simple-icons";
+import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  Bookmark,
-  BookOpenText,
-  CheckCircle,
-  CheckSquare,
-  ExternalLink,
-  FileType,
-  Heart,
-  MoreHorizontal,
-  Notebook,
-  Pen,
-  Star,
-  SwatchBook,
-  TreePalm,
-  XCircle,
-} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -127,36 +102,36 @@ function MangaDetailsRoute() {
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20">
                   <div className="flex flex-col items-center gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
-                      <Bookmark className="size-6 text-purple-400" />
+                      <Icon icon={"lucide:bookmark"} className="size-6 text-purple-400" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.planning")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="size-6 text-secondary" />
+                    <Icon icon={"lucide:check-circle"} className="size-6 text-secondary" />
                   </div>
                 </Button>
 
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20">
                   <div className="flex flex-col items-center gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
-                      <BookOpenText className="size-6 text-primary" />
+                      <Icon icon={"lucide:book-open-text"} className="size-6 text-primary" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.reading")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="size-6 text-secondary" />
+                    <Icon icon={"lucide:check-circle"} className="size-6 text-secondary" />
                   </div>
                 </Button>
 
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20">
                   <div className="flex flex-col items-center gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
-                      <CheckSquare className="size-6 text-chart-3" />
+                      <Icon icon={"lucide:check-square"} className="size-6 text-chart-3" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.read")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="size-6 text-secondary" />
+                    <Icon icon={"lucide:check-circle"} className="size-6 text-secondary" />
                   </div>
                 </Button>
               </div>
@@ -164,7 +139,7 @@ function MangaDetailsRoute() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className="flex bg-transparent items-center justify-center gap-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-                    <MoreHorizontal className="size-5" />
+                    <Icon icon={"lucide:more-horizontal"} className="size-5" />
                     <span className="text-sm font-medium">{t("library:moreOptions")}</span>
                   </Button>
                 </DialogTrigger>
@@ -188,7 +163,7 @@ function MangaDetailsRoute() {
                         </DialogTitle>
                         <div className="flex items-center gap-4 text-white/90 text-sm">
                           <div className="flex items-center gap-1">
-                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <Icon icon={"lucide:star"} className="size-4 fill-yellow-400 text-yellow-400" />
                             <span>{rating}</span>
                           </div>
                           <span>•</span>
@@ -200,7 +175,7 @@ function MangaDetailsRoute() {
 
                     <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
                       <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
-                        <Heart className="size-6" />
+                        <Icon icon={"lucide:heart"} className="size-6" />
                       </Button>
                     </div>
                   </DialogHeader>
@@ -244,7 +219,7 @@ function MangaDetailsRoute() {
                   const url = e.url;
 
                   if (/official/i.test(name)) {
-                    links.push({ href: url, key: `official-${i}`, icon: <ExternalLink /> });
+                    links.push({ href: url, key: `official-${i}`, icon: <Icon icon={"lucide:external-link"} /> });
                     return;
                   }
 
@@ -252,8 +227,8 @@ function MangaDetailsRoute() {
                     links.push({
                       href: url,
                       key: `instagram-${i}`,
-                      className: cn(`hover:text-[${SiInstagramHex}]`),
-                      icon: <SiInstagram />,
+                      className: cn(`hover:text-[#FF0069]`),
+                      icon: <Icon icon={"simple-icons:instagram"} />,
                     });
                     return;
                   }
@@ -262,14 +237,19 @@ function MangaDetailsRoute() {
                     links.push({
                       href: url,
                       key: `facebook-${i}`,
-                      className: cn(`hover:text-[${SiFacebookHex}]`),
-                      icon: <SiFacebook />,
+                      className: cn(`hover:text-[#0866FF]`),
+                      icon: <Icon icon={"simple-icons:facebook"} />,
                     });
                     return;
                   }
 
                   if (name.startsWith("@")) {
-                    links.push({ href: url, key: `twitter-${i}`, className: cn("hover:text-white"), icon: <SiX /> });
+                    links.push({
+                      href: url,
+                      key: `twitter-${i}`,
+                      className: cn("hover:text-white"),
+                      icon: <Icon icon={"simple-icons:x"} />,
+                    });
                     return;
                   }
 
@@ -286,20 +266,20 @@ function MangaDetailsRoute() {
                     links.push({
                       href: url,
                       key: `wikipedia-${i}`,
-                      className: cn(`hover:text-[${SiWikipediaHex}]`),
-                      icon: <SiWikipedia />,
+                      className: cn(`hover:text-[#000000]`),
+                      icon: <Icon icon={"simple-icons:wikipedia"} />,
                     });
                     return;
                   }
 
-                  links.push({ href: url, key: `link-${i}`, icon: <ExternalLink /> });
+                  links.push({ href: url, key: `link-${i}`, icon: <Icon icon={"lucide:external-link"} /> });
                 });
 
                 if (manga.malId) {
                   links.push({
                     href: `https://myanimelist.net/manga/${manga.malId}`,
                     key: "mal",
-                    icon: <SiMyanimelist />,
+                    icon: <Icon icon={"simple-icons:myanimelist"} />,
                   });
                 }
 
@@ -324,11 +304,11 @@ function MangaDetailsRoute() {
             {reviews.total >= 1 && (
               <div className="flex items-center gap-2">
                 <div className="flex">
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-muted-foreground" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
                 </div>
                 <span className="font-semibold text-card-foreground">{rating}</span>
                 <span className="text-muted-foreground">
@@ -391,28 +371,28 @@ function MangaDetailsRoute() {
                   {manga.type && (
                     <DetailsCard
                       title={t("library:type")}
-                      icon={<FileType className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:file-type"} className="size-5 text-muted-foreground" />}
                       description={manga.type}
                     />
                   )}
                   {manga.numberOfChapters && (
                     <DetailsCard
                       title={t("library:chapters")}
-                      icon={<BookOpenText className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:book-open-text"} className="size-5 text-muted-foreground" />}
                       description={manga.numberOfChapters}
                     />
                   )}
                   {manga.numberOfVolumes && (
                     <DetailsCard
                       title={t("library:volumes")}
-                      icon={<SwatchBook className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:swatch-book"} className="size-5 text-muted-foreground" />}
                       description={manga.numberOfVolumes}
                     />
                   )}
                   {manga.themes.length >= 1 && (
                     <DetailsCard
                       title={t("library:themes")}
-                      icon={<TreePalm className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:tree-palm"} className="size-5 text-muted-foreground" />}
                       description={manga.themes.map((theme: string, index: number) => (
                         <span key={theme}>
                           <Link to="/" search={{ landing: "true" }}>
@@ -426,7 +406,7 @@ function MangaDetailsRoute() {
                   {manga.authors.length >= 1 && (
                     <DetailsCard
                       title={t("library:authors")}
-                      icon={<Pen className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:pen"} className="size-5 text-muted-foreground" />}
                       description={manga.authors.map((au: { name: string; malId: number }, index: number) => (
                         <Link to="/" key={au.malId} search={{ landing: "true " }}>
                           {au.name}
@@ -438,7 +418,7 @@ function MangaDetailsRoute() {
                   {manga.serializations && (
                     <DetailsCard
                       title={t("library:publisher")}
-                      icon={<Notebook className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:notebook"} className="size-5 text-muted-foreground" />}
                       description={manga.serializations.map((sz: { name: string; malId: number }, index: number) => (
                         <Link to="/" key={sz.malId} search={{ landing: "true" }}>
                           {sz.name}
@@ -456,7 +436,7 @@ function MangaDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.planning")}</span>
-                      <Bookmark className="size-5 text-purple-400" />
+                      <Icon icon={"lucide:bookmark"} className="size-5 text-purple-400" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">5%</p>
                   </div>
@@ -464,7 +444,7 @@ function MangaDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.reading")}</span>
-                      <BookOpenText className="size-5 text-chart-1" />
+                      <Icon icon={"lucide:book-open-text"} className="size-5 text-chart-1" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">15%</p>
                   </div>
@@ -472,7 +452,7 @@ function MangaDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.read")}</span>
-                      <CheckCircle className="size-5 text-secondary" />
+                      <Icon icon={"lucide:check-circle"} className="size-5 text-secondary" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">72%</p>
                   </div>
@@ -480,7 +460,7 @@ function MangaDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.dropped")}</span>
-                      <XCircle className="size-5 text-destructive" />
+                      <Icon icon={"lucide:x-circle"} className="size-5 text-destructive" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">8%</p>
                   </div>

@@ -301,5 +301,68 @@
       "viewInvoice": "View Invoice",
       "viewCheckoutSession": "View Checkout Session"
     }
+  },
+  "compare": {
+    "metaTitle": "TrackGeek vs other media trackers",
+    "metaDescription": "Compare TrackGeek against Simkl, AniList, Backloggd, MyLists and StoryGraph. See feature coverage, social tools and tracking depth.",
+    "heroTitle": "TrackGeek as an alternative",
+    "heroDescription": "Honest feature-by-feature view of major media tracking platforms. Pick tool matching your workflow.",
+    "table": {
+      "features": "Features",
+      "note": "Note: Platform updates may cause slight discrepancies in this table."
+    },
+    "support": {
+      "yes": "Supported",
+      "no": "Not supported",
+      "partial": "Partially supported",
+      "partialDescription": "Partially supported."
+    },
+    "notes": {
+      "storygraphBooksOnly": "Reading progress for books only.",
+      "mylistsCommentsOnly": "Comments on lists instead of full reviews.",
+      "storygraphPartnerIntegrations": "Limited integrations for partner apps.",
+      "anilistCommunityApps": "No official app; community apps available.",
+      "backloggdLimitedExport": "Import available; export is limited."
+    },
+    "criteria": {
+      "anime": { "label": "Anime" },
+      "manga": { "label": "Manga" },
+      "books": { "label": "Books" },
+      "games": { "label": "Games" },
+      "movies": { "label": "Movies" },
+      "series": { "label": "Series" },
+      "granular-progress": {
+        "label": "Granular progress",
+        "description": "Granular progress per episode/chapter/entry."
+      },
+      "reviews": {
+        "label": "Reviews",
+        "description": "User-written reviews and scores."
+      },
+      "custom-lists": {
+        "label": "Custom lists",
+        "description": "Create public or private custom lists."
+      },
+      "public-profile": {
+        "label": "Public profile",
+        "description": "Share profile with other users."
+      },
+      "public-api": {
+        "label": "Public API",
+        "description": "Developer-facing public API."
+      },
+      "feed": {
+        "label": "Social feed",
+        "description": "Follow activity from friends/community."
+      },
+      "mobile": {
+        "label": "Mobile (PWA/App)",
+        "description": "Dedicated mobile experience."
+      },
+      "import-export": {
+        "label": "Import / Export",
+        "description": "Move data in and out of platform."
+      }
+    }
   }
 }

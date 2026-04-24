@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import { createTimeline, random, stagger } from "animejs";
-import { Book, Gamepad, Ghost } from "lucide-react";
 import { useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -99,7 +99,7 @@ export function Hero() {
         <div className="hero-card absolute top-[10%] left-[10%] w-64 p-4 rounded-xl border border-border bg-card shadow-2xl opacity-0 transform -rotate-6">
           <div className="flex items-center gap-3 mb-3">
             <div className="size-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
-              <Ghost />
+              <Icon icon={"lucide:ghost"} />
             </div>
             <div>
               <div className="text-sm font-semibold">Jujutsu Kaisen</div>
@@ -116,7 +116,7 @@ export function Hero() {
         <div className="hero-card absolute top-[20%] right-[10%] w-64 p-4 rounded-xl border border-border bg-card shadow-2xl opacity-0 transform rotate-[4deg]">
           <div className="flex items-center gap-3 mb-3">
             <div className="size-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
-              <Gamepad />
+              <Icon icon={"lucide:gamepad"} />
             </div>
             <div>
               <div className="text-sm font-semibold">Elden Ring</div>
@@ -137,7 +137,7 @@ export function Hero() {
         <div className="hero-card absolute bottom-[15%] left-[20%] w-64 p-4 rounded-xl border border-border bg-card shadow-2xl opacity-0 transform -rotate-3">
           <div className="flex items-center gap-3 mb-3">
             <div className="size-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400">
-              <Book />
+              <Icon icon={"lucide:book"} />
             </div>
             <div>
               <div className="text-sm font-semibold">Dune</div>

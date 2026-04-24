@@ -1,9 +1,15 @@
-import { HeartIcon, StarIcon } from "lucide-react";
+import { Icon } from "@iconify/react";
 import * as React from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
 import { cn } from "@/lib/utils";
 
-interface RatingGroupAdvancedProps {
+type RatingIconProps = {
+  className?: string;
+};
+
+type RatingIconComponent = React.ComponentType<RatingIconProps>;
+
+interface RatingGroupAdvancedProps extends Omit<React.ComponentPropsWithoutRef<"div">, "onChange"> {
   value?: string;
   onValueChange?: (value: string) => void;
   max?: number;
@@ -13,8 +19,8 @@ interface RatingGroupAdvancedProps {
   size?: "sm" | "default" | "lg";
   variant?: "star" | "heart";
   allowHalf?: boolean;
-  emptyIcon?: React.ComponentType<{ className?: string }>;
-  filledIcon?: React.ComponentType<{ className?: string }>;
+  emptyIcon?: RatingIconComponent;
+  filledIcon?: RatingIconComponent;
   colors?: {
     filled?: string;
     empty?: string;
@@ -29,9 +35,9 @@ const defaultColors = {
   hover: "text-yellow-300",
 };
 
-const iconVariants = {
-  star: StarIcon,
-  heart: HeartIcon,
+const iconVariants: Record<NonNullable<RatingGroupAdvancedProps["variant"]>, RatingIconComponent> = {
+  star: ({ className }) => <Icon icon="lucide:star" className={className} />,
+  heart: ({ className }) => <Icon icon="lucide:heart" className={className} />,
 };
 
 function RatingGroupAdvanced({
@@ -103,7 +109,6 @@ function RatingGroupAdvanced({
     className: cn("gap-0", className),
     disabled,
     onMouseLeave: handleMouseLeave,
-    ...props,
   };
 
   const renderItems = () =>
@@ -178,7 +183,7 @@ function RatingGroupAdvanced({
     });
 
   return (
-    <div className="relative">
+    <div {...props}>
       {allowHalf ? (
         <ToggleGroup
           type="multiple"

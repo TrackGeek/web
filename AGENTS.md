@@ -34,6 +34,7 @@ bun crowdin:upload    # Upload source strings to Crowdin
 - 2-space indent, 120-char line width
 - `useImportType` and `noArrayIndexKey` rules are disabled in Biome
 - Generated files excluded from linting: `routeTree.gen.ts` (in `biome.json` ignore)
+- Use lucide icons by importing from `iconify/react` (e.g. `import { Icon } from "@iconify/react";` and then `<Icon icon="lucide:home" />`)
 
 ## PR Requirements
 

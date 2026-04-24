@@ -57,7 +57,11 @@ export function UserDropdown() {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link to={"/user/$username"} params={{ username: session.data?.user?.username! }} className="cursor-pointer">
+          <Link
+            to={"/user/$username"}
+            params={{ username: session.data?.user?.username as string }}
+            className="cursor-pointer"
+          >
             <User size={18} className="text-white" />
             {t("common:profile")}
           </Link>

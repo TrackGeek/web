@@ -1,7 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
-import { SiDiscord, SiGithub, SiKick, SiNotion, SiSpotify, SiTwitch, SiX } from "@icons-pack/react-simple-icons";
-import { Lock, LogIn, Mail, User } from "lucide-react";
 import { type JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -25,15 +23,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
 
 const providers: { id: string; icon: JSX.Element }[] = [
-  { id: "discord", icon: <SiDiscord className="size-6" /> },
-  { id: "github", icon: <SiGithub className="size-5" /> },
+  { id: "discord", icon: <Icon icon={"simple-icons:discord"} className="size-6" /> },
+  { id: "github", icon: <Icon icon={"simple-icons:github"} className="size-5" /> },
   { id: "google", icon: <Icon className="size-6" icon="fa7-brands:google" /> },
-  { id: "kick", icon: <SiKick className="size-5" /> },
-  { id: "twitch", icon: <SiTwitch className="size-5" /> },
-  { id: "twitter", icon: <SiX className="size-5" /> },
-  { id: "notion", icon: <SiNotion className="size-5" /> },
+  { id: "kick", icon: <Icon icon={"simple-icons:kick"} className="size-5" /> },
+  { id: "twitch", icon: <Icon icon={"simple-icons:twitch"} className="size-5" /> },
+  { id: "twitter", icon: <Icon icon={"simple-icons:x"} className="size-5" /> },
+  { id: "notion", icon: <Icon icon={"simple-icons:notion"} className="size-5" /> },
   { id: "microsoft", icon: <Icon className="size-6" icon="fluent:store-microsoft-20-filled" /> },
-  { id: "spotify", icon: <SiSpotify className="size-5" /> },
+  { id: "spotify", icon: <Icon icon={"simple-icons:spotify"} className="size-5" /> },
   { id: "slack", icon: <Icon className="size-5" icon="mdi:slack" /> },
   // { id: "tiktok", icon: <SiTiktok className="size-5" /> },
   // { id: "roblox", icon: <SiRoblox className="size-5" /> },
@@ -245,7 +243,7 @@ export function AuthModal() {
     >
       <DialogTrigger asChild>
         <Button className="font-semibold">
-          <LogIn />
+          <Icon icon={"lucide:log-in"} />
 
           {t("auth:login")}
         </Button>
@@ -359,7 +357,7 @@ export function AuthModal() {
                             <Icon className="size-5" icon="eos-icons:loading" />
                           ) : (
                             <>
-                              <Lock className="size-5" />
+                              <Icon icon={"lucide:lock"} className="size-5" />
 
                               {t("auth:login")}
                             </>
@@ -394,7 +392,7 @@ export function AuthModal() {
                             <Icon className="size-5" icon="eos-icons:loading" />
                           ) : (
                             <>
-                              <Mail className="size-5" />
+                              <Icon icon={"lucide:mail"} className="size-5" />
 
                               {t("auth:sendMagicLink")}
                             </>
@@ -480,7 +478,7 @@ export function AuthModal() {
                         <Icon className="size-5" icon="eos-icons:loading" />
                       ) : (
                         <>
-                          <User className="size-5" />
+                          <Icon icon={"lucide:user"} className="size-5" />
 
                           {t("auth:register")}
                         </>
@@ -524,7 +522,7 @@ export function AuthModal() {
                   <Icon className="size-5" icon="eos-icons:loading" />
                 ) : (
                   <>
-                    <Mail className="size-5" />
+                    <Icon icon={"lucide:mail"} className="size-5" />
 
                     {t("auth:requestPasswordReset.button")}
                   </>

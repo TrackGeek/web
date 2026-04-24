@@ -1,4 +1,4 @@
-import { Send } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button.tsx";
 import { FeedComposer } from "./composer";
@@ -14,7 +14,7 @@ export function FeedListFollowing() {
         <FeedComposer />
         <div className="absolute bottom-2 right-2">
           <Button className="w-fit">
-            <Send />
+            <Icon icon={"lucide:send"} />
             {t("common:send")}
           </Button>
         </div>

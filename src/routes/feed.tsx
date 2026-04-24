@@ -1,15 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  Book,
-  Clapperboard,
-  Filter,
-  Gamepad2,
-  LibraryBig,
-  Mountain,
-  Newspaper,
-  Star,
-  TvMinimalPlay,
-} from "lucide-react";
+import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
 
 import { FeedListFollowing } from "@/components/pages/feed/listFollowing";
@@ -51,41 +41,41 @@ function FeedRoute() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild className="w-fit">
                 <Button>
-                  <Filter />
+                  <Icon icon={"lucide:filter"} />
                 </Button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent className="rounded-lg capitalize" align="end">
                 <DropdownMenuCheckboxItem checked>
-                  <Star size={18} className="text-white" />
+                  <Icon icon={"lucide:star"} className="text-white size-4.5" />
                   {t("library:reviews")}
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked>
-                  <Newspaper size={18} className="text-white" />
+                  <Icon icon={"lucide:newspaper"} className="text-white size-4.5" />
                   {t("user:entry_plural")}
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked>
-                  <Mountain size={18} className="text-white" />
+                  <Icon icon={"lucide:mountain"} className="text-white size-4.5" />
                   {t("common:types.anime_other")}
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked>
-                  <Book size={18} className="text-white" />
+                  <Icon icon={"lucide:book"} className="text-white size-4.5" />
                   {t("common:types.book_other")}
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked>
-                  <Gamepad2 size={18} className="text-white" />
+                  <Icon icon={"lucide:gamepad-2"} className="text-white size-4.5" />
                   {t("common:types.game_other")}
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked>
-                  <TvMinimalPlay size={18} className="text-white" />
+                  <Icon icon={"lucide:tv-minimal-play"} className="text-white size-4.5" />
                   {t("common:types.tv_other")}
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked>
-                  <LibraryBig size={18} className="text-white" />
+                  <Icon icon={"lucide:library-big"} className="text-white size-4.5" />
                   {t("common:types.manga_other")}
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem checked>
-                  <Clapperboard size={18} className="text-white" />
+                  <Icon icon={"lucide:clapperboard"} className="text-white size-4.5" />
                   {t("common:types.movie_other")}
                 </DropdownMenuCheckboxItem>
               </DropdownMenuContent>

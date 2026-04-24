@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { Check, Plus, Trash2, XIcon } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FeedComposer } from "@/components/pages/feed/composer.tsx";
@@ -150,7 +150,7 @@ export function ReviewModal({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-green-500/5 rounded-lg p-4 border border-green-500/20">
               <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                <Check className="text-green-600" />
+                <Icon icon={"lucide:check"} className="text-green-600" />
                 {t("feed:pros")}
               </h3>
               <div className="space-y-2 mb-4">
@@ -166,7 +166,7 @@ export function ReviewModal({
                       onClick={() => handleRemovePro(index)}
                       className="size-6 p-0"
                     >
-                      <Trash2 className="size-3" />
+                      <Icon icon={"lucide:trash-2"} className="size-3" />
                     </Button>
                   </div>
                 ))}
@@ -180,14 +180,14 @@ export function ReviewModal({
                   className="text-sm w-full"
                 />
                 <Button onClick={handleAddPro} size="sm" variant="outline" className="px-3 h-9">
-                  <Plus className="size-4 grow" />
+                  <Icon icon={"lucide:plus"} className="size-4 grow" />
                 </Button>
               </div>
             </div>
 
             <div className="bg-red-500/5 rounded-lg p-4 border border-red-500/20">
               <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                <XIcon className="text-red-600" /> {t("feed:cons")}
+                <Icon icon={"lucide:x"} className="text-red-600" /> {t("feed:cons")}
               </h3>
               <div className="space-y-2 mb-4">
                 {cons.map((con, index) => (
@@ -202,7 +202,7 @@ export function ReviewModal({
                       onClick={() => handleRemoveCon(index)}
                       className="size-6 p-0"
                     >
-                      <Trash2 className="size-3" />
+                      <Icon icon={"lucide:trash-2"} className="size-3" />
                     </Button>
                   </div>
                 ))}
@@ -216,7 +216,7 @@ export function ReviewModal({
                   className="text-sm w-full"
                 />
                 <Button onClick={handleAddCon} size="sm" variant="outline" className="px-3 h-9">
-                  <Plus className="size-4" />
+                  <Icon icon={"lucide:plus"} className="size-4" />
                 </Button>
               </div>
             </div>

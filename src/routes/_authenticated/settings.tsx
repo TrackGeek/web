@@ -2,7 +2,6 @@ import { Icon } from "@iconify/react";
 import ViteImage from "@son426/vite-image/react";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { CircleX, Image, Palette, Settings, Upload, User } from "lucide-react";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -157,7 +156,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col border-border border bg-card rounded-2xl p-6 col-span-1">
         <Field className="gap-2">
           <FieldLabel>
-            <Image className="size-6" />
+            <Icon icon={"lucide:image"} className="size-6" />
 
             {t("settings:avatar.title")}
           </FieldLabel>
@@ -190,7 +189,7 @@ function SettingsRoute() {
                       className="absolute top-2 right-10 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
                       onClick={() => avatarInputRef.current?.click()}
                     >
-                      <Upload className="size-4 text-white" />
+                      <Icon icon={"lucide:upload"} className="size-4 text-white" />
                     </button>
 
                     <button
@@ -198,7 +197,7 @@ function SettingsRoute() {
                       className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
                       onClick={() => deleteAvatarMutation.mutate()}
                     >
-                      <CircleX className="size-4 text-white" />
+                      <Icon icon={"lucide:circle-x"} className="size-4 text-white" />
                     </button>
                   </>
                 )}
@@ -217,7 +216,7 @@ function SettingsRoute() {
                   </div>
                 ) : (
                   <div className="size-full flex flex-col justify-center items-center gap-2">
-                    <Upload className="size-8 text-white/70" />
+                    <Icon icon={"lucide:upload"} className="size-8 text-white/70" />
 
                     <span className="text-white/70">{t("settings:avatar.upload.title")}</span>
                   </div>
@@ -239,7 +238,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col border-border border bg-card rounded-2xl p-6 col-span-2">
         <Field className="gap-2">
           <FieldLabel>
-            <Image className="size-6" />
+            <Icon icon={"lucide:image"} className="size-6" />
 
             {t("settings:banner.title")}
           </FieldLabel>
@@ -272,7 +271,7 @@ function SettingsRoute() {
                       className="absolute top-2 right-10 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
                       onClick={() => bannerInputRef.current?.click()}
                     >
-                      <Upload className="size-4 text-white" />
+                      <Icon icon={"lucide:upload"} className="size-4 text-white" />
                     </button>
 
                     <button
@@ -280,7 +279,7 @@ function SettingsRoute() {
                       className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
                       onClick={() => deleteBannerMutation.mutate()}
                     >
-                      <CircleX className="size-4 text-white" />
+                      <Icon icon={"lucide:circle-x"} className="size-4 text-white" />
                     </button>
                   </>
                 )}
@@ -299,7 +298,7 @@ function SettingsRoute() {
                   </div>
                 ) : (
                   <div className="size-full flex flex-col justify-center items-center gap-2">
-                    <Upload className="size-8 text-white/70" />
+                    <Icon icon={"lucide:upload"} className="size-8 text-white/70" />
 
                     <span className="text-white/70">{t("settings:banner.upload.title")}</span>
                   </div>
@@ -321,7 +320,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-2xl p-6 col-span-3">
         <Field className="gap-2">
           <FieldLabel>
-            <User className="size-6" />
+            <Icon icon={"lucide:user"} className="size-6" />
 
             {t("settings:profile.title")}
           </FieldLabel>
@@ -359,7 +358,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-2xl p-6 col-span-3">
         <Field className="gap-2">
           <FieldLabel>
-            <Palette className="size-6" />
+            <Icon icon={"lucide:palette"} className="size-6" />
 
             {t("settings:color.title")}
           </FieldLabel>
@@ -397,7 +396,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-2xl p-6 col-span-3">
         <Field className="gap-2">
           <FieldLabel>
-            <Settings className="size-6" />
+            <Icon icon={"lucide:settings"} className="size-6" />
 
             {t("settings:preferrences.title")}
           </FieldLabel>

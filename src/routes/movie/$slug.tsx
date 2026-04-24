@@ -126,7 +126,7 @@ function MovieDetailsRoute() {
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-5 transition-all duration-300 bg-card hover:bg-chart-5/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-chart-5/20 to-red-500/20 flex items-center justify-center border border-chart-5/30">
-                      <Icon icon={"lucide:thrash"} className="text-chart-5 size-6" />
+                      <Icon icon={"lucide:trash"} className="text-chart-5 size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.dropped")}</p>
                   </div>

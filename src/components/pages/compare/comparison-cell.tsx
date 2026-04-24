@@ -34,7 +34,7 @@ export function ComparisonCell({ support, note }: ComparisonCellProps) {
           </button>
         </TooltipTrigger>
         <TooltipContent side="top" className="max-w-48 text-center">
-          {note ? t(note, { defaultValue: note }) : t("pages:compare.support.partialDescription")}
+          {note ? t(note, { defaultValue: note }) : t("pages:compare.support.partial")}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

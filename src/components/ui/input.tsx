@@ -25,7 +25,11 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
           className="absolute right-3 top-1/2 -translate-y-1/2 rounded focus-visible:ring-ring/50 focus-visible:ring-[3px]"
           onClick={() => setShownPassword((prev) => !prev)}
         >
-          {shownPassword ? <Icon icon={"lucide:eye-off"} className={"size-4.5"} /> : <Icon icon={"lucide:eye"} className={"size-4.5"} />}
+          {shownPassword ? (
+            <Icon icon={"lucide:eye-off"} className={"size-4.5"} />
+          ) : (
+            <Icon icon={"lucide:eye"} className={"size-4.5"} />
+          )}
         </button>
       )}
     </div>

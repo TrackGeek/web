@@ -155,11 +155,14 @@ function RouteComponent() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <Icon
-              icon={"lucide:clipboard"}
-              className="size-5 absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:text-primary transition"
+            <button
+              type="button"
               onClick={handlePaste}
-            />
+              aria-label={t("user:pasteFromClipboard")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:text-primary transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+            >
+              <Icon icon={"lucide:clipboard"} className="size-5" aria-hidden="true" />
+            </button>
           </div>
         </div>
 

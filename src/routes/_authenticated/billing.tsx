@@ -2,7 +2,7 @@ import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/rea
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { Calendar, CreditCard, ExternalLink, Loader2, Receipt, Sparkles } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryState } from "nuqs";
@@ -101,7 +101,7 @@ function SubscriptionCard({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Sparkles className="size-5" />
+            <Icon icon={"lucide:sparkles"} className="size-5" />
             {t("pages:billing.subscription.title")}
           </CardTitle>
           <CardDescription>{t("pages:billing.subscription.description")}</CardDescription>
@@ -129,7 +129,7 @@ function SubscriptionCard({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Sparkles className="size-5" />
+            <Icon icon={"lucide:sparkles"} className="size-5" />
             {t("pages:billing.subscription.title")}
           </CardTitle>
           <CardDescription>{t("pages:billing.subscription.description")}</CardDescription>
@@ -138,7 +138,7 @@ function SubscriptionCard({
           <Empty className="border-0 p-0 md:p-0">
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <CreditCard />
+                <Icon icon={"lucide:credit-card"} />
               </EmptyMedia>
               <EmptyTitle>{t("pages:billing.subscription.noSubscription")}</EmptyTitle>
               <EmptyDescription>{t("pages:billing.subscription.noSubscriptionDescription")}</EmptyDescription>
@@ -158,7 +158,7 @@ function SubscriptionCard({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Sparkles className="size-5" />
+          <Icon icon={"lucide:sparkles"} className="size-5" />
           {t("pages:billing.subscription.title")}
         </CardTitle>
         <CardDescription>{t("pages:billing.subscription.description")}</CardDescription>
@@ -197,7 +197,7 @@ function SubscriptionCard({
             onClick={() => setCancelOpen(true)}
             disabled={isCancelling || subscription.status !== "active"}
           >
-            {isCancelling && <Loader2 className="animate-spin" />}
+            {isCancelling && <Icon icon={"lucide:loader-2"} className="animate-spin" />}
             {t("pages:billing.subscription.cancel")}
           </Button>
         </div>
@@ -279,7 +279,7 @@ function PaymentDetailDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Receipt className="size-5" />
+            <Icon icon={"lucide:receipt"} className="size-5" />
             {t("pages:billing.detail.title")}
           </DialogTitle>
           {payment && <DialogDescription>{payment.name}</DialogDescription>}
@@ -307,7 +307,7 @@ function PaymentDetailDialog({
                 <Separator />
                 <Button variant="outline" size="sm" asChild className="w-full">
                   <a href={payment.stripeInvoiceUrl} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="size-4" />
+                    <Icon icon={"lucide:external-link"} className="size-4" />
                     {t("pages:billing.detail.viewInvoice")}
                   </a>
                 </Button>
@@ -319,7 +319,7 @@ function PaymentDetailDialog({
                 <Separator />
                 <Button variant="outline" size="sm" asChild className="w-full">
                   <a href={payment.stripeCheckoutSessionUrl} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="size-4" />
+                    <Icon icon={"lucide:external-link"} className="size-4" />
                     {t("pages:billing.detail.viewCheckoutSession")}
                   </a>
                 </Button>
@@ -383,7 +383,7 @@ function BillingRoute() {
       columnHelper.accessor("createdAt", {
         header: () => (
           <span className="flex items-center gap-1">
-            <Calendar className="size-3.5" />
+            <Icon icon={"lucide:calendar"} className="size-3.5" />
             {t("pages:billing.payments.columns.date")}
           </span>
         ),
@@ -423,7 +423,7 @@ function BillingRoute() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Receipt className="size-5" />
+            <Icon icon={"lucide:receipt"} className="size-5" />
             {t("pages:billing.payments.title")}
           </CardTitle>
           <CardDescription>{t("pages:billing.payments.description")}</CardDescription>
@@ -439,7 +439,7 @@ function BillingRoute() {
             <Empty className="border-0 p-0">
               <EmptyHeader>
                 <EmptyMedia variant="icon">
-                  <Receipt />
+                  <Icon icon={"lucide:receipt"} />
                 </EmptyMedia>
                 <EmptyTitle>{t("pages:billing.payments.empty")}</EmptyTitle>
                 <EmptyDescription>{t("pages:billing.payments.emptyDescription")}</EmptyDescription>

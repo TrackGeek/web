@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { CornerDownRight, Heart, MessageCircle, MoreHorizontal, Send, Share2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -211,7 +211,7 @@ function CommentInput({
               aria-label={t("common:send")}
             >
               {t("common:send")}
-              <Send className="size-3" aria-hidden="true" />
+              <Icon icon={"lucide:send"} className="size-3" aria-hidden="true" />
             </Button>
           </div>
         </div>
@@ -295,7 +295,7 @@ function CommentItem({
                   aria-label={`More options for ${comment.user.name}'s comment`}
                   aria-haspopup="true"
                 >
-                  <MoreHorizontal className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                  <Icon icon={"lucide:more-horizontal"} className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -319,7 +319,7 @@ function CommentItem({
               aria-label={isLiked ? `Unlike comment (${likesCount} likes)` : `Like comment (${likesCount} likes)`}
               aria-pressed={isLiked}
             >
-              <Heart className={cn("size-3.5", isLiked && "fill-current")} aria-hidden="true" />
+              <Icon icon={"lucide:heart"} className={cn("size-3.5", isLiked && "fill-current")} aria-hidden="true" />
               <span aria-live="polite" aria-atomic="true">
                 {likesCount}
               </span>
@@ -335,7 +335,7 @@ function CommentItem({
               aria-expanded={isReplying}
               aria-controls={isReplying ? `reply-input-${comment.id}` : undefined}
             >
-              <MessageCircle className="size-3.5" aria-hidden="true" />
+              <Icon icon={"lucide:message-circle"} className="size-3.5" aria-hidden="true" />
               {t("feed:reply")}
             </button>
             <button
@@ -343,7 +343,7 @@ function CommentItem({
               className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
               aria-label={`Share ${comment.user.name}'s comment`}
             >
-              <Share2 className="size-3.5" aria-hidden="true" />
+              <Icon icon={"lucide:share"} className="size-3.5" aria-hidden="true" />
               {t("feed:share")}
             </button>
           </nav>
@@ -403,7 +403,7 @@ function CommentItem({
             {isExpanded ? (
               <div className="h-px w-4 bg-primary/50 mr-1" aria-hidden="true" />
             ) : (
-              <CornerDownRight className="size-3" aria-hidden="true" />
+              <Icon icon={"lucide:corner-down-right"} className="size-3" aria-hidden="true" />
             )}
             {isExpanded ? t("feed:hideReplies") : t("feed:showReplies", { number: comment.replies.length })}
           </button>

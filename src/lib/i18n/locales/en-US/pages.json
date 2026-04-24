@@ -314,8 +314,7 @@
     "support": {
       "yes": "Supported",
       "no": "Not supported",
-      "partial": "Partially supported",
-      "partialDescription": "Partially supported."
+      "partial": "Partially supported"
     },
     "notes": {
       "storygraphBooksOnly": "Reading progress for books only.",

@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
 import { Icon } from "@iconify/react";
+import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -94,7 +94,7 @@ export function Header() {
         </Link>
         <Link to="/donate" className="max-sm:hidden">
           <Button variant={"outline"}>
-            <Icon icon={"lucide:heart"} color="red" fill="red" />
+            <Icon icon={"lucide:heart"} className="text-red-500 [&_path]:fill-red-500" />
             {t("common:donate")}
           </Button>
         </Link>

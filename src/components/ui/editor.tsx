@@ -1466,7 +1466,7 @@ export const EditorTableHeaderColumnToggle = () => {
     <Tooltip>
       <TooltipTrigger asChild>
         <Button className="flex items-center gap-2 rounded-full" onClick={handleClick} size="icon" variant="ghost">
-          <Icon icon={"lucide:columns"} className="text-muted-foreground size-4" />
+          <Icon icon={"lucide:columns-2"} className="text-muted-foreground size-4" />
         </Button>
       </TooltipTrigger>
       <TooltipContent>
@@ -1493,7 +1493,7 @@ export const EditorTableHeaderRowToggle = () => {
     <Tooltip>
       <TooltipTrigger asChild>
         <Button className="flex items-center gap-2 rounded-full" onClick={handleClick} size="icon" variant="ghost">
-          <Icon icon={"lucide:rows"} className="text-muted-foreground size-4" />
+          <Icon icon={"lucide:rows-2"} className="text-muted-foreground size-4" />
         </Button>
       </TooltipTrigger>
       <TooltipContent>

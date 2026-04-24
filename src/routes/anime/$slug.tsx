@@ -1,34 +1,6 @@
-import {
-  SiFacebook,
-  SiFacebookHex,
-  SiInstagram,
-  SiInstagramHex,
-  SiMyanimelist,
-  SiWikipedia,
-  SiWikipediaHex,
-  SiX,
-} from "@icons-pack/react-simple-icons";
+import { Icon } from "@iconify/react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  Antenna,
-  Bookmark,
-  Building,
-  Building2,
-  CheckCircle,
-  CheckSquare,
-  Clock,
-  ExternalLink,
-  FilePenLine,
-  Hash,
-  Heart,
-  Languages,
-  MoreHorizontal,
-  Star,
-  TvIcon,
-  TvMinimalPlay,
-  XCircle,
-} from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -157,12 +129,12 @@ function AnimeDetailsRoute() {
                 >
                   <div className="flex flex-col items-center gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
-                      <Bookmark className="text-purple-400" />
+                      <Icon icon={"lucide:bookmark"} className="text-purple-400" />
                     </div>
                     <p className="font-medium text-card-foreground text-center">{t("feed:lists.planning")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="size-6 text-secondary" />
+                    <Icon icon={"lucide:check-circle"} className="size-6 text-secondary" />
                   </div>
                 </button>
 
@@ -172,12 +144,12 @@ function AnimeDetailsRoute() {
                 >
                   <div className="flex flex-col items-center gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
-                      <TvMinimalPlay className="text-primary" />
+                      <Icon icon={"lucide:tv-minimal-play"} className="text-primary" />
                     </div>
                     <p className="font-medium text-card-foreground text-center">{t("feed:lists.watching")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="size-6 text-secondary" />
+                    <Icon icon={"lucide:check-circle"} className="size-6 text-secondary" />
                   </div>
                 </button>
 
@@ -187,12 +159,12 @@ function AnimeDetailsRoute() {
                 >
                   <div className="flex flex-col items-center gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
-                      <CheckSquare className="text-chart-3" />
+                      <Icon icon={"lucide:check-square"} className="text-chart-3" />
                     </div>
                     <p className="font-medium text-card-foreground text-center">{t("feed:lists.completed")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="size-6 text-secondary" />
+                    <Icon icon={"lucide:check-circle"} className="size-6 text-secondary" />
                   </div>
                 </button>
               </div>
@@ -200,7 +172,7 @@ function AnimeDetailsRoute() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className="flex bg-transparent items-center justify-center gap-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-                    <MoreHorizontal className="size-5" />
+                    <Icon icon={"lucide:more-horizontal"} className="size-5" />
                     <span className="text-sm font-medium">{t("library:moreOptions")}</span>
                   </Button>
                 </DialogTrigger>
@@ -224,7 +196,7 @@ function AnimeDetailsRoute() {
                         </DialogTitle>
                         <div className="flex items-center gap-4 text-white/90 text-sm">
                           <div className="flex items-center gap-1">
-                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <Icon icon={"lucide:star"} className="size-4 fill-yellow-400 text-yellow-400" />
                             <span>{rating}</span>
                           </div>
                           <span>•</span>
@@ -236,7 +208,7 @@ function AnimeDetailsRoute() {
 
                     <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
                       <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
-                        <Heart className="size-6" />
+                        <Icon icon={"lucide:heart"} className="size-6" />
                       </Button>
                     </div>
                   </DialogHeader>
@@ -282,7 +254,7 @@ function AnimeDetailsRoute() {
                   const url = e.url;
 
                   if (/official/i.test(name)) {
-                    links.push({ href: url, key: `official-${i}`, icon: <ExternalLink /> });
+                    links.push({ href: url, key: `official-${i}`, icon: <Icon icon={"lucide:external-link"} /> });
                     return;
                   }
 
@@ -290,8 +262,8 @@ function AnimeDetailsRoute() {
                     links.push({
                       href: url,
                       key: `instagram-${i}`,
-                      className: cn(`hover:text-[${SiInstagramHex}]`),
-                      icon: <SiInstagram />,
+                      className: cn(`hover:text-[#FF0069]`),
+                      icon: <Icon icon={"simple-icons:instagram"} />,
                     });
                     return;
                   }
@@ -300,14 +272,19 @@ function AnimeDetailsRoute() {
                     links.push({
                       href: url,
                       key: `facebook-${i}`,
-                      className: cn(`hover:text-[${SiFacebookHex}]`),
-                      icon: <SiFacebook />,
+                      className: cn(`hover:text-[#0866FF]`),
+                      icon: <Icon icon={"simple-icons:facebook"} />,
                     });
                     return;
                   }
 
                   if (name.startsWith("@")) {
-                    links.push({ href: url, key: `twitter-${i}`, className: cn("hover:text-white"), icon: <SiX /> });
+                    links.push({
+                      href: url,
+                      key: `x-${i}`,
+                      className: cn("hover:text-white"),
+                      icon: <Icon icon={"simple-icons:x"} />,
+                    });
                     return;
                   }
 
@@ -324,20 +301,20 @@ function AnimeDetailsRoute() {
                     links.push({
                       href: url,
                       key: `wikipedia-${i}`,
-                      className: cn(`hover:text-[${SiWikipediaHex}]`),
-                      icon: <SiWikipedia />,
+                      className: cn(`hover:text-[#000000]`),
+                      icon: <Icon icon={"simple-icons:wikipedia"} />,
                     });
                     return;
                   }
 
-                  links.push({ href: url, key: `link-${i}`, icon: <ExternalLink /> });
+                  links.push({ href: url, key: `link-${i}`, icon: <Icon icon={"lucide:external-link"} /> });
                 });
 
                 if (anime.malId) {
                   links.push({
                     href: `https://myanimelist.net/anime/${anime.malId}`,
                     key: "mal",
-                    icon: <SiMyanimelist />,
+                    icon: <Icon icon={"simple-icons:myanimelist"} />,
                   });
                 }
 
@@ -362,11 +339,11 @@ function AnimeDetailsRoute() {
             {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews?.total >= 1 && (
               <div className="flex items-center gap-2">
                 <div className="flex">
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-muted-foreground" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
                 </div>
                 <span className="font-semibold text-card-foreground">{rating}</span>
                 <span className="text-muted-foreground">
@@ -433,49 +410,49 @@ function AnimeDetailsRoute() {
                   {anime.type && (
                     <DetailsCard
                       title={t("library:type")}
-                      icon={<FilePenLine className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:file-pen-line"} className="size-5 text-muted-foreground" />}
                       description={anime.type}
                     />
                   )}
                   {anime.source && (
                     <DetailsCard
                       title={t("library:source")}
-                      icon={<Hash className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:hash"} className="size-5 text-muted-foreground" />}
                       description={anime.source}
                     />
                   )}
                   {anime.numberOfEpisodes && (
                     <DetailsCard
                       title={t("library:totalEpisodes")}
-                      icon={<TvIcon className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:tv"} className="size-5 text-muted-foreground" />}
                       description={anime.numberOfEpisodes}
                     />
                   )}
                   {anime.broadcast.string && (
                     <DetailsCard
                       title={t("library:broadcast")}
-                      icon={<Antenna className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:antenna"} className="size-5 text-muted-foreground" />}
                       description={anime.broadcast.string}
                     />
                   )}
                   {anime.rating && (
                     <DetailsCard
                       title={t("library:rating")}
-                      icon={<Building className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:building"} className="size-5 text-muted-foreground" />}
                       description={anime.rating}
                     />
                   )}
                   {anime.duration && (
                     <DetailsCard
                       title={t("library:runtime")}
-                      icon={<Clock className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:clock"} className="size-5 text-muted-foreground" />}
                       description={anime.duration}
                     />
                   )}
                   {anime.studios.length >= 1 && (
                     <DetailsCard
                       title={t("library:studios")}
-                      icon={<Building2 className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:building-2"} className="size-5 text-muted-foreground" />}
                       description={anime.studios.map((st: { name: string; malId: number }, index: number) => (
                         <Link to="/" key={st.malId} search={{ landing: "true" }}>
                           {st.name}
@@ -487,7 +464,7 @@ function AnimeDetailsRoute() {
                   {anime.producers.length >= 1 && (
                     <DetailsCard
                       title={t("library:producers")}
-                      icon={<Languages className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:languages"} className="size-5 text-muted-foreground" />}
                       description={anime.producers.map((pd: { name: string; malId: number }, index: number) => (
                         <Link to="/" key={pd.malId} search={{ landing: "true" }}>
                           {pd.name}
@@ -507,7 +484,7 @@ function AnimeDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.planning")}</span>
-                      <Bookmark className="size-5 text-purple-400" />
+                      <Icon icon={"lucide:bookmark"} className="size-5 text-purple-400" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">5%</p>
                   </div>
@@ -515,7 +492,7 @@ function AnimeDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.watching")}</span>
-                      <TvMinimalPlay className="size-5 text-chart-1" />
+                      <Icon icon={"lucide:tv-minimal-play"} className="size-5 text-chart-1" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">15%</p>
                   </div>
@@ -523,7 +500,7 @@ function AnimeDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.completed")}</span>
-                      <CheckCircle className="size-5 text-secondary" />
+                      <Icon icon={"lucide:check-circle"} className="size-5 text-secondary" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">72%</p>
                   </div>
@@ -531,7 +508,7 @@ function AnimeDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.dropped")}</span>
-                      <XCircle className="size-5 text-destructive" />
+                      <Icon icon={"lucide:x-circle"} className="size-5 text-destructive" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">8%</p>
                   </div>

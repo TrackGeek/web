@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
-import { HomeIcon } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button.tsx";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty.tsx";
@@ -20,7 +20,7 @@ export function NotFoundComponent() {
           <div className="flex gap-2">
             <Button asChild>
               <Link to="/" search={{ landing: "true" }}>
-                <HomeIcon data-icon="inline-start" />
+                <Icon icon={"lucide:home"} data-icon="inline-start" />
                 {t("common:goHome")}
               </Link>
             </Button>

@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeftRight, Dices, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
 import { UserLayout } from "@/components/layouts/user";
@@ -62,15 +62,15 @@ function GameListRoute() {
             <div className="flex items-center justify-between">
               <h4 className="text-md font-semibold text-card-foreground">{t("user:filter")}</h4>
               <Button>
-                <Dices className={"size-5"} />
+                <Icon icon={"lucide:dices"} className={"size-5"} />
               </Button>
             </div>
             <Input placeholder={`${t("user:search")}...`} className="bg-muted/50" />
             <div className="flex items-center justify-between">
               <h5 className="text-md font-semibold text-card-foreground">{t("feed:customLists")}</h5>
               <div className={"flex gap-2"}>
-                <ArrowLeftRight className={"size-5 cursor-pointer"} />
-                <Plus className={"size-5 cursor-pointer"} />
+                <Icon icon={"lucide:arrow-left-right"} className={"size-5 cursor-pointer"} />
+                <Icon icon={"lucide:plus"} className={"size-5 cursor-pointer"} />
               </div>
             </div>
             <div className="flex flex-col gap-1">

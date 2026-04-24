@@ -1,6 +1,6 @@
 import ViteImage from "@son426/vite-image/react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Eye, EyeOff, Film, Heart, Share2 } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CommentThread } from "@/components/pages/feed/comment-thread.tsx";
@@ -28,12 +28,12 @@ function SpoilerTag({ children }: { children: string }) {
     >
       {revealed ? (
         <>
-          <Eye className="w-3.5 h-3.5" />
+          <Icon icon={"lucide:eye"} className="size-3.5" />
           <span className="text-sm">{children}</span>
         </>
       ) : (
         <>
-          <EyeOff className="w-3.5 h-3.5" />
+          <Icon icon={"lucide:eye-off"} className="size-3.5" />
           <span className="text-xs font-medium">{t("feed:spoiler")}</span>
         </>
       )}
@@ -96,7 +96,7 @@ function RouteComponent() {
           <div className="flex-1 space-y-1">
             <p className="text-sm font-semibold leading-none">@username</p>
             <div className="flex items-center gap-1.5">
-              <Film className="w-3 h-3 text-muted-foreground" />
+              <Icon icon={"lucide:film"} className="size-3 text-muted-foreground" />
               <span className="text-xs text-muted-foreground">{t("common:anime")}</span>
               <span className="text-xs text-muted-foreground">·</span>
               <span className="text-xs text-muted-foreground">2 days ago</span>
@@ -113,7 +113,7 @@ function RouteComponent() {
                 height: 500,
               }}
               alt="Demon Slayer - Kimetsu no Yaiba cover"
-              className={`w-full h-full object-cover transition-opacity duration-300 ${
+              className={`size-full object-cover transition-opacity duration-300 ${
                 imageLoaded ? "opacity-100" : "opacity-0"
               }`}
               onLoad={() => setImageLoaded(true)}
@@ -122,7 +122,7 @@ function RouteComponent() {
             />
             {!imageLoaded && (
               <div className="absolute inset-0 flex items-center justify-center bg-muted/20">
-                <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                <div className="size-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
               </div>
             )}
           </div>
@@ -173,11 +173,11 @@ function RouteComponent() {
 
         <div className="py-3 border-t border-border/50 flex gap-2">
           <Button variant={liked ? "default" : "outline"} size="sm" onClick={handleLike} className="gap-2">
-            <Heart className={`size-3.5 ${liked ? "fill-current" : ""}`} />
+            <Icon icon={"lucide:heart"} className={`size-3.5 ${liked ? "fill-current" : ""}`} />
             {likeCount}
           </Button>
           <Button variant="outline" size="sm" className="gap-2">
-            <Share2 className="size-3.5" />
+            <Icon icon={"lucide:share"} className="size-3.5" />
             {t("feed:share")}
           </Button>
         </div>

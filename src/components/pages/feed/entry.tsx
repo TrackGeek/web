@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
-import { Heart, MessageCircle } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 
 interface TempUser {
@@ -57,8 +57,8 @@ export function FeedEntry({ profile, item }: feedEntryProps) {
           <p className="text-xs text-muted-foreground whitespace-nowrap">{item.time.toLocaleString(i18n.language)}</p>
 
           <div className="flex items-center gap-3">
-            <Heart className="size-4" />
-            <MessageCircle className="size-4" />
+            <Icon icon={"lucide:heart"} className="size-4" />
+            <Icon icon={"lucide:message-circle"} className="size-4" />
           </div>
         </div>
       </div>

@@ -1,21 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  BarChart3,
-  Barcode,
-  BookCopy,
-  Bookmark,
-  BookOpen,
-  BookOpenText,
-  CheckCircle,
-  CheckSquare,
-  Heart,
-  MoreHorizontal,
-  ScanBarcode,
-  Star,
-  User,
-  XCircle,
-} from "lucide-react";
+import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -114,36 +99,36 @@ function BookDetailsRoute() {
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20">
                   <div className="flex flex-col items-center gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
-                      <Bookmark className="size-6 text-purple-400" />
+                      <Icon icon={"lucide:bookmark"} className="size-6 text-purple-400" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.planning")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="size-6 text-secondary" />
+                    <Icon icon={"lucide:check-circle"} className="size-6 text-secondary" />
                   </div>
                 </Button>
 
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20">
                   <div className="flex flex-col items-center gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
-                      <BookOpenText className="size-6 text-primary" />
+                      <Icon icon={"lucide:book-open-text"} className="size-6 text-primary" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.reading")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="size-6 text-secondary" />
+                    <Icon icon={"lucide:check-circle"} className="size-6 text-secondary" />
                   </div>
                 </Button>
 
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20">
                   <div className="flex flex-col items-center gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
-                      <CheckSquare className="size-6 text-chart-3" />
+                      <Icon icon={"lucide:check-square"} className="size-6 text-chart-3" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.read")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="size-6 text-secondary" />
+                    <Icon icon={"lucide:check-circle"} className="size-6 text-secondary" />
                   </div>
                 </Button>
               </div>
@@ -151,7 +136,7 @@ function BookDetailsRoute() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className="flex bg-transparent items-center justify-center gap-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-                    <MoreHorizontal className="size-5" />
+                    <Icon icon={"lucide:more-horizontal"} className="size-5" />
                     <span className="text-sm font-medium">{t("library:moreOptions")}</span>
                   </Button>
                 </DialogTrigger>
@@ -173,7 +158,7 @@ function BookDetailsRoute() {
                         <DialogTitle className="text-white font-bold text-2xl drop-shadow-lg">{book.title}</DialogTitle>
                         <div className="flex items-center gap-4 text-white/90 text-sm">
                           <div className="flex items-center gap-1">
-                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <Icon icon={"lucide:star"} className="size-4 fill-yellow-400 text-yellow-400" />
                             <span>{rating}</span>
                           </div>
                           <span>•</span>
@@ -185,7 +170,7 @@ function BookDetailsRoute() {
 
                     <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
                       <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
-                        <Heart className="size-6" />
+                        <Icon icon={"lucide:heart"} className="size-6" />
                       </Button>
                     </div>
                   </DialogHeader>
@@ -229,7 +214,7 @@ function BookDetailsRoute() {
             {book.title}
           </h1>
           <div className="flex items-center gap-2">
-            <User className="size-5 text-muted-foreground" />
+            <Icon icon={"lucide:user"} className="size-5 text-muted-foreground" />
             {book.contributions.map((contribution: { author: { id: string; name: string } }, index: number) => (
               <span key={contribution.author.id}>
                 <Link to={`/`} search={{ landing: "true" }} className="text-xl text-muted-foreground">
@@ -240,7 +225,7 @@ function BookDetailsRoute() {
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <BookCopy className="size-5 text-muted-foreground" />
+            <Icon icon={"lucide:book-copy"} className="size-5 text-muted-foreground" />
             <Link to={"/"} search={{ landing: "true" }} className="text-xl text-muted-foreground">
               series_names (can be hidden if not exists)
             </Link>
@@ -250,11 +235,11 @@ function BookDetailsRoute() {
             {!reviewsData.isLoading && !reviewsData.isError && reviews.total >= 1 && (
               <div className="flex items-center gap-2">
                 <div className="flex">
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-muted-foreground" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
                 </div>
                 <span className="font-semibold text-card-foreground">{rating}</span>
                 <span className="text-muted-foreground">
@@ -265,7 +250,7 @@ function BookDetailsRoute() {
 
             {book.numberOfPages && (
               <div className="flex items-center gap-2 text-muted-foreground">
-                <BarChart3 className="size-5" />
+                <Icon icon={"lucide:bar-chart-3"} className="size-5" />
                 <span>
                   {t("library:medium")}: {Math.round(book.numberOfPages / 29)} {t("library:days")}
                 </span>
@@ -317,17 +302,17 @@ function BookDetailsRoute() {
                 <Grid minColSize={"200px"} className="gap-4">
                   <DetailsCard
                     title="ISBN 10"
-                    icon={<ScanBarcode className="size-5 text-muted-foreground" />}
+                    icon={<Icon icon={"lucide:scan-barcode"} className="size-5 text-muted-foreground" />}
                     description={"6555117737"}
                   />
                   <DetailsCard
                     title="ISBN 13"
-                    icon={<Barcode className="size-5 text-muted-foreground" />}
+                    icon={<Icon icon={"lucide:barcode"} className="size-5 text-muted-foreground" />}
                     description={"9786555117738"}
                   />
                   <DetailsCard
                     title={t("library:mood")}
-                    icon={<Heart className="size-5 text-muted-foreground" />}
+                    icon={<Icon icon={"lucide:heart"} className="size-5 text-muted-foreground" />}
                     description={"Intenso"}
                   />
                 </Grid>
@@ -339,7 +324,7 @@ function BookDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.planning")}</span>
-                      <Bookmark className="size-5 text-purple-400" />
+                      <Icon icon={"lucide:bookmark"} className="size-5 text-purple-400" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">5%</p>
                   </div>
@@ -347,7 +332,7 @@ function BookDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.read")}</span>
-                      <BookOpen className="size-5 text-chart-1" />
+                      <Icon icon={"lucide:book-open"} className="size-5 text-chart-1" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">15%</p>
                   </div>
@@ -355,7 +340,7 @@ function BookDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.reading")}</span>
-                      <CheckCircle className="size-5 text-secondary" />
+                      <Icon icon={"lucide:check-circle"} className="size-5 text-secondary" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">72%</p>
                   </div>
@@ -363,7 +348,7 @@ function BookDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.dropped")}</span>
-                      <XCircle className="size-5 text-destructive" />
+                      <Icon icon={"lucide:x-circle"} className="size-5 text-destructive" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">8%</p>
                   </div>

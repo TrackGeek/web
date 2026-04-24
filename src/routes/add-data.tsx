@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/a11y/useAnchorContent: Trans component */
+
+import { Icon } from "@iconify/react";
 import { createFileRoute } from "@tanstack/react-router";
-import { AlertCircle } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { seo } from "@/lib/utils/seo";
@@ -37,7 +38,7 @@ function AddDataRoute() {
               }}
             />
             <p className="flex max-md:flex-col gap-2.5 items-center bg-amber-200/20 p-2 rounded-2xl text-amber-200">
-              <AlertCircle /> {t("pages:addData.warning")}
+              <Icon icon={"lucide:alert-circle"} /> {t("pages:addData.warning")}
             </p>
             <Accordion type="multiple">
               <AccordionItem value="anime">

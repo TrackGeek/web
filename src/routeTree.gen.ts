@@ -16,6 +16,7 @@ import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as FeedRouteImport } from './routes/feed'
 import { Route as DonateRouteImport } from './routes/donate'
 import { Route as CreditsRouteImport } from './routes/credits'
+import { Route as CompareRouteImport } from './routes/compare'
 import { Route as AddDataRouteImport } from './routes/add-data'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
@@ -106,6 +107,11 @@ const DonateRoute = DonateRouteImport.update({
 const CreditsRoute = CreditsRouteImport.update({
   id: '/credits',
   path: '/credits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AddDataRoute = AddDataRouteImport.update({
@@ -397,6 +403,7 @@ const AuthenticatedDonateErrorIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/add-data': typeof AddDataRoute
+  '/compare': typeof CompareRoute
   '/credits': typeof CreditsRoute
   '/donate': typeof DonateRoute
   '/feed': typeof FeedRoute
@@ -461,6 +468,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/add-data': typeof AddDataRoute
+  '/compare': typeof CompareRoute
   '/credits': typeof CreditsRoute
   '/donate': typeof DonateRoute
   '/feed': typeof FeedRoute
@@ -527,6 +535,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/add-data': typeof AddDataRoute
+  '/compare': typeof CompareRoute
   '/credits': typeof CreditsRoute
   '/donate': typeof DonateRoute
   '/feed': typeof FeedRoute
@@ -593,6 +602,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/add-data'
+    | '/compare'
     | '/credits'
     | '/donate'
     | '/feed'
@@ -657,6 +667,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/add-data'
+    | '/compare'
     | '/credits'
     | '/donate'
     | '/feed'
@@ -722,6 +733,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/add-data'
+    | '/compare'
     | '/credits'
     | '/donate'
     | '/feed'
@@ -788,6 +800,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AddDataRoute: typeof AddDataRoute
+  CompareRoute: typeof CompareRoute
   CreditsRoute: typeof CreditsRoute
   DonateRoute: typeof DonateRoute
   FeedRoute: typeof FeedRoute
@@ -895,6 +908,13 @@ declare module '@tanstack/react-router' {
       path: '/credits'
       fullPath: '/credits'
       preLoaderRoute: typeof CreditsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/add-data': {
@@ -1314,6 +1334,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AddDataRoute: AddDataRoute,
+  CompareRoute: CompareRoute,
   CreditsRoute: CreditsRoute,
   DonateRoute: DonateRoute,
   FeedRoute: FeedRoute,

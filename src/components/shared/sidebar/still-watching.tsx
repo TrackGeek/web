@@ -1,6 +1,6 @@
+import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
 import clsx from "clsx";
-import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface TempItem {
@@ -36,7 +36,7 @@ export function StillWatching({ items }: Items) {
               <p>
                 {item.episode} / {item.totalEpisodes}
               </p>
-              <Plus className="cursor-pointer" />
+              <Icon icon={"lucide:plus"} className="cursor-pointer" />
             </div>
           </div>
         ))}

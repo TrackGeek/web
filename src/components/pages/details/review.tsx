@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
-import { Heart, Star } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -19,18 +19,20 @@ function StarRating({ rating, iconSize = "md" }: StarRatingProps) {
         const starRating = starNumber * 2;
 
         if (rating >= starRating) {
-          return <Star key={starNumber} className={`${iconClass} fill-yellow-400 text-yellow-400`} />;
+          return (
+            <Icon icon={"lucide:star"} key={starNumber} className={`${iconClass} fill-yellow-400 text-yellow-400`} />
+          );
         } else if (rating >= starRating - 1) {
           return (
             <div key={starNumber} className={`relative ${iconClass}`}>
-              <Star className={`${iconClass} text-gray-300`} />
+              <Icon icon={"lucide:star"} className={`${iconClass} text-gray-300`} />
               <div className="absolute top-0 left-0 w-1/2 h-full overflow-hidden">
-                <Star className={`${iconClass} fill-yellow-400 text-yellow-400`} />
+                <Icon icon={"lucide:star"} className={`${iconClass} fill-yellow-400 text-yellow-400`} />
               </div>
             </div>
           );
         } else {
-          return <Star key={starNumber} className={`${iconClass} text-gray-300`} />;
+          return <Icon icon={"lucide:star"} key={starNumber} className={`${iconClass} text-gray-300`} />;
         }
       })}
     </div>
@@ -107,7 +109,7 @@ export function ReviewItem({ user, reviewText, likes = 0, date, criteries, revie
     const contentHeight = contentRef.current.scrollHeight;
     const shouldShow = lineHeight > 0 && contentHeight > lineHeight * 3 + 1;
     setShowReadMore(shouldShow);
-  }, [reviewText]);
+  }, []);
 
   const criteriaList = buildCriteriaList(criteries);
 
@@ -197,7 +199,7 @@ export function ReviewItem({ user, reviewText, likes = 0, date, criteries, revie
 
         <div className="flex items-center gap-3">
           <div className="flex gap-1.5 items-center cursor-pointer hover:text-red-500 transition-colors">
-            <Heart className="size-4" />
+            <Icon icon={"lucide:heart"} className="size-4" />
             <p className="text-muted-foreground min-w-6 text-center text-sm">{likes}</p>
           </div>
         </div>

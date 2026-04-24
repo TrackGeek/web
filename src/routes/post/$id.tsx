@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Eye, EyeOff, Heart, Share2 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CommentThread } from "@/components/pages/feed/comment-thread.tsx";
@@ -26,12 +26,12 @@ function SpoilerTag({ children }: { children: string }) {
     >
       {revealed ? (
         <>
-          <Eye className="w-3.5 h-3.5" />
+          <Icon icon={"lucide:eye"} className="w-3.5 h-3.5" />
           <span className="text-sm">{children}</span>
         </>
       ) : (
         <>
-          <EyeOff className="w-3.5 h-3.5" />
+          <Icon icon={"lucide:eye-off"} className="w-3.5 h-3.5" />
           <span className="text-xs font-medium">{t("feed:spoiler")}</span>
         </>
       )}
@@ -85,11 +85,11 @@ function RouteComponent() {
 
         <div className="py-3 border-t border-border/50 flex gap-2">
           <Button variant={liked ? "default" : "outline"} size="sm" onClick={handleLike} className="gap-2">
-            <Heart className={`size-3.5 ${liked ? "fill-current" : ""}`} />
+            <Icon icon={"lucide:heart"} className={`size-3.5 ${liked ? "fill-current" : ""}`} />
             {likeCount}
           </Button>
           <Button variant="outline" size="sm" className="gap-2">
-            <Share2 className="size-3.5" />
+            <Icon icon={"lucide:share"} className="size-3.5" />
             {t("feed:share")}
           </Button>
         </div>

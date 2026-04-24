@@ -1,9 +1,8 @@
+import { Icon } from "@iconify/react";
 import ViteImage from "@son426/vite-image/react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Bell, CreditCard, LogOut, Settings, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -55,31 +54,32 @@ export function UserDropdown() {
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />
-
-        <DropdownMenuItem asChild>
-          <Link to={"/user/$username"} params={{ username: session.data?.user?.username! }} className="cursor-pointer">
-            <User size={18} className="text-white" />
-            {t("common:profile")}
-          </Link>
-        </DropdownMenuItem>
+        {session.data?.user?.username && (
+          <DropdownMenuItem asChild>
+            <Link to={"/user/$username"} params={{ username: session.data.user.username }} className="cursor-pointer">
+              <Icon icon={"lucide:user"} className="text-white size-4.5" />
+              {t("common:profile")}
+            </Link>
+          </DropdownMenuItem>
+        )}
 
         <DropdownMenuItem asChild>
           <Link to="/" search={{ landing: "true" }} className="cursor-pointer">
-            <Bell size={18} className="text-white" />
+            <Icon icon={"lucide:bell"} className="text-white size-4.5" />
             {t("common:notifications")}
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link to="/billing" className="cursor-pointer">
-            <CreditCard size={18} className="text-white" />
+            <Icon icon={"lucide:credit-card"} className="text-white size-4.5" />
             {t("common:billing")}
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link to="/settings" className="cursor-pointer">
-            <Settings size={18} className="text-white" />
+            <Icon icon={"lucide:settings"} className="text-white size-4.5" />
             {t("common:settings")}
           </Link>
         </DropdownMenuItem>
@@ -105,7 +105,7 @@ export function UserDropdown() {
               });
             }}
           >
-            <LogOut size={18} className="text-white" />
+            <Icon icon={"lucide:log-out"} className="text-white size-4.5" />
             {t("auth:logout")}
           </button>
         </DropdownMenuItem>

@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
-import { Heart } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/avatar";
 
 export function ListItem() {
@@ -46,7 +46,7 @@ export function ListItem() {
           </Avatar>
           <p className="text-md font-bold text-muted-foreground">John Doe</p>
         </Link>
-        <Heart className="text-muted-foreground" />
+        <Icon icon={"lucide:heart"} className="text-muted-foreground" />
       </div>
     </Link>
   );

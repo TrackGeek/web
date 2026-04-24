@@ -1,44 +1,7 @@
-import {
-  SiAppstore,
-  SiBluesky,
-  SiDiscord,
-  SiEpicgames,
-  SiFacebook,
-  SiGogdotcom,
-  SiGoogleplay,
-  SiInstagram,
-  SiItchdotio,
-  SiReddit,
-  SiSteam,
-  SiTwitch,
-  SiWikipedia,
-  SiX,
-  SiYoutube,
-} from "@icons-pack/react-simple-icons";
+import { Icon } from "@iconify/react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { t } from "i18next";
-import {
-  Bookmark,
-  BookSearch,
-  Box,
-  Bug,
-  Building2,
-  Cctv,
-  CheckCircle,
-  CheckSquare,
-  Code,
-  Computer,
-  EthernetPort,
-  ExternalLink,
-  Gamepad,
-  Heart,
-  MoreHorizontal,
-  Star,
-  TreeDeciduous,
-  XCircle,
-} from "lucide-react";
-import type { ComponentType, SVGProps } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -64,27 +27,27 @@ import { seo } from "@/lib/utils/seo";
 const websiteIconMap: Record<
   string,
   {
-    icon: ComponentType<SVGProps<SVGSVGElement>>;
+    icon: string;
     hex?: string;
   }
 > = {
-  Steam: { icon: SiSteam },
-  Wikipedia: { icon: SiWikipedia },
-  Twitch: { icon: SiTwitch },
-  Subreddit: { icon: SiReddit },
-  Discord: { icon: SiDiscord },
-  Playstation: { icon: SiItchdotio },
-  Xbox: { icon: SiGoogleplay },
-  YouTube: { icon: SiYoutube },
-  Epic: { icon: SiEpicgames },
-  "Official Website": { icon: ExternalLink },
-  Twitter: { icon: SiX },
-  Facebook: { icon: SiFacebook },
-  GOG: { icon: SiGogdotcom },
-  Instagram: { icon: SiInstagram },
-  "Community Wiki": { icon: BookSearch },
-  "App Store (iPhone)": { icon: SiAppstore },
-  Bluesky: { icon: SiBluesky },
+  Steam: { icon: "simple-icons:steam" },
+  Wikipedia: { icon: "simple-icons:wikipedia" },
+  Twitch: { icon: "simple-icons:twitch" },
+  Subreddit: { icon: "simple-icons:reddit" },
+  Discord: { icon: "simple-icons:discord" },
+  Playstation: { icon: "simple-icons:playstation" },
+  Xbox: { icon: "fa-brands:xbox" },
+  YouTube: { icon: "simple-icons:youtube" },
+  Epic: { icon: "simple-icons:epicgames" },
+  "Official Website": { icon: "lucide:external-link" },
+  Twitter: { icon: "simple-icons:x" },
+  Facebook: { icon: "simple-icons:facebook" },
+  GOG: { icon: "simple-icons:gogdotcom" },
+  Instagram: { icon: "simple-icons:instagram" },
+  "Community Wiki": { icon: "lucide:book-search" },
+  "App Store (iPhone)": { icon: "simple-icons:appstore" },
+  Bluesky: { icon: "simple-icons:bluesky" },
 };
 
 export const Route = createFileRoute("/game/$slug")({
@@ -254,38 +217,38 @@ function GameDetailsRoute() {
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-purple-400 transition-all duration-300 bg-card hover:bg-purple-400/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-purple-500/20 to-violet-500/20 flex items-center justify-center border border-purple-500/30">
-                      <Bookmark className="text-purple-400 size-6" />
+                      <Icon icon={"lucide:bookmark"} className="text-purple-400 size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">
                       {t("feed:lists.wanttoplay")}
                     </p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="text-secondary size-6" />
+                    <Icon icon={"lucide:check-circle"} className="text-secondary size-6" />
                   </div>
                 </Button>
 
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-primary transition-all duration-300 bg-card hover:bg-primary/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
-                      <Gamepad className="text-primary size-6" />
+                      <Icon icon={"lucide:gamepad"} className="text-primary size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.playing")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="text-secondary size-6" />
+                    <Icon icon={"lucide:check-circle"} className="text-secondary size-6" />
                   </div>
                 </Button>
 
                 <Button className="size-full flex flex-col items-center justify-between p-4 rounded-xl border-2 border-border hover:border-chart-3 transition-all duration-300 bg-card hover:bg-chart-3/20">
                   <div className="flex flex-col items-center gap-x-4 gap-2">
                     <div className="size-10 rounded-full bg-linear-to-r from-chart-3/20 to-amber-500/20 flex items-center justify-center border border-chart-3/30">
-                      <CheckSquare className="text-chart-3 size-6" />
+                      <Icon icon={"lucide:check-square"} className="text-chart-3 size-6" />
                     </div>
                     <p className="font-medium text-card-foreground text-center text-base">{t("feed:lists.played")}</p>
                   </div>
                   <div className="status-indicator hidden">
-                    <CheckCircle className="text-secondary size-6" />
+                    <Icon icon={"lucide:check-circle"} className="text-secondary size-6" />
                   </div>
                 </Button>
               </div>
@@ -293,7 +256,7 @@ function GameDetailsRoute() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-                    <MoreHorizontal className="size-5" />
+                    <Icon icon={"lucide:more-horizontal"} className="size-5" />
                     <span className="text-sm font-medium">{t("library:moreOptions")}</span>
                   </Button>
                 </DialogTrigger>
@@ -317,7 +280,7 @@ function GameDetailsRoute() {
                         </DialogTitle>
                         <div className="flex items-center gap-4 text-white/90 text-sm">
                           <div className="flex items-center gap-1">
-                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <Icon icon={"lucide:star"} className="size-4 fill-yellow-400 text-yellow-400" />
                             <span>{rating}</span>
                           </div>
                           <span>•</span>
@@ -335,7 +298,7 @@ function GameDetailsRoute() {
 
                     <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
                       <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
-                        <Heart className="size-6" />
+                        <Icon icon={"lucide:heart"} className="size-6" />
                       </Button>
                     </div>
                   </DialogHeader>
@@ -379,8 +342,6 @@ function GameDetailsRoute() {
               const iconData = websiteIconMap[website.name];
               if (!iconData) return null;
 
-              const Icon = iconData.icon;
-
               return (
                 <a
                   key={idx}
@@ -389,7 +350,7 @@ function GameDetailsRoute() {
                   rel="noopener noreferrer"
                   className={"hover:text-foreground"}
                 >
-                  <Icon />
+                  <Icon icon={iconData.icon} />
                 </a>
               );
             })}
@@ -404,7 +365,7 @@ function GameDetailsRoute() {
           </h1>
           {game?.franchises[0]?.name && (
             <div className="flex items-center space-x-2">
-              <Box className="size-5 text-muted-foreground" />
+              <Icon icon={"lucide:box"} className="size-5 text-muted-foreground" />
               <Link
                 to={"/game/franchises/$slug"}
                 params={{ slug: game?.franchises[0]?.slug }}
@@ -419,11 +380,11 @@ function GameDetailsRoute() {
             {reviews?.total >= 1 && (
               <div className="flex items-center mb-5">
                 <div className="flex mr-2">
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-chart-3 fill-chart-3" />
-                  <Star className="size-5 text-muted-foreground" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                  <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
                 </div>
                 <span className="font-semibold text-card-foreground">{rating}</span>
                 <span className="text-muted-foreground ml-1">
@@ -501,7 +462,7 @@ function GameDetailsRoute() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   <DetailsCard
                     title={t("library:developers")}
-                    icon={<Code className="size-5 text-muted-foreground" />}
+                    icon={<Icon icon={"lucide:code"} className="size-5 text-muted-foreground" />}
                     description={game.involvedCompanies
                       .filter((c: { developer: string }) => c.developer)
                       .map((c: { companyName: string }) => c.companyName)
@@ -509,7 +470,7 @@ function GameDetailsRoute() {
                   />
                   <DetailsCard
                     title={t("library:publishers")}
-                    icon={<Building2 className="size-5 text-muted-foreground" />}
+                    icon={<Icon icon={"lucide:building-2"} className="size-5 text-muted-foreground" />}
                     description={game.involvedCompanies
                       .filter((c: { publisher: string }) => c.publisher)
                       .map((c: { companyName: string }) => c.companyName)
@@ -517,28 +478,28 @@ function GameDetailsRoute() {
                   />
                   <DetailsCard
                     title={t("library:platforms")}
-                    icon={<Computer className="size-5 text-muted-foreground" />}
+                    icon={<Icon icon={"lucide:computer"} className="size-5 text-muted-foreground" />}
                     description={game.platforms.map((p: { name: string }) => p.name).join(", ")}
                   />
                   <DetailsCard
                     title={t("library:themes")}
-                    icon={<TreeDeciduous className="size-5 text-muted-foreground" />}
+                    icon={<Icon icon={"lucide:tree-deciduous"} className="size-5 text-muted-foreground" />}
                     description={game.themes.join(", ")}
                   />
                   <DetailsCard
                     title={t("library:gameModes")}
-                    icon={<EthernetPort className="size-5 text-muted-foreground" />}
+                    icon={<Icon icon={"lucide:ethernet-port"} className="size-5 text-muted-foreground" />}
                     description={game.gameModes.map((m: { name: string }) => m.name).join(", ")}
                   />
                   <DetailsCard
                     title={t("library:playerPerspectives")}
-                    icon={<Cctv className="size-5 text-muted-foreground" />}
+                    icon={<Icon icon={"lucide:cctv"} className="size-5 text-muted-foreground" />}
                     description={game.playerPerspectives.map((p: { name: string }) => p.name).join(", ")}
                   />
                   {game.gameEngines.length > 0 && (
                     <DetailsCard
                       title={t("library:gameEngine")}
-                      icon={<Bug className="size-5 text-muted-foreground" />}
+                      icon={<Icon icon={"lucide:bug"} className="size-5 text-muted-foreground" />}
                       description={game.gameEngines.map((e: { name: string }) => e.name).join(", ")}
                     />
                   )}
@@ -551,7 +512,7 @@ function GameDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.wanttoplay")}</span>
-                      <Bookmark className="size-5 text-purple-400" />
+                      <Icon icon={"lucide:bookmark"} className="size-5 text-purple-400" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">5%</p>
                   </div>
@@ -559,7 +520,7 @@ function GameDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.playing")}</span>
-                      <Gamepad className="size-5 text-chart-1" />
+                      <Icon icon={"lucide:gamepad"} className="size-5 text-chart-1" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">15%</p>
                   </div>
@@ -567,7 +528,7 @@ function GameDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.played")}</span>
-                      <CheckCircle className="size-5 text-secondary" />
+                      <Icon icon={"lucide:check-circle"} className="size-5 text-secondary" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">72%</p>
                   </div>
@@ -575,7 +536,7 @@ function GameDetailsRoute() {
                   <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">{t("feed:lists.dropped")}</span>
-                      <XCircle className="size-5 text-destructive" />
+                      <Icon icon={"lucide:x-circle"} className="size-5 text-destructive" />
                     </div>
                     <p className="text-2xl font-bold text-card-foreground">8%</p>
                   </div>

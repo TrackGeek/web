@@ -1,7 +1,7 @@
+import { Icon } from "@iconify/react";
 import ViteImage from "@son426/vite-image/react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, Heart, Star } from "lucide-react";
 import { useState } from "react";
 import type { ContentType } from "@/components/layouts/filters.tsx";
 import { api } from "@/lib/api.ts";
@@ -166,7 +166,7 @@ export function CardItem({
                 size="sm"
                 className="absolute top-1 right-1 bg-black/50 hover:bg-black/70 text-white border-0 backdrop-blur-sm rounded-full size-7"
               >
-                <ChevronDown className="size-4" />
+                <Icon icon={"lucide:chevron-down"} className="size-4" />
               </Button>
             </DialogTrigger>
 
@@ -188,7 +188,7 @@ export function CardItem({
                     <DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">{title}</DialogTitle>
                     <div className="flex items-center gap-4 text-white/90 text-sm">
                       <div className="flex items-center gap-1">
-                        <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                        <Icon icon={"lucide:star"} className="size-4 fill-yellow-400 text-yellow-400" />
                         <span>{rating}</span>
                       </div>
                       <span>•</span>
@@ -200,7 +200,7 @@ export function CardItem({
 
                 <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
                   <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
-                    <Heart className="size-6" />
+                    <Icon icon={"lucide:heart"} className="size-6" />
                   </Button>
                 </div>
               </DialogHeader>

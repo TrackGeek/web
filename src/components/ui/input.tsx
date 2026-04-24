@@ -1,4 +1,4 @@
-import { Eye, EyeOff } from "lucide-react";
+import { Icon } from "@iconify/react";
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
@@ -25,7 +25,11 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
           className="absolute right-3 top-1/2 -translate-y-1/2 rounded focus-visible:ring-ring/50 focus-visible:ring-[3px]"
           onClick={() => setShownPassword((prev) => !prev)}
         >
-          {shownPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          {shownPassword ? (
+            <Icon icon={"lucide:eye-off"} className={"size-4.5"} />
+          ) : (
+            <Icon icon={"lucide:eye"} className={"size-4.5"} />
+          )}
         </button>
       )}
     </div>

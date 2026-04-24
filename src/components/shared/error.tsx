@@ -1,6 +1,5 @@
-import { SiGithub } from "@icons-pack/react-simple-icons";
+import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
-import { HomeIcon } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button.tsx";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty.tsx";
@@ -21,13 +20,13 @@ export function ErrorComponent() {
           <div className="flex gap-2">
             <Button asChild>
               <Link to="/" search={{ landing: "true" }}>
-                <HomeIcon data-icon="inline-start" />
+                <Icon icon={"lucide:home"} data-icon={"inline-start"} />
                 {t("common:goHome")}
               </Link>
             </Button>
             <Button asChild variant={"link"}>
               <a href={"https://github.com/TrackGeek/web/issues/new/choose"} target="_blank" rel="noopener">
-                <SiGithub data-icon="inline-start" />
+                <Icon icon={"simple-icons:github"} data-icon={"inline-start"} />
                 {t("common:reportError")}
               </a>
             </Button>

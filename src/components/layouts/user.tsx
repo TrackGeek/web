@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { LinkTabs, LinkTabsList, LinkTabsTrigger } from "@/components/ui/link-tabs";
 import { UserProfileHeader } from "@/components/pages/user/user-profile-header";
+import { LinkTabs, LinkTabsList, LinkTabsTrigger } from "@/components/ui/link-tabs";
 
 interface UserLayoutProps {
   children: React.ReactNode;

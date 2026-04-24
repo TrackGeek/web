@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -118,7 +117,7 @@ function RouteComponent() {
                 <Icon className="size-5" icon="eos-icons:loading" />
               ) : (
                 <>
-                  <Mail className="size-5" />
+                  <Icon icon={"lucide:mail"} className="size-5" />
 
                   {t("auth:resetPassword.button")}
                 </>

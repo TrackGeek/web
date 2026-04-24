@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import axios from "axios";
-import { Check, Coffee, Coins, ExternalLink, Loader2 } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -187,7 +187,7 @@ function DonateRoute() {
           <Dialog open={isDonateModalOpen} onOpenChange={handleDonateModalOpenChange}>
             <DialogTrigger asChild>
               <Button className="flex flex-wrap h-12 w-full mt-5 sm:w-1/4">
-                <Coffee />
+                <Icon icon={"lucide:coffee"} />
                 {t("common:donate")}
               </Button>
             </DialogTrigger>
@@ -270,7 +270,7 @@ function DonateRoute() {
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <Coins className="size-5 shrink-0 text-primary" />
+                  <Icon icon={"lucide:coins"} className="size-5 shrink-0 text-primary" />
 
                   <Input
                     type="number"
@@ -305,7 +305,7 @@ function DonateRoute() {
                 className="w-full py-3 text-md font-semibold"
               >
                 {createPaymentMutation.isPending ? (
-                  <Loader2 className="animate-spin" />
+                  <Icon icon={"lucide:loader-2"} className="animate-spin" />
                 ) : (
                   <>
                     {t("common:donate")} {currencySymbol} {(isValidAmount ? finalAmount : 0)?.toLocaleString()}
@@ -359,7 +359,7 @@ function DonateRoute() {
                     {(t(`pages:donate.perks.items.${perk.name}.benefits`, { returnObjects: true }) as string[]).map(
                       (benefit, i) => (
                         <div key={i} className="flex items-center gap-2">
-                          <Check className="size-5 shrink-0 text-primary" />
+                          <Icon icon={"lucide:check"} className="size-5 shrink-0 text-primary" />
                           <span>{benefit}</span>
                         </div>
                       ),
@@ -415,7 +415,7 @@ function DonateRoute() {
         >
           <Button className={"flex flex-wrap"}>
             View All
-            <ExternalLink />
+            <Icon icon={"lucide:external-link"} />
           </Button>
         </a>
       </div>

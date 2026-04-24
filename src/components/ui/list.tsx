@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { cn } from "@/lib/utils";
 
 export interface ListProps {
@@ -17,7 +17,7 @@ function List({ className, active = false, name }: ListProps) {
       )}
     >
       <p>{name}</p>
-      {active && <Check className={"size-3.5"} />}
+      {active && <Icon icon={"lucide:check"} className={"size-3.5"} />}
     </div>
   );
 }

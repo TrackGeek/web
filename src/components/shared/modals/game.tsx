@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { Calendar1, Image, Plus, Save, Star, Trash, X } from "lucide-react";
+import { Icon } from "@iconify/react";
 import { type DragEvent, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useGameReview, useUploadImage } from "@/hooks/game.ts";
@@ -145,7 +145,7 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
         <div className="space-y-4">
           <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
             <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-              <Star className="size-4" />
+              <Icon icon={"lucide:star"} className="size-4" />
               {t("feed:progress")}
             </h3>
             <div className="space-y-3">
@@ -239,7 +239,7 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
         <div className="space-y-4">
           <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
             <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-              <Calendar1 className="size-4" />
+              <Icon icon={"lucide:calendar"} className="size-4" />
               {t("feed:timeline")}
             </h3>
             <div className="space-y-3">
@@ -254,7 +254,7 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
                       data-empty={!startDate}
                       className="w-full justify-start text-left font-normal bg-background"
                     >
-                      <Calendar1 className="size-4 mr-2" />
+                      <Icon icon={"lucide:calendar"} className="size-4 mr-2" />
                       {startDate ? (
                         format(startDate, "PPP")
                       ) : (
@@ -279,7 +279,7 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
                       data-empty={!finishDate}
                       className="w-full justify-start text-left font-normal bg-background"
                     >
-                      <Calendar1 className="size-4 mr-2" />
+                      <Icon icon={"lucide:calendar"} className="size-4 mr-2" />
                       {finishDate ? (
                         format(finishDate, "PPP")
                       ) : (
@@ -310,7 +310,7 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
               }
             }}
           >
-            <Image className="mx-auto size-12" aria-hidden={true} />
+            <Icon icon={"lucide:image"} className="mx-auto size-12" aria-hidden={true} />
             <p className="relative text-sm font-medium text-center mt-2">
               <Trans
                 i18nKey={"feed:uploadScreenshot"}
@@ -375,7 +375,7 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
                     className="shrink-0 text-muted-foreground hover:text-destructive"
                     onClick={() => handleRemoveScreenshot(index)}
                   >
-                    <X className="size-3.5" />
+                    <Icon icon={"lucide:x"} className="size-3.5" />
                   </Button>
                 </div>
               ))}
@@ -398,7 +398,7 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-semibold text-foreground">{t("feed:customLists")}</h3>
               <Button variant="ghost" size="sm" className="h-6 px-2" onClick={handleAddList}>
-                <Plus className="size-3" />
+                <Icon icon={"lucide:plus"} className="size-3" />
               </Button>
             </div>
             <div className="space-y-2">
@@ -447,7 +447,7 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
 
       <div className="flex justify-between items-center pt-4 border-t border-border/50">
         <Button variant="destructive" size="sm" className="gap-2">
-          <Trash className="size-4" />
+          <Icon icon={"lucide:trash"} className="size-4" />
           {t("feed:remove")}
         </Button>
         <div className="flex gap-2">
@@ -455,7 +455,7 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
             {t("feed:cancel")}
           </Button>
           <Button size="sm" className="gap-2" onClick={handleSave} disabled={isSaving || !selectedStatus || !gameId}>
-            <Save className="size-4" />
+            <Icon icon={"lucide:save"} className="size-4" />
             {isSaving ? t("feed:saving") : t("feed:save")}
           </Button>
         </div>

@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
-import { Heart, MessageCircle, Star } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 
 interface TempCriteries {
@@ -55,18 +55,24 @@ export function FeedReview({ profile, item }: feedReviewProps) {
                 const starRating = starNumber * 2;
 
                 if (ratingValue >= starRating) {
-                  return <Star key={`star-all-${starNumber}`} className="size-4 fill-yellow-400 text-yellow-400" />;
+                  return (
+                    <Icon
+                      icon={"lucide:star"}
+                      key={`star-all-${starNumber}`}
+                      className="size-4 fill-yellow-400 text-yellow-400"
+                    />
+                  );
                 } else if (ratingValue >= starRating - 1) {
                   return (
                     <div key={`star-all-${starNumber}`} className="relative size-4">
-                      <Star className="size-4 text-gray-300" />
+                      <Icon icon={"lucide:star"} className="size-4 text-gray-300" />
                       <div className="absolute top-0 left-0 w-1/2 h-full overflow-hidden">
-                        <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                        <Icon icon={"lucide:star"} className="size-4 fill-yellow-400 text-yellow-400" />
                       </div>
                     </div>
                   );
                 } else {
-                  return <Star key={`star-all-${starNumber}`} className="size-4 text-gray-300" />;
+                  return <Icon icon={"lucide:star"} key={`star-all-${starNumber}`} className="size-4 text-gray-300" />;
                 }
               })}
             </div>
@@ -81,18 +87,26 @@ export function FeedReview({ profile, item }: feedReviewProps) {
                     const starRating = starNumber * 2;
 
                     if (ratingValue >= starRating) {
-                      return <Star key={`star-all-${starNumber}`} className="size-4 fill-yellow-400 text-yellow-400" />;
+                      return (
+                        <Icon
+                          icon={"lucide:star"}
+                          key={`star-all-${starNumber}`}
+                          className="size-4 fill-yellow-400 text-yellow-400"
+                        />
+                      );
                     } else if (ratingValue >= starRating - 1) {
                       return (
                         <div key={`star-all-${starNumber}`} className="relative size-4">
-                          <Star className="size-4 text-gray-300" />
+                          <Icon icon={"lucide:star"} className="size-4 text-gray-300" />
                           <div className="absolute top-0 left-0 w-1/2 h-full overflow-hidden">
-                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <Icon icon={"lucide:star"} className="size-4 fill-yellow-400 text-yellow-400" />
                           </div>
                         </div>
                       );
                     } else {
-                      return <Star key={`star-all-${starNumber}`} className="size-4 text-gray-300" />;
+                      return (
+                        <Icon icon={"lucide:star"} key={`star-all-${starNumber}`} className="size-4 text-gray-300" />
+                      );
                     }
                   })}
                 </div>
@@ -107,18 +121,26 @@ export function FeedReview({ profile, item }: feedReviewProps) {
                     const starRating = starNumber * 2;
 
                     if (ratingValue >= starRating) {
-                      return <Star key={`star-all-${starNumber}`} className="size-4 fill-yellow-400 text-yellow-400" />;
+                      return (
+                        <Icon
+                          icon={"lucide:star"}
+                          key={`star-all-${starNumber}`}
+                          className="size-4 fill-yellow-400 text-yellow-400"
+                        />
+                      );
                     } else if (ratingValue >= starRating - 1) {
                       return (
                         <div key={`star-all-${starNumber}`} className="relative size-4">
-                          <Star className="size-4 text-gray-300" />
+                          <Icon icon={"lucide:star"} className="size-4 text-gray-300" />
                           <div className="absolute top-0 left-0 w-1/2 h-full overflow-hidden">
-                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <Icon icon={"lucide:star"} className="size-4 fill-yellow-400 text-yellow-400" />
                           </div>
                         </div>
                       );
                     } else {
-                      return <Star key={`star-all-${starNumber}`} className="size-4 text-gray-300" />;
+                      return (
+                        <Icon icon={"lucide:star"} key={`star-all-${starNumber}`} className="size-4 text-gray-300" />
+                      );
                     }
                   })}
                 </div>
@@ -133,18 +155,26 @@ export function FeedReview({ profile, item }: feedReviewProps) {
                     const starRating = starNumber * 2;
 
                     if (ratingValue >= starRating) {
-                      return <Star key={`star-all-${starNumber}`} className="size-4 fill-yellow-400 text-yellow-400" />;
+                      return (
+                        <Icon
+                          icon={"lucide:star"}
+                          key={`star-all-${starNumber}`}
+                          className="size-4 fill-yellow-400 text-yellow-400"
+                        />
+                      );
                     } else if (ratingValue >= starRating - 1) {
                       return (
                         <div key={`star-all-${starNumber}`} className="relative size-4">
-                          <Star className="size-4 text-gray-300" />
+                          <Icon icon={"lucide:star"} className="size-4 text-gray-300" />
                           <div className="absolute top-0 left-0 w-1/2 h-full overflow-hidden">
-                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <Icon icon={"lucide:star"} className="size-4 fill-yellow-400 text-yellow-400" />
                           </div>
                         </div>
                       );
                     } else {
-                      return <Star key={`star-all-${starNumber}`} className="size-4 text-gray-300" />;
+                      return (
+                        <Icon icon={"lucide:star"} key={`star-all-${starNumber}`} className="size-4 text-gray-300" />
+                      );
                     }
                   })}
                 </div>
@@ -159,18 +189,26 @@ export function FeedReview({ profile, item }: feedReviewProps) {
                     const starRating = starNumber * 2;
 
                     if (ratingValue >= starRating) {
-                      return <Star key={`star-all-${starNumber}`} className="size-4 fill-yellow-400 text-yellow-400" />;
+                      return (
+                        <Icon
+                          icon={"lucide:star"}
+                          key={`star-all-${starNumber}`}
+                          className="size-4 fill-yellow-400 text-yellow-400"
+                        />
+                      );
                     } else if (ratingValue >= starRating - 1) {
                       return (
                         <div key={`star-all-${starNumber}`} className="relative size-4">
-                          <Star className="size-4 text-gray-300" />
+                          <Icon icon={"lucide:star"} className="size-4 text-gray-300" />
                           <div className="absolute top-0 left-0 w-1/2 h-full overflow-hidden">
-                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <Icon icon={"lucide:star"} className="size-4 fill-yellow-400 text-yellow-400" />
                           </div>
                         </div>
                       );
                     } else {
-                      return <Star key={`star-all-${starNumber}`} className="size-4 text-gray-300" />;
+                      return (
+                        <Icon icon={"lucide:star"} key={`star-all-${starNumber}`} className="size-4 text-gray-300" />
+                      );
                     }
                   })}
                 </div>
@@ -193,11 +231,11 @@ export function FeedReview({ profile, item }: feedReviewProps) {
 
           <div className="flex items-center gap-3">
             <div className="flex gap-1.5 items-center">
-              <Heart className="size-4" />
+              <Icon icon={"lucide:heart"} className="size-4" />
               <p className="text-muted-foreground">{item.likes}</p>
             </div>
             <div className="flex gap-1.5 items-center">
-              <MessageCircle className="size-4" />
+              <Icon icon={"lucide:message-circle"} className="size-4" />
               <p className="text-muted-foreground">{item.likes}</p>
             </div>
           </div>

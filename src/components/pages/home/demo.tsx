@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import { animate } from "animejs";
-import { Check, Plus, Wand } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -107,7 +107,7 @@ export function Demo() {
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-16">
           <div className="lg:w-1/2 space-y-6 demo-text opacity-0">
             <div className="size-12 rounded-lg bg-primary/20 text-primary flex items-center justify-center text-xl mb-4">
-              <Wand />
+              <Icon icon={"lucide:wand"} />
             </div>
             <h2 className="text-3xl font-bold tracking-tight">{t("pages:landing.demoTitle")}</h2>
             <p className="text-muted-foreground text-lg">{t("pages:landing.demoDescription")}</p>
@@ -126,7 +126,7 @@ export function Demo() {
                 t("pages:landing.settings"),
               ].map((benefit) => (
                 <li className="flex items-center gap-3" key={benefit}>
-                  <Check className="text-green-500" /> {benefit}
+                  <Icon icon={"lucide:check"} className="text-green-500" /> {benefit}
                 </li>
               ))}
             </ul>
@@ -168,7 +168,7 @@ export function Demo() {
                     disabled={watched === total}
                     className="w-full py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 group"
                   >
-                    <Plus className="transition-transform group-hover:rotate-90" />
+                    <Icon icon={"lucide:plus"} className="transition-transform group-hover:rotate-90" />
                     {watched === 6
                       ? t("library:statusAir.finished")
                       : t("pages:landing.markEpisode", { number: watched + 1 })}

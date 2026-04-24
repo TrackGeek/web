@@ -1,5 +1,5 @@
+import { Icon } from "@iconify/react";
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -112,14 +112,7 @@ function Carousel({
         canScrollNext,
       }}
     >
-      <div
-        onKeyDownCapture={handleKeyDown}
-        className={cn("relative", className)}
-        role="region"
-        aria-roledescription="carousel"
-        data-slot="carousel"
-        {...props}
-      >
+      <div onKeyDownCapture={handleKeyDown} className={cn("relative", className)} data-slot="carousel" {...props}>
         {children}
       </div>
     </CarouselContext.Provider>
@@ -141,8 +134,6 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
 
   return (
     <div
-      role="group"
-      aria-roledescription="slide"
       data-slot="carousel-item"
       className={cn("min-w-0 shrink-0 grow-0 basis-full", orientation === "horizontal" ? "pl-4" : "pt-4", className)}
       {...props}
@@ -174,7 +165,7 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft />
+      <Icon icon={"lucide:arrow-left"} />
       <span className="sr-only">Previous slide</span>
     </Button>
   );
@@ -204,10 +195,10 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight />
+      <Icon icon={"lucide:arrow-right"} />
       <span className="sr-only">Next slide</span>
     </Button>
   );
 }
 
-export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };
+export { Carousel, type CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious };

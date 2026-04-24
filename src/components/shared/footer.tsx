@@ -1,5 +1,6 @@
 /** biome-ignore-all lint/a11y/useAnchorContent: component use */
-import { SiIgdb, SiMyanimelist, SiThemoviedatabase } from "@icons-pack/react-simple-icons";
+
+import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
 import { Trans, useTranslation } from "react-i18next";
 
@@ -17,13 +18,13 @@ export function Footer() {
             <p className="flex gap-1 items-center">
               {t("common:providers.IGDBMetadata")}
               <a href="https://www.igdb.com" target="_blank" rel="noopener noreferrer">
-                <SiIgdb />
+                <Icon icon={"simple-icons:igdb"} />
               </a>
             </p>
             <p className="flex gap-1 items-center">
               {t("common:providers.TMDBMetadata")}
               <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">
-                <SiThemoviedatabase />
+                <Icon icon={"simple-icons:themoviedatabase"} />
               </a>
             </p>
             <p className="flex gap-1 items-center">
@@ -40,7 +41,7 @@ export function Footer() {
                 components={{
                   mal: (
                     <a href="https://myanimelist.net" target="_blank" rel="noopener noreferrer">
-                      <SiMyanimelist />
+                      <Icon icon={"simple-icons:myanimelist"} />
                     </a>
                   ),
                   jikan: <a href="https://jikan.moe" target="_blank" rel="noopener noreferrer" />,

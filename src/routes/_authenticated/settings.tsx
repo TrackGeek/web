@@ -1,10 +1,13 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
 import ViteImage from "@son426/vite-image/react";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import z from "zod";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
@@ -23,8 +26,19 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth";
-import { SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
+import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
 import { seo } from "@/lib/utils/seo";
+
+const profileSchema = z.object({
+  name: z.string(),
+  username: z.string(),
+  about: z.string(),
+  color: z.string(),
+  language: z.string(),
+  timezone: z.string(),
+});
+
+type ProfileFormData = z.infer<typeof profileSchema>;
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
@@ -32,6 +46,8 @@ export const Route = createFileRoute("/_authenticated/settings")({
   }),
   component: SettingsRoute,
 });
+
+const DEFAULT_COLOR = "#10b981";
 
 const colorOptions = [
   "#3b82f6", // Blue
@@ -50,6 +66,52 @@ function SettingsRoute() {
   const { t, i18n } = useTranslation();
 
   const session = useSession();
+
+  const profileForm = useForm<ProfileFormData>({
+    resolver: zodResolver(profileSchema),
+    values: {
+      name: session.data?.user?.name ?? "",
+      username: session.data?.user?.username ?? "",
+      about: session.data?.user?.profile?.about ?? "",
+      color: session.data?.user?.profile?.color ?? DEFAULT_COLOR,
+      language: session.data?.user?.profile?.language ?? i18n.language,
+      timezone:
+        session.data?.user?.profile?.timezone ?? new Intl.DateTimeFormat().resolvedOptions().timeZone,
+    },
+  });
+
+  const color = profileForm.watch("color");
+
+  const updateProfileMutation = useMutation({
+    mutationFn: async (data: ProfileFormData) => {
+      await Promise.all([
+        api.patch(apiEndpoints.updateUser, {
+          name: data.name,
+          username: data.username,
+        }),
+        api.patch(apiEndpoints.updateProfile, {
+          about: data.about,
+          color: data.color,
+          language: data.language,
+          timezone: data.timezone,
+        }),
+      ]);
+    },
+    onSuccess: async (_, variables) => {
+      await session.refetch();
+
+      if (variables.language !== i18n.language) {
+        window.localStorage.setItem(LANGUAGE_TOKEN, variables.language);
+
+        await i18n.changeLanguage(variables.language);
+      }
+
+      toast.success(t("settings:save.success"));
+    },
+    onError: () => {
+      toast.error(t("settings:save.error"));
+    },
+  });
 
   const timezonesByGroup = new Map<string, string[]>([
     [t("common:continents.Africa"), Intl.supportedValuesOf("timeZone").filter((tz) => tz.startsWith("Africa/"))],
@@ -152,7 +214,10 @@ function SettingsRoute() {
   }
 
   return (
-    <div className="grid grid-cols-3 gap-8">
+    <form
+      className="grid grid-cols-3 gap-8"
+      onSubmit={profileForm.handleSubmit((data) => updateProfileMutation.mutate(data))}
+    >
       <div className="w-full flex flex-col border-border border bg-card rounded-2xl p-6 col-span-1">
         <Field className="gap-2">
           <FieldLabel>
@@ -331,7 +396,7 @@ function SettingsRoute() {
         <Field className="gap-2">
           <FieldLabel htmlFor="name">{t("settings:profile.name")}</FieldLabel>
 
-          <Input id="name" type="text" placeholder="Jhon Doe" />
+          <Input id="name" type="text" placeholder="Jhon Doe" {...profileForm.register("name")} />
         </Field>
 
         <Field className="gap-2">
@@ -343,7 +408,12 @@ function SettingsRoute() {
             </ButtonGroupText>
 
             <InputGroup>
-              <InputGroupInput id="username" type="text" placeholder="jhondoe" />
+              <InputGroupInput
+                id="username"
+                type="text"
+                placeholder="jhondoe"
+                {...profileForm.register("username")}
+              />
             </InputGroup>
           </ButtonGroup>
         </Field>
@@ -351,7 +421,12 @@ function SettingsRoute() {
         <Field className="gap-2">
           <FieldLabel htmlFor="about">{t("settings:profile.about")}</FieldLabel>
 
-          <Textarea id="about" placeholder="Tell us about yourself..." rows={6} />
+          <Textarea
+            id="about"
+            placeholder="Tell us about yourself..."
+            rows={6}
+            {...profileForm.register("about")}
+          />
         </Field>
       </div>
 
@@ -366,29 +441,42 @@ function SettingsRoute() {
           <FieldDescription>{t("settings:color.description")}</FieldDescription>
 
           <div className="flex flex-wrap gap-2 mt-2">
-            {colorOptions.map((color) => (
+            {colorOptions.map((option) => (
               <button
                 type="button"
-                key={color}
-                className="size-10 rounded-full border-2 border-transparent hover:border-accent transition"
-                style={{ backgroundColor: color }}
-                onClick={() => {}}
+                key={option}
+                className={`size-10 rounded-full border-2 transition ${color === option ? "border-accent" : "border-transparent hover:border-accent"}`}
+                style={{ backgroundColor: option }}
+                onClick={() => profileForm.setValue("color", option)}
               />
             ))}
           </div>
 
-          <FieldLabel htmlFor="color">{t("settings:color.custom")}</FieldLabel>
+          <FieldLabel htmlFor="customColor">{t("settings:color.custom")}</FieldLabel>
 
           <div className="flex items-center gap-2">
             <input
               type="color"
               id="customColor"
-              value="#FFF"
-              onChange={() => {}}
+              value={color}
+              onChange={(e) => profileForm.setValue("color", e.target.value)}
               className="h-10 w-14 cursor-pointer rounded-xl border-transparent border-0 bg-transparent"
             />
 
-            <span className="text-sm text-muted-foreground">#FFF</span>
+            <span className="text-sm text-muted-foreground">{color}</span>
+
+            {color !== DEFAULT_COLOR && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => profileForm.setValue("color", DEFAULT_COLOR)}
+              >
+                <Icon icon={"lucide:rotate-ccw"} className="size-4" />
+
+                {t("settings:color.reset")}
+              </Button>
+            )}
           </div>
         </Field>
       </div>
@@ -407,51 +495,69 @@ function SettingsRoute() {
         <Field className="w-full gap-2">
           <FieldLabel>{t("settings:preferrences.language.title")}</FieldLabel>
 
-          <Select value={i18n.language}>
-            <SelectTrigger className="w-full max-w-full">
-              <SelectValue placeholder={t("settings:preferrences.language.placeholder")} />
-            </SelectTrigger>
+          <Controller
+            control={profileForm.control}
+            name="language"
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger className="w-full max-w-full">
+                  <SelectValue placeholder={t("settings:preferrences.language.placeholder")} />
+                </SelectTrigger>
 
-            <SelectContent position="popper">
-              <SelectGroup>
-                {SUPPORTED_LANGUAGES.map((lang) => (
-                  <SelectItem key={lang.id} value={lang.id}>
-                    {t(lang.name)}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+                <SelectContent position="popper">
+                  <SelectGroup>
+                    {SUPPORTED_LANGUAGES
+                      .sort((a, b) => t(a.name).localeCompare(t(b.name)))
+                    .map((lang) => (
+                      <SelectItem key={lang.id} value={lang.id}>
+                        {t(lang.name)}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
         </Field>
 
         <Field className="gap-2">
           <FieldLabel>{t("settings:preferrences.timezone.title")}</FieldLabel>
 
-          <Select value={new Intl.DateTimeFormat().resolvedOptions().timeZone}>
-            <SelectTrigger className="w-full max-w-full">
-              <SelectValue placeholder={t("settings:preferrences.timezone.placeholder")} />
-            </SelectTrigger>
+          <Controller
+            control={profileForm.control}
+            name="timezone"
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger className="w-full max-w-full">
+                  <SelectValue placeholder={t("settings:preferrences.timezone.placeholder")} />
+                </SelectTrigger>
 
-            <SelectContent position="popper">
-              {Array.from(timezonesByGroup.entries()).map(([group, timezones]) => (
-                <SelectGroup key={group}>
-                  <SelectLabel>{group}</SelectLabel>
+                <SelectContent position="popper">
+                  {Array.from(timezonesByGroup.entries()).map(([group, timezones]) => (
+                    <SelectGroup key={group}>
+                      <SelectLabel>{group}</SelectLabel>
 
-                  {timezones.map((timezone) => (
-                    <SelectItem key={timezone} value={timezone}>
-                      {timezone}
-                    </SelectItem>
+                      {timezones.map((timezone) => (
+                        <SelectItem key={timezone} value={timezone}>
+                          {timezone}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
                   ))}
-                </SelectGroup>
-              ))}
-            </SelectContent>
-          </Select>
+                </SelectContent>
+              </Select>
+            )}
+          />
         </Field>
       </div>
 
       <div className="flex justify-end col-span-3">
-        <Button>{t("settings:save.title")}</Button>
+        <Button disabled={updateProfileMutation.isPending}>
+          {updateProfileMutation.isPending && <Icon icon="eos-icons:loading" className="size-4 animate-spin" />}
+
+          {t("settings:save.title")}
+        </Button>
       </div>
-    </div>
+    </form>
   );
 }

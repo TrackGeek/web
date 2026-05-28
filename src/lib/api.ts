@@ -126,6 +126,8 @@ export const apiEndpoints = {
   createPayment: "/payment",
   getPayments: "/payment",
   getPaymentDetails: (id: string) => `/payment/detail/${id}`,
+  updateUser: "/user",
+  updateProfile: "/profile",
   updateProfileAvatar: "/profile/avatar",
   deleteProfileAvatar: "/profile/avatar",
   updateProfileBanner: "/profile/banner",

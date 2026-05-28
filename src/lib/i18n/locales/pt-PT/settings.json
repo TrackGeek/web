@@ -35,7 +35,8 @@
   "color": {
     "title": "Cor do Tema",
     "description": "Escolha a sua cor de tema preferida para a interface do aplicativo.",
-    "custom": "Cor Personalizada"
+    "custom": "Cor Personalizada",
+    "reset": "Reset to default"
   },
   "save": {
     "title": "Guardar Alterações",

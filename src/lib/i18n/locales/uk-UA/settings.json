@@ -35,7 +35,8 @@
   "color": {
     "title": "Color Theme",
     "description": "Choose your preferred color theme for the application interface.",
-    "custom": "Custom Color"
+    "custom": "Custom Color",
+    "reset": "Reset to default"
   },
   "save": {
     "title": "Save Changes",

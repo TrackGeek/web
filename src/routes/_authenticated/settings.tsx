@@ -75,8 +75,7 @@ function SettingsRoute() {
       about: session.data?.user?.profile?.about ?? "",
       color: session.data?.user?.profile?.color ?? DEFAULT_COLOR,
       language: session.data?.user?.profile?.language ?? i18n.language,
-      timezone:
-        session.data?.user?.profile?.timezone ?? new Intl.DateTimeFormat().resolvedOptions().timeZone,
+      timezone: session.data?.user?.profile?.timezone ?? new Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
   });
 
@@ -408,12 +407,7 @@ function SettingsRoute() {
             </ButtonGroupText>
 
             <InputGroup>
-              <InputGroupInput
-                id="username"
-                type="text"
-                placeholder="jhondoe"
-                {...profileForm.register("username")}
-              />
+              <InputGroupInput id="username" type="text" placeholder="jhondoe" {...profileForm.register("username")} />
             </InputGroup>
           </ButtonGroup>
         </Field>
@@ -421,12 +415,7 @@ function SettingsRoute() {
         <Field className="gap-2">
           <FieldLabel htmlFor="about">{t("settings:profile.about")}</FieldLabel>
 
-          <Textarea
-            id="about"
-            placeholder="Tell us about yourself..."
-            rows={6}
-            {...profileForm.register("about")}
-          />
+          <Textarea id="about" placeholder="Tell us about yourself..." rows={6} {...profileForm.register("about")} />
         </Field>
       </div>
 
@@ -506,9 +495,7 @@ function SettingsRoute() {
 
                 <SelectContent position="popper">
                   <SelectGroup>
-                    {SUPPORTED_LANGUAGES
-                      .sort((a, b) => t(a.name).localeCompare(t(b.name)))
-                    .map((lang) => (
+                    {SUPPORTED_LANGUAGES.sort((a, b) => t(a.name).localeCompare(t(b.name))).map((lang) => (
                       <SelectItem key={lang.id} value={lang.id}>
                         {t(lang.name)}
                       </SelectItem>

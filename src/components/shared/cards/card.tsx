@@ -64,9 +64,6 @@ export function CardItem({
 
   const detailId = url.split("/").pop();
 
-  // IN BUILD
-  console.log(pendingModalData);
-
   const { data, isFetching, refetch } = useQuery({
     queryKey: ["media-detail", mediaType, detailId],
     queryFn: () => api.get(`/${mediaType}/detail/${detailId}`),

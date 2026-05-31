@@ -48,6 +48,18 @@ export function Footer() {
                 }}
               />
             </p>
+            <p className="flex flex-wrap gap-1 items-center">
+              <Trans
+                i18nKey="common:providers.ALMetadata"
+                components={{
+                  al: (
+                    <a href="https://anilist.co" target="_blank" rel="noopener noreferrer">
+                      <Icon icon={"simple-icons:anilist"} />
+                    </a>
+                  ),
+                }}
+              />
+            </p>
           </div>
         </div>
 

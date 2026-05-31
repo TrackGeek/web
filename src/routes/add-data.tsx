@@ -34,6 +34,7 @@ function AddDataRoute() {
                 igdb: <a href="https://igdb.com" rel="noopener noreferrer" target="_blank" />,
                 hc: <a href="https://hardcover.app" rel="noopener noreferrer" target="_blank" />,
                 mal: <a href="https://myanimelist.net" rel="noopener noreferrer" target="_blank" />,
+                al: <a href="https://anilist.co" rel="noopener noreferrer" target="_blank" />,
                 tmdb: <a href="https://themoviedb.org" rel="noopener noreferrer" target="_blank" />,
               }}
             />
@@ -159,26 +160,14 @@ function AddDataRoute() {
                       parent="li"
                       i18nKey="pages:addData.createAccount"
                       components={{
-                        1: (
-                          <a
-                            href="https://myanimelist.net/register.php?from=%2F&"
-                            rel="noopener noreferrer"
-                            target="_blank"
-                          />
-                        ),
+                        1: <a href="https://anilist.co/signup" rel="noopener noreferrer" target="_blank" />,
                       }}
                     />
                     <Trans
                       parent="li"
                       i18nKey="pages:addData.fillInfo"
                       components={{
-                        1: (
-                          <a
-                            href="https://myanimelist.net/panel.php?go=mangadb&do=add"
-                            rel="noopener noreferrer"
-                            target="_blank"
-                          />
-                        ),
+                        1: <a href="https://anilist.co/edit/manga/new" rel="noopener noreferrer" target="_blank" />,
                       }}
                     />
                     <li>{t("pages:addData.saveManga")}</li>

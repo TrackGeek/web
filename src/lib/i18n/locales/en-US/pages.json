@@ -18,7 +18,7 @@
     "markEpisode": "Mark Episode {{number}} as Watched",
     "toastCongrats": "Congrats! You finished this TV show.",
     "toastMark": "Episode {{number}} marked as watched!",
-    "CTATitle": "Ready to assume the control?",
+    "CTATitle": "Ready to take control?",
     "CTADescription": "Join other geeks organizing your favorite media today!",
     "CTAButton": "Get Started Free",
     "alive": "We're alive!",
@@ -40,7 +40,7 @@
   },
   "addData": {
     "description": "TrackGeek relies on third-party databases like <tmdb>TMDB</tmdb> (The Movie Database), <mal>MAL</mal> (My Anime List), <al>Anilist</al>, <hc>HardCover</hc>, <igdb>IGDB</igdb> for its TV show, Movie, Game, Book, Anime and Manga data. If you find that a specific show, game, manga, book, anime or movie is missing from TrackGeek, you can add it to the corresponding database.",
-    "warning": "Please keep in mind that it might take 24 hours to index the data from those sources to be discoverable in search using its Title as we update our search index once every 24 hours.",
+    "warning": "New entries may take up to 24 hours to appear in TrackGeek search, since we update our index daily.",
     "forAnimes": "For animes",
     "forMovies": "For movies",
     "forGames": "For games",

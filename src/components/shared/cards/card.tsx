@@ -169,7 +169,7 @@ export function CardItem({
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0" aria-dialog={synopsis}>
+            <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
               <DialogHeader
                 className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
                 style={{

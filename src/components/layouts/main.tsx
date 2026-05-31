@@ -10,7 +10,7 @@ export function MainLayout({ children }: MainLayoutProps) {
     <div className="antialiased bg-background flex flex-col min-h-screen">
       <Header />
 
-      <div className="flex flex-col grow py-5 px-4 max-w-7xl w-full flex-1 mx-auto">{children}</div>
+      <div id="main-content" className="flex flex-col grow py-5 px-4 max-w-7xl w-full flex-1 mx-auto">{children}</div>
 
       <Footer />
     </div>

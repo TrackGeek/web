@@ -19,7 +19,14 @@ export function Header() {
   const session = useSession();
 
   return (
-    <header className="bg-border/30 backdrop-blur border-b border-border w-full h-14 flex items-center justify-between px-5 py-2">
+    <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:text-sm focus:font-medium"
+      >
+        Skip to main content
+      </a>
+      <header className="bg-border/30 backdrop-blur border-b border-border w-full h-14 flex items-center justify-between px-5 py-2">
       <div className="flex items-center justify-center gap-3">
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="w-fit">
@@ -102,5 +109,6 @@ export function Header() {
         {session.isPending ? <Skeleton className="h-8 w-8" /> : session.data ? <UserDropdown /> : <AuthModal />}
       </div>
     </header>
+    </>
   );
 }

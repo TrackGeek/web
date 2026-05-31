@@ -21,7 +21,7 @@ export function UserLayout({ children, user, medalsCount, entriesCount }: UserLa
     <div>
       <UserProfileHeader user={user} medalsCount={medalsCount} entriesCount={entriesCount} />
       <LinkTabs>
-        <LinkTabsList className="flex flex-wrap gap-2 text-sm justify-between mb-5 w-full">
+        <LinkTabsList className="flex flex-wrap gap-3 text-sm justify-between mb-6 w-full">
           <LinkTabsTrigger to={`/user/${user.username}`}>{t("user:overview")}</LinkTabsTrigger>
           <LinkTabsTrigger to={`/user/${user.username}/movie`}>{t("user:movieList")}</LinkTabsTrigger>
           <LinkTabsTrigger to={`/user/${user.username}/serie`}>{t("user:serieList")}</LinkTabsTrigger>

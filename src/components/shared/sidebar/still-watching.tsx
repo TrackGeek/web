@@ -16,7 +16,7 @@ interface Items {
 export function StillWatching({ items }: Items) {
   const { t } = useTranslation();
   return (
-    <div className="bg-border/30 backdrop-blur border-border w-full p-2 gap-2 flex flex-col rounded-xl">
+    <div className="bg-border/30 backdrop-blur border-border w-full p-3 gap-3 flex flex-col rounded-xl">
       <span className="font-bold">{t("library:stillWatching")}</span>
       <div className={clsx("grid gap-3", items.length >= 3 ? "grid-cols-3" : "grid-cols-2")}>
         {items.map((item) => (
@@ -32,7 +32,7 @@ export function StillWatching({ items }: Items) {
                 }}
               />
             </div>
-            <div className="w-full bg-accent/30 flex items-center justify-center gap-2 rounded-b-2xl py-1">
+            <div className="w-full bg-accent/30 flex items-center justify-center gap-2 rounded-b-2xl py-2">
               <p>
                 {item.episode} / {item.totalEpisodes}
               </p>

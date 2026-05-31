@@ -1,6 +1,6 @@
+import { Icon } from "@iconify/react";
 import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { Icon } from "@iconify/react";
 import { type DragEvent, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useGameReview, useUploadImage } from "@/hooks/game.ts";
@@ -44,7 +44,6 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // IN BUILD
   console.log(selectedCompletion);
 
   const session = useSession();
@@ -106,7 +105,6 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
 
   const handleSave = async () => {
     if (!selectedStatus || !userId || !gameId) return;
-    console.log(userId, gameId);
 
     if (selectedStatus === "played" || selectedStatus === "replayed") {
       const review = await gameReviewMutation.mutateAsync({

@@ -62,10 +62,9 @@ export function CardItem({
 
   const [modalOpenedAt, setModalOpenedAt] = useState<Date | null>(null);
 
-  const detailId = url.split("/").pop();
-
-  // IN BUILD
   console.log(pendingModalData);
+
+  const detailId = url.split("/").pop();
 
   const { data, isFetching, refetch } = useQuery({
     queryKey: ["media-detail", mediaType, detailId],
@@ -140,7 +139,7 @@ export function CardItem({
   const showProgress = progress !== undefined && total !== undefined;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <div className="relative rounded-lg border border-border overflow-hidden aspect-3/4 group">
         <Link to={url}>
           <div
@@ -153,7 +152,7 @@ export function CardItem({
         </Link>
 
         {isAdult && (
-          <Button variant="destructive" size="xs" className="absolute top-1 left-1 group-hover:opacity-0">
+          <Button variant="destructive" size="xs" className="absolute top-2 left-2 group-hover:opacity-0">
             NSFW
           </Button>
         )}
@@ -164,13 +163,13 @@ export function CardItem({
               <Button
                 variant="secondary"
                 size="sm"
-                className="absolute top-1 right-1 bg-black/50 hover:bg-black/70 text-white border-0 backdrop-blur-sm rounded-full size-7"
+                className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white border-0 backdrop-blur-sm rounded-full size-7"
               >
                 <Icon icon={"lucide:chevron-down"} className="size-4" />
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0" aria-dialog={synopsis}>
+            <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
               <DialogHeader
                 className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
                 style={{
@@ -226,7 +225,7 @@ export function CardItem({
       </div>
 
       {isAuthenticated && showProgress && (
-        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-auto flex items-center gap-1.5 bg-primary-foreground/65 backdrop-blur-sm rounded-full px-2.5 py-1 border border-primary/15">
+        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-auto flex items-center gap-2 bg-primary-foreground/65 backdrop-blur-sm rounded-full px-3 py-1.5 border border-primary/15">
           <span className="text-xs font-medium text-white/90">
             {currentProgress}/{total}
           </span>

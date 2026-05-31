@@ -62,6 +62,8 @@ export function CardItem({
 
   const [modalOpenedAt, setModalOpenedAt] = useState<Date | null>(null);
 
+  console.log(pendingModalData);
+
   const detailId = url.split("/").pop();
 
   const { data, isFetching, refetch } = useQuery({

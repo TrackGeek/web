@@ -44,6 +44,8 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  console.log(selectedCompletion);
+
   const session = useSession();
   const userId = session?.data?.user?.id;
 

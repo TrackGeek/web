@@ -7,6 +7,10 @@ interface CardProps {
   url: string;
   imageURL: string;
   isAdult?: boolean;
+  rating?: number;
+  year?: number;
+  synopsis?: string;
+  mediaType?: string;
 }
 
 export function CardItem({

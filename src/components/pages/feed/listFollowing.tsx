@@ -1,7 +1,4 @@
-import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button.tsx";
-import { FeedComposer } from "./composer";
 import { FeedItem } from "./item";
 import { FeedReview } from "./review";
 

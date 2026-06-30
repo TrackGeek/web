@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CastItem } from "@/components/pages/details/cast";
-import { ListItem } from "@/components/pages/details/list";
 import { ReviewItem } from "@/components/pages/details/review";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
@@ -453,11 +452,6 @@ function MovieDetailsRoute() {
             </TabsContent>
             <TabsContent value="reviews">
               <ReviewItem
-                user={{
-                  name: "John Doe",
-                  avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
-                  slug: "john-doe",
-                }}
                 reviewText={
                   "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
                 }
@@ -472,9 +466,7 @@ function MovieDetailsRoute() {
               />
             </TabsContent>
             <TabsContent value="lists">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <ListItem />
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4" />
             </TabsContent>
             <TabsContent value="cast">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

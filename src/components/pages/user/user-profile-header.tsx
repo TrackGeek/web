@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth";
-import { Link } from "@tanstack/react-router";
 import { api, apiEndpoints, type ApiTypes } from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";

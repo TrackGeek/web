@@ -37,7 +37,7 @@ export function UserDropdown() {
               }}
             />
           ) : (
-            <AvatarFallback>{getInitialsFromName(session.data?.user?.name || "John Doe")}</AvatarFallback>
+            <AvatarFallback>{getInitialsFromName(session.data?.user?.name ?? '')}</AvatarFallback>
           )}
         </Avatar>
       </DropdownMenuTrigger>

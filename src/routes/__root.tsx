@@ -3,8 +3,7 @@ import "@/global.css";
 
 import { createRootRouteWithContext, HeadContent, Outlet, useRouterState } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { FullLayout } from "@/components/layouts/full";
-import { MainLayout } from "@/components/layouts/main";
+import { Layout } from "@/components/layouts";
 import type { authClient } from "@/lib/auth";
 import { RootProvider } from "@/providers";
 
@@ -12,15 +11,20 @@ interface RouterContext {
   auth: typeof authClient;
 }
 
+declare module "@tanstack/react-router" {
+  interface StaticDataRouteOption {
+    layout?: "full" | "main";
+  }
+}
+
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootLayout,
 });
 
 function RootLayout() {
-  const { location } = useRouterState();
-
-  const isHome = location.pathname === "/";
-  const isUserPage = location.pathname.startsWith("/user/");
+  const layout = useRouterState({
+    select: (s) => s.matches.at(-1)?.staticData.layout ?? "main",
+  });
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
@@ -35,17 +39,12 @@ function RootLayout() {
     return () => observer.disconnect();
   }, []);
 
-  const Layout = (() => {
-    if (isHome || isUserPage) return FullLayout;
-    return MainLayout;
-  })();
-
   return (
     <>
       <HeadContent />
 
       <RootProvider>
-        <Layout>
+        <Layout variant={layout}>
           <Outlet />
         </Layout>
       </RootProvider>

@@ -23,6 +23,7 @@ async function getUser(username: string) {
 }
 
 export const Route = createFileRoute("/user/$username/")({
+  staticData: { layout: "full" },
   loader: async ({ params }) => {
     try {
       const user = await getUser(params.username);

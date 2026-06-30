@@ -4,47 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-
-interface StarRatingProps {
-  rating: number;
-  iconSize?: "sm" | "md";
-}
-
-function StarRating({ rating, iconSize = "md" }: StarRatingProps) {
-  const iconClass = iconSize === "sm" ? "size-3" : "size-4";
-  return (
-    <div className="flex gap-0.5">
-      {[...Array(5)].map((_, index) => {
-        const starNumber = index + 1;
-        const starRating = starNumber * 2;
-
-        if (rating >= starRating) {
-          return (
-            <Icon icon={"lucide:star"} key={starNumber} className={`${iconClass} fill-yellow-400 text-yellow-400`} />
-          );
-        } else if (rating >= starRating - 1) {
-          return (
-            <div key={starNumber} className={`relative ${iconClass}`}>
-              <Icon icon={"lucide:star"} className={`${iconClass} text-gray-300`} />
-              <div className="absolute top-0 left-0 w-1/2 h-full overflow-hidden">
-                <Icon icon={"lucide:star"} className={`${iconClass} fill-yellow-400 text-yellow-400`} />
-              </div>
-            </div>
-          );
-        } else {
-          return <Icon icon={"lucide:star"} key={starNumber} className={`${iconClass} text-gray-300`} />;
-        }
-      })}
-    </div>
-  );
-}
+import { StarRating } from '@/components/shared/star-rating';
+import type { ApiTypes } from '@/lib/api';
 
 interface ReviewItemProps {
-  user?: {
-    name: string;
-    avatarURL: string;
-    slug: string;
-  };
+  user?: ApiTypes.User;
   reviewText: string;
   likes?: number;
   date: Date;
@@ -102,12 +66,15 @@ export function ReviewItem({ user, reviewText, likes = 0, date, criteries, revie
   useEffect(() => {
     if (!contentRef.current) {
       setShowReadMore(false);
+      
       return;
     }
+    
     const computed = getComputedStyle(contentRef.current);
     const lineHeight = parseFloat(computed.lineHeight || "0");
     const contentHeight = contentRef.current.scrollHeight;
     const shouldShow = lineHeight > 0 && contentHeight > lineHeight * 3 + 1;
+    
     setShowReadMore(shouldShow);
   }, []);
 
@@ -128,23 +95,24 @@ export function ReviewItem({ user, reviewText, likes = 0, date, criteries, revie
               </Link>
             ) : (
               <Link
-                to={"/"}
-                search={{ landing: "true" }}
+                to="/user/$username"
+                params={{ username: user?.username ?? "" }}
                 className="inline-flex items-center gap-2 min-w-0 w-auto shrink-0 hover:text-primary transition-colors"
               >
                 <Avatar size="sm">
-                  <AvatarImage src={user?.avatarURL} />
+                  <AvatarImage src={user?.profile.avatarUrl} />
                 </Avatar>
                 <p className="font-bold truncate text-sm sm:text-base max-w-48">{user?.name}</p>
               </Link>
             )}
+            
             <div className="sm:ml-auto sm:flex hidden items-center gap-1">
-              <StarRating rating={criteries?.all || 0} />
+              <StarRating value={criteries?.all || 0} />
             </div>
           </div>
 
           <div className="sm:hidden flex items-center gap-1">
-            <StarRating rating={criteries?.all || 0} />
+            <StarRating value={criteries?.all || 0} />
           </div>
         </div>
 
@@ -153,7 +121,8 @@ export function ReviewItem({ user, reviewText, likes = 0, date, criteries, revie
             criteriaList.map((criterion) => (
               <div key={criterion.label} className="flex items-center gap-1 min-w-0">
                 <span className="text-muted-foreground truncate">{t(criterion.label)}:</span>
-                <StarRating rating={criterion.rating} iconSize="sm" />
+                
+                <StarRating value={criterion.rating} starClassName="size-3" />
               </div>
             ))}
         </div>

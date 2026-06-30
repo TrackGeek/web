@@ -10,7 +10,7 @@ export function FeedListFollowing() {
 
   return (
     <div className="flex flex-col w-full gap-y-3">
-      <div className="relative">
+      {/* <div className="relative">
         <FeedComposer />
         <div className="absolute bottom-2 right-2">
           <Button className="w-fit">
@@ -18,7 +18,7 @@ export function FeedListFollowing() {
             {t("common:send")}
           </Button>
         </div>
-      </div>
+      </div> */}
       <FeedItem
         profile={{
           avatarURL:

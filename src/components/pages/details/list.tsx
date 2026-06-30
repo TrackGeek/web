@@ -1,53 +1,66 @@
-import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/avatar";
+import type { ApiTypes } from "@/lib/api.ts";
+import { ListItemsModal } from "./list-items-modal";
 
-export function ListItem() {
+const PREVIEW_COUNT = 3;
+
+interface ListItemProps {
+  list: ApiTypes.ListWithPreview;
+}
+
+export function ListItem({ list }: ListItemProps) {
+  const [open, setOpen] = useState(false);
+
+  const total = list._count.listItems;
+  const previews = list.listItems.slice(0, PREVIEW_COUNT);
+  const remaining = total - previews.length;
+
   return (
-    <Link
-      to={"/"}
-      search={{ landing: "true" }}
-      className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border"
-    >
-      <div className="flex items-center justify-between mb-2">
-        <AvatarGroup className="items-center -space-x-3 overflow-x-hidden">
-          <Avatar className="aspect-3/4 h-max w-16 rounded-md">
-            <AvatarImage
-              src="https://assets.hardcover.app/edition/31601422/3a01ea07-01f4-45a2-9940-6fc7e00e0d08.jpeg"
-              alt="Book Title"
-              className="object-cover aspect-3/4 h-full"
-            />
-            <AvatarFallback className="rounded-lg">Book Title</AvatarFallback>
-          </Avatar>
-          <Avatar className="aspect-3/4 h-max w-16 rounded-md">
-            <AvatarImage
-              src="https://assets.hardcover.app/edition/32508798/62c09422-138d-42ef-81d9-a9599e2fba5c.jpg"
-              alt="Book Title"
-              className="object-cover aspect-3/4 h-full"
-            />
-            <AvatarFallback className="rounded-lg">Book Title</AvatarFallback>
-          </Avatar>
-          <Avatar className="aspect-3/4 h-max w-16 rounded-md">
-            <AvatarImage
-              src="https://assets.hardcover.app/editions/30399846/4434002844651.jpg"
-              alt="Book Title"
-              className="object-cover aspect-3/4 h-full"
-            />
-            <AvatarFallback className="rounded-lg">Book Title</AvatarFallback>
-          </Avatar>
-          <AvatarGroupCount className="w-16 size-none h-max aspect-3/4 rounded-lg">+34</AvatarGroupCount>
-        </AvatarGroup>
-      </div>
-      <p className="text-card-foreground font-bold">The Human Shadow: True Crime</p>
-      <div className="flex justify-between items-center mt-2">
-        <Link to={"/user/$username"} params={{ username: "johndoe" }} className="flex gap-1 items-center">
-          <Avatar size="sm">
-            <AvatarImage src="https://assets.hardcover.app/editions/30399846/4434002844651.jpg"></AvatarImage>
-          </Avatar>
-          <p className="text-md font-bold text-muted-foreground">John Doe</p>
-        </Link>
-        <Icon icon={"lucide:heart"} className="text-muted-foreground" />
-      </div>
-    </Link>
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border text-left w-full cursor-pointer transition-colors hover:border-primary/50"
+      >
+        <div className="flex items-center justify-between mb-2">
+          <AvatarGroup className="items-center -space-x-3 overflow-x-hidden">
+            {previews.map((item) => (
+              <Avatar key={item.id} className="aspect-video h-max w-24 rounded-md">
+                <AvatarImage
+                  src={item.tvShow?.backdropUrl ?? undefined}
+                  alt={item.tvShow?.name ?? ""}
+                  className="object-cover aspect-video h-full"
+                />
+                <AvatarFallback className="rounded-md text-xs">{item.tvShow?.name}</AvatarFallback>
+              </Avatar>
+            ))}
+            {remaining > 0 && (
+              <AvatarGroupCount className="w-24 size-none h-max aspect-video rounded-md">
+                +{remaining}
+              </AvatarGroupCount>
+            )}
+          </AvatarGroup>
+        </div>
+        <p className="text-card-foreground font-bold line-clamp-1">{list.name}</p>
+        <div className="flex justify-between items-center mt-2">
+          <Link
+            to="/user/$username"
+            params={{ username: list.user.username }}
+            onClick={(e) => e.stopPropagation()}
+            className="flex gap-2 items-center"
+          >
+            <Avatar size="sm">
+              <AvatarImage src={list.user.profile?.avatarUrl ?? undefined} alt={list.user.name} />
+              <AvatarFallback>{list.user.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <p className="text-sm font-bold text-muted-foreground">{list.user.name}</p>
+          </Link>
+        </div>
+      </button>
+
+      <ListItemsModal list={list} open={open} onOpenChange={setOpen} />
+    </>
   );
 }

@@ -127,12 +127,16 @@
 }
 
 ::-webkit-scrollbar:horizontal {
-  @apply h-1;
+  @apply h-2;
+}
+
+::-webkit-scrollbar:vertical {
+  @apply w-2;
 }
 
 /*Giving the thumb a gradient*/
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary rounded-4xl;
+  @apply bg-primary;
 }
 
 .glass-panel {

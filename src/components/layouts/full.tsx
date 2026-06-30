@@ -1,11 +1,11 @@
 import { Footer } from "../shared/footer";
 import { Header } from "../shared/header";
 
-interface HomeLayoutProps {
+interface FullLayoutProps {
   children: React.ReactNode;
 }
 
-export function HomeLayout({ children }: HomeLayoutProps) {
+export function FullLayout({ children }: FullLayoutProps) {
   return (
     <div className="antialiased bg-background flex flex-col min-h-screen">
       <Header />

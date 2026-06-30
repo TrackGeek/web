@@ -7,6 +7,9 @@
   "page_other": "Pages",
   "moreOptions": "More Options",
   "reviews": "reviews",
+  "noReviews": "No reviews yet",
+  "noLists": "No lists yet",
+  "noItems": "No items yet",
   "medium": "Medium",
   "days": "days",
   "genres": "Genres",
@@ -43,6 +46,7 @@
   "season_other": "Seasons",
   "episode": "Episode",
   "episode_other": "Episodes",
+  "noEpisodes": "No episodes available for this season.",
   "totalEpisodes": "Total Episodes",
   "type": "Type",
   "tvShowCharacteristics": "TV Show Characteristics",
@@ -54,6 +58,7 @@
   "unmarkEpisode": "Unmark Episode",
   "unmarkAll": "Unmark All",
   "unmarkSeason": "Unmark Season",
+  "progressUpdated": "Progress updated",
   "studios": "Studios",
   "producers": "Producers",
   "rating": "Age Rating",
@@ -230,5 +235,6 @@
     "splitscreen": "Split screen",
     "battleRoyale": "Battle Royale",
     "massivelyMultiplayerOnline": "Massively Multiplayer Online (MMORPG)"
-  }
+  },
+  "users": "users"
 }

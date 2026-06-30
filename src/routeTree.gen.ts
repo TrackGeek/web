@@ -63,14 +63,6 @@ import { Route as AnimeAiringIndexRouteImport } from './routes/anime/airing/inde
 import { Route as MovieFranchisesSlugRouteImport } from './routes/movie/franchises/$slug'
 import { Route as GameFranchisesSlugRouteImport } from './routes/game/franchises/$slug'
 import { Route as BookFranchisesSlugRouteImport } from './routes/book/franchises/$slug'
-import { Route as UserUsernameSerieIndexRouteImport } from './routes/user/$username/serie/index'
-import { Route as UserUsernameScreenshotsIndexRouteImport } from './routes/user/$username/screenshots/index'
-import { Route as UserUsernameReviewsIndexRouteImport } from './routes/user/$username/reviews/index'
-import { Route as UserUsernameMovieIndexRouteImport } from './routes/user/$username/movie/index'
-import { Route as UserUsernameMangaIndexRouteImport } from './routes/user/$username/manga/index'
-import { Route as UserUsernameGameIndexRouteImport } from './routes/user/$username/game/index'
-import { Route as UserUsernameBookIndexRouteImport } from './routes/user/$username/book/index'
-import { Route as UserUsernameAnimeIndexRouteImport } from './routes/user/$username/anime/index'
 import { Route as AuthenticatedDonateSuccessIndexRouteImport } from './routes/_authenticated/donate/success/index'
 import { Route as AuthenticatedDonateErrorIndexRouteImport } from './routes/_authenticated/donate/error/index'
 
@@ -345,48 +337,6 @@ const BookFranchisesSlugRoute = BookFranchisesSlugRouteImport.update({
   path: '/book/franchises/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UserUsernameSerieIndexRoute = UserUsernameSerieIndexRouteImport.update({
-  id: '/user/$username/serie/',
-  path: '/user/$username/serie/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const UserUsernameScreenshotsIndexRoute =
-  UserUsernameScreenshotsIndexRouteImport.update({
-    id: '/user/$username/screenshots/',
-    path: '/user/$username/screenshots/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const UserUsernameReviewsIndexRoute =
-  UserUsernameReviewsIndexRouteImport.update({
-    id: '/user/$username/reviews/',
-    path: '/user/$username/reviews/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const UserUsernameMovieIndexRoute = UserUsernameMovieIndexRouteImport.update({
-  id: '/user/$username/movie/',
-  path: '/user/$username/movie/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const UserUsernameMangaIndexRoute = UserUsernameMangaIndexRouteImport.update({
-  id: '/user/$username/manga/',
-  path: '/user/$username/manga/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const UserUsernameGameIndexRoute = UserUsernameGameIndexRouteImport.update({
-  id: '/user/$username/game/',
-  path: '/user/$username/game/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const UserUsernameBookIndexRoute = UserUsernameBookIndexRouteImport.update({
-  id: '/user/$username/book/',
-  path: '/user/$username/book/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const UserUsernameAnimeIndexRoute = UserUsernameAnimeIndexRouteImport.update({
-  id: '/user/$username/anime/',
-  path: '/user/$username/anime/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedDonateSuccessIndexRoute =
   AuthenticatedDonateSuccessIndexRouteImport.update({
     id: '/donate/success/',
@@ -456,14 +406,6 @@ export interface FileRoutesByFullPath {
   '/user/$username/': typeof UserUsernameIndexRoute
   '/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
-  '/user/$username/anime/': typeof UserUsernameAnimeIndexRoute
-  '/user/$username/book/': typeof UserUsernameBookIndexRoute
-  '/user/$username/game/': typeof UserUsernameGameIndexRoute
-  '/user/$username/manga/': typeof UserUsernameMangaIndexRoute
-  '/user/$username/movie/': typeof UserUsernameMovieIndexRoute
-  '/user/$username/reviews/': typeof UserUsernameReviewsIndexRoute
-  '/user/$username/screenshots/': typeof UserUsernameScreenshotsIndexRoute
-  '/user/$username/serie/': typeof UserUsernameSerieIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -521,14 +463,6 @@ export interface FileRoutesByTo {
   '/user/$username': typeof UserUsernameIndexRoute
   '/donate/error': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success': typeof AuthenticatedDonateSuccessIndexRoute
-  '/user/$username/anime': typeof UserUsernameAnimeIndexRoute
-  '/user/$username/book': typeof UserUsernameBookIndexRoute
-  '/user/$username/game': typeof UserUsernameGameIndexRoute
-  '/user/$username/manga': typeof UserUsernameMangaIndexRoute
-  '/user/$username/movie': typeof UserUsernameMovieIndexRoute
-  '/user/$username/reviews': typeof UserUsernameReviewsIndexRoute
-  '/user/$username/screenshots': typeof UserUsernameScreenshotsIndexRoute
-  '/user/$username/serie': typeof UserUsernameSerieIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -588,14 +522,6 @@ export interface FileRoutesById {
   '/user/$username/': typeof UserUsernameIndexRoute
   '/_authenticated/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/_authenticated/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
-  '/user/$username/anime/': typeof UserUsernameAnimeIndexRoute
-  '/user/$username/book/': typeof UserUsernameBookIndexRoute
-  '/user/$username/game/': typeof UserUsernameGameIndexRoute
-  '/user/$username/manga/': typeof UserUsernameMangaIndexRoute
-  '/user/$username/movie/': typeof UserUsernameMovieIndexRoute
-  '/user/$username/reviews/': typeof UserUsernameReviewsIndexRoute
-  '/user/$username/screenshots/': typeof UserUsernameScreenshotsIndexRoute
-  '/user/$username/serie/': typeof UserUsernameSerieIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -655,14 +581,6 @@ export interface FileRouteTypes {
     | '/user/$username/'
     | '/donate/error/'
     | '/donate/success/'
-    | '/user/$username/anime/'
-    | '/user/$username/book/'
-    | '/user/$username/game/'
-    | '/user/$username/manga/'
-    | '/user/$username/movie/'
-    | '/user/$username/reviews/'
-    | '/user/$username/screenshots/'
-    | '/user/$username/serie/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -720,14 +638,6 @@ export interface FileRouteTypes {
     | '/user/$username'
     | '/donate/error'
     | '/donate/success'
-    | '/user/$username/anime'
-    | '/user/$username/book'
-    | '/user/$username/game'
-    | '/user/$username/manga'
-    | '/user/$username/movie'
-    | '/user/$username/reviews'
-    | '/user/$username/screenshots'
-    | '/user/$username/serie'
   id:
     | '__root__'
     | '/'
@@ -786,14 +696,6 @@ export interface FileRouteTypes {
     | '/user/$username/'
     | '/_authenticated/donate/error/'
     | '/_authenticated/donate/success/'
-    | '/user/$username/anime/'
-    | '/user/$username/book/'
-    | '/user/$username/game/'
-    | '/user/$username/manga/'
-    | '/user/$username/movie/'
-    | '/user/$username/reviews/'
-    | '/user/$username/screenshots/'
-    | '/user/$username/serie/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -849,14 +751,6 @@ export interface RootRouteChildren {
   TvTrendingIndexRoute: typeof TvTrendingIndexRoute
   TvUpcomingIndexRoute: typeof TvUpcomingIndexRoute
   UserUsernameIndexRoute: typeof UserUsernameIndexRoute
-  UserUsernameAnimeIndexRoute: typeof UserUsernameAnimeIndexRoute
-  UserUsernameBookIndexRoute: typeof UserUsernameBookIndexRoute
-  UserUsernameGameIndexRoute: typeof UserUsernameGameIndexRoute
-  UserUsernameMangaIndexRoute: typeof UserUsernameMangaIndexRoute
-  UserUsernameMovieIndexRoute: typeof UserUsernameMovieIndexRoute
-  UserUsernameReviewsIndexRoute: typeof UserUsernameReviewsIndexRoute
-  UserUsernameScreenshotsIndexRoute: typeof UserUsernameScreenshotsIndexRoute
-  UserUsernameSerieIndexRoute: typeof UserUsernameSerieIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1239,62 +1133,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookFranchisesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/user/$username/serie/': {
-      id: '/user/$username/serie/'
-      path: '/user/$username/serie'
-      fullPath: '/user/$username/serie/'
-      preLoaderRoute: typeof UserUsernameSerieIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/user/$username/screenshots/': {
-      id: '/user/$username/screenshots/'
-      path: '/user/$username/screenshots'
-      fullPath: '/user/$username/screenshots/'
-      preLoaderRoute: typeof UserUsernameScreenshotsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/user/$username/reviews/': {
-      id: '/user/$username/reviews/'
-      path: '/user/$username/reviews'
-      fullPath: '/user/$username/reviews/'
-      preLoaderRoute: typeof UserUsernameReviewsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/user/$username/movie/': {
-      id: '/user/$username/movie/'
-      path: '/user/$username/movie'
-      fullPath: '/user/$username/movie/'
-      preLoaderRoute: typeof UserUsernameMovieIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/user/$username/manga/': {
-      id: '/user/$username/manga/'
-      path: '/user/$username/manga'
-      fullPath: '/user/$username/manga/'
-      preLoaderRoute: typeof UserUsernameMangaIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/user/$username/game/': {
-      id: '/user/$username/game/'
-      path: '/user/$username/game'
-      fullPath: '/user/$username/game/'
-      preLoaderRoute: typeof UserUsernameGameIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/user/$username/book/': {
-      id: '/user/$username/book/'
-      path: '/user/$username/book'
-      fullPath: '/user/$username/book/'
-      preLoaderRoute: typeof UserUsernameBookIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/user/$username/anime/': {
-      id: '/user/$username/anime/'
-      path: '/user/$username/anime'
-      fullPath: '/user/$username/anime/'
-      preLoaderRoute: typeof UserUsernameAnimeIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated/donate/success/': {
       id: '/_authenticated/donate/success/'
       path: '/donate/success'
@@ -1383,14 +1221,6 @@ const rootRouteChildren: RootRouteChildren = {
   TvTrendingIndexRoute: TvTrendingIndexRoute,
   TvUpcomingIndexRoute: TvUpcomingIndexRoute,
   UserUsernameIndexRoute: UserUsernameIndexRoute,
-  UserUsernameAnimeIndexRoute: UserUsernameAnimeIndexRoute,
-  UserUsernameBookIndexRoute: UserUsernameBookIndexRoute,
-  UserUsernameGameIndexRoute: UserUsernameGameIndexRoute,
-  UserUsernameMangaIndexRoute: UserUsernameMangaIndexRoute,
-  UserUsernameMovieIndexRoute: UserUsernameMovieIndexRoute,
-  UserUsernameReviewsIndexRoute: UserUsernameReviewsIndexRoute,
-  UserUsernameScreenshotsIndexRoute: UserUsernameScreenshotsIndexRoute,
-  UserUsernameSerieIndexRoute: UserUsernameSerieIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -3,14 +3,15 @@ import { Icon } from "@iconify/react";
 import ViteImage from "@son426/vite-image/react";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef } from "react";
+import type { TFunction } from "i18next";
+import { useMemo, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import z from "zod";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
@@ -29,16 +30,25 @@ import { useSession } from "@/lib/auth";
 import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
 import { seo } from "@/lib/utils/seo";
 
-const profileSchema = z.object({
-  name: z.string(),
-  username: z.string(),
-  about: z.string(),
-  color: z.string(),
-  language: z.string(),
-  timezone: z.string(),
-});
+const ABOUT_MAX_LENGTH = 500;
 
-type ProfileFormData = z.infer<typeof profileSchema>;
+function createProfileSchema(t: TFunction) {
+  return z.object({
+    name: z.string().trim().min(2, t("settings:profile.errors.nameMin")).max(50, t("settings:profile.errors.nameMax")),
+    username: z
+      .string()
+      .trim()
+      .min(3, t("settings:profile.errors.usernameMin"))
+      .max(30, t("settings:profile.errors.usernameMax"))
+      .regex(/^[a-zA-Z0-9_]+$/, t("settings:profile.errors.usernameFormat")),
+    about: z.string().trim().max(ABOUT_MAX_LENGTH, t("settings:profile.errors.aboutMax")),
+    color: z.string().regex(/^#[0-9a-fA-F]{6}$/, t("settings:color.errors.invalid")),
+    language: z.string().min(1),
+    timezone: z.string().min(1),
+  });
+}
+
+type ProfileFormData = z.infer<ReturnType<typeof createProfileSchema>>;
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
@@ -67,6 +77,8 @@ function SettingsRoute() {
 
   const session = useSession();
 
+  const profileSchema = useMemo(() => createProfileSchema(t), [t]);
+
   const profileForm = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     values: {
@@ -80,6 +92,7 @@ function SettingsRoute() {
   });
 
   const color = profileForm.watch("color");
+  const about = profileForm.watch("about") ?? "";
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data: ProfileFormData) => {
@@ -395,7 +408,17 @@ function SettingsRoute() {
         <Field className="gap-2">
           <FieldLabel htmlFor="name">{t("settings:profile.name")}</FieldLabel>
 
-          <Input id="name" type="text" placeholder="Jhon Doe" {...profileForm.register("name")} />
+          <Input
+            id="name"
+            type="text"
+            placeholder="Jhon Doe"
+            aria-invalid={Boolean(profileForm.formState.errors.name)}
+            {...profileForm.register("name")}
+          />
+
+          {profileForm.formState.errors.name?.message && (
+            <FieldError>{profileForm.formState.errors.name.message}</FieldError>
+          )}
         </Field>
 
         <Field className="gap-2">
@@ -407,15 +430,45 @@ function SettingsRoute() {
             </ButtonGroupText>
 
             <InputGroup>
-              <InputGroupInput id="username" type="text" placeholder="jhondoe" {...profileForm.register("username")} />
+              <InputGroupInput
+                id="username"
+                type="text"
+                placeholder="jhondoe"
+                aria-invalid={Boolean(profileForm.formState.errors.username)}
+                {...profileForm.register("username")}
+              />
             </InputGroup>
           </ButtonGroup>
+
+          {profileForm.formState.errors.username?.message && (
+            <FieldError>{profileForm.formState.errors.username.message}</FieldError>
+          )}
         </Field>
 
         <Field className="gap-2">
           <FieldLabel htmlFor="about">{t("settings:profile.about")}</FieldLabel>
 
-          <Textarea id="about" placeholder="Tell us about yourself..." rows={6} {...profileForm.register("about")} />
+          <Textarea
+            id="about"
+            placeholder="Tell us about yourself..."
+            rows={10}
+            className="min-h-40 resize-none"
+            maxLength={ABOUT_MAX_LENGTH}
+            aria-invalid={Boolean(profileForm.formState.errors.about)}
+            {...profileForm.register("about")}
+          />
+
+          <div className="flex items-center justify-between gap-2">
+            {profileForm.formState.errors.about?.message ? (
+              <FieldError>{profileForm.formState.errors.about.message}</FieldError>
+            ) : (
+              <span />
+            )}
+
+            <span className="text-xs text-muted-foreground">
+              {about.length}/{ABOUT_MAX_LENGTH}
+            </span>
+          </div>
         </Field>
       </div>
 

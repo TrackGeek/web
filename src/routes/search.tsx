@@ -1,9 +1,10 @@
 import { Icon } from "@iconify/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useState } from "react";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
+import { memo, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { type ContentType, type FilterParams, Filters } from "@/components/layouts/filters.tsx";
+import { type ContentType, type FilterParams } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid";
 import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
@@ -15,13 +16,6 @@ import { seo } from "@/lib/utils/seo";
 import { useDebounce } from "@/lib/utils/useDebounce.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
-export const Route = createFileRoute("/search")({
-  head: () => ({
-    meta: [...seo({ title: "Search" })],
-  }),
-  component: RouteComponent,
-});
-
 const CONTENT_TYPES: { value: ContentType; labelKey: string }[] = [
   { value: "anime", labelKey: "common:types.anime" },
   { value: "manga", labelKey: "common:types.manga" },
@@ -31,7 +25,19 @@ const CONTENT_TYPES: { value: ContentType; labelKey: string }[] = [
   { value: "tv", labelKey: "common:types.tv" },
 ];
 
-function buildSearchUrl(contentType: ContentType, query: string, filters: FilterParams, page: number): string {
+export const Route = createFileRoute("/search")({
+  head: () => ({
+    meta: [...seo({ title: "Search" })],
+  }),
+  beforeLoad: ({ search }) => {
+    if (!(search as { type?: string }).type) {
+      throw redirect({ to: "/search", search: { type: "anime" }, replace: true });
+    }
+  },
+  component: RouteComponent,
+});
+
+function buildSearchUrl(contentType: ContentType, query: string = "A", filters: FilterParams, page: number): string {
   const qs = new URLSearchParams();
 
   if (page > 1) qs.set("page", String(page));
@@ -88,20 +94,71 @@ function getPaginationFromPage(page: any, contentType: ContentType) {
   }
 }
 
+type SearchResultsProps = {
+  items: any[];
+  contentType: ContentType;
+  isLoading: boolean;
+  isError: boolean;
+  isFetchingNextPage: boolean;
+  sentinelRef: React.Ref<HTMLDivElement>;
+};
+
+const SearchResults = memo(({
+  items,
+  contentType,
+  isLoading,
+  isError,
+  isFetchingNextPage,
+  sentinelRef,
+}: SearchResultsProps) => {
+  return (
+    <div className="flex-1 md:w-2/3 space-y-4">
+      {isError && <ErrorComponent />}
+      
+      {isLoading && <LoadingFiltered />}
+
+      {!isLoading && !isError && (
+        <Grid minColSize="128px" className="grid gap-6">
+          {items.map((item: any) => (
+            <CardItem
+              key={item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}
+              title={item.title ?? item.name}
+              url={`/${contentType}/${item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}`}
+              imageURL={
+                (item.imageUrl ?? item.coverUrl ?? item.posterUrl ?? null)?.replace(
+                  "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                  "/placeholder/cover.webp",
+                ) ?? "/placeholder/cover.webp"
+              }
+              isAdult={item.isAdult}
+            />
+          ))}
+        </Grid>
+      )}
+
+      <div ref={sentinelRef} className="h-px" />
+      
+      {isFetchingNextPage && <LoadingFiltered />}
+    </div>
+  );
+});
+
 function RouteComponent() {
-  const { t } = useTranslation();
-  const [contentType, setContentType] = useState<ContentType>("anime");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [contentType, setContentType] = useQueryState(
+    "type",
+    parseAsStringLiteral(CONTENT_TYPES.map((c) => c.value)).withDefault("anime"),
+  );
+
+  const [searchQuery, setSearchQuery] = useQueryState("query", parseAsString.withDefault(""));
   const [filters, setFilters] = useState<FilterParams>({});
 
-  const debouncedQuery = useDebounce(searchQuery, 400);
-
-  const handleFilterChange = useCallback((patch: Partial<FilterParams>) => {
-    setFilters((prev) => ({ ...prev, ...patch }));
-  }, []);
+  const debouncedQuery = useDebounce(searchQuery, 600);
+  
+  const { t } = useTranslation();
 
   const handleContentTypeChange = (value: string) => {
     setContentType(value as ContentType);
+    setSearchQuery("");
     setFilters({});
   };
 
@@ -111,6 +168,7 @@ function RouteComponent() {
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       const pagination = getPaginationFromPage(lastPage, contentType);
+      
       return pagination?.hasNextPage ? pagination.nextCursor : undefined;
     },
   });
@@ -120,13 +178,17 @@ function RouteComponent() {
   const handlePaste = async () => {
     try {
       const text = await navigator.clipboard.readText();
+      
       setSearchQuery(text);
     } catch (err) {
       console.error("Failed to read clipboard:", err);
     }
   };
 
-  const items = data?.pages.flatMap((p) => getItemsFromPage(p, contentType)) ?? [];
+  const items = useMemo(
+    () => data?.pages.flatMap((p) => getItemsFromPage(p, contentType)) ?? [],
+    [data, contentType],
+  );
 
   return (
     <div className="p-4 sm:p-6">
@@ -167,42 +229,14 @@ function RouteComponent() {
         </div>
 
         <div className="flex max-sm:flex-col gap-5">
-          <Filters type={contentType} values={filters} onChange={handleFilterChange} />
-
-          <div className="flex-1 md:w-2/3 space-y-4">
-            {isError && <ErrorComponent />}
-            {isLoading && <LoadingFiltered />}
-
-            {!isLoading && !isError && (
-              <Grid minColSize="128px" className="grid gap-6">
-                {items.map((item: any) => (
-                  <CardItem
-                    key={item.malId ?? item.id}
-                    title={item.title ?? item.name}
-                    url={`/${contentType}/${item.malId ?? item.id}`}
-                    imageURL={
-                      (item.imageUrl ?? item.coverImage ?? "").replace(
-                        "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-                        "/placeholder/cover.webp",
-                      ) || "/placeholder/cover.webp"
-                    }
-                    rating={item.rating}
-                    year={
-                      (item.airedFrom ?? item.releasedAt ?? item.publishedAt)
-                        ? new Date(item.airedFrom ?? item.releasedAt ?? item.publishedAt).getFullYear()
-                        : undefined
-                    }
-                    synopsis={item.synopsis ?? item.description}
-                    isAdult={item.isAdult}
-                    mediaType={contentType}
-                  />
-                ))}
-              </Grid>
-            )}
-
-            <div ref={sentinelRef} className="h-px" />
-            {isFetchingNextPage && <LoadingFiltered />}
-          </div>
+          <SearchResults
+            items={items}
+            contentType={contentType}
+            isLoading={isLoading}
+            isError={isError}
+            isFetchingNextPage={isFetchingNextPage}
+            sentinelRef={sentinelRef}
+          />
         </div>
       </div>
     </div>

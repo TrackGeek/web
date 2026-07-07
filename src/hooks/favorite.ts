@@ -33,13 +33,15 @@ export function favoritesQueryKey(userId: string) {
   return ["favorites", userId];
 }
 
-export function useFavorites(userId: string) {
+export function useFavorites(userId: string, query?: string) {
+  const trimmedQuery = query?.trim() || undefined;
+
   return useInfiniteQuery({
-    queryKey: favoritesQueryKey(userId),
+    queryKey: [...favoritesQueryKey(userId), trimmedQuery],
     queryFn: ({ pageParam }) =>
       api
         .get<ApiTypes.GetFavoritesByUserIdResponse>(apiEndpoints.getFavoritesByUserId(userId), {
-          params: { page: pageParam, itemsPerPage: ITEMS_PER_PAGE },
+          params: { page: pageParam, itemsPerPage: ITEMS_PER_PAGE, ...(trimmedQuery && { query: trimmedQuery }) },
         })
         .then(({ data }) => data.favorites),
     initialPageParam: 1,
@@ -58,6 +60,16 @@ export function useToggleFavorite(mediaType: ContentType, id: string) {
         ? api.delete(apiEndpoints.removeFavorite, { data: body })
         : api.post(apiEndpoints.addFavorite, body);
     },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["favorites"] }),
+  });
+}
+
+export function useRemoveFavorite() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ contentType, mediaId }: { contentType: ContentType; mediaId: string }) =>
+      api.delete(apiEndpoints.removeFavorite, { data: buildFavoriteRequest(contentType, mediaId) }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["favorites"] }),
   });
 }

@@ -1,6 +1,6 @@
-import ViteImage from "@son426/vite-image/react";
 import { useQueries } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
@@ -9,6 +9,7 @@ import { LoadingFeatured } from "@/components/shared/loadings/featured.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel.tsx";
 import { api, apiEndpoints } from "@/lib/api.ts";
+import { AVATAR_BLUR } from "@/lib/image.ts";
 import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/tv/")({
@@ -76,13 +77,11 @@ function SerieRoute() {
             return (
               <CarouselItem key={serie.tmdbId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
-                  <ViteImage
-                    src={{
-                      src: serie.backdropUrl,
-                      blurDataURL: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH",
-                      height: 240,
-                      width: 1920,
-                    }}
+                  <Image
+                    src={serie.backdropUrl}
+                    layout="fullWidth"
+                    aspectRatio={1920 / 240}
+                    background={AVATAR_BLUR}
                     className="w-full h-60 md:h-120 object-cover"
                     alt={serie.name}
                   />

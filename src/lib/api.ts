@@ -293,6 +293,12 @@ export namespace ApiTypes {
         };
       };
     };
+    counts: {
+      lists: number;
+      favorites: number;
+      reviews: number;
+    };
+    latestReviewType: ReviewContentType | null;
   }
 
   export interface GetUserByUsernameResponse {
@@ -384,6 +390,25 @@ export namespace ApiTypes {
 
   export type ListType = FavoriteType;
 
+  export interface AddItemToListRequest {
+    type: ListType;
+    listId: string;
+    position?: number;
+    animeId?: string;
+    mangaId?: string;
+    tvShowId?: string;
+    movieId?: string;
+    gameId?: string;
+    bookId?: string;
+  }
+
+  export type RemoveItemFromListRequest = AddItemToListRequest;
+
+  export interface UpdateListRequest {
+    name?: string;
+    description?: string;
+  }
+
   export interface List {
     id: string;
     name: string;
@@ -398,7 +423,7 @@ export namespace ApiTypes {
   }
 
   export interface GetListsByUserIdResponse {
-    lists: PaginatedResponse<List>;
+    lists: PaginatedResponse<ListWithPreview>;
   }
 
   export interface ListItem {
@@ -442,10 +467,73 @@ export namespace ApiTypes {
     tvShowId: string;
     createdAt: string;
     user: User;
+    reactions?: ReviewReaction[];
   }
 
   export interface GetTVShowReviewsResponse {
     tvShowReviews: PaginatedResponse<TVShowReview>;
+  }
+
+  export type ReviewContentType = "tv" | "movie" | "game" | "anime" | "book" | "manga";
+
+  export interface ReviewMediaSummary {
+    id?: string;
+    name?: string | null;
+    title?: string | null;
+    coverUrl?: string | null;
+    backdropUrl?: string | null;
+    imageUrl?: string | null;
+  }
+
+  export interface ReviewReaction {
+    id: string;
+    emoji: string;
+    createdAt: string;
+    user: {
+      id: string;
+      username: string;
+    };
+  }
+
+  export interface Review {
+    id: string;
+    overall: number | string;
+    direction?: number | string | null;
+    production?: number | string | null;
+    acting?: number | string | null;
+    graphics?: number | string | null;
+    sound?: number | string | null;
+    gameplay?: number | string | null;
+    characters?: number | string | null;
+    animation?: number | string | null;
+    enjoyment?: number | string | null;
+    language?: number | string | null;
+    theme?: number | string | null;
+    art?: number | string | null;
+    worldbuilding?: number | string | null;
+    story?: string | null;
+    summary?: string | null;
+    notes?: string | null;
+    recommended?: boolean | null;
+    userId: string;
+    createdAt: string;
+    user: User;
+    game?: ReviewMediaSummary | null;
+    movie?: ReviewMediaSummary | null;
+    tvShow?: ReviewMediaSummary | null;
+    anime?: ReviewMediaSummary | null;
+    book?: ReviewMediaSummary | null;
+    manga?: ReviewMediaSummary | null;
+    reactions?: ReviewReaction[];
+  }
+
+  export interface GetReviewsResponse {
+    tvShowReviews?: PaginatedResponse<Review>;
+    movieReviews?: PaginatedResponse<Review>;
+    gameReviews?: PaginatedResponse<Review>;
+    animeReviews?: PaginatedResponse<Review>;
+    bookReviews?: PaginatedResponse<Review>;
+    mangaReviews?: PaginatedResponse<Review>;
   }
 }
 
@@ -508,8 +596,7 @@ export const apiEndpoints = {
   getTvShowEpisodeWatch: (userId: string, tvShowId: string) =>
     `/tv/episode/watch?userId=${userId}&tvShowId=${tvShowId}`,
   tvShowProgress: "/tv/progress",
-  getTvShowProgress: (userId: string, tvShowId: string) =>
-    `/tv/progress?userId=${userId}&tvShowId=${tvShowId}`,
+  getTvShowProgress: (userId: string, tvShowId: string) => `/tv/progress?userId=${userId}&tvShowId=${tvShowId}`,
   resetTvShowTracking: (tvShowId: string) => `/tv/tracking/${tvShowId}`,
   getMangaDetails: (id: string) => `/manga/detail/${id}`,
   getMangaPublishing: "/manga/top?filter=publishing",
@@ -524,6 +611,8 @@ export const apiEndpoints = {
   getListsContainingItem: "/list/containing",
   listItem: (listId: string) => `/list/${listId}/item`,
   getItemsByListId: (listId: string) => `/list/${listId}/item`,
+  updateList: (listId: string) => `/list/${listId}`,
+  deleteList: (listId: string) => `/list/${listId}`,
   getUserByUsername: (username: string) => `/user/username/${username}`,
   followUser: (followId: string) => `/user/follow/${followId}`,
   unfollowUser: (unfollowId: string) => `/user/unfollow/${unfollowId}`,
@@ -537,4 +626,6 @@ export const apiEndpoints = {
   getFavoriteStatus: "/favorite/status",
   addFavorite: "/favorite",
   removeFavorite: "/favorite",
+  addReaction: "/reaction",
+  deleteReaction: (reactionId: string) => `/reaction/${reactionId}`,
 };

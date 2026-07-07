@@ -1,5 +1,7 @@
 {
   "following": "Following",
+  "edit": "Edit",
+  "delete": "Delete",
   "global": "Global",
   "trending": "Trending",
   "reviewed": "reviewed <strong>{{content}}</strong>",
@@ -47,6 +49,10 @@
   "finishDate": "Finish Date",
   "notes": "Notes",
   "notesPlaceholder": "Add your thoughts about this...",
+  "story": "Story",
+  "storyPlaceholder": "Describe the plot or narrative...",
+  "showMore": "Show more",
+  "showLess": "Show less",
   "pickADate": "Pick a date",
   "remove": "Delete",
   "removeConfirmTitle": "Delete tracking data?",
@@ -99,5 +105,8 @@
   "summaryPlaceholder": "A short summary of your review...",
   "recommended": "I recommend this",
   "saving": "Saving...",
+  "reviewSummaryMax": "Summary is too long.",
+  "reviewNotesMax": "Notes are too long.",
+  "reviewStoryMax": "Story is too long.",
   "reviewAvailableWhenCompleted": "Mark as completed to write a review"
 }

@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
-import ViteImage from "@son426/vite-image/react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -21,9 +21,11 @@ import { StarRating } from "@/components/shared/star-rating.tsx";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
@@ -115,6 +117,8 @@ function TVShowDetailsPage() {
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
   const userId = session?.data?.user?.id;
+
+  const toggleReaction = useToggleReviewReaction("tv", userId ?? "");
 
   const episodeWatchQuery = useQuery<EpisodeWatch[]>({
     queryKey: ["tvEpisodeWatch", item?.id, userId],
@@ -333,14 +337,12 @@ function TVShowDetailsPage() {
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       <div className="lg:w-1/3">
-        <div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 gap-4 flex flex-col">
+        <div className="bg-card rounded-2xl shadow-lg p-6 gap-4 flex flex-col">
           <div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
-            <ViteImage
-              src={{
-                src: item.posterUrl || "/placeholder/cover.webp",
-                width: 500,
-                height: 750,
-              }}
+            <Image
+              src={item.posterUrl || "/placeholder/cover.webp"}
+              width={500}
+              height={750}
               alt={`${item.name} Cover`}
               className="w-full h-auto object-cover"
             />
@@ -397,12 +399,10 @@ function TVShowDetailsPage() {
                   >
                     <div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
                     <div className="flex flex-row items-center w-full">
-                      <ViteImage
-                        src={{
-                          src: item.posterUrl,
-                          height: 160,
-                          width: 112,
-                        }}
+                      <Image
+                        src={item.posterUrl}
+                        width={112}
+                        height={160}
                         alt="Cover"
                         className="w-28! h-40 shrink-0 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
                       />
@@ -411,21 +411,21 @@ function TVShowDetailsPage() {
                         <DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">
                           {item.name}
                         </DialogTitle>
-                        
+
                         <div className="flex items-center gap-2 text-white/90 text-sm">
                           <div className="flex items-center gap-1">
                             <StarRating value={1} max={1} />
-                            
+
                             <span>{rating}</span>
                           </div>
-                          
+
                           <span>•</span>
-                          
+
                           <span>
                             {new Date(item.firstAirDate).getFullYear()} - {new Date(item.lastAirDate).getFullYear()}
                           </span>
                         </div>
-                        
+
                         <p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">{item.tagline}</p>
                       </div>
                     </div>
@@ -438,10 +438,7 @@ function TVShowDetailsPage() {
                         onClick={() => toggleFavoriteMutation.mutate()}
                         className="text-white hover:bg-white/10 hover:text-white"
                       >
-                        <Icon
-                          icon={"lucide:heart"}
-                          className={cn("size-6", isFavorited && "text-red-500")}
-                        />
+                        <Icon icon={"lucide:heart"} className={cn("size-6", isFavorited && "text-red-500")} />
                       </Button>
                     </div>
                   </DialogHeader>
@@ -468,7 +465,7 @@ function TVShowDetailsPage() {
                 <p className="font-semibold text-card-foreground">{getStatusLabel(t, item.status)}</p>
               </div>
             )}
-            
+
             {item.firstAirDate && item.lastAirDate && (
               <div className="bg-muted/50 p-4 rounded-lg border border-border">
                 <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
@@ -478,21 +475,21 @@ function TVShowDetailsPage() {
               </div>
             )}
           </Grid>
-          
+
           <RefreshData
             sourceURL={`https://www.themoviedb.org/tv/${item.tmdbId}`}
             onSubmit={() => {
               mutation.mutate();
             }}
           />
-          
+
           <div className="flex flex-wrap gap-3 items-center justify-center">
             {item.homepage && (
               <a href={item.homepage} target="_blank" rel="noopener noreferrer">
                 <Icon icon={"lucide:external-link"} />
               </a>
             )}
-            
+
             {(
               [
                 {
@@ -552,30 +549,28 @@ function TVShowDetailsPage() {
               </div>
             )}
           </div>
-          
+
           <Tabs defaultValue="info">
             <div className="flex items-center justify-between gap-3 mb-2">
               <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
                 <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-                
+
                 <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
-                
+
                 <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
-                
-                {item.backdrops.length >= 1 && <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>}
-                
-                {reviews.total >= 1 && (
-                  <TabsTrigger value="reviews" className="capitalize">
-                    {t("library:reviews")} ({reviews.total})
-                  </TabsTrigger>
-                )}
-                
+
+                <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>
+
+                <TabsTrigger value="reviews" className="capitalize">
+                  {t("library:reviews")} ({reviews.total})
+                </TabsTrigger>
+
                 <TabsTrigger value="lists">
                   {t("library:lists")} ({listsQuery.data?.total ?? 0})
                 </TabsTrigger>
               </TabsList>
             </div>
-            
+
             <TabsContent value="info" className={"space-y-5"}>
               <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:genres")}</h3>
@@ -643,7 +638,7 @@ function TVShowDetailsPage() {
                     <DetailsCard
                       title={t("library:language")}
                       icon={<Icon icon={"lucide:languages"} className="size-5 text-muted-foreground" />}
-                      description={item.originalLanguage}
+                      description={item.originalLanguage.toUpperCase()}
                     />
                   )}
                   {item?.productionCompanies?.length >= 1 && (
@@ -767,7 +762,7 @@ function TVShowDetailsPage() {
                 />
               )}
             </TabsContent>
-            
+
             <TabsContent value="episodes">
               <Accordion type="single" collapsible value={openSeason} onValueChange={setOpenSeason}>
                 {seasons.map((season: any) => {
@@ -790,33 +785,60 @@ function TVShowDetailsPage() {
                 })}
               </Accordion>
             </TabsContent>
-            
+
             <TabsContent value="reviews">
               {reviews.items.length === 0 ? (
-                <p className="text-muted-foreground">{t("library:noReviews")}</p>
+                <Empty className="border-0">
+                  <EmptyHeader>
+                    <EmptyMedia variant="icon">
+                      <Icon icon="lucide:star" />
+                    </EmptyMedia>
+                    <EmptyTitle>{t("library:noReviews")}</EmptyTitle>
+                    <EmptyDescription>{t("library:noReviewsDescription")}</EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
               ) : (
                 <div className="flex flex-col divide-y divide-border/30">
                   {reviews.items.map((review: ApiTypes.TVShowReview) => (
                     <ReviewItem
                       key={review.id}
                       user={review.user}
-                      reviewText={review.notes ?? review.summary ?? ""}
+                      reviewText={review.summary ?? ""}
+                      notes={review.notes}
+                      story={review.story}
                       date={new Date(review.createdAt)}
                       criteries={{
-                        all: Number(review.overall) * 2,
-                        direction: review.direction != null ? Number(review.direction) * 2 : undefined,
-                        production: review.production != null ? Number(review.production) * 2 : undefined,
-                        acting: review.acting != null ? Number(review.acting) * 2 : undefined,
+                        all: Number(review.overall),
+                        direction: review.direction != null ? Number(review.direction) : undefined,
+                        production: review.production != null ? Number(review.production) : undefined,
+                        acting: review.acting != null ? Number(review.acting) : undefined,
                       }}
+                      reviewId={review.id}
+                      reactions={review.reactions}
+                      onReact={(emoji, currentReaction) =>
+                        toggleReaction.mutate(
+                          { reviewId: review.id, currentReaction, emoji },
+                          { onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tvReviews", item.id] }) },
+                        )
+                      }
+                      isReacting={toggleReaction.isPending && toggleReaction.variables?.reviewId === review.id}
                     />
                   ))}
                 </div>
               )}
             </TabsContent>
-            
+
             <TabsContent value="lists">
               {!listsQuery.data || listsQuery.data.items.length === 0 ? (
-                <p className="text-muted-foreground">{t("library:noLists")}</p>
+                <Empty className="border-0">
+                  <EmptyHeader>
+                    <EmptyMedia variant="icon">
+                      <Icon icon="lucide:list" />
+                    </EmptyMedia>
+                    <EmptyTitle>{t("library:noLists")}</EmptyTitle>
+                    <EmptyDescription>{t("library:noListsDescription")}</EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {listsQuery.data.items.map((list) => (
@@ -825,7 +847,7 @@ function TVShowDetailsPage() {
                 </div>
               )}
             </TabsContent>
-            
+
             <TabsContent value="cast">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 {item.cast?.map((cast: { character: string; name: string; profileUrl: string }) => {
@@ -840,25 +862,16 @@ function TVShowDetailsPage() {
                 })}
               </div>
             </TabsContent>
-            
-            {item.backdrops.length >= 1 && (
-              <TabsContent value="medias">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {item.backdrops?.map((url: string, i: number) => (
-                    <ImageZoom key={i}>
-                      <ViteImage
-                        src={{
-                          src: url,
-                          width: 1920,
-                          height: 1080,
-                        }}
-                        alt="Backdrop"
-                      />
-                    </ImageZoom>
-                  ))}
-                </div>
-              </TabsContent>
-            )}
+
+            <TabsContent value="medias">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {item.backdrops?.map((url: string, i: number) => (
+                  <ImageZoom key={i}>
+                    <Image src={url} width={1920} height={1080} alt="Backdrop" />
+                  </ImageZoom>
+                ))}
+              </div>
+            </TabsContent>
           </Tabs>
         </div>
       </div>

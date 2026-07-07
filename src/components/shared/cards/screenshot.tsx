@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import { Image } from "@unpic/react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog";
 
@@ -43,8 +44,10 @@ export function ScreenshotItem({ title, imageURL, images }: ScreenshotProps) {
           <CarouselContent>
             {images.map((image, index) => (
               <CarouselItem key={image}>
-                <img
+                <Image
                   src={image}
+                  layout="fullWidth"
+                  aspectRatio={16 / 9}
                   className="w-full aspect-video object-contain"
                   alt={`${title} – screenshot ${index + 1} of ${images.length}`}
                 />

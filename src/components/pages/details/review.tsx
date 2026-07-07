@@ -1,11 +1,15 @@
 import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { Image } from "@unpic/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { StarRating } from '@/components/shared/star-rating';
-import type { ApiTypes } from '@/lib/api';
+import { Markdown } from "@/components/shared/comments/markdown";
+import { StarRating } from "@/components/shared/star-rating";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import type { ApiTypes } from "@/lib/api";
+import { useSession } from "@/lib/auth";
+
+const QUICK_REACTIONS = ["👍", "❤️", "🔥", "😂", "😮", "😢"];
 
 interface ReviewItemProps {
   user?: ApiTypes.User;
@@ -29,7 +33,18 @@ interface ReviewItemProps {
     all?: number;
   };
   reviewName?: string;
-  reviewSlug?: string;
+  entityId?: string;
+  routeName?: string;
+  notes?: string | null;
+  story?: string | null;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  isDeleting?: boolean;
+  /** When provided, renders the emoji reaction bar for this review. */
+  reviewId?: string;
+  reactions?: ApiTypes.ReviewReaction[];
+  onReact?: (emoji: string, currentReaction?: ApiTypes.ReviewReaction) => void;
+  isReacting?: boolean;
 }
 
 function buildCriteriaList(criteries?: ReviewItemProps["criteries"]): { label: string; rating: number }[] {
@@ -58,54 +73,75 @@ function buildCriteriaList(criteries?: ReviewItemProps["criteries"]): { label: s
   return result;
 }
 
-export function ReviewItem({ user, reviewText, likes = 0, date, criteries, reviewName }: ReviewItemProps) {
+export function ReviewItem({
+  user,
+  reviewText,
+  likes = 0,
+  date,
+  criteries,
+  reviewName,
+  notes,
+  story,
+  onEdit,
+  onDelete,
+  isDeleting = false,
+  reviewId,
+  reactions,
+  routeName,
+  entityId,
+  onReact,
+  isReacting = false,
+}: ReviewItemProps) {
   const { t, i18n } = useTranslation();
-  const [showReadMore, setShowReadMore] = useState(false);
-  const contentRef = useRef<HTMLParagraphElement>(null);
+  const session = useSession();
+  const currentUserId = session.data?.user?.id;
 
-  useEffect(() => {
-    if (!contentRef.current) {
-      setShowReadMore(false);
-      
-      return;
-    }
-    
-    const computed = getComputedStyle(contentRef.current);
-    const lineHeight = parseFloat(computed.lineHeight || "0");
-    const contentHeight = contentRef.current.scrollHeight;
-    const shouldShow = lineHeight > 0 && contentHeight > lineHeight * 3 + 1;
-    
-    setShowReadMore(shouldShow);
-  }, []);
+  const reactionList = reactions ?? [];
+  const currentReaction = currentUserId ? reactionList.find((r) => r.user.id === currentUserId) : undefined;
+  const reactionCounts = reactionList.reduce<Record<string, number>>((acc, r) => {
+    acc[r.emoji] = (acc[r.emoji] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  const [expanded, setExpanded] = useState(false);
 
   const criteriaList = buildCriteriaList(criteries);
 
   return (
-    <div className={`w-full min-w-0 px-3 sm:px-4 py-3 rounded-xl sm:rounded-2xl flex flex-col gap-3 sm:gap-4`}>
-      <div className="flex-1 flex flex-col gap-3">
+    <div className="bg-linear-to-br from-muted/50 flex flex-col gap-4 to-muted p-4 rounded-xl border border-border text-left w-full transition-colors">
+      <div className="flex-1 flex flex-col gap-2">
         <div className="flex flex-col gap-3">
           <div className="flex flex-col sm:flex-row sm:items-start sm:gap-2 gap-2">
-            {reviewName ? (
+            {!reviewName && user ? (
               <Link
-                to={"/"}
-                search={{ landing: "true" }}
-                className="min-w-0 w-auto shrink-0 hover:text-primary transition-colors"
+                to="/user/$username"
+                params={{ username: user?.username }}
+                className="inline-flex items-center gap-2 min-w-0 w-auto shrink-0"
               >
-                <p className="font-bold truncate text-sm sm:text-base max-w-48">{reviewName}</p>
+                <Avatar size="sm">
+                  {user.profile?.avatarUrl ? (
+                    <Image
+                      className="aspect-square size-full"
+                      src={user.profile.avatarUrl}
+                      width={24}
+                      height={24}
+                      alt={user.name}
+                    />
+                  ) : (
+                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                  )}
+                </Avatar>
+                <p className="text-sm font-bold text-muted-foreground">{user.name}</p>
               </Link>
             ) : (
               <Link
-                to="/user/$username"
-                params={{ username: user?.username ?? "" }}
-                className="inline-flex items-center gap-2 min-w-0 w-auto shrink-0 hover:text-primary transition-colors"
+                to={`/${routeName}/${entityId}` as any}
+                className="min-w-0 w-auto shrink-0"
               >
-                <Avatar size="sm">
-                  <AvatarImage src={user?.profile.avatarUrl} />
-                </Avatar>
-                <p className="font-bold truncate text-sm sm:text-base max-w-48">{user?.name}</p>
+                <p className="font-bold truncate text-sm sm:text-base max-w-48">{reviewName}</p>
               </Link>
             )}
-            
+
             <div className="sm:ml-auto sm:flex hidden items-center gap-1">
               <StarRating value={criteries?.all || 0} />
             </div>
@@ -120,57 +156,117 @@ export function ReviewItem({ user, reviewText, likes = 0, date, criteries, revie
           {criteriaList.length > 0 &&
             criteriaList.map((criterion) => (
               <div key={criterion.label} className="flex items-center gap-1 min-w-0">
-                <span className="text-muted-foreground truncate">{t(criterion.label)}:</span>
-                
+                <span className="text-xs font-semibold text-muted-foreground">{t(criterion.label)}:</span>
+
                 <StarRating value={criterion.rating} starClassName="size-3" />
               </div>
             ))}
         </div>
 
-        <div className="relative">
-          <p
-            ref={contentRef}
-            className="overflow-hidden wrap-anywhere break-all relative z-10 text-xs sm:text-sm text-foreground/90 transition-all duration-200 whitespace-pre-wrap line-clamp-3"
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: "vertical",
-            }}
-          >
-            {reviewText}
-          </p>
-
-          {showReadMore && (
-            <>
-              <div className="absolute bottom-0 left-0 right-0 h-12 bg-linear-to-t from-card via-card/95 to-transparent pointer-events-none z-15" />
-              <Link
-                to={"/"}
-                search={{ landing: "true" }}
-                className="absolute bottom-0 right-0 flex justify-end p-2 cursor-pointer z-20"
-              >
-                <Button className="text-xs sm:text-sm text-primary hover:text-primary/80 font-medium transition-colors bg-primary-foreground/80 hover:bg-primary-foreground backdrop-blur-sm rounded-full px-2">
-                  {t("library:readMore")}
-                </Button>
-              </Link>
-            </>
-          )}
+        <div className="flex flex-col gap-2">
+          <p className="text-md font-semibold text-muted-foreground">{t("feed:summary")}</p>
+          <Markdown className="text-xs sm:text-sm">{reviewText}</Markdown>
         </div>
+
+        {(story || notes) && (
+          <>
+            {expanded && (
+              <div className="flex flex-col gap-3">
+                {story && (
+                  <div className="flex flex-col gap-2">
+                    <p className="text-md font-semibold text-muted-foreground">{t("feed:story")}</p>
+                    <Markdown className="text-xs sm:text-sm">{story}</Markdown>
+                  </div>
+                )}
+                {notes && (
+                  <div className="flex flex-col gap-2">
+                    <p className="text-md font-semibold text-muted-foreground">{t("feed:notes")}</p>
+                    <Markdown className="text-xs sm:text-sm">{notes}</Markdown>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setExpanded((value) => !value)}
+              className="inline-flex items-center gap-1 self-center text-xs text-primary hover:text-primary/80 transition-colors cursor-pointer"
+            >
+              <Icon icon={expanded ? "lucide:chevron-up" : "lucide:chevron-down"} className="size-3.5" />
+
+              {t(expanded ? "feed:showLess" : "feed:showMore")}
+            </button>
+          </>
+        )}
       </div>
 
       <div className="flex items-center justify-between gap-2 pt-2 sm:pt-4 border-t border-border/30">
         <p className="text-xs text-muted-foreground whitespace-nowrap">
           {date.toLocaleDateString(i18n.language, {
-            day: "numeric",
-            month: "short",
+            day: "2-digit",
+            month: "2-digit",
             year: "numeric",
           })}
         </p>
 
         <div className="flex items-center gap-3">
-          <div className="flex gap-1.5 items-center cursor-pointer hover:text-red-500 transition-colors">
-            <Icon icon={"lucide:heart"} className="size-4" />
-            <p className="text-muted-foreground min-w-6 text-center text-sm">{likes}</p>
-          </div>
+          {reviewId ? (
+            <div className="flex flex-wrap items-center gap-1">
+              {QUICK_REACTIONS.map((emoji) => {
+                const count = reactionCounts[emoji] ?? 0;
+                const active = currentReaction?.emoji === emoji;
+
+                return (
+                  <button
+                    key={emoji}
+                    type="button"
+                    onClick={() => onReact?.(emoji, currentReaction)}
+                    disabled={isReacting || !currentUserId}
+                    aria-pressed={active}
+                    className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+                      active
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border/50 hover:border-primary/50 hover:bg-muted"
+                    }`}
+                  >
+                    <span className="leading-none">{emoji}</span>
+                    {count > 0 && <span className="text-xs text-muted-foreground">{count}</span>}
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="flex gap-1.5 items-center cursor-pointer hover:text-red-500 transition-colors">
+              <Icon icon={"lucide:heart"} className="size-4" />
+              <p className="text-muted-foreground min-w-6 text-center text-sm">{likes}</p>
+            </div>
+          )}
+
+          {onEdit && (
+            <button
+              type="button"
+              onClick={onEdit}
+              className="flex items-center text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+              aria-label={t("feed:edit")}
+            >
+              <Icon icon={"lucide:pencil"} className="size-4" />
+            </button>
+          )}
+
+          {onDelete && (
+            <button
+              type="button"
+              onClick={onDelete}
+              disabled={isDeleting}
+              className="flex items-center text-muted-foreground hover:text-red-500 transition-colors cursor-pointer disabled:opacity-50"
+              aria-label={t("feed:delete")}
+            >
+              <Icon
+                icon={isDeleting ? "lucide:loader-2" : "lucide:trash-2"}
+                className={`size-4 ${isDeleting ? "animate-spin" : ""}`}
+              />
+            </button>
+          )}
         </div>
       </div>
     </div>

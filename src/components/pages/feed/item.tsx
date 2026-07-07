@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { Trans, useTranslation } from "react-i18next";
 
 interface TempUser {
@@ -25,7 +26,13 @@ export function FeedItem({ profile, item }: feedItemProps) {
   return (
     <div className="flex w-full h-30">
       <Link to={"/"} search={{ landing: "true" }} className="w-auto min-w-16 shrink-0">
-        <img src={item.coverURL} className="h-full object-cover rounded-l-2xl aspect-3/4" alt="" />
+        <Image
+          src={item.coverURL}
+          width={300}
+          height={400}
+          className="h-full object-cover rounded-l-2xl aspect-3/4"
+          alt=""
+        />
       </Link>
 
       <div className="flex flex-1 px-4 py-3 bg-card border-y border-r border-border rounded-r-2xl justify-between items-start">
@@ -45,8 +52,10 @@ export function FeedItem({ profile, item }: feedItemProps) {
           </div>
           <div className="flex items-center gap-3">
             <Link to={"/"} search={{ landing: "true" }}>
-              <img
+              <Image
                 src={profile.avatarURL}
+                width={32}
+                height={32}
                 className="size-8 shrink-0 rounded-full object-cover"
                 alt={`Avatar of ${profile.name}`}
               />

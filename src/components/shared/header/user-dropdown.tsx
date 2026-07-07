@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
-import ViteImage from "@son426/vite-image/react";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut, useSession } from "@/lib/auth";
+import { AVATAR_BLUR } from "@/lib/image";
 import { getInitialsFromName } from "@/lib/utils";
 
 export function UserDropdown() {
@@ -27,17 +28,16 @@ export function UserDropdown() {
       <DropdownMenuTrigger asChild>
         <Avatar className="border border-border size-9 cursor-pointer">
           {session.data?.user?.profile?.avatarUrl ? (
-            <ViteImage
+            <Image
               className="aspect-square size-full"
-              src={{
-                src: session.data.user.profile.avatarUrl,
-                blurDataURL: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH",
-                width: 36,
-                height: 36,
-              }}
+              src={session.data.user.profile.avatarUrl}
+              width={36}
+              height={36}
+              background={AVATAR_BLUR}
+              alt={session.data.user.name ?? ""}
             />
           ) : (
-            <AvatarFallback>{getInitialsFromName(session.data?.user?.name ?? '')}</AvatarFallback>
+            <AvatarFallback>{getInitialsFromName(session.data?.user?.name ?? "")}</AvatarFallback>
           )}
         </Avatar>
       </DropdownMenuTrigger>
@@ -63,12 +63,12 @@ export function UserDropdown() {
           </DropdownMenuItem>
         )}
 
-        <DropdownMenuItem asChild>
+        {/* <DropdownMenuItem asChild>
           <Link to="/" search={{ landing: "true" }} className="cursor-pointer">
             <Icon icon={"lucide:bell"} className="text-white size-4.5" />
             {t("common:notifications")}
           </Link>
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
 
         <DropdownMenuItem asChild>
           <Link to="/billing" className="cursor-pointer">

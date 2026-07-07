@@ -1,20 +1,22 @@
-import { Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar";
 import type { ApiTypes } from "@/lib/api.ts";
+import { listItemToLink } from "@/lib/utils/list-item";
 import { ListItemsModal } from "./list-items-modal";
 
 const PREVIEW_COUNT = 3;
 
 interface ListItemProps {
   list: ApiTypes.ListWithPreview;
+  editable?: boolean;
 }
 
-export function ListItem({ list }: ListItemProps) {
+export function ListItem({ list, editable = false }: ListItemProps) {
   const [open, setOpen] = useState(false);
 
   const total = list._count.listItems;
-  const previews = list.listItems.slice(0, PREVIEW_COUNT);
+  const previews = list.listItems.slice(0, PREVIEW_COUNT).map((item) => ({ item, link: listItemToLink(item) }));
   const remaining = total - previews.length;
 
   return (
@@ -26,41 +28,47 @@ export function ListItem({ list }: ListItemProps) {
       >
         <div className="flex items-center justify-between mb-2">
           <AvatarGroup className="items-center -space-x-3 overflow-x-hidden">
-            {previews.map((item) => (
+            {previews.map(({ item, link }) => (
               <Avatar key={item.id} className="aspect-video h-max w-24 rounded-md">
-                <AvatarImage
-                  src={item.tvShow?.backdropUrl ?? undefined}
-                  alt={item.tvShow?.name ?? ""}
-                  className="object-cover aspect-video h-full"
-                />
-                <AvatarFallback className="rounded-md text-xs">{item.tvShow?.name}</AvatarFallback>
+                {link?.image ? (
+                  <Image
+                    src={link.image}
+                    width={96}
+                    height={54}
+                    alt={link?.title ?? ""}
+                    className="object-cover aspect-video h-full"
+                  />
+                ) : (
+                  <AvatarFallback className="rounded-md text-xs">{link?.title}</AvatarFallback>
+                )}
               </Avatar>
             ))}
+
             {remaining > 0 && (
-              <AvatarGroupCount className="w-24 size-none h-max aspect-video rounded-md">
-                +{remaining}
-              </AvatarGroupCount>
+              <AvatarGroupCount className="w-24 size-none h-max aspect-video rounded-md">+{remaining}</AvatarGroupCount>
             )}
           </AvatarGroup>
         </div>
         <p className="text-card-foreground font-bold line-clamp-1">{list.name}</p>
-        <div className="flex justify-between items-center mt-2">
-          <Link
-            to="/user/$username"
-            params={{ username: list.user.username }}
-            onClick={(e) => e.stopPropagation()}
-            className="flex gap-2 items-center"
-          >
-            <Avatar size="sm">
-              <AvatarImage src={list.user.profile?.avatarUrl ?? undefined} alt={list.user.name} />
+        <div className="flex items-center gap-2 mt-2">
+          <Avatar size="sm">
+            {list.user.profile?.avatarUrl ? (
+              <Image
+                className="aspect-square size-full"
+                src={list.user.profile.avatarUrl}
+                width={24}
+                height={24}
+                alt={list.user.name}
+              />
+            ) : (
               <AvatarFallback>{list.user.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <p className="text-sm font-bold text-muted-foreground">{list.user.name}</p>
-          </Link>
+            )}
+          </Avatar>
+          <p className="text-sm font-bold text-muted-foreground">{list.user.name}</p>
         </div>
       </button>
 
-      <ListItemsModal list={list} open={open} onOpenChange={setOpen} />
+      <ListItemsModal list={list} open={open} onOpenChange={setOpen} editable={editable} />
     </>
   );
 }

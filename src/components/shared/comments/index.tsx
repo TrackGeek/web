@@ -1,16 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
+import { Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { formatDistanceToNow } from "date-fns";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import z from "zod";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Field, FieldError } from "@/components/ui/field";
-import { Markdown } from "./markdown";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { type CommentTarget, useAddComment, useComments, useDeleteComment } from "@/hooks/comment.ts";
@@ -18,7 +19,7 @@ import type { ApiTypes } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
-import { Link } from '@tanstack/react-router';
+import { Markdown } from "./markdown";
 
 const MAX_LENGTH = 500;
 
@@ -170,8 +171,17 @@ function CommentItem({
   return (
     <article className="group flex gap-3">
       <Avatar className="size-9 border border-border/50">
-        <AvatarImage src={comment.user.profile.avatarUrl ?? undefined} alt={comment.user.username} />
-        <AvatarFallback>{(comment.user.username || "?").charAt(0).toUpperCase()}</AvatarFallback>
+        {comment.user.profile.avatarUrl ? (
+          <Image
+            className="aspect-square size-full"
+            src={comment.user.profile.avatarUrl}
+            width={36}
+            height={36}
+            alt={comment.user.username}
+          />
+        ) : (
+          <AvatarFallback>{(comment.user.username || "?").charAt(0).toUpperCase()}</AvatarFallback>
+        )}
       </Avatar>
 
       <div className="flex-1 flex flex-col gap-1">

@@ -1,6 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
-import { format } from "date-fns";
 import { Icon } from "@iconify/react";
+import { useMutation } from "@tanstack/react-query";
+import { Image } from "@unpic/react";
+import { format } from "date-fns";
 import { type DragEvent, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useGameReview, useUploadImage } from "@/hooks/game.ts";
@@ -338,8 +339,10 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
                   key={screenshot.previewUrl}
                   className="flex items-start gap-3 bg-muted/30 rounded-lg p-3 border border-border/50"
                 >
-                  <img
+                  <Image
                     src={screenshot.previewUrl}
+                    width={56}
+                    height={56}
                     alt="Screenshot preview"
                     className="size-14 object-cover rounded-md shrink-0"
                   />

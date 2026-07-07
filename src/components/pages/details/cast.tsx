@@ -1,21 +1,17 @@
-import ViteImage from "@son426/vite-image/react";
+import { Image } from "@unpic/react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export function CastItem({ imageUrl, character, name }: { imageUrl: string; name: string; character: string }) {
   return (
-    <div
-      className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border"
-    >
+    <div className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
       <div className="flex items-center justify-between mb-2">
         <Avatar className="w-full aspect-square h-full rounded-2xl">
           {imageUrl ? (
-            <ViteImage
+            <Image
               className="object-cover aspect-3/4 h-full"
-              src={{
-                src: imageUrl,
-                width: 300,
-                height: 400,
-              }}
+              src={imageUrl}
+              width={300}
+              height={400}
               alt={`Avatar of ${name}`}
             />
           ) : (

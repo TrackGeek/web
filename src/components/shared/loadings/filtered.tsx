@@ -6,8 +6,6 @@ export function LoadingFiltered() {
     <div className="mx-auto w-full py-6 space-y-4">
       {Array.from({ length: 1 }).map((_, sectionIndex) => (
         <div key={sectionIndex}>
-          <Skeleton className="h-8 w-48 mb-4" />
-
           <Grid minColSize={"128px"} className={"grid-cols-5"}>
             {Array.from({ length: 16 }).map((_, cardIndex) => (
               <div key={cardIndex} className="flex flex-col gap-2">

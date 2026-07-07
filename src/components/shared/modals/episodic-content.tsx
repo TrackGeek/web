@@ -1,16 +1,20 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
+import type { TFunction } from "i18next";
+import { useEffect, useMemo, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import z from "zod";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../ui/dialog";
-import { Field, FieldLabel } from "../../ui/field";
+import { Field, FieldError, FieldLabel } from "../../ui/field";
 import { Input } from "../../ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "../../ui/input-group";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
@@ -38,6 +42,38 @@ const ENUM_TO_STATUS: Record<ProgressStatus, string> = {
   Paused: "paused",
   Dropped: "dropped",
 };
+
+const SUMMARY_MAX_LENGTH = 500;
+const STORY_MAX_LENGTH = 500;
+const REVIEW_NOTES_MAX_LENGTH = 1000;
+const PROGRESS_NOTES_MAX_LENGTH = 1000;
+
+function createProgressSchema(t: TFunction) {
+  return z.object({
+    status: z.string(),
+    watchCount: z.string(),
+    startDate: z.date().optional(),
+    finishDate: z.date().optional(),
+    notes: z.string().trim().max(PROGRESS_NOTES_MAX_LENGTH, t("feed:progress.errors.notesMax")),
+  });
+}
+
+type ProgressFormData = z.infer<ReturnType<typeof createProgressSchema>>;
+
+function createReviewSchema(t: TFunction) {
+  return z.object({
+    overall: z.string(),
+    direction: z.string(),
+    production: z.string(),
+    acting: z.string(),
+    summary: z.string().trim().max(SUMMARY_MAX_LENGTH, t("feed:review.errors.summaryMax")),
+    notes: z.string().trim().max(REVIEW_NOTES_MAX_LENGTH, t("feed:review.errors.notesMax")),
+    story: z.string().trim().max(STORY_MAX_LENGTH, t("feed:review.errors.storyMax")),
+    recommended: z.boolean(),
+  });
+}
+
+type ReviewFormData = z.infer<ReturnType<typeof createReviewSchema>>;
 
 interface TVShowProgressData {
   id: string;
@@ -67,18 +103,42 @@ export function EpisodicContentModal({
   const userId = session?.data?.user?.id;
   const enabled = !!userId && !!tvShowId;
 
-  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-  const [startDate, setStartDate] = useState<Date>();
-  const [finishDate, setFinishDate] = useState<Date>();
-  const [watchCount, setWatchCount] = useState("");
+  const progressSchema = useMemo(() => createProgressSchema(t), [t]);
 
-  const [overall, setOverall] = useState("0");
-  const [direction, setDirection] = useState("0");
-  const [production, setProduction] = useState("0");
-  const [acting, setActing] = useState("0");
-  const [summary, setSummary] = useState("");
-  const [notes, setNotes] = useState("");
-  const [recommended, setRecommended] = useState(false);
+  const progressForm = useForm<ProgressFormData>({
+    resolver: zodResolver(progressSchema),
+    defaultValues: {
+      status: "",
+      watchCount: "",
+      startDate: undefined,
+      finishDate: undefined,
+      notes: "",
+    },
+  });
+
+  const progressStatus = progressForm.watch("status");
+  const progressNotes = progressForm.watch("notes") ?? "";
+  const isCompleted = progressStatus === "completed";
+
+  const reviewSchema = useMemo(() => createReviewSchema(t), [t]);
+
+  const reviewForm = useForm<ReviewFormData>({
+    resolver: zodResolver(reviewSchema),
+    defaultValues: {
+      overall: "0",
+      direction: "0",
+      production: "0",
+      acting: "0",
+      summary: "",
+      notes: "",
+      story: "",
+      recommended: false,
+    },
+  });
+
+  const summary = reviewForm.watch("summary") ?? "";
+  const story = reviewForm.watch("story") ?? "";
+  const reviewNotes = reviewForm.watch("notes") ?? "";
 
   const [newListInput, setNewListInput] = useState<string | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
@@ -133,26 +193,30 @@ export function EpisodicContentModal({
     const progress = progressQuery.data;
     if (!progress) return;
 
-    setSelectedStatus(ENUM_TO_STATUS[progress.status] ?? null);
-    setWatchCount(progress.watchCount != null ? String(progress.watchCount) : "");
-    setNotes(progress.notes ?? "");
-    setStartDate(progress.startedAt ? new Date(progress.startedAt) : undefined);
-    setFinishDate(progress.completedAt ? new Date(progress.completedAt) : undefined);
-  }, [progressQuery.data]);
+    progressForm.reset({
+      status: ENUM_TO_STATUS[progress.status] ?? "",
+      watchCount: progress.watchCount != null ? String(progress.watchCount) : "",
+      notes: progress.notes ?? "",
+      startDate: progress.startedAt ? new Date(progress.startedAt) : undefined,
+      finishDate: progress.completedAt ? new Date(progress.completedAt) : undefined,
+    });
+  }, [progressQuery.data, progressForm.reset]);
 
   useEffect(() => {
     const review = reviewQuery.data;
     if (!review) return;
 
-    setOverall(String(Number(review.overall)));
-    setDirection(review.direction != null ? String(Number(review.direction)) : "0");
-    setProduction(review.production != null ? String(Number(review.production)) : "0");
-    setActing(review.acting != null ? String(Number(review.acting)) : "0");
-    setSummary(review.summary ?? "");
-    setRecommended(!!review.recommended);
-  }, [reviewQuery.data]);
-
-  const isCompleted = selectedStatus === "completed";
+    reviewForm.reset({
+      overall: String(Number(review.overall)),
+      direction: review.direction != null ? String(Number(review.direction)) : "0",
+      production: review.production != null ? String(Number(review.production)) : "0",
+      acting: review.acting != null ? String(Number(review.acting)) : "0",
+      summary: review.summary ?? "",
+      notes: review.notes ?? "",
+      story: review.story ?? "",
+      recommended: !!review.recommended,
+    });
+  }, [reviewQuery.data, reviewForm.reset]);
 
   const invalidateProgress = () => {
     queryClient.invalidateQueries({ queryKey: ["tvProgress", tvShowId, userId] });
@@ -161,32 +225,33 @@ export function EpisodicContentModal({
   };
 
   const saveProgressMutation = useMutation({
-    mutationFn: () => {
-      const status = STATUS_TO_ENUM[selectedStatus as string];
+    mutationFn: (data: ProgressFormData) => {
+      const status = STATUS_TO_ENUM[data.status];
 
       return api.post(apiEndpoints.tvShowProgress, {
         tvShowId,
         status,
-        watchCount: watchCount ? Number(watchCount) : undefined,
-        notes: notes.trim() || undefined,
-        startedAt: startDate ?? undefined,
-        completedAt: status === "Completed" ? (finishDate ?? new Date()) : (finishDate ?? undefined),
+        watchCount: data.watchCount ? Number(data.watchCount) : undefined,
+        notes: data.notes.trim() || undefined,
+        startedAt: data.startDate ?? undefined,
+        completedAt: status === "Completed" ? (data.finishDate ?? new Date()) : (data.finishDate ?? undefined),
       });
     },
     onSuccess: invalidateProgress,
   });
 
   const saveReviewMutation = useMutation({
-    mutationFn: () => {
+    mutationFn: (data: ReviewFormData) => {
       const body = {
         tvShowId,
-        overall: Number(overall),
-        direction: Number(direction) || undefined,
-        production: Number(production) || undefined,
-        acting: Number(acting) || undefined,
-        summary: summary.trim() || undefined,
-        notes: notes.trim() || undefined,
-        recommended,
+        overall: Number(data.overall),
+        direction: Number(data.direction) || undefined,
+        production: Number(data.production) || undefined,
+        acting: Number(data.acting) || undefined,
+        summary: data.summary.trim() || undefined,
+        notes: data.notes.trim() || undefined,
+        story: data.story.trim() || undefined,
+        recommended: data.recommended,
       };
 
       const existing = reviewQuery.data;
@@ -224,7 +289,11 @@ export function EpisodicContentModal({
         ? api.delete(apiEndpoints.listItem(listId), { data: body })
         : api.post(apiEndpoints.listItem(listId), body);
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tvListStatus", tvShowId, userId] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tvListStatus", tvShowId, userId] });
+      queryClient.invalidateQueries({ queryKey: ["tvContainingLists", tvShowId] });
+      queryClient.invalidateQueries({ queryKey: ["tv"] });
+    },
     onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
   });
 
@@ -243,16 +312,24 @@ export function EpisodicContentModal({
   };
 
   const handleSave = async () => {
-    if (!tvShowId || !selectedStatus) {
+    const progress = progressForm.getValues();
+
+    if (!tvShowId || !progress.status) {
       onClose?.();
       return;
     }
 
     try {
-      await saveProgressMutation.mutateAsync();
+      if (!(await progressForm.trigger())) return;
 
-      if (isCompleted && Number(overall) > 0) {
-        await saveReviewMutation.mutateAsync();
+      await saveProgressMutation.mutateAsync(progress);
+
+      const review = reviewForm.getValues();
+
+      if (progress.status === "completed" && Number(review.overall) > 0) {
+        if (!(await reviewForm.trigger())) return;
+
+        await saveReviewMutation.mutateAsync(review);
       }
 
       onClose?.();
@@ -265,32 +342,39 @@ export function EpisodicContentModal({
 
   return (
     <div className="flex flex-col gap-6 p-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="space-y-4">
-          <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+        <div className="flex flex-col gap-4">
+          <div className="bg-muted/30 rounded-lg h-72 p-4 border border-border/50">
             <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
               <Icon icon={"lucide:star"} className="size-4" />
               {t("feed:progress")}
             </h3>
+            
             <div className="space-y-3">
               <Field>
                 <FieldLabel htmlFor="status" className="text-sm font-medium">
                   {t("library:status")}
                 </FieldLabel>
-                <Select value={selectedStatus ?? undefined} onValueChange={(value) => setSelectedStatus(value)}>
-                  <SelectTrigger className="w-full bg-background">
-                    <SelectValue placeholder={t("feed:selectStatus")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {STATUS_OPTIONS.map((status) => (
-                        <SelectItem key={status} value={status}>
-                          {t(`feed:lists.${status}`)}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                <Controller
+                  control={progressForm.control}
+                  name="status"
+                  render={({ field }) => (
+                    <Select value={field.value || undefined} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full bg-background">
+                        <SelectValue placeholder={t("feed:selectStatus")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {STATUS_OPTIONS.map((status) => (
+                            <SelectItem key={status} value={status}>
+                              {t(`feed:lists.${status}`)}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
               </Field>
 
               <Field>
@@ -315,144 +399,114 @@ export function EpisodicContentModal({
                   min={0}
                   placeholder="0"
                   className="bg-background"
-                  value={watchCount}
-                  onChange={(e) => setWatchCount(e.target.value)}
+                  {...progressForm.register("watchCount")}
                 />
               </Field>
             </div>
           </div>
 
-          {isCompleted && (
-            <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
-              <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                <Icon icon={"lucide:pen-line"} className="size-4" />
-                {t("feed:review")}
-              </h3>
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{t("feed:overall")}</span>
-                  <RatingGroupAdvanced max={5} allowHalf value={overall} onValueChange={setOverall} allowClear />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{t("feed:criteries.direction")}</span>
-                  <RatingGroupAdvanced max={5} allowHalf value={direction} onValueChange={setDirection} allowClear />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{t("feed:criteries.production")}</span>
-                  <RatingGroupAdvanced max={5} allowHalf value={production} onValueChange={setProduction} allowClear />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{t("feed:criteries.acting")}</span>
-                  <RatingGroupAdvanced max={5} allowHalf value={acting} onValueChange={setActing} allowClear />
-                </div>
-                <Field>
-                  <FieldLabel htmlFor="summary" className="text-sm font-medium">
-                    {t("feed:summary")}
-                  </FieldLabel>
-                  <Input
-                    id="summary"
-                    placeholder={t("feed:summaryPlaceholder")}
-                    className="bg-background"
-                    value={summary}
-                    onChange={(e) => setSummary(e.target.value)}
-                    maxLength={250}
-                  />
-                </Field>
-                <Field orientation="horizontal">
-                  <Checkbox
-                    id="recommended"
-                    checked={recommended}
-                    onCheckedChange={(checked) => setRecommended(checked === true)}
-                  />
-                  <FieldLabel htmlFor="recommended" className="cursor-pointer text-sm">
-                    {t("feed:recommended")}
-                  </FieldLabel>
-                </Field>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="space-y-4">
-          <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
+          <div className="bg-muted/30 rounded-lg p-4 border h-55 border-border/50">
             <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
               <Icon icon={"lucide:calendar"} className="size-4" />
               {t("feed:timeline")}
             </h3>
+            
             <div className="space-y-3">
               <Field>
                 <FieldLabel htmlFor="startDate" className="text-sm font-medium">
                   {t("feed:startDate")}
                 </FieldLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      data-empty={!startDate}
-                      className="w-full justify-start text-left font-normal bg-background"
-                    >
-                      <Icon icon={"lucide:calendar"} className="size-4 mr-2" />
-                      {startDate ? (
-                        format(startDate, "PPP")
-                      ) : (
-                        <span className="text-muted-foreground">{t("feed:pickADate")}</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar mode="single" selected={startDate} onSelect={setStartDate} />
-                  </PopoverContent>
-                </Popover>
+                <Controller
+                  control={progressForm.control}
+                  name="startDate"
+                  render={({ field }) => (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          data-empty={!field.value}
+                          className="w-full justify-start text-left font-normal bg-background"
+                        >
+                          <Icon icon={"lucide:calendar"} className="size-4 mr-2" />
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span className="text-muted-foreground">{t("feed:pickADate")}</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                />
               </Field>
 
               <Field>
                 <FieldLabel htmlFor="finishDate" className="text-sm font-medium">
                   {t("feed:finishDate")}
                 </FieldLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      data-empty={!finishDate}
-                      className="w-full justify-start text-left font-normal bg-background"
-                    >
-                      <Icon icon={"lucide:calendar"} className="size-4 mr-2" />
-                      {finishDate ? (
-                        format(finishDate, "PPP")
-                      ) : (
-                        <span className="text-muted-foreground">{t("feed:pickADate")}</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar mode="single" selected={finishDate} onSelect={setFinishDate} />
-                  </PopoverContent>
-                </Popover>
+                <Controller
+                  control={progressForm.control}
+                  name="finishDate"
+                  render={({ field }) => (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          data-empty={!field.value}
+                          className="w-full justify-start text-left font-normal bg-background"
+                        >
+                          <Icon icon={"lucide:calendar"} className="size-4 mr-2" />
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span className="text-muted-foreground">{t("feed:pickADate")}</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                />
               </Field>
             </div>
           </div>
         </div>
 
-        <div className="space-y-4">
-          <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
+        <div className="flex flex-col gap-4">
+          <div className="bg-muted/30 rounded-lg h-72 p-4 border border-border/50 flex flex-col">
             <h3 className="font-semibold text-foreground mb-3">{t("feed:notes")}</h3>
             <Textarea
               placeholder={t("feed:notesPlaceholder")}
-              className="min-h-25 bg-background resize-none"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              maxLength={1000}
+              className="flex-1 bg-background resize-none"
+              maxLength={PROGRESS_NOTES_MAX_LENGTH}
+              aria-invalid={Boolean(progressForm.formState.errors.notes)}
+              {...progressForm.register("notes")}
             />
+            <div className="flex items-center justify-between gap-2 mt-2">
+              {progressForm.formState.errors.notes?.message ? (
+                <FieldError>{progressForm.formState.errors.notes.message}</FieldError>
+              ) : (
+                <span />
+              )}
+              <span className="text-xs text-muted-foreground">
+                {progressNotes.length}/{PROGRESS_NOTES_MAX_LENGTH}
+              </span>
+            </div>
           </div>
 
-          <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
-            <div className="flex items-center justify-between mb-3">
+          <div className="bg-muted/30 rounded-lg p-4 border border-border/50 flex flex-col h-55">
+            <div className="flex items-center justify-between mb-3 shrink-0">
               <h3 className="font-semibold text-foreground">{t("feed:customLists")}</h3>
               <Button variant="ghost" size="sm" className="h-6 px-2" onClick={() => setNewListInput("")}>
                 <Icon icon={"lucide:plus"} className="size-3" />
               </Button>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 flex-1 min-h-0 overflow-y-auto pr-1">
               {lists.map((list) => (
                 <Field key={list.id} orientation="horizontal">
                   <Checkbox
@@ -487,6 +541,169 @@ export function EpisodicContentModal({
           </div>
         </div>
       </div>
+
+      {isCompleted && (
+        <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
+          <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+            <Icon icon={"lucide:pen-line"} className="size-4" />
+            {t("feed:review")}
+          </h3>
+          
+          <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">{t("feed:overall")}</span>
+                <Controller
+                  control={reviewForm.control}
+                  name="overall"
+                  render={({ field }) => (
+                    <RatingGroupAdvanced
+                      max={5}
+                      allowHalf
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      allowClear
+                    />
+                  )}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">{t("feed:criteries.direction")}</span>
+                <Controller
+                  control={reviewForm.control}
+                  name="direction"
+                  render={({ field }) => (
+                    <RatingGroupAdvanced
+                      max={5}
+                      allowHalf
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      allowClear
+                    />
+                  )}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">{t("feed:criteries.production")}</span>
+                <Controller
+                  control={reviewForm.control}
+                  name="production"
+                  render={({ field }) => (
+                    <RatingGroupAdvanced
+                      max={5}
+                      allowHalf
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      allowClear
+                    />
+                  )}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">{t("feed:criteries.acting")}</span>
+                <Controller
+                  control={reviewForm.control}
+                  name="acting"
+                  render={({ field }) => (
+                    <RatingGroupAdvanced
+                      max={5}
+                      allowHalf
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      allowClear
+                    />
+                  )}
+                />
+              </div>
+            </div>
+            <Field>
+              <FieldLabel htmlFor="summary" className="text-sm font-medium">
+                {t("feed:summary")}
+              </FieldLabel>
+              <Textarea
+                id="summary"
+                placeholder={t("feed:summaryPlaceholder")}
+                className="bg-background resize-none min-h-25"
+                maxLength={SUMMARY_MAX_LENGTH}
+                aria-invalid={Boolean(reviewForm.formState.errors.summary)}
+                {...reviewForm.register("summary")}
+              />
+              <div className="flex items-center justify-between gap-2">
+                {reviewForm.formState.errors.summary?.message ? (
+                  <FieldError>{reviewForm.formState.errors.summary.message}</FieldError>
+                ) : (
+                  <span />
+                )}
+                <span className="text-xs text-muted-foreground">
+                  {summary.length}/{SUMMARY_MAX_LENGTH}
+                </span>
+              </div>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="reviewNotes" className="text-sm font-medium">
+                {t("feed:notes")}
+              </FieldLabel>
+              <Textarea
+                id="reviewNotes"
+                placeholder={t("feed:notesPlaceholder")}
+                className="bg-background resize-none min-h-25"
+                maxLength={REVIEW_NOTES_MAX_LENGTH}
+                aria-invalid={Boolean(reviewForm.formState.errors.notes)}
+                {...reviewForm.register("notes")}
+              />
+              <div className="flex items-center justify-between gap-2">
+                {reviewForm.formState.errors.notes?.message ? (
+                  <FieldError>{reviewForm.formState.errors.notes.message}</FieldError>
+                ) : (
+                  <span />
+                )}
+                <span className="text-xs text-muted-foreground">
+                  {reviewNotes.length}/{REVIEW_NOTES_MAX_LENGTH}
+                </span>
+              </div>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="story" className="text-sm font-medium">
+                {t("feed:story")}
+              </FieldLabel>
+              <Textarea
+                id="story"
+                placeholder={t("feed:storyPlaceholder")}
+                className="bg-background resize-none min-h-25"
+                maxLength={STORY_MAX_LENGTH}
+                aria-invalid={Boolean(reviewForm.formState.errors.story)}
+                {...reviewForm.register("story")}
+              />
+              <div className="flex items-center justify-between gap-2">
+                {reviewForm.formState.errors.story?.message ? (
+                  <FieldError>{reviewForm.formState.errors.story.message}</FieldError>
+                ) : (
+                  <span />
+                )}
+                <span className="text-xs text-muted-foreground">
+                  {story.length}/{STORY_MAX_LENGTH}
+                </span>
+              </div>
+            </Field>
+            <Field orientation="horizontal">
+              <Controller
+                control={reviewForm.control}
+                name="recommended"
+                render={({ field }) => (
+                  <Checkbox
+                    id="recommended"
+                    checked={field.value}
+                    onCheckedChange={(checked) => field.onChange(checked === true)}
+                  />
+                )}
+              />
+              <FieldLabel htmlFor="recommended" className="cursor-pointer text-sm">
+                {t("feed:recommended")}
+              </FieldLabel>
+            </Field>
+          </div>
+        </div>
+      )}
 
       <div className="flex justify-between items-center pt-4 pb-4 border-t border-border/50">
         <Button

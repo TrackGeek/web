@@ -1,10 +1,10 @@
-import ViteImage from "@son426/vite-image/react";
-import { createFileRoute } from "@tanstack/react-router";
 import { Icon } from "@iconify/react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CommentThread } from "@/components/pages/feed/comment-thread.tsx";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { RatingGroupAdvanced } from "@/components/ui/rating-group-advanced.tsx";
 
@@ -90,8 +90,13 @@ function RouteComponent() {
       <article className="bg-card rounded-2xl shadow-sm overflow-hidden border border-border/50 px-4">
         <div className="py-3 border-b border-border/50 flex items-center gap-3">
           <Avatar className="size-9">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@username" />
-            <AvatarFallback>UN</AvatarFallback>
+            <Image
+              className="aspect-square size-full"
+              src="https://github.com/shadcn.png"
+              width={36}
+              height={36}
+              alt="@username"
+            />
           </Avatar>
           <div className="flex-1 space-y-1">
             <p className="text-sm font-semibold leading-none">@username</p>
@@ -106,12 +111,10 @@ function RouteComponent() {
 
         <div className="py-4 flex gap-4">
           <div className="relative shrink-0 w-24 rounded-lg overflow-hidden shadow-md aspect-2/3">
-            <ViteImage
-              src={{
-                src: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx179062-pbzYE1miZq61.png",
-                width: 1024,
-                height: 500,
-              }}
+            <Image
+              src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx179062-pbzYE1miZq61.png"
+              width={1024}
+              height={500}
               alt="Demon Slayer - Kimetsu no Yaiba cover"
               className={`size-full object-cover transition-opacity duration-300 ${
                 imageLoaded ? "opacity-100" : "opacity-0"

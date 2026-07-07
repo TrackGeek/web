@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { createFileRoute } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useCallback, useState } from "react";
 import { type FilterParams, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -24,7 +25,13 @@ function MovieFranchiseRoute() {
       {movies.slice(0, 1).map((movie) => {
         return (
           <div className="relative w-full overflow-hidden rounded-xl border border-border" key={movie.id}>
-            <img src={movie.backdropUrl} className="w-full h-60 md:h-100 object-cover" alt={movie.title} />
+            <Image
+              src={movie.backdropUrl}
+              layout="fullWidth"
+              aspectRatio={16 / 9}
+              className="w-full h-60 md:h-100 object-cover"
+              alt={movie.title}
+            />
 
             <div
               className="absolute inset-0 bg-linear-to-t from-primary-foreground/80 via-primary-foreground/30

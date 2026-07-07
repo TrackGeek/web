@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -112,8 +113,10 @@ function AnimeDetailsRoute() {
       <div className="lg:w-1/3">
         <div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 flex flex-col gap-4">
           <div className="w-full mx-auto shadow-xl rounded-lg overflow-hidden">
-            <img
+            <Image
               src={anime.imageUrl || "/placeholder/cover.webp"}
+              width={500}
+              height={750}
               alt="Capa do anime"
               className="w-full h-auto object-cover"
             />
@@ -184,8 +187,10 @@ function AnimeDetailsRoute() {
                   >
                     <div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
                     <div className="flex flex-row items-center w-full">
-                      <img
+                      <Image
                         src={anime.imageUrl || "/placeholder/cover.webp"}
+                        width={112}
+                        height={160}
                         alt="Cover"
                         className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
                       />

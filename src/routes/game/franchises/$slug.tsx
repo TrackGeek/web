@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { createFileRoute } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useCallback, useState } from "react";
 import { type FilterParams, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -28,8 +29,10 @@ function GameFranchiseRoute() {
 
         return (
           <div className="relative w-full overflow-hidden rounded-xl border border-border" key={game.id}>
-            <img
+            <Image
               src={keyArt || game.coverUrl}
+              layout="fullWidth"
+              aspectRatio={16 / 9}
               className="w-full h-60 md:h-100 object-cover object-top"
               alt={game.name}
             />

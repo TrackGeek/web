@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -204,8 +205,10 @@ function GameDetailsRoute() {
       <div className="lg:w-1/3">
         <div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 gap-4 flex flex-col">
           <div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
-            <img
+            <Image
               src={game.coverUrl || "/placeholder/cover.webp"}
+              width={500}
+              height={750}
               alt="Capa do jogo"
               className="w-full h-auto object-cover"
             />
@@ -268,8 +271,10 @@ function GameDetailsRoute() {
                   >
                     <div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
                     <div className="flex flex-row items-center w-full">
-                      <img
+                      <Image
                         src={game.coverUrl || "/placeholder/cover.webp"}
+                        width={112}
+                        height={160}
                         alt="Cover"
                         className="w-28 h-40 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
                       />
@@ -556,7 +561,13 @@ function GameDetailsRoute() {
                   ))}
                   {game.screenshots.map((screenshot: { checksum: string; imageId: string }) => (
                     <CarouselItem key={screenshot.checksum}>
-                      <img src={screenshot.imageId} className="w-full aspect-video object-cover" alt="Screenshot" />
+                      <Image
+                        src={screenshot.imageId}
+                        layout="fullWidth"
+                        aspectRatio={16 / 9}
+                        className="w-full aspect-video object-cover"
+                        alt="Screenshot"
+                      />
                     </CarouselItem>
                   ))}
                 </CarouselContent>
@@ -593,7 +604,7 @@ function GameDetailsRoute() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {screenshots?.map((screenshot: { checksum: string; imageId: string }) => (
                     <ImageZoom key={screenshot.checksum}>
-                      <img src={screenshot.imageId} alt="" />
+                      <Image src={screenshot.imageId} width={1920} height={1080} alt="" />
                     </ImageZoom>
                   ))}
                 </div>

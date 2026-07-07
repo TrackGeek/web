@@ -1,5 +1,6 @@
 import { useQueries } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
@@ -75,7 +76,13 @@ function MovieRoute() {
             return (
               <CarouselItem key={movie.tmdbId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
-                  <img src={movie.backdropUrl} className="w-full h-60 md:h-120 object-cover" alt={movie.name} />
+                  <Image
+                    src={movie.backdropUrl}
+                    layout="fullWidth"
+                    aspectRatio={16 / 9}
+                    className="w-full h-60 md:h-120 object-cover"
+                    alt={movie.name}
+                  />
 
                   <div
                     className="absolute inset-0 bg-linear-to-t from-primary-foreground/80 via-primary-foreground/30

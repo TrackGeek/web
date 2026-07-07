@@ -1,4 +1,3 @@
-import { viteImage } from "@son426/vite-image/plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
@@ -11,7 +10,6 @@ export default defineConfig({
     tanstackRouter({ target: "react", autoCodeSplitting: true }),
     react(),
     tailwindcss(),
-    viteImage(),
   ],
   resolve: {
     tsconfigPaths: true,

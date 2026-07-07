@@ -1,5 +1,4 @@
 /// <reference types="vite/client" />
-/// <reference types="@son426/vite-image/client" />
 
 /**
  * @vitejs/plugin-react - React plugin for Vite

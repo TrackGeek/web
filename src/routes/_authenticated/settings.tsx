@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
-import ViteImage from "@son426/vite-image/react";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import type { TFunction } from "i18next";
 import { useMemo, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -27,6 +27,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth";
+import { AVATAR_BLUR } from "@/lib/image";
 import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
 import { seo } from "@/lib/utils/seo";
 
@@ -230,7 +231,7 @@ function SettingsRoute() {
       className="grid grid-cols-3 gap-8"
       onSubmit={profileForm.handleSubmit((data) => updateProfileMutation.mutate(data))}
     >
-      <div className="w-full flex flex-col border-border border bg-card rounded-2xl p-6 col-span-1">
+      <div className="w-full flex flex-col border-border border bg-card rounded-xl p-6 col-span-1">
         <Field className="gap-2">
           <FieldLabel>
             <Icon icon={"lucide:image"} className="size-6" />
@@ -243,14 +244,13 @@ function SettingsRoute() {
           <div className="flex items-center justify-center gap-2 h-55">
             {session.data?.user?.profile?.avatarUrl ? (
               <div className="size-55 relative">
-                <ViteImage
+                <Image
                   className="size-full rounded-lg border-accent border"
-                  src={{
-                    src: session.data?.user?.profile.avatarUrl,
-                    blurDataURL: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH",
-                    width: 220,
-                    height: 220,
-                  }}
+                  src={session.data?.user?.profile.avatarUrl}
+                  width={220}
+                  height={220}
+                  background={AVATAR_BLUR}
+                  alt=""
                 />
 
                 {(deleteAvatarMutation.isPending || uploadAvatarMutation.isPending) && (
@@ -312,7 +312,7 @@ function SettingsRoute() {
         </Field>
       </div>
 
-      <div className="w-full flex flex-col border-border border bg-card rounded-2xl p-6 col-span-2">
+      <div className="w-full flex flex-col border-border border bg-card rounded-xl p-6 col-span-2">
         <Field className="gap-2">
           <FieldLabel>
             <Icon icon={"lucide:image"} className="size-6" />
@@ -325,14 +325,13 @@ function SettingsRoute() {
           <div className="flex items-center gap-2 h-55">
             {session.data?.user?.profile?.bannerUrl ? (
               <div className="size-full relative">
-                <ViteImage
-                  className="size-full rounded-lg border-accent border"
-                  src={{
-                    src: session.data?.user?.profile.bannerUrl,
-                    blurDataURL: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH",
-                    width: 300,
-                    height: 220,
-                  }}
+                <Image
+                  className="size-full rounded-lg border-accent border object-cover"
+                  src={session.data?.user?.profile.bannerUrl}
+                  width={300}
+                  height={220}
+                  background={AVATAR_BLUR}
+                  alt=""
                 />
 
                 {(deleteBannerMutation.isPending || uploadBannerMutation.isPending) && (
@@ -394,7 +393,7 @@ function SettingsRoute() {
         </Field>
       </div>
 
-      <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-2xl p-6 col-span-3">
+      <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-xl p-6 col-span-3">
         <Field className="gap-2">
           <FieldLabel>
             <Icon icon={"lucide:user"} className="size-6" />
@@ -472,7 +471,7 @@ function SettingsRoute() {
         </Field>
       </div>
 
-      <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-2xl p-6 col-span-3">
+      <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-xl p-6 col-span-3">
         <Field className="gap-2">
           <FieldLabel>
             <Icon icon={"lucide:palette"} className="size-6" />
@@ -523,7 +522,7 @@ function SettingsRoute() {
         </Field>
       </div>
 
-      <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-2xl p-6 col-span-3">
+      <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-xl p-6 col-span-3">
         <Field className="gap-2">
           <FieldLabel>
             <Icon icon={"lucide:settings"} className="size-6" />

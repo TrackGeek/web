@@ -191,7 +191,7 @@ function RouteComponent() {
   );
 
   return (
-    <div className="p-4 sm:p-6">
+    <div>
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 flex flex-col sm:flex-row gap-4 sm:items-end">
           <div className="w-full sm:w-32">

@@ -140,7 +140,7 @@ export function Demo() {
                   {t("pages:landing.watchingNow")}
                 </span>
                 <h3 className="relative z-10 text-2xl font-bold text-white">Game of Thrones</h3>
-                <p className="relative z-10 text-gray-300 text-sm">
+                <p className="relative z-10 text-muted-foreground text-sm">
                   {t("library:season")} 8 • {t("library:episode")} {watched === 4 ? 5 : 6}
                 </p>
               </div>
@@ -153,7 +153,14 @@ export function Demo() {
                   </span>
                 </div>
 
-                <div className="h-4 w-full bg-gray-300 rounded-full overflow-hidden relative">
+                <div
+                  role="progressbar"
+                  aria-valuenow={watched}
+                  aria-valuemin={0}
+                  aria-valuemax={total}
+                  aria-label="Season progress"
+                  className="h-4 w-full bg-muted rounded-full overflow-hidden relative"
+                >
                   <div
                     className="h-full bg-secondary rounded-full transition-all duration-500 ease-out"
                     style={{ width: `${watched * (100 / total)}%` }}

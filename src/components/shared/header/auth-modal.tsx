@@ -113,7 +113,7 @@ export function AuthModal() {
       return;
     }
 
-    toast.success(t("auth:enterYourEmail"));
+    toast.success(t("auth:magicLinkSent"));
 
     magicLinkForm.reset();
     magicLinkForm.clearErrors();
@@ -316,7 +316,7 @@ export function AuthModal() {
                           <Input
                             id="email"
                             type="email"
-                            placeholder="jhondoe@example.com"
+                            placeholder="johndoe@example.com"
                             disabled={passwordForm.formState.isSubmitting}
                             {...passwordForm.register("email")}
                           />
@@ -377,7 +377,7 @@ export function AuthModal() {
                           <Input
                             id="email"
                             type="email"
-                            placeholder="jhondoe@example.com"
+                            placeholder="johndoe@example.com"
                             disabled={magicLinkForm.formState.isSubmitting}
                             {...magicLinkForm.register("email")}
                           />
@@ -427,7 +427,7 @@ export function AuthModal() {
                       <Input
                         id="email"
                         type="email"
-                        placeholder="jhondoe@example.com"
+                        placeholder="johndoe@example.com"
                         disabled={registerForm.formState.isSubmitting}
                         {...registerForm.register("email")}
                       />
@@ -507,7 +507,7 @@ export function AuthModal() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="jhondoe@example.com"
+                  placeholder="johndoe@example.com"
                   disabled={requestPasswordResetForm.formState.isSubmitting}
                   {...requestPasswordResetForm.register("email")}
                 />

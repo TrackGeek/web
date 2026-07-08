@@ -45,7 +45,6 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // IN BUILD
   console.log(selectedCompletion);
 
   const session = useSession();
@@ -107,7 +106,6 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
 
   const handleSave = async () => {
     if (!selectedStatus || !userId || !gameId) return;
-    console.log(userId, gameId);
 
     if (selectedStatus === "played" || selectedStatus === "replayed") {
       const review = await gameReviewMutation.mutateAsync({

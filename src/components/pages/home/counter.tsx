@@ -44,10 +44,10 @@ export function Counter() {
   }, []);
 
   return (
-    <section className="border-y border-border bg-secondary/20 py-16">
+    <section className="border-y border-border bg-secondary/20 py-20">
       <div className="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
         <div className="stat-item opacity-0">
-          <div className="text-4xl font-bold mb-2">
+          <div className="text-4xl font-bold mb-3">
             <span className="counter tabular-nums" data-target="350">
               0
             </span>
@@ -57,7 +57,7 @@ export function Counter() {
         </div>
 
         <div className="stat-item opacity-0">
-          <div className="text-4xl font-bold mb-2">
+          <div className="text-4xl font-bold mb-3">
             <span className="counter tabular-nums" data-target="1.1">
               0
             </span>
@@ -67,7 +67,7 @@ export function Counter() {
         </div>
 
         <div className="stat-item opacity-0">
-          <div className="text-4xl font-bold mb-2">
+          <div className="text-4xl font-bold mb-3">
             <span className="counter tabular-nums" data-target="214">
               0
             </span>
@@ -77,7 +77,7 @@ export function Counter() {
         </div>
 
         <div className="stat-item opacity-0">
-          <div className="text-4xl font-bold mb-2">
+          <div className="text-4xl font-bold mb-3">
             <span className="counter tabular-nums" data-target="1.6">
               0
             </span>

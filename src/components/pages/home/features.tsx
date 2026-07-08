@@ -38,7 +38,7 @@ export function Features() {
     <section className="py-24 bg-secondary/10">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16 feature-head opacity-0">
-          <h2 className="text-3xl font-bold mb-4">{t("pages:landing.featuresTitle")}</h2>
+          <h2 className="text-3xl font-bold mb-3">{t("pages:landing.featuresTitle")}</h2>
           <p className="text-muted-foreground">{t("pages:landing.featuresDescription")}</p>
         </div>
 

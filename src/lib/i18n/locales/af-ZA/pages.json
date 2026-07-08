@@ -18,7 +18,7 @@
     "markEpisode": "Mark Episode {{number}} as Watched",
     "toastCongrats": "Congrats! You finished this TV show.",
     "toastMark": "Episode {{number}} marked as watched!",
-    "CTATitle": "Ready to assume the control?",
+    "CTATitle": "Ready to take control?",
     "CTADescription": "Join other geeks organizing your favorite media today!",
     "CTAButton": "Get Started Free",
     "alive": "We're alive!",
@@ -39,8 +39,8 @@
     "booksDescription": "For the more literary-minded, we offer an option as well. Track pages read and how many times you’ve reread a book."
   },
   "addData": {
-    "description": "TrackGeek relies on third-party databases like <tmdb>TMDB</tmdb> (The Movie Database), <mal>MAL</mal> (My Anime List), <hc>HardCover</hc>, <igdb>IGDB</igdb> for its TV show, Movie, Game, Book, Anime and Manga data. If you find that a specific show, game, manga, book, anime or movie is missing from TrackGeek, you can add it to the corresponding database.",
-    "warning": "Please keep in mind that it might take 24 hours to index the data from those sources to be discoverable in search using its Title as we update our search index once every 24 hours.",
+    "description": "TrackGeek relies on third-party databases like <tmdb>TMDB</tmdb> (The Movie Database), <mal>MAL</mal> (My Anime List), <al>Anilist</al>, <hc>HardCover</hc>, <igdb>IGDB</igdb> for its TV show, Movie, Game, Book, Anime and Manga data. If you find that a specific show, game, manga, book, anime or movie is missing from TrackGeek, you can add it to the corresponding database.",
+    "warning": "New entries may take up to 24 hours to appear in TrackGeek search, since we update our index daily.",
     "forAnimes": "For animes",
     "forMovies": "For movies",
     "forGames": "For games",
@@ -70,7 +70,7 @@
     "howWeUseData.list3": "Store your tracking data and preferences.",
     "howWeUseData.list4": "Improve the platform and user experience.",
     "thirdParties.title": "Third-Party Services",
-    "thirdParties.metadata": "TrackGeek uses third-party APIs (IGDB, TMDB, MyAnimeList, HardCover) only to fetch metadata. No personal user data is shared with these providers.",
+    "thirdParties.metadata": "TrackGeek uses third-party APIs (IGDB, TMDB, MyAnimeList, Anilist, HardCover) only to fetch metadata. No personal user data is shared with these providers.",
     "thirdParties.analytics": "TrackGeek uses Google Analytics to understand general usage patterns and improve the platform. Analytics data is collected only after user consent and processed in accordance with GDPR requirements, including IP anonymization.",
     "payments.title": "Donations and Payments",
     "payments.info": "TrackGeek may offer optional donation tiers via third-party platforms such as Patreon. Payment processing is handled by those platforms, and TrackGeek does not store payment details.",

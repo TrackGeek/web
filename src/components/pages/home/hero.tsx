@@ -59,27 +59,23 @@ export function Hero() {
     tl.play();
   }, []);
   return (
-    <section className="relative pt-20 pb-32 overflow-hidden">
+    <section className="relative pt-24 pb-24 overflow-hidden">
       <div className="container mx-auto px-4 text-center relative z-10">
         <div className="inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 text-sm font-medium text-secondary mb-8 hero-badge opacity-0 translate-y-4">
           <span className="flex size-2 rounded-full bg-green-500 mr-2"></span>
           {t("pages:landing.alive")}
         </div>
 
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 hero-text opacity-0 max-w-lg mx-auto">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 hero-text opacity-0 max-w-lg mx-auto">
           <Trans
             i18nKey="pages:landing.heroTitle"
             components={{
-              1: (
-                <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
-                  Geek Journey
-                </span>
-              ),
+              1: <span className="text-primary">Geek Journey</span>,
             }}
           ></Trans>
         </h1>
 
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 hero-text opacity-0 leading-relaxed">
+        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 hero-text opacity-0 leading-relaxed">
           {t("pages:landing.heroDescription")}
         </p>
 

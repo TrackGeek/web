@@ -7,6 +7,11 @@
   "page_other": "Páginas",
   "moreOptions": "Mais Opções",
   "reviews": "avaliações",
+  "noReviews": "No reviews yet",
+  "noReviewsDescription": "Be the first to review this show.",
+  "noLists": "No lists yet",
+  "noListsDescription": "This show hasn't been added to any list yet.",
+  "noItems": "No items yet",
   "medium": "Médio",
   "days": "dias",
   "genres": "Géneros",
@@ -43,6 +48,7 @@
   "season_other": "Temporadas",
   "episode": "Episódio",
   "episode_other": "Episódios",
+  "noEpisodes": "No episodes available for this season.",
   "totalEpisodes": "Total de episódios",
   "type": "Tipo",
   "tvShowCharacteristics": "Características da Série",
@@ -54,6 +60,7 @@
   "unmarkEpisode": "Desmarcar Episódio",
   "unmarkAll": "Desmarcar Todos",
   "unmarkSeason": "Desmarcar Temporada",
+  "progressUpdated": "Progress updated",
   "studios": "Estúdios",
   "producers": "Produtores",
   "rating": "Classificação Etária",
@@ -230,5 +237,6 @@
     "splitscreen": "Tela dividida",
     "battleRoyale": "Battle Royale",
     "massivelyMultiplayerOnline": "Massivamente Multijogador Online (MMORPG)"
-  }
+  },
+  "users": "users"
 }

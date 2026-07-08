@@ -113,5 +113,12 @@
   "somethingWentWrong": "Algo deu errado. Por favor, tente novamente mais tarde.",
   "internalError": "Uh oh! Não se preocupe! Não é você - somos nós.<br />Nós estamos tentando corrigir o problema. Tenta novamente mais tarde!",
   "reportError": "Relatar problemas",
-  "all": "All"
+  "all": "All",
+  "joinedAt": "Joined at",
+  "tierStartedAt": "Tier started at",
+  "tiers": {
+    "Tracker": "Tracker",
+    "Archivist": "Archivist",
+    "ArchiveMaster": "Archive Master"
+  }
 }

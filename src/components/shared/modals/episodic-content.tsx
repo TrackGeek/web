@@ -349,7 +349,7 @@ export function EpisodicContentModal({
               <Icon icon={"lucide:star"} className="size-4" />
               {t("feed:progress")}
             </h3>
-            
+
             <div className="space-y-3">
               <Field>
                 <FieldLabel htmlFor="status" className="text-sm font-medium">
@@ -410,7 +410,7 @@ export function EpisodicContentModal({
               <Icon icon={"lucide:calendar"} className="size-4" />
               {t("feed:timeline")}
             </h3>
-            
+
             <div className="space-y-3">
               <Field>
                 <FieldLabel htmlFor="startDate" className="text-sm font-medium">
@@ -548,7 +548,7 @@ export function EpisodicContentModal({
             <Icon icon={"lucide:pen-line"} className="size-4" />
             {t("feed:review")}
           </h3>
-          
+
           <div className="flex flex-col gap-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
               <div className="flex items-center justify-between">

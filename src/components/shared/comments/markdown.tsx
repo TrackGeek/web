@@ -18,19 +18,13 @@ const components: Components = {
   strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
   em: ({ children }) => <em className="italic">{children}</em>,
   del: ({ children }) => <del className="line-through">{children}</del>,
-  code: ({ children }) => (
-    <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">{children}</code>
-  ),
-  pre: ({ children }) => (
-    <pre className="bg-muted rounded-md p-3 overflow-x-auto text-xs my-2">{children}</pre>
-  ),
+  code: ({ children }) => <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">{children}</code>,
+  pre: ({ children }) => <pre className="bg-muted rounded-md p-3 overflow-x-auto text-xs my-2">{children}</pre>,
   ul: ({ children }) => <ul className="list-disc pl-5 my-1 space-y-0.5">{children}</ul>,
   ol: ({ children }) => <ol className="list-decimal pl-5 my-1 space-y-0.5">{children}</ol>,
   li: ({ children }) => <li>{children}</li>,
   blockquote: ({ children }) => (
-    <blockquote className="border-l-2 border-border pl-3 text-muted-foreground italic my-1">
-      {children}
-    </blockquote>
+    <blockquote className="border-l-2 border-border pl-3 text-muted-foreground italic my-1">{children}</blockquote>
   ),
   hr: () => <hr className="border-border my-2" />,
   h1: ({ children }) => <p className="font-semibold">{children}</p>,
@@ -51,19 +45,15 @@ const components: Components = {
   ),
 };
 
-export const Markdown = memo(function Markdown({
-  children,
-  className,
-}: {
-  children: string;
-  className?: string;
-}) {
+export const Markdown = memo(function Markdown({ children, className }: { children: string; className?: string }) {
   return (
-    <div className={cn("text-sm text-foreground/90 leading-relaxed [&>*:first-child]:mt-0 [&>*:last-child]:mb-0", className)}>
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        components={components}
-      >
+    <div
+      className={cn(
+        "text-sm text-foreground/90 leading-relaxed [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
+        className,
+      )}
+    >
+      <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
         {children}
       </ReactMarkdown>
     </div>

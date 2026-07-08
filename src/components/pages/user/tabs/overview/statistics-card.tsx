@@ -1,6 +1,6 @@
-import type { ApiTypes } from "@/lib/api";
-import { useTranslation } from "react-i18next";
 import { Icon } from "@iconify/react";
+import { useTranslation } from "react-i18next";
+import type { ApiTypes } from "@/lib/api";
 
 interface StatisticsCardProps {
   user: ApiTypes.User;
@@ -86,17 +86,13 @@ function MediaTile({
   const { t } = useTranslation();
 
   return (
-    <div
-      className={`flex flex-col gap-3 rounded-2xl border bg-linear-to-br to-transparent p-4 ${gradient} ${border}`}
-    >
+    <div className={`flex flex-col gap-3 rounded-2xl border bg-linear-to-br to-transparent p-4 ${gradient} ${border}`}>
       <div className="flex size-9 items-center justify-center rounded-xl bg-white/5">
         <Icon icon={icon} className={`size-5 ${iconColor}`} />
       </div>
 
       <div className="flex flex-col gap-0.5">
-        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          {t(label)}
-        </span>
+        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t(label)}</span>
         <span className="text-2xl font-bold text-card-foreground">{total}</span>
       </div>
     </div>

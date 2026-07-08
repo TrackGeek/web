@@ -4,12 +4,12 @@ export const Route = createFileRoute("/_authenticated")({
   ssr: false,
   beforeLoad: async ({ context }) => {
     let session: any;
-    
+
     try {
       session = await context.auth.getSession();
     } catch (error) {
       console.error(error);
-      
+
       throw redirect({ to: "/", search: { landing: "true" } });
     }
 

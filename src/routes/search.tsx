@@ -103,45 +103,40 @@ type SearchResultsProps = {
   sentinelRef: React.Ref<HTMLDivElement>;
 };
 
-const SearchResults = memo(({
-  items,
-  contentType,
-  isLoading,
-  isError,
-  isFetchingNextPage,
-  sentinelRef,
-}: SearchResultsProps) => {
-  return (
-    <div className="flex-1 md:w-2/3 space-y-4">
-      {isError && <ErrorComponent />}
-      
-      {isLoading && <LoadingFiltered />}
+const SearchResults = memo(
+  ({ items, contentType, isLoading, isError, isFetchingNextPage, sentinelRef }: SearchResultsProps) => {
+    return (
+      <div className="flex-1 md:w-2/3 space-y-4">
+        {isError && <ErrorComponent />}
 
-      {!isLoading && !isError && (
-        <Grid minColSize="128px" className="grid gap-6">
-          {items.map((item: any) => (
-            <CardItem
-              key={item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}
-              title={item.title ?? item.name}
-              url={`/${contentType}/${item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}`}
-              imageURL={
-                (item.imageUrl ?? item.coverUrl ?? item.posterUrl ?? null)?.replace(
-                  "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-                  "/placeholder/cover.webp",
-                ) ?? "/placeholder/cover.webp"
-              }
-              isAdult={item.isAdult}
-            />
-          ))}
-        </Grid>
-      )}
+        {isLoading && <LoadingFiltered />}
 
-      <div ref={sentinelRef} className="h-px" />
-      
-      {isFetchingNextPage && <LoadingFiltered />}
-    </div>
-  );
-});
+        {!isLoading && !isError && (
+          <Grid minColSize="128px" className="grid gap-6">
+            {items.map((item: any) => (
+              <CardItem
+                key={item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}
+                title={item.title ?? item.name}
+                url={`/${contentType}/${item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}`}
+                imageURL={
+                  (item.imageUrl ?? item.coverUrl ?? item.posterUrl ?? null)?.replace(
+                    "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+                    "/placeholder/cover.webp",
+                  ) ?? "/placeholder/cover.webp"
+                }
+                isAdult={item.isAdult}
+              />
+            ))}
+          </Grid>
+        )}
+
+        <div ref={sentinelRef} className="h-px" />
+
+        {isFetchingNextPage && <LoadingFiltered />}
+      </div>
+    );
+  },
+);
 
 function RouteComponent() {
   const [contentType, setContentType] = useQueryState(
@@ -153,7 +148,7 @@ function RouteComponent() {
   const [filters, setFilters] = useState<FilterParams>({});
 
   const debouncedQuery = useDebounce(searchQuery, 600);
-  
+
   const { t } = useTranslation();
 
   const handleContentTypeChange = (value: string) => {
@@ -168,7 +163,7 @@ function RouteComponent() {
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       const pagination = getPaginationFromPage(lastPage, contentType);
-      
+
       return pagination?.hasNextPage ? pagination.nextCursor : undefined;
     },
   });
@@ -178,17 +173,14 @@ function RouteComponent() {
   const handlePaste = async () => {
     try {
       const text = await navigator.clipboard.readText();
-      
+
       setSearchQuery(text);
     } catch (err) {
       console.error("Failed to read clipboard:", err);
     }
   };
 
-  const items = useMemo(
-    () => data?.pages.flatMap((p) => getItemsFromPage(p, contentType)) ?? [],
-    [data, contentType],
-  );
+  const items = useMemo(() => data?.pages.flatMap((p) => getItemsFromPage(p, contentType)) ?? [], [data, contentType]);
 
   return (
     <div>

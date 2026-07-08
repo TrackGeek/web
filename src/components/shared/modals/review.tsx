@@ -280,7 +280,7 @@ export function ReviewModal({
               </Field>
             )}
 
-            <Field orientation="horizontal" className='pb-4'>
+            <Field orientation="horizontal" className="pb-4">
               <Controller
                 control={form.control}
                 name="recommended"

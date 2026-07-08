@@ -13,12 +13,7 @@ interface CardProps {
   mediaType?: string;
 }
 
-export function CardItem({
-  title,
-  url,
-  imageURL,
-  isAdult = false,
-}: CardProps) {
+export function CardItem({ title, url, imageURL, isAdult = false }: CardProps) {
   return (
     <Link to={url} className="space-y-2">
       <div className="relative rounded-lg border border-border overflow-hidden aspect-3/4 group">
@@ -37,7 +32,7 @@ export function CardItem({
         )}
       </div>
 
-        <p className="font-bold text-card-foreground hover:text-primary transition-colors line-clamp-2">{title}</p>
+      <p className="font-bold text-card-foreground hover:text-primary transition-colors line-clamp-2">{title}</p>
     </Link>
   );
 }

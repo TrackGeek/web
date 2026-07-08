@@ -27,8 +27,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth";
-import { AVATAR_BLUR } from "@/lib/image";
 import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
+import { AVATAR_BLUR } from "@/lib/image";
 import { seo } from "@/lib/utils/seo";
 
 const ABOUT_MAX_LENGTH = 500;

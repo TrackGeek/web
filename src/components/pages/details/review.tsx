@@ -134,10 +134,7 @@ export function ReviewItem({
                 <p className="text-sm font-bold text-muted-foreground">{user.name}</p>
               </Link>
             ) : (
-              <Link
-                to={`/${routeName}/${entityId}` as any}
-                className="min-w-0 w-auto shrink-0"
-              >
+              <Link to={`/${routeName}/${entityId}` as any} className="min-w-0 w-auto shrink-0">
                 <p className="font-bold truncate text-sm sm:text-base max-w-48">{reviewName}</p>
               </Link>
             )}

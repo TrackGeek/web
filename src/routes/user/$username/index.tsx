@@ -68,7 +68,7 @@ function UserDetailsRoute() {
           <Image
             className="aspect-video w-full h-82.5 object-cover"
             src={userQuery.data.profile.bannerUrl}
-            layout='fullWidth'
+            layout="fullWidth"
             background={AVATAR_BLUR}
             alt=""
           />

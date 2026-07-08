@@ -1,5 +1,5 @@
-import * as SelectPrimitive from "@radix-ui/react-select";
 import { Icon } from "@iconify/react";
+import * as SelectPrimitive from "@radix-ui/react-select";
 import type * as React from "react";
 
 import { cn } from "@/lib/utils";

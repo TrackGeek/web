@@ -30,7 +30,7 @@ interface EdgesData {
   target: string;
 }
 
-export function Card({ data }: any) {
+export function Card({ data }: { data: NodeData }) {
   return (
     <Link to={data.link} className="w-full h-fit cursor-pointer pointer-events-auto">
       <div className="relative rounded-xl border border-border overflow-hidden aspect-3/4 shadow-lg bg-background w-32">

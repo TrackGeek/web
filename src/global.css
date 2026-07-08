@@ -96,6 +96,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-white;
     font-family: "Archivo", sans-serif;
@@ -103,17 +104,18 @@
     font-style: normal;
     font-variation-settings: "wdth" 100;
   }
-  a {
-    @apply text-white hover:text-accent;
-  }
+
   .asw-menu-btn svg {
     @apply size-7! min-w-7! min-h-7! max-w-7! max-h-7!;
   }
+
   body .asw-menu-btn {
     @apply size-10! bg-primary! bg-none!;
   }
+
   .asw-menu,
   .asw-widget {
+    /* biome-ignore lint/complexity/noImportantStyles: override third-party accessibility widget variable */
     --asw-primary: var(--color-malachite-500) !important;
   }
 }
@@ -127,12 +129,16 @@
 }
 
 ::-webkit-scrollbar:horizontal {
-  @apply h-1;
+  @apply h-2;
+}
+
+::-webkit-scrollbar:vertical {
+  @apply w-2;
 }
 
 /*Giving the thumb a gradient*/
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary rounded-4xl;
+  @apply bg-primary;
 }
 
 .glass-panel {

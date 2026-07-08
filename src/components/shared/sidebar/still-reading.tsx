@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 
@@ -22,7 +23,13 @@ export function StillReading({ items }: Items) {
         {items.map((item) => (
           <div key={item.link} className="w-full rounded-2xl">
             <Link to={item.link}>
-              <img src={item.coverURL} alt="" className="rounded-t-2xl w-full aspect-3/4 object-cover" />
+              <Image
+                src={item.coverURL}
+                width={300}
+                height={400}
+                alt=""
+                className="rounded-t-2xl w-full aspect-3/4 object-cover"
+              />
             </Link>
             <div className="bg-accent/30">
               <div

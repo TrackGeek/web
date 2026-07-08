@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Icon } from "@iconify/react";
 import { useMutation, useQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import axios from "axios";
-import { Icon } from "@iconify/react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -394,7 +394,7 @@ function DonateRoute() {
                 name={contributor.login}
                 url={contributor.html_url}
                 avatarURL={contributor.avatar_url}
-                role="supporter"
+                roleType="supporter"
               />
             ))}
         </div>

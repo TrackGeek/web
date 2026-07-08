@@ -1,5 +1,6 @@
 import { useQueries } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
@@ -65,8 +66,10 @@ function BookRoute() {
             return (
               <CarouselItem key={book.id}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
-                  <img
+                  <Image
                     src={`/placeholder/banner-${index + 1}.webp`}
+                    layout="fullWidth"
+                    aspectRatio={16 / 9}
                     className="w-full h-60 md:h-120 object-cover"
                     alt={book.title}
                   />

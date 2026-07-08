@@ -1,12 +1,13 @@
 import { Icon } from "@iconify/react";
-import ViteImage from "@son426/vite-image/react";
 import { createFileRoute } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type ContentType, type FilterParams, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CardItem } from "@/components/shared/cards/card.tsx";
 import { LinkTabs, LinkTabsList, LinkTabsTrigger } from "@/components/ui/link-tabs.tsx";
+import { AVATAR_BLUR } from "@/lib/image.ts";
 import movies from "@/lib/mockups/movies.json";
 
 export const Route = createFileRoute("/list/$slug")({
@@ -33,7 +34,13 @@ function ListRoute() {
       {movies.slice(0, 1).map((movie) => {
         return (
           <div className="relative w-full overflow-hidden rounded-xl border border-border" key={movie.id}>
-            <img src={movie.backdropUrl} className="w-full h-60 md:h-100 object-cover" alt={movie.title} />
+            <Image
+              src={movie.backdropUrl}
+              layout="fullWidth"
+              aspectRatio={16 / 9}
+              className="w-full h-60 md:h-100 object-cover"
+              alt={movie.title}
+            />
 
             <div
               className="absolute inset-0 bg-linear-to-t from-primary-foreground/80 via-primary-foreground/30
@@ -48,15 +55,13 @@ function ListRoute() {
                 <p className="text-lg line-clamp-2 text-white/90 drop-shadow-md">{movie.overview}</p>
               </div>
               <div className="flex gap-2 items-center">
-                <ViteImage
+                <Image
                   className="aspect-square size-8 rounded-full object-cover"
-                  style={{ width: "36px", height: "36px" }}
-                  src={{
-                    src: user.avatarUrl,
-                    blurDataURL: "LKO2:N%2Tw=w]~RBVZRi};RPxuwH",
-                    width: 36,
-                    height: 36,
-                  }}
+                  src={user.avatarUrl}
+                  width={36}
+                  height={36}
+                  background={AVATAR_BLUR}
+                  alt={user.name}
                 />
                 <p className="text-sm line-clamp-1 text-gray-300 drop-shadow-md">{user.name}</p>
               </div>

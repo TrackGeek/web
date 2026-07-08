@@ -73,6 +73,7 @@ function Field({
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof fieldVariants>) {
   return (
+    // biome-ignore lint/a11y/useSemanticElements: generic field wrapper needs role="group", not a fieldset
     <div
       role="group"
       data-slot="field"
@@ -182,7 +183,7 @@ function FieldError({
 
     const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()];
 
-    if (uniqueErrors?.length == 1) {
+    if (uniqueErrors?.length === 1) {
       return uniqueErrors[0]?.message;
     }
 
@@ -211,13 +212,13 @@ function FieldError({
 
 export {
   Field,
-  FieldLabel,
+  FieldContent,
   FieldDescription,
   FieldError,
   FieldGroup,
+  FieldLabel,
   FieldLegend,
   FieldSeparator,
   FieldSet,
-  FieldContent,
   FieldTitle,
 };

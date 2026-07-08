@@ -1,6 +1,5 @@
 import { Icon } from "@iconify/react";
 import * as React from "react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group.tsx";
 import { cn } from "@/lib/utils";
 
 type RatingIconProps = {
@@ -91,11 +90,11 @@ function RatingGroupAdvanced({
     [disabled, readOnly, onValueChange, allowHalf, allowClear, currentValue],
   );
 
-  const getIconState = (index: number) => {
+  const getFillPercent = (index: number) => {
     const value = displayValue;
-    if (value >= index) return "filled";
-    if (allowHalf && value >= index - 0.5) return "half";
-    return "empty";
+    if (value >= index) return 100;
+    if (allowHalf && value >= index - 0.5) return 50;
+    return 0;
   };
 
   const sizeClasses = {
@@ -104,105 +103,53 @@ function RatingGroupAdvanced({
     lg: "size-6",
   };
 
-  const sharedToggleProps = {
-    size,
-    className: cn("gap-0", className),
-    disabled,
-    onMouseLeave: handleMouseLeave,
-  };
-
-  const renderItems = () =>
-    indices.map((index) => {
-      const starValue = index.toString();
-      const iconState = getIconState(index);
-
-      return (
-        <div key={starValue} className="relative">
-          <ToggleGroupItem
-            value={starValue}
-            aria-label={`${index} rating`}
-            className={cn(
-              "relative border-0 bg-transparent p-0 hover:bg-transparent data-[state=on]:bg-transparent focus-visible:ring-0",
-              "hover:scale-110 focus-visible:scale-110 transition-transform ease-out",
-              (disabled || readOnly) && "pointer-events-none",
-              disabled && "opacity-50",
-            )}
-            disabled={disabled}
-          >
-            {allowHalf ? (
-              <div className="relative">
-                <div
-                  className="absolute inset-0 w-1/2 z-10 cursor-pointer"
-                  onMouseEnter={() => handleMouseEnter(index, true)}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleClick(index, true);
-                  }}
-                />
-                <div
-                  className="absolute inset-0 left-1/2 w-1/2 z-10 cursor-pointer"
-                  onMouseEnter={() => handleMouseEnter(index, false)}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleClick(index, false);
-                  }}
-                />
-                <div className="relative">
-                  {iconState === "half" ? (
-                    <div className="relative">
-                      <EmptyIcon className={cn("transition-colors ease-out", sizeClasses[size], colors.empty)} />
-                      <div className="absolute inset-0 overflow-hidden w-1/2">
-                        <FilledIcon className={cn("transition-colors ease-out", sizeClasses[size], colors.filled)} />
-                      </div>
-                    </div>
-                  ) : (
-                    <FilledIcon
-                      className={cn(
-                        "transition-colors ease-out",
-                        sizeClasses[size],
-                        iconState === "filled" ? colors.filled : colors.empty,
-                      )}
-                    />
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div onMouseEnter={() => handleMouseEnter(index)}>
-                <FilledIcon
-                  className={cn(
-                    "transition-colors ease-out",
-                    sizeClasses[size],
-                    iconState === "filled" ? colors.filled : colors.empty,
-                  )}
-                />
-              </div>
-            )}
-          </ToggleGroupItem>
-        </div>
-      );
-    });
+  const interactive = !disabled && !readOnly;
 
   return (
-    <div {...props}>
-      {allowHalf ? (
-        <ToggleGroup
-          type="multiple"
-          value={[value]}
-          onValueChange={(groupValue: string[]) => onValueChange?.(groupValue[groupValue.length - 1] || "0")}
-          {...sharedToggleProps}
-        >
-          {renderItems()}
-        </ToggleGroup>
-      ) : (
-        <ToggleGroup
-          type="single"
-          value={value}
-          onValueChange={(groupValue: string) => onValueChange?.(groupValue || "0")}
-          {...sharedToggleProps}
-        >
-          {renderItems()}
-        </ToggleGroup>
-      )}
+    // biome-ignore lint/a11y/noStaticElementInteractions: hover preview reset only, zones are focusable buttons
+    <div {...props} className={cn("flex w-fit items-center", className)} onMouseLeave={handleMouseLeave}>
+      {indices.map((index) => {
+        const fillPercent = getFillPercent(index);
+
+        return (
+          <div key={index} className={cn("relative", disabled && "opacity-50")}>
+            {/* Single stable structure: empty base + filled overlay clipped by width. */}
+            <EmptyIcon className={cn(sizeClasses[size], colors.empty)} />
+            <div className="absolute inset-0 overflow-hidden" style={{ width: `${fillPercent}%` }}>
+              <FilledIcon className={cn(sizeClasses[size], colors.filled)} />
+            </div>
+
+            {/* Hover/click zones layered on top. */}
+            {interactive &&
+              (allowHalf ? (
+                <>
+                  <button
+                    type="button"
+                    aria-label={`${index - 0.5} rating`}
+                    className="absolute inset-y-0 left-0 w-1/2 z-10 cursor-pointer"
+                    onMouseEnter={() => handleMouseEnter(index, true)}
+                    onClick={() => handleClick(index, true)}
+                  />
+                  <button
+                    type="button"
+                    aria-label={`${index} rating`}
+                    className="absolute inset-y-0 right-0 w-1/2 z-10 cursor-pointer"
+                    onMouseEnter={() => handleMouseEnter(index, false)}
+                    onClick={() => handleClick(index, false)}
+                  />
+                </>
+              ) : (
+                <button
+                  type="button"
+                  aria-label={`${index} rating`}
+                  className="absolute inset-0 z-10 cursor-pointer"
+                  onMouseEnter={() => handleMouseEnter(index)}
+                  onClick={() => handleClick(index)}
+                />
+              ))}
+          </div>
+        );
+      })}
     </div>
   );
 }

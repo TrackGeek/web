@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { createFileRoute } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useCallback, useState } from "react";
 import { type FilterParams, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -25,7 +26,13 @@ function BookFranchisesRoute() {
       {books.slice(0, 1).map((book) => {
         return (
           <div className="relative w-full overflow-hidden rounded-xl border border-border" key={book.id}>
-            <img src={"/placeholder/banner-1.webp"} className="w-full h-60 md:h-100 object-cover" alt={book.title} />
+            <Image
+              src={"/placeholder/banner-1.webp"}
+              layout="fullWidth"
+              aspectRatio={16 / 9}
+              className="w-full h-60 md:h-100 object-cover"
+              alt={book.title}
+            />
 
             <div
               className="absolute inset-0 bg-linear-to-t from-primary-foreground/80 via-primary-foreground/30

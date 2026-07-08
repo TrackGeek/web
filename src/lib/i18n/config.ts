@@ -1,11 +1,11 @@
-import i18next from "i18next";
+import i18next, { type Resource } from "i18next";
 import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import i18nextHttpBackend from "i18next-http-backend";
 import * as i18nextReact from "react-i18next";
 
 const modules = import.meta.glob("./locales/**/*.json", { eager: true });
 
-const resources: Record<string, Record<string, any>> = {};
+const resources: Record<string, Record<string, unknown>> = {};
 
 for (const path in modules) {
   const parts = path.split("/");
@@ -30,7 +30,7 @@ i18next
   .use(i18nextBrowserLanguageDetector)
   .use(i18nextReact.initReactI18next)
   .init({
-    resources,
+    resources: resources as Resource,
     supportedLngs: SUPPORTED_LANGUAGES.map((lang) => lang.id),
     lng: window.localStorage.getItem(LANGUAGE_TOKEN) ?? DEFAULT_LANGUAGE,
     fallbackLng: DEFAULT_LANGUAGE,

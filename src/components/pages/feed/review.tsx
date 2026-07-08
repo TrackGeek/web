@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { Trans, useTranslation } from "react-i18next";
 
 interface TempCriteries {
@@ -218,8 +219,10 @@ export function FeedReview({ profile, item }: feedReviewProps) {
           </div>
           <div className="flex items-center gap-3">
             <Link to={"/"} search={{ landing: "true" }}>
-              <img
+              <Image
                 src={profile.avatarURL}
+                width={32}
+                height={32}
                 className="size-8 shrink-0 rounded-full object-cover"
                 alt={`Avatar of ${profile.name}`}
               />

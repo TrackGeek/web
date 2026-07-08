@@ -1,6 +1,6 @@
+import { Icon } from "@iconify/react";
 import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api, apiEndpoints } from "@/lib/api.ts";
@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Textarea } from "../../ui/textarea";
 
 interface MovieModalProps {
-  mediaData?: any;
+  mediaData?: unknown;
   onStatusChange?: (status: string) => void;
   onSaveSuccess?: (status: string) => void;
 }

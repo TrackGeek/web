@@ -95,6 +95,7 @@ function PrivacyPolicyRoute() {
               parent="p"
               i18nKey="pages:privacyPolicy.contact.text"
               components={{
+                // biome-ignore lint/a11y/useAnchorContent: content is injected by the Trans component
                 email: <a href="mailto:privacy@trackgeek.net" className="underline" />,
               }}
             />

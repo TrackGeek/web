@@ -22,7 +22,7 @@ import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { api, apiEndpoints } from "@/lib/api.ts";
+import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { seo } from "@/lib/utils/seo";
@@ -75,9 +75,30 @@ const LAYOUT = {
   CENTER: { x: 0, y: 0 },
 };
 
-const buildRelationsData = (game: any) => {
-  const nodes: any[] = [];
-  const edges: any[] = [];
+type RelatedGame = { id: string; name: string; coverUrl: string };
+
+type GameRelations = {
+  id: string;
+  name: string;
+  coverUrl: string;
+  parentGame?: RelatedGame | null;
+  prequels?: RelatedGame[];
+  expandedGames?: RelatedGame[];
+  sequels?: RelatedGame[];
+  dlcs?: RelatedGame[];
+  expansions?: RelatedGame[];
+  ports?: RelatedGame[];
+  remakes?: RelatedGame[];
+  remasters?: RelatedGame[];
+  bundles?: RelatedGame[];
+};
+
+type FlowNode = { id: string; image: string; name: string; link: string; relationShip: string; x: number; y: number };
+type FlowEdge = { id: string; source: string; target: string };
+
+const buildRelationsData = (game: GameRelations) => {
+  const nodes: FlowNode[] = [];
+  const edges: FlowEdge[] = [];
   let nodeId = 0;
 
   const addNode = (name: string, image: string, link: string, relationship: string, x: number, y: number) => {
@@ -86,7 +107,7 @@ const buildRelationsData = (game: any) => {
     return id;
   };
 
-  const columnOffset = (items: any[], index: number) => {
+  const columnOffset = (items: unknown[], index: number) => {
     const total = items.length;
     return (index - (total - 1) / 2) * LAYOUT.V_SPACING;
   };
@@ -95,7 +116,7 @@ const buildRelationsData = (game: any) => {
 
   const leftRelations = [
     ...(game.parentGame?.id ? [{ data: game.parentGame, label: t("library:relationships.parent") }] : []),
-    ...(game.prequels?.map((g: any) => ({ data: g, label: t("library:relationships.prequel") })) ?? []),
+    ...(game.prequels?.map((g) => ({ data: g, label: t("library:relationships.prequel") })) ?? []),
   ];
 
   leftRelations.forEach(({ data, label }, i) => {
@@ -105,11 +126,11 @@ const buildRelationsData = (game: any) => {
   });
 
   const rightRelations = [
-    ...(game.expandedGames?.map((g: any) => ({ data: g, label: t("library:relationships.expandedGame") })) ?? []),
-    ...(game.sequels?.map((g: any) => ({ data: g, label: t("library:relationships.sequel") })) ?? []),
-    ...(game.dlcs?.map((g: any) => ({ data: g, label: t("library:relationships.dlc") })) ?? []),
-    ...(game.expansions?.map((g: any) => ({ data: g, label: t("library:relationships.expansion") })) ?? []),
-    ...(game.ports?.map((g: any) => ({ data: g, label: t("library:relationships.port") })) ?? []),
+    ...(game.expandedGames?.map((g) => ({ data: g, label: t("library:relationships.expandedGame") })) ?? []),
+    ...(game.sequels?.map((g) => ({ data: g, label: t("library:relationships.sequel") })) ?? []),
+    ...(game.dlcs?.map((g) => ({ data: g, label: t("library:relationships.dlc") })) ?? []),
+    ...(game.expansions?.map((g) => ({ data: g, label: t("library:relationships.expansion") })) ?? []),
+    ...(game.ports?.map((g) => ({ data: g, label: t("library:relationships.port") })) ?? []),
   ];
 
   rightRelations.forEach(({ data, label }, i) => {
@@ -119,8 +140,8 @@ const buildRelationsData = (game: any) => {
   });
 
   const bottomRelations = [
-    ...(game.remakes?.map((g: any) => ({ data: g, label: t("library:relationships.remake") })) ?? []),
-    ...(game.remasters?.map((g: any) => ({ data: g, label: t("library:relationships.remaster") })) ?? []),
+    ...(game.remakes?.map((g) => ({ data: g, label: t("library:relationships.remake") })) ?? []),
+    ...(game.remasters?.map((g) => ({ data: g, label: t("library:relationships.remaster") })) ?? []),
   ];
 
   bottomRelations.forEach(({ data, label }, i) => {
@@ -130,7 +151,7 @@ const buildRelationsData = (game: any) => {
   });
 
   const bundles = game.bundles ?? [];
-  bundles.forEach((data: any, i: number) => {
+  bundles.forEach((data, i) => {
     const x = columnOffset(bundles, i);
     const id = addNode(
       data.name,
@@ -452,11 +473,13 @@ function GameDetailsRoute() {
         </TabsContent>
         <TabsContent value="reviews">
           <ReviewItem
-            user={{
-              name: "John Doe",
-              avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
-              slug: "john-doe",
-            }}
+            user={
+              {
+                name: "John Doe",
+                avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
+                slug: "john-doe",
+              } as unknown as ApiTypes.User
+            }
             reviewText={
               "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
             }
@@ -472,7 +495,16 @@ function GameDetailsRoute() {
         </TabsContent>
         <TabsContent value="lists">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <ListItem />
+            <ListItem
+              list={
+                {
+                  _count: { listItems: 0 },
+                  listItems: [],
+                  name: "",
+                  user: { name: "", profile: null },
+                } as unknown as ApiTypes.ListWithPreview
+              }
+            />
           </div>
         </TabsContent>
         <TabsContent value="relations">

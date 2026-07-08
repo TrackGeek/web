@@ -1,9 +1,10 @@
 import { Icon } from "@iconify/react";
 import { createFileRoute } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CommentThread } from "@/components/pages/feed/comment-thread.tsx";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/post/$id")({
@@ -55,8 +56,13 @@ function RouteComponent() {
       <article className="bg-card rounded-2xl shadow-sm overflow-hidden border border-border/50 px-4">
         <div className="py-3 border-b border-border/50 flex items-center gap-3">
           <Avatar className="size-9">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@username" />
-            <AvatarFallback>UN</AvatarFallback>
+            <Image
+              className="aspect-square size-full"
+              src="https://github.com/shadcn.png"
+              width={36}
+              height={36}
+              alt="@username"
+            />
           </Avatar>
           <div className="flex-1 space-y-1">
             <p className="text-sm font-semibold leading-none">@username</p>

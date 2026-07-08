@@ -1,11 +1,11 @@
+import { NuqsAdapter } from "nuqs/adapters/tanstack-router";
 import type { ComponentType, ReactNode } from "react";
 import { CookiesProvider } from "react-cookie";
-import { NuqsAdapter } from "nuqs/adapters/tanstack-router";
 
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { TanstackQueryProvider } from "./tanstack-query-provider";
 import { TanstackDevtoolsProvider } from "./tanstack-devtools-provider";
+import { TanstackQueryProvider } from "./tanstack-query-provider";
 
 interface ProviderProps {
   children: ReactNode;

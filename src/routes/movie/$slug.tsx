@@ -21,7 +21,7 @@ import { MovieModal } from "@/components/shared/modals/movie";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { api, apiEndpoints } from "@/lib/api.ts";
+import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils";
@@ -162,7 +162,7 @@ function MovieDetailsRoute() {
           </a>
         )}
         {(() => {
-          const ext = movie?.external || ({} as Record<string, any>);
+          const ext = movie?.external || ({} as Record<string, string>);
           const links: { href: string; key: string; className?: string; icon: ReactElement }[] = [];
 
           if (ext.instagram_id) {
@@ -348,11 +348,13 @@ function MovieDetailsRoute() {
         </TabsContent>
         <TabsContent value="reviews">
           <ReviewItem
-            user={{
-              name: "John Doe",
-              avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
-              slug: "john-doe",
-            }}
+            user={
+              {
+                name: "John Doe",
+                avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
+                slug: "john-doe",
+              } as unknown as ApiTypes.User
+            }
             reviewText={
               "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
             }
@@ -368,7 +370,16 @@ function MovieDetailsRoute() {
         </TabsContent>
         <TabsContent value="lists">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <ListItem />
+            <ListItem
+              list={
+                {
+                  _count: { listItems: 0 },
+                  listItems: [],
+                  name: "",
+                  user: { name: "", profile: null },
+                } as unknown as ApiTypes.ListWithPreview
+              }
+            />
           </div>
         </TabsContent>
         <TabsContent value="cast">

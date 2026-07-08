@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -20,7 +21,7 @@ import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { MangaModal } from "@/components/shared/modals/manga";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { api, apiEndpoints } from "@/lib/api.ts";
+import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
@@ -161,7 +162,7 @@ function MangaDetailsRoute() {
         <div className="flex flex-wrap gap-3 items-center justify-center">
           {(() => {
             const extArr = manga.external || [];
-            const links: any[] = [];
+            const links: { href: string; key: string; className?: string; icon: ReactNode }[] = [];
 
             extArr.forEach((e: { url: string; name: string }, i: number) => {
               const name = (e.name || "").toLowerCase();
@@ -373,11 +374,13 @@ function MangaDetailsRoute() {
         </TabsContent>
         <TabsContent value="reviews">
           <ReviewItem
-            user={{
-              name: "John Doe",
-              avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
-              slug: "john-doe",
-            }}
+            user={
+              {
+                name: "John Doe",
+                avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
+                slug: "john-doe",
+              } as unknown as ApiTypes.User
+            }
             reviewText={
               "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
             }
@@ -393,7 +396,16 @@ function MangaDetailsRoute() {
         </TabsContent>
         <TabsContent value="lists">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <ListItem />
+            <ListItem
+              list={
+                {
+                  _count: { listItems: 0 },
+                  listItems: [],
+                  name: "",
+                  user: { name: "", profile: null },
+                } as unknown as ApiTypes.ListWithPreview
+              }
+            />
           </div>
         </TabsContent>
         <TabsContent value="characters">

@@ -1,8 +1,9 @@
 import { Icon } from "@iconify/react";
+import { Image } from "@unpic/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -161,8 +162,17 @@ function CommentInput({
         <div className="p-4">
           <div className="flex gap-4">
             <Avatar className="size-8 border border-border/50" aria-hidden="true">
-              <AvatarImage src={session?.data?.user?.profile?.avatarUrl as string} alt="" />
-              <AvatarFallback>YO</AvatarFallback>
+              {session?.data?.user?.profile?.avatarUrl ? (
+                <Image
+                  className="aspect-square size-full"
+                  src={session.data.user.profile.avatarUrl}
+                  width={32}
+                  height={32}
+                  alt=""
+                />
+              ) : (
+                <AvatarFallback>YO</AvatarFallback>
+              )}
             </Avatar>
             <div className="flex-1">
               <label htmlFor={uniqueId} id={uniqueLabelId} className="sr-only">
@@ -273,8 +283,17 @@ function CommentItem({
     >
       <div className="flex gap-4">
         <Avatar className={cn("border border-border/50", isReply ? "h-8 w-8" : "h-10 w-10")}>
-          <AvatarImage src={comment.user.avatar} alt={`${comment.user.name}'s avatar`} />
-          <AvatarFallback aria-hidden="true">{comment.user.name[0]}</AvatarFallback>
+          {comment.user.avatar ? (
+            <Image
+              className="aspect-square size-full"
+              src={comment.user.avatar}
+              width={isReply ? 32 : 40}
+              height={isReply ? 32 : 40}
+              alt={`${comment.user.name}'s avatar`}
+            />
+          ) : (
+            <AvatarFallback aria-hidden="true">{comment.user.name[0]}</AvatarFallback>
+          )}
         </Avatar>
 
         <div className="flex-1 space-y-1.5">

@@ -607,7 +607,6 @@ export const EditorBubbleMenu = ({ className, children, ...props }: EditorBubble
               return [child];
             }
 
-            // biome-ignore lint/suspicious/noArrayIndexKey: "only iterator we have"
             acc.push(<Separator key={index} orientation="vertical" />);
             acc.push(child);
             return acc;

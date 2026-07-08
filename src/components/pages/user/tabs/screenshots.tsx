@@ -1,40 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Grid } from "@/components/layouts/grid";
-import { UserLayout } from "@/components/layouts/user";
 import { ScreenshotItem } from "@/components/shared/cards/screenshot";
 
-export const Route = createFileRoute("/user/$username/screenshots/")({
-  head: ({ params }) => ({
-    meta: [{ title: `${params.username}'s Screenshots | TrackGeek` }],
-  }),
-  component: ScreenshotsRoute,
-});
-
-function ScreenshotsRoute() {
-  const { username } = Route.useParams();
-
-  const user = {
-    username,
-    avatarUrl: "https://github.com/Kuriel23.png",
-    bio: "Apaixonada por anime, leitora ávida e avaliadora. Gosto de slice-of-life e sci-fi. Escrevo reviews detalhadas e listas de favoritos.",
-    followers: 324,
-    following: 48,
-  };
-
-  const medals = [
-    {
-      id: "m1",
-      name: "Top Reviewer",
-      description: "100+ reviews and highly rated",
-    },
-    {
-      id: "m2",
-      name: "Marathon Watcher",
-      description: "1000+ episodes watched",
-    },
-    { id: "m3", name: "Community Helper", description: "10 helpful reviews" },
-  ];
-
+export function UserScreenshotsTab() {
   const gamesWithScreenshots = [
     {
       id: "a1",
@@ -75,12 +42,10 @@ function ScreenshotsRoute() {
   ];
 
   return (
-    <UserLayout user={user} medalsCount={medals.length} entriesCount={2}>
-      <Grid minColSize={"128px"} className="flex w-full flex-col rounded-2xl py-4 px-2 gap-6">
-        {gamesWithScreenshots.map((f) => (
-          <ScreenshotItem key={f.id} title={f.title} imageURL={f.image} images={f.images} />
-        ))}
-      </Grid>
-    </UserLayout>
+    <Grid minColSize={"128px"} className="flex w-full flex-col rounded-2xl py-4 px-2 gap-6">
+      {gamesWithScreenshots.map((f) => (
+        <ScreenshotItem key={f.id} title={f.title} imageURL={f.image} images={f.images} />
+      ))}
+    </Grid>
   );
 }

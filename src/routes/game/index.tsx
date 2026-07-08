@@ -1,5 +1,6 @@
 import { useQueries } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
 import { CardItem } from "@/components/shared/cards/card";
@@ -79,8 +80,10 @@ function GameRoute() {
             return (
               <CarouselItem key={game.id}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
-                  <img
+                  <Image
                     src={keyArt || artworks[0]?.url || game.coverUrl}
+                    layout="fullWidth"
+                    aspectRatio={16 / 9}
                     className="w-full h-60 md:h-120 object-cover object-top"
                     alt={game.name}
                   />

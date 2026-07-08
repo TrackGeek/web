@@ -49,7 +49,7 @@ function PopularMovieRoute() {
     <div className="mx-auto w-full py-6 space-y-4">
       <p className="text-2xl font-bold mb-4">{t("common:mostPopular")}</p>
       <Grid minColSize={"128px"} className={"grid-cols-5"}>
-        {movies?.map((movie: any) => (
+        {movies?.map((movie) => (
           <CardItem
             title={movie.name}
             url={`/movie/${movie.tmdbId}`}

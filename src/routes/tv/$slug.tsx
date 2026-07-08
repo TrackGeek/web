@@ -771,7 +771,7 @@ function TVShowDetailsPage() {
 
             <TabsContent value="episodes">
               <Accordion type="single" collapsible value={openSeason} onValueChange={setOpenSeason}>
-                {seasons.map((season) => {
+                {seasons.map((season: any) => {
                   const seasonValue = `item-${season.seasonNumber}`;
 
                   return (

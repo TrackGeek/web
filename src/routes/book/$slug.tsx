@@ -17,7 +17,7 @@ import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { BookModal } from "@/components/shared/modals/book";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { api, apiEndpoints } from "@/lib/api.ts";
+import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { seo } from "@/lib/utils/seo";
 
@@ -309,11 +309,13 @@ function BookDetailsRoute() {
         {!reviewsData.isLoading && !reviewsData.isError && reviews.total >= 1 && (
           <TabsContent value="reviews">
             <ReviewItem
-              user={{
-                name: "John Doe",
-                avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
-                slug: "john-doe",
-              }}
+              user={
+                {
+                  name: "John Doe",
+                  avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
+                  slug: "john-doe",
+                } as unknown as ApiTypes.User
+              }
               reviewText={
                 "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
               }
@@ -330,7 +332,16 @@ function BookDetailsRoute() {
         )}
         <TabsContent value="lists">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <ListItem />
+            <ListItem
+              list={
+                {
+                  _count: { listItems: 0 },
+                  listItems: [],
+                  name: "",
+                  user: { name: "", profile: null },
+                } as unknown as ApiTypes.ListWithPreview
+              }
+            />
           </div>
         </TabsContent>
       </Tabs>

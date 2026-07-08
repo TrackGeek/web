@@ -27,6 +27,18 @@
       }
     }
   },
+  "overrides": [
+    {
+      "includes": ["src/routes/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    }
+  ],
   "javascript": {
     "formatter": {
       "quoteStyle": "double"

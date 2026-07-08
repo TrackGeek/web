@@ -136,7 +136,7 @@ function CreditsRoute() {
                   name={contributor.login}
                   url={contributor.html_url}
                   avatarURL={contributor.avatar_url}
-                  role="developer"
+                  roleType="developer"
                 />
               ))
             )}

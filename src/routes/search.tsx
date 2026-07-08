@@ -114,7 +114,7 @@ const SearchResults = memo(
 
         {!isLoading && !isError && (
           <Grid minColSize="128px" className="grid gap-6">
-            {items.map((item) => (
+            {items.map((item: any) => (
               <CardItem
                 key={item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}
                 title={item.title ?? item.name}

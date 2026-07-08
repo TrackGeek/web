@@ -72,7 +72,7 @@ function AnimeRoute() {
         }}
       >
         <CarouselContent>
-          {topAiring?.slice(0, 3).map((anime) => {
+          {topAiring?.slice(0, 3).map((anime: any) => {
             const getYoutubeThumbnail = (url: string) => {
               if (!url) return null;
               const match = url.match(/\/embed\/([^/?]+)/);
@@ -126,7 +126,7 @@ function AnimeRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {topAiring?.slice(0, 16).map((anime) => (
+          {topAiring?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
               url={`/anime/${anime.malId}`}
@@ -152,7 +152,7 @@ function AnimeRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {recommendations?.slice(0, 16).map((anime) => (
+          {recommendations?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
               url={`/anime/${anime.malId}`}
@@ -178,7 +178,7 @@ function AnimeRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {comingSoon?.slice(0, 16).map((anime) => (
+          {comingSoon?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
               url={`/anime/${anime.malId}`}
@@ -204,7 +204,7 @@ function AnimeRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {topQuery?.slice(0, 16).map((anime) => (
+          {topQuery?.slice(0, 16).map((anime: any) => (
             <CardItem
               title={anime.title}
               url={`/anime/${anime.malId}`}

@@ -25,7 +25,7 @@ function GameFranchiseRoute() {
     <div className="mx-auto w-full">
       {games.map((game) => {
         const artworks = Array.isArray(game.artworks) ? game.artworks : [];
-        const keyArt = artworks.find((a) => a.type === "Key art without logo")?.url;
+        const keyArt = artworks.find((a: any) => a.type === "Key art without logo")?.url;
 
         return (
           <div className="relative w-full overflow-hidden rounded-xl border border-border" key={game.id}>

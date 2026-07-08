@@ -1,0 +1,15 @@
+{
+  "title": "Comments",
+  "count_one": "{{count}} comment",
+  "count_other": "{{count}} comments",
+  "placeholder": "Write a comment...",
+  "required": "Comment cannot be empty.",
+  "tooLong": "Comment is too long.",
+  "empty": "No comments yet.",
+  "emptyDescription": "Be the first to leave a comment.",
+  "loginToComment": "Log in to leave a comment.",
+  "addSuccess": "Comment posted.",
+  "addError": "Failed to post comment.",
+  "deleteSuccess": "Comment deleted.",
+  "deleteError": "Failed to delete comment."
+}

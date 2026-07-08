@@ -1,7 +1,7 @@
 {
   "banner": {
     "title": "Banner",
-    "description": "Formatos permitidos: JPG, JPEG, PNG, GIF. Tamanho máximo: 5mb. Dimensões ideais: 1700x330",
+    "description": "Allowed Formats: JPG, JPEG, PNG, GIF. Max size: 5mb. Optimal dimensions: 1200x330",
     "upload": {
       "title": "Carregar banner",
       "success": "Banner carregado com sucesso.",
@@ -30,13 +30,24 @@
     "description": "Gerencie as suas informações pessoais e preferências.",
     "name": "Nome",
     "username": "Nome de utilizador",
-    "about": "Sobre Mim"
+    "about": "Sobre Mim",
+    "errors": {
+      "nameMin": "Name must be at least 2 characters.",
+      "nameMax": "Name must be at most 50 characters.",
+      "usernameMin": "Username must be at least 3 characters.",
+      "usernameMax": "Username must be at most 30 characters.",
+      "usernameFormat": "Username can only contain letters, numbers and underscores.",
+      "aboutMax": "About must be at most 500 characters."
+    }
   },
   "color": {
     "title": "Cor do Tema",
     "description": "Escolha a sua cor de tema preferida para a interface do aplicativo.",
     "custom": "Cor Personalizada",
-    "reset": "Reset to default"
+    "reset": "Reset to default",
+    "errors": {
+      "invalid": "Color must be a valid hex code."
+    }
   },
   "save": {
     "title": "Guardar Alterações",

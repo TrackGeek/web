@@ -1,7 +1,7 @@
 {
   "banner": {
     "title": "Banner",
-    "description": "Allowed Formats: JPG, JPEG, PNG, GIF. Max size: 5mb. Optimal dimensions: 1700x330",
+    "description": "Allowed Formats: JPG, JPEG, PNG, GIF. Max size: 5mb. Optimal dimensions: 1200x330",
     "upload": {
       "title": "Upload Banner",
       "success": "Banner uploaded successfully.",
@@ -30,13 +30,24 @@
     "description": "Manage your personal information and preferences.",
     "name": "Name",
     "username": "Username",
-    "about": "About Me"
+    "about": "About Me",
+    "errors": {
+      "nameMin": "Name must be at least 2 characters.",
+      "nameMax": "Name must be at most 50 characters.",
+      "usernameMin": "Username must be at least 3 characters.",
+      "usernameMax": "Username must be at most 30 characters.",
+      "usernameFormat": "Username can only contain letters, numbers and underscores.",
+      "aboutMax": "About must be at most 500 characters."
+    }
   },
   "color": {
     "title": "Color Theme",
     "description": "Choose your preferred color theme for the application interface.",
     "custom": "Custom Color",
-    "reset": "Reset to default"
+    "reset": "Reset to default",
+    "errors": {
+      "invalid": "Color must be a valid hex code."
+    }
   },
   "save": {
     "title": "Save Changes",

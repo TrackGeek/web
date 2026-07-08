@@ -72,7 +72,7 @@ function MovieRoute() {
         }}
       >
         <CarouselContent>
-          {airing?.slice(0, 3).map((movie: any) => {
+          {airing?.slice(0, 3).map((movie) => {
             return (
               <CarouselItem key={movie.tmdbId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
@@ -120,7 +120,7 @@ function MovieRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {trending?.slice(0, 16).map((movie: any) => (
+          {trending?.slice(0, 16).map((movie) => (
             <CardItem
               title={movie.name}
               url={`/movie/${movie.tmdbId}`}
@@ -140,7 +140,7 @@ function MovieRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {popular?.slice(0, 16).map((movie: any) => (
+          {popular?.slice(0, 16).map((movie) => (
             <CardItem
               title={movie.name}
               url={`/movie/${movie.tmdbId}`}
@@ -160,7 +160,7 @@ function MovieRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {airing?.slice(0, 16).map((movie: any) => (
+          {airing?.slice(0, 16).map((movie) => (
             <CardItem
               title={movie.name}
               url={`/movie/${movie.tmdbId}`}
@@ -180,7 +180,7 @@ function MovieRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {upcoming?.slice(0, 16).map((movie: any) => (
+          {upcoming?.slice(0, 16).map((movie) => (
             <CardItem
               title={movie.name}
               url={`/movie/${movie.tmdbId}`}

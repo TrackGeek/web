@@ -78,6 +78,7 @@ export function UserProfileHeader({ user, username, onUserRefresh }: UserProfile
 
           <div className="flex items-center gap-2">
             <button
+              type="button"
               className="text-md text-accent-foreground block cursor-pointer hover:underline"
               onClick={() => {
                 navigator.clipboard.writeText(`${user.username}`);

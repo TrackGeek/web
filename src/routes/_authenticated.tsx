@@ -3,7 +3,7 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
   beforeLoad: async ({ context }) => {
-    let session: any;
+    let session: Awaited<ReturnType<typeof context.auth.getSession>>;
 
     try {
       session = await context.auth.getSession();

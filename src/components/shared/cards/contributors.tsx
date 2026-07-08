@@ -9,10 +9,10 @@ interface ContributorsProps {
   name: string;
   url: string;
   avatarURL: string;
-  role: RoleType;
+  roleType: RoleType;
 }
 
-export function ContributorsItem({ name, url, avatarURL, role }: ContributorsProps) {
+export function ContributorsItem({ name, url, avatarURL, roleType }: ContributorsProps) {
   const { t } = useTranslation();
 
   return (
@@ -32,7 +32,7 @@ export function ContributorsItem({ name, url, avatarURL, role }: ContributorsPro
       </TooltipTrigger>
       <TooltipContent side="bottom">
         <p className="text-primary font-bold text-xl">{name}</p>
-        <p className="text-card-foreground">{t(`common:roles.${role}`)}</p>
+        <p className="text-card-foreground">{t(`common:roles.${roleType}`)}</p>
       </TooltipContent>
     </Tooltip>
   );

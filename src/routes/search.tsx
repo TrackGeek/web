@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import type { AxiosResponse } from "axios";
 import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
 import { memo, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -54,7 +55,7 @@ function buildSearchUrl(contentType: ContentType, query: string = "A", filters: 
   return qsStr ? `/${contentType}/search?${qsStr}` : `/${contentType}/search`;
 }
 
-function getItemsFromPage(page: any, contentType: ContentType): any[] {
+function getItemsFromPage(page: AxiosResponse, contentType: ContentType) {
   const data = page?.data;
   switch (contentType) {
     case "anime":
@@ -74,7 +75,7 @@ function getItemsFromPage(page: any, contentType: ContentType): any[] {
   }
 }
 
-function getPaginationFromPage(page: any, contentType: ContentType) {
+function getPaginationFromPage(page: AxiosResponse, contentType: ContentType) {
   const data = page?.data;
   switch (contentType) {
     case "anime":
@@ -95,7 +96,7 @@ function getPaginationFromPage(page: any, contentType: ContentType) {
 }
 
 type SearchResultsProps = {
-  items: any[];
+  items: ReturnType<typeof getItemsFromPage>;
   contentType: ContentType;
   isLoading: boolean;
   isError: boolean;
@@ -113,7 +114,7 @@ const SearchResults = memo(
 
         {!isLoading && !isError && (
           <Grid minColSize="128px" className="grid gap-6">
-            {items.map((item: any) => (
+            {items.map((item) => (
               <CardItem
                 key={item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}
                 title={item.title ?? item.name}

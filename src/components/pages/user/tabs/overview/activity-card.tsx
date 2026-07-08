@@ -46,6 +46,7 @@ const renderRect =
     });
 
     return (
+      // biome-ignore lint/a11y/noStaticElementInteractions: decorative heatmap tile, hover only shows a tooltip
       <rect
         className="transition-all hover:brightness-125"
         onMouseEnter={() => handleMouseEnter(tileInfo)}
@@ -83,6 +84,7 @@ export function ActivityCard() {
     return () => observer.disconnect();
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: re-run to scroll to the end whenever width recomputes
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;

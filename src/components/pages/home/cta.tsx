@@ -13,7 +13,7 @@ export function CTA() {
 
           const el = entry.target as HTMLElement;
 
-          const simple = (props: any) => {
+          const simple = (props: Parameters<typeof animate>[1]) => {
             animate(el, { ...props });
             observer.unobserve(el);
           };

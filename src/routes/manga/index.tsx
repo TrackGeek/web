@@ -71,7 +71,7 @@ function MangaRoute() {
         }}
       >
         <CarouselContent>
-          {publishing?.slice(0, 3).map((manga: any, index: number) => {
+          {publishing?.slice(0, 3).map((manga, index: number) => {
             return (
               <CarouselItem key={manga.malId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
@@ -119,7 +119,7 @@ function MangaRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {publishing?.slice(0, 16).map((manga: any) => (
+          {publishing?.slice(0, 16).map((manga) => (
             <CardItem
               title={manga.title}
               url={`/manga/${manga.malId}`}
@@ -143,7 +143,7 @@ function MangaRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {recommendations?.slice(0, 16).map((manga: any) => (
+          {recommendations?.slice(0, 16).map((manga) => (
             <CardItem
               title={manga.title}
               url={`/manga/${manga.malId}`}
@@ -167,7 +167,7 @@ function MangaRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {upcoming?.slice(0, 16).map((manga: any) => (
+          {upcoming?.slice(0, 16).map((manga) => (
             <CardItem
               title={manga.title}
               url={`/manga/${manga.malId}`}
@@ -191,7 +191,7 @@ function MangaRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {favorite?.slice(0, 16).map((manga: any) => (
+          {favorite?.slice(0, 16).map((manga) => (
             <CardItem
               title={manga.title}
               url={`/manga/${manga.malId}`}

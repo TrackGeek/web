@@ -34,7 +34,6 @@ const components: Components = {
   h5: ({ children }) => <p className="font-semibold">{children}</p>,
   h6: ({ children }) => <p className="font-semibold">{children}</p>,
   img: ({ alt, src }) => (
-    // biome-ignore lint/a11y/useAltText: alt is forwarded from markdown ![alt](src)
     <img
       src={typeof src === "string" ? src : undefined}
       alt={alt ?? ""}

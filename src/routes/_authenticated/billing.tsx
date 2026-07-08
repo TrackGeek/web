@@ -229,7 +229,7 @@ function PaymentDetailDialog({
     queryKey: ["payments", paymentId],
     queryFn: () =>
       api
-        .get<ApiTypes.GetPaymentDetailsResponse>(apiEndpoints.getPaymentDetails(paymentId!))
+        .get<ApiTypes.GetPaymentDetailsResponse>(apiEndpoints.getPaymentDetails(paymentId ?? ""))
         .then((response) => response.data),
     staleTime: 1000 * 60 * 60,
     enabled: !!paymentId,

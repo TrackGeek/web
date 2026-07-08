@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 
 function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
+    // biome-ignore lint/a11y/useSemanticElements: input group container needs role="group", not a fieldset
     <div
       data-slot="input-group"
       role="group"
@@ -57,6 +58,8 @@ function InputGroupAddon({
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof inputGroupAddonVariants>) {
   return (
+    // biome-ignore lint/a11y/useSemanticElements: addon container needs role="group", not a fieldset
+    // biome-ignore lint/a11y/useKeyWithClickEvents: click only forwards focus to the input; not a keyboard control
     <div
       role="group"
       data-slot="input-group-addon"

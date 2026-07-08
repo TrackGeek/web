@@ -72,10 +72,10 @@ function GameRoute() {
         }}
       >
         <CarouselContent>
-          {popular?.slice(0, 3).map((game: any) => {
+          {popular?.slice(0, 3).map((game) => {
             const artworks = Array.isArray(game.artworks) ? game.artworks : [];
-            const keyArt = artworks.find((a: any) => a.type === "Key art without logo")?.url;
-            const logoArt = artworks.find((a: any) => a.type === "Game logo (color)")?.url;
+            const keyArt = artworks.find((a) => a.type === "Key art without logo")?.url;
+            const logoArt = artworks.find((a) => a.type === "Game logo (color)")?.url;
 
             return (
               <CarouselItem key={game.id}>
@@ -132,7 +132,7 @@ function GameRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {popular?.slice(0, 16).map((game: any) => {
+          {popular?.slice(0, 16).map((game) => {
             const releaseDate = game.firstReleaseDate ? new Date(game.firstReleaseDate) : null;
             const releaseYear =
               releaseDate && !Number.isNaN(releaseDate.getTime()) ? releaseDate.getFullYear() : undefined;
@@ -158,7 +158,7 @@ function GameRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {recentlyReleased?.slice(0, 16).map((game: any) => {
+          {recentlyReleased?.slice(0, 16).map((game) => {
             const releaseDate = game.firstReleaseDate ? new Date(game.firstReleaseDate) : null;
             const releaseYear =
               releaseDate && !Number.isNaN(releaseDate.getTime()) ? releaseDate.getFullYear() : undefined;
@@ -184,7 +184,7 @@ function GameRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {comingSoon?.slice(0, 16).map((game: any) => {
+          {comingSoon?.slice(0, 16).map((game) => {
             const releaseDate = game.firstReleaseDate ? new Date(game.firstReleaseDate) : null;
             const releaseYear =
               releaseDate && !Number.isNaN(releaseDate.getTime()) ? releaseDate.getFullYear() : undefined;
@@ -210,7 +210,7 @@ function GameRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {anticipated?.slice(0, 16).map((game: any) => {
+          {anticipated?.slice(0, 16).map((game) => {
             const releaseDate = game.firstReleaseDate ? new Date(game.firstReleaseDate) : null;
             const releaseYear =
               releaseDate && !Number.isNaN(releaseDate.getTime()) ? releaseDate.getFullYear() : undefined;

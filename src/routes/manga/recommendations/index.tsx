@@ -50,7 +50,7 @@ function RecommendationsMangaRoute() {
     <div className="mx-auto w-full py-6 space-y-4">
       <p className="text-2xl font-bold mb-4">{t("common:recommendations")}</p>
       <Grid minColSize={"128px"} className={"grid-cols-5"}>
-        {mangas?.map((manga: any) => (
+        {mangas?.map((manga) => (
           <CardItem
             title={manga.title}
             url={`/manga/${manga.malId}`}

@@ -16,7 +16,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Textarea } from "../../ui/textarea";
 
 interface BookModalProps {
-  mediaData?: any;
+  mediaData?: unknown;
   onStatusChange?: (status: string) => void;
   onSaveSuccess?: (status: string) => void;
 }

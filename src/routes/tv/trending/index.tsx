@@ -49,7 +49,7 @@ function TrendingTVShowRoute() {
     <div className="mx-auto w-full py-6 space-y-4">
       <p className="text-2xl font-bold mb-4">{t("feed:trending")}</p>
       <Grid minColSize={"128px"} className={"grid-cols-5"}>
-        {tvShows?.map((serie: any) => {
+        {tvShows?.map((serie) => {
           const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
           const airYear =
             firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;

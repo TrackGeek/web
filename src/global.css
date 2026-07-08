@@ -115,6 +115,7 @@
 
   .asw-menu,
   .asw-widget {
+    /* biome-ignore lint/complexity/noImportantStyles: override third-party accessibility widget variable */
     --asw-primary: var(--color-malachite-500) !important;
   }
 }

@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Image } from "@unpic/react";
 import type { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -163,7 +162,7 @@ function MovieDetailsRoute() {
           </a>
         )}
         {(() => {
-          const ext = movie?.external || ({} as Record<string, any>);
+          const ext = movie?.external || ({} as Record<string, string>);
           const links: { href: string; key: string; className?: string; icon: ReactElement }[] = [];
 
           if (ext.instagram_id) {

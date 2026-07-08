@@ -5,7 +5,7 @@ import * as i18nextReact from "react-i18next";
 
 const modules = import.meta.glob("./locales/**/*.json", { eager: true });
 
-const resources: Record<string, Record<string, any>> = {};
+const resources: Record<string, Record<string, unknown>> = {};
 
 for (const path in modules) {
   const parts = path.split("/");

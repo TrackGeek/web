@@ -73,7 +73,7 @@ function SerieRoute() {
         }}
       >
         <CarouselContent>
-          {airing?.slice(0, 3).map((serie: any) => {
+          {airing?.slice(0, 3).map((serie) => {
             return (
               <CarouselItem key={serie.tmdbId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
@@ -122,7 +122,7 @@ function SerieRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {trending?.slice(0, 16).map((serie: any) => {
+          {trending?.slice(0, 16).map((serie) => {
             const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
             const airYear =
               firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;
@@ -147,7 +147,7 @@ function SerieRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {popular?.slice(0, 16).map((serie: any) => {
+          {popular?.slice(0, 16).map((serie) => {
             const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
             const airYear =
               firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;
@@ -172,7 +172,7 @@ function SerieRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {airing?.slice(0, 16).map((serie: any) => {
+          {airing?.slice(0, 16).map((serie) => {
             const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
             const airYear =
               firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;
@@ -197,7 +197,7 @@ function SerieRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {upcoming?.slice(0, 16).map((serie: any) => {
+          {upcoming?.slice(0, 16).map((serie) => {
             const firstAirDate = serie.firstAirDate ? new Date(serie.firstAirDate) : null;
             const airYear =
               firstAirDate && !Number.isNaN(firstAirDate.getTime()) ? firstAirDate.getFullYear() : undefined;

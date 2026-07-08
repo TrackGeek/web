@@ -6,7 +6,7 @@
  * https://vite.dev/guide/env-and-mode#intellisense-for-typescript
  */
 
-type ViteTypeOptions = {};
+type ViteTypeOptions = Record<string, never>;
 
 interface ImportMetaEnv {
   readonly VITE_API_URL: string;

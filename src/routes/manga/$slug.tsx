@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Image } from "@unpic/react";
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -162,7 +162,7 @@ function MangaDetailsRoute() {
         <div className="flex flex-wrap gap-3 items-center justify-center">
           {(() => {
             const extArr = manga.external || [];
-            const links: any[] = [];
+            const links: { href: string; key: string; className?: string; icon: ReactNode }[] = [];
 
             extArr.forEach((e: { url: string; name: string }, i: number) => {
               const name = (e.name || "").toLowerCase();

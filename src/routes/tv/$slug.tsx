@@ -524,7 +524,13 @@ function TVShowDetailsPage() {
             )
               .filter((l) => !!l.id)
               .map((l) => (
-                <a key={l.key} href={l.href(l.id!)} target="_blank" rel="noopener noreferrer" className={l.className}>
+                <a
+                  key={l.key}
+                  href={l.href(l.id ?? "")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={l.className}
+                >
                   <Icon icon={l.icon} />
                 </a>
               ))}
@@ -765,7 +771,7 @@ function TVShowDetailsPage() {
 
             <TabsContent value="episodes">
               <Accordion type="single" collapsible value={openSeason} onValueChange={setOpenSeason}>
-                {seasons.map((season: any) => {
+                {seasons.map((season) => {
                   const seasonValue = `item-${season.seasonNumber}`;
 
                   return (

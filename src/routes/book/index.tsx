@@ -62,7 +62,7 @@ function BookRoute() {
         }}
       >
         <CarouselContent>
-          {trendingQuery?.slice(0, 3).map((book: any, index: number) => {
+          {trendingQuery?.slice(0, 3).map((book, index: number) => {
             return (
               <CarouselItem key={book.id}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
@@ -110,7 +110,7 @@ function BookRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {trendingQuery?.slice(0, 16).map((book: any) => (
+          {trendingQuery?.slice(0, 16).map((book) => (
             <CardItem
               title={book.title}
               url={`/book/${book.id}`}
@@ -130,7 +130,7 @@ function BookRoute() {
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
-          {comingSoonQuery?.slice(0, 16).map((book: any) => (
+          {comingSoonQuery?.slice(0, 16).map((book) => (
             <CardItem
               title={book.title}
               url={`/book/${book.id}`}

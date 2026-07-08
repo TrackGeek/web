@@ -56,7 +56,7 @@ function buildCriteriaList(criteries?: ReviewItemProps["criteries"]): { label: s
   const added = new Set<string>();
 
   for (const key of preferred) {
-    const val = (criteries as any)[key];
+    const val = criteries[key];
     if (val !== undefined) {
       result.push({ label: `feed:criteries.${key}`, rating: val as number });
       added.add(String(key));
@@ -134,7 +134,7 @@ export function ReviewItem({
                 <p className="text-sm font-bold text-muted-foreground">{user.name}</p>
               </Link>
             ) : (
-              <Link to={`/${routeName}/${entityId}` as any} className="min-w-0 w-auto shrink-0">
+              <Link to={`/${routeName}/${entityId}` as never} className="min-w-0 w-auto shrink-0">
                 <p className="font-bold truncate text-sm sm:text-base max-w-48">{reviewName}</p>
               </Link>
             )}

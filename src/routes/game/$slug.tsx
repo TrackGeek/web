@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Image } from "@unpic/react";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -76,9 +75,30 @@ const LAYOUT = {
   CENTER: { x: 0, y: 0 },
 };
 
-const buildRelationsData = (game: any) => {
-  const nodes: any[] = [];
-  const edges: any[] = [];
+type RelatedGame = { id: string; name: string; coverUrl: string };
+
+type GameRelations = {
+  id: string;
+  name: string;
+  coverUrl: string;
+  parentGame?: RelatedGame | null;
+  prequels?: RelatedGame[];
+  expandedGames?: RelatedGame[];
+  sequels?: RelatedGame[];
+  dlcs?: RelatedGame[];
+  expansions?: RelatedGame[];
+  ports?: RelatedGame[];
+  remakes?: RelatedGame[];
+  remasters?: RelatedGame[];
+  bundles?: RelatedGame[];
+};
+
+type FlowNode = { id: string; image: string; name: string; link: string; relationShip: string; x: number; y: number };
+type FlowEdge = { id: string; source: string; target: string };
+
+const buildRelationsData = (game: GameRelations) => {
+  const nodes: FlowNode[] = [];
+  const edges: FlowEdge[] = [];
   let nodeId = 0;
 
   const addNode = (name: string, image: string, link: string, relationship: string, x: number, y: number) => {
@@ -87,7 +107,7 @@ const buildRelationsData = (game: any) => {
     return id;
   };
 
-  const columnOffset = (items: any[], index: number) => {
+  const columnOffset = (items: unknown[], index: number) => {
     const total = items.length;
     return (index - (total - 1) / 2) * LAYOUT.V_SPACING;
   };
@@ -96,7 +116,7 @@ const buildRelationsData = (game: any) => {
 
   const leftRelations = [
     ...(game.parentGame?.id ? [{ data: game.parentGame, label: t("library:relationships.parent") }] : []),
-    ...(game.prequels?.map((g: any) => ({ data: g, label: t("library:relationships.prequel") })) ?? []),
+    ...(game.prequels?.map((g) => ({ data: g, label: t("library:relationships.prequel") })) ?? []),
   ];
 
   leftRelations.forEach(({ data, label }, i) => {
@@ -106,11 +126,11 @@ const buildRelationsData = (game: any) => {
   });
 
   const rightRelations = [
-    ...(game.expandedGames?.map((g: any) => ({ data: g, label: t("library:relationships.expandedGame") })) ?? []),
-    ...(game.sequels?.map((g: any) => ({ data: g, label: t("library:relationships.sequel") })) ?? []),
-    ...(game.dlcs?.map((g: any) => ({ data: g, label: t("library:relationships.dlc") })) ?? []),
-    ...(game.expansions?.map((g: any) => ({ data: g, label: t("library:relationships.expansion") })) ?? []),
-    ...(game.ports?.map((g: any) => ({ data: g, label: t("library:relationships.port") })) ?? []),
+    ...(game.expandedGames?.map((g) => ({ data: g, label: t("library:relationships.expandedGame") })) ?? []),
+    ...(game.sequels?.map((g) => ({ data: g, label: t("library:relationships.sequel") })) ?? []),
+    ...(game.dlcs?.map((g) => ({ data: g, label: t("library:relationships.dlc") })) ?? []),
+    ...(game.expansions?.map((g) => ({ data: g, label: t("library:relationships.expansion") })) ?? []),
+    ...(game.ports?.map((g) => ({ data: g, label: t("library:relationships.port") })) ?? []),
   ];
 
   rightRelations.forEach(({ data, label }, i) => {
@@ -120,8 +140,8 @@ const buildRelationsData = (game: any) => {
   });
 
   const bottomRelations = [
-    ...(game.remakes?.map((g: any) => ({ data: g, label: t("library:relationships.remake") })) ?? []),
-    ...(game.remasters?.map((g: any) => ({ data: g, label: t("library:relationships.remaster") })) ?? []),
+    ...(game.remakes?.map((g) => ({ data: g, label: t("library:relationships.remake") })) ?? []),
+    ...(game.remasters?.map((g) => ({ data: g, label: t("library:relationships.remaster") })) ?? []),
   ];
 
   bottomRelations.forEach(({ data, label }, i) => {
@@ -131,7 +151,7 @@ const buildRelationsData = (game: any) => {
   });
 
   const bundles = game.bundles ?? [];
-  bundles.forEach((data: any, i: number) => {
+  bundles.forEach((data, i) => {
     const x = columnOffset(bundles, i);
     const id = addNode(
       data.name,

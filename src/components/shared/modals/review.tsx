@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Image } from "@unpic/react";
 import type { TFunction } from "i18next";
 import { useEffect, useMemo } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, type Resolver, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { Button } from "@/components/ui/button.tsx";
@@ -94,7 +94,7 @@ export function ReviewModal({
   }, [review, criteria, hasStory]);
 
   const form = useForm<ReviewFormData>({
-    resolver: zodResolver(schema) as any,
+    resolver: zodResolver(schema) as Resolver<ReviewFormData>,
     defaultValues: buildDefaults(),
   });
 

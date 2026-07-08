@@ -9,10 +9,6 @@ export interface ListItemLink {
   image: string;
 }
 
-/**
- * Maps a list item (which may hold any media type) to a detail route link + preview data.
- * Returns null when the item has no populated media entity.
- */
 export function listItemToLink(item: ApiTypes.ListItem): ListItemLink | null {
   if (item.tvShow) {
     return {

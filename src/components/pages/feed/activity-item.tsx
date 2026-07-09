@@ -37,7 +37,7 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
         {hasMediaLink && mediaLink ? (
           <Link {...mediaLink}>
             <div className="w-30 h-35 rounded-l-xl bg-muted/50 flex items-center justify-center">
-              {item.coverURL ? (
+              {item.coverURL ? (
                 <Image
                   src={item.coverURL}
                   layout="fullWidth"
@@ -52,7 +52,7 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
           </Link>
         ) : (
           <div className="w-30 h-35 rounded-l-xl bg-muted/50 flex items-center justify-center">
-            {item.coverURL ? (
+            {item.coverURL ? (
               <Image
                 src={item.coverURL}
                 layout="fullWidth"
@@ -71,9 +71,13 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
             <span className="text-md font-semibold capitalize">
               <Trans>{item.title}</Trans>
             </span>
-            
+
             <div className="flex items-center gap-3">
-              <Link to="/user/$username" params={{ username: profile.username ?? "" }} className="flex items-center gap-2">
+              <Link
+                to="/user/$username"
+                params={{ username: profile.username ?? "" }}
+                className="flex items-center gap-2"
+              >
                 <Avatar size="sm">
                   {profile.avatarURL ? (
                     <Image
@@ -87,14 +91,12 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
                     <AvatarFallback>{profile.name.charAt(0)}</AvatarFallback>
                   )}
                 </Avatar>
-                
-                <p className="text-sm font-bold text-muted-foreground">
-                  {profile.name}
-                </p>
+
+                <p className="text-sm font-bold text-muted-foreground">{profile.name}</p>
               </Link>
             </div>
           </div>
-          
+
           <div className="flex flex-col items-end justify-between gap-3 ml-4 shrink-0 h-full">
             <p className="text-xs text-muted-foreground whitespace-nowrap">{item.time.toLocaleString(i18n.language)}</p>
 

@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import z from "zod";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Field, FieldError } from "@/components/ui/field";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -19,7 +20,6 @@ import type { ApiTypes } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 import { Markdown } from "./markdown";
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const MAX_LENGTH = 500;
 
@@ -81,13 +81,13 @@ export function Comments({ className, canModerate = false, ...target }: Comments
       <CardHeader>
         <CardTitle>
           <Icon icon="lucide:message-circle" className="size-5" />
-          
+
           {t("comments:title")}
-          
+
           {total > 0 && <span className="text-sm text-muted-foreground">{t("comments:count", { count: total })}</span>}
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent>
         {canComment ? (
           <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-2">
@@ -100,7 +100,9 @@ export function Comments({ className, canModerate = false, ...target }: Comments
                 className="min-h-20 resize-none"
                 {...form.register("content")}
               />
-              {form.formState.errors.content?.message && <FieldError>{form.formState.errors.content.message}</FieldError>}
+              {form.formState.errors.content?.message && (
+                <FieldError>{form.formState.errors.content.message}</FieldError>
+              )}
             </Field>
             <div className="flex items-center justify-end gap-2">
               <span className="text-xs text-muted-foreground">

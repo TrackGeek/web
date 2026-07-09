@@ -1,8 +1,8 @@
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFavorites } from "@/hooks/favorite";
 import { FavoriteCard, type FavoriteItem, favoriteToItem } from "./favorite-card";
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface FavoritesCardProps {
   userId: string;
@@ -27,10 +27,10 @@ export function FavoritesCard({ userId, onSeeMore }: FavoritesCardProps) {
         <CardTitle className="justify-between">
           <div className="flex items-center gap-2">
             <Icon icon="lucide:heart" className="size-5" />
-          
+
             {t("user:favorites")}
           </div>
-          
+
           {total > 6 && (
             <button
               type="button"
@@ -43,7 +43,7 @@ export function FavoritesCard({ userId, onSeeMore }: FavoritesCardProps) {
           )}
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent>
         {items.length > 0 ? (
           <div className="grid grid-cols-3 gap-3">

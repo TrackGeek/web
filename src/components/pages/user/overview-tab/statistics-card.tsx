@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ApiTypes } from "@/lib/api";
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface StatisticsCardProps {
   user: ApiTypes.User;
@@ -108,11 +108,11 @@ export function StatisticsCard({ user }: StatisticsCardProps) {
       <CardHeader>
         <CardTitle>
           <Icon icon="lucide:trending-up" className="size-5" />
-          
+
           {t("user:statistics")}
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {MEDIA_CONFIG.map(({ key, icon, label, gradient, border, iconColor }) => (

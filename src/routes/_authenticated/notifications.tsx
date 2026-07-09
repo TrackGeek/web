@@ -1,9 +1,11 @@
+import { Icon } from "@iconify/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { NotificationList } from "@/components/pages/notifications/list-notification";
 import { Button } from "@/components/ui/button";
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogClose,
@@ -21,8 +23,6 @@ import {
   useUnreadNotificationsCount,
 } from "@/hooks/notification";
 import { seo } from "@/lib/utils/seo";
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Icon } from '@iconify/react';
 
 export const Route = createFileRoute("/_authenticated/notifications")({
   head: () => ({
@@ -79,18 +79,21 @@ function NotificationsRoute() {
                 {t("notifications:markAllAsUnread")}
               </Button>
 
-              <Button variant="destructive" disabled={isPending || total === 0} onClick={() => setIsDeleteAllOpen(true)}>
+              <Button
+                variant="destructive"
+                disabled={isPending || total === 0}
+                onClick={() => setIsDeleteAllOpen(true)}
+              >
                 {t("notifications:deleteAll")}
               </Button>
             </div>
           </CardAction>
         </CardHeader>
-        
+
         <CardContent>
           <NotificationList />
         </CardContent>
       </Card>
-
 
       <Dialog open={isDeleteAllOpen} onOpenChange={setIsDeleteAllOpen}>
         <DialogContent>

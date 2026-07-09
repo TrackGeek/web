@@ -6,11 +6,11 @@ import { useTranslation } from "react-i18next";
 import { Markdown } from "@/components/shared/comments/markdown";
 import { StarRating } from "@/components/shared/star-rating";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
 import type { ApiTypes } from "@/lib/api";
 import { useSession } from "@/lib/auth";
 import { QUICK_REACTIONS } from "@/lib/reactions";
-import { Card, CardContent } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 interface ReviewItemProps {
   user?: ApiTypes.User;
@@ -114,7 +114,7 @@ export function ReviewItem({
       <CardContent className="flex flex-row p-0 gap-0">
         {reviewText && !user && (
           <div className={cn("flex rounded-l-xl items-center justify-center", coverURL ? "p-0" : "p-4")}>
-            {coverURL ? (
+            {coverURL ? (
               <div
                 className="h-full rounded-l-xl p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
                 style={{
@@ -122,7 +122,7 @@ export function ReviewItem({
                 }}
               >
                 <div className="absolute rounded-l-xl inset-0 backdrop-blur-sm bg-black/20" />
-                
+
                 <div className="flex flex-row rounded-l-xl items-center w-full">
                   <Image
                     src={coverURL}
@@ -138,7 +138,7 @@ export function ReviewItem({
             )}
           </div>
         )}
-            
+
         <div className="w-full flex flex-col gap-4 p-6">
           <div className="flex-1 flex flex-col gap-2">
             <div className="flex flex-col gap-3">

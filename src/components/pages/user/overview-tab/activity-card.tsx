@@ -1,10 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import HeatMap, { type SVGProps } from "@uiw/react-heat-map";
+import { Icon } from "@iconify/react";
 import { useQuery } from "@tanstack/react-query";
+import HeatMap, { type SVGProps } from "@uiw/react-heat-map";
 import type { TFunction } from "i18next";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Icon } from "@iconify/react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -45,9 +45,7 @@ const renderRect =
     handleTooltip: (pos: { x: number; y: number } | null) => void,
   ): SVGProps["rectRender"] =>
   (props, data) => {
-    const [year, month, day] = String(data.date)
-      .split(/[-/]/)
-      .map(Number);
+    const [year, month, day] = String(data.date).split(/[-/]/).map(Number);
     const date = new Date(year, month - 1, day);
 
     const formattedDate = `${date.toLocaleDateString("en-US", { month: "long" })} ${date.getDate()}${getDateSuffix(date.getDate())}, ${date.getFullYear()}`;
@@ -147,13 +145,13 @@ export function ActivityCard({ userId }: ActivityCardProps) {
       <CardHeader>
         <CardTitle>
           <Icon icon="lucide:activity" className="size-5" />
-          
+
           {t("user:activity")}
         </CardTitle>
-        
+
         <CardDescription>{hoveredTile}</CardDescription>
       </CardHeader>
-      
+
       <CardContent>
         <div ref={containerRef} className="relative overflow-visible">
           <div
@@ -193,10 +191,7 @@ export function ActivityCard({ userId }: ActivityCardProps) {
               style={{
                 left: Math.max(
                   12,
-                  Math.min(
-                    tooltipPos.x + rectSize / 2 + leftPad - scrollRef.current.scrollLeft,
-                    containerWidth - 12,
-                  ),
+                  Math.min(tooltipPos.x + rectSize / 2 + leftPad - scrollRef.current.scrollLeft, containerWidth - 12),
                 ),
                 top: tooltipPos.y - 8,
                 transform: "translate(-50%, -100%)",

@@ -14,11 +14,12 @@ interface CardProps {
 }
 
 export function CardItem(item: CardProps) {
-  const imageURL = (item.imageURL ?? null)?.replace(
-    "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-    "/placeholder/cover.webp",
-  ) ?? "/placeholder/cover.webp"
-  
+  const imageURL =
+    (item.imageURL ?? null)?.replace(
+      "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
+      "/placeholder/cover.webp",
+    ) ?? "/placeholder/cover.webp";
+
   return (
     <Link to={item.url} className="space-y-2">
       <div className="relative rounded-lg border border-border overflow-hidden aspect-3/4 group">

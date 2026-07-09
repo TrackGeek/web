@@ -2,6 +2,8 @@ import { Image } from "@unpic/react";
 import { useTranslation } from "react-i18next";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { ApiTypes } from "@/lib/api";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Icon } from "@iconify/react";
 
 interface MedalsCardProps {
   userMedals: ApiTypes.User["userMedals"];
@@ -31,18 +33,26 @@ export function MedalsCard({ userMedals }: MedalsCardProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-card rounded-2xl shadow-lg p-6 flex flex-col gap-2">
-      <h4 className="text-md font-semibold text-card-foreground">{t("user:medals")}</h4>
-
-      {userMedals.length > 0 ? (
-        <div className="grid grid-cols-4 gap-4">
-          {userMedals.map(({ medal }) => (
-            <MedalIcon key={medal.id} name={medal.name} imageUrl={medal.imageUrl} />
-          ))}
-        </div>
-      ) : (
-        <p className="text-muted-foreground leading-relaxed">{t("user:noMedals")}</p>
-      )}
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          <Icon icon="lucide:medal" className="size-5" />
+          
+          {t("user:medals")}
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent>
+        {userMedals.length > 0 ? (
+          <div className="grid grid-cols-4 gap-4">
+            {userMedals.map(({ medal }) => (
+              <MedalIcon key={medal.id} name={medal.name} imageUrl={medal.imageUrl} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-muted-foreground leading-relaxed">{t("user:noMedals")}</p>
+        )}
+      </CardContent>
+    </Card>
   );
 }

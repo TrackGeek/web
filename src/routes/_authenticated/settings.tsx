@@ -234,7 +234,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col border-border border bg-card rounded-xl p-6 col-span-1">
         <Field className="gap-2">
           <FieldLabel>
-            <Icon icon={"lucide:image"} className="size-6" />
+            <Icon icon={"lucide:image"} className="size-5" />
 
             {t("settings:avatar.title")}
           </FieldLabel>
@@ -315,7 +315,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col border-border border bg-card rounded-xl p-6 col-span-2">
         <Field className="gap-2">
           <FieldLabel>
-            <Icon icon={"lucide:image"} className="size-6" />
+            <Icon icon={"lucide:image"} className="size-5" />
 
             {t("settings:banner.title")}
           </FieldLabel>
@@ -396,7 +396,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-xl p-6 col-span-3">
         <Field className="gap-2">
           <FieldLabel>
-            <Icon icon={"lucide:user"} className="size-6" />
+            <Icon icon={"lucide:user"} className="size-5" />
 
             {t("settings:profile.title")}
           </FieldLabel>
@@ -474,7 +474,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-xl p-6 col-span-3">
         <Field className="gap-2">
           <FieldLabel>
-            <Icon icon={"lucide:palette"} className="size-6" />
+            <Icon icon={"lucide:palette"} className="size-5" />
 
             {t("settings:color.title")}
           </FieldLabel>
@@ -525,7 +525,7 @@ function SettingsRoute() {
       <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-xl p-6 col-span-3">
         <Field className="gap-2">
           <FieldLabel>
-            <Icon icon={"lucide:settings"} className="size-6" />
+            <Icon icon={"lucide:settings"} className="size-5" />
 
             {t("settings:preferrences.title")}
           </FieldLabel>

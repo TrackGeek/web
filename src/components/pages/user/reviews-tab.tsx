@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ReviewItem } from "@/components/pages/details/review";
+import { ReviewItem } from "@/components/pages/details/review-item";
 import { ReviewModal } from "@/components/shared/modals/review";
 import { SearchInput } from "@/components/shared/search-input";
 import { Button } from "@/components/ui/button";
@@ -113,7 +113,7 @@ export function UserReviewsTab({
           </EmptyHeader>
         </Empty>
       ) : (
-        <div className="flex flex-col divide-y divide-border/30">
+        <div className="flex flex-col divide-y gap-5 divide-border/30">
           {reviews.map((review) => {
             const mediaContent = REVIEW_CONTENT[contentType];
             const mediaData = review[mediaContent.mediaKey as keyof ApiTypes.Review];
@@ -121,6 +121,7 @@ export function UserReviewsTab({
             return (
               <ReviewItem
                 key={review.id}
+                coverURL={reviewMediaImage(contentType, review)}
                 reviewText={review.summary ?? ""}
                 notes={review.notes}
                 story={review.story}

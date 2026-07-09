@@ -16,7 +16,7 @@ import { ListItem } from "@/components/pages/details/list";
 import { MoreOptionsDialog } from "@/components/pages/details/more-options-dialog";
 import { QuickStatusButtons } from "@/components/pages/details/quick-status-buttons";
 import { Relations } from "@/components/pages/details/relations";
-import { ReviewItem } from "@/components/pages/details/review";
+import { ReviewItem } from "@/components/pages/details/review-item";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";

@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
 import type { ApiTypes } from "@/lib/api";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface StatisticsCardProps {
   user: ApiTypes.User;
@@ -103,22 +104,30 @@ export function StatisticsCard({ user }: StatisticsCardProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-card rounded-2xl shadow-lg p-6 flex flex-col gap-4">
-      <h4 className="text-md font-semibold text-card-foreground">{t("user:statistics")}</h4>
-
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        {MEDIA_CONFIG.map(({ key, icon, label, gradient, border, iconColor }) => (
-          <MediaTile
-            key={key}
-            icon={icon}
-            label={label}
-            gradient={gradient}
-            border={border}
-            iconColor={iconColor}
-            total={user.progressStats[key].total}
-          />
-        ))}
-      </div>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          <Icon icon="lucide:trending-up" className="size-5" />
+          
+          {t("user:statistics")}
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {MEDIA_CONFIG.map(({ key, icon, label, gradient, border, iconColor }) => (
+            <MediaTile
+              key={key}
+              icon={icon}
+              label={label}
+              gradient={gradient}
+              border={border}
+              iconColor={iconColor}
+              total={user.progressStats[key].total}
+            />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }

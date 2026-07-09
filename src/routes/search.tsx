@@ -119,12 +119,7 @@ const SearchResults = memo(
                 key={item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}
                 title={item.title ?? item.name}
                 url={`/${contentType}/${item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}`}
-                imageURL={
-                  (item.imageUrl ?? item.coverUrl ?? item.posterUrl ?? null)?.replace(
-                    "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-                    "/placeholder/cover.webp",
-                  ) ?? "/placeholder/cover.webp"
-                }
+                imageURL={item.imageUrl ?? item.coverUrl ?? item.posterUrl ?? null}
                 isAdult={item.isAdult}
               />
             ))}

@@ -1,0 +1,36 @@
+{
+  "title": "Notifications",
+  "description": "Everything people did with your comments, reviews and activity.",
+  "markAllAsRead": "Mark all as read",
+  "markAllAsUnread": "Mark all as unread",
+  "markAsRead": "Mark as read",
+  "markAsUnread": "Mark as unread",
+  "delete": "Delete",
+  "deleteAll": "Delete all",
+  "deleteAllTitle": "Delete all notifications?",
+  "deleteAllDescription": "This permanently deletes every notification you have. This cannot be undone.",
+  "cancel": "Cancel",
+  "system": "TrackGeek",
+  "learnMore": "Learn more",
+  "welcome": {
+    "title": "Welcome to TrackGeek",
+    "description": "Start tracking the anime, manga, shows, movies, games and books you love."
+  },
+  "unreadCount_one": "{{count}} unread notification",
+  "unreadCount_other": "{{count}} unread notifications",
+  "empty": {
+    "title": "No notifications yet",
+    "description": "When someone comments on your profile or reacts to your content, it shows up here."
+  },
+  "types": {
+    "CommentOnProfile": "commented on your profile",
+    "ReactionOnComment": "reacted to your comment",
+    "ReactionOnActivity": "reacted to your activity",
+    "ReactionOnAnimeReview": "reacted to your anime review",
+    "ReactionOnMangaReview": "reacted to your manga review",
+    "ReactionOnTvShowReview": "reacted to your TV show review",
+    "ReactionOnMovieReview": "reacted to your movie review",
+    "ReactionOnGameReview": "reacted to your game review",
+    "ReactionOnBookReview": "reacted to your book review"
+  }
+}

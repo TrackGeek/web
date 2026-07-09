@@ -17,9 +17,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { type CommentTarget, useAddComment, useComments, useDeleteComment } from "@/hooks/comment.ts";
 import type { ApiTypes } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
-import { cn } from "@/lib/utils";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 import { Markdown } from "./markdown";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const MAX_LENGTH = 500;
 
@@ -77,83 +77,90 @@ export function Comments({ className, canModerate = false, ...target }: Comments
   }
 
   return (
-    <section className={cn("bg-card rounded-2xl shadow-lg p-6 flex flex-col gap-4", className)}>
-      <header className="flex items-center gap-2">
-        <h4 className="text-md font-semibold text-card-foreground">{t("comments:title")}</h4>
-        {total > 0 && <span className="text-sm text-muted-foreground">{t("comments:count", { count: total })}</span>}
-      </header>
-
-      {canComment ? (
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-2">
-          <Field>
-            <Textarea
-              placeholder={t("comments:placeholder")}
-              maxLength={MAX_LENGTH}
-              disabled={addComment.isPending}
-              aria-invalid={Boolean(form.formState.errors.content)}
-              className="min-h-20 resize-none"
-              {...form.register("content")}
-            />
-            {form.formState.errors.content?.message && <FieldError>{form.formState.errors.content.message}</FieldError>}
-          </Field>
-          <div className="flex items-center justify-end gap-2">
-            <span className="text-xs text-muted-foreground">
-              {content.length}/{MAX_LENGTH}
-            </span>
-            <Button
-              type="submit"
-              size="sm"
-              disabled={!form.formState.isValid || addComment.isPending}
-              className="gap-2"
-            >
-              {t("common:send")}
-              <Icon icon="lucide:send" className="size-3" />
-            </Button>
-          </div>
-        </form>
-      ) : (
-        !sessionUserId && <p className="text-sm text-muted-foreground">{t("comments:loginToComment")}</p>
-      )}
-
-      {isLoading ? (
-        <div className="flex flex-col gap-4">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <div key={index} className="flex gap-3">
-              <Skeleton className="size-9 rounded-full" />
-              <div className="flex-1 flex flex-col gap-2">
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-4 w-full" />
-              </div>
+    <Card className={className}>
+      <CardHeader>
+        <CardTitle>
+          <Icon icon="lucide:message-circle" className="size-5" />
+          
+          {t("comments:title")}
+          
+          {total > 0 && <span className="text-sm text-muted-foreground">{t("comments:count", { count: total })}</span>}
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent>
+        {canComment ? (
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-2">
+            <Field>
+              <Textarea
+                placeholder={t("comments:placeholder")}
+                maxLength={MAX_LENGTH}
+                disabled={addComment.isPending}
+                aria-invalid={Boolean(form.formState.errors.content)}
+                className="min-h-20 resize-none"
+                {...form.register("content")}
+              />
+              {form.formState.errors.content?.message && <FieldError>{form.formState.errors.content.message}</FieldError>}
+            </Field>
+            <div className="flex items-center justify-end gap-2">
+              <span className="text-xs text-muted-foreground">
+                {content.length}/{MAX_LENGTH}
+              </span>
+              <Button
+                type="submit"
+                size="sm"
+                disabled={!form.formState.isValid || addComment.isPending}
+                className="gap-2"
+              >
+                {t("common:send")}
+                <Icon icon="lucide:send" className="size-3" />
+              </Button>
             </div>
-          ))}
-        </div>
-      ) : comments.length === 0 ? (
-        <Empty className="border-0">
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <Icon icon="lucide:message-circle" />
-            </EmptyMedia>
-            <EmptyTitle>{t("comments:empty")}</EmptyTitle>
-            {canComment && <EmptyDescription>{t("comments:emptyDescription")}</EmptyDescription>}
-          </EmptyHeader>
-        </Empty>
-      ) : (
-        <div className="flex flex-col gap-4">
-          {comments.map((comment) => (
-            <CommentItem
-              key={comment.id}
-              comment={comment}
-              canDelete={comment.userId === sessionUserId || canModerate}
-              isDeleting={deleteComment.isPending && deleteComment.variables === comment.id}
-              onDelete={() => handleDelete(comment.id)}
-            />
-          ))}
+          </form>
+        ) : (
+          !sessionUserId && <p className="text-sm text-muted-foreground">{t("comments:loginToComment")}</p>
+        )}
 
-          <div ref={sentinelRef} className="h-px" />
-          {isFetchingNextPage && <Skeleton className="h-4 w-full" />}
-        </div>
-      )}
-    </section>
+        {isLoading ? (
+          <div className="flex flex-col gap-4">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="flex gap-3">
+                <Skeleton className="size-9 rounded-full" />
+                <div className="flex-1 flex flex-col gap-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-4 w-full" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : comments.length === 0 ? (
+          <Empty className="border-0">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Icon icon="lucide:message-circle" />
+              </EmptyMedia>
+              <EmptyTitle>{t("comments:empty")}</EmptyTitle>
+              {canComment && <EmptyDescription>{t("comments:emptyDescription")}</EmptyDescription>}
+            </EmptyHeader>
+          </Empty>
+        ) : (
+          <div className="flex flex-col gap-4">
+            {comments.map((comment) => (
+              <CommentItem
+                key={comment.id}
+                comment={comment}
+                canDelete={comment.userId === sessionUserId || canModerate}
+                isDeleting={deleteComment.isPending && deleteComment.variables === comment.id}
+                onDelete={() => handleDelete(comment.id)}
+              />
+            ))}
+
+            <div ref={sentinelRef} className="h-px" />
+            {isFetchingNextPage && <Skeleton className="h-4 w-full" />}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 

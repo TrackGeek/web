@@ -13,6 +13,14 @@
   "moved": "moved a {{type}} from {{fromList}} to {{toList}}",
   "plansToRead": "plans to read <strong>{{content}}</strong>",
   "plansToWatch": "plans to watch <strong>{{content}}</strong>",
+  "startedTracking": "started <strong>{{content}}</strong>",
+  "completedTracking": "completed <strong>{{content}}</strong>",
+  "favorited": "favorited <strong>{{content}}</strong>",
+  "addedToList": "added <strong>{{content}}</strong> to a list",
+  "createdList": "created the list <strong>{{content}}</strong>",
+  "followed": "started following <strong>{{content}}</strong>",
+  "earnedMedal": "earned the <strong>{{content}}</strong> medal",
+  "joined": "joined TrackGeek",
   "lists": {
     "playing": "Playing",
     "wanttoplay": "Want to Play",
@@ -42,7 +50,8 @@
     "theme": "Theme",
     "art": "Art",
     "worldbuilding": "World-building",
-    "animation": "Animation"
+    "animation": "Animation",
+    "enjoyment": "Enjoyment"
   },
   "totalRewatches": "Total Rewatches",
   "startDate": "Start Date",

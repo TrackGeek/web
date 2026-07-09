@@ -4,6 +4,7 @@ import { Image } from "@unpic/react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useUnreadNotificationsCount } from "@/hooks/notification";
 import { signOut, useSession } from "@/lib/auth";
 import { AVATAR_BLUR } from "@/lib/image";
 import { getInitialsFromName } from "@/lib/utils";
@@ -23,23 +25,36 @@ export function UserDropdown() {
 
   const session = useSession();
 
+  const { data: unreadCount } = useUnreadNotificationsCount();
+
+  const unread = unreadCount ?? 0;
+  const hasUnread = unread > 0;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="border border-border size-9 cursor-pointer">
-          {session.data?.user?.profile?.avatarUrl ? (
-            <Image
-              className="aspect-square size-full"
-              src={session.data.user.profile.avatarUrl}
-              width={36}
-              height={36}
-              background={AVATAR_BLUR}
-              alt={session.data.user.name ?? ""}
-            />
-          ) : (
-            <AvatarFallback>{getInitialsFromName(session.data?.user?.name ?? "")}</AvatarFallback>
+        <div className="relative cursor-pointer">
+          <Avatar className="border border-border size-9">
+            {session.data?.user?.profile?.avatarUrl ? (
+              <Image
+                className="aspect-square size-full"
+                src={session.data.user.profile.avatarUrl}
+                width={36}
+                height={36}
+                background={AVATAR_BLUR}
+                alt={session.data.user.name ?? ""}
+              />
+            ) : (
+              <AvatarFallback>{getInitialsFromName(session.data?.user?.name ?? "")}</AvatarFallback>
+            )}
+          </Avatar>
+
+          {hasUnread && (
+            <span className="absolute right-0 top-0 size-2.5 rounded-full bg-destructive ring-2 ring-background">
+              <span className="sr-only">{t("notifications:unreadCount", { count: unread })}</span>
+            </span>
           )}
-        </Avatar>
+        </div>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg" align="end">
@@ -63,12 +78,18 @@ export function UserDropdown() {
           </DropdownMenuItem>
         )}
 
-        {/* <DropdownMenuItem asChild>
-          <Link to="/" search={{ landing: "true" }} className="cursor-pointer">
+        <DropdownMenuItem asChild>
+          <Link to="/notifications" className="cursor-pointer">
             <Icon icon={"lucide:bell"} className="text-white size-4.5" />
             {t("common:notifications")}
+
+            {hasUnread && (
+              <Badge variant="destructive" className="ml-auto">
+                {unread > 99 ? "99+" : unread}
+              </Badge>
+            )}
           </Link>
-        </DropdownMenuItem> */}
+        </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link to="/billing" className="cursor-pointer">

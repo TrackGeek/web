@@ -10,7 +10,7 @@ import { CastItem } from "@/components/pages/details/cast";
 import { EpisodeItem } from "@/components/pages/details/episode";
 import { ListItem } from "@/components/pages/details/list";
 import { EpisodeProgress, type SeasonData } from "@/components/pages/details/progress";
-import { ReviewItem } from "@/components/pages/details/review";
+import { ReviewItem } from "@/components/pages/details/review-item";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { ErrorComponent } from "@/components/shared/error.tsx";

@@ -36,6 +36,7 @@ import { Route as GameSlugRouteImport } from './routes/game/$slug'
 import { Route as BookSlugRouteImport } from './routes/book/$slug'
 import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated/billing'
 import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
 import { Route as TvUpcomingIndexRouteImport } from './routes/tv/upcoming/index'
@@ -200,6 +201,12 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedNotificationsRoute =
+  AuthenticatedNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedBillingRoute = AuthenticatedBillingRouteImport.update({
   id: '/billing',
   path: '/billing',
@@ -362,6 +369,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/tos': typeof TosRoute
   '/billing': typeof AuthenticatedBillingRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
@@ -419,6 +427,7 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/tos': typeof TosRoute
   '/billing': typeof AuthenticatedBillingRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
@@ -478,6 +487,7 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/tos': typeof TosRoute
   '/_authenticated/billing': typeof AuthenticatedBillingRoute
+  '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
@@ -537,6 +547,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/tos'
     | '/billing'
+    | '/notifications'
     | '/settings'
     | '/anime/$slug'
     | '/book/$slug'
@@ -594,6 +605,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/tos'
     | '/billing'
+    | '/notifications'
     | '/settings'
     | '/anime/$slug'
     | '/book/$slug'
@@ -652,6 +664,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/tos'
     | '/_authenticated/billing'
+    | '/_authenticated/notifications'
     | '/_authenticated/settings'
     | '/anime/$slug'
     | '/book/$slug'
@@ -944,6 +957,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/notifications': {
+      id: '/_authenticated/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/billing': {
       id: '/_authenticated/billing'
       path: '/billing'
@@ -1152,6 +1172,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
+  AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedDonateErrorIndexRoute: typeof AuthenticatedDonateErrorIndexRoute
   AuthenticatedDonateSuccessIndexRoute: typeof AuthenticatedDonateSuccessIndexRoute
@@ -1159,6 +1180,7 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedBillingRoute: AuthenticatedBillingRoute,
+  AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedDonateErrorIndexRoute: AuthenticatedDonateErrorIndexRoute,
   AuthenticatedDonateSuccessIndexRoute: AuthenticatedDonateSuccessIndexRoute,

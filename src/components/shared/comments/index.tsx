@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { formatDistanceToNow } from "date-fns";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -11,24 +11,48 @@ import z from "zod";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Field, FieldError } from "@/components/ui/field";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
-import { type CommentTarget, useAddComment, useComments, useDeleteComment } from "@/hooks/comment.ts";
+import {
+  type AddCommentInput,
+  type CommentTarget,
+  useAddComment,
+  useComments,
+  useDeleteComment,
+  useToggleCommentReaction,
+} from "@/hooks/comment.ts";
 import type { ApiTypes } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
+import { QUICK_REACTIONS } from "@/lib/reactions";
+import { cn } from "@/lib/utils";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 import { Markdown } from "./markdown";
 
 const MAX_LENGTH = 500;
 
 type CommentsProps = CommentTarget & {
-  className?: string;
+  containerClassName?: string;
+  headerClassName?: string;
+  contentClassName?: string;
   canModerate?: boolean;
+  showTitle?: boolean;
 };
 
-export function Comments({ className, canModerate = false, ...target }: CommentsProps) {
+type AddComment = ReturnType<typeof useAddComment>;
+type DeleteComment = ReturnType<typeof useDeleteComment>;
+type ToggleReaction = ReturnType<typeof useToggleCommentReaction>;
+
+export function Comments({
+  containerClassName,
+  headerClassName,
+  contentClassName,
+  showTitle = true,
+  canModerate = false,
+  ...target
+}: CommentsProps) {
   const { t } = useTranslation();
   const session = useSession();
   const sessionUserId = session.data?.user?.id;
@@ -36,33 +60,18 @@ export function Comments({ className, canModerate = false, ...target }: Comments
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useComments(target);
   const addComment = useAddComment(target);
   const deleteComment = useDeleteComment(target);
+  const toggleReaction = useToggleCommentReaction(target);
 
   const sentinelRef = useInfiniteScroll(fetchNextPage, hasNextPage && !isFetchingNextPage);
-
-  const schema = useMemo(
-    () =>
-      z.object({
-        content: z.string().trim().min(1, t("comments:required")).max(MAX_LENGTH, t("comments:tooLong")),
-      }),
-    [t],
-  );
-
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
-    mode: "onChange",
-    defaultValues: { content: "" },
-  });
-
-  const content = form.watch("content") ?? "";
 
   const comments = data?.pages.flatMap((page) => page.items) ?? [];
   const total = data?.pages[0]?.total ?? 0;
   const canComment = Boolean(sessionUserId);
 
-  function handleSubmit({ content }: z.infer<typeof schema>) {
-    addComment.mutate(content.trim(), {
+  function handleAdd(input: AddCommentInput, onSuccess?: () => void) {
+    addComment.mutate(input, {
       onSuccess: () => {
-        form.reset();
+        onSuccess?.();
         toast.success(t("comments:addSuccess"));
       },
       onError: () => toast.error(t("comments:addError")),
@@ -77,50 +86,26 @@ export function Comments({ className, canModerate = false, ...target }: Comments
   }
 
   return (
-    <Card className={className}>
-      <CardHeader>
-        <CardTitle>
-          <Icon icon="lucide:message-circle" className="size-5" />
+    <Card className={containerClassName}>
+      {showTitle && (
+        <CardHeader className={headerClassName}>
+          <CardTitle>
+            <Icon icon="lucide:message-circle" className="size-5" />
 
-          {t("comments:title")}
+            {t("comments:title")}
 
-          {total > 0 && <span className="text-sm text-muted-foreground">{t("comments:count", { count: total })}</span>}
-        </CardTitle>
-      </CardHeader>
+            {total > 0 && (
+              <span className="text-sm text-muted-foreground">{t("comments:count", { count: total })}</span>
+            )}
+          </CardTitle>
+        </CardHeader>
+      )}
 
-      <CardContent className="flex flex-col gap-4">
+      <CardContent className={cn("flex flex-col gap-4", contentClassName)}>
         {canComment ? (
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-2">
-            <Field>
-              <Textarea
-                placeholder={t("comments:placeholder")}
-                maxLength={MAX_LENGTH}
-                disabled={addComment.isPending}
-                aria-invalid={Boolean(form.formState.errors.content)}
-                className="min-h-20 resize-none"
-                {...form.register("content")}
-              />
-              {form.formState.errors.content?.message && (
-                <FieldError>{form.formState.errors.content.message}</FieldError>
-              )}
-            </Field>
-            <div className="flex items-center justify-end gap-2">
-              <span className="text-xs text-muted-foreground">
-                {content.length}/{MAX_LENGTH}
-              </span>
-              <Button
-                type="submit"
-                size="sm"
-                disabled={!form.formState.isValid || addComment.isPending}
-                className="gap-2"
-              >
-                {t("common:send")}
-                <Icon icon="lucide:send" className="size-3" />
-              </Button>
-            </div>
-          </form>
+          <CommentForm isPending={addComment.isPending} onSubmit={(input, done) => handleAdd(input, done)} />
         ) : (
-          !sessionUserId && <p className="text-sm text-muted-foreground">{t("comments:loginToComment")}</p>
+          <p className="text-sm text-muted-foreground">{t("comments:loginToComment")}</p>
         )}
 
         {isLoading ? (
@@ -151,9 +136,14 @@ export function Comments({ className, canModerate = false, ...target }: Comments
               <CommentItem
                 key={comment.id}
                 comment={comment}
-                canDelete={comment.userId === sessionUserId || canModerate}
-                isDeleting={deleteComment.isPending && deleteComment.variables === comment.id}
-                onDelete={() => handleDelete(comment.id)}
+                canComment={canComment}
+                canModerate={canModerate}
+                sessionUserId={sessionUserId}
+                addComment={addComment}
+                deleteComment={deleteComment}
+                toggleReaction={toggleReaction}
+                onAdd={handleAdd}
+                onDelete={handleDelete}
               />
             ))}
 
@@ -166,17 +156,123 @@ export function Comments({ className, canModerate = false, ...target }: Comments
   );
 }
 
+function CommentForm({
+  isPending,
+  onSubmit,
+  autoFocus = false,
+  onCancel,
+}: {
+  isPending: boolean;
+  onSubmit: (input: AddCommentInput, done: () => void) => void;
+  autoFocus?: boolean;
+  onCancel?: () => void;
+}) {
+  const { t } = useTranslation();
+
+  const schema = useMemo(
+    () =>
+      z.object({
+        content: z.string().trim().min(1, t("comments:required")).max(MAX_LENGTH, t("comments:tooLong")),
+        isSpoiler: z.boolean(),
+      }),
+    [t],
+  );
+
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    mode: "onChange",
+    defaultValues: { content: "", isSpoiler: false },
+  });
+
+  const content = form.watch("content") ?? "";
+  const isSpoiler = form.watch("isSpoiler");
+
+  function handleSubmit({ content, isSpoiler }: z.infer<typeof schema>) {
+    onSubmit({ content: content.trim(), isSpoiler }, () => form.reset());
+  }
+
+  return (
+    <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-2">
+      <Field>
+        <Textarea
+          placeholder={t("comments:placeholder")}
+          maxLength={MAX_LENGTH}
+          disabled={isPending}
+          autoFocus={autoFocus}
+          aria-invalid={Boolean(form.formState.errors.content)}
+          className="min-h-20 resize-none"
+          {...form.register("content")}
+        />
+        {form.formState.errors.content?.message && <FieldError>{form.formState.errors.content.message}</FieldError>}
+      </Field>
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
+          <Checkbox
+            checked={isSpoiler}
+            onCheckedChange={(checked) => form.setValue("isSpoiler", checked === true)}
+            disabled={isPending}
+          />
+          {t("comments:spoiler")}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">
+            {content.length}/{MAX_LENGTH}
+          </span>
+          {onCancel && (
+            <Button type="button" size="sm" variant="ghost" onClick={onCancel} disabled={isPending}>
+              {t("comments:cancel")}
+            </Button>
+          )}
+          <Button type="submit" size="sm" disabled={!form.formState.isValid || isPending} className="gap-2">
+            {t("common:send")}
+            <Icon icon="lucide:send" className="size-3" />
+          </Button>
+        </div>
+      </div>
+    </form>
+  );
+}
+
 function CommentItem({
   comment,
-  canDelete,
-  isDeleting,
+  canComment,
+  canModerate,
+  sessionUserId,
+  addComment,
+  deleteComment,
+  toggleReaction,
+  onAdd,
   onDelete,
+  isReply = false,
 }: {
   comment: ApiTypes.Comment;
-  canDelete: boolean;
-  isDeleting: boolean;
-  onDelete: () => void;
+  canComment: boolean;
+  canModerate: boolean;
+  sessionUserId?: string;
+  addComment: AddComment;
+  deleteComment: DeleteComment;
+  toggleReaction: ToggleReaction;
+  onAdd: (input: AddCommentInput, onSuccess?: () => void) => void;
+  onDelete: (commentId: string) => void;
+  isReply?: boolean;
 }) {
+  const { t } = useTranslation();
+  const [replying, setReplying] = useState(false);
+  const [revealed, setRevealed] = useState(false);
+
+  const canDelete = comment.userId === sessionUserId || canModerate;
+  const isDeleting = deleteComment.isPending && deleteComment.variables === comment.id;
+  const replies = comment.replies ?? [];
+
+  const reactionList = comment.reactions ?? [];
+  const currentReaction = sessionUserId ? reactionList.find((r) => r.user.id === sessionUserId) : undefined;
+  const reactionCounts = reactionList.reduce<Record<string, number>>((acc, r) => {
+    acc[r.emoji] = (acc[r.emoji] ?? 0) + 1;
+    return acc;
+  }, {});
+  const isReacting = toggleReaction.isPending && toggleReaction.variables?.commentId === comment.id;
+
   return (
     <article className="group flex gap-3">
       <Avatar className="size-9 shrink-0 border border-border/50">
@@ -213,7 +309,7 @@ function CommentItem({
               variant="ghost"
               size="icon"
               type="button"
-              onClick={onDelete}
+              onClick={() => onDelete(comment.id)}
               disabled={isDeleting}
               className="size-6 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity text-muted-foreground hover:text-destructive"
             >
@@ -222,7 +318,101 @@ function CommentItem({
           )}
         </div>
 
-        <Markdown>{comment.content}</Markdown>
+        {comment.isSpoiler && !revealed ? (
+          <button
+            type="button"
+            onClick={() => setRevealed(true)}
+            className="relative w-full overflow-hidden rounded-md border border-dashed border-border bg-muted/40 py-4 text-left"
+            aria-label={t("comments:spoilerReveal")}
+          >
+            <div className="pointer-events-none select-none px-3 blur-sm">
+              <Markdown>{comment.content}</Markdown>
+            </div>
+            <span className="absolute inset-0 flex items-center justify-center gap-1.5 text-xs font-medium text-muted-foreground">
+              <Icon icon="lucide:eye-off" className="size-3.5" />
+              {t("comments:spoilerReveal")}
+            </span>
+          </button>
+        ) : (
+          <Markdown>{comment.content}</Markdown>
+        )}
+
+        <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+          <div className="flex flex-wrap items-center gap-1">
+            {QUICK_REACTIONS.map((emoji) => {
+              const count = reactionCounts[emoji] ?? 0;
+              const active = currentReaction?.emoji === emoji;
+
+              if (count === 0 && !active && !sessionUserId) return null;
+
+              return (
+                <button
+                  key={emoji}
+                  type="button"
+                  onClick={() => toggleReaction.mutate({ commentId: comment.id, emoji, currentReaction })}
+                  disabled={isReacting || !sessionUserId}
+                  aria-pressed={active}
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+                    active
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-border/50 hover:border-primary/50 hover:bg-muted",
+                  )}
+                >
+                  <span className="leading-none">{emoji}</span>
+                  {count > 0 && <span className="text-xs text-muted-foreground">{count}</span>}
+                </button>
+              );
+            })}
+          </div>
+
+          {!isReply && canComment && (
+            <button
+              type="button"
+              onClick={() => setReplying((value) => !value)}
+              className="flex w-fit items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-card-foreground"
+            >
+              <Icon icon="lucide:reply" className="size-3.5" />
+              {t("comments:reply")}
+            </button>
+          )}
+        </div>
+
+        {replying && (
+          <div className="mt-2">
+            <CommentForm
+              isPending={addComment.isPending}
+              autoFocus
+              onCancel={() => setReplying(false)}
+              onSubmit={(input, done) =>
+                onAdd({ ...input, parentId: comment.id }, () => {
+                  done();
+                  setReplying(false);
+                })
+              }
+            />
+          </div>
+        )}
+
+        {replies.length > 0 && (
+          <div className="mt-3 flex flex-col gap-4 border-l border-border/50 pl-4">
+            {replies.map((reply) => (
+              <CommentItem
+                key={reply.id}
+                comment={reply}
+                canComment={canComment}
+                canModerate={canModerate}
+                sessionUserId={sessionUserId}
+                addComment={addComment}
+                deleteComment={deleteComment}
+                toggleReaction={toggleReaction}
+                onAdd={onAdd}
+                onDelete={onDelete}
+                isReply
+              />
+            ))}
+          </div>
+        )}
       </div>
     </article>
   );

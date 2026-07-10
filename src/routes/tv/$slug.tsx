@@ -13,6 +13,7 @@ import { EpisodeProgress, type SeasonData } from "@/components/pages/details/pro
 import { ReviewItem } from "@/components/pages/details/review-item";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
+import { Comments } from "@/components/shared/comments";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { EpisodicContentModal } from "@/components/shared/modals/episodic-content";
@@ -578,6 +579,8 @@ function TVShowDetailsPage() {
                   <TabsTrigger value="lists">
                     {t("library:lists")} ({listsQuery.data?.total ?? 0})
                   </TabsTrigger>
+
+                  <TabsTrigger value="comments">{t("comments:title")}</TabsTrigger>
                 </TabsList>
               </div>
 
@@ -858,6 +861,17 @@ function TVShowDetailsPage() {
                     ))}
                   </div>
                 )}
+              </TabsContent>
+
+              <TabsContent value="comments">
+                <Comments
+                  type="TVShow"
+                  tvShowId={item.id}
+                  showTitle={false}
+                  containerClassName="border-0 bg-transparent p-0 shadow-none"
+                  headerClassName="p-0"
+                  contentClassName="p-0"
+                />
               </TabsContent>
 
               <TabsContent value="cast">

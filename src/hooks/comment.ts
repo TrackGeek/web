@@ -42,11 +42,39 @@ export function useComments(target: CommentTarget) {
   });
 }
 
+export interface AddCommentInput {
+  content: string;
+  isSpoiler?: boolean;
+  parentId?: string;
+}
+
 export function useAddComment(target: CommentTarget) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (content: string) => api.post(apiEndpoints.addComment, { ...target, content }),
+    mutationFn: (input: AddCommentInput) => api.post(apiEndpoints.addComment, { ...target, ...input }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: commentsQueryKey(target) }),
+  });
+}
+
+export interface ToggleCommentReactionArgs {
+  commentId: string;
+  emoji: string;
+  currentReaction?: ApiTypes.CommentReaction;
+}
+
+export function useToggleCommentReaction(target: CommentTarget) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ commentId, emoji, currentReaction }: ToggleCommentReactionArgs) => {
+      if (currentReaction) {
+        await api.delete(apiEndpoints.deleteReaction(currentReaction.id));
+        if (currentReaction.emoji === emoji) return;
+      }
+
+      await api.post(apiEndpoints.addReaction, { type: "Comment", emoji, commentId });
+    },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: commentsQueryKey(target) }),
   });
 }

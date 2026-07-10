@@ -111,6 +111,8 @@
   "notFound": "A página que procuras pode ter sido <br />movida ou não existe.",
   "notLoggedIn": "Precisas estar conectado.",
   "somethingWentWrong": "Algo correu mal. Por favor, tente mais tarde.",
+  "tryAgainLater": "Please try again in a moment.",
+  "tryAgain": "Try again",
   "internalError": "Uh oh! Não te preocupes! Não és tu - somos nós.<br />Nós já estamos a tentar corrigir o problema. Tenta novamente mais tarde!",
   "reportError": "Comunicar erro",
   "all": "All",

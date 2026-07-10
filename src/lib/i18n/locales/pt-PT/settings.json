@@ -42,6 +42,7 @@
   },
   "color": {
     "title": "Cor do Tema",
+    "options": "Color Options",
     "description": "Escolha a sua cor de tema preferida para a interface do aplicativo.",
     "custom": "Cor Personalizada",
     "reset": "Reset to default",

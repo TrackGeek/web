@@ -111,6 +111,8 @@
   "notFound": "The page you're looking for might have been <br />moved or doesn't exist.",
   "notLoggedIn": "You need to be logged in.",
   "somethingWentWrong": "Something went wrong. Please try again later.",
+  "tryAgainLater": "Please try again in a moment.",
+  "tryAgain": "Try again",
   "internalError": "Uh oh! Don't worry! It's not you - it's us.<br />We're trying to fix the problem. Try again later!",
   "reportError": "Report error",
   "all": "All",

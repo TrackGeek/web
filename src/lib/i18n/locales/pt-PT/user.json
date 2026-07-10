@@ -33,6 +33,8 @@
   "search": "Pesquisar",
   "feed": "Feed",
   "activity": "Activity",
+  "noActivity": "No activity yet.",
+  "noActivityDescription": "When this user tracks something, it will show up here.",
   "activityTooltip": "{{value}} activities on {{date}}",
   "activityLastYear": "{{value}} activities in the last year",
   "activityNoCount": "No",

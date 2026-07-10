@@ -314,6 +314,30 @@ export namespace ApiTypes {
     followStatus: FollowStatus;
   }
 
+  export interface FollowUser {
+    id: string;
+    name: string;
+    username: string;
+    profile: { id: string; avatarUrl: string | null };
+  }
+
+  export interface Following {
+    id: string;
+    followerId: string;
+    followingId: string;
+    createdAt: string;
+    follower?: FollowUser;
+    following?: FollowUser;
+  }
+
+  export interface GetFollowersResponse {
+    followers: PaginatedResponse<Following>;
+  }
+
+  export interface GetFollowingResponse {
+    following: PaginatedResponse<Following>;
+  }
+
   export type CommentType = "Anime" | "Manga" | "TVShow" | "Movie" | "Game" | "Book" | "Profile";
 
   export interface CommentReaction {

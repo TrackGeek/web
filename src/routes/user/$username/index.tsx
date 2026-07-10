@@ -6,6 +6,7 @@ import { useQueryState } from "nuqs";
 import { useTranslation } from "react-i18next";
 import { UserActivityTab } from "@/components/pages/user/activity-tab";
 import { UserFavoritesTab } from "@/components/pages/user/favorites-tab";
+import { UserFollowersTab, UserFollowingTab } from "@/components/pages/user/follows-tab";
 import { UserListsTab } from "@/components/pages/user/lists-tab";
 import { UserOverviewTab } from "@/components/pages/user/overview-tab";
 import { UserReviewsTab } from "@/components/pages/user/reviews-tab";
@@ -85,7 +86,12 @@ function UserDetailsRoute() {
       </div>
 
       <div className="flex flex-col gap-5 grow py-5 px-4 max-w-7xl w-full flex-1 mx-auto">
-        <UserProfileHeader user={userQuery.data} username={username} onUserRefresh={() => userQuery.refetch()} onActiveTabChange={setActiveTab} />
+        <UserProfileHeader
+          user={userQuery.data}
+          username={username}
+          onUserRefresh={() => userQuery.refetch()}
+          onActiveTabChange={setActiveTab}
+        />
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="flex flex-wrap gap-2 text-sm justify-between mb-5 w-full">
@@ -129,13 +135,13 @@ function UserDetailsRoute() {
           <TabsContent value="screenshots">
             <UserScreenshotsTab />
           </TabsContent>
-          
+
           <TabsContent value="followers">
-            
+            <UserFollowersTab userId={userQuery.data.id} />
           </TabsContent>
-          
+
           <TabsContent value="following">
-            
+            <UserFollowingTab userId={userQuery.data.id} />
           </TabsContent>
         </Tabs>
       </div>

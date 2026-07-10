@@ -18,6 +18,12 @@
   },
   "unreadCount_one": "{{count}} unread notification",
   "unreadCount_other": "{{count}} unread notifications",
+  "preferences": {
+    "title": "Notification preferences",
+    "description": "Choose which notifications you want to receive. System notifications are always delivered.",
+    "comment": "Comments",
+    "reaction": "Reactions"
+  },
   "empty": {
     "title": "No notifications yet",
     "description": "When someone comments on your profile or reacts to your content, it shows up here."

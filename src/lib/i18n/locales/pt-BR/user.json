@@ -45,6 +45,9 @@
   "activityLastYear": "{{value}} activities in the last year",
   "activityNoCount": "No",
   "lists": "Lists",
+  "progress": "Progress",
+  "noProgress": "No progress yet.",
+  "noProgressDescription": "Titles this user is tracking will show up here.",
   "copyProfileUsernameSuccess": "Username copied to clipboard!",
   "sort": {
     "placeholder": "Ordenar por:",

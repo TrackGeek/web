@@ -2,6 +2,8 @@
   "favorites": "Favorites",
   "noFavorites": "No favorites yet.",
   "noFavoritesDescription": "Favorited titles will show up here.",
+  "noSearchResults": "No results found.",
+  "noSearchResultsDescription": "Try adjusting your search or filters.",
   "deleteReviewTitle": "Delete review?",
   "deleteReviewConfirm": "Are you sure you want to delete this review?",
   "seeMore": "See more",

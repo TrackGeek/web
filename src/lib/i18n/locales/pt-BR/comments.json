@@ -11,5 +11,9 @@
   "addSuccess": "Comment posted.",
   "addError": "Failed to post comment.",
   "deleteSuccess": "Comment deleted.",
-  "deleteError": "Failed to delete comment."
+  "deleteError": "Failed to delete comment.",
+  "reply": "Responder",
+  "cancel": "Cancelar",
+  "spoiler": "Marcar como spoiler",
+  "spoilerReveal": "Spoiler — clique para revelar"
 }

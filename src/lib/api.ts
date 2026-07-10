@@ -345,6 +345,7 @@ export namespace ApiTypes {
     emoji: string;
     createdAt: string;
     user: {
+      id: string;
       username: string;
     };
   }
@@ -353,7 +354,9 @@ export namespace ApiTypes {
     id: string;
     content: string;
     type: CommentType;
+    isSpoiler: boolean;
     userId: string;
+    parentId: string | null;
     animeId: string | null;
     mangaId: string | null;
     tvShowId: string | null;
@@ -373,6 +376,7 @@ export namespace ApiTypes {
       };
     };
     reactions: CommentReaction[];
+    replies?: Comment[];
   }
 
   export interface GetCommentsResponse {

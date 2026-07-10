@@ -12,8 +12,8 @@
   "addError": "Failed to post comment.",
   "deleteSuccess": "Comment deleted.",
   "deleteError": "Failed to delete comment.",
-  "reply": "Responder",
-  "cancel": "Cancelar",
-  "spoiler": "Marcar como spoiler",
-  "spoilerReveal": "Spoiler — clique para revelar"
+  "reply": "Reply",
+  "cancel": "Cancel",
+  "spoiler": "Mark as spoiler",
+  "spoilerReveal": "Spoiler — click to reveal"
 }

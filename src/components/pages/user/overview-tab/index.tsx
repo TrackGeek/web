@@ -10,14 +10,15 @@ import { StatisticsCard } from "./statistics-card";
 interface UserOverviewTabProps {
   user: ApiTypes.User;
   onSeeFavorites?: () => void;
+  onSeeProgress?: (contentType: ApiTypes.ReviewContentType) => void;
 }
 
-export function UserOverviewTab({ user, onSeeFavorites }: UserOverviewTabProps) {
+export function UserOverviewTab({ user, onSeeFavorites, onSeeProgress }: UserOverviewTabProps) {
   const session = useSession();
 
   return (
     <div className="flex flex-col gap-5">
-      <StatisticsCard user={user} />
+      <StatisticsCard user={user} onSeeProgress={onSeeProgress} />
 
       <div className="flex max-sm:flex-col gap-5">
         <div className="w-full md:w-2/3 flex flex-col gap-5">

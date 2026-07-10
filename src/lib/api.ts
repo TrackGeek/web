@@ -299,6 +299,7 @@ export namespace ApiTypes {
       reviews: number;
     };
     latestReviewType: ReviewContentType | null;
+    latestProgressType: ReviewContentType | null;
   }
 
   export interface GetUserByUsernameResponse {
@@ -496,6 +497,39 @@ export namespace ApiTypes {
 
   export interface GetFavoriteStatusResponse {
     favorited: boolean;
+  }
+
+  /** User progress statuses (mirrors the backend `ProgressStatus` enum). */
+  export type ProgressStatus =
+    | "NotWatched"
+    | "NotRead"
+    | "NotPlayed"
+    | "Watching"
+    | "Playing"
+    | "Reading"
+    | "Completed"
+    | "Paused"
+    | "Dropped"
+    | "Planning";
+
+  export interface Progress {
+    id: string;
+    status: ProgressStatus;
+    anime: { id: string; malId: number; title: string; imageUrl: string | null } | null;
+    manga: { id: string; malId: number; title: string; imageUrl: string | null } | null;
+    tvShow: { id: string; tmdbId: number; name: string; backdropUrl: string | null } | null;
+    movie: { id: string; tmdbId: number; title: string; backdropUrl: string | null } | null;
+    game: { id: string; igdbId: number; name: string; coverUrl: string | null } | null;
+    book: { id: string; hardcoverId: number; title: string; imageUrl: string | null } | null;
+  }
+
+  export interface GetProgressResponse {
+    animeProgresses?: PaginatedResponse<Progress>;
+    mangaProgresses?: PaginatedResponse<Progress>;
+    tvShowProgresses?: PaginatedResponse<Progress>;
+    movieProgresses?: PaginatedResponse<Progress>;
+    gameProgresses?: PaginatedResponse<Progress>;
+    bookProgresses?: PaginatedResponse<Progress>;
   }
 
   export interface FavoriteRequest {
@@ -837,11 +871,13 @@ export const apiEndpoints = {
   getAnimeComingSoon: "/anime/top?filter=upcoming",
   getAnimeTop: "/anime/top?filter=favorite",
   animeReview: "/anime/review",
+  animeProgress: "/anime/progress",
   refreshAnimeData: "/anime/refresh",
   getBookDetails: (id: string) => `/book/detail/${id}`,
   getBookTrending: "/book/top?filter=trending",
   getBookComingSoon: "/book/top?filter=comingSoon",
   bookReview: "/book/review",
+  bookProgress: "/book/progress",
   refreshBookData: "/book/refresh",
   getMovieDetails: (id: string) => `/movie/detail/${id}`,
   getMovieAiring: "/movie/top?filter=airing",
@@ -874,6 +910,7 @@ export const apiEndpoints = {
   getMangaFavorite: "/manga/top?filter=favorite",
   getMangaRecommendations: "/manga/top?filter=bypopularity",
   mangaReview: "/manga/review",
+  mangaProgress: "/manga/progress",
   refreshMangaData: "/manga/refresh",
   list: "/list",
   getListsByUserId: (userId: string) => `/list/user/${userId}`,

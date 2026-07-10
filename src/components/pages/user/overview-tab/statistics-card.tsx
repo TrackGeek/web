@@ -5,12 +5,14 @@ import type { ApiTypes } from "@/lib/api";
 
 interface StatisticsCardProps {
   user: ApiTypes.User;
+  onSeeProgress?: (contentType: ApiTypes.ReviewContentType) => void;
 }
 
 type MediaKey = keyof ApiTypes.User["progressStats"];
 
 interface MediaConfig {
   key: MediaKey;
+  contentType: ApiTypes.ReviewContentType;
   icon: string;
   label: string;
   gradient: string;
@@ -21,6 +23,7 @@ interface MediaConfig {
 const MEDIA_CONFIG: MediaConfig[] = [
   {
     key: "anime",
+    contentType: "anime",
     icon: "lucide:mountain",
     label: "common:types.anime_other",
     gradient: "from-purple-500/20",
@@ -29,6 +32,7 @@ const MEDIA_CONFIG: MediaConfig[] = [
   },
   {
     key: "manga",
+    contentType: "manga",
     icon: "lucide:library-big",
     label: "common:types.manga_other",
     gradient: "from-rose-500/20",
@@ -37,6 +41,7 @@ const MEDIA_CONFIG: MediaConfig[] = [
   },
   {
     key: "tvShow",
+    contentType: "tv",
     icon: "lucide:tv-minimal-play",
     label: "common:types.tv_other",
     gradient: "from-blue-500/20",
@@ -45,6 +50,7 @@ const MEDIA_CONFIG: MediaConfig[] = [
   },
   {
     key: "movie",
+    contentType: "movie",
     icon: "lucide:clapperboard",
     label: "common:types.movie_other",
     gradient: "from-amber-500/20",
@@ -53,6 +59,7 @@ const MEDIA_CONFIG: MediaConfig[] = [
   },
   {
     key: "game",
+    contentType: "game",
     icon: "lucide:gamepad-2",
     label: "common:types.game_other",
     gradient: "from-emerald-500/20",
@@ -61,6 +68,7 @@ const MEDIA_CONFIG: MediaConfig[] = [
   },
   {
     key: "book",
+    contentType: "book",
     icon: "lucide:book",
     label: "common:types.book_other",
     gradient: "from-indigo-500/20",
@@ -76,6 +84,7 @@ function MediaTile({
   border,
   iconColor,
   total,
+  onClick,
 }: {
   icon: string;
   label: string;
@@ -83,11 +92,17 @@ function MediaTile({
   border: string;
   iconColor: string;
   total: number;
+  onClick?: () => void;
 }) {
   const { t } = useTranslation();
 
   return (
-    <div className={`flex flex-col gap-3 rounded-2xl border bg-linear-to-br to-transparent p-4 ${gradient} ${border}`}>
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={!onClick}
+      className={`flex flex-col gap-3 rounded-2xl border bg-linear-to-br to-transparent p-4 text-left transition-shadow enabled:cursor-pointer enabled:hover:shadow-lg ${gradient} ${border}`}
+    >
       <div className="flex size-9 items-center justify-center rounded-xl bg-white/5">
         <Icon icon={icon} className={`size-5 ${iconColor}`} />
       </div>
@@ -96,11 +111,11 @@ function MediaTile({
         <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t(label)}</span>
         <span className="text-2xl font-bold text-card-foreground">{total}</span>
       </div>
-    </div>
+    </button>
   );
 }
 
-export function StatisticsCard({ user }: StatisticsCardProps) {
+export function StatisticsCard({ user, onSeeProgress }: StatisticsCardProps) {
   const { t } = useTranslation();
 
   return (
@@ -115,7 +130,7 @@ export function StatisticsCard({ user }: StatisticsCardProps) {
 
       <CardContent>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {MEDIA_CONFIG.map(({ key, icon, label, gradient, border, iconColor }) => (
+          {MEDIA_CONFIG.map(({ key, contentType, icon, label, gradient, border, iconColor }) => (
             <MediaTile
               key={key}
               icon={icon}
@@ -124,6 +139,7 @@ export function StatisticsCard({ user }: StatisticsCardProps) {
               border={border}
               iconColor={iconColor}
               total={user.progressStats[key].total}
+              onClick={onSeeProgress ? () => onSeeProgress(contentType) : undefined}
             />
           ))}
         </div>

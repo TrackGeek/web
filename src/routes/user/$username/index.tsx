@@ -85,7 +85,7 @@ function UserDetailsRoute() {
       </div>
 
       <div className="flex flex-col gap-5 grow py-5 px-4 max-w-7xl w-full flex-1 mx-auto">
-        <UserProfileHeader user={userQuery.data} username={username} onUserRefresh={() => userQuery.refetch()} />
+        <UserProfileHeader user={userQuery.data} username={username} onUserRefresh={() => userQuery.refetch()} onActiveTabChange={setActiveTab} />
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="flex flex-wrap gap-2 text-sm justify-between mb-5 w-full">
@@ -128,6 +128,14 @@ function UserDetailsRoute() {
 
           <TabsContent value="screenshots">
             <UserScreenshotsTab />
+          </TabsContent>
+          
+          <TabsContent value="followers">
+            
+          </TabsContent>
+          
+          <TabsContent value="following">
+            
           </TabsContent>
         </Tabs>
       </div>

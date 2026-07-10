@@ -8,16 +8,19 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth";
 import { AVATAR_BLUR } from "@/lib/image";
 import { getInitialsFromName } from "@/lib/utils";
+import { useNavigate } from '@tanstack/react-router';
 
 export interface UserProfileHeaderProps {
   user: ApiTypes.User;
   username: string;
   onUserRefresh: () => void;
+  onActiveTabChange: (tab: string) => void;
 }
 
-export function UserProfileHeader({ user, username, onUserRefresh }: UserProfileHeaderProps) {
+export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabChange }: UserProfileHeaderProps) {
   const { t } = useTranslation();
   const session = useSession();
+  const navigate = useNavigate();
 
   const sessionUser = session.data?.user;
   const isOwnProfile = sessionUser?.id === user.id;
@@ -119,18 +122,44 @@ export function UserProfileHeader({ user, username, onUserRefresh }: UserProfile
         <div className="flex items-center gap-4">
           <div className="flex-1 flex items-center justify-center">
             <div className="flex items-center gap-3">
-              <div className="bg-muted px-3 py-1 rounded-full text-sm">
+              <button
+                type="button"
+                onClick={async () => {
+                  await navigate({
+                    to: "/user/$username",
+                    params: { username: user.username },
+                    search: (prev) => ({ ...prev, tab: "overview" }),
+                  });
+
+                  requestAnimationFrame(() =>
+                    document
+                      .getElementById("medals-card")
+                      ?.scrollIntoView({ behavior: "smooth", block: "start" }),
+                  );
+                }}
+                className="bg-muted px-3 py-1 rounded-full text-sm cursor-pointer"
+              >
                 <strong className="font-semibold text-card-foreground">{user.userMedals.length}</strong>
                 <span className="text-muted-foreground ml-2">{t("user:medals")}</span>
-              </div>
-              <div className="bg-muted px-3 py-1 rounded-full text-sm">
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => onActiveTabChange("followers")}
+                className="bg-muted px-3 py-1 rounded-full text-sm cursor-pointer"
+              >
                 <strong className="font-semibold text-card-foreground">{user._count.followers || 0}</strong>
                 <span className="text-muted-foreground ml-2">{t("user:follower_plural")}</span>
-              </div>
-              <div className="bg-muted px-3 py-1 rounded-full text-sm">
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => onActiveTabChange("following")}
+                className="bg-muted px-3 py-1 rounded-full text-sm cursor-pointer"
+              >
                 <strong className="font-semibold text-card-foreground">{user._count.following || 0}</strong>
                 <span className="text-muted-foreground ml-2">{t("user:following")}</span>
-              </div>
+              </button>
             </div>
           </div>
 

@@ -33,7 +33,7 @@ export function MedalsCard({ userMedals }: MedalsCardProps) {
   const { t } = useTranslation();
 
   return (
-    <Card>
+    <Card id="medals-card">
       <CardHeader>
         <CardTitle>
           <Icon icon="lucide:medal" className="size-5" />

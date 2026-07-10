@@ -95,10 +95,7 @@ export function useUpdateNotificationPreferences() {
   return useMutation({
     mutationFn: (preferences: Partial<ApiTypes.NotificationPreferences>) =>
       api
-        .patch<ApiTypes.UpdateNotificationPreferencesResponse>(
-          apiEndpoints.updateNotificationPreferences,
-          preferences,
-        )
+        .patch<ApiTypes.UpdateNotificationPreferencesResponse>(apiEndpoints.updateNotificationPreferences, preferences)
         .then(({ data }) => data.preferences),
     onSuccess: (preferences) => {
       queryClient.setQueryData(notificationPreferencesQueryKey(), preferences);

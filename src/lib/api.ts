@@ -849,6 +849,8 @@ export const apiEndpoints = {
   getMovieTrending: "/movie/top?filter=trending",
   getMoviePopular: "/movie/top?filter=popular",
   movieReview: "/movie/review",
+  movieProgress: "/movie/progress",
+  getMovieProgress: (userId: string, movieId: string) => `/movie/progress?userId=${userId}&movieId=${movieId}`,
   refreshMovieData: "/movie/refresh",
   getTvShowDetails: (id: string) => `/tv/detail/${id}`,
   getTvShowSeasonDetails: (id: string) => `/tv/detail/${id}/season`,

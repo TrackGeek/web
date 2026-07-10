@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 interface MoreOptionsDialogProps {
   title: string;
@@ -11,6 +12,11 @@ interface MoreOptionsDialogProps {
   description?: string;
   triggerLabel: string;
   children: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  isFavorited?: boolean;
+  onToggleFavorite?: () => void;
+  favoriteDisabled?: boolean;
 }
 
 export function MoreOptionsDialog({
@@ -21,9 +27,14 @@ export function MoreOptionsDialog({
   description,
   triggerLabel,
   children,
+  open,
+  onOpenChange,
+  isFavorited,
+  onToggleFavorite,
+  favoriteDisabled,
 }: MoreOptionsDialogProps) {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button className="flex bg-transparent items-center justify-center gap-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
           <Icon icon="lucide:more-horizontal" className="size-5" />
@@ -58,8 +69,14 @@ export function MoreOptionsDialog({
             </div>
           </div>
           <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
-            <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
-              <Icon icon="lucide:heart" className="size-6" />
+            <Button
+              size="sm"
+              variant="ghost"
+              disabled={favoriteDisabled}
+              onClick={onToggleFavorite}
+              className="text-white hover:bg-white/10 hover:text-white"
+            >
+              <Icon icon="lucide:heart" className={cn("size-6", isFavorited && "text-red-500")} />
             </Button>
           </div>
         </DialogHeader>

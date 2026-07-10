@@ -3,7 +3,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CommentThread } from "@/components/pages/feed/comment-thread.tsx";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
@@ -99,7 +98,6 @@ function RouteComponent() {
             {t("feed:share")}
           </Button>
         </div>
-        <CommentThread />
       </article>
     </div>
   );

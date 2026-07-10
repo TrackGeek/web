@@ -11,7 +11,8 @@ import { toast } from "sonner";
 import z from "zod";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
@@ -30,7 +31,6 @@ import { useSession } from "@/lib/auth";
 import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
 import { AVATAR_BLUR } from "@/lib/image";
 import { seo } from "@/lib/utils/seo";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const ABOUT_MAX_LENGTH = 500;
 
@@ -239,7 +239,7 @@ function SettingsRoute() {
 
             {t("settings:avatar.title")}
           </CardTitle>
-          
+
           <CardDescription>{t("settings:avatar.description")}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -321,10 +321,10 @@ function SettingsRoute() {
 
             {t("settings:banner.title")}
           </CardTitle>
-          
+
           <CardDescription>{t("settings:banner.description")}</CardDescription>
         </CardHeader>
-        
+
         <CardContent>
           <div className="flex items-center gap-2 h-55">
             {session.data?.user?.profile?.bannerUrl ? (
@@ -407,7 +407,7 @@ function SettingsRoute() {
 
           <CardDescription>{t("settings:profile.description")}</CardDescription>
         </CardHeader>
-        
+
         <CardContent className="flex flex-col gap-4">
           <Field className="gap-2">
             <FieldLabel htmlFor="name">{t("settings:profile.name")}</FieldLabel>
@@ -490,7 +490,7 @@ function SettingsRoute() {
 
         <CardContent className="flex flex-col gap-2">
           <FieldLabel htmlFor="colorOptions">{t("settings:color.options")}</FieldLabel>
-          
+
           <div className="flex flex-wrap gap-2 mt-2">
             {colorOptions.map((option) => (
               <button

@@ -20,6 +20,7 @@ import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { StarRating } from "@/components/shared/star-rating.tsx";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { ImageZoom } from "@/components/ui/image-zoom";
@@ -32,7 +33,6 @@ import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
-import { Card, CardContent } from '@/components/ui/card';
 
 export const Route = createFileRoute("/tv/$slug")({
   loader: async ({ params }) => {
@@ -540,7 +540,7 @@ function TVShowDetailsPage() {
           </CardContent>
         </Card>
       </div>
-      
+
       <div className="lg:w-2/3">
         <Card>
           <CardContent className="flex flex-col gap-4">
@@ -712,7 +712,9 @@ function TVShowDetailsPage() {
                 )}
 
                 <div>
-                  <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
+                  <h3 className="font-semibold text-card-foreground text-lg mb-4">
+                    {t("library:communityStatistics")}
+                  </h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {(
                       [

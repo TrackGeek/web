@@ -3,12 +3,14 @@ import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import axios from "axios";
 import { useQueryState } from "nuqs";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { UserActivityTab } from "@/components/pages/user/activity-tab";
 import { UserFavoritesTab } from "@/components/pages/user/favorites-tab";
 import { UserFollowersTab, UserFollowingTab } from "@/components/pages/user/follows-tab";
 import { UserListsTab } from "@/components/pages/user/lists-tab";
 import { UserOverviewTab } from "@/components/pages/user/overview-tab";
+import { UserProgressTab } from "@/components/pages/user/progress-tab";
 import { UserReviewsTab } from "@/components/pages/user/reviews-tab";
 import { UserScreenshotsTab } from "@/components/pages/user/screenshots-tab";
 import { UserProfileHeader } from "@/components/pages/user/user-profile-header";
@@ -60,12 +62,16 @@ function UserDetailsRoute() {
   const { t } = useTranslation();
   const session = useSession();
   const [activeTab, setActiveTab] = useQueryState("tab", { defaultValue: "overview" });
+  const [progressType, setProgressType] = useState<ApiTypes.ReviewContentType>(loaderUser.latestProgressType ?? "game");
 
   const userQuery = useQuery({
     queryKey: ["user", username],
     queryFn: () => getUser(username),
     initialData: loaderUser,
   });
+
+  const { progressStats } = userQuery.data;
+  const totalProgress = Object.values(progressStats).reduce((sum, stats) => sum + stats.total, 0);
 
   return (
     <div className="flex flex-col gap-5">
@@ -97,6 +103,9 @@ function UserDetailsRoute() {
           <TabsList className="flex flex-wrap gap-2 text-sm justify-between mb-5 w-full">
             <TabsTrigger value="overview">{t("user:overview")}</TabsTrigger>
             <TabsTrigger value="activity">{t("user:activity")}</TabsTrigger>
+            <TabsTrigger value="progress">
+              {t("user:progress")} ({totalProgress})
+            </TabsTrigger>
             <TabsTrigger value="lists">
               {t("user:lists")} ({userQuery.data.counts.lists})
             </TabsTrigger>
@@ -110,11 +119,27 @@ function UserDetailsRoute() {
           </TabsList>
 
           <TabsContent value="overview">
-            <UserOverviewTab user={userQuery.data} onSeeFavorites={() => setActiveTab("favorites")} />
+            <UserOverviewTab
+              user={userQuery.data}
+              onSeeFavorites={() => setActiveTab("favorites")}
+              onSeeProgress={(nextContentType) => {
+                setProgressType(nextContentType);
+                setActiveTab("progress");
+              }}
+            />
           </TabsContent>
 
           <TabsContent value="activity">
             <UserActivityTab userId={userQuery.data.id} />
+          </TabsContent>
+
+          <TabsContent value="progress">
+            <UserProgressTab
+              userId={userQuery.data.id}
+              progressStats={progressStats}
+              contentType={progressType}
+              onContentTypeChange={setProgressType}
+            />
           </TabsContent>
 
           <TabsContent value="lists">

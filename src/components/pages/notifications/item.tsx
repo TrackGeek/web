@@ -29,7 +29,9 @@ export function NotificationItem({ notification, isPending, onToggleRead, onDele
 
   return (
     <Card className={cn("py-0", !isRead && "border-primary/40 bg-primary/5")}>
-      <CardContent className="flex items-start gap-3 p-4">
+      <CardContent className="flex items-center gap-4 p-4">
+        {!isRead && <span className ="size-2 rounded-full bg-destructive shrink-0" aria-hidden="true" />}
+        
         {isSystem || !actor ? (
           <div className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border/50 bg-muted">
             <Icon icon="lucide:megaphone" className="size-4.5" />
@@ -53,7 +55,6 @@ export function NotificationItem({ notification, isPending, onToggleRead, onDele
 
         <div className="flex flex-1 flex-col gap-1 min-w-0">
           <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
-            {!isRead && <span className="size-2 rounded-full bg-destructive shrink-0" aria-hidden="true" />}
 
             {isSystem || !actor ? (
               <span className="text-sm font-semibold">{systemTitle ?? t("notifications:system")}</span>

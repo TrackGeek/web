@@ -355,6 +355,86 @@ export namespace ApiTypes {
     comments: PaginatedResponse<Comment>;
   }
 
+  export type ReactionType =
+    | "Comment"
+    | "Activity"
+    | "GameReview"
+    | "AnimeReview"
+    | "MangaReview"
+    | "TvShowReview"
+    | "MovieReview"
+    | "BookReview";
+
+  export type NotificationType =
+    | "System"
+    | "CommentOnProfile"
+    | "ReactionOnComment"
+    | "ReactionOnActivity"
+    | "ReactionOnAnimeReview"
+    | "ReactionOnMangaReview"
+    | "ReactionOnTvShowReview"
+    | "ReactionOnMovieReview"
+    | "ReactionOnGameReview"
+    | "ReactionOnBookReview";
+
+  // titleKey/descriptionKey are i18n keys resolved at render time; title/description are literals
+  // used when the content has no translation.
+  export interface SystemNotificationMetadata {
+    title?: string;
+    titleKey?: string;
+    description?: string;
+    descriptionKey?: string;
+    url?: string;
+    [key: string]: unknown;
+  }
+
+  export interface Notification {
+    id: string;
+    type: NotificationType;
+    recipientId: string;
+    actorId: string | null;
+    metadata: SystemNotificationMetadata | null;
+    readAt: string | null;
+    createdAt: string;
+    profileId: string | null;
+    commentId: string | null;
+    reactionId: string | null;
+    activityId: string | null;
+    animeReviewId: string | null;
+    mangaReviewId: string | null;
+    tvShowReviewId: string | null;
+    movieReviewId: string | null;
+    gameReviewId: string | null;
+    bookReviewId: string | null;
+    actor: {
+      id: string;
+      name: string;
+      username: string;
+      profile: {
+        id: string;
+        avatarUrl: string | null;
+      } | null;
+    } | null;
+    comment: {
+      id: string;
+      type: CommentType;
+      content: string;
+    } | null;
+    reaction: {
+      id: string;
+      type: ReactionType;
+      emoji: string;
+    } | null;
+  }
+
+  export interface GetNotificationsResponse {
+    notifications: PaginatedResponse<Notification>;
+  }
+
+  export interface GetUnreadNotificationsCountResponse {
+    count: number;
+  }
+
   export type FavoriteType = "Anime" | "Manga" | "TVShow" | "Movie" | "Game" | "Book";
 
   export interface Favorite {
@@ -535,6 +615,153 @@ export namespace ApiTypes {
     bookReviews?: PaginatedResponse<Review>;
     mangaReviews?: PaginatedResponse<Review>;
   }
+
+  export type ActivityType =
+    | "AccountCreated"
+    | "ListCreated"
+    | "ListItemAdded"
+    | "FavoriteAdded"
+    | "ReviewAdded"
+    | "ProgressStarted"
+    | "ProgressCompleted"
+    | "ProgressPaused"
+    | "ProgressDropped"
+    | "Watched"
+    | "Followed"
+    | "MedalEarned";
+
+  export interface ActivityMediaSummary {
+    id?: string;
+    malId?: number | string | null;
+    tmdbId?: number | string | null;
+    igdbId?: number | string | null;
+    hardcoverId?: number | string | null;
+    name?: string | null;
+    title?: string | null;
+    coverUrl?: string | null;
+    posterUrl?: string | null;
+    imageUrl?: string | null;
+  }
+
+  export interface ActivityMediaRefs {
+    anime?: ActivityMediaSummary | null;
+    manga?: ActivityMediaSummary | null;
+    tvShow?: ActivityMediaSummary | null;
+    movie?: ActivityMediaSummary | null;
+    game?: ActivityMediaSummary | null;
+    book?: ActivityMediaSummary | null;
+  }
+
+  export interface ActivityUser {
+    id: string;
+    name: string;
+    username: string;
+    profile?: { avatarUrl: string | null } | null;
+  }
+
+  export interface ActivityReaction {
+    id: string;
+    emoji: string;
+    createdAt: string;
+    user: { id: string; username: string };
+  }
+
+  export interface ActivityReview extends ActivityMediaRefs {
+    id: string;
+    overall: number | string;
+    story?: number | string | null;
+    characters?: number | string | null;
+    animation?: number | string | null;
+    sound?: number | string | null;
+    enjoyment?: number | string | null;
+    art?: number | string | null;
+    worldbuilding?: number | string | null;
+    direction?: number | string | null;
+    production?: number | string | null;
+    acting?: number | string | null;
+    graphics?: number | string | null;
+    gameplay?: number | string | null;
+    language?: number | string | null;
+    theme?: number | string | null;
+    summary?: string | null;
+  }
+
+  export interface ActivityProgress extends ActivityMediaRefs {
+    id: string;
+    status: string;
+  }
+
+  export interface ActivityEpisodeWatch extends ActivityMediaRefs {
+    id: string;
+    status: string;
+    episode: number;
+    season?: number;
+  }
+
+  export interface ActivityFavorite extends ActivityMediaRefs {
+    id: string;
+    type: string;
+  }
+
+  export interface ActivityListItem extends ActivityMediaRefs {
+    id: string;
+  }
+
+  export interface Activity {
+    id: string;
+    type: ActivityType;
+    userId: string;
+    createdAt: string;
+    metadata?: Record<string, unknown> | null;
+    user: ActivityUser;
+    reactions?: ActivityReaction[];
+    _count?: { reactions: number };
+    list?: { id: string; name: string } | null;
+    listItem?: ActivityListItem | null;
+    favorite?: ActivityFavorite | null;
+    animeReview?: ActivityReview | null;
+    mangaReview?: ActivityReview | null;
+    tvShowReview?: ActivityReview | null;
+    movieReview?: ActivityReview | null;
+    gameReview?: ActivityReview | null;
+    bookReview?: ActivityReview | null;
+    animeProgress?: ActivityProgress | null;
+    mangaProgress?: ActivityProgress | null;
+    tvShowProgress?: ActivityProgress | null;
+    movieProgress?: ActivityProgress | null;
+    gameProgress?: ActivityProgress | null;
+    bookProgress?: ActivityProgress | null;
+    animeEpisodeWatch?: ActivityEpisodeWatch | null;
+    tvShowEpisodeWatch?: ActivityEpisodeWatch | null;
+    anime?: ActivityMediaSummary | null;
+    tvShow?: ActivityMediaSummary | null;
+    following?: { id: string; following: ActivityUser } | null;
+    userMedal?: { id: string; medal: { id: string; name: string; imageUrl: string } } | null;
+  }
+
+  export interface ActivityGroup {
+    type: ActivityType;
+    userId: string;
+    createdAt: string;
+    count: number;
+    items: Activity[];
+  }
+
+  export interface GetActivitiesByUserResponse {
+    activities: PaginatedResponse<ActivityGroup>;
+  }
+
+  export interface ActivityCalendarItem {
+    date: string;
+    count: number;
+  }
+
+  export interface GetUserActivityCalendarResponse {
+    activityCalendar: {
+      total: number;
+      items: ActivityCalendarItem[];
+    };
+  }
 }
 
 export const apiEndpoints = {
@@ -628,4 +855,14 @@ export const apiEndpoints = {
   removeFavorite: "/favorite",
   addReaction: "/reaction",
   deleteReaction: (reactionId: string) => `/reaction/${reactionId}`,
+  getActivitiesByUserId: (userId: string) => `/activities/user/${userId}`,
+  getCalendarActivitiesByUserId: (userId: string) => `/activities/user/${userId}/calendar`,
+  getNotifications: "/notifications",
+  getUnreadNotificationsCount: "/notifications/unread/count",
+  markAllNotificationsAsRead: "/notifications/read/all",
+  markAllNotificationsAsUnread: "/notifications/read/all",
+  deleteAllNotifications: "/notifications/all",
+  markNotificationAsRead: (notificationId: string) => `/notifications/${notificationId}/read`,
+  markNotificationAsUnread: (notificationId: string) => `/notifications/${notificationId}/read`,
+  deleteNotification: (notificationId: string) => `/notifications/${notificationId}`,
 };

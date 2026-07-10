@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FavoriteCard, type FavoriteItem, favoriteToItem } from "@/components/pages/user/tabs/overview/favorite-card";
+import { FavoriteCard, type FavoriteItem, favoriteToItem } from "@/components/pages/user/overview-tab/favorite-card";
 import { SearchInput } from "@/components/shared/search-input";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";

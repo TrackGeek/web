@@ -1,17 +1,9 @@
-import { Icon } from "@iconify/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
-import { FeedListFollowing } from "@/components/pages/feed/listFollowing";
+import { FeedListFollowing } from "@/components/pages/feed/user-following";
 import { StillReading } from "@/components/shared/sidebar/still-reading";
 import { StillWatching } from "@/components/shared/sidebar/still-watching";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "@/lib/auth.ts";
 import { seo } from "@/lib/utils/seo";
@@ -38,48 +30,6 @@ function FeedRoute() {
               <TabsTrigger value="global">{t("feed:global")}</TabsTrigger>
               <TabsTrigger value="trending">{t("feed:trending")}</TabsTrigger>
             </TabsList>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild className="w-fit">
-                <Button>
-                  <Icon icon={"lucide:filter"} />
-                </Button>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent className="rounded-lg capitalize" align="end">
-                <DropdownMenuCheckboxItem checked>
-                  <Icon icon={"lucide:star"} className="text-white size-4.5" />
-                  {t("library:reviews")}
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked>
-                  <Icon icon={"lucide:newspaper"} className="text-white size-4.5" />
-                  {t("user:entry_plural")}
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked>
-                  <Icon icon={"lucide:mountain"} className="text-white size-4.5" />
-                  {t("common:types.anime_other")}
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked>
-                  <Icon icon={"lucide:book"} className="text-white size-4.5" />
-                  {t("common:types.book_other")}
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked>
-                  <Icon icon={"lucide:gamepad-2"} className="text-white size-4.5" />
-                  {t("common:types.game_other")}
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked>
-                  <Icon icon={"lucide:tv-minimal-play"} className="text-white size-4.5" />
-                  {t("common:types.tv_other")}
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked>
-                  <Icon icon={"lucide:library-big"} className="text-white size-4.5" />
-                  {t("common:types.manga_other")}
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem checked>
-                  <Icon icon={"lucide:clapperboard"} className="text-white size-4.5" />
-                  {t("common:types.movie_other")}
-                </DropdownMenuCheckboxItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
           {isAuthenticated && (
             <TabsContent value="following">

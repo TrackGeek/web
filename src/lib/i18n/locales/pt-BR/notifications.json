@@ -1,0 +1,36 @@
+{
+  "title": "Notificações",
+  "description": "Tudo o que fizeram com seus comentários, avaliações e atividades.",
+  "markAllAsRead": "Marcar todas como lidas",
+  "markAllAsUnread": "Marcar todas como não lidas",
+  "markAsRead": "Marcar como lida",
+  "markAsUnread": "Marcar como não lida",
+  "delete": "Excluir",
+  "deleteAll": "Excluir todas",
+  "deleteAllTitle": "Excluir todas as notificações?",
+  "deleteAllDescription": "Isso exclui permanentemente todas as suas notificações. Não é possível desfazer.",
+  "cancel": "Cancelar",
+  "system": "TrackGeek",
+  "learnMore": "Saiba mais",
+  "welcome": {
+    "title": "Bem-vindo ao TrackGeek",
+    "description": "Comece a acompanhar os animes, mangás, séries, filmes, jogos e livros que você ama."
+  },
+  "unreadCount_one": "{{count}} notificação não lida",
+  "unreadCount_other": "{{count}} notificações não lidas",
+  "empty": {
+    "title": "Nenhuma notificação ainda",
+    "description": "Quando alguém comentar no seu perfil ou reagir ao seu conteúdo, aparece aqui."
+  },
+  "types": {
+    "CommentOnProfile": "comentou no seu perfil",
+    "ReactionOnComment": "reagiu ao seu comentário",
+    "ReactionOnActivity": "reagiu à sua atividade",
+    "ReactionOnAnimeReview": "reagiu à sua avaliação de anime",
+    "ReactionOnMangaReview": "reagiu à sua avaliação de mangá",
+    "ReactionOnTvShowReview": "reagiu à sua avaliação de série",
+    "ReactionOnMovieReview": "reagiu à sua avaliação de filme",
+    "ReactionOnGameReview": "reagiu à sua avaliação de jogo",
+    "ReactionOnBookReview": "reagiu à sua avaliação de livro"
+  }
+}

@@ -21,7 +21,7 @@ export function UserOverviewTab({ user, onSeeFavorites }: UserOverviewTabProps) 
 
       <div className="flex max-sm:flex-col gap-5">
         <div className="w-full md:w-2/3 flex flex-col gap-5">
-          <ActivityCard />
+          <ActivityCard userId={user.id} />
 
           <Comments type="Profile" profileId={user.profile.id} canModerate={session.data?.user?.id === user.id} />
         </div>

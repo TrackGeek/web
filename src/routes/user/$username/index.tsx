@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import axios from "axios";
-import { useState } from "react";
+import { useQueryState } from "nuqs";
 import { useTranslation } from "react-i18next";
-import { UserActivityTab } from "@/components/pages/user/tabs/activity";
-import { UserFavoritesTab } from "@/components/pages/user/tabs/favorites";
-import { UserListsTab } from "@/components/pages/user/tabs/lists";
-import { UserOverviewTab } from "@/components/pages/user/tabs/overview";
-import { UserReviewsTab } from "@/components/pages/user/tabs/reviews";
-import { UserScreenshotsTab } from "@/components/pages/user/tabs/screenshots";
+import { UserActivityTab } from "@/components/pages/user/activity-tab";
+import { UserFavoritesTab } from "@/components/pages/user/favorites-tab";
+import { UserListsTab } from "@/components/pages/user/lists-tab";
+import { UserOverviewTab } from "@/components/pages/user/overview-tab";
+import { UserReviewsTab } from "@/components/pages/user/reviews-tab";
+import { UserScreenshotsTab } from "@/components/pages/user/screenshots-tab";
 import { UserProfileHeader } from "@/components/pages/user/user-profile-header";
 import { NotFoundComponent } from "@/components/shared/404";
 import { ErrorComponent } from "@/components/shared/error";
@@ -27,6 +27,11 @@ async function getUser(username: string) {
 
 export const Route = createFileRoute("/user/$username/")({
   staticData: { layout: "full" },
+  beforeLoad: ({ params, search }) => {
+    if (!(search as { tab?: string }).tab) {
+      throw redirect({ to: "/user/$username", params, search: { tab: "overview" }, replace: true });
+    }
+  },
   loader: async ({ params }) => {
     try {
       const user = await getUser(params.username);
@@ -53,7 +58,7 @@ function UserDetailsRoute() {
   const { user: loaderUser } = Route.useLoaderData();
   const { t } = useTranslation();
   const session = useSession();
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useQueryState("tab", { defaultValue: "overview" });
 
   const userQuery = useQuery({
     queryKey: ["user", username],
@@ -103,7 +108,7 @@ function UserDetailsRoute() {
           </TabsContent>
 
           <TabsContent value="activity">
-            <UserActivityTab />
+            <UserActivityTab userId={userQuery.data.id} />
           </TabsContent>
 
           <TabsContent value="lists">

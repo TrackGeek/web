@@ -463,6 +463,19 @@ export namespace ApiTypes {
     count: number;
   }
 
+  export interface NotificationPreferences {
+    comment: boolean;
+    reaction: boolean;
+  }
+
+  export interface GetNotificationPreferencesResponse {
+    preferences: NotificationPreferences;
+  }
+
+  export interface UpdateNotificationPreferencesResponse {
+    preferences: NotificationPreferences;
+  }
+
   export type FavoriteType = "Anime" | "Manga" | "TVShow" | "Movie" | "Game" | "Book";
 
   export interface Favorite {
@@ -889,6 +902,8 @@ export const apiEndpoints = {
   getCalendarActivitiesByUserId: (userId: string) => `/activities/user/${userId}/calendar`,
   getNotifications: "/notifications",
   getUnreadNotificationsCount: "/notifications/unread/count",
+  getNotificationPreferences: "/notifications/preferences",
+  updateNotificationPreferences: "/notifications/preferences",
   markAllNotificationsAsRead: "/notifications/read/all",
   markAllNotificationsAsUnread: "/notifications/read/all",
   deleteAllNotifications: "/notifications/all",

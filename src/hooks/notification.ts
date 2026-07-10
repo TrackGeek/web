@@ -11,6 +11,10 @@ export function unreadNotificationsCountQueryKey() {
   return ["notifications", "unread-count"];
 }
 
+export function notificationPreferencesQueryKey() {
+  return ["notifications", "preferences"];
+}
+
 export function useNotifications() {
   return useInfiniteQuery({
     queryKey: notificationsQueryKey(),
@@ -73,4 +77,31 @@ export function useDeleteNotification() {
 
 export function useDeleteAllNotifications() {
   return useNotificationMutation(() => api.delete(apiEndpoints.deleteAllNotifications));
+}
+
+export function useNotificationPreferences() {
+  return useQuery({
+    queryKey: notificationPreferencesQueryKey(),
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetNotificationPreferencesResponse>(apiEndpoints.getNotificationPreferences)
+        .then(({ data }) => data.preferences),
+  });
+}
+
+export function useUpdateNotificationPreferences() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (preferences: Partial<ApiTypes.NotificationPreferences>) =>
+      api
+        .patch<ApiTypes.UpdateNotificationPreferencesResponse>(
+          apiEndpoints.updateNotificationPreferences,
+          preferences,
+        )
+        .then(({ data }) => data.preferences),
+    onSuccess: (preferences) => {
+      queryClient.setQueryData(notificationPreferencesQueryKey(), preferences);
+    },
+  });
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { NotificationList } from "@/components/pages/notifications/list-notification";
+import { NotificationPreferences } from "@/components/pages/notifications/notification-preferences";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -54,6 +55,8 @@ function NotificationsRoute() {
 
   return (
     <div className="flex flex-col gap-6">
+      <NotificationPreferences />
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

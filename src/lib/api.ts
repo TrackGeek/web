@@ -624,6 +624,8 @@ export namespace ApiTypes {
     | "ReviewAdded"
     | "ProgressStarted"
     | "ProgressCompleted"
+    | "ProgressPaused"
+    | "ProgressDropped"
     | "Watched"
     | "Followed"
     | "MedalEarned";
@@ -731,6 +733,8 @@ export namespace ApiTypes {
     bookProgress?: ActivityProgress | null;
     animeEpisodeWatch?: ActivityEpisodeWatch | null;
     tvShowEpisodeWatch?: ActivityEpisodeWatch | null;
+    anime?: ActivityMediaSummary | null;
+    tvShow?: ActivityMediaSummary | null;
     following?: { id: string; following: ActivityUser } | null;
     userMedal?: { id: string; medal: { id: string; name: string; imageUrl: string } } | null;
   }

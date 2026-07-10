@@ -88,7 +88,7 @@ export function Comments({ className, canModerate = false, ...target }: Comments
         </CardTitle>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="flex flex-col gap-4">
         {canComment ? (
           <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-2">
             <Field>
@@ -179,7 +179,7 @@ function CommentItem({
 }) {
   return (
     <article className="group flex gap-3">
-      <Avatar className="size-9 border border-border/50">
+      <Avatar className="size-9 shrink-0 border border-border/50">
         {comment.user.profile.avatarUrl ? (
           <Image
             className="aspect-square size-full"
@@ -193,17 +193,17 @@ function CommentItem({
         )}
       </Avatar>
 
-      <div className="flex-1 flex flex-col gap-1">
+      <div className="min-w-0 flex-1 flex flex-col gap-1">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5">
+          <div className="min-w-0 flex items-center gap-1.5">
             <Link
               to="/user/$username"
               params={{ username: comment.user.username }}
-              className="text-sm font-semibold text-card-foreground hover:underline"
+              className="truncate text-sm font-semibold text-card-foreground hover:underline"
             >
               {comment.user.username}
             </Link>
-            <time className="text-xs text-muted-foreground" dateTime={comment.createdAt}>
+            <time className="shrink-0 text-xs text-muted-foreground" dateTime={comment.createdAt}>
               • {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
             </time>
           </div>

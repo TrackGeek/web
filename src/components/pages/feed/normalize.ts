@@ -45,6 +45,8 @@ const ACTIVITY_ICONS: Record<ApiTypes.ActivityType, string> = {
   Watched: "lucide:monitor-play",
   ProgressStarted: "lucide:play",
   ProgressCompleted: "lucide:circle-check",
+  ProgressPaused: "lucide:pause",
+  ProgressDropped: "lucide:circle-x",
   FavoriteAdded: "lucide:heart",
   ListItemAdded: "lucide:list-plus",
   ListCreated: "lucide:list",
@@ -216,9 +218,19 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFuncti
       }
 
       case "Watched": {
-        const watch = activity.animeEpisodeWatch ?? activity.tvShowEpisodeWatch;
-        const media = resolveMedia(watch);
-        if (!watch || !media) return null;
+        const media = resolveMedia({ anime: activity.anime, tvShow: activity.tvShow });
+        if (!media) return null;
+
+        // A Watched activity holds an episode range { from, to } in its metadata.
+        const meta = (activity.metadata ?? {}) as { from?: number; to?: number };
+        const from = meta.from;
+        const to = meta.to;
+        if (from == null || to == null) return null;
+
+        const title =
+          from === to
+            ? t("feed:watchedEpisodes", { episodeNumber: from, content: media.title })
+            : t("feed:watchedEpisodesRange", { from, to, content: media.title });
 
         return {
           kind: "item",
@@ -226,7 +238,7 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFuncti
           item: {
             coverURL: media.cover,
             media: media.media,
-            title: t("feed:watchedEpisodes", { episodeNumber: watch.episode, content: media.title }),
+            title,
             time,
             likes,
           },
@@ -234,12 +246,20 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFuncti
       }
 
       case "ProgressStarted":
-      case "ProgressCompleted": {
+      case "ProgressCompleted":
+      case "ProgressPaused":
+      case "ProgressDropped": {
         const progress = firstProgress(activity);
         const media = resolveMedia(progress);
         if (!progress || !media) return null;
 
-        const key = group.type === "ProgressCompleted" ? "feed:completedTracking" : "feed:startedTracking";
+        const TRACKING_KEYS: Record<string, string> = {
+          ProgressCompleted: "feed:completedTracking",
+          ProgressPaused: "feed:pausedTracking",
+          ProgressDropped: "feed:droppedTracking",
+        };
+
+        const key = TRACKING_KEYS[group.type] ?? "feed:startedTracking";
 
         return {
           kind: "item",

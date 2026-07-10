@@ -42,6 +42,7 @@
   },
   "color": {
     "title": "Color Theme",
+    "options": "Color Options",
     "description": "Choose your preferred color theme for the application interface.",
     "custom": "Custom Color",
     "reset": "Reset to default",

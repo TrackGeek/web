@@ -30,6 +30,7 @@ import { useSession } from "@/lib/auth";
 import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES } from "@/lib/i18n/config";
 import { AVATAR_BLUR } from "@/lib/image";
 import { seo } from "@/lib/utils/seo";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const ABOUT_MAX_LENGTH = 500;
 
@@ -231,16 +232,17 @@ function SettingsRoute() {
       className="grid grid-cols-3 gap-8"
       onSubmit={profileForm.handleSubmit((data) => updateProfileMutation.mutate(data))}
     >
-      <div className="w-full flex flex-col border-border border bg-card rounded-xl p-6 col-span-1">
-        <Field className="gap-2">
-          <FieldLabel>
+      <Card className="col-span-1">
+        <CardHeader>
+          <CardTitle>
             <Icon icon={"lucide:image"} className="size-5" />
 
             {t("settings:avatar.title")}
-          </FieldLabel>
-
-          <FieldDescription>{t("settings:avatar.description")}</FieldDescription>
-
+          </CardTitle>
+          
+          <CardDescription>{t("settings:avatar.description")}</CardDescription>
+        </CardHeader>
+        <CardContent>
           <div className="flex items-center justify-center gap-2 h-55">
             {session.data?.user?.profile?.avatarUrl ? (
               <div className="size-55 relative">
@@ -309,19 +311,21 @@ function SettingsRoute() {
               onChange={(e) => handleImageUpload(e, "avatar")}
             />
           </div>
-        </Field>
-      </div>
+        </CardContent>
+      </Card>
 
-      <div className="w-full flex flex-col border-border border bg-card rounded-xl p-6 col-span-2">
-        <Field className="gap-2">
-          <FieldLabel>
+      <Card className="col-span-2">
+        <CardHeader>
+          <CardTitle>
             <Icon icon={"lucide:image"} className="size-5" />
 
             {t("settings:banner.title")}
-          </FieldLabel>
-
-          <FieldDescription>{t("settings:banner.description")}</FieldDescription>
-
+          </CardTitle>
+          
+          <CardDescription>{t("settings:banner.description")}</CardDescription>
+        </CardHeader>
+        
+        <CardContent>
           <div className="flex items-center gap-2 h-55">
             {session.data?.user?.profile?.bannerUrl ? (
               <div className="size-full relative">
@@ -390,97 +394,103 @@ function SettingsRoute() {
               onChange={(e) => handleImageUpload(e, "banner")}
             />
           </div>
-        </Field>
-      </div>
+        </CardContent>
+      </Card>
 
-      <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-xl p-6 col-span-3">
-        <Field className="gap-2">
-          <FieldLabel>
+      <Card className="col-span-3">
+        <CardHeader className="gap-2">
+          <CardTitle>
             <Icon icon={"lucide:user"} className="size-5" />
 
             {t("settings:profile.title")}
-          </FieldLabel>
+          </CardTitle>
 
-          <FieldDescription>{t("settings:profile.description")}</FieldDescription>
-        </Field>
+          <CardDescription>{t("settings:profile.description")}</CardDescription>
+        </CardHeader>
+        
+        <CardContent className="flex flex-col gap-4">
+          <Field className="gap-2">
+            <FieldLabel htmlFor="name">{t("settings:profile.name")}</FieldLabel>
 
-        <Field className="gap-2">
-          <FieldLabel htmlFor="name">{t("settings:profile.name")}</FieldLabel>
+            <Input
+              id="name"
+              type="text"
+              placeholder="Jhon Doe"
+              aria-invalid={Boolean(profileForm.formState.errors.name)}
+              {...profileForm.register("name")}
+            />
 
-          <Input
-            id="name"
-            type="text"
-            placeholder="Jhon Doe"
-            aria-invalid={Boolean(profileForm.formState.errors.name)}
-            {...profileForm.register("name")}
-          />
-
-          {profileForm.formState.errors.name?.message && (
-            <FieldError>{profileForm.formState.errors.name.message}</FieldError>
-          )}
-        </Field>
-
-        <Field className="gap-2">
-          <FieldLabel htmlFor="username">{t("settings:profile.username")}</FieldLabel>
-
-          <ButtonGroup>
-            <ButtonGroupText asChild>
-              <Label htmlFor="username">@</Label>
-            </ButtonGroupText>
-
-            <InputGroup>
-              <InputGroupInput
-                id="username"
-                type="text"
-                placeholder="jhondoe"
-                aria-invalid={Boolean(profileForm.formState.errors.username)}
-                {...profileForm.register("username")}
-              />
-            </InputGroup>
-          </ButtonGroup>
-
-          {profileForm.formState.errors.username?.message && (
-            <FieldError>{profileForm.formState.errors.username.message}</FieldError>
-          )}
-        </Field>
-
-        <Field className="gap-2">
-          <FieldLabel htmlFor="about">{t("settings:profile.about")}</FieldLabel>
-
-          <Textarea
-            id="about"
-            placeholder="Tell us about yourself..."
-            rows={10}
-            className="min-h-40 resize-none"
-            maxLength={ABOUT_MAX_LENGTH}
-            aria-invalid={Boolean(profileForm.formState.errors.about)}
-            {...profileForm.register("about")}
-          />
-
-          <div className="flex items-center justify-between gap-2">
-            {profileForm.formState.errors.about?.message ? (
-              <FieldError>{profileForm.formState.errors.about.message}</FieldError>
-            ) : (
-              <span />
+            {profileForm.formState.errors.name?.message && (
+              <FieldError>{profileForm.formState.errors.name.message}</FieldError>
             )}
+          </Field>
 
-            <span className="text-xs text-muted-foreground">
-              {about.length}/{ABOUT_MAX_LENGTH}
-            </span>
-          </div>
-        </Field>
-      </div>
+          <Field className="gap-2">
+            <FieldLabel htmlFor="username">{t("settings:profile.username")}</FieldLabel>
 
-      <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-xl p-6 col-span-3">
-        <Field className="gap-2">
-          <FieldLabel>
+            <ButtonGroup>
+              <ButtonGroupText asChild>
+                <Label htmlFor="username">@</Label>
+              </ButtonGroupText>
+
+              <InputGroup>
+                <InputGroupInput
+                  id="username"
+                  type="text"
+                  placeholder="jhondoe"
+                  aria-invalid={Boolean(profileForm.formState.errors.username)}
+                  {...profileForm.register("username")}
+                />
+              </InputGroup>
+            </ButtonGroup>
+
+            {profileForm.formState.errors.username?.message && (
+              <FieldError>{profileForm.formState.errors.username.message}</FieldError>
+            )}
+          </Field>
+
+          <Field className="gap-2">
+            <FieldLabel htmlFor="about">{t("settings:profile.about")}</FieldLabel>
+
+            <Textarea
+              id="about"
+              placeholder="Tell us about yourself..."
+              rows={10}
+              className="min-h-40 resize-none"
+              maxLength={ABOUT_MAX_LENGTH}
+              aria-invalid={Boolean(profileForm.formState.errors.about)}
+              {...profileForm.register("about")}
+            />
+
+            <div className="flex items-center justify-between gap-2">
+              {profileForm.formState.errors.about?.message ? (
+                <FieldError>{profileForm.formState.errors.about.message}</FieldError>
+              ) : (
+                <span />
+              )}
+
+              <span className="text-xs text-muted-foreground">
+                {about.length}/{ABOUT_MAX_LENGTH}
+              </span>
+            </div>
+          </Field>
+        </CardContent>
+      </Card>
+
+      <Card className="col-span-3">
+        <CardHeader>
+          <CardTitle>
             <Icon icon={"lucide:palette"} className="size-5" />
 
             {t("settings:color.title")}
-          </FieldLabel>
+          </CardTitle>
 
-          <FieldDescription>{t("settings:color.description")}</FieldDescription>
+          <CardDescription>{t("settings:color.description")}</CardDescription>
+        </CardHeader>
 
+        <CardContent className="flex flex-col gap-2">
+          <FieldLabel htmlFor="colorOptions">{t("settings:color.options")}</FieldLabel>
+          
           <div className="flex flex-wrap gap-2 mt-2">
             {colorOptions.map((option) => (
               <button
@@ -519,76 +529,78 @@ function SettingsRoute() {
               </Button>
             )}
           </div>
-        </Field>
-      </div>
+        </CardContent>
+      </Card>
 
-      <div className="w-full flex flex-col gap-4 border-border border bg-card rounded-xl p-6 col-span-3">
-        <Field className="gap-2">
-          <FieldLabel>
+      <Card className="col-span-3">
+        <CardHeader className="gap-2">
+          <CardTitle>
             <Icon icon={"lucide:settings"} className="size-5" />
 
             {t("settings:preferrences.title")}
-          </FieldLabel>
+          </CardTitle>
 
-          <FieldDescription>{t("settings:preferrences.description")}</FieldDescription>
-        </Field>
+          <CardDescription>{t("settings:preferrences.description")}</CardDescription>
+        </CardHeader>
 
-        <Field className="w-full gap-2">
-          <FieldLabel>{t("settings:preferrences.language.title")}</FieldLabel>
+        <CardContent className="flex flex-col gap-4">
+          <Field className="w-full gap-2">
+            <FieldLabel>{t("settings:preferrences.language.title")}</FieldLabel>
 
-          <Controller
-            control={profileForm.control}
-            name="language"
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger className="w-full max-w-full">
-                  <SelectValue placeholder={t("settings:preferrences.language.placeholder")} />
-                </SelectTrigger>
+            <Controller
+              control={profileForm.control}
+              name="language"
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full max-w-full">
+                    <SelectValue placeholder={t("settings:preferrences.language.placeholder")} />
+                  </SelectTrigger>
 
-                <SelectContent position="popper">
-                  <SelectGroup>
-                    {SUPPORTED_LANGUAGES.sort((a, b) => t(a.name).localeCompare(t(b.name))).map((lang) => (
-                      <SelectItem key={lang.id} value={lang.id}>
-                        {t(lang.name)}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            )}
-          />
-        </Field>
-
-        <Field className="gap-2">
-          <FieldLabel>{t("settings:preferrences.timezone.title")}</FieldLabel>
-
-          <Controller
-            control={profileForm.control}
-            name="timezone"
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger className="w-full max-w-full">
-                  <SelectValue placeholder={t("settings:preferrences.timezone.placeholder")} />
-                </SelectTrigger>
-
-                <SelectContent position="popper">
-                  {Array.from(timezonesByGroup.entries()).map(([group, timezones]) => (
-                    <SelectGroup key={group}>
-                      <SelectLabel>{group}</SelectLabel>
-
-                      {timezones.map((timezone) => (
-                        <SelectItem key={timezone} value={timezone}>
-                          {timezone}
+                  <SelectContent position="popper">
+                    <SelectGroup>
+                      {SUPPORTED_LANGUAGES.sort((a, b) => t(a.name).localeCompare(t(b.name))).map((lang) => (
+                        <SelectItem key={lang.id} value={lang.id}>
+                          {t(lang.name)}
                         </SelectItem>
                       ))}
                     </SelectGroup>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          />
-        </Field>
-      </div>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </Field>
+
+          <Field className="gap-2">
+            <FieldLabel>{t("settings:preferrences.timezone.title")}</FieldLabel>
+
+            <Controller
+              control={profileForm.control}
+              name="timezone"
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full max-w-full">
+                    <SelectValue placeholder={t("settings:preferrences.timezone.placeholder")} />
+                  </SelectTrigger>
+
+                  <SelectContent position="popper">
+                    {Array.from(timezonesByGroup.entries()).map(([group, timezones]) => (
+                      <SelectGroup key={group}>
+                        <SelectLabel>{group}</SelectLabel>
+
+                        {timezones.map((timezone) => (
+                          <SelectItem key={timezone} value={timezone}>
+                            {timezone}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </Field>
+        </CardContent>
+      </Card>
 
       <div className="flex justify-end col-span-3">
         <Button disabled={updateProfileMutation.isPending}>

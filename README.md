@@ -147,7 +147,7 @@ cp .env.example .env
 Install dependencies
 
 ```bash
-npm install
+bun install
 ```
 
 Start the development server

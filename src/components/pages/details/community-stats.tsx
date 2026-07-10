@@ -5,6 +5,7 @@ interface CommunityStat {
   icon: string;
   iconClass: string;
   value: string;
+  sub?: string;
 }
 
 interface CommunityStatsProps {
@@ -21,6 +22,7 @@ export function CommunityStats({ stats }: CommunityStatsProps) {
             <Icon icon={stat.icon} className={`size-5 ${stat.iconClass}`} />
           </div>
           <p className="text-2xl font-bold text-card-foreground">{stat.value}</p>
+          {stat.sub && <p className="text-xs text-muted-foreground mt-1">{stat.sub}</p>}
         </div>
       ))}
     </div>

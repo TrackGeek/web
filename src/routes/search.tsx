@@ -10,6 +10,7 @@ import { Grid } from "@/components/layouts/grid";
 import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { api } from "@/lib/api";
@@ -106,13 +107,27 @@ type SearchResultsProps = {
 
 const SearchResults = memo(
   ({ items, contentType, isLoading, isError, isFetchingNextPage, sentinelRef }: SearchResultsProps) => {
+    const { t } = useTranslation();
+
     return (
       <div className="flex-1 md:w-2/3 space-y-4">
         {isError && <ErrorComponent />}
 
         {isLoading && <LoadingFiltered />}
 
-        {!isLoading && !isError && (
+        {!isLoading && !isError && items.length === 0 && (
+          <Empty className="border-0">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Icon icon="lucide:search-x" />
+              </EmptyMedia>
+              <EmptyTitle>{t("user:noSearchResults")}</EmptyTitle>
+              <EmptyDescription>{t("user:noSearchResultsDescription")}</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        )}
+
+        {!isLoading && !isError && items.length > 0 && (
           <Grid minColSize="128px" className="grid gap-6">
             {items.map((item: any) => (
               <CardItem

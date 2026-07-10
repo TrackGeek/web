@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface DetailsPageLayoutProps {
   sidebar: ReactNode;
@@ -9,10 +10,14 @@ export function DetailsPageLayout({ sidebar, children }: DetailsPageLayoutProps)
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       <div className="lg:w-1/3">
-        <div className="bg-card rounded-2xl shadow-lg p-6 sticky top-6 flex flex-col gap-4">{sidebar}</div>
+        <Card>
+          <CardContent className="flex flex-col gap-4">{sidebar}</CardContent>
+        </Card>
       </div>
       <div className="lg:w-2/3">
-        <div className="bg-card rounded-2xl shadow-lg p-8 space-y-3">{children}</div>
+        <Card>
+          <CardContent className="flex flex-col gap-4">{children}</CardContent>
+        </Card>
       </div>
     </div>
   );

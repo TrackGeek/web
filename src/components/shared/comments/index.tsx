@@ -94,7 +94,9 @@ export function Comments({
 
             {t("comments:title")}
 
-            {total > 0 && <span className="text-sm text-muted-foreground">{t("comments:count", { count: total })}</span>}
+            {total > 0 && (
+              <span className="text-sm text-muted-foreground">{t("comments:count", { count: total })}</span>
+            )}
           </CardTitle>
         </CardHeader>
       )}
@@ -196,7 +198,6 @@ function CommentForm({
           placeholder={t("comments:placeholder")}
           maxLength={MAX_LENGTH}
           disabled={isPending}
-          // biome-ignore lint/a11y/noAutofocus: reply form intentionally focuses when opened
           autoFocus={autoFocus}
           aria-invalid={Boolean(form.formState.errors.content)}
           className="min-h-20 resize-none"
@@ -205,14 +206,14 @@ function CommentForm({
         {form.formState.errors.content?.message && <FieldError>{form.formState.errors.content.message}</FieldError>}
       </Field>
       <div className="flex items-center justify-between gap-2">
-        <label className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
           <Checkbox
             checked={isSpoiler}
             onCheckedChange={(checked) => form.setValue("isSpoiler", checked === true)}
             disabled={isPending}
           />
           {t("comments:spoiler")}
-        </label>
+        </div>
 
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted-foreground">

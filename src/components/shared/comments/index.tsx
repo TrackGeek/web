@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { formatDistanceToNow } from "date-fns";
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -168,6 +168,7 @@ function CommentForm({
   onCancel?: () => void;
 }) {
   const { t } = useTranslation();
+  const spoilerId = useId();
 
   const schema = useMemo(
     () =>
@@ -206,14 +207,15 @@ function CommentForm({
         {form.formState.errors.content?.message && <FieldError>{form.formState.errors.content.message}</FieldError>}
       </Field>
       <div className="flex items-center justify-between gap-2">
-        <div className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
+        <label htmlFor={spoilerId} className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
           <Checkbox
+            id={spoilerId}
             checked={isSpoiler}
             onCheckedChange={(checked) => form.setValue("isSpoiler", checked === true)}
             disabled={isPending}
           />
           {t("comments:spoiler")}
-        </div>
+        </label>
 
         <div className="flex items-center gap-2">
           <span className="text-xs text-muted-foreground">
@@ -244,7 +246,6 @@ function CommentItem({
   toggleReaction,
   onAdd,
   onDelete,
-  isReply = false,
 }: {
   comment: ApiTypes.Comment;
   canComment: boolean;
@@ -255,7 +256,6 @@ function CommentItem({
   toggleReaction: ToggleReaction;
   onAdd: (input: AddCommentInput, onSuccess?: () => void) => void;
   onDelete: (commentId: string) => void;
-  isReply?: boolean;
 }) {
   const { t } = useTranslation();
   const [replying, setReplying] = useState(false);
@@ -366,7 +366,7 @@ function CommentItem({
             })}
           </div>
 
-          {!isReply && canComment && (
+          {canComment && (
             <button
               type="button"
               onClick={() => setReplying((value) => !value)}
@@ -408,7 +408,6 @@ function CommentItem({
                 toggleReaction={toggleReaction}
                 onAdd={onAdd}
                 onDelete={onDelete}
-                isReply
               />
             ))}
           </div>

@@ -343,15 +343,13 @@ function MovieDetailsRoute() {
       )} */}
 
       <div className="flex flex-wrap items-center gap-6 border-b border-border">
-        {reviews.total >= 1 && (
-          <div className="flex items-center mb-3 space-x-1">
-            <StarRating value={rating} className="mr-1" />
-            <span className="font-semibold text-card-foreground">{rating}</span>
-            <span className="text-muted-foreground">
-              ({reviews.total} {t("library:reviews")})
-            </span>
-          </div>
-        )}
+        <div className="flex items-center mb-3 space-x-1">
+          <StarRating value={rating} className="mr-1" />
+          <span className="font-semibold text-card-foreground">{rating}</span>
+          <span className="text-muted-foreground">
+            ({reviews.total} {t("library:reviews")})
+          </span>
+        </div>
       </div>
 
       <Tabs defaultValue="info">

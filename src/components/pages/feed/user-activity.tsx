@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useToggleActivityReaction, useUserActivities, userActivitiesQueryKey } from "@/hooks/activity";
+import { userActivitiesQueryKey, useToggleActivityReaction, useUserActivities } from "@/hooks/activity";
 import { ActivityFeed } from "./activity-feed";
 
 interface UserActivityProps {

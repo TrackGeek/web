@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -8,7 +9,6 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth";
 import { AVATAR_BLUR } from "@/lib/image";
 import { getInitialsFromName } from "@/lib/utils";
-import { useNavigate } from '@tanstack/react-router';
 
 export interface UserProfileHeaderProps {
   user: ApiTypes.User;
@@ -132,9 +132,7 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
                   });
 
                   requestAnimationFrame(() =>
-                    document
-                      .getElementById("medals-card")
-                      ?.scrollIntoView({ behavior: "smooth", block: "start" }),
+                    document.getElementById("medals-card")?.scrollIntoView({ behavior: "smooth", block: "start" }),
                   );
                 }}
                 className="bg-muted px-3 py-1 rounded-full text-sm cursor-pointer"
@@ -142,7 +140,7 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
                 <strong className="font-semibold text-card-foreground">{user.userMedals.length}</strong>
                 <span className="text-muted-foreground ml-2">{t("user:medals")}</span>
               </button>
-              
+
               <button
                 type="button"
                 onClick={() => onActiveTabChange("followers")}
@@ -151,7 +149,7 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
                 <strong className="font-semibold text-card-foreground">{user._count.followers || 0}</strong>
                 <span className="text-muted-foreground ml-2">{t("user:follower_plural")}</span>
               </button>
-              
+
               <button
                 type="button"
                 onClick={() => onActiveTabChange("following")}

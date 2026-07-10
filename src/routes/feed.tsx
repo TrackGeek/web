@@ -1,12 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQueryState } from "nuqs";
 import { useTranslation } from "react-i18next";
-
 import { FeedListFollowing } from "@/components/pages/feed/user-following";
 import { FeedListGlobal } from "@/components/pages/feed/user-global";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "@/lib/auth.ts";
 import { seo } from "@/lib/utils/seo";
-import { useQueryState } from 'nuqs';
 
 export const Route = createFileRoute("/feed")({
   head: () => ({
@@ -17,12 +16,12 @@ export const Route = createFileRoute("/feed")({
 
 function FeedRoute() {
   const { t } = useTranslation();
-  
+
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
-  
+
   const [activeTab, setActiveTab] = useQueryState("tab", { defaultValue: isAuthenticated ? "following" : "global" });
-  
+
   return (
     <div className="flex max-sm:flex-col gap-5">
       <div className="flex flex-col md:w-2/3">
@@ -33,7 +32,7 @@ function FeedRoute() {
               <TabsTrigger value="global">{t("feed:global")}</TabsTrigger>
             </TabsList>
           </div>
-          
+
           {isAuthenticated && (
             <TabsContent value="following">
               <FeedListFollowing enabled={activeTab === "following"} />

@@ -22,6 +22,7 @@ import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { StarRating } from "@/components/shared/star-rating.tsx";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { ImageZoom } from "@/components/ui/image-zoom";
@@ -531,351 +532,379 @@ function TVShowDetailsPage() {
   );
 
   return (
-    <DetailsPageLayout sidebar={sidebar}>
-      <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-        {item.name}
-      </h1>
+    <>
+      <DetailsPageLayout sidebar={sidebar}>
+        <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
+          {item.name}
+        </h1>
 
-      <div className="flex flex-wrap items-center gap-6 border-b border-border">
-        <div className="flex items-center mb-3 space-x-1">
-          <StarRating value={rating} className="mr-1" />
-          <span className="font-semibold text-card-foreground">{rating}</span>
-          <span className="text-muted-foreground">
-            ({reviews.total} {t("library:reviews")})
-          </span>
-        </div>
-      </div>
-
-      <Tabs defaultValue="info">
-        <div className="flex items-center justify-between gap-3 mb-2">
-          <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
-            <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-
-            <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
-
-            <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
-
-            <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>
-
-            <TabsTrigger value="reviews" className="capitalize">
-              {t("library:reviews")} ({reviews.total})
-            </TabsTrigger>
-
-            <TabsTrigger value="lists">
-              {t("library:lists")} ({listsQuery.data?.total ?? 0})
-            </TabsTrigger>
-
-            <TabsTrigger value="comments">{t("comments:title")}</TabsTrigger>
-          </TabsList>
+        <div className="flex flex-wrap items-center gap-6 border-b border-border">
+          <div className="flex items-center mb-3 space-x-1">
+            <StarRating value={rating} className="mr-1" />
+            <span className="font-semibold text-card-foreground">{rating}</span>
+            <span className="text-muted-foreground">
+              ({reviews.total} {t("library:reviews")})
+            </span>
+          </div>
         </div>
 
-        <TabsContent value="info" className={"space-y-5"}>
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:genres")}</h3>
-            <div className="flex flex-wrap gap-2">
-              {item.genres.map((genre: string, index: number) => {
-                const colors = [
-                  "bg-chart-1/20 text-chart-1 border-chart-1/30 from-chart-1/20 to-chart-1/30",
-                  "bg-chart-2/20 text-chart-2 border-chart-2/30 from-chart-2/20 to-chart-2/30",
-                  "bg-chart-3/20 text-chart-3 border-chart-3/30 from-chart-3/20 to-chart-3/30",
-                  "bg-chart-4/20 text-chart-4 border-chart-4/30 from-chart-4/20 to-chart-4/30",
-                  "bg-chart-5/20 text-chart-5 border-chart-5/30 from-chart-5/20 to-chart-5/30",
-                ];
-                const color = colors[index % colors.length];
+        <Tabs defaultValue="info">
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
+              <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
 
-                return (
-                  <span
-                    key={genre}
-                    className={`px-3 py-1.5 bg-linear-to-r ${color} border rounded-full text-sm font-medium`}
-                  >
-                    {getGenreLabel(t, genre)}
-                  </span>
-                );
-              })}
-            </div>
+              <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
+
+              <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
+
+              <TabsTrigger value="lists">
+                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+              </TabsTrigger>
+
+              <TabsTrigger value="comments">{t("comments:title")}</TabsTrigger>
+            </TabsList>
           </div>
 
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:synopsis")}</h3>
-            <div className="text-muted-foreground leading-relaxed space-y-4">
-              <p>{item.tagline}</p>
-            </div>
-          </div>
+          <TabsContent value="info" className={"space-y-5"}>
+            <div className={"space-y-3"}>
+              <p className="text-muted-foreground leading-relaxed">{item.tagline}</p>
+              <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
+              <div className="flex flex-wrap gap-2">
+                {item.genres.map((genre: string, index: number) => {
+                  const colors = [
+                    "bg-chart-1/20 text-chart-1 border-chart-1/30 from-chart-1/20 to-chart-1/30",
+                    "bg-chart-2/20 text-chart-2 border-chart-2/30 from-chart-2/20 to-chart-2/30",
+                    "bg-chart-3/20 text-chart-3 border-chart-3/30 from-chart-3/20 to-chart-3/30",
+                    "bg-chart-4/20 text-chart-4 border-chart-4/30 from-chart-4/20 to-chart-4/30",
+                    "bg-chart-5/20 text-chart-5 border-chart-5/30 from-chart-5/20 to-chart-5/30",
+                  ];
+                  const color = colors[index % colors.length];
 
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:tvShowCharacteristics")}</h3>
-            <Grid minColSize={"200px"} className="gap-4 items-start">
-              {item?.createdBy.length >= 1 && (
-                <DetailsCard
-                  title={t("library:creators")}
-                  icon={<Icon icon={"lucide:file-pen-line"} className="size-5 text-muted-foreground" />}
-                  description={item.createdBy
-                    .map((cb: { name: string }) => {
-                      return cb.name;
-                    })
-                    .join(", ")}
-                />
-              )}
-              {item.numberOfSeasons && (
-                <DetailsCard
-                  title={t("library:season_other")}
-                  icon={<Icon icon={"lucide:hash"} className="size-5 text-muted-foreground" />}
-                  description={item.numberOfSeasons}
-                />
-              )}
-              {item.numberOfEpisodes && (
-                <DetailsCard
-                  title={t("library:totalEpisodes")}
-                  icon={<Icon icon={"lucide:tv"} className="size-5 text-muted-foreground" />}
-                  description={item.numberOfEpisodes}
-                />
-              )}
-              {item.originalLanguage && (
-                <DetailsCard
-                  title={t("library:language")}
-                  icon={<Icon icon={"lucide:languages"} className="size-5 text-muted-foreground" />}
-                  description={item.originalLanguage.toUpperCase()}
-                />
-              )}
-              {item?.productionCompanies?.length >= 1 && (
-                <DetailsCard
-                  title={t("library:productionCompanies")}
-                  icon={<Icon icon={"lucide:building"} className="size-5 text-muted-foreground" />}
-                  description={
-                    <span className="inline-flex items-center gap-1.5">
-                      <span className="truncate">{item.productionCompanies[0].name}</span>
-                      {item.productionCompanies.length > 1 && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <span className="shrink-0 cursor-default rounded-md bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
-                              +{item.productionCompanies.length - 1}
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <ul className="flex flex-col gap-0.5">
-                              {item.productionCompanies.slice(1).map((pc: { name: string }) => (
-                                <li key={pc.name}>{pc.name}</li>
-                              ))}
-                            </ul>
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
+                  return (
+                    <span
+                      key={genre}
+                      className={`px-3 py-1.5 bg-linear-to-r ${color} border rounded-full text-sm font-medium`}
+                    >
+                      {getGenreLabel(t, genre)}
                     </span>
-                  }
-                />
-              )}
-              {item?.episodeRuntime?.length >= 1 && (
-                <DetailsCard
-                  title={t("library:runtime")}
-                  icon={<Icon icon={"lucide:clock"} className="size-5 text-muted-foreground" />}
-                  description={`${item?.episodeRuntime[0]} minutes`}
-                />
-              )}
-              {item.type && (
-                <DetailsCard
-                  title={t("library:type")}
-                  icon={<Icon icon={"lucide:file-type"} className="size-5 text-muted-foreground" />}
-                  description={item.type}
-                />
-              )}
-            </Grid>
-          </div>
+                  );
+                })}
+              </div>
+            </div>
 
-          {isAuthenticated && (
-            <EpisodeProgress
-              seasons={mySeasons}
-              defaultSeason={1}
-              seasonCustomNames={{
-                0: t("library:specials"),
-              }}
-              isLoading={
-                toggleSeasonMutation.isPending || toggleAllMutation.isPending || toggleEpisodeMutation.isPending
-              }
-              onToggleEpisode={handleWatchEpisodeToggle}
-              onToggleSeason={handleWatchSeasonToggle}
-              onToggleAll={handleWatchAllToggle}
-            />
-          )}
+            <div>
+              <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:tvShowCharacteristics")}</h3>
+              <Grid minColSize={"200px"} className="gap-4 items-start">
+                {item?.createdBy.length >= 1 && (
+                  <DetailsCard
+                    title={t("library:creators")}
+                    icon={<Icon icon={"lucide:file-pen-line"} className="size-5 text-muted-foreground" />}
+                    description={item.createdBy
+                      .map((cb: { name: string }) => {
+                        return cb.name;
+                      })
+                      .join(", ")}
+                  />
+                )}
+                {item.numberOfSeasons && (
+                  <DetailsCard
+                    title={t("library:season_other")}
+                    icon={<Icon icon={"lucide:hash"} className="size-5 text-muted-foreground" />}
+                    description={item.numberOfSeasons}
+                  />
+                )}
+                {item.numberOfEpisodes && (
+                  <DetailsCard
+                    title={t("library:totalEpisodes")}
+                    icon={<Icon icon={"lucide:tv"} className="size-5 text-muted-foreground" />}
+                    description={item.numberOfEpisodes}
+                  />
+                )}
+                {item.originalLanguage && (
+                  <DetailsCard
+                    title={t("library:language")}
+                    icon={<Icon icon={"lucide:languages"} className="size-5 text-muted-foreground" />}
+                    description={item.originalLanguage.toUpperCase()}
+                  />
+                )}
+                {item?.productionCompanies?.length >= 1 && (
+                  <DetailsCard
+                    title={t("library:productionCompanies")}
+                    icon={<Icon icon={"lucide:building"} className="size-5 text-muted-foreground" />}
+                    description={
+                      <span className="inline-flex items-center gap-1.5">
+                        <span className="truncate">{item.productionCompanies[0].name}</span>
+                        {item.productionCompanies.length > 1 && (
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="shrink-0 cursor-default rounded-md bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
+                                +{item.productionCompanies.length - 1}
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <ul className="flex flex-col gap-0.5">
+                                {item.productionCompanies.slice(1).map((pc: { name: string }) => (
+                                  <li key={pc.name}>{pc.name}</li>
+                                ))}
+                              </ul>
+                            </TooltipContent>
+                          </Tooltip>
+                        )}
+                      </span>
+                    }
+                  />
+                )}
+                {item?.episodeRuntime?.length >= 1 && (
+                  <DetailsCard
+                    title={t("library:runtime")}
+                    icon={<Icon icon={"lucide:clock"} className="size-5 text-muted-foreground" />}
+                    description={`${item?.episodeRuntime[0]} minutes`}
+                  />
+                )}
+                {item.type && (
+                  <DetailsCard
+                    title={t("library:type")}
+                    icon={<Icon icon={"lucide:file-type"} className="size-5 text-muted-foreground" />}
+                    description={item.type}
+                  />
+                )}
+              </Grid>
+            </div>
 
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {(
-                [
-                  {
-                    key: "planToWatch",
-                    label: t("feed:lists.planning"),
-                    icon: "lucide:bookmark",
-                    iconClassName: "text-purple-400",
-                  },
-                  {
-                    key: "watching",
-                    label: t("feed:lists.watching"),
-                    icon: "lucide:tv-minimal-play",
-                    iconClassName: "text-chart-1",
-                  },
-                  {
-                    key: "completed",
-                    label: t("feed:lists.completed"),
-                    icon: "lucide:check-circle",
-                    iconClassName: "text-secondary",
-                  },
-                  {
-                    key: "dropped",
-                    label: t("feed:lists.dropped"),
-                    icon: "lucide:x-circle",
-                    iconClassName: "text-destructive",
-                  },
-                ] as const
-              ).map((stat) => {
-                const value = item.progressStats?.[stat.key] ?? { count: 0, percentage: 0 };
+            {isAuthenticated && (
+              <EpisodeProgress
+                seasons={mySeasons}
+                defaultSeason={1}
+                seasonCustomNames={{
+                  0: t("library:specials"),
+                }}
+                isLoading={
+                  toggleSeasonMutation.isPending || toggleAllMutation.isPending || toggleEpisodeMutation.isPending
+                }
+                onToggleEpisode={handleWatchEpisodeToggle}
+                onToggleSeason={handleWatchSeasonToggle}
+                onToggleAll={handleWatchAllToggle}
+              />
+            )}
+
+            <div>
+              <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {(
+                  [
+                    {
+                      key: "planToWatch",
+                      label: t("feed:lists.planning"),
+                      icon: "lucide:bookmark",
+                      iconClassName: "text-purple-400",
+                    },
+                    {
+                      key: "watching",
+                      label: t("feed:lists.watching"),
+                      icon: "lucide:tv-minimal-play",
+                      iconClassName: "text-chart-1",
+                    },
+                    {
+                      key: "completed",
+                      label: t("feed:lists.completed"),
+                      icon: "lucide:check-circle",
+                      iconClassName: "text-secondary",
+                    },
+                    {
+                      key: "dropped",
+                      label: t("feed:lists.dropped"),
+                      icon: "lucide:x-circle",
+                      iconClassName: "text-destructive",
+                    },
+                  ] as const
+                ).map((stat) => {
+                  const value = item.progressStats?.[stat.key] ?? { count: 0, percentage: 0 };
+
+                  return (
+                    <div
+                      key={stat.key}
+                      className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-muted-foreground">{stat.label}</span>
+                        <Icon icon={stat.icon} className={cn("size-5", stat.iconClassName)} />
+                      </div>
+                      <p className="text-2xl font-bold text-card-foreground">{value.percentage}%</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {value.count} {t("library:users")}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {(item.trailerId || item.backdrops?.length >= 1) && (
+              <Carousel className="w-full" opts={{ loop: true, align: "center" }}>
+                <CarouselContent>
+                  {item.trailerId && (
+                    <CarouselItem>
+                      <div className="relative w-full overflow-hidden pt-[56.25%]">
+                        <iframe
+                          src={`https://youtube.com/embed/${item.trailerId}`}
+                          allowFullScreen
+                          className="absolute inset-0 w-full h-full"
+                          title="Trailer"
+                        />
+                      </div>
+                    </CarouselItem>
+                  )}
+                  {item.backdrops?.map((url: string, i: number) => (
+                    <CarouselItem key={i}>
+                      <div className="relative w-full overflow-hidden pt-[56.25%]">
+                        <div
+                          className="absolute inset-0 bg-cover bg-center blur-xl scale-110"
+                          style={{ backgroundImage: `url(${url})` }}
+                          aria-hidden="true"
+                        />
+                        <ImageZoom className="absolute inset-0">
+                          <Image
+                            src={url}
+                            width={1920}
+                            height={1080}
+                            alt="Backdrop"
+                            className="absolute inset-0 w-full h-full object-contain"
+                          />
+                        </ImageZoom>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious variant="default" className="left-2" />
+                <CarouselNext variant="default" className="right-2" />
+              </Carousel>
+            )}
+          </TabsContent>
+
+          <TabsContent value="episodes">
+            <Accordion type="single" collapsible value={openSeason} onValueChange={setOpenSeason}>
+              {seasons.map((season: any) => {
+                const seasonValue = `item-${season.seasonNumber}`;
 
                 return (
-                  <div
-                    key={stat.key}
-                    className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-muted-foreground">{stat.label}</span>
-                      <Icon icon={stat.icon} className={cn("size-5", stat.iconClassName)} />
-                    </div>
-                    <p className="text-2xl font-bold text-card-foreground">{value.percentage}%</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {value.count} {t("library:users")}
-                    </p>
-                  </div>
+                  <AccordionItem key={season.id} value={seasonValue}>
+                    <AccordionTrigger className="cursor-pointer">
+                      <h3 className="font-semibold text-card-foreground text-lg mb-3">{season.name}</h3>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <SeasonEpisodes
+                        slug={slug}
+                        seasonNumber={season.seasonNumber}
+                        isOpen={openSeason === seasonValue}
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
+            </Accordion>
+          </TabsContent>
+
+          <TabsContent value="lists">
+            {!listsQuery.data || listsQuery.data.items.length === 0 ? (
+              <Empty className="border-0">
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <Icon icon="lucide:list" />
+                  </EmptyMedia>
+                  <EmptyTitle>{t("library:noLists")}</EmptyTitle>
+                  <EmptyDescription>{t("library:noListsDescription")}</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {listsQuery.data.items.map((list) => (
+                  <ListItem key={list.id} list={list} />
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="comments">
+            <Comments
+              type="TVShow"
+              tvShowId={item.id}
+              showTitle={false}
+              containerClassName="border-0 bg-transparent p-0 shadow-none"
+              headerClassName="p-0"
+              contentClassName="p-0"
+            />
+          </TabsContent>
+
+          <TabsContent value="cast">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {item.cast?.map((cast: { character: string; name: string; profileUrl: string }) => {
+                return (
+                  <CastItem
+                    key={cast.character}
+                    name={cast.name}
+                    character={cast.character}
+                    imageUrl={cast.profileUrl}
+                  />
                 );
               })}
             </div>
-          </div>
+          </TabsContent>
+        </Tabs>
+      </DetailsPageLayout>
 
-          {item.trailerId && (
-            <iframe
-              src={`https://youtube.com/embed/${item.trailerId}`}
-              allowFullScreen
-              className="w-full aspect-video"
-              title="Trailer"
-            />
+      <div className="space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="font-semibold text-card-foreground text-lg capitalize">
+            {t("library:reviews")} ({reviews?.total ?? 0})
+          </h3>
+          {isAuthenticated && (
+            <Button variant="outline" size="sm" className="shrink-0 gap-2" onClick={() => setMoreOpen(true)}>
+              <Icon icon="lucide:pen-line" className="size-4" />
+              {t("feed:review")}
+            </Button>
           )}
-        </TabsContent>
-
-        <TabsContent value="episodes">
-          <Accordion type="single" collapsible value={openSeason} onValueChange={setOpenSeason}>
-            {seasons.map((season: any) => {
-              const seasonValue = `item-${season.seasonNumber}`;
-
-              return (
-                <AccordionItem key={season.id} value={seasonValue}>
-                  <AccordionTrigger className="cursor-pointer">
-                    <h3 className="font-semibold text-card-foreground text-lg mb-3">{season.name}</h3>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <SeasonEpisodes
-                      slug={slug}
-                      seasonNumber={season.seasonNumber}
-                      isOpen={openSeason === seasonValue}
-                    />
-                  </AccordionContent>
-                </AccordionItem>
-              );
-            })}
-          </Accordion>
-        </TabsContent>
-
-        <TabsContent value="reviews">
-          {reviews.items.length === 0 ? (
-            <Empty className="border-0">
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <Icon icon="lucide:star" />
-                </EmptyMedia>
-                <EmptyTitle>{t("library:noReviews")}</EmptyTitle>
-                <EmptyDescription>{t("library:noReviewsDescription")}</EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          ) : (
-            <div className="flex flex-col divide-y divide-border/30">
-              {reviews.items.map((review: ApiTypes.TVShowReview) => (
-                <ReviewItem
-                  key={review.id}
-                  user={review.user}
-                  reviewText={review.summary ?? ""}
-                  notes={review.notes}
-                  story={review.story}
-                  date={new Date(review.createdAt)}
-                  criteries={{
-                    all: Number(review.overall),
-                    direction: review.direction != null ? Number(review.direction) : undefined,
-                    production: review.production != null ? Number(review.production) : undefined,
-                    acting: review.acting != null ? Number(review.acting) : undefined,
-                  }}
-                  reviewId={review.id}
-                  reactions={review.reactions}
-                  onReact={(emoji, currentReaction) =>
-                    toggleReaction.mutate(
-                      { reviewId: review.id, currentReaction, emoji },
-                      { onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tvReviews", item.id] }) },
-                    )
-                  }
-                  isReacting={toggleReaction.isPending && toggleReaction.variables?.reviewId === review.id}
-                />
-              ))}
-            </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="lists">
-          {!listsQuery.data || listsQuery.data.items.length === 0 ? (
-            <Empty className="border-0">
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <Icon icon="lucide:list" />
-                </EmptyMedia>
-                <EmptyTitle>{t("library:noLists")}</EmptyTitle>
-                <EmptyDescription>{t("library:noListsDescription")}</EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {listsQuery.data.items.map((list) => (
-                <ListItem key={list.id} list={list} />
-              ))}
-            </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="comments">
-          <Comments
-            type="TVShow"
-            tvShowId={item.id}
-            showTitle={false}
-            containerClassName="border-0 bg-transparent p-0 shadow-none"
-            headerClassName="p-0"
-            contentClassName="p-0"
-          />
-        </TabsContent>
-
-        <TabsContent value="cast">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {item.cast?.map((cast: { character: string; name: string; profileUrl: string }) => {
-              return (
-                <CastItem key={cast.character} name={cast.name} character={cast.character} imageUrl={cast.profileUrl} />
-              );
-            })}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="medias">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {item.backdrops?.map((url: string, i: number) => (
-              <ImageZoom key={i}>
-                <Image src={url} width={1920} height={1080} alt="Backdrop" />
-              </ImageZoom>
+        </div>
+        {reviews.items.length === 0 ? (
+          <Empty className="border-0">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Icon icon="lucide:star" />
+              </EmptyMedia>
+              <EmptyTitle>{t("library:noReviews")}</EmptyTitle>
+              <EmptyDescription>{t("library:noReviewsDescription")}</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        ) : (
+          <div className="flex flex-col divide-y divide-border/30">
+            {reviews.items.map((review: ApiTypes.TVShowReview) => (
+              <ReviewItem
+                key={review.id}
+                user={review.user}
+                reviewText={review.summary ?? ""}
+                notes={review.notes}
+                story={review.story}
+                date={new Date(review.createdAt)}
+                criteries={{
+                  all: Number(review.overall),
+                  direction: review.direction != null ? Number(review.direction) : undefined,
+                  production: review.production != null ? Number(review.production) : undefined,
+                  acting: review.acting != null ? Number(review.acting) : undefined,
+                }}
+                reviewId={review.id}
+                reactions={review.reactions}
+                onReact={(emoji, currentReaction) =>
+                  toggleReaction.mutate(
+                    { reviewId: review.id, currentReaction, emoji },
+                    { onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tvReviews", item.id] }) },
+                  )
+                }
+                isReacting={toggleReaction.isPending && toggleReaction.variables?.reviewId === review.id}
+              />
             ))}
           </div>
-        </TabsContent>
-      </Tabs>
-    </DetailsPageLayout>
+        )}
+      </div>
+    </>
   );
 }
 

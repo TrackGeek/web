@@ -1,13 +1,15 @@
 import { Icon } from "@iconify/react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FavoriteCard, type FavoriteItem } from "@/components/pages/user/overview-tab/favorite-card";
+import { SearchInput } from "@/components/shared/search-input";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PROGRESS_CONTENT, progressStatusSections, progressToItem, useUserProgress } from "@/hooks/progress";
 import type { ApiTypes } from "@/lib/api";
+import { useDebounce } from "@/lib/utils/useDebounce";
 
 const CONTENT_TYPES: { type: ApiTypes.ReviewContentType; labelKey: string }[] = [
   { type: "game", labelKey: "common:types.game_other" },
@@ -31,6 +33,10 @@ export function UserProgressTab({
 }) {
   const { t } = useTranslation();
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedQuery = useDebounce(searchQuery, 600);
+  const normalizedQuery = debouncedQuery.trim().toLowerCase();
+
   const progressQuery = useUserProgress(contentType, userId);
 
   const rows = useMemo(() => progressQuery.data?.pages.flatMap((page) => page.items) ?? [], [progressQuery.data]);
@@ -42,34 +48,48 @@ export function UserProgressTab({
     >;
 
     return progressStatusSections(contentType)
-      .map((section) => ({
-        ...section,
-        count: typeStats[section.statsKey]?.count ?? 0,
-        items: rows
+      .map((section) => {
+        const items = rows
           .filter((row) => row.status === section.status)
           .map((row) => progressToItem(contentType, row))
-          .filter((item): item is FavoriteItem => item !== null),
-      }))
+          .filter((item): item is FavoriteItem => item !== null)
+          .filter((item) => !normalizedQuery || item.title.toLowerCase().includes(normalizedQuery));
+
+        return {
+          ...section,
+          // When searching, count reflects the filtered (loaded) matches; otherwise the accurate total from stats.
+          count: normalizedQuery ? items.length : (typeStats[section.statsKey]?.count ?? 0),
+          items,
+        };
+      })
       .filter((section) => section.items.length > 0);
-  }, [rows, contentType, progressStats]);
+  }, [rows, contentType, progressStats, normalizedQuery]);
+
+  const handleContentTypeChange = (value: string) => {
+    onContentTypeChange(value as ApiTypes.ReviewContentType);
+    setSearchQuery("");
+  };
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="w-full sm:w-40">
-        <Select value={contentType} onValueChange={(value) => onContentTypeChange(value as ApiTypes.ReviewContentType)}>
-          <SelectTrigger className="w-full">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {CONTENT_TYPES.map(({ type, labelKey }) => (
-                <SelectItem key={type} value={type}>
-                  {t(labelKey)}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+      <div className="flex flex-col sm:flex-row gap-5 sm:items-end">
+        <div className="w-full sm:w-40">
+          <Select value={contentType} onValueChange={handleContentTypeChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {CONTENT_TYPES.map(({ type, labelKey }) => (
+                  <SelectItem key={type} value={type}>
+                    {t(labelKey)}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <SearchInput value={searchQuery} onChange={setSearchQuery} />
       </div>
 
       {progressQuery.isLoading ? (
@@ -82,10 +102,12 @@ export function UserProgressTab({
         <Empty className="border-0">
           <EmptyHeader>
             <EmptyMedia variant="icon">
-              <Icon icon="lucide:chart-line" />
+              <Icon icon={normalizedQuery ? "lucide:search-x" : "lucide:chart-line"} />
             </EmptyMedia>
-            <EmptyTitle>{t("user:noProgress")}</EmptyTitle>
-            <EmptyDescription>{t("user:noProgressDescription")}</EmptyDescription>
+            <EmptyTitle>{normalizedQuery ? t("user:noSearchResults") : t("user:noProgress")}</EmptyTitle>
+            <EmptyDescription>
+              {normalizedQuery ? t("user:noSearchResultsDescription") : t("user:noProgressDescription")}
+            </EmptyDescription>
           </EmptyHeader>
         </Empty>
       ) : (

@@ -1,17 +1,18 @@
 import { Icon } from "@iconify/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FavoriteCard, type FavoriteItem, favoriteToItem } from "@/components/pages/user/overview-tab/favorite-card";
 import { SearchInput } from "@/components/shared/search-input";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFavorites, useRemoveFavorite } from "@/hooks/favorite";
 import type { ApiTypes } from "@/lib/api";
 import { useSession } from "@/lib/auth";
 import { useDebounce } from "@/lib/utils/useDebounce";
 
-const FAVORITE_TYPE_ORDER: { type: ApiTypes.FavoriteType; labelKey: string }[] = [
+const CONTENT_TYPES: { type: ApiTypes.FavoriteType; labelKey: string }[] = [
   { type: "Anime", labelKey: "common:types.anime_other" },
   { type: "Manga", labelKey: "common:types.manga_other" },
   { type: "TVShow", labelKey: "common:types.tv_other" },
@@ -20,32 +21,65 @@ const FAVORITE_TYPE_ORDER: { type: ApiTypes.FavoriteType; labelKey: string }[] =
   { type: "Book", labelKey: "common:types.book_other" },
 ];
 
-export function UserFavoritesTab({ userId }: { userId: string }) {
+export function UserFavoritesTab({
+  userId,
+  initialContentType = "Anime",
+}: {
+  userId: string;
+  initialContentType?: ApiTypes.FavoriteType;
+}) {
   const { t } = useTranslation();
   const session = useSession();
 
   const isOwner = session.data?.user?.id === userId;
 
+  const [contentType, setContentType] = useState<ApiTypes.FavoriteType>(initialContentType);
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedQuery = useDebounce(searchQuery, 600);
 
   const favoritesQuery = useFavorites(userId, debouncedQuery);
   const removeFavorite = useRemoveFavorite();
 
-  const favorites = favoritesQuery.data?.pages.flatMap((page) => page.items) ?? [];
+  const favorites = useMemo(
+    () => favoritesQuery.data?.pages.flatMap((page) => page.items) ?? [],
+    [favoritesQuery.data],
+  );
 
-  const groups = FAVORITE_TYPE_ORDER.map(({ type, labelKey }) => ({
-    type,
-    labelKey,
-    items: favorites
-      .filter((favorite) => favorite.type === type)
-      .map(favoriteToItem)
-      .filter((item): item is FavoriteItem => item !== null),
-  })).filter((group) => group.items.length > 0);
+  const items = useMemo(
+    () =>
+      favorites
+        .filter((favorite) => favorite.type === contentType)
+        .map(favoriteToItem)
+        .filter((item): item is FavoriteItem => item !== null),
+    [favorites, contentType],
+  );
+
+  const handleContentTypeChange = (value: string) => {
+    setContentType(value as ApiTypes.FavoriteType);
+    setSearchQuery("");
+  };
 
   return (
     <div className="flex flex-col gap-5">
-      <SearchInput value={searchQuery} onChange={setSearchQuery} />
+      <div className="flex flex-col sm:flex-row gap-5 sm:items-end">
+        <div className="w-full sm:w-40">
+          <Select value={contentType} onValueChange={handleContentTypeChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {CONTENT_TYPES.map(({ type, labelKey }) => (
+                  <SelectItem key={type} value={type}>
+                    {t(labelKey)}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <SearchInput value={searchQuery} onChange={setSearchQuery} />
+      </div>
 
       {favoritesQuery.isLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
@@ -53,38 +87,34 @@ export function UserFavoritesTab({ userId }: { userId: string }) {
             <FavoriteSkeleton key={index} />
           ))}
         </div>
-      ) : groups.length === 0 ? (
+      ) : items.length === 0 ? (
         <Empty className="border-0">
           <EmptyHeader>
             <EmptyMedia variant="icon">
-              <Icon icon="lucide:heart" />
+              <Icon icon={debouncedQuery.trim() ? "lucide:search-x" : "lucide:heart"} />
             </EmptyMedia>
-            <EmptyTitle>{t("user:noFavorites")}</EmptyTitle>
-            <EmptyDescription>{t("user:noFavoritesDescription")}</EmptyDescription>
+            <EmptyTitle>{debouncedQuery.trim() ? t("user:noSearchResults") : t("user:noFavorites")}</EmptyTitle>
+            <EmptyDescription>
+              {debouncedQuery.trim() ? t("user:noSearchResultsDescription") : t("user:noFavoritesDescription")}
+            </EmptyDescription>
           </EmptyHeader>
         </Empty>
       ) : (
-        groups.map((group) => (
-          <div key={group.type} className="flex flex-col gap-3">
-            <h4 className="text-lg font-semibold text-card-foreground">{t(group.labelKey)}</h4>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-              {group.items.map((item) => (
-                <FavoriteCard
-                  key={item.id}
-                  item={item}
-                  onRemove={
-                    isOwner
-                      ? (favorite) =>
-                          removeFavorite.mutate({ contentType: favorite.contentType, mediaId: favorite.mediaId })
-                      : undefined
-                  }
-                  isRemoving={removeFavorite.isPending}
-                />
-              ))}
-            </div>
-          </div>
-        ))
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          {items.map((item) => (
+            <FavoriteCard
+              key={item.id}
+              item={item}
+              onRemove={
+                isOwner
+                  ? (favorite) =>
+                      removeFavorite.mutate({ contentType: favorite.contentType, mediaId: favorite.mediaId })
+                  : undefined
+              }
+              isRemoving={removeFavorite.isPending}
+            />
+          ))}
+        </div>
       )}
 
       {favoritesQuery.hasNextPage && (

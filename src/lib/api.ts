@@ -300,6 +300,7 @@ export namespace ApiTypes {
     };
     latestReviewType: ReviewContentType | null;
     latestProgressType: ReviewContentType | null;
+    latestFavoriteType: FavoriteType | null;
   }
 
   export interface GetUserByUsernameResponse {

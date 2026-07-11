@@ -102,19 +102,25 @@ function UserDetailsRoute() {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="flex flex-wrap gap-2 text-sm justify-between mb-5 w-full">
             <TabsTrigger value="overview">{t("user:overview")}</TabsTrigger>
+            
             <TabsTrigger value="activity">{t("user:activity")}</TabsTrigger>
+            
             <TabsTrigger value="progress">
               {t("user:progress")} ({totalProgress})
             </TabsTrigger>
-            <TabsTrigger value="lists">
-              {t("user:lists")} ({userQuery.data.counts.lists})
-            </TabsTrigger>
-            <TabsTrigger value="favorites">
-              {t("user:favorites")} ({userQuery.data.counts.favorites})
-            </TabsTrigger>
+            
             <TabsTrigger value="reviews">
               {t("user:reviews")} ({userQuery.data.counts.reviews})
             </TabsTrigger>
+            
+            <TabsTrigger value="lists">
+              {t("user:lists")} ({userQuery.data.counts.lists})
+            </TabsTrigger>
+            
+            <TabsTrigger value="favorites">
+              {t("user:favorites")} ({userQuery.data.counts.favorites})
+            </TabsTrigger>
+            
             <TabsTrigger value="screenshots">{t("user:screenshots")} (0)</TabsTrigger>
           </TabsList>
 
@@ -147,7 +153,10 @@ function UserDetailsRoute() {
           </TabsContent>
 
           <TabsContent value="favorites">
-            <UserFavoritesTab userId={userQuery.data.id} />
+            <UserFavoritesTab
+              userId={userQuery.data.id}
+              initialContentType={userQuery.data.latestFavoriteType ?? undefined}
+            />
           </TabsContent>
 
           <TabsContent value="reviews">

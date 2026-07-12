@@ -293,7 +293,9 @@ function BookDetailsRoute() {
           <div className="flex items-center justify-between gap-3 mb-2">
             <TabsList className="w-full">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-              <TabsTrigger value="lists">{t("library:lists")} ({listsQuery.data?.total ?? 0})</TabsTrigger>
+              <TabsTrigger value="lists">
+                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+              </TabsTrigger>
             </TabsList>
           </div>
           <TabsContent value="info" className="space-y-5">

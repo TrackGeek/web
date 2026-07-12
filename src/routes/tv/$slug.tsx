@@ -171,7 +171,12 @@ function TVShowDetailsPage() {
         .then(({ data }) => data.lists.items);
       const newList = [...freshLists].reverse().find((l) => l.name === name);
       if (!newList) throw new Error("List not found after creation");
-      await api.post(apiEndpoints.listItem(newList.id), { type: "TVShow", listId: newList.id, userId, tvShowId: item?.id });
+      await api.post(apiEndpoints.listItem(newList.id), {
+        type: "TVShow",
+        listId: newList.id,
+        userId,
+        tvShowId: item?.id,
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tvLists", userId] });

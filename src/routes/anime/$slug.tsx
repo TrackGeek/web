@@ -175,7 +175,12 @@ function AnimeDetailsRoute() {
         .then(({ data }) => data.lists.items);
       const newList = [...freshLists].reverse().find((l) => l.name === name);
       if (!newList) throw new Error("List not found after creation");
-      await api.post(apiEndpoints.listItem(newList.id), { type: "Anime", listId: newList.id, userId, animeId: anime?.id });
+      await api.post(apiEndpoints.listItem(newList.id), {
+        type: "Anime",
+        listId: newList.id,
+        userId,
+        animeId: anime?.id,
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["animeLists", userId] });
@@ -376,7 +381,9 @@ function AnimeDetailsRoute() {
               )}
               <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
               <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
-              <TabsTrigger value="lists">{t("library:lists")} ({listsQuery.data?.total ?? 0})</TabsTrigger>
+              <TabsTrigger value="lists">
+                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+              </TabsTrigger>
             </TabsList>
           </div>
           <TabsContent value="info" className="space-y-5">

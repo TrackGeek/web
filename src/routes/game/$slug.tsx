@@ -427,7 +427,9 @@ function GameDetailsRoute() {
           <div className="flex items-center justify-between gap-3 mb-2">
             <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-              <TabsTrigger value="lists">{t("library:lists")} ({listsQuery.data?.total ?? 0})</TabsTrigger>
+              <TabsTrigger value="lists">
+                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+              </TabsTrigger>
               {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
                 <TabsTrigger value="screenshots">
                   {t("library:screenshots")} ({screenshots?.length ?? 0})

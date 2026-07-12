@@ -201,7 +201,12 @@ function MovieDetailsRoute() {
         .then(({ data }) => data.lists.items);
       const newList = [...freshLists].reverse().find((l) => l.name === name);
       if (!newList) throw new Error("List not found after creation");
-      await api.post(apiEndpoints.listItem(newList.id), { type: "Movie", listId: newList.id, userId, movieId: movie?.id });
+      await api.post(apiEndpoints.listItem(newList.id), {
+        type: "Movie",
+        listId: newList.id,
+        userId,
+        movieId: movie?.id,
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["movieLists", userId] });

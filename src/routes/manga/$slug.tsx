@@ -152,7 +152,12 @@ function MangaDetailsRoute() {
         .then(({ data }) => data.lists.items);
       const newList = [...freshLists].reverse().find((l) => l.name === name);
       if (!newList) throw new Error("List not found after creation");
-      await api.post(apiEndpoints.listItem(newList.id), { type: "Manga", listId: newList.id, userId, mangaId: manga?.id });
+      await api.post(apiEndpoints.listItem(newList.id), {
+        type: "Manga",
+        listId: newList.id,
+        userId,
+        mangaId: manga?.id,
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["mangaLists", userId] });
@@ -347,7 +352,9 @@ function MangaDetailsRoute() {
             <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
               <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
-              <TabsTrigger value="lists">{t("library:lists")} ({listsQuery.data?.total ?? 0})</TabsTrigger>
+              <TabsTrigger value="lists">
+                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+              </TabsTrigger>
             </TabsList>
           </div>
           <TabsContent value="info" className="space-y-5">

@@ -18,7 +18,10 @@ import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { BookModal } from "@/components/shared/modals/book";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
@@ -84,7 +87,78 @@ function BookDetailsRoute() {
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
+  const userId = session?.data?.user?.id;
   const [moreOpen, setMoreOpen] = useState(false);
+  const [newListName, setNewListName] = useState("");
+
+  const listsQuery = useQuery<ApiTypes.PaginatedResponse<ApiTypes.ListWithPreview>>({
+    queryKey: ["bookContainingLists", book?.id],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListsContainingItemResponse>(apiEndpoints.getListsContainingItem, {
+          params: { type: "Book", bookId: book?.id, itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists),
+    enabled: !!book?.id,
+  });
+
+  const userListsQuery = useQuery<ApiTypes.List[]>({
+    queryKey: ["bookLists", userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Book", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items),
+    enabled: isAuthenticated && !!userId,
+  });
+
+  const listStatusQuery = useQuery<string[]>({
+    queryKey: ["bookListStatus", book?.id, userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListStatusResponse>(apiEndpoints.getListStatus, {
+          params: { type: "Book", bookId: book?.id },
+        })
+        .then(({ data }) => data.listIds),
+    enabled: isAuthenticated && !!userId && !!book?.id,
+  });
+
+  const toggleListMutation = useMutation({
+    mutationFn: ({ listId, isMember }: { listId: string; isMember: boolean }) => {
+      const body = { type: "Book", listId, userId, bookId: book?.id };
+      return isMember
+        ? api.delete(apiEndpoints.listItem(listId), { data: body })
+        : api.post(apiEndpoints.listItem(listId), body);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["bookListStatus", book?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["bookContainingLists", book?.id] });
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
+  const createAndAddListMutation = useMutation({
+    mutationFn: async (name: string) => {
+      await api.post(apiEndpoints.list, { name, userId, type: "Book" });
+      const freshLists = await api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Book", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items);
+      const newList = [...freshLists].reverse().find((l) => l.name === name);
+      if (!newList) throw new Error("List not found after creation");
+      await api.post(apiEndpoints.listItem(newList.id), { type: "Book", listId: newList.id, userId, bookId: book?.id });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["bookLists", userId] });
+      queryClient.invalidateQueries({ queryKey: ["bookListStatus", book?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["bookContainingLists", book?.id] });
+      setNewListName("");
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
   if (isLoading || reviewsData.isLoading) return <LoadingDetails />;
   if (isError || reviewsData.isError || !book) return <ErrorComponent />;
 
@@ -219,7 +293,7 @@ function BookDetailsRoute() {
           <div className="flex items-center justify-between gap-3 mb-2">
             <TabsList className="w-full">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-              <TabsTrigger value="lists">{t("library:lists")} (30)</TabsTrigger>
+              <TabsTrigger value="lists">{t("library:lists")} ({listsQuery.data?.total ?? 0})</TabsTrigger>
             </TabsList>
           </div>
           <TabsContent value="info" className="space-y-5">
@@ -314,19 +388,78 @@ function BookDetailsRoute() {
               </div>
             </div>
           </TabsContent>
-          <TabsContent value="lists">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <ListItem
-                list={
-                  {
-                    _count: { listItems: 0 },
-                    listItems: [],
-                    name: "",
-                    user: { name: "", profile: null },
-                  } as unknown as ApiTypes.ListWithPreview
-                }
-              />
-            </div>
+          <TabsContent value="lists" className="space-y-4">
+            {isAuthenticated && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-1.5">
+                    <Icon icon="lucide:list-plus" className="size-3.5" />
+                    {t("feed:customLists")}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-56 p-2 space-y-2">
+                  <div className="flex items-center gap-1.5 pb-1.5 border-b border-border">
+                    <Input
+                      value={newListName}
+                      onChange={(e) => setNewListName(e.target.value)}
+                      placeholder={t("feed:newList")}
+                      className="h-7 text-sm"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && newListName.trim()) {
+                          createAndAddListMutation.mutate(newListName.trim());
+                        }
+                      }}
+                    />
+                    <Button
+                      size="icon"
+                      className="size-7 shrink-0"
+                      disabled={!newListName.trim() || createAndAddListMutation.isPending}
+                      onClick={() => createAndAddListMutation.mutate(newListName.trim())}
+                    >
+                      <Icon icon="lucide:plus" className="size-3.5" />
+                    </Button>
+                  </div>
+                  <div className="space-y-0.5">
+                    {userListsQuery.data?.map((list) => {
+                      const isMember = listStatusQuery.data?.includes(list.id) ?? false;
+                      return (
+                        <label
+                          key={list.id}
+                          className="flex items-center gap-2 px-2 py-1.5 rounded-sm hover:bg-muted cursor-pointer text-sm select-none"
+                        >
+                          <Checkbox
+                            checked={isMember}
+                            disabled={toggleListMutation.isPending}
+                            onCheckedChange={() => toggleListMutation.mutate({ listId: list.id, isMember })}
+                          />
+                          {list.name}
+                        </label>
+                      );
+                    })}
+                    {(!userListsQuery.data || userListsQuery.data.length === 0) && (
+                      <p className="text-sm text-muted-foreground px-2 py-1.5">{t("library:noLists")}</p>
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
+            {!listsQuery.data || listsQuery.data.items.length === 0 ? (
+              <Empty className="border-0">
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <Icon icon="lucide:list" />
+                  </EmptyMedia>
+                  <EmptyTitle>{t("library:noLists")}</EmptyTitle>
+                  <EmptyDescription>{t("library:noListsDescription")}</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {listsQuery.data.items.map((list) => (
+                  <ListItem key={list.id} list={list} />
+                ))}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </DetailsPageLayout>

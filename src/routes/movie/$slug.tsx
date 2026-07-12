@@ -24,8 +24,11 @@ import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { StarRating } from "@/components/shared/star-rating";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { ImageZoom } from "@/components/ui/image-zoom";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToggleReviewReaction } from "@/hooks/review";
@@ -105,6 +108,7 @@ function MovieDetailsRoute() {
   const userId = session?.data?.user?.id;
 
   const [moreOpen, setMoreOpen] = useState(false);
+  const [newListName, setNewListName] = useState("");
 
   const toggleReaction = useToggleReviewReaction("movie", userId ?? "");
 
@@ -148,6 +152,64 @@ function MovieDetailsRoute() {
       queryClient.invalidateQueries({ queryKey: ["movieFavorite", movie?.id, userId] });
       return toast.error(t("api:INTERNAL_SERVER_ERROR"));
     },
+  });
+
+  const userListsQuery = useQuery<ApiTypes.List[]>({
+    queryKey: ["movieLists", userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Movie", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items),
+    enabled: isAuthenticated && !!userId,
+  });
+
+  const listStatusQuery = useQuery<string[]>({
+    queryKey: ["movieListStatus", movie?.id, userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListStatusResponse>(apiEndpoints.getListStatus, {
+          params: { type: "Movie", movieId: movie?.id },
+        })
+        .then(({ data }) => data.listIds),
+    enabled: isAuthenticated && !!userId && !!movie?.id,
+  });
+
+  const toggleListMutation = useMutation({
+    mutationFn: ({ listId, isMember }: { listId: string; isMember: boolean }) => {
+      const body = { type: "Movie", listId, userId, movieId: movie?.id };
+      return isMember
+        ? api.delete(apiEndpoints.listItem(listId), { data: body })
+        : api.post(apiEndpoints.listItem(listId), body);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["movieListStatus", movie?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["movieContainingLists", movie?.id] });
+      queryClient.invalidateQueries({ queryKey: ["movie"] });
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
+  const createAndAddListMutation = useMutation({
+    mutationFn: async (name: string) => {
+      await api.post(apiEndpoints.list, { name, userId, type: "Movie" });
+      const freshLists = await api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Movie", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items);
+      const newList = [...freshLists].reverse().find((l) => l.name === name);
+      if (!newList) throw new Error("List not found after creation");
+      await api.post(apiEndpoints.listItem(newList.id), { type: "Movie", listId: newList.id, userId, movieId: movie?.id });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["movieLists", userId] });
+      queryClient.invalidateQueries({ queryKey: ["movieListStatus", movie?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["movieContainingLists", movie?.id] });
+      setNewListName("");
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
   });
 
   const progressQuery = useQuery<MovieProgress | null>({
@@ -518,7 +580,62 @@ function MovieDetailsRoute() {
               </Carousel>
             )}
           </TabsContent>
-          <TabsContent value="lists">
+          <TabsContent value="lists" className="space-y-4">
+            {isAuthenticated && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-1.5">
+                    <Icon icon="lucide:list-plus" className="size-3.5" />
+                    {t("feed:customLists")}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-56 p-2 space-y-2">
+                  <div className="flex items-center gap-1.5 pb-1.5 border-b border-border">
+                    <Input
+                      value={newListName}
+                      onChange={(e) => setNewListName(e.target.value)}
+                      placeholder={t("feed:newList")}
+                      className="h-7 text-sm"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && newListName.trim()) {
+                          createAndAddListMutation.mutate(newListName.trim());
+                        }
+                      }}
+                    />
+                    <Button
+                      size="icon"
+                      className="size-7 shrink-0"
+                      disabled={!newListName.trim() || createAndAddListMutation.isPending}
+                      onClick={() => createAndAddListMutation.mutate(newListName.trim())}
+                    >
+                      <Icon icon="lucide:plus" className="size-3.5" />
+                    </Button>
+                  </div>
+                  <div className="space-y-0.5">
+                    {userListsQuery.data?.map((list) => {
+                      const isMember = listStatusQuery.data?.includes(list.id) ?? false;
+                      return (
+                        <label
+                          key={list.id}
+                          className="flex items-center gap-2 px-2 py-1.5 rounded-sm hover:bg-muted cursor-pointer text-sm select-none"
+                        >
+                          <Checkbox
+                            checked={isMember}
+                            disabled={toggleListMutation.isPending}
+                            onCheckedChange={() => toggleListMutation.mutate({ listId: list.id, isMember })}
+                          />
+                          {list.name}
+                        </label>
+                      );
+                    })}
+                    {(!userListsQuery.data || userListsQuery.data.length === 0) && (
+                      <p className="text-sm text-muted-foreground px-2 py-1.5">{t("library:noLists")}</p>
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
+
             {!listsQuery.data || listsQuery.data.items.length === 0 ? (
               <Empty className="border-0">
                 <EmptyHeader>

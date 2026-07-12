@@ -542,6 +542,7 @@ function GameDetailsRoute() {
                         src={video.videoId}
                         allowFullScreen
                         className="w-full inset-0 absolute h-full"
+                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
                         title={video.name}
                       />
                     </div>

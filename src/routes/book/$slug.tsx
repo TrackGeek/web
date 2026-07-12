@@ -274,7 +274,7 @@ function BookDetailsRoute() {
               </div>
               <span className="font-semibold text-card-foreground">{rating}</span>
               <span className="text-muted-foreground">
-                ({reviews.total} {t("library:reviews")})
+                ({reviews?.total ?? 0} {t("library:reviews")})
               </span>
             </div>
           )}

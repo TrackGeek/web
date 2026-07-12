@@ -366,7 +366,7 @@ function AnimeDetailsRoute() {
               </div>
               <span className="font-semibold text-card-foreground">{rating}</span>
               <span className="text-muted-foreground">
-                ({reviews.total} {t("library:reviews")})
+                ({reviews?.total ?? 0} {t("library:reviews")})
               </span>
             </div>
           )}
@@ -511,6 +511,7 @@ function AnimeDetailsRoute() {
                 src={anime.trailer.embedUrl.replace("&autoplay=1", "")}
                 allowFullScreen
                 className="w-full aspect-video"
+                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
                 title="Trailer"
               />
             )}

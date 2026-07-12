@@ -341,7 +341,7 @@ function MangaDetailsRoute() {
               </div>
               <span className="font-semibold text-card-foreground">{rating}</span>
               <span className="text-muted-foreground">
-                ({reviews.total} {t("library:reviews")})
+                ({reviews?.total ?? 0} {t("library:reviews")})
               </span>
             </div>
           )}
@@ -407,7 +407,7 @@ function MangaDetailsRoute() {
                     title={t("library:authors")}
                     icon={<Icon icon={"lucide:pen"} className="size-5 text-muted-foreground" />}
                     description={manga.authors.map((au: { name: string; malId: number }, index: number) => (
-                      <Link to="/" key={au.malId} search={{ landing: "true " }}>
+                      <Link to="/" key={au.malId} search={{ landing: "true" }}>
                         {au.name}
                         {index < manga.authors.length - 1 && "; "}
                       </Link>

@@ -417,7 +417,7 @@ function MovieDetailsRoute() {
             <StarRating value={rating} className="mr-1" />
             <span className="font-semibold text-card-foreground">{rating}</span>
             <span className="text-muted-foreground">
-              ({reviews.total} {t("library:reviews")})
+              ({reviews?.total ?? 0} {t("library:reviews")})
             </span>
           </div>
         </div>
@@ -560,6 +560,7 @@ function MovieDetailsRoute() {
                           src={`https://youtube.com/embed/${movie.trailerId}`}
                           allowFullScreen
                           className="absolute inset-0 w-full h-full"
+                          sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
                           title="Trailer"
                         />
                       </div>

@@ -297,7 +297,6 @@ function AnimeDetailsRoute() {
           <div className="flex items-center justify-between gap-3 mb-2">
             <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-              <TabsTrigger value="relations">{t("library:relations")}</TabsTrigger>
               {!episodesQuery.isLoading && !episodesQuery.isError && episodes?.length > 0 && (
                 <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
               )}
@@ -385,6 +384,13 @@ function AnimeDetailsRoute() {
               </Grid>
             </div>
 
+            {anime.relations?.nodes?.length > 0 || anime.relations?.edges?.length > 0 ? (
+              <div>
+                <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:relations")}</h3>
+                <Relations nodes={anime.relations.nodes} edges={anime.relations.edges} />
+              </div>
+            ) : null}
+
             {isAuthenticated && <AnimeEpisodeProgress season={mySeason} onToggle={handleToggle} />}
 
             <div>
@@ -447,9 +453,6 @@ function AnimeDetailsRoute() {
               </Grid>
             </TabsContent>
           )}
-          <TabsContent value="relations">
-            <Relations nodes={[]} edges={[]} />
-          </TabsContent>
           <TabsContent value="lists">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <ListItem

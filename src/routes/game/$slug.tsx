@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { t } from "i18next";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -352,18 +353,6 @@ function GameDetailsRoute() {
           <div className="flex items-center justify-between gap-3 mb-2">
             <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-              {(game.parentGame?.id ||
-                (game.prequels?.length ?? 0) > 0 ||
-                (game.expandedGames?.length ?? 0) > 0 ||
-                (game.sequels?.length ?? 0) > 0 ||
-                (game.dlcs?.length ?? 0) > 0 ||
-                (game.expansions?.length ?? 0) > 0 ||
-                (game.ports?.length ?? 0) > 0 ||
-                (game.remakes?.length ?? 0) > 0 ||
-                (game.remasters?.length ?? 0) > 0 ||
-                (game.bundles?.length ?? 0) > 0) && (
-                <TabsTrigger value="relations">{t("library:relations")}</TabsTrigger>
-              )}
               <TabsTrigger value="lists">{t("library:lists")} (30)</TabsTrigger>
               {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
                 <TabsTrigger value="screenshots">
@@ -431,6 +420,17 @@ function GameDetailsRoute() {
               </div>
             </div>
 
+            {(() => {
+              const { nodes, edges } = buildRelationsData(game);
+              if (edges.length === 0) return null;
+              return (
+                <div>
+                  <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:relations")}</h3>
+                  <Relations nodes={nodes} edges={edges} />
+                </div>
+              );
+            })()}
+
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
               <CommunityStats
@@ -457,21 +457,43 @@ function GameDetailsRoute() {
                 ]}
               />
             </div>
-            <Carousel className="w-full px-4" opts={{ loop: true, align: "center" }}>
+            <Carousel className="w-full" opts={{ loop: true, align: "center" }}>
               <CarouselContent>
                 {game.videos.map((video: { checksum: string; videoId: string; name: string }) => (
                   <CarouselItem key={video.checksum}>
-                    <iframe src={video.videoId} allowFullScreen className="w-full aspect-video" title={video.name} />
+                    <div className="relative w-full overflow-hidden pt-[56.25%]">
+                      <iframe
+                        src={video.videoId}
+                        allowFullScreen
+                        className="w-full inset-0 absolute h-full"
+                        title={video.name}
+                      />
+                    </div>
                   </CarouselItem>
                 ))}
                 {game.screenshots.map((screenshot: { checksum: string; imageId: string }) => (
                   <CarouselItem key={screenshot.checksum}>
-                    <img src={screenshot.imageId} className="w-full aspect-video object-cover" alt="Screenshot" />
+                    <div className="relative w-full overflow-hidden pt-[56.25%]">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center blur-xl scale-110"
+                        style={{ backgroundImage: `url(${screenshot.imageId})` }}
+                        aria-hidden="true"
+                      />
+                      <ImageZoom className="absolute inset-0">
+                        <Image
+                          src={screenshot.imageId}
+                          width={1920}
+                          height={1080}
+                          alt="Screenshot"
+                          className="absolute inset-0 w-full h-full object-contain"
+                        />
+                      </ImageZoom>
+                    </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious variant="default" className="-left-6" />
-              <CarouselNext variant="default" className="-right-6" />
+              <CarouselPrevious variant="default" className="left-2" />
+              <CarouselNext variant="default" className="right-2" />
             </Carousel>
           </TabsContent>
           <TabsContent value="lists">
@@ -487,12 +509,6 @@ function GameDetailsRoute() {
                 }
               />
             </div>
-          </TabsContent>
-          <TabsContent value="relations">
-            {(() => {
-              const { nodes, edges } = buildRelationsData(game);
-              return <Relations nodes={nodes} edges={edges} />;
-            })()}
           </TabsContent>
           {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
             <TabsContent value="screenshots">

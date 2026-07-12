@@ -272,7 +272,6 @@ function MangaDetailsRoute() {
           <div className="flex items-center justify-between gap-3 mb-2">
             <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-              <TabsTrigger value="relations">{t("library:relations")}</TabsTrigger>
               <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
               <TabsTrigger value="lists">{t("library:lists")} (30)</TabsTrigger>
             </TabsList>
@@ -349,6 +348,13 @@ function MangaDetailsRoute() {
               </Grid>
             </div>
 
+            {manga.relations?.nodes?.length > 0 || manga.relations?.edges?.length > 0 ? (
+              <div>
+                <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:relations")}</h3>
+                <Relations nodes={manga.relations.nodes} edges={manga.relations.edges} />
+              </div>
+            ) : null}
+
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
               <CommunityStats
@@ -380,9 +386,6 @@ function MangaDetailsRoute() {
                 ]}
               />
             </div>
-          </TabsContent>
-          <TabsContent value="relations">
-            <Relations nodes={[]} edges={[]} />
           </TabsContent>
           <TabsContent value="lists">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

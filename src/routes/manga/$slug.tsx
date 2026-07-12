@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -20,6 +20,11 @@ import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { MangaModal } from "@/components/shared/modals/manga";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
@@ -86,6 +91,83 @@ function MangaDetailsRoute() {
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
+  const userId = session?.data?.user?.id;
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [newListName, setNewListName] = useState("");
+
+  const listsQuery = useQuery<ApiTypes.PaginatedResponse<ApiTypes.ListWithPreview>>({
+    queryKey: ["mangaContainingLists", manga?.id],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListsContainingItemResponse>(apiEndpoints.getListsContainingItem, {
+          params: { type: "Manga", mangaId: manga?.id, itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists),
+    enabled: !!manga?.id,
+  });
+
+  const userListsQuery = useQuery<ApiTypes.List[]>({
+    queryKey: ["mangaLists", userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Manga", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items),
+    enabled: isAuthenticated && !!userId,
+  });
+
+  const listStatusQuery = useQuery<string[]>({
+    queryKey: ["mangaListStatus", manga?.id, userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListStatusResponse>(apiEndpoints.getListStatus, {
+          params: { type: "Manga", mangaId: manga?.id },
+        })
+        .then(({ data }) => data.listIds),
+    enabled: isAuthenticated && !!userId && !!manga?.id,
+  });
+
+  const toggleListMutation = useMutation({
+    mutationFn: ({ listId, isMember }: { listId: string; isMember: boolean }) => {
+      const body = { type: "Manga", listId, userId, mangaId: manga?.id };
+      return isMember
+        ? api.delete(apiEndpoints.listItem(listId), { data: body })
+        : api.post(apiEndpoints.listItem(listId), body);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["mangaListStatus", manga?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["mangaContainingLists", manga?.id] });
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
+  const createAndAddListMutation = useMutation({
+    mutationFn: async (name: string) => {
+      await api.post(apiEndpoints.list, { name, userId, type: "Manga" });
+      const freshLists = await api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Manga", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items);
+      const newList = [...freshLists].reverse().find((l) => l.name === name);
+      if (!newList) throw new Error("List not found after creation");
+      await api.post(apiEndpoints.listItem(newList.id), {
+        type: "Manga",
+        listId: newList.id,
+        userId,
+        mangaId: manga?.id,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["mangaLists", userId] });
+      queryClient.invalidateQueries({ queryKey: ["mangaListStatus", manga?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["mangaContainingLists", manga?.id] });
+      setNewListName("");
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
   if (isLoading || reviewsData.isLoading) return <LoadingDetails />;
   if (isError || reviewsData.isError || !manga) return <ErrorComponent />;
 
@@ -137,6 +219,8 @@ function MangaDetailsRoute() {
             subtitle={manga.published.string}
             description={manga.synopsis}
             triggerLabel={t("library:moreOptions")}
+            open={moreOpen}
+            onOpenChange={setMoreOpen}
           >
             <MangaModal />
           </MoreOptionsDialog>
@@ -239,140 +323,254 @@ function MangaDetailsRoute() {
   );
 
   return (
-    <DetailsPageLayout sidebar={sidebar}>
-      <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-        {manga.title}
-      </h1>
+    <>
+      <DetailsPageLayout sidebar={sidebar}>
+        <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
+          {manga.title}
+        </h1>
 
-      <div className="flex flex-wrap items-center gap-6 border-b border-border pb-5">
-        {reviews.total >= 1 && (
-          <div className="flex items-center gap-2">
-            <div className="flex">
-              <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-              <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-              <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-              <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-              <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
+        <div className="flex flex-wrap items-center gap-6 border-b border-border pb-5">
+          {reviews.total >= 1 && (
+            <div className="flex items-center gap-2">
+              <div className="flex">
+                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
+              </div>
+              <span className="font-semibold text-card-foreground">{rating}</span>
+              <span className="text-muted-foreground">
+                ({reviews?.total ?? 0} {t("library:reviews")})
+              </span>
             </div>
-            <span className="font-semibold text-card-foreground">{rating}</span>
-            <span className="text-muted-foreground">
-              ({reviews.total} {t("library:reviews")})
-            </span>
-          </div>
-        )}
-      </div>
-
-      <Tabs defaultValue="info">
-        <div className="flex items-center justify-between gap-3 mb-2">
-          <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
-            <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-            <TabsTrigger value="relations">{t("library:relations")}</TabsTrigger>
-            <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
-            {reviews.total >= 1 && (
-              <TabsTrigger value="reviews" className="capitalize">
-                {t("library:reviews")} ({reviews.total})
-              </TabsTrigger>
-            )}
-            <TabsTrigger value="lists">{t("library:lists")} (30)</TabsTrigger>
-          </TabsList>
+          )}
         </div>
-        <TabsContent value="info" className="space-y-5">
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:genres")}</h3>
-            <GenrePills genres={manga.genres} getLabel={(g) => getGenreLabel(t, g)} />
-          </div>
 
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:synopsis")}</h3>
-            <p className="text-muted-foreground leading-relaxed">{manga.synopsis}</p>
+        <Tabs defaultValue="info">
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
+              <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
+              <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
+              <TabsTrigger value="lists">
+                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+              </TabsTrigger>
+            </TabsList>
           </div>
+          <TabsContent value="info" className="space-y-5">
+            <div className={"space-y-3"}>
+              <p className="text-muted-foreground leading-relaxed">{manga.synopsis}</p>
+              <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
+              <GenrePills genres={manga.genres} getLabel={(g) => getGenreLabel(t, g)} />
+            </div>
 
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:mangaCharacteristics")}</h3>
-            <Grid minColSize={"200px"} className="gap-4">
-              {manga.type && (
-                <DetailsCard
-                  title={t("library:type")}
-                  icon={<Icon icon={"lucide:file-type"} className="size-5 text-muted-foreground" />}
-                  description={manga.type}
-                />
-              )}
-              {manga.numberOfChapters && (
-                <DetailsCard
-                  title={t("library:chapters")}
-                  icon={<Icon icon={"lucide:book-open-text"} className="size-5 text-muted-foreground" />}
-                  description={manga.numberOfChapters}
-                />
-              )}
-              {manga.numberOfVolumes && (
-                <DetailsCard
-                  title={t("library:volumes")}
-                  icon={<Icon icon={"lucide:swatch-book"} className="size-5 text-muted-foreground" />}
-                  description={manga.numberOfVolumes}
-                />
-              )}
-              {manga.themes.length >= 1 && (
-                <DetailsCard
-                  title={t("library:themes")}
-                  icon={<Icon icon={"lucide:tree-palm"} className="size-5 text-muted-foreground" />}
-                  description={manga.themes.map((theme: string, index: number) => (
-                    <span key={theme}>
-                      <Link to="/" search={{ landing: "true" }}>
-                        {getGenreLabel(t, theme)}
+            <div>
+              <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:mangaCharacteristics")}</h3>
+              <Grid minColSize={"200px"} className="gap-4">
+                {manga.type && (
+                  <DetailsCard
+                    title={t("library:type")}
+                    icon={<Icon icon={"lucide:file-type"} className="size-5 text-muted-foreground" />}
+                    description={manga.type}
+                  />
+                )}
+                {manga.numberOfChapters && (
+                  <DetailsCard
+                    title={t("library:chapters")}
+                    icon={<Icon icon={"lucide:book-open-text"} className="size-5 text-muted-foreground" />}
+                    description={manga.numberOfChapters}
+                  />
+                )}
+                {manga.numberOfVolumes && (
+                  <DetailsCard
+                    title={t("library:volumes")}
+                    icon={<Icon icon={"lucide:swatch-book"} className="size-5 text-muted-foreground" />}
+                    description={manga.numberOfVolumes}
+                  />
+                )}
+                {manga.themes.length >= 1 && (
+                  <DetailsCard
+                    title={t("library:themes")}
+                    icon={<Icon icon={"lucide:tree-palm"} className="size-5 text-muted-foreground" />}
+                    description={manga.themes.map((theme: string, index: number) => (
+                      <span key={theme}>
+                        <Link to="/" search={{ landing: "true" }}>
+                          {getGenreLabel(t, theme)}
+                        </Link>
+                        {index < manga.themes.length - 1 && ", "}
+                      </span>
+                    ))}
+                  />
+                )}
+                {manga.authors.length >= 1 && (
+                  <DetailsCard
+                    title={t("library:authors")}
+                    icon={<Icon icon={"lucide:pen"} className="size-5 text-muted-foreground" />}
+                    description={manga.authors.map((au: { name: string; malId: number }, index: number) => (
+                      <Link to="/" key={au.malId} search={{ landing: "true" }}>
+                        {au.name}
+                        {index < manga.authors.length - 1 && "; "}
                       </Link>
-                      {index < manga.themes.length - 1 && ", "}
-                    </span>
-                  ))}
-                />
-              )}
-              {manga.authors.length >= 1 && (
-                <DetailsCard
-                  title={t("library:authors")}
-                  icon={<Icon icon={"lucide:pen"} className="size-5 text-muted-foreground" />}
-                  description={manga.authors.map((au: { name: string; malId: number }, index: number) => (
-                    <Link to="/" key={au.malId} search={{ landing: "true " }}>
-                      {au.name}
-                      {index < manga.authors.length - 1 && "; "}
-                    </Link>
-                  ))}
-                />
-              )}
-              {manga.serializations && (
-                <DetailsCard
-                  title={t("library:publisher")}
-                  icon={<Icon icon={"lucide:notebook"} className="size-5 text-muted-foreground" />}
-                  description={manga.serializations.map((sz: { name: string; malId: number }, index: number) => (
-                    <Link to="/" key={sz.malId} search={{ landing: "true" }}>
-                      {sz.name}
-                      {index < manga.serializations.length - 1 && ", "}
-                    </Link>
-                  ))}
-                />
-              )}
-            </Grid>
-          </div>
+                    ))}
+                  />
+                )}
+                {manga.serializations && (
+                  <DetailsCard
+                    title={t("library:publisher")}
+                    icon={<Icon icon={"lucide:notebook"} className="size-5 text-muted-foreground" />}
+                    description={manga.serializations.map((sz: { name: string; malId: number }, index: number) => (
+                      <Link to="/" key={sz.malId} search={{ landing: "true" }}>
+                        {sz.name}
+                        {index < manga.serializations.length - 1 && ", "}
+                      </Link>
+                    ))}
+                  />
+                )}
+              </Grid>
+            </div>
 
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
-            <CommunityStats
-              stats={[
-                { label: t("feed:lists.planning"), icon: "lucide:bookmark", iconClass: "text-purple-400", value: "5%" },
-                {
-                  label: t("feed:lists.reading"),
-                  icon: "lucide:book-open-text",
-                  iconClass: "text-chart-1",
-                  value: "15%",
-                },
-                { label: t("feed:lists.read"), icon: "lucide:check-circle", iconClass: "text-secondary", value: "72%" },
-                { label: t("feed:lists.dropped"), icon: "lucide:x-circle", iconClass: "text-destructive", value: "8%" },
-              ]}
-            />
-          </div>
-        </TabsContent>
-        <TabsContent value="relations">
-          <Relations nodes={[]} edges={[]} />
-        </TabsContent>
-        <TabsContent value="reviews">
+            {manga.relations?.nodes?.length > 0 || manga.relations?.edges?.length > 0 ? (
+              <div>
+                <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:relations")}</h3>
+                <Relations nodes={manga.relations.nodes} edges={manga.relations.edges} />
+              </div>
+            ) : null}
+
+            <div>
+              <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
+              <CommunityStats
+                stats={[
+                  {
+                    label: t("feed:lists.planning"),
+                    icon: "lucide:bookmark",
+                    iconClass: "text-purple-400",
+                    value: "5%",
+                  },
+                  {
+                    label: t("feed:lists.reading"),
+                    icon: "lucide:book-open-text",
+                    iconClass: "text-chart-1",
+                    value: "15%",
+                  },
+                  {
+                    label: t("feed:lists.read"),
+                    icon: "lucide:check-circle",
+                    iconClass: "text-secondary",
+                    value: "72%",
+                  },
+                  {
+                    label: t("feed:lists.dropped"),
+                    icon: "lucide:x-circle",
+                    iconClass: "text-destructive",
+                    value: "8%",
+                  },
+                ]}
+              />
+            </div>
+          </TabsContent>
+          <TabsContent value="lists" className="space-y-4">
+            {isAuthenticated && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-1.5">
+                    <Icon icon="lucide:list-plus" className="size-3.5" />
+                    {t("feed:customLists")}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-56 p-2 space-y-2">
+                  <div className="flex items-center gap-1.5 pb-1.5 border-b border-border">
+                    <Input
+                      value={newListName}
+                      onChange={(e) => setNewListName(e.target.value)}
+                      placeholder={t("feed:newList")}
+                      className="h-7 text-sm"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && newListName.trim()) {
+                          createAndAddListMutation.mutate(newListName.trim());
+                        }
+                      }}
+                    />
+                    <Button
+                      size="icon"
+                      className="size-7 shrink-0"
+                      disabled={!newListName.trim() || createAndAddListMutation.isPending}
+                      onClick={() => createAndAddListMutation.mutate(newListName.trim())}
+                    >
+                      <Icon icon="lucide:plus" className="size-3.5" />
+                    </Button>
+                  </div>
+                  <div className="space-y-0.5">
+                    {userListsQuery.data?.map((list) => {
+                      const isMember = listStatusQuery.data?.includes(list.id) ?? false;
+                      return (
+                        <label
+                          key={list.id}
+                          className="flex items-center gap-2 px-2 py-1.5 rounded-sm hover:bg-muted cursor-pointer text-sm select-none"
+                        >
+                          <Checkbox
+                            checked={isMember}
+                            disabled={toggleListMutation.isPending}
+                            onCheckedChange={() => toggleListMutation.mutate({ listId: list.id, isMember })}
+                          />
+                          {list.name}
+                        </label>
+                      );
+                    })}
+                    {(!userListsQuery.data || userListsQuery.data.length === 0) && (
+                      <p className="text-sm text-muted-foreground px-2 py-1.5">{t("library:noLists")}</p>
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
+            {!listsQuery.data || listsQuery.data.items.length === 0 ? (
+              <Empty className="border-0">
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <Icon icon="lucide:list" />
+                  </EmptyMedia>
+                  <EmptyTitle>{t("library:noLists")}</EmptyTitle>
+                  <EmptyDescription>{t("library:noListsDescription")}</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {listsQuery.data.items.map((list) => (
+                  <ListItem key={list.id} list={list} />
+                ))}
+              </div>
+            )}
+          </TabsContent>
+          <TabsContent value="characters">
+            <Grid minColSize={"150px"} className="gap-4">
+              {manga.characters?.map((character: { name: string; imageUrl: string }) => (
+                <CharacterItem
+                  key={character.name}
+                  name={character.name}
+                  imageUrl={character.imageUrl.replace(
+                    "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
+                    "",
+                  )}
+                />
+              ))}
+            </Grid>
+          </TabsContent>
+        </Tabs>
+      </DetailsPageLayout>
+
+      <div className="space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="font-semibold text-card-foreground text-lg capitalize">
+            {t("library:reviews")} ({reviews.total})
+          </h3>
+          {isAuthenticated && (
+            <Button variant="outline" size="sm" className="shrink-0 gap-2" onClick={() => setMoreOpen(true)}>
+              <Icon icon="lucide:pen-line" className="size-4" />
+              {t("feed:review")}
+            </Button>
+          )}
+        </div>
+        {reviews.total >= 1 ? (
           <ReviewItem
             user={
               {
@@ -384,45 +582,21 @@ function MangaDetailsRoute() {
             reviewText={
               "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
             }
-            criteries={{
-              language: 5,
-              characters: 4,
-              all: 10,
-              story: 8,
-              theme: 9,
-            }}
+            criteries={{ language: 5, characters: 4, all: 10, story: 8, theme: 9 }}
             date={new Date("2023-06-19")}
           />
-        </TabsContent>
-        <TabsContent value="lists">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <ListItem
-              list={
-                {
-                  _count: { listItems: 0 },
-                  listItems: [],
-                  name: "",
-                  user: { name: "", profile: null },
-                } as unknown as ApiTypes.ListWithPreview
-              }
-            />
-          </div>
-        </TabsContent>
-        <TabsContent value="characters">
-          <Grid minColSize={"150px"} className="gap-4">
-            {manga.characters?.map((character: { name: string; imageUrl: string }) => (
-              <CharacterItem
-                key={character.name}
-                name={character.name}
-                imageUrl={character.imageUrl.replace(
-                  "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
-                  "",
-                )}
-              />
-            ))}
-          </Grid>
-        </TabsContent>
-      </Tabs>
-    </DetailsPageLayout>
+        ) : (
+          <Empty className="border-0">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Icon icon="lucide:star" />
+              </EmptyMedia>
+              <EmptyTitle>{t("library:noReviews")}</EmptyTitle>
+              <EmptyDescription>{t("library:noReviewsDescription")}</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        )}
+      </div>
+    </>
   );
 }

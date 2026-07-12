@@ -1,7 +1,9 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Image } from "@unpic/react";
 import { t } from "i18next";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -19,8 +21,13 @@ import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { GameModal } from "@/components/shared/modals/game";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
+import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { ImageZoom } from "@/components/ui/image-zoom";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
@@ -173,6 +180,7 @@ function GameDetailsRoute() {
 
   const rating = 4.2;
   const { t } = useTranslation();
+  const [moreOpen, setMoreOpen] = useState(false);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["game", slug],
@@ -216,6 +224,77 @@ function GameDetailsRoute() {
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
+  const userId = session?.data?.user?.id;
+  const [newListName, setNewListName] = useState("");
+
+  const listsQuery = useQuery<ApiTypes.PaginatedResponse<ApiTypes.ListWithPreview>>({
+    queryKey: ["gameContainingLists", game?.id],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListsContainingItemResponse>(apiEndpoints.getListsContainingItem, {
+          params: { type: "Game", gameId: game?.id, itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists),
+    enabled: !!game?.id,
+  });
+
+  const userListsQuery = useQuery<ApiTypes.List[]>({
+    queryKey: ["gameLists", userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Game", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items),
+    enabled: isAuthenticated && !!userId,
+  });
+
+  const listStatusQuery = useQuery<string[]>({
+    queryKey: ["gameListStatus", game?.id, userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListStatusResponse>(apiEndpoints.getListStatus, {
+          params: { type: "Game", gameId: game?.id },
+        })
+        .then(({ data }) => data.listIds),
+    enabled: isAuthenticated && !!userId && !!game?.id,
+  });
+
+  const toggleListMutation = useMutation({
+    mutationFn: ({ listId, isMember }: { listId: string; isMember: boolean }) => {
+      const body = { type: "Game", listId, userId, gameId: game?.id };
+      return isMember
+        ? api.delete(apiEndpoints.listItem(listId), { data: body })
+        : api.post(apiEndpoints.listItem(listId), body);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["gameListStatus", game?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["gameContainingLists", game?.id] });
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
+  const createAndAddListMutation = useMutation({
+    mutationFn: async (name: string) => {
+      await api.post(apiEndpoints.list, { name, userId, type: "Game" });
+      const freshLists = await api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Game", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items);
+      const newList = [...freshLists].reverse().find((l) => l.name === name);
+      if (!newList) throw new Error("List not found after creation");
+      await api.post(apiEndpoints.listItem(newList.id), { type: "Game", listId: newList.id, userId, gameId: game?.id });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["gameLists", userId] });
+      queryClient.invalidateQueries({ queryKey: ["gameListStatus", game?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["gameContainingLists", game?.id] });
+      setNewListName("");
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
   if (isLoading || reviewsQuery.isLoading) return <LoadingDetails />;
   if (isError || reviewsQuery.isError || !game) return <ErrorComponent />;
 
@@ -271,6 +350,8 @@ function GameDetailsRoute() {
             subtitle={releaseDate}
             description={game.summary}
             triggerLabel={t("library:moreOptions")}
+            open={moreOpen}
+            onOpenChange={setMoreOpen}
           >
             <GameModal />
           </MoreOptionsDialog>
@@ -307,171 +388,291 @@ function GameDetailsRoute() {
   );
 
   return (
-    <DetailsPageLayout sidebar={sidebar}>
-      <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-        {game.name}
-      </h1>
-      {game?.franchises[0]?.name && (
-        <div className="flex items-center space-x-2">
-          <Icon icon={"lucide:box"} className="size-5 text-muted-foreground" />
-          <Link
-            to={"/game/franchises/$slug"}
-            params={{ slug: game?.franchises[0]?.slug }}
-            className="text-xl text-muted-foreground"
-          >
-            {game?.franchises[0]?.name}
-          </Link>
-        </div>
-      )}
-
-      <div className="flex flex-wrap items-center gap-6 border-b border-border">
-        {reviews?.total >= 1 && (
-          <div className="flex items-center mb-5">
-            <div className="flex mr-2">
-              <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-              <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-              <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-              <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-              <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
-            </div>
-            <span className="font-semibold text-card-foreground">{rating}</span>
-            <span className="text-muted-foreground ml-1">
-              ({reviews?.total} {t("library:reviews")})
-            </span>
+    <>
+      <DetailsPageLayout sidebar={sidebar}>
+        <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
+          {game.name}
+        </h1>
+        {game?.franchises[0]?.name && (
+          <div className="flex items-center space-x-2">
+            <Icon icon={"lucide:box"} className="size-5 text-muted-foreground" />
+            <Link
+              to={"/game/franchises/$slug"}
+              params={{ slug: game?.franchises[0]?.slug }}
+              className="text-xl text-muted-foreground"
+            >
+              {game?.franchises[0]?.name}
+            </Link>
           </div>
         )}
-      </div>
-      <Tabs defaultValue="info">
-        <div className="flex items-center justify-between gap-3 mb-2">
-          <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
-            <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-            {(game.parentGame?.id ||
-              (game.prequels?.length ?? 0) > 0 ||
-              (game.expandedGames?.length ?? 0) > 0 ||
-              (game.sequels?.length ?? 0) > 0 ||
-              (game.dlcs?.length ?? 0) > 0 ||
-              (game.expansions?.length ?? 0) > 0 ||
-              (game.ports?.length ?? 0) > 0 ||
-              (game.remakes?.length ?? 0) > 0 ||
-              (game.remasters?.length ?? 0) > 0 ||
-              (game.bundles?.length ?? 0) > 0) && <TabsTrigger value="relations">{t("library:relations")}</TabsTrigger>}
-            {reviews?.total >= 1 && (
-              <TabsTrigger value="reviews" className="capitalize">
-                {t("library:reviews")} ({reviews?.total})
-              </TabsTrigger>
-            )}
-            <TabsTrigger value="lists">{t("library:lists")} (30)</TabsTrigger>
-            {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
-              <TabsTrigger value="screenshots">
-                {t("library:screenshots")} ({screenshots?.length ?? 0})
-              </TabsTrigger>
-            )}
-          </TabsList>
+
+        <div className="flex flex-wrap items-center gap-6 border-b border-border">
+          {reviews?.total >= 1 && (
+            <div className="flex items-center mb-5">
+              <div className="flex mr-2">
+                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
+              </div>
+              <span className="font-semibold text-card-foreground">{rating}</span>
+              <span className="text-muted-foreground ml-1">
+                ({reviews?.total} {t("library:reviews")})
+              </span>
+            </div>
+          )}
         </div>
-        <TabsContent value="info" className={"space-y-5"}>
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:genres")}</h3>
-            <GenrePills
-              genres={game.genres.map((g: { name: string }) => g.name)}
-              getLabel={(g) => getGenreLabel(t, g)}
-            />
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:synopsis")}</h3>
-            <div className="text-muted-foreground leading-relaxed space-y-4">
-              <p>{game.summary}</p>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:gameCharacteristics")}</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              <DetailsCard
-                title={t("library:developers")}
-                icon={<Icon icon={"lucide:code"} className="size-5 text-muted-foreground" />}
-                description={game.involvedCompanies
-                  .filter((c: { developer: string }) => c.developer)
-                  .map((c: { companyName: string }) => c.companyName)
-                  .join(", ")}
-              />
-              <DetailsCard
-                title={t("library:publishers")}
-                icon={<Icon icon={"lucide:building-2"} className="size-5 text-muted-foreground" />}
-                description={game.involvedCompanies
-                  .filter((c: { publisher: string }) => c.publisher)
-                  .map((c: { companyName: string }) => c.companyName)
-                  .join(", ")}
-              />
-              <DetailsCard
-                title={t("library:platforms")}
-                icon={<Icon icon={"lucide:computer"} className="size-5 text-muted-foreground" />}
-                description={game.platforms.map((p: { name: string }) => p.name).join(", ")}
-              />
-              <DetailsCard
-                title={t("library:themes")}
-                icon={<Icon icon={"lucide:tree-deciduous"} className="size-5 text-muted-foreground" />}
-                description={game.themes.join(", ")}
-              />
-              <DetailsCard
-                title={t("library:gameModes")}
-                icon={<Icon icon={"lucide:ethernet-port"} className="size-5 text-muted-foreground" />}
-                description={game.gameModes.map((m: { name: string }) => m.name).join(", ")}
-              />
-              <DetailsCard
-                title={t("library:playerPerspectives")}
-                icon={<Icon icon={"lucide:cctv"} className="size-5 text-muted-foreground" />}
-                description={game.playerPerspectives.map((p: { name: string }) => p.name).join(", ")}
-              />
-              {game.gameEngines.length > 0 && (
-                <DetailsCard
-                  title={t("library:gameEngine")}
-                  icon={<Icon icon={"lucide:bug"} className="size-5 text-muted-foreground" />}
-                  description={game.gameEngines.map((e: { name: string }) => e.name).join(", ")}
-                />
+        <Tabs defaultValue="info">
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
+              <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
+              <TabsTrigger value="lists">
+                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+              </TabsTrigger>
+              {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
+                <TabsTrigger value="screenshots">
+                  {t("library:screenshots")} ({screenshots?.length ?? 0})
+                </TabsTrigger>
               )}
+            </TabsList>
+          </div>
+          <TabsContent value="info" className={"space-y-5"}>
+            <div className={"space-y-3"}>
+              <p className="text-muted-foreground leading-relaxed">{game.summary}</p>
+              <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
+              <GenrePills
+                genres={game.genres.map((g: { name: string }) => g.name)}
+                getLabel={(g) => getGenreLabel(t, g)}
+              />
             </div>
-          </div>
 
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
-            <CommunityStats
-              stats={[
-                {
-                  label: t("feed:lists.wanttoplay"),
-                  icon: "lucide:bookmark",
-                  iconClass: "text-purple-400",
-                  value: "5%",
-                },
-                { label: t("feed:lists.playing"), icon: "lucide:gamepad", iconClass: "text-chart-1", value: "15%" },
-                {
-                  label: t("feed:lists.played"),
-                  icon: "lucide:check-circle",
-                  iconClass: "text-secondary",
-                  value: "72%",
-                },
-                { label: t("feed:lists.dropped"), icon: "lucide:x-circle", iconClass: "text-destructive", value: "8%" },
-              ]}
-            />
-          </div>
-          <Carousel className="w-full px-4" opts={{ loop: true, align: "center" }}>
-            <CarouselContent>
-              {game.videos.map((video: { checksum: string; videoId: string; name: string }) => (
-                <CarouselItem key={video.checksum}>
-                  <iframe src={video.videoId} allowFullScreen className="w-full aspect-video" title={video.name} />
-                </CarouselItem>
-              ))}
-              {game.screenshots.map((screenshot: { checksum: string; imageId: string }) => (
-                <CarouselItem key={screenshot.checksum}>
-                  <img src={screenshot.imageId} className="w-full aspect-video object-cover" alt="Screenshot" />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious variant="default" className="-left-6" />
-            <CarouselNext variant="default" className="-right-6" />
-          </Carousel>
-        </TabsContent>
-        <TabsContent value="reviews">
+            <div>
+              <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:gameCharacteristics")}</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <DetailsCard
+                  title={t("library:developers")}
+                  icon={<Icon icon={"lucide:code"} className="size-5 text-muted-foreground" />}
+                  description={game.involvedCompanies
+                    .filter((c: { developer: string }) => c.developer)
+                    .map((c: { companyName: string }) => c.companyName)
+                    .join(", ")}
+                />
+                <DetailsCard
+                  title={t("library:publishers")}
+                  icon={<Icon icon={"lucide:building-2"} className="size-5 text-muted-foreground" />}
+                  description={game.involvedCompanies
+                    .filter((c: { publisher: string }) => c.publisher)
+                    .map((c: { companyName: string }) => c.companyName)
+                    .join(", ")}
+                />
+                <DetailsCard
+                  title={t("library:platforms")}
+                  icon={<Icon icon={"lucide:computer"} className="size-5 text-muted-foreground" />}
+                  description={game.platforms.map((p: { name: string }) => p.name).join(", ")}
+                />
+                <DetailsCard
+                  title={t("library:themes")}
+                  icon={<Icon icon={"lucide:tree-deciduous"} className="size-5 text-muted-foreground" />}
+                  description={game.themes.join(", ")}
+                />
+                <DetailsCard
+                  title={t("library:gameModes")}
+                  icon={<Icon icon={"lucide:ethernet-port"} className="size-5 text-muted-foreground" />}
+                  description={game.gameModes.map((m: { name: string }) => m.name).join(", ")}
+                />
+                <DetailsCard
+                  title={t("library:playerPerspectives")}
+                  icon={<Icon icon={"lucide:cctv"} className="size-5 text-muted-foreground" />}
+                  description={game.playerPerspectives.map((p: { name: string }) => p.name).join(", ")}
+                />
+                {game.gameEngines.length > 0 && (
+                  <DetailsCard
+                    title={t("library:gameEngine")}
+                    icon={<Icon icon={"lucide:bug"} className="size-5 text-muted-foreground" />}
+                    description={game.gameEngines.map((e: { name: string }) => e.name).join(", ")}
+                  />
+                )}
+              </div>
+            </div>
+
+            {(() => {
+              const { nodes, edges } = buildRelationsData(game);
+              if (edges.length === 0) return null;
+              return (
+                <div>
+                  <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:relations")}</h3>
+                  <Relations nodes={nodes} edges={edges} />
+                </div>
+              );
+            })()}
+
+            <div>
+              <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
+              <CommunityStats
+                stats={[
+                  {
+                    label: t("feed:lists.wanttoplay"),
+                    icon: "lucide:bookmark",
+                    iconClass: "text-purple-400",
+                    value: "5%",
+                  },
+                  { label: t("feed:lists.playing"), icon: "lucide:gamepad", iconClass: "text-chart-1", value: "15%" },
+                  {
+                    label: t("feed:lists.played"),
+                    icon: "lucide:check-circle",
+                    iconClass: "text-secondary",
+                    value: "72%",
+                  },
+                  {
+                    label: t("feed:lists.dropped"),
+                    icon: "lucide:x-circle",
+                    iconClass: "text-destructive",
+                    value: "8%",
+                  },
+                ]}
+              />
+            </div>
+            <Carousel className="w-full" opts={{ loop: true, align: "center" }}>
+              <CarouselContent>
+                {game.videos.map((video: { checksum: string; videoId: string; name: string }) => (
+                  <CarouselItem key={video.checksum}>
+                    <div className="relative w-full overflow-hidden pt-[56.25%]">
+                      <iframe
+                        src={video.videoId}
+                        allowFullScreen
+                        className="w-full inset-0 absolute h-full"
+                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
+                        title={video.name}
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+                {game.screenshots.map((screenshot: { checksum: string; imageId: string }) => (
+                  <CarouselItem key={screenshot.checksum}>
+                    <div className="relative w-full overflow-hidden pt-[56.25%]">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center blur-xl scale-110"
+                        style={{ backgroundImage: `url(${screenshot.imageId})` }}
+                        aria-hidden="true"
+                      />
+                      <ImageZoom className="absolute inset-0">
+                        <Image
+                          src={screenshot.imageId}
+                          width={1920}
+                          height={1080}
+                          alt="Screenshot"
+                          className="absolute inset-0 w-full h-full object-contain"
+                        />
+                      </ImageZoom>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious variant="default" className="left-2" />
+              <CarouselNext variant="default" className="right-2" />
+            </Carousel>
+          </TabsContent>
+          <TabsContent value="lists" className="space-y-4">
+            {isAuthenticated && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-1.5">
+                    <Icon icon="lucide:list-plus" className="size-3.5" />
+                    {t("feed:customLists")}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-56 p-2 space-y-2">
+                  <div className="flex items-center gap-1.5 pb-1.5 border-b border-border">
+                    <Input
+                      value={newListName}
+                      onChange={(e) => setNewListName(e.target.value)}
+                      placeholder={t("feed:newList")}
+                      className="h-7 text-sm"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && newListName.trim()) {
+                          createAndAddListMutation.mutate(newListName.trim());
+                        }
+                      }}
+                    />
+                    <Button
+                      size="icon"
+                      className="size-7 shrink-0"
+                      disabled={!newListName.trim() || createAndAddListMutation.isPending}
+                      onClick={() => createAndAddListMutation.mutate(newListName.trim())}
+                    >
+                      <Icon icon="lucide:plus" className="size-3.5" />
+                    </Button>
+                  </div>
+                  <div className="space-y-0.5">
+                    {userListsQuery.data?.map((list) => {
+                      const isMember = listStatusQuery.data?.includes(list.id) ?? false;
+                      return (
+                        <label
+                          key={list.id}
+                          className="flex items-center gap-2 px-2 py-1.5 rounded-sm hover:bg-muted cursor-pointer text-sm select-none"
+                        >
+                          <Checkbox
+                            checked={isMember}
+                            disabled={toggleListMutation.isPending}
+                            onCheckedChange={() => toggleListMutation.mutate({ listId: list.id, isMember })}
+                          />
+                          {list.name}
+                        </label>
+                      );
+                    })}
+                    {(!userListsQuery.data || userListsQuery.data.length === 0) && (
+                      <p className="text-sm text-muted-foreground px-2 py-1.5">{t("library:noLists")}</p>
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
+            {!listsQuery.data || listsQuery.data.items.length === 0 ? (
+              <Empty className="border-0">
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <Icon icon="lucide:list" />
+                  </EmptyMedia>
+                  <EmptyTitle>{t("library:noLists")}</EmptyTitle>
+                  <EmptyDescription>{t("library:noListsDescription")}</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {listsQuery.data.items.map((list) => (
+                  <ListItem key={list.id} list={list} />
+                ))}
+              </div>
+            )}
+          </TabsContent>
+          {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
+            <TabsContent value="screenshots">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {screenshots?.map((screenshot: { checksum: string; imageId: string }) => (
+                  <ImageZoom key={screenshot.checksum}>
+                    <img src={screenshot.imageId} alt="" />
+                  </ImageZoom>
+                ))}
+              </div>
+            </TabsContent>
+          )}
+        </Tabs>
+      </DetailsPageLayout>
+
+      <div className="space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="font-semibold text-card-foreground text-lg capitalize">
+            {t("library:reviews")} ({reviews?.total ?? 0})
+          </h3>
+          {isAuthenticated && (
+            <Button variant="outline" size="sm" className="shrink-0 gap-2" onClick={() => setMoreOpen(true)}>
+              <Icon icon="lucide:pen-line" className="size-4" />
+              {t("feed:review")}
+            </Button>
+          )}
+        </div>
+        {(reviews?.total ?? 0) >= 1 ? (
           <ReviewItem
             user={
               {
@@ -483,48 +684,21 @@ function GameDetailsRoute() {
             reviewText={
               "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
             }
-            criteries={{
-              language: 5,
-              characters: 4,
-              all: 10,
-              story: 8,
-              theme: 9,
-            }}
+            criteries={{ language: 5, characters: 4, all: 10, story: 8, theme: 9 }}
             date={new Date("2023-06-19")}
           />
-        </TabsContent>
-        <TabsContent value="lists">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <ListItem
-              list={
-                {
-                  _count: { listItems: 0 },
-                  listItems: [],
-                  name: "",
-                  user: { name: "", profile: null },
-                } as unknown as ApiTypes.ListWithPreview
-              }
-            />
-          </div>
-        </TabsContent>
-        <TabsContent value="relations">
-          {(() => {
-            const { nodes, edges } = buildRelationsData(game);
-            return <Relations nodes={nodes} edges={edges} />;
-          })()}
-        </TabsContent>
-        {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
-          <TabsContent value="screenshots">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {screenshots?.map((screenshot: { checksum: string; imageId: string }) => (
-                <ImageZoom key={screenshot.checksum}>
-                  <img src={screenshot.imageId} alt="" />
-                </ImageZoom>
-              ))}
-            </div>
-          </TabsContent>
+        ) : (
+          <Empty className="border-0">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Icon icon="lucide:star" />
+              </EmptyMedia>
+              <EmptyTitle>{t("library:noReviews")}</EmptyTitle>
+              <EmptyDescription>{t("library:noReviewsDescription")}</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         )}
-      </Tabs>
-    </DetailsPageLayout>
+      </div>
+    </>
   );
 }

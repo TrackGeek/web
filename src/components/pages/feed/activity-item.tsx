@@ -114,13 +114,18 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
                         onClick={() => onReact?.(emoji, currentReaction)}
                         disabled={isReacting || !currentUserId}
                         aria-pressed={active}
-                        className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+                        className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 text-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                           active
                             ? "border-primary bg-primary/10 text-primary"
                             : "border-border/50 hover:border-primary/50 hover:bg-muted"
                         }`}
                       >
-                        <span className="leading-none">{emoji}</span>
+                        <span
+                          className="text-base leading-none"
+                          style={{ fontFamily: "'Noto Color Emoji', sans-serif" }}
+                        >
+                          {emoji}
+                        </span>
                         {count > 0 && <span className="text-xs text-muted-foreground">{count}</span>}
                       </button>
                     );

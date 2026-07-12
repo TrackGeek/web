@@ -22,8 +22,13 @@ import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { MovieModal } from "@/components/shared/modals/movie";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
 import { StarRating } from "@/components/shared/star-rating";
+import { Button } from "@/components/ui/button";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { ImageZoom } from "@/components/ui/image-zoom";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToggleReviewReaction } from "@/hooks/review";
@@ -103,6 +108,7 @@ function MovieDetailsRoute() {
   const userId = session?.data?.user?.id;
 
   const [moreOpen, setMoreOpen] = useState(false);
+  const [newListName, setNewListName] = useState("");
 
   const toggleReaction = useToggleReviewReaction("movie", userId ?? "");
 
@@ -146,6 +152,69 @@ function MovieDetailsRoute() {
       queryClient.invalidateQueries({ queryKey: ["movieFavorite", movie?.id, userId] });
       return toast.error(t("api:INTERNAL_SERVER_ERROR"));
     },
+  });
+
+  const userListsQuery = useQuery<ApiTypes.List[]>({
+    queryKey: ["movieLists", userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Movie", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items),
+    enabled: isAuthenticated && !!userId,
+  });
+
+  const listStatusQuery = useQuery<string[]>({
+    queryKey: ["movieListStatus", movie?.id, userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListStatusResponse>(apiEndpoints.getListStatus, {
+          params: { type: "Movie", movieId: movie?.id },
+        })
+        .then(({ data }) => data.listIds),
+    enabled: isAuthenticated && !!userId && !!movie?.id,
+  });
+
+  const toggleListMutation = useMutation({
+    mutationFn: ({ listId, isMember }: { listId: string; isMember: boolean }) => {
+      const body = { type: "Movie", listId, userId, movieId: movie?.id };
+      return isMember
+        ? api.delete(apiEndpoints.listItem(listId), { data: body })
+        : api.post(apiEndpoints.listItem(listId), body);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["movieListStatus", movie?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["movieContainingLists", movie?.id] });
+      queryClient.invalidateQueries({ queryKey: ["movie"] });
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
+  const createAndAddListMutation = useMutation({
+    mutationFn: async (name: string) => {
+      await api.post(apiEndpoints.list, { name, userId, type: "Movie" });
+      const freshLists = await api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Movie", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items);
+      const newList = [...freshLists].reverse().find((l) => l.name === name);
+      if (!newList) throw new Error("List not found after creation");
+      await api.post(apiEndpoints.listItem(newList.id), {
+        type: "Movie",
+        listId: newList.id,
+        userId,
+        movieId: movie?.id,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["movieLists", userId] });
+      queryClient.invalidateQueries({ queryKey: ["movieListStatus", movie?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["movieContainingLists", movie?.id] });
+      setNewListName("");
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
   });
 
   const progressQuery = useQuery<MovieProgress | null>({
@@ -328,12 +397,13 @@ function MovieDetailsRoute() {
   );
 
   return (
-    <DetailsPageLayout sidebar={sidebar}>
-      <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-        {movie.title}
-      </h1>
+    <>
+      <DetailsPageLayout sidebar={sidebar}>
+        <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
+          {movie.title}
+        </h1>
 
-      {/* {movie?.belongsToCollection?.name && (
+        {/* {movie?.belongsToCollection?.name && (
         <div className="flex items-center space-x-2">
           <Icon icon={"lucide:box"} className="size-5 text-muted-foreground" />
           <a href={`/movies-collection/${movie?.belongsToCollection?.id}`} className="text-xl text-muted-foreground">
@@ -342,252 +412,334 @@ function MovieDetailsRoute() {
         </div>
       )} */}
 
-      <div className="flex flex-wrap items-center gap-6 border-b border-border">
-        <div className="flex items-center mb-3 space-x-1">
-          <StarRating value={rating} className="mr-1" />
-          <span className="font-semibold text-card-foreground">{rating}</span>
-          <span className="text-muted-foreground">
-            ({reviews.total} {t("library:reviews")})
-          </span>
-        </div>
-      </div>
-
-      <Tabs defaultValue="info">
-        <div className="flex items-center justify-between gap-3 mb-2">
-          <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
-            <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-            <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
-            {movie.backdrops.length >= 1 && <TabsTrigger value="medias">{t("library:medias")}</TabsTrigger>}
-            <TabsTrigger value="reviews" className="capitalize">
-              {t("library:reviews")} ({reviews?.total ?? 0})
-            </TabsTrigger>
-            <TabsTrigger value="lists">
-              {t("library:lists")} ({listsQuery.data?.total ?? 0})
-            </TabsTrigger>
-            <TabsTrigger value="comments">{t("comments:title")}</TabsTrigger>
-          </TabsList>
-        </div>
-        <TabsContent value="info" className={"space-y-5"}>
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:genres")}</h3>
-            <GenrePills genres={movie.genres} getLabel={(g) => getGenreLabel(t, g)} />
+        <div className="flex flex-wrap items-center gap-6 border-b border-border">
+          <div className="flex items-center mb-3 space-x-1">
+            <StarRating value={rating} className="mr-1" />
+            <span className="font-semibold text-card-foreground">{rating}</span>
+            <span className="text-muted-foreground">
+              ({reviews?.total ?? 0} {t("library:reviews")})
+            </span>
           </div>
+        </div>
 
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:synopsis")}</h3>
-            <div className="text-muted-foreground leading-relaxed space-y-4">
-              <p>{movie.overview}</p>
+        <Tabs defaultValue="info">
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
+              <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
+              <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
+              <TabsTrigger value="lists">
+                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+              </TabsTrigger>
+              <TabsTrigger value="comments">{t("comments:title")}</TabsTrigger>
+            </TabsList>
+          </div>
+          <TabsContent value="info" className={"space-y-5"}>
+            <div className={"space-y-3"}>
+              <p className="text-muted-foreground leading-relaxed">{movie.overview}</p>
+              <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
+              <GenrePills genres={movie.genres} getLabel={(g) => getGenreLabel(t, g)} />
             </div>
-          </div>
 
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:movieCharacteristics")}</h3>
-            <Grid minColSize={"200px"} className="gap-4">
-              <DetailsCard
-                title={t("library:directors")}
-                icon={<Icon icon={"lucide:clapperboard"} className="size-5 text-muted-foreground" />}
-                description={
-                  <Link to="/" search={{ landing: "true" }} className="font-medium text-card-foreground">
-                    Tom Gormican
-                  </Link>
-                }
-              />
-              {movie.budget > 0 && (
+            <div>
+              <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:movieCharacteristics")}</h3>
+              <Grid minColSize={"200px"} className="gap-4">
                 <DetailsCard
-                  title={t("library:budget")}
-                  icon={<Icon icon={"lucide:piggy-bank"} className="size-5 text-muted-foreground" />}
-                  description={new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-                    movie.budget,
-                  )}
-                />
-              )}
-              {movie.revenue > 0 && (
-                <DetailsCard
-                  title={t("library:revenue")}
-                  icon={<Icon icon={"lucide:ticket"} className="size-5 text-muted-foreground" />}
-                  description={new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-                    movie.revenue,
-                  )}
-                />
-              )}
-              {movie?.spokenLanguages[0]?.name && (
-                <DetailsCard
-                  title={t("library:language")}
-                  icon={<Icon icon={"lucide:languages"} className="size-5 text-muted-foreground" />}
-                  description={movie?.spokenLanguages[0]?.name}
-                />
-              )}
-              {movie?.productionCompanies?.length >= 1 && (
-                <DetailsCard
-                  title={t("library:productionCompanies")}
-                  icon={<Icon icon={"lucide:building"} className="size-5 text-muted-foreground" />}
+                  title={t("library:directors")}
+                  icon={<Icon icon={"lucide:clapperboard"} className="size-5 text-muted-foreground" />}
                   description={
-                    <span className="inline-flex items-center gap-1.5">
-                      <span className="truncate">{movie.productionCompanies[0].name}</span>
-                      {movie.productionCompanies.length > 1 && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <span className="shrink-0 cursor-default rounded-md bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
-                              +{movie.productionCompanies.length - 1}
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <ul className="flex flex-col gap-0.5">
-                              {movie.productionCompanies.slice(1).map((pc: { name: string }) => (
-                                <li key={pc.name}>{pc.name}</li>
-                              ))}
-                            </ul>
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
-                    </span>
+                    <Link to="/" search={{ landing: "true" }} className="font-medium text-card-foreground">
+                      Tom Gormican
+                    </Link>
                   }
                 />
-              )}
-              {movie.runtime > 0 && (
-                <DetailsCard
-                  title={t("library:runtime")}
-                  icon={<Icon icon={"lucide:clock"} className="size-5 text-muted-foreground" />}
-                  description={`${movie.runtime} min`}
-                />
-              )}
-            </Grid>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
-            <CommunityStats
-              stats={[
-                {
-                  label: t("feed:lists.planning"),
-                  icon: "lucide:bookmark",
-                  iconClass: "text-purple-400",
-                  value: `${movie.progressStats?.planToWatch?.percentage ?? 0}%`,
-                  sub: `${movie.progressStats?.planToWatch?.count ?? 0} ${t("library:users")}`,
-                },
-                {
-                  label: t("feed:lists.watching"),
-                  icon: "lucide:tv-minimal-play",
-                  iconClass: "text-chart-1",
-                  value: `${movie.progressStats?.watching?.percentage ?? 0}%`,
-                  sub: `${movie.progressStats?.watching?.count ?? 0} ${t("library:users")}`,
-                },
-                {
-                  label: t("feed:lists.completed"),
-                  icon: "lucide:check-circle",
-                  iconClass: "text-secondary",
-                  value: `${movie.progressStats?.completed?.percentage ?? 0}%`,
-                  sub: `${movie.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
-                },
-                {
-                  label: t("feed:lists.dropped"),
-                  icon: "lucide:x-circle",
-                  iconClass: "text-destructive",
-                  value: `${movie.progressStats?.dropped?.percentage ?? 0}%`,
-                  sub: `${movie.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
-                },
-              ]}
-            />
-          </div>
-
-          {movie.trailerId && (
-            <iframe
-              src={`https://youtube.com/embed/${movie.trailerId}`}
-              allowFullScreen
-              className="w-full aspect-video"
-              title="Trailer"
-            />
-          )}
-        </TabsContent>
-        <TabsContent value="reviews">
-          {!reviews || reviews.items.length === 0 ? (
-            <Empty className="border-0">
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <Icon icon="lucide:star" />
-                </EmptyMedia>
-                <EmptyTitle>{t("library:noReviews")}</EmptyTitle>
-                <EmptyDescription>{t("library:noReviewsDescription")}</EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          ) : (
-            <div className="flex flex-col divide-y divide-border/30">
-              {reviews.items.map((review: ApiTypes.Review) => (
-                <ReviewItem
-                  key={review.id}
-                  user={review.user}
-                  reviewText={review.summary ?? ""}
-                  notes={review.notes}
-                  story={review.story}
-                  date={new Date(review.createdAt)}
-                  criteries={{
-                    all: Number(review.overall),
-                    direction: review.direction != null ? Number(review.direction) : undefined,
-                    production: review.production != null ? Number(review.production) : undefined,
-                    acting: review.acting != null ? Number(review.acting) : undefined,
-                  }}
-                  reviewId={review.id}
-                  reactions={review.reactions}
-                  onReact={(emoji, currentReaction) =>
-                    toggleReaction.mutate(
-                      { reviewId: review.id, currentReaction, emoji },
-                      { onSuccess: () => queryClient.invalidateQueries({ queryKey: ["movieReviews", movie.id] }) },
-                    )
-                  }
-                  isReacting={toggleReaction.isPending && toggleReaction.variables?.reviewId === review.id}
-                />
-              ))}
+                {movie.budget > 0 && (
+                  <DetailsCard
+                    title={t("library:budget")}
+                    icon={<Icon icon={"lucide:piggy-bank"} className="size-5 text-muted-foreground" />}
+                    description={new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+                      movie.budget,
+                    )}
+                  />
+                )}
+                {movie.revenue > 0 && (
+                  <DetailsCard
+                    title={t("library:revenue")}
+                    icon={<Icon icon={"lucide:ticket"} className="size-5 text-muted-foreground" />}
+                    description={new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+                      movie.revenue,
+                    )}
+                  />
+                )}
+                {movie?.spokenLanguages[0]?.name && (
+                  <DetailsCard
+                    title={t("library:language")}
+                    icon={<Icon icon={"lucide:languages"} className="size-5 text-muted-foreground" />}
+                    description={movie?.spokenLanguages[0]?.name}
+                  />
+                )}
+                {movie?.productionCompanies?.length >= 1 && (
+                  <DetailsCard
+                    title={t("library:productionCompanies")}
+                    icon={<Icon icon={"lucide:building"} className="size-5 text-muted-foreground" />}
+                    description={
+                      <span className="inline-flex items-center gap-1.5">
+                        <span className="truncate">{movie.productionCompanies[0].name}</span>
+                        {movie.productionCompanies.length > 1 && (
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="shrink-0 cursor-default rounded-md bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
+                                +{movie.productionCompanies.length - 1}
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <ul className="flex flex-col gap-0.5">
+                                {movie.productionCompanies.slice(1).map((pc: { name: string }) => (
+                                  <li key={pc.name}>{pc.name}</li>
+                                ))}
+                              </ul>
+                            </TooltipContent>
+                          </Tooltip>
+                        )}
+                      </span>
+                    }
+                  />
+                )}
+                {movie.runtime > 0 && (
+                  <DetailsCard
+                    title={t("library:runtime")}
+                    icon={<Icon icon={"lucide:clock"} className="size-5 text-muted-foreground" />}
+                    description={`${movie.runtime} min`}
+                  />
+                )}
+              </Grid>
             </div>
-          )}
-        </TabsContent>
-        <TabsContent value="lists">
-          {!listsQuery.data || listsQuery.data.items.length === 0 ? (
-            <Empty className="border-0">
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <Icon icon="lucide:list" />
-                </EmptyMedia>
-                <EmptyTitle>{t("library:noLists")}</EmptyTitle>
-                <EmptyDescription>{t("library:noListsDescription")}</EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {listsQuery.data.items.map((list) => (
-                <ListItem key={list.id} list={list} />
-              ))}
+
+            <div>
+              <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
+              <CommunityStats
+                stats={[
+                  {
+                    label: t("feed:lists.planning"),
+                    icon: "lucide:bookmark",
+                    iconClass: "text-purple-400",
+                    value: `${movie.progressStats?.planToWatch?.percentage ?? 0}%`,
+                    sub: `${movie.progressStats?.planToWatch?.count ?? 0} ${t("library:users")}`,
+                  },
+                  {
+                    label: t("feed:lists.watching"),
+                    icon: "lucide:tv-minimal-play",
+                    iconClass: "text-chart-1",
+                    value: `${movie.progressStats?.watching?.percentage ?? 0}%`,
+                    sub: `${movie.progressStats?.watching?.count ?? 0} ${t("library:users")}`,
+                  },
+                  {
+                    label: t("feed:lists.completed"),
+                    icon: "lucide:check-circle",
+                    iconClass: "text-secondary",
+                    value: `${movie.progressStats?.completed?.percentage ?? 0}%`,
+                    sub: `${movie.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
+                  },
+                  {
+                    label: t("feed:lists.dropped"),
+                    icon: "lucide:x-circle",
+                    iconClass: "text-destructive",
+                    value: `${movie.progressStats?.dropped?.percentage ?? 0}%`,
+                    sub: `${movie.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
+                  },
+                ]}
+              />
             </div>
-          )}
-        </TabsContent>
-        <TabsContent value="comments">
-          <Comments
-            type="Movie"
-            movieId={movie.id}
-            showTitle={false}
-            containerClassName="border-0 bg-transparent p-0 shadow-none"
-            headerClassName="p-0"
-            contentClassName="p-0"
-          />
-        </TabsContent>
-        <TabsContent value="cast">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {movie.cast?.map((cast: { character: string; name: string; profileUrl: string }) => (
-              <CastItem key={cast.character} name={cast.name} character={cast.character} imageUrl={cast.profileUrl} />
-            ))}
-          </div>
-        </TabsContent>
-        {movie.backdrops.length >= 1 && (
-          <TabsContent value="medias">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {movie.backdrops?.map((url: string, i: number) => (
-                <ImageZoom key={i}>
-                  <img src={url} alt={"Backdrop"} />
-                </ImageZoom>
+
+            {(movie.trailerId || movie.backdrops.length >= 1) && (
+              <Carousel className="w-full" opts={{ loop: true, align: "center" }}>
+                <CarouselContent>
+                  {movie.trailerId && (
+                    <CarouselItem>
+                      <div className="relative w-full overflow-hidden pt-[56.25%]">
+                        <iframe
+                          src={`https://youtube.com/embed/${movie.trailerId}`}
+                          allowFullScreen
+                          className="absolute inset-0 w-full h-full"
+                          sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
+                          title="Trailer"
+                        />
+                      </div>
+                    </CarouselItem>
+                  )}
+                  {movie.backdrops?.map((url: string, i: number) => (
+                    <CarouselItem key={i}>
+                      <div className="relative w-full overflow-hidden pt-[56.25%]">
+                        <div
+                          className="absolute inset-0 bg-cover bg-center blur-xl scale-110"
+                          style={{ backgroundImage: `url(${url})` }}
+                          aria-hidden="true"
+                        />
+                        <ImageZoom className="absolute inset-0">
+                          <img src={url} alt={"Backdrop"} className="absolute inset-0 w-full h-full object-contain" />
+                        </ImageZoom>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious variant="default" className="left-2" />
+                <CarouselNext variant="default" className="right-2" />
+              </Carousel>
+            )}
+          </TabsContent>
+          <TabsContent value="lists" className="space-y-4">
+            {isAuthenticated && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-1.5">
+                    <Icon icon="lucide:list-plus" className="size-3.5" />
+                    {t("feed:customLists")}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-56 p-2 space-y-2">
+                  <div className="flex items-center gap-1.5 pb-1.5 border-b border-border">
+                    <Input
+                      value={newListName}
+                      onChange={(e) => setNewListName(e.target.value)}
+                      placeholder={t("feed:newList")}
+                      className="h-7 text-sm"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && newListName.trim()) {
+                          createAndAddListMutation.mutate(newListName.trim());
+                        }
+                      }}
+                    />
+                    <Button
+                      size="icon"
+                      className="size-7 shrink-0"
+                      disabled={!newListName.trim() || createAndAddListMutation.isPending}
+                      onClick={() => createAndAddListMutation.mutate(newListName.trim())}
+                    >
+                      <Icon icon="lucide:plus" className="size-3.5" />
+                    </Button>
+                  </div>
+                  <div className="space-y-0.5">
+                    {userListsQuery.data?.map((list) => {
+                      const isMember = listStatusQuery.data?.includes(list.id) ?? false;
+                      return (
+                        <label
+                          key={list.id}
+                          className="flex items-center gap-2 px-2 py-1.5 rounded-sm hover:bg-muted cursor-pointer text-sm select-none"
+                        >
+                          <Checkbox
+                            checked={isMember}
+                            disabled={toggleListMutation.isPending}
+                            onCheckedChange={() => toggleListMutation.mutate({ listId: list.id, isMember })}
+                          />
+                          {list.name}
+                        </label>
+                      );
+                    })}
+                    {(!userListsQuery.data || userListsQuery.data.length === 0) && (
+                      <p className="text-sm text-muted-foreground px-2 py-1.5">{t("library:noLists")}</p>
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
+
+            {!listsQuery.data || listsQuery.data.items.length === 0 ? (
+              <Empty className="border-0">
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <Icon icon="lucide:list" />
+                  </EmptyMedia>
+                  <EmptyTitle>{t("library:noLists")}</EmptyTitle>
+                  <EmptyDescription>{t("library:noListsDescription")}</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {listsQuery.data.items.map((list) => (
+                  <ListItem key={list.id} list={list} />
+                ))}
+              </div>
+            )}
+          </TabsContent>
+          <TabsContent value="comments">
+            <Comments
+              type="Movie"
+              movieId={movie.id}
+              showTitle={false}
+              containerClassName="border-0 bg-transparent p-0 shadow-none"
+              headerClassName="p-0"
+              contentClassName="p-0"
+            />
+          </TabsContent>
+          <TabsContent value="cast">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {movie.cast?.map((cast: { character: string; name: string; profileUrl: string }) => (
+                <CastItem key={cast.character} name={cast.name} character={cast.character} imageUrl={cast.profileUrl} />
               ))}
             </div>
           </TabsContent>
+        </Tabs>
+      </DetailsPageLayout>
+
+      <div className="space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="font-semibold text-card-foreground text-lg capitalize">
+            {t("library:reviews")} ({reviews?.total ?? 0})
+          </h3>
+          {isAuthenticated && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="shrink-0 gap-2"
+              onClick={() => {
+                setProgressMutation.mutate("Completed");
+                setMoreOpen(true);
+              }}
+            >
+              <Icon icon="lucide:pen-line" className="size-4" />
+              {t("feed:review")}
+            </Button>
+          )}
+        </div>
+        {!reviews || reviews.items.length === 0 ? (
+          <Empty className="border-0">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Icon icon="lucide:star" />
+              </EmptyMedia>
+              <EmptyTitle>{t("library:noReviews")}</EmptyTitle>
+              <EmptyDescription>{t("library:noReviewsDescription")}</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        ) : (
+          <div className="flex flex-col divide-y divide-border/30">
+            {reviews.items.map((review: ApiTypes.Review) => (
+              <ReviewItem
+                key={review.id}
+                user={review.user}
+                reviewText={review.summary ?? ""}
+                notes={review.notes}
+                story={review.story}
+                date={new Date(review.createdAt)}
+                criteries={{
+                  all: Number(review.overall),
+                  direction: review.direction != null ? Number(review.direction) : undefined,
+                  production: review.production != null ? Number(review.production) : undefined,
+                  acting: review.acting != null ? Number(review.acting) : undefined,
+                }}
+                reviewId={review.id}
+                reactions={review.reactions}
+                onReact={(emoji, currentReaction) =>
+                  toggleReaction.mutate(
+                    { reviewId: review.id, currentReaction, emoji },
+                    { onSuccess: () => queryClient.invalidateQueries({ queryKey: ["movieReviews", movie.id] }) },
+                  )
+                }
+                isReacting={toggleReaction.isPending && toggleReaction.variables?.reviewId === review.id}
+              />
+            ))}
+          </div>
         )}
-      </Tabs>
-    </DetailsPageLayout>
+      </div>
+    </>
   );
 }

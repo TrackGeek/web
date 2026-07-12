@@ -8,8 +8,8 @@ interface DetailsPageLayoutProps {
 
 export function DetailsPageLayout({ sidebar, children }: DetailsPageLayoutProps) {
   return (
-    <div className="flex flex-col lg:flex-row gap-8">
-      <div className="lg:w-1/3">
+    <div className="flex flex-col lg:flex-row gap-8 mb-4 items-start">
+      <div className="lg:w-1/3 lg:sticky lg:top-4">
         <Card>
           <CardContent className="flex flex-col gap-4">{sidebar}</CardContent>
         </Card>

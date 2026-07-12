@@ -22,6 +22,11 @@ import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { EpisodicContentModal } from "@/components/shared/modals/episodic-content";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
@@ -54,6 +59,7 @@ function AnimeDetailsRoute() {
   const { slug } = Route.useParams();
   const { anime: loaderAnime } = Route.useLoaderData();
   const { t } = useTranslation();
+  const [moreOpen, setMoreOpen] = useState(false);
   const [mySeason, _setMySeason] = useState<SingleSeasonData>({
     totalEpisodes: 12,
     watchedEpisodes: [1, 2, 3, 4, 5],
@@ -109,6 +115,82 @@ function AnimeDetailsRoute() {
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
+  const userId = session?.data?.user?.id;
+  const [newListName, setNewListName] = useState("");
+
+  const listsQuery = useQuery<ApiTypes.PaginatedResponse<ApiTypes.ListWithPreview>>({
+    queryKey: ["animeContainingLists", anime?.id],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListsContainingItemResponse>(apiEndpoints.getListsContainingItem, {
+          params: { type: "Anime", animeId: anime?.id, itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists),
+    enabled: !!anime?.id,
+  });
+
+  const userListsQuery = useQuery<ApiTypes.List[]>({
+    queryKey: ["animeLists", userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Anime", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items),
+    enabled: isAuthenticated && !!userId,
+  });
+
+  const listStatusQuery = useQuery<string[]>({
+    queryKey: ["animeListStatus", anime?.id, userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListStatusResponse>(apiEndpoints.getListStatus, {
+          params: { type: "Anime", animeId: anime?.id },
+        })
+        .then(({ data }) => data.listIds),
+    enabled: isAuthenticated && !!userId && !!anime?.id,
+  });
+
+  const toggleListMutation = useMutation({
+    mutationFn: ({ listId, isMember }: { listId: string; isMember: boolean }) => {
+      const body = { type: "Anime", listId, userId, animeId: anime?.id };
+      return isMember
+        ? api.delete(apiEndpoints.listItem(listId), { data: body })
+        : api.post(apiEndpoints.listItem(listId), body);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["animeListStatus", anime?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["animeContainingLists", anime?.id] });
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
+  const createAndAddListMutation = useMutation({
+    mutationFn: async (name: string) => {
+      await api.post(apiEndpoints.list, { name, userId, type: "Anime" });
+      const freshLists = await api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Anime", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items);
+      const newList = [...freshLists].reverse().find((l) => l.name === name);
+      if (!newList) throw new Error("List not found after creation");
+      await api.post(apiEndpoints.listItem(newList.id), {
+        type: "Anime",
+        listId: newList.id,
+        userId,
+        animeId: anime?.id,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["animeLists", userId] });
+      queryClient.invalidateQueries({ queryKey: ["animeListStatus", anime?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["animeContainingLists", anime?.id] });
+      setNewListName("");
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
   if (isLoading) return <LoadingDetails />;
   if (isError || !anime) return <ErrorComponent />;
 
@@ -160,6 +242,8 @@ function AnimeDetailsRoute() {
             subtitle={anime.season && anime.year ? `${anime.season} ${anime.year}` : undefined}
             description={anime.synopsis}
             triggerLabel={t("library:moreOptions")}
+            open={moreOpen}
+            onOpenChange={setMoreOpen}
           >
             <EpisodicContentModal />
           </MoreOptionsDialog>
@@ -264,253 +348,337 @@ function AnimeDetailsRoute() {
   );
 
   return (
-    <DetailsPageLayout sidebar={sidebar}>
-      <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
-        {anime.title}
-      </h1>
+    <>
+      <DetailsPageLayout sidebar={sidebar}>
+        <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
+          {anime.title}
+        </h1>
 
-      <div className="flex flex-wrap items-center gap-6 border-b border-border pb-5">
-        {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews?.total >= 1 && (
-          <div className="flex items-center gap-2">
-            <div className="flex">
-              <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-              <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-              <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-              <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-              <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
+        <div className="flex flex-wrap items-center gap-6 border-b border-border pb-5">
+          {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews?.total >= 1 && (
+            <div className="flex items-center gap-2">
+              <div className="flex">
+                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
+                <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
+              </div>
+              <span className="font-semibold text-card-foreground">{rating}</span>
+              <span className="text-muted-foreground">
+                ({reviews?.total ?? 0} {t("library:reviews")})
+              </span>
             </div>
-            <span className="font-semibold text-card-foreground">{rating}</span>
-            <span className="text-muted-foreground">
-              ({reviews.total} {t("library:reviews")})
-            </span>
+          )}
+        </div>
+
+        <Tabs defaultValue="info">
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
+              <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
+              {!episodesQuery.isLoading && !episodesQuery.isError && episodes?.length > 0 && (
+                <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
+              )}
+              <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
+              <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
+              <TabsTrigger value="lists">
+                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+              </TabsTrigger>
+            </TabsList>
           </div>
+          <TabsContent value="info" className="space-y-5">
+            <div className={"space-y-3"}>
+              <p className="text-muted-foreground leading-relaxed">{anime.synopsis}</p>
+              <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
+              <GenrePills genres={anime.genres} getLabel={(g) => getGenreLabel(t, g)} />
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:animeCharacteristics")}</h3>
+              <Grid minColSize={"200px"} className="gap-4">
+                {anime.type && (
+                  <DetailsCard
+                    title={t("library:type")}
+                    icon={<Icon icon={"lucide:file-pen-line"} className="size-5 text-muted-foreground" />}
+                    description={anime.type}
+                  />
+                )}
+                {anime.source && (
+                  <DetailsCard
+                    title={t("library:source")}
+                    icon={<Icon icon={"lucide:hash"} className="size-5 text-muted-foreground" />}
+                    description={anime.source}
+                  />
+                )}
+                {anime.numberOfEpisodes && (
+                  <DetailsCard
+                    title={t("library:totalEpisodes")}
+                    icon={<Icon icon={"lucide:tv"} className="size-5 text-muted-foreground" />}
+                    description={anime.numberOfEpisodes}
+                  />
+                )}
+                {anime.broadcast.string && (
+                  <DetailsCard
+                    title={t("library:broadcast")}
+                    icon={<Icon icon={"lucide:antenna"} className="size-5 text-muted-foreground" />}
+                    description={anime.broadcast.string}
+                  />
+                )}
+                {anime.rating && (
+                  <DetailsCard
+                    title={t("library:rating")}
+                    icon={<Icon icon={"lucide:building"} className="size-5 text-muted-foreground" />}
+                    description={anime.rating}
+                  />
+                )}
+                {anime.duration && (
+                  <DetailsCard
+                    title={t("library:runtime")}
+                    icon={<Icon icon={"lucide:clock"} className="size-5 text-muted-foreground" />}
+                    description={anime.duration}
+                  />
+                )}
+                {anime.studios.length >= 1 && (
+                  <DetailsCard
+                    title={t("library:studios")}
+                    icon={<Icon icon={"lucide:building-2"} className="size-5 text-muted-foreground" />}
+                    description={anime.studios.map((st: { name: string; malId: number }, index: number) => (
+                      <Link to="/" key={st.malId} search={{ landing: "true" }}>
+                        {st.name}
+                        {index < anime.studios.length - 1 && ", "}
+                      </Link>
+                    ))}
+                  />
+                )}
+                {anime.producers.length >= 1 && (
+                  <DetailsCard
+                    title={t("library:producers")}
+                    icon={<Icon icon={"lucide:languages"} className="size-5 text-muted-foreground" />}
+                    description={anime.producers.map((pd: { name: string; malId: number }, index: number) => (
+                      <Link to="/" key={pd.malId} search={{ landing: "true" }}>
+                        {pd.name}
+                        {index < anime.producers.length - 1 && ", "}
+                      </Link>
+                    ))}
+                  />
+                )}
+              </Grid>
+            </div>
+
+            {anime.relations?.nodes?.length > 0 || anime.relations?.edges?.length > 0 ? (
+              <div>
+                <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:relations")}</h3>
+                <Relations nodes={anime.relations.nodes} edges={anime.relations.edges} />
+              </div>
+            ) : null}
+
+            {isAuthenticated && <AnimeEpisodeProgress season={mySeason} onToggle={handleToggle} />}
+
+            <div>
+              <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
+              <CommunityStats
+                stats={[
+                  {
+                    label: t("feed:lists.planning"),
+                    icon: "lucide:bookmark",
+                    iconClass: "text-purple-400",
+                    value: "5%",
+                  },
+                  {
+                    label: t("feed:lists.watching"),
+                    icon: "lucide:tv-minimal-play",
+                    iconClass: "text-chart-1",
+                    value: "15%",
+                  },
+                  {
+                    label: t("feed:lists.completed"),
+                    icon: "lucide:check-circle",
+                    iconClass: "text-secondary",
+                    value: "72%",
+                  },
+                  {
+                    label: t("feed:lists.dropped"),
+                    icon: "lucide:x-circle",
+                    iconClass: "text-destructive",
+                    value: "8%",
+                  },
+                ]}
+              />
+            </div>
+
+            {anime.trailer.embedUrl && (
+              <iframe
+                src={anime.trailer.embedUrl.replace("&autoplay=1", "")}
+                allowFullScreen
+                className="w-full aspect-video"
+                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
+                title="Trailer"
+              />
+            )}
+          </TabsContent>
+          {!episodesQuery.isLoading && !episodesQuery.isError && episodes?.length > 0 && (
+            <TabsContent value="episodes">
+              <Grid minColSize={"200px"} className="gap-4">
+                {episodes
+                  .sort((a: { malId: number }, b: { malId: number }) => a.malId - b.malId)
+                  .map((episode: { malId: number; title: string; imageUrl: string }) => (
+                    <EpisodeItem
+                      key={episode.malId}
+                      title={episode.title}
+                      number={episode.malId}
+                      imageURL={episode.imageUrl.replace(
+                        "https://myanimelist.net/images/icon-banned-youtube.png",
+                        "/placeholder/banner-1.webp",
+                      )}
+                    />
+                  ))}
+              </Grid>
+            </TabsContent>
+          )}
+          <TabsContent value="lists" className="space-y-4">
+            {isAuthenticated && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-1.5">
+                    <Icon icon="lucide:list-plus" className="size-3.5" />
+                    {t("feed:customLists")}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-56 p-2 space-y-2">
+                  <div className="flex items-center gap-1.5 pb-1.5 border-b border-border">
+                    <Input
+                      value={newListName}
+                      onChange={(e) => setNewListName(e.target.value)}
+                      placeholder={t("feed:newList")}
+                      className="h-7 text-sm"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && newListName.trim()) {
+                          createAndAddListMutation.mutate(newListName.trim());
+                        }
+                      }}
+                    />
+                    <Button
+                      size="icon"
+                      className="size-7 shrink-0"
+                      disabled={!newListName.trim() || createAndAddListMutation.isPending}
+                      onClick={() => createAndAddListMutation.mutate(newListName.trim())}
+                    >
+                      <Icon icon="lucide:plus" className="size-3.5" />
+                    </Button>
+                  </div>
+                  <div className="space-y-0.5">
+                    {userListsQuery.data?.map((list) => {
+                      const isMember = listStatusQuery.data?.includes(list.id) ?? false;
+                      return (
+                        <label
+                          key={list.id}
+                          className="flex items-center gap-2 px-2 py-1.5 rounded-sm hover:bg-muted cursor-pointer text-sm select-none"
+                        >
+                          <Checkbox
+                            checked={isMember}
+                            disabled={toggleListMutation.isPending}
+                            onCheckedChange={() => toggleListMutation.mutate({ listId: list.id, isMember })}
+                          />
+                          {list.name}
+                        </label>
+                      );
+                    })}
+                    {(!userListsQuery.data || userListsQuery.data.length === 0) && (
+                      <p className="text-sm text-muted-foreground px-2 py-1.5">{t("library:noLists")}</p>
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
+            {!listsQuery.data || listsQuery.data.items.length === 0 ? (
+              <Empty className="border-0">
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <Icon icon="lucide:list" />
+                  </EmptyMedia>
+                  <EmptyTitle>{t("library:noLists")}</EmptyTitle>
+                  <EmptyDescription>{t("library:noListsDescription")}</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {listsQuery.data.items.map((list) => (
+                  <ListItem key={list.id} list={list} />
+                ))}
+              </div>
+            )}
+          </TabsContent>
+          <TabsContent value="cast">
+            <Grid minColSize={"150px"} className="gap-4">
+              {anime.cast?.map((cast: { role: string; name: string; imageUrl: string; positions: string[] }) => (
+                <CastItem
+                  key={cast.role}
+                  name={cast.name}
+                  character={cast.positions.map((positions) => positions).join(", ") as string}
+                  imageUrl={cast.imageUrl.replace(
+                    "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
+                    "",
+                  )}
+                />
+              ))}
+            </Grid>
+          </TabsContent>
+          <TabsContent value="characters">
+            <Grid minColSize={"150px"} className="gap-4">
+              {anime.characters?.map((character: { name: string; imageUrl: string }) => (
+                <CharacterItem
+                  key={character.name}
+                  name={character.name}
+                  imageUrl={character.imageUrl.replace(
+                    "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
+                    "",
+                  )}
+                />
+              ))}
+            </Grid>
+          </TabsContent>
+        </Tabs>
+      </DetailsPageLayout>
+
+      <div className="space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="font-semibold text-card-foreground text-lg capitalize">
+            {t("library:reviews")} ({reviews?.total ?? 0})
+          </h3>
+          {isAuthenticated && (
+            <Button variant="outline" size="sm" className="shrink-0 gap-2" onClick={() => setMoreOpen(true)}>
+              <Icon icon="lucide:pen-line" className="size-4" />
+              {t("feed:review")}
+            </Button>
+          )}
+        </div>
+        {!reviewsQuery.isLoading && !reviewsQuery.isError && (reviews?.total ?? 0) >= 1 ? (
+          <ReviewItem
+            user={
+              {
+                name: "John Doe",
+                avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
+                slug: "john-doe",
+              } as unknown as ApiTypes.User
+            }
+            reviewText={
+              "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
+            }
+            criteries={{ language: 5, characters: 4, all: 10, story: 8, theme: 9 }}
+            date={new Date("2023-06-19")}
+          />
+        ) : (
+          <Empty className="border-0">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Icon icon="lucide:star" />
+              </EmptyMedia>
+              <EmptyTitle>{t("library:noReviews")}</EmptyTitle>
+              <EmptyDescription>{t("library:noReviewsDescription")}</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         )}
       </div>
-
-      <Tabs defaultValue="info">
-        <div className="flex items-center justify-between gap-3 mb-2">
-          <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
-            <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-            <TabsTrigger value="relations">{t("library:relations")}</TabsTrigger>
-            {!episodesQuery.isLoading && !episodesQuery.isError && episodes?.length > 0 && (
-              <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
-            )}
-            <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
-            <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
-            {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews?.total >= 1 && (
-              <TabsTrigger value="reviews" className="capitalize">
-                {t("library:reviews")} ({reviews.total})
-              </TabsTrigger>
-            )}
-            <TabsTrigger value="lists">{t("library:lists")} (30)</TabsTrigger>
-          </TabsList>
-        </div>
-        <TabsContent value="info" className="space-y-5">
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:genres")}</h3>
-            <GenrePills genres={anime.genres} getLabel={(g) => getGenreLabel(t, g)} />
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-3">{t("library:synopsis")}</h3>
-            <p className="text-muted-foreground leading-relaxed">{anime.synopsis}</p>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:animeCharacteristics")}</h3>
-            <Grid minColSize={"200px"} className="gap-4">
-              {anime.type && (
-                <DetailsCard
-                  title={t("library:type")}
-                  icon={<Icon icon={"lucide:file-pen-line"} className="size-5 text-muted-foreground" />}
-                  description={anime.type}
-                />
-              )}
-              {anime.source && (
-                <DetailsCard
-                  title={t("library:source")}
-                  icon={<Icon icon={"lucide:hash"} className="size-5 text-muted-foreground" />}
-                  description={anime.source}
-                />
-              )}
-              {anime.numberOfEpisodes && (
-                <DetailsCard
-                  title={t("library:totalEpisodes")}
-                  icon={<Icon icon={"lucide:tv"} className="size-5 text-muted-foreground" />}
-                  description={anime.numberOfEpisodes}
-                />
-              )}
-              {anime.broadcast.string && (
-                <DetailsCard
-                  title={t("library:broadcast")}
-                  icon={<Icon icon={"lucide:antenna"} className="size-5 text-muted-foreground" />}
-                  description={anime.broadcast.string}
-                />
-              )}
-              {anime.rating && (
-                <DetailsCard
-                  title={t("library:rating")}
-                  icon={<Icon icon={"lucide:building"} className="size-5 text-muted-foreground" />}
-                  description={anime.rating}
-                />
-              )}
-              {anime.duration && (
-                <DetailsCard
-                  title={t("library:runtime")}
-                  icon={<Icon icon={"lucide:clock"} className="size-5 text-muted-foreground" />}
-                  description={anime.duration}
-                />
-              )}
-              {anime.studios.length >= 1 && (
-                <DetailsCard
-                  title={t("library:studios")}
-                  icon={<Icon icon={"lucide:building-2"} className="size-5 text-muted-foreground" />}
-                  description={anime.studios.map((st: { name: string; malId: number }, index: number) => (
-                    <Link to="/" key={st.malId} search={{ landing: "true" }}>
-                      {st.name}
-                      {index < anime.studios.length - 1 && ", "}
-                    </Link>
-                  ))}
-                />
-              )}
-              {anime.producers.length >= 1 && (
-                <DetailsCard
-                  title={t("library:producers")}
-                  icon={<Icon icon={"lucide:languages"} className="size-5 text-muted-foreground" />}
-                  description={anime.producers.map((pd: { name: string; malId: number }, index: number) => (
-                    <Link to="/" key={pd.malId} search={{ landing: "true" }}>
-                      {pd.name}
-                      {index < anime.producers.length - 1 && ", "}
-                    </Link>
-                  ))}
-                />
-              )}
-            </Grid>
-          </div>
-
-          {isAuthenticated && <AnimeEpisodeProgress season={mySeason} onToggle={handleToggle} />}
-
-          <div>
-            <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
-            <CommunityStats
-              stats={[
-                { label: t("feed:lists.planning"), icon: "lucide:bookmark", iconClass: "text-purple-400", value: "5%" },
-                {
-                  label: t("feed:lists.watching"),
-                  icon: "lucide:tv-minimal-play",
-                  iconClass: "text-chart-1",
-                  value: "15%",
-                },
-                {
-                  label: t("feed:lists.completed"),
-                  icon: "lucide:check-circle",
-                  iconClass: "text-secondary",
-                  value: "72%",
-                },
-                { label: t("feed:lists.dropped"), icon: "lucide:x-circle", iconClass: "text-destructive", value: "8%" },
-              ]}
-            />
-          </div>
-
-          {anime.trailer.embedUrl && (
-            <iframe
-              src={anime.trailer.embedUrl.replace("&autoplay=1", "")}
-              allowFullScreen
-              className="w-full aspect-video"
-              title="Trailer"
-            />
-          )}
-        </TabsContent>
-        {!episodesQuery.isLoading && !episodesQuery.isError && episodes?.length > 0 && (
-          <TabsContent value="episodes">
-            <Grid minColSize={"200px"} className="gap-4">
-              {episodes
-                .sort((a: { malId: number }, b: { malId: number }) => a.malId - b.malId)
-                .map((episode: { malId: number; title: string; imageUrl: string }) => (
-                  <EpisodeItem
-                    key={episode.malId}
-                    title={episode.title}
-                    number={episode.malId}
-                    imageURL={episode.imageUrl.replace(
-                      "https://myanimelist.net/images/icon-banned-youtube.png",
-                      "/placeholder/banner-1.webp",
-                    )}
-                  />
-                ))}
-            </Grid>
-          </TabsContent>
-        )}
-        <TabsContent value="relations">
-          <Relations nodes={[]} edges={[]} />
-        </TabsContent>
-        {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews?.total >= 1 && (
-          <TabsContent value="reviews">
-            <ReviewItem
-              user={
-                {
-                  name: "John Doe",
-                  avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
-                  slug: "john-doe",
-                } as unknown as ApiTypes.User
-              }
-              reviewText={
-                "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
-              }
-              criteries={{
-                language: 5,
-                characters: 4,
-                all: 10,
-                story: 8,
-                theme: 9,
-              }}
-              date={new Date("2023-06-19")}
-            />
-          </TabsContent>
-        )}
-        <TabsContent value="lists">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <ListItem
-              list={
-                {
-                  _count: { listItems: 0 },
-                  listItems: [],
-                  name: "",
-                  user: { name: "", profile: null },
-                } as unknown as ApiTypes.ListWithPreview
-              }
-            />
-          </div>
-        </TabsContent>
-        <TabsContent value="cast">
-          <Grid minColSize={"150px"} className="gap-4">
-            {anime.cast?.map((cast: { role: string; name: string; imageUrl: string; positions: string[] }) => (
-              <CastItem
-                key={cast.role}
-                name={cast.name}
-                character={cast.positions.map((positions) => positions).join(", ") as string}
-                imageUrl={cast.imageUrl.replace(
-                  "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
-                  "",
-                )}
-              />
-            ))}
-          </Grid>
-        </TabsContent>
-        <TabsContent value="characters">
-          <Grid minColSize={"150px"} className="gap-4">
-            {anime.characters?.map((character: { name: string; imageUrl: string }) => (
-              <CharacterItem
-                key={character.name}
-                name={character.name}
-                imageUrl={character.imageUrl.replace(
-                  "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
-                  "",
-                )}
-              />
-            ))}
-          </Grid>
-        </TabsContent>
-      </Tabs>
-    </DetailsPageLayout>
+    </>
   );
 }

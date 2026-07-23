@@ -241,7 +241,7 @@ function MangaDetailsRoute() {
           <p className="font-semibold text-card-foreground">{manga.published.string}</p>
         </div>
       </Grid>
-      <RefreshData sourceURL={manga.url} onSubmit={() => mutation.mutate()} />
+      {isAuthenticated && <RefreshData sourceURL={manga.url} onSubmit={() => mutation.mutate()} />}
       {manga.external.length >= 1 && (
         <div className="flex flex-wrap gap-3 items-center justify-center">
           {(() => {

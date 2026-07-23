@@ -77,10 +77,10 @@ export function progressStatusSections(contentType: ApiTypes.ReviewContentType):
 
   return [
     { status: activeStatus, statsKey: activeStatsKey, labelKey: `feed:lists.${activeStatsKey}` },
+    { status: "Planning", statsKey: "planning", labelKey: "feed:lists.planning" },
+    { status: "Completed", statsKey: "completed", labelKey: "feed:lists.completed" },
     { status: "Paused", statsKey: "paused", labelKey: "feed:lists.paused" },
     { status: "Dropped", statsKey: "dropped", labelKey: "feed:lists.dropped" },
-    { status: "Completed", statsKey: "completed", labelKey: "feed:lists.completed" },
-    { status: "Planning", statsKey: "planning", labelKey: "feed:lists.planning" },
   ];
 }
 
@@ -112,7 +112,7 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
       return {
         id: row.id,
         title: row.tvShow.name,
-        image: row.tvShow.backdropUrl ?? "",
+        image: row.tvShow.posterUrl ?? "",
         contentType: "tv",
         slug: String(row.tvShow.tmdbId),
         mediaId: row.tvShow.id,
@@ -122,7 +122,7 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
       return {
         id: row.id,
         title: row.movie.title,
-        image: row.movie.backdropUrl ?? "",
+        image: row.movie.posterUrl ?? "",
         contentType: "movie",
         slug: String(row.movie.tmdbId),
         mediaId: row.movie.id,

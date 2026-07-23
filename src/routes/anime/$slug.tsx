@@ -266,7 +266,9 @@ function AnimeDetailsRoute() {
           </div>
         )}
       </Grid>
-      <RefreshData sourceURL={`https://myanimelist.net/anime/${anime.malId}`} onSubmit={() => mutation.mutate()} />
+      {isAuthenticated && (
+        <RefreshData sourceURL={`https://myanimelist.net/anime/${anime.malId}`} onSubmit={() => mutation.mutate()} />
+      )}
       {anime.external.length >= 1 && (
         <div className="flex flex-wrap gap-3 items-center justify-center">
           {(() => {

@@ -1,9 +1,8 @@
 import { Icon } from "@iconify/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FavoriteCard, type FavoriteItem, favoriteToItem } from "@/components/pages/user/overview-tab/favorite-card";
 import { SearchInput } from "@/components/shared/search-input";
-import { Button } from "@/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -39,6 +38,25 @@ export function UserFavoritesTab({
 
   const favoritesQuery = useFavorites(userId, debouncedQuery);
   const removeFavorite = useRemoveFavorite();
+
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && favoritesQuery.hasNextPage && !favoritesQuery.isFetchingNextPage) {
+          favoritesQuery.fetchNextPage();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [favoritesQuery.hasNextPage, favoritesQuery.isFetchingNextPage, favoritesQuery.fetchNextPage]);
 
   const favorites = useMemo(
     () => favoritesQuery.data?.pages.flatMap((page) => page.items) ?? [],
@@ -117,15 +135,13 @@ export function UserFavoritesTab({
         </div>
       )}
 
-      {favoritesQuery.hasNextPage && (
-        <div className="flex justify-center">
-          <Button
-            variant="outline"
-            onClick={() => favoritesQuery.fetchNextPage()}
-            disabled={favoritesQuery.isFetchingNextPage}
-          >
-            {favoritesQuery.isFetchingNextPage ? t("user:loading") : t("user:loadMore")}
-          </Button>
+      <div ref={sentinelRef} />
+
+      {favoritesQuery.isFetchingNextPage && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <FavoriteSkeleton key={index} />
+          ))}
         </div>
       )}
     </div>
@@ -133,5 +149,5 @@ export function UserFavoritesTab({
 }
 
 function FavoriteSkeleton() {
-  return <Skeleton className="aspect-[3/4] w-full rounded-2xl" />;
+  return <Skeleton className="aspect-3/4 w-full rounded-2xl" />;
 }

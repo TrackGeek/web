@@ -1,11 +1,16 @@
 import { Icon } from "@iconify/react";
+import { Link } from "@tanstack/react-router";
 import { createTimeline, random, stagger } from "animejs";
 import { useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { useSession } from "@/lib/auth";
+import { openAuthModal } from "@/lib/auth-modal";
 
 export function Hero() {
   const { t } = useTranslation();
+  const session = useSession();
+  const username = session.data?.user?.username;
 
   useEffect(() => {
     const tl = createTimeline({
@@ -80,9 +85,20 @@ export function Hero() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 hero-cta opacity-0 translate-y-8">
-          <Button className="h-12 px-8 rounded-lg font-medium text-base hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary/20">
-            {t("pages:landing.CTAButton")}
-          </Button>
+          {username ? (
+            <Link to="/user/$username" params={{ username }} search={{ tab: "overview" }}>
+              <Button className="h-12 px-8 rounded-lg font-medium text-base hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary/20">
+                {t("pages:landing.CTAButton")}
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              onClick={() => openAuthModal("register")}
+              className="h-12 px-8 rounded-lg font-medium text-base hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary/20"
+            >
+              {t("pages:landing.CTAButton")}
+            </Button>
+          )}
           <a href="https://github.com/TrackGeek/" target="_blank" rel="noopener noreferrer">
             <Button className="h-12 px-8 rounded-lg font-medium text-base transition-colors">
               {t("pages:landing.heroButton")}

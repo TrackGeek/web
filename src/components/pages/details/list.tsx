@@ -29,14 +29,14 @@ export function ListItem({ list, editable = false }: ListItemProps) {
         <div className="flex items-center justify-between mb-2">
           <AvatarGroup className="items-center -space-x-3 overflow-x-hidden">
             {previews.map(({ item, link }) => (
-              <Avatar key={item.id} className="aspect-video h-max w-24 rounded-md">
+              <Avatar key={item.id} className="aspect-3/4 h-max w-24 rounded-md">
                 {link?.image ? (
                   <Image
                     src={link.image}
                     width={96}
                     height={54}
                     alt={link?.title ?? ""}
-                    className="object-cover aspect-video h-full"
+                    className="object-cover aspect-3/4 h-full"
                   />
                 ) : (
                   <AvatarFallback className="rounded-md text-xs">{link?.title}</AvatarFallback>
@@ -45,7 +45,7 @@ export function ListItem({ list, editable = false }: ListItemProps) {
             ))}
 
             {remaining > 0 && (
-              <AvatarGroupCount className="w-24 size-none h-max aspect-video rounded-md">+{remaining}</AvatarGroupCount>
+              <AvatarGroupCount className="w-24 size-none h-max aspect-3/4 rounded-md">+{remaining}</AvatarGroupCount>
             )}
           </AvatarGroup>
         </div>

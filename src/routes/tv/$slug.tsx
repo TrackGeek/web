@@ -459,25 +459,27 @@ function TVShowDetailsPage() {
             </DialogTrigger>
             <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
               <DialogHeader
-                className="h-48 p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
+                className="h-40 sm:h-48 p-0 flex flex-row items-center bg-cover bg-center px-4 sm:px-6 relative"
                 style={{
                   backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${item.posterUrl}")`,
                 }}
               >
                 <div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
-                <div className="flex flex-row items-center w-full">
+                <div className="flex flex-row items-center w-full min-w-0">
                   <Image
                     src={item.posterUrl}
                     width={112}
                     height={160}
                     alt="Cover"
-                    className="w-28! h-40 shrink-0 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
+                    className="w-20! h-28 sm:w-28! sm:h-40 shrink-0 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
                   />
 
-                  <div className="flex-1 px-6 relative z-10">
-                    <DialogTitle className="text-white font-bold text-2xl drop-shadow-lg mb-2">{item.name}</DialogTitle>
+                  <div className="flex-1 min-w-0 px-3 sm:px-6 relative z-10">
+                    <DialogTitle className="text-white font-bold text-lg sm:text-2xl drop-shadow-lg mb-2 line-clamp-2">
+                      {item.name}
+                    </DialogTitle>
 
-                    <div className="flex items-center gap-2 text-white/90 text-sm">
+                    <div className="flex items-center gap-2 text-white/90 text-xs sm:text-sm">
                       <div className="flex items-center gap-1">
                         <StarRating value={1} max={1} />
 
@@ -491,11 +493,11 @@ function TVShowDetailsPage() {
                       </span>
                     </div>
 
-                    <p className="text-white/80 text-sm mt-2 max-w-md line-clamp-2">{item.tagline}</p>
+                    <p className="hidden sm:block text-white/80 text-sm mt-2 max-w-md line-clamp-2">{item.tagline}</p>
                   </div>
                 </div>
 
-                <div className="absolute z-50 top-[45%] right-10 flex items-center gap-2">
+                <div className="absolute z-50 top-3 right-3 sm:top-[45%] sm:right-10 flex items-center gap-2">
                   <Button
                     size="sm"
                     variant="ghost"
@@ -511,6 +513,7 @@ function TVShowDetailsPage() {
               <div className="overflow-y-auto max-h-[calc(90vh-12rem)]">
                 <EpisodicContentModal
                   tvShowId={item.id}
+                  slug={slug}
                   totalEpisodes={item.numberOfEpisodes}
                   watchedEpisodes={totalWatchedEpisodes}
                   onClose={() => setMoreOpen(false)}
@@ -541,12 +544,14 @@ function TVShowDetailsPage() {
         )}
       </Grid>
 
-      <RefreshData
-        sourceURL={`https://www.themoviedb.org/tv/${item.tmdbId}`}
-        onSubmit={() => {
-          mutation.mutate();
-        }}
-      />
+      {isAuthenticated && (
+        <RefreshData
+          sourceURL={`https://www.themoviedb.org/tv/${item.tmdbId}`}
+          onSubmit={() => {
+            mutation.mutate();
+          }}
+        />
+      )}
 
       <div className="flex flex-wrap gap-3 items-center justify-center">
         {item.homepage && (
@@ -698,7 +703,7 @@ function TVShowDetailsPage() {
                     title={t("library:productionCompanies")}
                     icon={<Icon icon={"lucide:building"} className="size-5 text-muted-foreground" />}
                     description={
-                      <span className="inline-flex items-center gap-1.5">
+                      <span className="flex min-w-0 items-center gap-1.5">
                         <span className="truncate">{item.productionCompanies[0].name}</span>
                         {item.productionCompanies.length > 1 && (
                           <Tooltip>

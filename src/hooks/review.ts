@@ -164,7 +164,7 @@ export function reviewMediaTitle(contentType: ApiTypes.ReviewContentType, review
 
 export function reviewMediaImage(contentType: ApiTypes.ReviewContentType, review: ApiTypes.Review): string {
   const media = review[REVIEW_CONTENT[contentType].mediaKey];
-  return media?.coverUrl ?? media?.backdropUrl ?? media?.imageUrl ?? "";
+  return media?.coverUrl ?? media?.posterUrl ?? media?.imageUrl ?? "";
 }
 
 export function userReviewsQueryKey(contentType: ApiTypes.ReviewContentType, userId: string) {

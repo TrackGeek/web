@@ -191,10 +191,12 @@ export function ReviewItem({
                 ))}
             </div>
 
-            <div className="flex flex-col gap-2">
-              <p className="text-md font-semibold text-muted-foreground">{t("feed:summary")}</p>
-              <Markdown className="text-xs sm:text-sm">{reviewText}</Markdown>
-            </div>
+            {reviewText && (
+              <div className="flex flex-col gap-2">
+                <p className="text-md font-semibold text-muted-foreground">{t("feed:summary")}</p>
+                <Markdown className="text-xs sm:text-sm">{reviewText}</Markdown>
+              </div>
+            )}
 
             {(story || notes) && (
               <>
@@ -228,7 +230,7 @@ export function ReviewItem({
             )}
           </div>
 
-          <div className="flex items-center justify-between gap-2 pt-2 sm:pt-4 border-t border-border/30">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-2 sm:pt-4 border-t border-border/30">
             <p className="text-xs text-muted-foreground whitespace-nowrap">
               {date.toLocaleDateString(i18n.language, {
                 day: "2-digit",
@@ -237,7 +239,7 @@ export function ReviewItem({
               })}
             </p>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               {reviewId ? (
                 <div className="flex flex-wrap items-center gap-1">
                   {QUICK_REACTIONS.map((emoji) => {

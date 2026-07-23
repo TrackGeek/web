@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import { Grid } from "@/components/layouts/grid.tsx";
 
 interface CommunityStat {
   label: string;
@@ -14,7 +15,7 @@ interface CommunityStatsProps {
 
 export function CommunityStats({ stats }: CommunityStatsProps) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <Grid className="gap-4" minColSize={"150px"}>
       {stats.map((stat) => (
         <div key={stat.label} className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border">
           <div className="flex items-center justify-between mb-2">
@@ -25,6 +26,6 @@ export function CommunityStats({ stats }: CommunityStatsProps) {
           {stat.sub && <p className="text-xs text-muted-foreground mt-1">{stat.sub}</p>}
         </div>
       ))}
-    </div>
+    </Grid>
   );
 }

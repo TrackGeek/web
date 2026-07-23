@@ -18,7 +18,7 @@ import { RatingGroupAdvanced } from "../../ui/rating-group-advanced";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import { Textarea } from "../../ui/textarea";
 
-type ProgressStatus = "Planning" | "Watching" | "Completed" | "Paused" | "Dropped";
+type ProgressStatus = "Planning" | "Completed" | "Paused" | "Dropped";
 
 const STATUS_OPTIONS = ["planning", "completed", "dropped", "paused"] as const;
 
@@ -31,7 +31,6 @@ const STATUS_TO_ENUM: Record<string, ProgressStatus> = {
 
 const ENUM_TO_STATUS: Record<ProgressStatus, string> = {
   Planning: "planning",
-  Watching: "completed",
   Completed: "completed",
   Paused: "paused",
   Dropped: "dropped",
@@ -76,8 +75,6 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
   const [selectedStatus, setSelectedStatus] = useState<string>("");
   const [newListInput, setNewListInput] = useState<string | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-
-  const isCompleted = selectedStatus === "completed";
 
   const reviewSchema = useMemo(() => createReviewSchema(t), [t]);
 
@@ -346,6 +343,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
                   onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
                   placeholder={t("feed:newList")}
                   className="h-6 text-sm bg-background px-2 py-0"
+                  aria-label={t("feed:newList")}
                 />
               </Field>
             )}
@@ -356,7 +354,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
         </div>
       </div>
 
-      {isCompleted && (
+      {(selectedStatus === "completed" || selectedStatus === "dropped") && (
         <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
             <Icon icon={"lucide:pen-line"} className="size-4" />
@@ -440,6 +438,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
                 className="bg-background resize-none min-h-25"
                 maxLength={SUMMARY_MAX_LENGTH}
                 aria-invalid={Boolean(reviewForm.formState.errors.summary)}
+                aria-label={t("feed:summary")}
                 {...reviewForm.register("summary")}
               />
               <div className="flex items-center justify-between gap-2">
@@ -463,6 +462,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
                 className="bg-background resize-none min-h-25"
                 maxLength={REVIEW_NOTES_MAX_LENGTH}
                 aria-invalid={Boolean(reviewForm.formState.errors.notes)}
+                aria-label={t("feed:notes")}
                 {...reviewForm.register("notes")}
               />
               <div className="flex items-center justify-between gap-2">
@@ -486,6 +486,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
                 className="bg-background resize-none min-h-25"
                 maxLength={STORY_MAX_LENGTH}
                 aria-invalid={Boolean(reviewForm.formState.errors.story)}
+                aria-label={t("feed:story")}
                 {...reviewForm.register("story")}
               />
               <div className="flex items-center justify-between gap-2">

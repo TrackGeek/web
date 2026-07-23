@@ -12,7 +12,7 @@ export function DetailsCard({ title, icon, description }: DetailsCardProps) {
       <div className="shrink-0">{icon}</div>
       <div className="flex-1 min-w-0">
         <p className="text-sm text-muted-foreground">{title}</p>
-        <p className="font-medium text-card-foreground">{description}</p>
+        <p className="font-medium text-card-foreground break-words">{description}</p>
       </div>
     </div>
   );

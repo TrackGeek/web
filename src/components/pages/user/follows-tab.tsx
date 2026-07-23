@@ -1,10 +1,10 @@
 import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { FollowButton } from "@/components/pages/user/follow-button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFollowers, useFollowing } from "@/hooks/follow";
@@ -26,6 +26,25 @@ function FollowsList({ userId, variant }: { userId: string; variant: FollowsVari
 
   const emptyTitleKey = variant === "followers" ? "user:noFollowers" : "user:noFollowing";
   const emptyDescriptionKey = variant === "followers" ? "user:noFollowersDescription" : "user:noFollowingDescription";
+
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && query.hasNextPage && !query.isFetchingNextPage) {
+          query.fetchNextPage();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [query.hasNextPage, query.isFetchingNextPage, query.fetchNextPage]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -74,13 +93,9 @@ function FollowsList({ userId, variant }: { userId: string; variant: FollowsVari
         ))
       )}
 
-      {query.hasNextPage && (
-        <div className="flex justify-center">
-          <Button variant="outline" onClick={() => query.fetchNextPage()} disabled={query.isFetchingNextPage}>
-            {query.isFetchingNextPage ? t("user:loading") : t("user:loadMore")}
-          </Button>
-        </div>
-      )}
+      <div ref={sentinelRef} />
+
+      {query.isFetchingNextPage && Array.from({ length: 4 }).map((_, index) => <FollowSkeleton key={index} />)}
     </div>
   );
 }

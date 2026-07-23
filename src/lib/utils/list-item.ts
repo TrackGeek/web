@@ -15,7 +15,7 @@ export function listItemToLink(item: ApiTypes.ListItem): ListItemLink | null {
       to: "/tv/$slug",
       slug: String(item.tvShow.tmdbId),
       title: item.tvShow.name,
-      image: item.tvShow.backdropUrl ?? "",
+      image: item.tvShow.posterUrl ?? "",
     };
   }
 
@@ -24,7 +24,7 @@ export function listItemToLink(item: ApiTypes.ListItem): ListItemLink | null {
       to: "/movie/$slug",
       slug: String(item.movie.tmdbId),
       title: item.movie.title,
-      image: item.movie.backdropUrl ?? "",
+      image: item.movie.posterUrl ?? "",
     };
   }
 

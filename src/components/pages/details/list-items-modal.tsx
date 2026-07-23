@@ -191,38 +191,26 @@ export function ListItemsModal({ list, open, onOpenChange, editable = false }: L
                   if (!link) return null;
 
                   return (
-                    <div key={item.id} className="group relative flex flex-col gap-2">
-                      {editable && (
-                        <Button
-                          size="icon-xs"
-                          variant="destructive"
-                          onClick={() => handleRemoveItem(item)}
-                          disabled={removeItem.isPending}
-                          aria-label={t("user:removeItem")}
-                          className="absolute top-1 right-1 z-10 opacity-0 transition-opacity group-hover:opacity-100"
-                        >
-                          <Icon icon="lucide:x" />
-                        </Button>
-                      )}
-
-                      <Link to={link.to} params={{ slug: link.slug }} className="flex flex-col gap-2">
-                        <div className="aspect-video w-full overflow-hidden rounded-lg border border-border bg-muted">
-                          {link.image ? (
-                            <Image
-                              src={link.image}
-                              layout="fullWidth"
-                              aspectRatio={16 / 9}
-                              alt={link.title}
-                              className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            />
-                          ) : (
-                            <div className="flex size-full items-center justify-center text-muted-foreground text-xs">
-                              {link.title}
-                            </div>
-                          )}
-                        </div>
-                        <p className="text-sm font-medium text-card-foreground line-clamp-1">{link.title}</p>
-                      </Link>
+                    <div key={item.id} className="space-y-2">
+                      <div className="relative rounded-lg border border-border overflow-hidden aspect-3/4 group">
+                        <div
+                          className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:opacity-80"
+                          style={{ backgroundImage: `url("${link.image ?? '/placeholder/cover.webp'}")` }}
+                        />
+                        <Link to={link.to} params={{ slug: link.slug }} className="absolute inset-0" />
+                        {editable && (
+                          <button
+                            type="button"
+                            disabled={removeItem.isPending}
+                            onClick={() => handleRemoveItem(item)}
+                            aria-label={t("user:removeItem")}
+                            className="absolute top-2 right-2 z-10 flex size-7 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity hover:bg-black/80 group-hover:opacity-100 disabled:opacity-50"
+                          >
+                            <Icon icon="lucide:x" className="size-4" />
+                          </button>
+                        )}
+                      </div>
+                      <p className="font-bold text-card-foreground hover:text-primary transition-colors line-clamp-2">{link.title}</p>
                     </div>
                   );
                 })}

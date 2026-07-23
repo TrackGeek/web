@@ -19,12 +19,12 @@ import { useDebounce } from "@/lib/utils/useDebounce.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 const CONTENT_TYPES: { value: ContentType; labelKey: string }[] = [
+  { value: "movie", labelKey: "common:types.movie" },
+  { value: "tv", labelKey: "common:types.tv" },
+  { value: "game", labelKey: "common:types.game" },
   { value: "anime", labelKey: "common:types.anime" },
   { value: "manga", labelKey: "common:types.manga" },
   { value: "book", labelKey: "common:types.book" },
-  { value: "game", labelKey: "common:types.game" },
-  { value: "movie", labelKey: "common:types.movie" },
-  { value: "tv", labelKey: "common:types.tv" },
 ];
 
 export const Route = createFileRoute("/search")({
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/search")({
   }),
   beforeLoad: ({ search }) => {
     if (!(search as { type?: string }).type) {
-      throw redirect({ to: "/search", search: { type: "anime" }, replace: true });
+      throw redirect({ to: "/search", search: { type: "movie" }, replace: true });
     }
   },
   component: RouteComponent,
@@ -59,6 +59,10 @@ function buildSearchUrl(contentType: ContentType, query: string = "A", filters: 
 function getItemsFromPage(page: AxiosResponse, contentType: ContentType) {
   const data = page?.data;
   switch (contentType) {
+    case "movie":
+      return data?.movies?.items ?? [];
+    case "tv":
+      return data?.tvShows?.items ?? [];
     case "anime":
       return data?.animes?.items ?? [];
     case "manga":
@@ -67,10 +71,6 @@ function getItemsFromPage(page: AxiosResponse, contentType: ContentType) {
       return data?.books?.items ?? [];
     case "game":
       return data?.games?.items ?? [];
-    case "movie":
-      return data?.movies?.items ?? [];
-    case "tv":
-      return data?.tvShows?.items ?? [];
     default:
       return [];
   }

@@ -342,7 +342,12 @@ function MovieDetailsRoute() {
           <p className="font-semibold text-card-foreground">{new Date(movie.releaseDate as string).getFullYear()}</p>
         </div>
       </Grid>
-      <RefreshData sourceURL={`https://www.themoviedb.org/movie/${movie.tmdbId}`} onSubmit={() => mutation.mutate()} />
+      {isAuthenticated && (
+        <RefreshData
+          sourceURL={`https://www.themoviedb.org/movie/${movie.tmdbId}`}
+          onSubmit={() => mutation.mutate()}
+        />
+      )}
       <div className="flex flex-wrap gap-3 items-center justify-center">
         {movie.homepage && (
           <a href={movie.homepage} target="_blank" rel="noopener noreferrer">
@@ -399,7 +404,7 @@ function MovieDetailsRoute() {
   return (
     <>
       <DetailsPageLayout sidebar={sidebar}>
-        <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
+        <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text break-words">
           {movie.title}
         </h1>
 
@@ -423,8 +428,8 @@ function MovieDetailsRoute() {
         </div>
 
         <Tabs defaultValue="info">
-          <div className="flex items-center justify-between gap-3 mb-2">
-            <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
+          <div className="mb-2 min-w-0 overflow-x-auto">
+            <TabsList className="w-max min-w-full items-center justify-start">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
               <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
               <TabsTrigger value="lists">
@@ -482,7 +487,7 @@ function MovieDetailsRoute() {
                     title={t("library:productionCompanies")}
                     icon={<Icon icon={"lucide:building"} className="size-5 text-muted-foreground" />}
                     description={
-                      <span className="inline-flex items-center gap-1.5">
+                      <span className="flex min-w-0 items-center gap-1.5">
                         <span className="truncate">{movie.productionCompanies[0].name}</span>
                         {movie.productionCompanies.length > 1 && (
                           <Tooltip>
@@ -526,18 +531,18 @@ function MovieDetailsRoute() {
                     sub: `${movie.progressStats?.planToWatch?.count ?? 0} ${t("library:users")}`,
                   },
                   {
-                    label: t("feed:lists.watching"),
-                    icon: "lucide:tv-minimal-play",
-                    iconClass: "text-chart-1",
-                    value: `${movie.progressStats?.watching?.percentage ?? 0}%`,
-                    sub: `${movie.progressStats?.watching?.count ?? 0} ${t("library:users")}`,
-                  },
-                  {
                     label: t("feed:lists.completed"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
                     value: `${movie.progressStats?.completed?.percentage ?? 0}%`,
                     sub: `${movie.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
+                  },
+                  {
+                    label: t("feed:lists.paused"),
+                    icon: "lucide:pause",
+                    iconClass: "text-chart-5",
+                    value: `${movie.progressStats?.paused?.percentage ?? 0}%`,
+                    sub: `${movie.progressStats?.paused?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.dropped"),
@@ -671,7 +676,7 @@ function MovieDetailsRoute() {
             />
           </TabsContent>
           <TabsContent value="cast">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {movie.cast?.map((cast: { character: string; name: string; profileUrl: string }) => (
                 <CastItem key={cast.character} name={cast.name} character={cast.character} imageUrl={cast.profileUrl} />
               ))}

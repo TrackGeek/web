@@ -100,7 +100,7 @@ function UserDetailsRoute() {
         />
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="flex flex-wrap gap-2 text-sm justify-between mb-5 w-full">
+          <TabsList className="flex w-full gap-2 text-sm justify-start overflow-x-auto mb-5">
             <TabsTrigger value="overview">{t("user:overview")}</TabsTrigger>
 
             <TabsTrigger value="activity">{t("user:activity")}</TabsTrigger>

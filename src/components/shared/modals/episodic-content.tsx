@@ -86,13 +86,26 @@ interface TVShowProgressData {
 
 interface EpisodicContentModalProps {
   tvShowId?: string;
+  slug?: string;
   totalEpisodes?: number;
   watchedEpisodes?: number;
   onClose?: () => void;
 }
 
+interface SeasonDetails {
+  seasonNumber: number;
+  numberOfEpisodes: number;
+}
+
+interface EpisodeWatch {
+  season: number;
+  episode: number;
+  status: string;
+}
+
 export function EpisodicContentModal({
   tvShowId,
+  slug,
   totalEpisodes = 0,
   watchedEpisodes = 0,
   onClose,
@@ -118,7 +131,6 @@ export function EpisodicContentModal({
 
   const progressStatus = progressForm.watch("status");
   const progressNotes = progressForm.watch("notes") ?? "";
-  const isCompleted = progressStatus === "completed";
 
   const reviewSchema = useMemo(() => createReviewSchema(t), [t]);
 
@@ -188,6 +200,89 @@ export function EpisodicContentModal({
   const listIds = listStatusQuery.data ?? [];
 
   const isInList = (listId: string) => listIds.includes(listId);
+
+  const seasonsQuery = useQuery<SeasonDetails[]>({
+    queryKey: ["tvSeason", slug],
+    queryFn: () => api.get(apiEndpoints.getTvShowSeasonDetails(slug as string)).then(({ data }) => data.seasons),
+    enabled: !!slug,
+  });
+
+  const episodeWatchQuery = useQuery<EpisodeWatch[]>({
+    queryKey: ["tvEpisodeWatch", tvShowId, userId],
+    queryFn: () =>
+      api
+        .get(apiEndpoints.getTvShowEpisodeWatch(userId as string, tvShowId as string))
+        .then(({ data }) => data.tvShowEpisodeWatch),
+    enabled,
+  });
+
+  const orderedEpisodes = useMemo(
+    () =>
+      (seasonsQuery.data ?? [])
+        .filter((season) => season.numberOfEpisodes > 0 && season.seasonNumber > 0)
+        .sort((a, b) => a.seasonNumber - b.seasonNumber)
+        .flatMap((season) =>
+          Array.from({ length: season.numberOfEpisodes }, (_, i) => ({ season: season.seasonNumber, episode: i + 1 })),
+        ),
+    [seasonsQuery.data],
+  );
+
+  const watchedSet = useMemo(() => {
+    const set = new Set<string>();
+    for (const watch of episodeWatchQuery.data ?? []) {
+      if (watch.status === "Completed") set.add(`${watch.season}-${watch.episode}`);
+    }
+    return set;
+  }, [episodeWatchQuery.data]);
+
+  const [episodeInput, setEpisodeInput] = useState(String(watchedEpisodes));
+
+  useEffect(() => {
+    setEpisodeInput(String(watchedEpisodes));
+  }, [watchedEpisodes]);
+
+  const setEpisodesMutation = useMutation({
+    mutationFn: async (target: number) => {
+      const clamped = Math.max(0, Math.min(target, orderedEpisodes.length));
+
+      const toAdd = orderedEpisodes.slice(0, clamped).filter((e) => !watchedSet.has(`${e.season}-${e.episode}`));
+      const toRemove = orderedEpisodes.slice(clamped).filter((e) => watchedSet.has(`${e.season}-${e.episode}`));
+
+      if (toAdd.length > 0) {
+        await api.post(apiEndpoints.tvShowEpisodeWatch, {
+          tvShowId,
+          episodes: toAdd.map((e) => ({ season: e.season, episode: e.episode, status: "Completed" })),
+        });
+      }
+
+      await Promise.all(
+        toRemove.map((e) =>
+          api.delete(apiEndpoints.tvShowEpisodeWatch, {
+            data: { tvShowId, season: e.season, episode: e.episode },
+          }),
+        ),
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tvEpisodeWatch", tvShowId, userId] });
+      queryClient.invalidateQueries({ queryKey: ["tvProgress", tvShowId, userId] });
+      queryClient.invalidateQueries({ queryKey: ["tv"] });
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
+  const commitEpisodeCount = () => {
+    if (orderedEpisodes.length === 0) return;
+
+    const parsed = Number.parseInt(episodeInput, 10);
+    const next = Math.max(0, Math.min(Number.isNaN(parsed) ? 0 : parsed, orderedEpisodes.length));
+
+    setEpisodeInput(String(next));
+
+    if (next !== watchedEpisodes) {
+      setEpisodesMutation.mutate(next);
+    }
+  };
 
   useEffect(() => {
     const progress = progressQuery.data;
@@ -382,7 +477,17 @@ export function EpisodicContentModal({
                   {t("library:episode_other")}
                 </FieldLabel>
                 <InputGroup className="bg-background">
-                  <InputGroupInput id="episodes" type="number" min={0} value={watchedEpisodes} readOnly />
+                  <InputGroupInput
+                    id="episodes"
+                    type="number"
+                    min={0}
+                    max={orderedEpisodes.length || totalEpisodes}
+                    value={episodeInput}
+                    disabled={orderedEpisodes.length === 0 || setEpisodesMutation.isPending}
+                    onChange={(e) => setEpisodeInput(e.target.value)}
+                    onBlur={commitEpisodeCount}
+                    onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+                  />
                   <InputGroupAddon align="inline-end">
                     <InputGroupText>/{totalEpisodes}</InputGroupText>
                   </InputGroupAddon>
@@ -400,6 +505,7 @@ export function EpisodicContentModal({
                   placeholder="0"
                   className="bg-background"
                   {...progressForm.register("watchCount")}
+                  aria-label={t("feed:totalRewatches")}
                 />
               </Field>
             </div>
@@ -485,6 +591,7 @@ export function EpisodicContentModal({
               className="flex-1 bg-background resize-none"
               maxLength={PROGRESS_NOTES_MAX_LENGTH}
               aria-invalid={Boolean(progressForm.formState.errors.notes)}
+              aria-label={t("feed:notes")}
               {...progressForm.register("notes")}
             />
             <div className="flex items-center justify-between gap-2 mt-2">
@@ -531,6 +638,7 @@ export function EpisodicContentModal({
                     onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
                     placeholder={t("feed:newList")}
                     className="h-6 text-sm bg-background px-2 py-0"
+                    aria-label={t("feed:newList")}
                   />
                 </Field>
               )}
@@ -542,7 +650,7 @@ export function EpisodicContentModal({
         </div>
       </div>
 
-      {isCompleted && (
+      {(progressStatus === "completed" || progressStatus === "dropped") && (
         <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
             <Icon icon={"lucide:pen-line"} className="size-4" />
@@ -626,6 +734,7 @@ export function EpisodicContentModal({
                 className="bg-background resize-none min-h-25"
                 maxLength={SUMMARY_MAX_LENGTH}
                 aria-invalid={Boolean(reviewForm.formState.errors.summary)}
+                aria-label={t("feed:summary")}
                 {...reviewForm.register("summary")}
               />
               <div className="flex items-center justify-between gap-2">
@@ -649,6 +758,7 @@ export function EpisodicContentModal({
                 className="bg-background resize-none min-h-25"
                 maxLength={REVIEW_NOTES_MAX_LENGTH}
                 aria-invalid={Boolean(reviewForm.formState.errors.notes)}
+                aria-label={t("feed:notes")}
                 {...reviewForm.register("notes")}
               />
               <div className="flex items-center justify-between gap-2">
@@ -672,6 +782,7 @@ export function EpisodicContentModal({
                 className="bg-background resize-none min-h-25"
                 maxLength={STORY_MAX_LENGTH}
                 aria-invalid={Boolean(reviewForm.formState.errors.story)}
+                aria-label={t("feed:story")}
                 {...reviewForm.register("story")}
               />
               <div className="flex items-center justify-between gap-2">
@@ -693,6 +804,7 @@ export function EpisodicContentModal({
                   <Checkbox
                     id="recommended"
                     checked={field.value}
+                    aria-label={t("feed:recommended")}
                     onCheckedChange={(checked) => field.onChange(checked === true)}
                   />
                 )}

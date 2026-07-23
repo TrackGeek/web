@@ -518,8 +518,8 @@ export namespace ApiTypes {
     status: ProgressStatus;
     anime: { id: string; malId: number; title: string; imageUrl: string | null } | null;
     manga: { id: string; malId: number; title: string; imageUrl: string | null } | null;
-    tvShow: { id: string; tmdbId: number; name: string; backdropUrl: string | null } | null;
-    movie: { id: string; tmdbId: number; title: string; backdropUrl: string | null } | null;
+    tvShow: { id: string; tmdbId: number; name: string; posterUrl: string | null } | null;
+    movie: { id: string; tmdbId: number; title: string; posterUrl: string | null } | null;
     game: { id: string; igdbId: number; name: string; coverUrl: string | null } | null;
     book: { id: string; hardcoverId: number; title: string; imageUrl: string | null } | null;
   }
@@ -586,8 +586,8 @@ export namespace ApiTypes {
     id: string;
     anime: { id: string; malId: number; title: string; imageUrl: string | null } | null;
     manga: { id: string; malId: number; title: string; imageUrl: string | null } | null;
-    tvShow: { id: string; tmdbId: number; name: string; backdropUrl: string | null } | null;
-    movie: { id: string; tmdbId: number; title: string; backdropUrl: string | null } | null;
+    tvShow: { id: string; tmdbId: number; name: string; posterUrl: string | null } | null;
+    movie: { id: string; tmdbId: number; title: string; posterUrl: string | null } | null;
     game: { id: string; igdbId: number; name: string; coverUrl: string | null } | null;
     book: { id: string; hardcoverId: number; title: string; imageUrl: string | null } | null;
   }
@@ -637,7 +637,7 @@ export namespace ApiTypes {
     name?: string | null;
     title?: string | null;
     coverUrl?: string | null;
-    backdropUrl?: string | null;
+    posterUrl?: string | null;
     imageUrl?: string | null;
   }
 
@@ -859,7 +859,7 @@ export const apiEndpoints = {
   getGameDetails: (id: string) => `/game/detail/${id}`,
   getGamePopular: "/game/top?filter=popular",
   getGameComing: "/game/top?filter=coming",
-  getGameAnticipated: "/game/top?filter=anticipated",
+  getGameAnticipated: "/game/top?filter=antecipated",
   getGameRecentlyReleased: "/game/top?filter=recentlyReleased",
   gameReviewScreenshot: "/game/review/screenshot",
   gameReview: "/game/review",

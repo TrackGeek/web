@@ -18,6 +18,7 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { getLastUsedLoginMethod, requestPasswordReset, signIn, signUp } from "@/lib/auth";
+import { type AuthModalTab, setAuthModalOpen, useAuthModal } from "@/lib/auth-modal";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
@@ -77,8 +78,9 @@ type RequestPasswordResetFormData = z.infer<typeof requestPasswordResetSchema>;
 export function AuthModal() {
   const { t } = useTranslation();
 
+  const { open: authModalOpen, tab } = useAuthModal();
   const [lastMethod, setLastMethod] = useState<string | null>(null);
-  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authTab, setAuthTab] = useState<AuthModalTab>("login");
   const [isRequestForgotPassword, setIsRequestForgotPassword] = useState(false);
 
   const magicLinkForm = useForm<MagicLinkFormData>({
@@ -214,6 +216,10 @@ export function AuthModal() {
     setLastMethod(getLastUsedLoginMethod());
   }, []);
 
+  useEffect(() => {
+    if (authModalOpen) setAuthTab(tab);
+  }, [authModalOpen, tab]);
+
   return (
     <Dialog
       open={authModalOpen}
@@ -258,7 +264,7 @@ export function AuthModal() {
               <DialogDescription>{t("auth:welcome.description")}</DialogDescription>
             </DialogHeader>
 
-            <Tabs defaultValue="login">
+            <Tabs value={authTab} onValueChange={(value) => setAuthTab(value as AuthModalTab)}>
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between gap-3 mb-2">
                   <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">

@@ -27,7 +27,7 @@ export function Grid({ children, minColSize, gap = "gap-4", className, preset = 
 
   const gridStyle: CSSProperties = {
     display: "grid",
-    gridTemplateColumns: `repeat(auto-fill, minmax(${finalMinColSize}, 1fr))`,
+    gridTemplateColumns: `repeat(auto-fill, minmax(min(${finalMinColSize}, 100%), 1fr))`,
     gap: preset === "auto" ? undefined : "1rem",
   } as CSSProperties;
 

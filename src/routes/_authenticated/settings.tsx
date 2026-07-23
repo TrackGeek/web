@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import z from "zod";
 import { Button } from "@/components/ui/button";
-import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -229,10 +228,10 @@ function SettingsRoute() {
 
   return (
     <form
-      className="grid grid-cols-3 gap-8"
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8"
       onSubmit={profileForm.handleSubmit((data) => updateProfileMutation.mutate(data))}
     >
-      <Card className="col-span-1">
+      <Card className="sm:col-span-1 lg:col-span-1">
         <CardHeader>
           <CardTitle>
             <Icon icon={"lucide:image"} className="size-5" />
@@ -243,78 +242,80 @@ function SettingsRoute() {
           <CardDescription>{t("settings:avatar.description")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-center gap-2 h-55">
-            {session.data?.user?.profile?.avatarUrl ? (
-              <div className="size-55 relative">
-                <Image
-                  className="size-full rounded-lg border-accent border"
-                  src={session.data?.user?.profile.avatarUrl}
-                  width={220}
-                  height={220}
-                  background={AVATAR_BLUR}
-                  alt=""
-                />
+          <div className="flex justify-center py-2">
+            <div className="w-full max-w-55 aspect-square relative">
+              {session.data?.user?.profile?.avatarUrl ? (
+                <>
+                  <Image
+                    className="size-full rounded-lg border-accent border object-cover"
+                    src={session.data?.user?.profile.avatarUrl}
+                    width={220}
+                    height={220}
+                    background={AVATAR_BLUR}
+                    alt=""
+                  />
 
-                {(deleteAvatarMutation.isPending || uploadAvatarMutation.isPending) && (
-                  <div className="absolute inset-0 bg-black/50 rounded-lg flex flex-col justify-center items-center gap-2">
-                    <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
-                  </div>
-                )}
+                  {(deleteAvatarMutation.isPending || uploadAvatarMutation.isPending) && (
+                    <div className="absolute inset-0 bg-black/50 rounded-lg flex flex-col justify-center items-center gap-2">
+                      <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
+                    </div>
+                  )}
 
-                {(!deleteAvatarMutation.isPending || !uploadAvatarMutation.isPending) && (
-                  <>
-                    <button
-                      type="button"
-                      className="absolute top-2 right-10 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
-                      onClick={() => avatarInputRef.current?.click()}
-                    >
-                      <Icon icon={"lucide:upload"} className="size-4 text-white" />
-                    </button>
+                  {(!deleteAvatarMutation.isPending || !uploadAvatarMutation.isPending) && (
+                    <>
+                      <button
+                        type="button"
+                        className="absolute top-2 right-10 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
+                        onClick={() => avatarInputRef.current?.click()}
+                      >
+                        <Icon icon={"lucide:upload"} className="size-4 text-white" />
+                      </button>
 
-                    <button
-                      type="button"
-                      className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
-                      onClick={() => deleteAvatarMutation.mutate()}
-                    >
-                      <Icon icon={"lucide:circle-x"} className="size-4 text-white" />
-                    </button>
-                  </>
-                )}
-              </div>
-            ) : (
-              // biome-ignore lint/a11y/noStaticElementInteractions: false positive
-              <div
-                className="size-55 rounded-lg cursor-pointer relative"
-                style={{ backgroundColor: session.data?.user?.profile?.color }}
-                onClick={() => avatarInputRef.current?.click()}
-                onKeyDown={() => avatarInputRef.current?.click()}
-              >
-                {uploadAvatarMutation.isPending ? (
-                  <div className="size-full flex flex-col justify-center items-center gap-2">
-                    <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
-                  </div>
-                ) : (
-                  <div className="size-full flex flex-col justify-center items-center gap-2">
-                    <Icon icon={"lucide:upload"} className="size-8 text-white/70" />
+                      <button
+                        type="button"
+                        className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
+                        onClick={() => deleteAvatarMutation.mutate()}
+                      >
+                        <Icon icon={"lucide:circle-x"} className="size-4 text-white" />
+                      </button>
+                    </>
+                  )}
+                </>
+              ) : (
+                // biome-ignore lint/a11y/noStaticElementInteractions: false positive
+                <div
+                  className="size-full rounded-lg cursor-pointer"
+                  style={{ backgroundColor: session.data?.user?.profile?.color }}
+                  onClick={() => avatarInputRef.current?.click()}
+                  onKeyDown={() => avatarInputRef.current?.click()}
+                >
+                  {uploadAvatarMutation.isPending ? (
+                    <div className="size-full flex flex-col justify-center items-center gap-2">
+                      <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
+                    </div>
+                  ) : (
+                    <div className="size-full flex flex-col justify-center items-center gap-2">
+                      <Icon icon={"lucide:upload"} className="size-8 text-white/70" />
 
-                    <span className="text-white/70">{t("settings:avatar.upload.title")}</span>
-                  </div>
-                )}
-              </div>
-            )}
-
-            <input
-              type="file"
-              ref={avatarInputRef}
-              className="hidden"
-              accept=".jpg,.jpeg,.png,.gif"
-              onChange={(e) => handleImageUpload(e, "avatar")}
-            />
+                      <span className="text-white/70">{t("settings:avatar.upload.title")}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
+
+          <input
+            type="file"
+            ref={avatarInputRef}
+            className="hidden"
+            accept=".jpg,.jpeg,.png,.gif"
+            onChange={(e) => handleImageUpload(e, "avatar")}
+          />
         </CardContent>
       </Card>
 
-      <Card className="col-span-2">
+      <Card className="sm:col-span-1 lg:col-span-2">
         <CardHeader>
           <CardTitle>
             <Icon icon={"lucide:image"} className="size-5" />
@@ -326,17 +327,19 @@ function SettingsRoute() {
         </CardHeader>
 
         <CardContent>
-          <div className="flex items-center gap-2 h-55">
+          <div className="relative w-full aspect-2/1 sm:aspect-3/1">
             {session.data?.user?.profile?.bannerUrl ? (
-              <div className="size-full relative">
-                <Image
-                  className="size-full rounded-lg border-accent border object-cover"
-                  src={session.data?.user?.profile.bannerUrl}
-                  width={300}
-                  height={220}
-                  background={AVATAR_BLUR}
-                  alt=""
-                />
+              <>
+                <div className="absolute inset-0">
+                  <Image
+                    className="size-full rounded-lg border-accent border object-cover"
+                    src={session.data?.user?.profile.bannerUrl}
+                    width={300}
+                    height={220}
+                    background={AVATAR_BLUR}
+                    alt=""
+                  />
+                </div>
 
                 {(deleteBannerMutation.isPending || uploadBannerMutation.isPending) && (
                   <div className="absolute inset-0 bg-black/50 rounded-lg flex flex-col justify-center items-center gap-2">
@@ -363,11 +366,11 @@ function SettingsRoute() {
                     </button>
                   </>
                 )}
-              </div>
+              </>
             ) : (
               // biome-ignore lint/a11y/noStaticElementInteractions: false positive
               <div
-                className="size-full rounded-lg cursor-pointer relative"
+                className="absolute inset-0 rounded-lg cursor-pointer"
                 style={{ backgroundColor: session.data?.user?.profile?.color }}
                 onClick={() => bannerInputRef.current?.click()}
                 onKeyDown={() => bannerInputRef.current?.click()}
@@ -385,19 +388,19 @@ function SettingsRoute() {
                 )}
               </div>
             )}
-
-            <input
-              type="file"
-              ref={bannerInputRef}
-              className="hidden"
-              accept=".jpg,.jpeg,.png,.gif"
-              onChange={(e) => handleImageUpload(e, "banner")}
-            />
           </div>
+
+          <input
+            type="file"
+            ref={bannerInputRef}
+            className="hidden"
+            accept=".jpg,.jpeg,.png,.gif"
+            onChange={(e) => handleImageUpload(e, "banner")}
+          />
         </CardContent>
       </Card>
 
-      <Card className="col-span-3">
+      <Card className="sm:col-span-2 lg:col-span-3">
         <CardHeader className="gap-2">
           <CardTitle>
             <Icon icon={"lucide:user"} className="size-5" />
@@ -417,6 +420,7 @@ function SettingsRoute() {
               type="text"
               placeholder="Jhon Doe"
               aria-invalid={Boolean(profileForm.formState.errors.name)}
+              aria-label={t("settings:profile.name")}
               {...profileForm.register("name")}
             />
 
@@ -428,21 +432,25 @@ function SettingsRoute() {
           <Field className="gap-2">
             <FieldLabel htmlFor="username">{t("settings:profile.username")}</FieldLabel>
 
-            <ButtonGroup>
-              <ButtonGroupText asChild>
-                <Label htmlFor="username">@</Label>
-              </ButtonGroupText>
+            <div className="flex w-full items-stretch">
+              <Label
+                htmlFor="username"
+                className="bg-muted text-muted-foreground flex shrink-0 items-center rounded-l-md border border-r-0 px-4 text-sm font-medium shadow-xs"
+              >
+                @
+              </Label>
 
-              <InputGroup>
+              <InputGroup className="flex-1 rounded-l-none border-l-0">
                 <InputGroupInput
                   id="username"
                   type="text"
                   placeholder="jhondoe"
                   aria-invalid={Boolean(profileForm.formState.errors.username)}
+                  aria-label={t("settings:profile.username")}
                   {...profileForm.register("username")}
                 />
               </InputGroup>
-            </ButtonGroup>
+            </div>
 
             {profileForm.formState.errors.username?.message && (
               <FieldError>{profileForm.formState.errors.username.message}</FieldError>
@@ -459,6 +467,7 @@ function SettingsRoute() {
               className="min-h-40 resize-none"
               maxLength={ABOUT_MAX_LENGTH}
               aria-invalid={Boolean(profileForm.formState.errors.about)}
+              aria-label={t("settings:profile.about")}
               {...profileForm.register("about")}
             />
 
@@ -477,7 +486,7 @@ function SettingsRoute() {
         </CardContent>
       </Card>
 
-      <Card className="col-span-3">
+      <Card className="sm:col-span-2 lg:col-span-3">
         <CardHeader>
           <CardTitle>
             <Icon icon={"lucide:palette"} className="size-5" />
@@ -532,7 +541,7 @@ function SettingsRoute() {
         </CardContent>
       </Card>
 
-      <Card className="col-span-3">
+      <Card className="sm:col-span-2 lg:col-span-3">
         <CardHeader className="gap-2">
           <CardTitle>
             <Icon icon={"lucide:settings"} className="size-5" />
@@ -602,7 +611,7 @@ function SettingsRoute() {
         </CardContent>
       </Card>
 
-      <div className="flex justify-end col-span-3">
+      <div className="flex justify-end col-span-full">
         <Button disabled={updateProfileMutation.isPending}>
           {updateProfileMutation.isPending && <Icon icon="eos-icons:loading" className="size-4 animate-spin" />}
 

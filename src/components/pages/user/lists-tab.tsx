@@ -1,9 +1,8 @@
 import { Icon } from "@iconify/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ListItem } from "@/components/pages/details/list";
 import { SearchInput } from "@/components/shared/search-input";
-import { Button } from "@/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLists } from "@/hooks/list";
@@ -18,6 +17,25 @@ export function UserListsTab({ userId, isOwner }: { userId: string; isOwner: boo
   const listsQuery = useLists(userId, debouncedQuery);
 
   const lists = listsQuery.data?.pages.flatMap((page) => page.items) ?? [];
+
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && listsQuery.hasNextPage && !listsQuery.isFetchingNextPage) {
+          listsQuery.fetchNextPage();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [listsQuery.hasNextPage, listsQuery.isFetchingNextPage, listsQuery.fetchNextPage]);
 
   return (
     <div className="flex flex-col gap-5">
@@ -47,11 +65,13 @@ export function UserListsTab({ userId, isOwner }: { userId: string; isOwner: boo
         </div>
       )}
 
-      {listsQuery.hasNextPage && (
-        <div className="flex justify-center">
-          <Button variant="outline" onClick={() => listsQuery.fetchNextPage()} disabled={listsQuery.isFetchingNextPage}>
-            {listsQuery.isFetchingNextPage ? t("user:loading") : t("user:loadMore")}
-          </Button>
+      <div ref={sentinelRef} />
+
+      {listsQuery.isFetchingNextPage && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <ListSkeleton key={index} />
+          ))}
         </div>
       )}
     </div>

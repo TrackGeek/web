@@ -234,7 +234,9 @@ function BookDetailsRoute() {
           </div>
         )}
       </Grid>
-      <RefreshData sourceURL={`https://hardcover.app/books/${book.slug}`} onSubmit={() => mutation.mutate()} />
+      {isAuthenticated && (
+        <RefreshData sourceURL={`https://hardcover.app/books/${book.slug}`} onSubmit={() => mutation.mutate()} />
+      )}
     </>
   );
 

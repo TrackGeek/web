@@ -36,7 +36,7 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
       <CardContent className="flex flex-row p-0 gap-0">
         {hasMediaLink && mediaLink ? (
           <Link {...mediaLink}>
-            <div className="w-30 h-35 rounded-l-xl bg-muted/50 flex items-center justify-center">
+            <div className="w-24 sm:w-30 h-35 shrink-0 rounded-l-xl bg-muted/50 flex items-center justify-center">
               {item.coverURL ? (
                 <Image
                   src={item.coverURL}
@@ -51,7 +51,7 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
             </div>
           </Link>
         ) : (
-          <div className="w-30 h-35 rounded-l-xl bg-muted/50 flex items-center justify-center">
+          <div className="w-24 sm:w-30 h-35 shrink-0 rounded-l-xl bg-muted/50 flex items-center justify-center">
             {item.coverURL ? (
               <Image
                 src={item.coverURL}
@@ -66,8 +66,8 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
           </div>
         )}
 
-        <div className="py-6 px-6 flex flex-1 justify-between items-start">
-          <div className="flex flex-col items-start justify-between gap-3 shrink-0 h-full">
+        <div className="p-4 sm:py-6 sm:px-6 flex flex-1 min-w-0 flex-col sm:flex-row sm:justify-between gap-3 items-start">
+          <div className="flex flex-col items-start justify-between gap-3 min-w-0 h-full">
             <span className="text-md font-semibold capitalize">
               <Trans>{item.title}</Trans>
             </span>
@@ -97,12 +97,12 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
             </div>
           </div>
 
-          <div className="flex flex-col items-end justify-between gap-3 ml-4 shrink-0 h-full">
+          <div className="flex flex-col items-start sm:items-end justify-between gap-3 w-full sm:w-auto sm:ml-4 h-full">
             <p className="text-xs text-muted-foreground whitespace-nowrap">{item.time.toLocaleString(i18n.language)}</p>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 w-full sm:w-auto">
               {item.activityId ? (
-                <div className="flex flex-wrap items-center justify-end gap-1">
+                <div className="flex flex-wrap items-center justify-start sm:justify-end gap-1">
                   {QUICK_REACTIONS.map((emoji) => {
                     const count = reactionCounts[emoji] ?? 0;
                     const active = currentReaction?.emoji === emoji;

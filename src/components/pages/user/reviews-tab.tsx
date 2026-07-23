@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReviewItem } from "@/components/pages/details/review-item";
 import { ReviewModal } from "@/components/shared/modals/review";
@@ -58,6 +58,25 @@ export function UserReviewsTab({
   const reviewsQuery = useUserReviews(contentType, userId, debouncedQuery);
   const deleteReview = useDeleteReview(contentType, userId);
   const toggleReaction = useToggleReviewReaction(contentType, userId);
+
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && reviewsQuery.hasNextPage && !reviewsQuery.isFetchingNextPage) {
+          reviewsQuery.fetchNextPage();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [reviewsQuery.hasNextPage, reviewsQuery.isFetchingNextPage, reviewsQuery.fetchNextPage]);
 
   const reviews = useMemo(() => reviewsQuery.data?.pages.flatMap((page) => page.items) ?? [], [reviewsQuery.data]);
 
@@ -145,15 +164,13 @@ export function UserReviewsTab({
         </div>
       )}
 
-      {reviewsQuery.hasNextPage && (
-        <div className="flex justify-center pt-2">
-          <Button
-            variant="outline"
-            onClick={() => reviewsQuery.fetchNextPage()}
-            disabled={reviewsQuery.isFetchingNextPage}
-          >
-            {reviewsQuery.isFetchingNextPage ? t("user:loading") : t("user:loadMore")}
-          </Button>
+      <div ref={sentinelRef} />
+
+      {reviewsQuery.isFetchingNextPage && (
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: 2 }).map((_, index) => (
+            <ReviewSkeleton key={index} />
+          ))}
         </div>
       )}
 

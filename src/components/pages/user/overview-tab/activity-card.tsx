@@ -92,28 +92,14 @@ export function ActivityCard({ userId }: ActivityCardProps) {
   const [hoveredTile, setHoveredTile] = useState<string | null>(defaultValue);
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
   const [containerWidth, setContainerWidth] = useState(0);
-  const [width, setWidth] = useState(700);
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const space = 2;
+  const space = 3;
   const leftPad = 30;
-  const rectSize = Math.max(1, (width - leftPad) / weeks - space);
-  const height = 10 * (rectSize + space);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-
-    if (!el) return;
-
-    const observer = new ResizeObserver(([entry]) => {
-      setWidth(entry.contentRect.width);
-    });
-
-    observer.observe(el);
-
-    return () => observer.disconnect();
-  }, []);
+  const rectSize = 15;
+  const width = leftPad + weeks * (rectSize + space);
+  const height = 8 * (rectSize + space);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -129,12 +115,12 @@ export function ActivityCard({ userId }: ActivityCardProps) {
     return () => observer.disconnect();
   }, []);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: re-run to scroll to the end whenever width recomputes
+  // biome-ignore lint/correctness/useExhaustiveDependencies: re-run to scroll to the end whenever the data changes
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
     }
-  }, [width]);
+  }, [weeks, activityCalendarQuery.data]);
 
   useEffect(() => {
     setHoveredTile(defaultValue);

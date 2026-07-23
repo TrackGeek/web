@@ -372,7 +372,9 @@ function GameDetailsRoute() {
           <p className="font-semibold text-card-foreground">{releaseDate}</p>
         </div>
       </Grid>
-      <RefreshData sourceURL={`https://www.igdb.com/games/${game.slug}`} onSubmit={() => mutation.mutate()} />
+      {isAuthenticated && (
+        <RefreshData sourceURL={`https://www.igdb.com/games/${game.slug}`} onSubmit={() => mutation.mutate()} />
+      )}
       <div className="flex flex-wrap gap-3 items-center justify-center">
         {game.websites?.map((website: { name: string; url: string }, idx: number) => {
           const iconData = websiteIconMap[website.name];

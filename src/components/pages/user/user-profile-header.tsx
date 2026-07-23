@@ -162,7 +162,7 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
           </div>
 
           {session.data?.user && session.data?.user.id !== user.id && (
-            <div className="flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-3">
               <div className="flex items-center gap-2">
                 {followStatusQuery.data?.isFollowing ? (
                   <Button
@@ -186,6 +186,32 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
           )}
         </div>
       </div>
+
+      {session.data?.user && session.data?.user.id !== user.id && (
+        <div className="flex lg:hidden w-full">
+          {followStatusQuery.data?.isFollowing ? (
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full"
+              onClick={() => unfollowUserMutation.mutate(user.id)}
+              disabled={followUserMutation.isPending || unfollowUserMutation.isPending}
+            >
+              {t("user:unfollow")}
+            </Button>
+          ) : (
+            <Button
+              variant="secondary"
+              size="lg"
+              className="w-full"
+              onClick={() => followUserMutation.mutate(user.id)}
+              disabled={followUserMutation.isPending || unfollowUserMutation.isPending}
+            >
+              {t("user:follow")}
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

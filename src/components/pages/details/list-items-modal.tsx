@@ -195,7 +195,7 @@ export function ListItemsModal({ list, open, onOpenChange, editable = false }: L
                       <div className="relative rounded-lg border border-border overflow-hidden aspect-3/4 group">
                         <div
                           className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:opacity-80"
-                          style={{ backgroundImage: `url("${link.image ?? '/placeholder/cover.webp'}")` }}
+                          style={{ backgroundImage: `url("${link.image ?? "/placeholder/cover.webp"}")` }}
                         />
                         <Link to={link.to} params={{ slug: link.slug }} className="absolute inset-0" />
                         {editable && (
@@ -210,7 +210,9 @@ export function ListItemsModal({ list, open, onOpenChange, editable = false }: L
                           </button>
                         )}
                       </div>
-                      <p className="font-bold text-card-foreground hover:text-primary transition-colors line-clamp-2">{link.title}</p>
+                      <p className="font-bold text-card-foreground hover:text-primary transition-colors line-clamp-2">
+                        {link.title}
+                      </p>
                     </div>
                   );
                 })}

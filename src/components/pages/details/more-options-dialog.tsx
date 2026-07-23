@@ -67,7 +67,9 @@ export function MoreOptionsDialog({
                 <span>•</span>
                 <span>{subtitle}</span>
               </div>
-              {description && <p className="hidden sm:block text-white/80 text-sm max-w-md line-clamp-2">{description}</p>}
+              {description && (
+                <p className="hidden sm:block text-white/80 text-sm max-w-md line-clamp-2">{description}</p>
+              )}
             </div>
           </div>
           <div className="absolute z-50 top-3 right-3 sm:top-[45%] sm:right-10 flex items-center gap-2">

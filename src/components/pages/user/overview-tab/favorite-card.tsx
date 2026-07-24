@@ -100,11 +100,7 @@ interface FavoriteCardProps {
 
 export function FavoriteCard({ item, onRemove, isRemoving }: FavoriteCardProps) {
   return (
-    <Link
-      to={ROUTE_BY_CONTENT[item.contentType]}
-      params={{ slug: item.slug }}
-      className="space-y-2"
-    >
+    <Link to={ROUTE_BY_CONTENT[item.contentType]} params={{ slug: item.slug }} className="space-y-2">
       <div className="relative rounded-lg border border-border overflow-hidden aspect-3/4 group">
         <div
           className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:opacity-80"

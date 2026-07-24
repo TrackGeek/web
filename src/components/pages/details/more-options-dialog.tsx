@@ -56,7 +56,7 @@ export function MoreOptionsDialog({
               className="w-20 h-28 sm:w-28 sm:h-40 shrink-0 object-cover rounded-lg shadow-2xl relative z-10 border-2 border-white/30"
             />
             <div className="flex-1 min-w-0 px-3 sm:px-6 relative z-10 space-y-2">
-              <DialogTitle className="text-white font-bold text-lg sm:text-2xl drop-shadow-lg line-clamp-2">
+              <DialogTitle className="text-white font-bold text-lg sm:text-2xl drop-shadow-lg line-clamp-2 text-left">
                 {title}
               </DialogTitle>
               <div className="flex items-center gap-2 sm:gap-4 text-white/90 text-xs sm:text-sm">
@@ -68,11 +68,13 @@ export function MoreOptionsDialog({
                 <span>{subtitle}</span>
               </div>
               {description && (
-                <p className="hidden sm:block text-white/80 text-sm max-w-md line-clamp-2">{description}</p>
+                <div className="hidden sm:block">
+                  <p className="text-white/80 text-sm max-w-md line-clamp-2">{description}</p>
+                </div>
               )}
             </div>
           </div>
-          <div className="absolute z-50 top-3 right-3 sm:top-[45%] sm:right-10 flex items-center gap-2">
+          <div className="absolute z-50 right-3 sm:top-[45%] sm:right-10 flex items-center gap-2">
             <Button
               size="sm"
               variant="ghost"

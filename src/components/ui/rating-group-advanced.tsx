@@ -30,12 +30,12 @@ interface RatingGroupAdvancedProps extends Omit<React.ComponentPropsWithoutRef<"
 
 const defaultColors = {
   filled: "fill-yellow-400 text-yellow-400",
-  empty: "text-muted-foreground/50",
+  empty: "text-primary-foreground",
   hover: "text-yellow-300",
 };
 
 const iconVariants: Record<NonNullable<RatingGroupAdvancedProps["variant"]>, RatingIconComponent> = {
-  star: ({ className }) => <Icon icon="lucide:star" className={className} />,
+  star: ({ className }) => <Icon icon="material-symbols:star-rounded" className={className} />,
   heart: ({ className }) => <Icon icon="lucide:heart" className={className} />,
 };
 

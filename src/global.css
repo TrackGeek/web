@@ -131,7 +131,15 @@
 }
 
 ::-webkit-scrollbar:horizontal {
-  @apply h-2;
+  @apply h-0.5;
+}
+
+::-webkit-scrollbar-track:horizontal {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  background: transparent;
 }
 
 ::-webkit-scrollbar:vertical {

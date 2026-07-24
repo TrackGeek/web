@@ -14,7 +14,7 @@ interface ProgressContentConfig {
   /** Active-progress status for this content type. */
   activeStatus: ApiTypes.ProgressStatus;
   /** `progressStats` sub-key + `feed:lists.*` i18n key for the active status. */
-  activeStatsKey: "watching" | "playing" | "reading";
+  activeStatsKey: "watching" | "playing" | "reading" | "planning";
 }
 
 export const PROGRESS_CONTENT: Record<ApiTypes.ReviewContentType, ProgressContentConfig> = {
@@ -43,8 +43,8 @@ export const PROGRESS_CONTENT: Record<ApiTypes.ReviewContentType, ProgressConten
     endpoint: apiEndpoints.movieProgress,
     responseKey: "movieProgresses",
     statsKey: "movie",
-    activeStatus: "Watching",
-    activeStatsKey: "watching",
+    activeStatus: "Planning",
+    activeStatsKey: "planning",
   },
   game: {
     endpoint: apiEndpoints.gameProgress,
@@ -77,10 +77,12 @@ export function progressStatusSections(contentType: ApiTypes.ReviewContentType):
 
   return [
     { status: activeStatus, statsKey: activeStatsKey, labelKey: `feed:lists.${activeStatsKey}` },
-    { status: "Planning", statsKey: "planning", labelKey: "feed:lists.planning" },
-    { status: "Completed", statsKey: "completed", labelKey: "feed:lists.completed" },
-    { status: "Paused", statsKey: "paused", labelKey: "feed:lists.paused" },
-    { status: "Dropped", statsKey: "dropped", labelKey: "feed:lists.dropped" },
+    ...(activeStatus !== "Planning"
+      ? [{ status: "Planning" as const, statsKey: "planning", labelKey: "feed:lists.planning" }]
+      : []),
+    { status: "Completed" as const, statsKey: "completed", labelKey: "feed:lists.completed" },
+    { status: "Paused" as const, statsKey: "paused", labelKey: "feed:lists.paused" },
+    { status: "Dropped" as const, statsKey: "dropped", labelKey: "feed:lists.dropped" },
   ];
 }
 

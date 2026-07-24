@@ -1,9 +1,7 @@
 import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
-import { Image } from "@unpic/react";
 import type { ContentType } from "@/components/layouts/filters.tsx";
 import type { ApiTypes } from "@/lib/api";
-import { cn } from "@/lib/utils";
 
 const ROUTE_BY_CONTENT: Record<
   ContentType,
@@ -105,37 +103,29 @@ export function FavoriteCard({ item, onRemove, isRemoving }: FavoriteCardProps) 
     <Link
       to={ROUTE_BY_CONTENT[item.contentType]}
       params={{ slug: item.slug }}
-      className={cn("relative bg-card rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-shadow")}
+      className="space-y-2"
     >
-      {onRemove && (
-        <button
-          type="button"
-          disabled={isRemoving}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onRemove(item);
-          }}
-          className="absolute top-2 right-2 z-10 flex size-7 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity hover:bg-black/80 group-hover:opacity-100 disabled:opacity-50"
-        >
-          <Icon icon="lucide:x" className="size-4" />
-        </button>
-      )}
-      <Image
-        src={item.image}
-        layout="fullWidth"
-        aspectRatio={3 / 4}
-        alt={item.title}
-        className="w-full h-44 object-cover"
-      />
-      <div className="p-3">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-card-foreground truncate">{item.title}</h3>
-          {typeof item.score === "number" && (
-            <span className="text-sm font-medium text-muted-foreground">{item.score}</span>
-          )}
-        </div>
+      <div className="relative rounded-lg border border-border overflow-hidden aspect-3/4 group">
+        <div
+          className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:opacity-80"
+          style={{ backgroundImage: `url("${item.image}")` }}
+        />
+        {onRemove && (
+          <button
+            type="button"
+            disabled={isRemoving}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onRemove(item);
+            }}
+            className="absolute top-2 right-2 z-10 flex size-7 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity hover:bg-black/80 group-hover:opacity-100 disabled:opacity-50"
+          >
+            <Icon icon="lucide:x" className="size-4" />
+          </button>
+        )}
       </div>
+      <p className="font-bold text-card-foreground hover:text-primary transition-colors line-clamp-2">{item.title}</p>
     </Link>
   );
 }

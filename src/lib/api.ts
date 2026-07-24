@@ -225,10 +225,6 @@ export namespace ApiTypes {
       };
       movie: {
         total: number;
-        watching: {
-          count: number;
-          percentage: number;
-        };
         completed: {
           count: number;
           percentage: number;

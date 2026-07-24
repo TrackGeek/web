@@ -529,7 +529,6 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
           onClick={() => setConfirmDeleteOpen(true)}
         >
           <Icon icon={"lucide:trash"} className="size-4" />
-          {t("feed:remove")}
         </Button>
 
         <Dialog open={confirmDeleteOpen} onOpenChange={setConfirmDeleteOpen}>

@@ -17,8 +17,8 @@ export function StarRating({ value, max = 5, className, starClassName }: StarRat
         {Array.from({ length: max }).map((_, index) => (
           <Icon
             key={index}
-            icon={"lucide:star"}
-            className={cn("size-5 shrink-0 text-muted-foreground", starClassName)}
+            icon={"material-symbols:star-rounded"}
+            className={cn("size-5 shrink-0 text-primary-foreground", starClassName)}
           />
         ))}
       </div>
@@ -26,7 +26,7 @@ export function StarRating({ value, max = 5, className, starClassName }: StarRat
         {Array.from({ length: max }).map((_, index) => (
           <Icon
             key={index}
-            icon={"lucide:star"}
+            icon={"material-symbols:star-rounded"}
             className={cn("size-5 shrink-0 text-yellow-400 fill-yellow-400", starClassName)}
           />
         ))}

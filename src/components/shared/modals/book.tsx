@@ -238,7 +238,6 @@ export function BookModal({ mediaData: _, onStatusChange, onSaveSuccess }: BookM
       <div className="flex justify-between items-center pt-4 border-t border-border/50">
         <Button variant="destructive" size="sm" className="gap-2">
           <Icon icon={"lucide:trash"} className="size-4" />
-          {t("feed:remove")}
         </Button>
         <div className="flex gap-2">
           <Button variant="outline" size="sm">

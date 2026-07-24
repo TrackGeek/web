@@ -149,5 +149,5 @@ export function UserFavoritesTab({
 }
 
 function FavoriteSkeleton() {
-  return <Skeleton className="aspect-3/4 w-full rounded-2xl" />;
+  return <Skeleton className="aspect-3/4 w-full rounded-lg" />;
 }

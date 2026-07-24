@@ -112,7 +112,7 @@ export function ReviewItem({
   return (
     <Card className="p-0">
       <CardContent className="flex flex-row p-0 gap-0">
-        {reviewText && !user && (
+        {!user && (
           <div className={cn("flex rounded-l-xl items-center justify-center", coverURL ? "p-0" : "p-4")}>
             {coverURL ? (
               <div
@@ -128,7 +128,7 @@ export function ReviewItem({
                     src={coverURL}
                     layout="fullWidth"
                     aspectRatio={3 / 4}
-                    alt={reviewText}
+                    alt={reviewName || "Cover"}
                     className="w-40 h-50 object-cover relative z-10"
                   />
                 </div>

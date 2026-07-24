@@ -1,6 +1,8 @@
 import { Icon } from "@iconify/react";
+import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Grid } from "@/components/layouts/grid.tsx";
 import type { FavoriteItem } from "@/components/pages/user/overview-tab/favorite-card";
 import { CardItem } from "@/components/shared/cards/card";
 import { SearchInput } from "@/components/shared/search-input";
@@ -15,7 +17,7 @@ const CONTENT_TYPES: { type: ApiTypes.ReviewContentType; labelKey: string; icon:
   { type: "movie", labelKey: "common:types.movie_other", icon: "lucide:clapperboard" },
   { type: "tv", labelKey: "common:types.tv_other", icon: "lucide:tv" },
   { type: "game", labelKey: "common:types.game_other", icon: "lucide:gamepad-2" },
-  { type: "anime", labelKey: "common:types.anime_other", icon: "lucide:sparkles" },
+  { type: "anime", labelKey: "common:types.anime_other", icon: "lucide:mountain" },
   { type: "manga", labelKey: "common:types.manga_other", icon: "lucide:book-open" },
   { type: "book", labelKey: "common:types.book_other", icon: "lucide:book" },
 ];
@@ -45,6 +47,8 @@ export function UserProgressTab({
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSection, setSelectedSection] = useState<ApiTypes.ProgressStatus | null>(null);
+  const [isRandomizing, setIsRandomizing] = useState(false);
+  const navigate = useNavigate();
   const debouncedQuery = useDebounce(searchQuery, 600);
   const normalizedQuery = debouncedQuery.trim().toLowerCase();
 
@@ -103,17 +107,37 @@ export function UserProgressTab({
       .filter((section) => !selectedSection || section.status === selectedSection);
   }, [rows, contentType, typeStats, normalizedQuery, selectedSection]);
 
+  useEffect(() => {
+    if (!isRandomizing) return;
+    if (progressQuery.isLoading || progressQuery.isFetchingNextPage) return;
+
+    if (progressQuery.hasNextPage) {
+      progressQuery.fetchNextPage();
+    } else {
+      const allItems = rows
+        .map((row) => progressToItem(contentType, row))
+        .filter((item): item is FavoriteItem => item !== null);
+
+      if (allItems.length > 0) {
+        const randomItem = allItems[Math.floor(Math.random() * allItems.length)];
+        void navigate({ to: `/${randomItem.contentType}/${randomItem.slug}` as string });
+      }
+      setIsRandomizing(false);
+    }
+  }, [isRandomizing, progressQuery.isLoading, progressQuery.isFetchingNextPage, progressQuery.hasNextPage, rows]);
+
   const handleContentTypeChange = (value: ApiTypes.ReviewContentType) => {
     onContentTypeChange(value);
     setSearchQuery("");
     setSelectedSection(null);
+    setIsRandomizing(false);
   };
 
   const isEmpty = !progressQuery.isLoading && sections.length === 0;
 
   return (
     <div className="flex flex-col md:flex-row gap-6">
-      <aside className="flex flex-col gap-3 md:w-44 shrink-0">
+      <aside className="flex flex-col gap-3 md:w-52 shrink-0">
         <div className="flex md:flex-col gap-1 overflow-x-auto">
           {CONTENT_TYPES.map(({ type, labelKey, icon }) => (
             <button
@@ -122,9 +146,7 @@ export function UserProgressTab({
               onClick={() => handleContentTypeChange(type)}
               className={cn(
                 "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0",
-                contentType === type
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                contentType === type ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted",
               )}
             >
               <Icon icon={icon} className="size-4 shrink-0" />
@@ -133,8 +155,20 @@ export function UserProgressTab({
           ))}
         </div>
 
-        <div className="px-1">
+        <div className="px-1 flex gap-1.5">
           <SearchInput value={searchQuery} onChange={setSearchQuery} />
+          <button
+            type="button"
+            onClick={() => setIsRandomizing(true)}
+            disabled={isRandomizing || progressQuery.isLoading}
+            title="Random"
+            className="bg-primary flex items-center justify-center size-9 shrink-0 rounded-lg transition-colors text-primary-foreground hover:text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Icon
+              icon={isRandomizing ? "lucide:loader-circle" : "lucide:shuffle"}
+              className={cn("size-4", isRandomizing && "animate-spin")}
+            />
+          </button>
         </div>
 
         <div className="flex md:flex-col gap-1 overflow-x-auto">
@@ -143,9 +177,7 @@ export function UserProgressTab({
             onClick={() => setSelectedSection(null)}
             className={cn(
               "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0",
-              !selectedSection
-                ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted",
+              !selectedSection ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted",
             )}
           >
             <Icon icon="lucide:layers" className="size-3.5 shrink-0" />
@@ -160,7 +192,7 @@ export function UserProgressTab({
                 "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0",
                 selectedSection === section.status
                   ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                  : "text-muted-foreground hover:bg-muted",
               )}
             >
               <Icon icon={SECTION_ICONS[section.status] ?? "lucide:list"} className="size-3.5 shrink-0" />
@@ -196,7 +228,7 @@ export function UserProgressTab({
               <h4 className="text-lg font-semibold text-card-foreground">
                 {t(section.labelKey)} ({section.count})
               </h4>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              <Grid minColSize={"128px"} className="grid-cols-5">
                 {section.items.map((item) => (
                   <CardItem
                     key={item.id}
@@ -206,7 +238,7 @@ export function UserProgressTab({
                     rating={item.score ?? undefined}
                   />
                 ))}
-              </div>
+              </Grid>
             </div>
           ))
         )}

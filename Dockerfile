@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 oven/bun:1 AS build
+FROM oven/bun:1 AS build
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ ENV VITE_SITE_URL=$VITE_SITE_URL
 
 RUN bun run build
 
-FROM --platform=linux/amd64 oven/bun:1-slim
+FROM oven/bun:1-slim
 
 WORKDIR /app
 ENV NODE_ENV=production

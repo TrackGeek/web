@@ -15,6 +15,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
         with:
@@ -31,4 +34,5 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           push: true
+          platforms: linux/arm64
           tags: trackgeek/web:latest

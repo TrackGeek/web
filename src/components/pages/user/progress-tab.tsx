@@ -115,8 +115,10 @@ export function UserProgressTab({
       progressQuery.fetchNextPage();
     } else {
       const allItems = rows
+        .filter((row) => !selectedSection || row.status === selectedSection)
         .map((row) => progressToItem(contentType, row))
-        .filter((item): item is FavoriteItem => item !== null);
+        .filter((item): item is FavoriteItem => item !== null)
+        .filter((item) => !normalizedQuery || item.title.toLowerCase().includes(normalizedQuery));
 
       if (allItems.length > 0) {
         const randomItem = allItems[Math.floor(Math.random() * allItems.length)];
@@ -124,7 +126,18 @@ export function UserProgressTab({
       }
       setIsRandomizing(false);
     }
-  }, [isRandomizing, progressQuery.isLoading, progressQuery.isFetchingNextPage, progressQuery.hasNextPage, rows]);
+  }, [
+    isRandomizing,
+    progressQuery.isLoading,
+    progressQuery.isFetchingNextPage,
+    progressQuery.hasNextPage,
+    progressQuery.fetchNextPage,
+    rows,
+    contentType,
+    selectedSection,
+    normalizedQuery,
+    navigate,
+  ]);
 
   const handleContentTypeChange = (value: ApiTypes.ReviewContentType) => {
     onContentTypeChange(value);

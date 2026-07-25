@@ -11,8 +11,8 @@ export const seo = ({
   keywords = "media tracker, open-source, self-hostable, progress tracker, anime list, game backlog, movie watchlist, TV show stats, manga tracker, book tracker, privacy-focused, entertainment dashboard",
   image = "/logo-128.png",
 }: SeoOptions) => {
+  const origin = typeof window !== "undefined" ? window.location.origin : (import.meta.env.VITE_SITE_URL ?? "");
   const url = typeof document !== "undefined" ? document.URL : "";
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
   const resolvedImage = image?.startsWith("http") ? image : `${origin}${image}`;
 
   return [

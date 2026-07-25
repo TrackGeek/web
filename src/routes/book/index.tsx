@@ -12,6 +12,7 @@ import { api, apiEndpoints } from "@/lib/api.ts";
 import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/book/")({
+  ssr: "data-only",
   component: BookRoute,
   head: () => ({
     meta: [

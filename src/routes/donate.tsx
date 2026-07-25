@@ -25,6 +25,7 @@ import { useSession } from "@/lib/auth";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/donate")({
+  ssr: "data-only",
   head: () => ({
     meta: [...seo({ title: "Donate" })],
   }),

@@ -4,6 +4,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/tos")({
+  ssr: "data-only",
   head: () => ({
     meta: [...seo({ title: "Terms of Service" })],
   }),

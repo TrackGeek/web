@@ -1,21 +1,107 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import { format } from "date-fns";
-import { type DragEvent, useRef, useState } from "react";
+import type { TFunction } from "i18next";
+import { type DragEvent, useEffect, useMemo, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Trans, useTranslation } from "react-i18next";
-import { useGameReview, useUploadImage } from "@/hooks/game.ts";
-import { api, apiEndpoints } from "@/lib/api.ts";
+import { toast } from "sonner";
+import z from "zod";
+import { useUploadImage } from "@/hooks/game.ts";
+import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";
-import { Field, FieldLabel } from "../../ui/field";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../ui/dialog";
+import { Field, FieldError, FieldLabel } from "../../ui/field";
 import { Input } from "../../ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "../../ui/input-group";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import { RatingGroupAdvanced } from "../../ui/rating-group-advanced";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import { Textarea } from "../../ui/textarea";
+
+type ProgressStatus = "Planning" | "Playing" | "Completed" | "Paused" | "Dropped";
+
+const STATUS_OPTIONS = ["planning", "playing", "played", "replaying", "dropped", "paused"] as const;
+
+const STATUS_TO_ENUM: Record<string, ProgressStatus> = {
+  planning: "Planning",
+  playing: "Playing",
+  played: "Completed",
+  replaying: "Playing",
+  dropped: "Dropped",
+  paused: "Paused",
+};
+
+const ENUM_TO_STATUS: Record<ProgressStatus, string> = {
+  Planning: "planning",
+  Playing: "playing",
+  Completed: "played",
+  Paused: "paused",
+  Dropped: "dropped",
+};
+
+const COMPLETION_OPTIONS = ["mainStory", "mainStoryPlusExtras", "100%", "endless"] as const;
+
+const SUMMARY_MAX_LENGTH = 500;
+const REVIEW_NOTES_MAX_LENGTH = 1000;
+const PROGRESS_NOTES_MAX_LENGTH = 1000;
+
+function createProgressSchema(t: TFunction) {
+  return z.object({
+    status: z.string(),
+    completion: z.string(),
+    progress: z.string(),
+    playCount: z.string(),
+    startDate: z.date().optional(),
+    finishDate: z.date().optional(),
+    notes: z.string().trim().max(PROGRESS_NOTES_MAX_LENGTH, t("feed:progress.errors.notesMax")),
+  });
+}
+
+type ProgressFormData = z.infer<ReturnType<typeof createProgressSchema>>;
+
+function createReviewSchema(t: TFunction) {
+  return z.object({
+    overall: z.string(),
+    graphics: z.string(),
+    sound: z.string(),
+    story: z.string(),
+    gameplay: z.string(),
+    summary: z.string().trim().max(SUMMARY_MAX_LENGTH, t("feed:review.errors.summaryMax")),
+    notes: z.string().trim().max(REVIEW_NOTES_MAX_LENGTH, t("feed:review.errors.notesMax")),
+    recommended: z.boolean(),
+  });
+}
+
+type ReviewFormData = z.infer<ReturnType<typeof createReviewSchema>>;
+
+interface GameProgressData {
+  id: string;
+  status: ProgressStatus;
+  playCount: number | null;
+  completion: string | null;
+  progress: number | null;
+  notes: string | null;
+  startedAt: string | null;
+  completedAt: string | null;
+}
+
+interface GameReviewData {
+  id: string;
+  overall: number | string;
+  graphics: number | string | null;
+  sound: number | string | null;
+  story: number | string | null;
+  gameplay: number | string | null;
+  summary: string | null;
+  notes: string | null;
+  recommended: boolean | null;
+}
 
 interface PendingScreenshot {
   file: File;
@@ -26,59 +112,233 @@ interface PendingScreenshot {
 
 interface GameModalProps {
   gameId?: string;
-  initialStartDate?: Date;
-  onStatusChange?: (status: string) => void;
-  onSaveSuccess?: (status: string, reviewId?: string) => void;
+  onClose?: () => void;
 }
 
-export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSuccess }: GameModalProps) {
-  const [startDate, setStartDate] = useState<Date | undefined>(initialStartDate);
-  const [finishDate, setFinishDate] = useState<Date>();
-  const [customLists, setCustomLists] = useState<string[]>(["2026", "Favorites", "Play Later"]);
-  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-  const [selectedCompletion, setSelectedCompletion] = useState<string | null>(null);
-  const [progress, setProgress] = useState<number>(0);
-  const [replays, setReplays] = useState<number>(0);
-  const [notes, setNotes] = useState<string>("");
+export function GameModal({ gameId, onClose }: GameModalProps) {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const session = useSession();
+  const userId = session?.data?.user?.id;
+  const enabled = !!userId && !!gameId;
+
+  const progressSchema = useMemo(() => createProgressSchema(t), [t]);
+
+  const progressForm = useForm<ProgressFormData>({
+    resolver: zodResolver(progressSchema),
+    defaultValues: {
+      status: "",
+      completion: "",
+      progress: "",
+      playCount: "",
+      startDate: undefined,
+      finishDate: undefined,
+      notes: "",
+    },
+  });
+
+  const progressStatus = progressForm.watch("status");
+  const progressNotes = progressForm.watch("notes") ?? "";
+
+  const reviewSchema = useMemo(() => createReviewSchema(t), [t]);
+
+  const reviewForm = useForm<ReviewFormData>({
+    resolver: zodResolver(reviewSchema),
+    defaultValues: {
+      overall: "0",
+      graphics: "0",
+      sound: "0",
+      story: "0",
+      gameplay: "0",
+      summary: "",
+      notes: "",
+      recommended: false,
+    },
+  });
+
+  const summary = reviewForm.watch("summary") ?? "";
+  const reviewNotes = reviewForm.watch("notes") ?? "";
+
   const [newListInput, setNewListInput] = useState<string | null>(null);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [pendingScreenshots, setPendingScreenshots] = useState<PendingScreenshot[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  console.log(selectedCompletion);
-
-  const session = useSession();
-  const userId = session?.data?.user?.id;
-
-  const gameReviewMutation = useGameReview();
   const uploadImageMutation = useUploadImage();
 
-  const createListMutation = useMutation({
-    mutationFn: async (name: string) => {
-      const { data } = await api.post(apiEndpoints.list, {
-        name,
-        userId,
-        type: "Game",
+  const progressQuery = useQuery<GameProgressData | null>({
+    queryKey: ["gameProgress", gameId, userId],
+    queryFn: () =>
+      api
+        .get(apiEndpoints.gameProgress, { params: { userId, gameId } })
+        .then(({ data }) => data.gameProgresses.items[0] ?? null),
+    enabled,
+  });
+
+  const reviewQuery = useQuery<GameReviewData | null>({
+    queryKey: ["gameReview", gameId, userId],
+    queryFn: () =>
+      api
+        .get(`${apiEndpoints.gameReview}/?gameId=${gameId}&userId=${userId}`)
+        .then(({ data }) => data.gameReviews.items[0] ?? null),
+    enabled,
+  });
+
+  const listsQuery = useQuery<ApiTypes.List[]>({
+    queryKey: ["gameLists", userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
+          params: { type: "Game", itemsPerPage: 50 },
+        })
+        .then(({ data }) => data.lists.items),
+    enabled: !!userId,
+  });
+
+  const lists = listsQuery.data ?? [];
+
+  const listStatusQuery = useQuery<string[]>({
+    queryKey: ["gameListStatus", gameId, userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetListStatusResponse>(apiEndpoints.getListStatus, {
+          params: { type: "Game", gameId },
+        })
+        .then(({ data }) => data.listIds),
+    enabled,
+  });
+
+  const listIds = listStatusQuery.data ?? [];
+
+  const isInList = (listId: string) => listIds.includes(listId);
+
+  useEffect(() => {
+    const progress = progressQuery.data;
+    if (!progress) return;
+
+    progressForm.reset({
+      status: ENUM_TO_STATUS[progress.status] ?? "",
+      completion: progress.completion ?? "",
+      progress: progress.progress != null ? String(progress.progress) : "",
+      playCount: progress.playCount != null ? String(progress.playCount) : "",
+      notes: progress.notes ?? "",
+      startDate: progress.startedAt ? new Date(progress.startedAt) : undefined,
+      finishDate: progress.completedAt ? new Date(progress.completedAt) : undefined,
+    });
+  }, [progressQuery.data, progressForm.reset]);
+
+  useEffect(() => {
+    const review = reviewQuery.data;
+    if (!review) return;
+
+    reviewForm.reset({
+      overall: String(Number(review.overall)),
+      graphics: review.graphics != null ? String(Number(review.graphics)) : "0",
+      sound: review.sound != null ? String(Number(review.sound)) : "0",
+      story: review.story != null ? String(Number(review.story)) : "0",
+      gameplay: review.gameplay != null ? String(Number(review.gameplay)) : "0",
+      summary: review.summary ?? "",
+      notes: review.notes ?? "",
+      recommended: !!review.recommended,
+    });
+  }, [reviewQuery.data, reviewForm.reset]);
+
+  const invalidateProgress = () => {
+    queryClient.invalidateQueries({ queryKey: ["gameProgress", gameId, userId] });
+    queryClient.invalidateQueries({ queryKey: ["game"] });
+  };
+
+  const saveProgressMutation = useMutation({
+    mutationFn: (data: ProgressFormData) => {
+      const status = STATUS_TO_ENUM[data.status];
+
+      return api.post(apiEndpoints.gameProgress, {
+        gameId,
+        status,
+        playCount: data.playCount ? Number(data.playCount) : undefined,
+        completion: data.completion || undefined,
+        progress: data.progress ? Number(data.progress) : undefined,
+        notes: data.notes.trim() || undefined,
+        startedAt: data.startDate ?? undefined,
+        completedAt: status === "Completed" ? (data.finishDate ?? new Date()) : (data.finishDate ?? undefined),
       });
-      return data;
+    },
+    onSuccess: invalidateProgress,
+  });
+
+  const saveReviewMutation = useMutation({
+    mutationFn: async (data: ReviewFormData): Promise<string | undefined> => {
+      const body = {
+        gameId,
+        overall: Number(data.overall),
+        graphics: Number(data.graphics) || undefined,
+        sound: Number(data.sound) || undefined,
+        story: Number(data.story) || undefined,
+        gameplay: Number(data.gameplay) || undefined,
+        summary: data.summary.trim() || undefined,
+        notes: data.notes.trim() || undefined,
+        recommended: data.recommended,
+      };
+
+      const existing = reviewQuery.data;
+
+      if (existing) {
+        await api.patch(`${apiEndpoints.gameReview}/${existing.id}`, body);
+        return existing.id;
+      }
+
+      const { data: response } = await api.post(apiEndpoints.gameReview, body);
+      return response.gameReview?.id;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["gameReview", gameId, userId] });
+      queryClient.invalidateQueries({ queryKey: ["gameReviews", gameId] });
+      queryClient.invalidateQueries({ queryKey: ["game"] });
     },
   });
 
-  const { t } = useTranslation();
+  const deleteProgressMutation = useMutation({
+    mutationFn: () => api.delete(apiEndpoints.resetGameTracking(gameId as string)),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["gameProgress", gameId, userId] });
+      queryClient.invalidateQueries({ queryKey: ["gameReview", gameId, userId] });
+      queryClient.invalidateQueries({ queryKey: ["gameReviews", gameId] });
+      queryClient.invalidateQueries({ queryKey: ["gameScreenshots", gameId] });
+      queryClient.invalidateQueries({ queryKey: ["game"] });
+      setConfirmDeleteOpen(false);
+      onClose?.();
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
 
-  const handleAddList = () => setNewListInput("");
+  const toggleListMutation = useMutation({
+    mutationFn: ({ listId, isMember }: { listId: string; isMember: boolean }) => {
+      const body = { type: "Game", listId, userId, gameId };
+
+      return isMember
+        ? api.delete(apiEndpoints.listItem(listId), { data: body })
+        : api.post(apiEndpoints.listItem(listId), body);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["gameListStatus", gameId, userId] });
+      queryClient.invalidateQueries({ queryKey: ["gameContainingLists", gameId] });
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
+  const createListMutation = useMutation({
+    mutationFn: (name: string) => api.post(apiEndpoints.list, { name, userId, type: "Game" }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["gameLists", userId] }),
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
 
   const handleNewListBlur = () => {
-    if (newListInput?.trim()) {
-      const trimmed = newListInput.trim();
-      setCustomLists((prev) => [...prev, trimmed]);
+    const trimmed = newListInput?.trim();
+    if (trimmed) {
       createListMutation.mutate(trimmed);
     }
     setNewListInput(null);
-  };
-
-  const toggleCustomList = (list: string) => {
-    setCustomLists((prev) => (prev.includes(list) ? prev.filter((l) => l !== list) : [...prev, list]));
   };
 
   const handleFileSelect = (files: FileList | null) => {
@@ -104,39 +364,54 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
     });
   };
 
+  const uploadScreenshots = async (gameReviewId: string) => {
+    await Promise.all(
+      pendingScreenshots.map(async (screenshot) => {
+        const imageUrl = await uploadImageMutation.mutateAsync(screenshot.file);
+        await api.post(apiEndpoints.gameReviewScreenshot, {
+          gameReviewId,
+          isSpoiler: screenshot.isSpoiler,
+          url: imageUrl,
+          description: screenshot.description || undefined,
+        });
+      }),
+    );
+    setPendingScreenshots([]);
+    queryClient.invalidateQueries({ queryKey: ["gameScreenshots", gameId] });
+  };
+
   const handleSave = async () => {
-    if (!selectedStatus || !userId || !gameId) return;
+    const progress = progressForm.getValues();
 
-    if (selectedStatus === "played" || selectedStatus === "replayed") {
-      const review = await gameReviewMutation.mutateAsync({
-        gameId,
-        userId,
-        overall: 0,
-        notes,
-      });
-
-      if (pendingScreenshots.length > 0 && review?.id) {
-        await Promise.all(
-          pendingScreenshots.map(async (screenshot) => {
-            const imageUrl = await uploadImageMutation.mutateAsync(screenshot.file);
-            await api.post(apiEndpoints.gameReviewScreenshot, {
-              gameReviewId: review.id,
-              isSpoiler: screenshot.isSpoiler,
-              url: imageUrl,
-              description: screenshot.description || undefined,
-            });
-          }),
-        );
-      }
-
-      onSaveSuccess?.(selectedStatus, review?.id);
+    if (!gameId || !progress.status) {
+      onClose?.();
       return;
     }
 
-    onSaveSuccess?.(selectedStatus);
+    try {
+      if (!(await progressForm.trigger())) return;
+
+      await saveProgressMutation.mutateAsync(progress);
+
+      const review = reviewForm.getValues();
+
+      if ((progress.status === "played" || progress.status === "dropped") && Number(review.overall) > 0) {
+        if (!(await reviewForm.trigger())) return;
+
+        const reviewId = await saveReviewMutation.mutateAsync(review);
+
+        if (reviewId && pendingScreenshots.length > 0) {
+          await uploadScreenshots(reviewId);
+        }
+      }
+
+      onClose?.();
+    } catch {
+      toast.error(t("api:INTERNAL_SERVER_ERROR"));
+    }
   };
 
-  const isSaving = gameReviewMutation.isPending || uploadImageMutation.isPending || createListMutation.isPending;
+  const isSaving = saveProgressMutation.isPending || saveReviewMutation.isPending || uploadImageMutation.isPending;
 
   return (
     <div className="flex flex-col gap-6 p-6">
@@ -152,49 +427,52 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
                 <FieldLabel htmlFor="status" className="text-sm font-medium">
                   {t("library:status")}
                 </FieldLabel>
-                <Select
-                  onValueChange={(value) => {
-                    setSelectedStatus(value);
-                    onStatusChange?.(value);
-
-                    if ((value === "played" || value === "replayed") && !finishDate) setFinishDate(new Date());
-                  }}
-                >
-                  <SelectTrigger className="w-full bg-background">
-                    <SelectValue placeholder={t("feed:selectStatus")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="planning">{t("feed:lists.planning")}</SelectItem>
-                      <SelectItem value="playing">{t("feed:lists.playing")}</SelectItem>
-                      <SelectItem value="played">{t("feed:lists.played")}</SelectItem>
-                      <SelectItem value="replaying">{t("feed:lists.replaying")}</SelectItem>
-                      <SelectItem value="dropped">{t("feed:lists.dropped")}</SelectItem>
-                      <SelectItem value="paused">{t("feed:lists.paused")}</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                <Controller
+                  control={progressForm.control}
+                  name="status"
+                  render={({ field }) => (
+                    <Select value={field.value || undefined} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full bg-background">
+                        <SelectValue placeholder={t("feed:selectStatus")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {STATUS_OPTIONS.map((status) => (
+                            <SelectItem key={status} value={status}>
+                              {t(`feed:lists.${status}`)}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
               </Field>
 
               <Field>
                 <FieldLabel htmlFor="completionStatus" className="text-sm font-medium">
                   {t("feed:completionStatus.label")}
                 </FieldLabel>
-                <Select onValueChange={setSelectedCompletion}>
-                  <SelectTrigger className="w-full bg-background">
-                    <SelectValue placeholder={t("feed:completionStatus.select")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="mainStory">{t("feed:completionStatus.mainStory")}</SelectItem>
-                      <SelectItem value="mainStoryPlusExtras">
-                        {t("feed:completionStatus.mainStoryPlusExtras")}
-                      </SelectItem>
-                      <SelectItem value="100%">100%</SelectItem>
-                      <SelectItem value="endless">{t("feed:completionStatus.endless")}</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                <Controller
+                  control={progressForm.control}
+                  name="completion"
+                  render={({ field }) => (
+                    <Select value={field.value || undefined} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full bg-background">
+                        <SelectValue placeholder={t("feed:completionStatus.select")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {COMPLETION_OPTIONS.map((option) => (
+                            <SelectItem key={option} value={option}>
+                              {option === "100%" ? "100%" : t(`feed:completionStatus.${option}`)}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
               </Field>
 
               <Field>
@@ -208,8 +486,7 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
                     min={0}
                     max={100}
                     placeholder="0"
-                    value={progress}
-                    onChange={(e) => setProgress(Number(e.target.value))}
+                    {...progressForm.register("progress")}
                   />
                   <InputGroupAddon align="inline-end">
                     <InputGroupText>%</InputGroupText>
@@ -227,8 +504,7 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
                   min={0}
                   placeholder="0"
                   className="bg-background"
-                  value={replays}
-                  onChange={(e) => setReplays(Number(e.target.value))}
+                  {...progressForm.register("playCount")}
                 />
               </Field>
             </div>
@@ -246,50 +522,62 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
                 <FieldLabel htmlFor="startDate" className="text-sm font-medium">
                   {t("feed:startDate")}
                 </FieldLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      data-empty={!startDate}
-                      className="w-full justify-start text-left font-normal bg-background"
-                    >
-                      <Icon icon={"lucide:calendar"} className="size-4 mr-2" />
-                      {startDate ? (
-                        format(startDate, "PPP")
-                      ) : (
-                        <span className="text-muted-foreground">{t("feed:pickADate")}</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar mode="single" selected={startDate} onSelect={setStartDate} />
-                  </PopoverContent>
-                </Popover>
+                <Controller
+                  control={progressForm.control}
+                  name="startDate"
+                  render={({ field }) => (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          data-empty={!field.value}
+                          className="w-full justify-start text-left font-normal bg-background"
+                        >
+                          <Icon icon={"lucide:calendar"} className="size-4 mr-2" />
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span className="text-muted-foreground">{t("feed:pickADate")}</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                />
               </Field>
 
               <Field>
                 <FieldLabel htmlFor="finishDate" className="text-sm font-medium">
                   {t("feed:finishDate")}
                 </FieldLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      data-empty={!finishDate}
-                      className="w-full justify-start text-left font-normal bg-background"
-                    >
-                      <Icon icon={"lucide:calendar"} className="size-4 mr-2" />
-                      {finishDate ? (
-                        format(finishDate, "PPP")
-                      ) : (
-                        <span className="text-muted-foreground">{t("feed:pickADate")}</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
-                    <Calendar mode="single" selected={finishDate} onSelect={setFinishDate} />
-                  </PopoverContent>
-                </Popover>
+                <Controller
+                  control={progressForm.control}
+                  name="finishDate"
+                  render={({ field }) => (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          data-empty={!field.value}
+                          className="w-full justify-start text-left font-normal bg-background"
+                        >
+                          <Icon icon={"lucide:calendar"} className="size-4 mr-2" />
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span className="text-muted-foreground">{t("feed:pickADate")}</span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                />
               </Field>
             </div>
           </div>
@@ -385,45 +673,46 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
         </div>
 
         <div className="space-y-4">
-          <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
+          <div className="bg-muted/30 rounded-lg p-4 border border-border/50 flex flex-col">
             <h3 className="font-semibold text-foreground mb-3">{t("feed:notes")}</h3>
             <Textarea
               placeholder={t("feed:notesPlaceholder")}
               className="min-h-25 bg-background resize-none"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              maxLength={PROGRESS_NOTES_MAX_LENGTH}
+              aria-invalid={Boolean(progressForm.formState.errors.notes)}
+              aria-label={t("feed:notes")}
+              {...progressForm.register("notes")}
             />
+            <div className="flex items-center justify-between gap-2 mt-2">
+              {progressForm.formState.errors.notes?.message ? (
+                <FieldError>{progressForm.formState.errors.notes.message}</FieldError>
+              ) : (
+                <span />
+              )}
+              <span className="text-xs text-muted-foreground">
+                {progressNotes.length}/{PROGRESS_NOTES_MAX_LENGTH}
+              </span>
+            </div>
           </div>
 
-          <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
-            <div className="flex items-center justify-between mb-3">
+          <div className="bg-muted/30 rounded-lg p-4 border border-border/50 flex flex-col">
+            <div className="flex items-center justify-between mb-3 shrink-0">
               <h3 className="font-semibold text-foreground">{t("feed:customLists")}</h3>
-              <Button variant="ghost" size="sm" className="h-6 px-2" onClick={handleAddList}>
+              <Button variant="ghost" size="sm" className="h-6 px-2" onClick={() => setNewListInput("")}>
                 <Icon icon={"lucide:plus"} className="size-3" />
               </Button>
             </div>
-            <div className="space-y-2">
-              {["2026", "Favorites", "Play Later"].map((list) => (
-                <Field key={list} orientation="horizontal">
+            <div className="space-y-2 flex-1 min-h-0 max-h-55 overflow-y-auto pr-1">
+              {lists.map((list) => (
+                <Field key={list.id} orientation="horizontal">
                   <Checkbox
-                    id={list}
-                    checked={customLists.includes(list)}
-                    onCheckedChange={() => toggleCustomList(list)}
+                    id={list.id}
+                    checked={isInList(list.id)}
+                    disabled={toggleListMutation.isPending}
+                    onCheckedChange={() => toggleListMutation.mutate({ listId: list.id, isMember: isInList(list.id) })}
                   />
-                  <FieldLabel htmlFor={list} className="cursor-pointer text-sm">
-                    {list}
-                  </FieldLabel>
-                </Field>
-              ))}
-              {customLists.slice(3).map((list) => (
-                <Field key={list} orientation="horizontal">
-                  <Checkbox
-                    id={list}
-                    checked={customLists.includes(list)}
-                    onCheckedChange={() => toggleCustomList(list)}
-                  />
-                  <FieldLabel htmlFor={list} className="cursor-pointer text-sm">
-                    {list}
+                  <FieldLabel htmlFor={list.id} className="cursor-pointer text-sm">
+                    {list.name}
                   </FieldLabel>
                 </Field>
               ))}
@@ -438,23 +727,214 @@ export function GameModal({ gameId, initialStartDate, onStatusChange, onSaveSucc
                     onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
                     placeholder={t("feed:newList")}
                     className="h-6 text-sm bg-background px-2 py-0"
+                    aria-label={t("feed:newList")}
                   />
                 </Field>
+              )}
+              {lists.length === 0 && newListInput === null && (
+                <p className="text-sm text-muted-foreground">{t("library:noLists")}</p>
               )}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between items-center pt-4 border-t border-border/50">
-        <Button variant="destructive" size="sm" className="gap-2">
+      {(progressStatus === "played" || progressStatus === "dropped" || progressStatus === "replaying") && (
+        <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
+          <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+            <Icon icon={"lucide:pen-line"} className="size-4" />
+            {t("feed:review")}
+          </h3>
+
+          <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">{t("feed:overall")}</span>
+                <Controller
+                  control={reviewForm.control}
+                  name="overall"
+                  render={({ field }) => (
+                    <RatingGroupAdvanced
+                      max={5}
+                      allowHalf
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      allowClear
+                    />
+                  )}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">{t("feed:criteries.graphics")}</span>
+                <Controller
+                  control={reviewForm.control}
+                  name="graphics"
+                  render={({ field }) => (
+                    <RatingGroupAdvanced
+                      max={5}
+                      allowHalf
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      allowClear
+                    />
+                  )}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">{t("feed:criteries.soundtrack")}</span>
+                <Controller
+                  control={reviewForm.control}
+                  name="sound"
+                  render={({ field }) => (
+                    <RatingGroupAdvanced
+                      max={5}
+                      allowHalf
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      allowClear
+                    />
+                  )}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">{t("feed:criteries.story")}</span>
+                <Controller
+                  control={reviewForm.control}
+                  name="story"
+                  render={({ field }) => (
+                    <RatingGroupAdvanced
+                      max={5}
+                      allowHalf
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      allowClear
+                    />
+                  )}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">{t("feed:criteries.gameplay")}</span>
+                <Controller
+                  control={reviewForm.control}
+                  name="gameplay"
+                  render={({ field }) => (
+                    <RatingGroupAdvanced
+                      max={5}
+                      allowHalf
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      allowClear
+                    />
+                  )}
+                />
+              </div>
+            </div>
+            <Field>
+              <FieldLabel htmlFor="summary" className="text-sm font-medium">
+                {t("feed:summary")}
+              </FieldLabel>
+              <Textarea
+                id="summary"
+                placeholder={t("feed:summaryPlaceholder")}
+                className="bg-background resize-none min-h-25"
+                maxLength={SUMMARY_MAX_LENGTH}
+                aria-invalid={Boolean(reviewForm.formState.errors.summary)}
+                aria-label={t("feed:summary")}
+                {...reviewForm.register("summary")}
+              />
+              <div className="flex items-center justify-between gap-2">
+                {reviewForm.formState.errors.summary?.message ? (
+                  <FieldError>{reviewForm.formState.errors.summary.message}</FieldError>
+                ) : (
+                  <span />
+                )}
+                <span className="text-xs text-muted-foreground">
+                  {summary.length}/{SUMMARY_MAX_LENGTH}
+                </span>
+              </div>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="reviewNotes" className="text-sm font-medium">
+                {t("feed:notes")}
+              </FieldLabel>
+              <Textarea
+                id="reviewNotes"
+                placeholder={t("feed:notesPlaceholder")}
+                className="bg-background resize-none min-h-25"
+                maxLength={REVIEW_NOTES_MAX_LENGTH}
+                aria-invalid={Boolean(reviewForm.formState.errors.notes)}
+                aria-label={t("feed:notes")}
+                {...reviewForm.register("notes")}
+              />
+              <div className="flex items-center justify-between gap-2">
+                {reviewForm.formState.errors.notes?.message ? (
+                  <FieldError>{reviewForm.formState.errors.notes.message}</FieldError>
+                ) : (
+                  <span />
+                )}
+                <span className="text-xs text-muted-foreground">
+                  {reviewNotes.length}/{REVIEW_NOTES_MAX_LENGTH}
+                </span>
+              </div>
+            </Field>
+            <Field orientation="horizontal">
+              <Controller
+                control={reviewForm.control}
+                name="recommended"
+                render={({ field }) => (
+                  <Checkbox
+                    id="recommended"
+                    checked={field.value}
+                    aria-label={t("feed:recommended")}
+                    onCheckedChange={(checked) => field.onChange(checked === true)}
+                  />
+                )}
+              />
+              <FieldLabel htmlFor="recommended" className="cursor-pointer text-sm">
+                {t("feed:recommended")}
+              </FieldLabel>
+            </Field>
+          </div>
+        </div>
+      )}
+
+      <div className="flex justify-between items-center pt-4 pb-4 border-t border-border/50">
+        <Button
+          variant="destructive"
+          size="sm"
+          className="gap-2"
+          disabled={(!progressQuery.data && !reviewQuery.data) || deleteProgressMutation.isPending}
+          onClick={() => setConfirmDeleteOpen(true)}
+        >
           <Icon icon={"lucide:trash"} className="size-4" />
         </Button>
+
+        <Dialog open={confirmDeleteOpen} onOpenChange={setConfirmDeleteOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{t("feed:removeConfirmTitle")}</DialogTitle>
+              <DialogDescription>{t("feed:removeConfirmDescription")}</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="outline" size="sm" onClick={() => setConfirmDeleteOpen(false)}>
+                {t("feed:cancel")}
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                disabled={deleteProgressMutation.isPending}
+                onClick={() => deleteProgressMutation.mutate()}
+              >
+                {t("feed:removeConfirm")}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={() => onClose?.()}>
             {t("feed:cancel")}
           </Button>
-          <Button size="sm" className="gap-2" onClick={handleSave} disabled={isSaving || !selectedStatus || !gameId}>
+          <Button size="sm" className="gap-2" onClick={handleSave} disabled={isSaving}>
             <Icon icon={"lucide:save"} className="size-4" />
             {isSaving ? t("feed:saving") : t("feed:save")}
           </Button>

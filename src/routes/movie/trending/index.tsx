@@ -10,6 +10,7 @@ import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/movie/trending/")({
+  ssr: "data-only",
   component: TrendingMovieRoute,
   head: () => ({
     meta: [

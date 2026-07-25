@@ -8,6 +8,7 @@ import { authClient } from "@/lib/auth.ts";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/")({
+  ssr: "data-only",
   staticData: { layout: "full" },
   validateSearch: (search) => ({
     landing: search.landing as string | undefined,

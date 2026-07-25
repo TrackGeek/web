@@ -860,6 +860,8 @@ export const apiEndpoints = {
   gameReviewScreenshot: "/game/review/screenshot",
   gameReview: "/game/review",
   gameProgress: "/game/progress",
+  getGameProgress: (userId: string, gameId: string) => `/game/progress?userId=${userId}&gameId=${gameId}`,
+  resetGameTracking: (gameId: string) => `/game/tracking/${gameId}`,
   refreshGameData: "/game/refresh",
   getAnimeDetails: (id: string) => `/anime/detail/${id}`,
   getAnimeEpisodeDetails: (id: string) => `/anime/detail/${id}/episode`,

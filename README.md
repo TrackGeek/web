@@ -184,9 +184,10 @@ bun dev
 
 <samp>
 
-| Variable       | Description                          |
-|----------------|--------------------------------------|
-| `VITE_API_URL` | Base URL of the TrackGeek API        |
+| Variable          | Description                                          |
+|-------------------|-------------------------------------------------------|
+| `VITE_API_URL`    | Base URL of the TrackGeek API                        |
+| `VITE_SITE_URL`   | Public origin of this site (used for SEO tags)       |
 
 For the Crowdin scripts, set `CROWDIN_PROJECT_ID` and `CROWDIN_API_TOKEN` in your environment.
 

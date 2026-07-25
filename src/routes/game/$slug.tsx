@@ -21,6 +21,7 @@ import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { GameModal } from "@/components/shared/modals/game";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
+import { StarRating } from "@/components/shared/star-rating.tsx";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -29,6 +30,7 @@ import { ImageZoom } from "@/components/ui/image-zoom";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
@@ -55,6 +57,7 @@ const websiteIconMap: Record<string, { icon: string; hex?: string }> = {
 };
 
 export const Route = createFileRoute("/game/$slug")({
+  ssr: "data-only",
   loader: async ({ params }) => {
     const game = await api.get(apiEndpoints.getGameDetails(params.slug)).then(({ data }) => data.game);
     return { game };
@@ -81,6 +84,15 @@ const LAYOUT = {
   V_SPACING: 180,
   CENTER: { x: 0, y: 0 },
 };
+
+type ProgressStatus = "Planning" | "Playing" | "Completed";
+
+interface GameProgress {
+  id: string;
+  status: string;
+  gameId: string;
+  userId: string;
+}
 
 type RelatedGame = { id: string; name: string; coverUrl: string };
 
@@ -178,7 +190,6 @@ function GameDetailsRoute() {
   const { slug } = Route.useParams();
   const { game: loaderGame } = Route.useLoaderData();
 
-  const rating = 4.2;
   const { t } = useTranslation();
   const [moreOpen, setMoreOpen] = useState(false);
 
@@ -188,6 +199,8 @@ function GameDetailsRoute() {
     initialData: loaderGame,
   });
   const game = data;
+
+  const rating = game?.tgReviewScore ?? 0;
 
   const [reviewsQuery, screenshotsQuery] = useQueries({
     queries: [
@@ -295,6 +308,69 @@ function GameDetailsRoute() {
     onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
   });
 
+  const toggleReaction = useToggleReviewReaction("game", userId ?? "");
+
+  const progressQuery = useQuery<GameProgress | null>({
+    queryKey: ["gameProgress", game?.id, userId],
+    queryFn: () =>
+      api
+        .get(apiEndpoints.getGameProgress(userId as string, game?.id as string))
+        .then(({ data }) => data.gameProgresses.items[0] ?? null),
+    enabled: isAuthenticated && !!userId && !!game?.id,
+  });
+
+  const currentStatus = progressQuery.data?.status;
+
+  const setProgressMutation = useMutation({
+    mutationFn: (status: ProgressStatus) => {
+      const current = progressQuery.data;
+
+      if (current && current.status === status) {
+        return api.delete(`${apiEndpoints.gameProgress}/${current.id}`);
+      }
+
+      return api.post(apiEndpoints.gameProgress, { gameId: game?.id, status });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["gameProgress", game?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["game", slug] });
+    },
+    onError: () => {
+      return toast.error(t("api:INTERNAL_SERVER_ERROR"));
+    },
+  });
+
+  const favoriteQuery = useQuery<boolean>({
+    queryKey: ["gameFavorite", game?.id, userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetFavoriteStatusResponse>(apiEndpoints.getFavoriteStatus, {
+          params: { type: "Game", gameId: game?.id },
+        })
+        .then(({ data }) => data.favorited),
+    enabled: isAuthenticated && !!userId && !!game?.id,
+  });
+
+  const isFavorited = !!favoriteQuery.data;
+
+  const toggleFavoriteMutation = useMutation({
+    mutationFn: () => {
+      const body = { type: "Game", gameId: game?.id };
+
+      return isFavorited
+        ? api.delete(apiEndpoints.removeFavorite, { data: body })
+        : api.post(apiEndpoints.addFavorite, body);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["gameFavorite", game?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    },
+    onError: () => {
+      queryClient.invalidateQueries({ queryKey: ["gameFavorite", game?.id, userId] });
+      return toast.error(t("api:INTERNAL_SERVER_ERROR"));
+    },
+  });
+
   if (isLoading || reviewsQuery.isLoading) return <LoadingDetails />;
   if (isError || reviewsQuery.isError || !game) return <ErrorComponent />;
 
@@ -322,6 +398,10 @@ function GameDetailsRoute() {
                 iconBg: "bg-linear-to-r from-purple-500/20 to-violet-500/20",
                 iconBorder: "border-purple-500/30",
                 iconColor: "text-purple-400",
+                activeClass: "border-purple-400 bg-purple-400/20",
+                isActive: currentStatus === "Planning",
+                disabled: setProgressMutation.isPending,
+                onClick: () => setProgressMutation.mutate("Planning"),
               },
               {
                 label: t("feed:lists.playing"),
@@ -331,6 +411,10 @@ function GameDetailsRoute() {
                 iconBg: "bg-linear-to-r from-primary/20 to-secondary/20",
                 iconBorder: "border-primary/30",
                 iconColor: "text-primary",
+                activeClass: "border-primary bg-primary/20",
+                isActive: currentStatus === "Playing",
+                disabled: setProgressMutation.isPending,
+                onClick: () => setProgressMutation.mutate("Playing"),
               },
               {
                 label: t("feed:lists.played"),
@@ -340,6 +424,10 @@ function GameDetailsRoute() {
                 iconBg: "bg-linear-to-r from-chart-3/20 to-amber-500/20",
                 iconBorder: "border-chart-3/30",
                 iconColor: "text-chart-3",
+                activeClass: "border-chart-3 bg-chart-3/20",
+                isActive: currentStatus === "Completed",
+                disabled: setProgressMutation.isPending,
+                onClick: () => setProgressMutation.mutate("Completed"),
               },
             ]}
           />
@@ -352,8 +440,11 @@ function GameDetailsRoute() {
             triggerLabel={t("library:moreOptions")}
             open={moreOpen}
             onOpenChange={setMoreOpen}
+            isFavorited={isFavorited}
+            onToggleFavorite={() => toggleFavoriteMutation.mutate()}
+            favoriteDisabled={toggleFavoriteMutation.isPending || favoriteQuery.isFetching}
           >
-            <GameModal />
+            <GameModal gameId={game.id} onClose={() => setMoreOpen(false)} />
           </MoreOptionsDialog>
         </>
       )}
@@ -409,21 +500,13 @@ function GameDetailsRoute() {
         )}
 
         <div className="flex flex-wrap items-center gap-6 border-b border-border">
-          {reviews?.total >= 1 && (
-            <div className="flex items-center mb-5">
-              <div className="flex mr-2">
-                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-                <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
-              </div>
-              <span className="font-semibold text-card-foreground">{rating}</span>
-              <span className="text-muted-foreground ml-1">
-                ({reviews?.total} {t("library:reviews")})
-              </span>
-            </div>
-          )}
+          <div className="flex items-center mb-3 space-x-1">
+            <StarRating value={rating} className="mr-1" />
+            <span className="font-semibold text-card-foreground">{rating}</span>
+            <span className="text-muted-foreground">
+              ({reviews?.total ?? 0} {t("library:reviews")})
+            </span>
+          </div>
         </div>
         <Tabs defaultValue="info">
           <div className="flex items-center justify-between gap-3 mb-2">
@@ -517,20 +600,25 @@ function GameDetailsRoute() {
                     label: t("feed:lists.wanttoplay"),
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
-                    value: "5%",
+                    value: `${game.progressStats?.planToPlay?.percentage ?? 0}%`,
                   },
-                  { label: t("feed:lists.playing"), icon: "lucide:gamepad", iconClass: "text-chart-1", value: "15%" },
+                  {
+                    label: t("feed:lists.playing"),
+                    icon: "lucide:gamepad",
+                    iconClass: "text-chart-1",
+                    value: `${game.progressStats?.playing?.percentage ?? 0}%`,
+                  },
                   {
                     label: t("feed:lists.played"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
-                    value: "72%",
+                    value: `${game.progressStats?.completed?.percentage ?? 0}%`,
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
-                    value: "8%",
+                    value: `${game.progressStats?.dropped?.percentage ?? 0}%`,
                   },
                 ]}
               />
@@ -674,22 +762,7 @@ function GameDetailsRoute() {
             </Button>
           )}
         </div>
-        {(reviews?.total ?? 0) >= 1 ? (
-          <ReviewItem
-            user={
-              {
-                name: "John Doe",
-                avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
-                slug: "john-doe",
-              } as unknown as ApiTypes.User
-            }
-            reviewText={
-              "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
-            }
-            criteries={{ language: 5, characters: 4, all: 10, story: 8, theme: 9 }}
-            date={new Date("2023-06-19")}
-          />
-        ) : (
+        {(reviews?.items?.length ?? 0) === 0 ? (
           <Empty className="border-0">
             <EmptyHeader>
               <EmptyMedia variant="icon">
@@ -699,6 +772,34 @@ function GameDetailsRoute() {
               <EmptyDescription>{t("library:noReviewsDescription")}</EmptyDescription>
             </EmptyHeader>
           </Empty>
+        ) : (
+          <div className="flex flex-col divide-y divide-border/30">
+            {reviews.items.map((review: ApiTypes.Review) => (
+              <ReviewItem
+                key={review.id}
+                user={review.user}
+                reviewText={review.summary ?? ""}
+                notes={review.notes}
+                date={new Date(review.createdAt)}
+                criteries={{
+                  all: Number(review.overall),
+                  graphics: review.graphics != null ? Number(review.graphics) : undefined,
+                  soundtrack: review.sound != null ? Number(review.sound) : undefined,
+                  story: review.story != null ? Number(review.story) : undefined,
+                  gameplay: review.gameplay != null ? Number(review.gameplay) : undefined,
+                }}
+                reviewId={review.id}
+                reactions={review.reactions}
+                onReact={(emoji, currentReaction) =>
+                  toggleReaction.mutate(
+                    { reviewId: review.id, currentReaction, emoji },
+                    { onSuccess: () => queryClient.invalidateQueries({ queryKey: ["gameReviews", game.id] }) },
+                  )
+                }
+                isReacting={toggleReaction.isPending && toggleReaction.variables?.reviewId === review.id}
+              />
+            ))}
+          </div>
         )}
       </div>
     </>

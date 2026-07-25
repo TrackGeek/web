@@ -8,6 +8,7 @@ import { useSession } from "@/lib/auth.ts";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/feed")({
+  ssr: "data-only",
   head: () => ({
     meta: [...seo({ title: "Feed" })],
   }),

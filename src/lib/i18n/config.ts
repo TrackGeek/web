@@ -32,7 +32,7 @@ i18next
   .init({
     resources: resources as Resource,
     supportedLngs: SUPPORTED_LANGUAGES.map((lang) => lang.id),
-    lng: window.localStorage.getItem(LANGUAGE_TOKEN) ?? DEFAULT_LANGUAGE,
+    lng: (typeof window !== "undefined" && window.localStorage.getItem(LANGUAGE_TOKEN)) || DEFAULT_LANGUAGE,
     fallbackLng: DEFAULT_LANGUAGE,
     interpolation: {
       escapeValue: false,

@@ -29,6 +29,7 @@ async function getUser(username: string) {
 }
 
 export const Route = createFileRoute("/user/$username/")({
+  ssr: "data-only",
   staticData: { layout: "full" },
   beforeLoad: ({ params, search }) => {
     if (!(search as { tab?: string }).tab) {

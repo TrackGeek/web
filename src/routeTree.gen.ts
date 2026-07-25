@@ -9,102 +9,71 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TosRouteImport } from './routes/tos'
-import { Route as SearchRouteImport } from './routes/search'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
-import { Route as FeedRouteImport } from './routes/feed'
-import { Route as DonateRouteImport } from './routes/donate'
-import { Route as CreditsRouteImport } from './routes/credits'
-import { Route as CompareRouteImport } from './routes/compare'
-import { Route as AddDataRouteImport } from './routes/add-data'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TvIndexRouteImport } from './routes/tv/index'
-import { Route as MovieIndexRouteImport } from './routes/movie/index'
-import { Route as MangaIndexRouteImport } from './routes/manga/index'
-import { Route as GameIndexRouteImport } from './routes/game/index'
-import { Route as BookIndexRouteImport } from './routes/book/index'
-import { Route as AnimeIndexRouteImport } from './routes/anime/index'
-import { Route as TvSlugRouteImport } from './routes/tv/$slug'
-import { Route as ReviewIdRouteImport } from './routes/review/$id'
-import { Route as PostIdRouteImport } from './routes/post/$id'
-import { Route as MovieSlugRouteImport } from './routes/movie/$slug'
-import { Route as MangaSlugRouteImport } from './routes/manga/$slug'
-import { Route as ListSlugRouteImport } from './routes/list/$slug'
-import { Route as GameSlugRouteImport } from './routes/game/$slug'
-import { Route as BookSlugRouteImport } from './routes/book/$slug'
-import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
-import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
-import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AddDataRouteImport } from './routes/add-data'
+import { Route as CompareRouteImport } from './routes/compare'
+import { Route as CreditsRouteImport } from './routes/credits'
+import { Route as DonateRouteImport } from './routes/donate'
+import { Route as FeedRouteImport } from './routes/feed'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as TosRouteImport } from './routes/tos'
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated/billing'
-import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
-import { Route as TvUpcomingIndexRouteImport } from './routes/tv/upcoming/index'
-import { Route as TvTrendingIndexRouteImport } from './routes/tv/trending/index'
-import { Route as TvPopularIndexRouteImport } from './routes/tv/popular/index'
-import { Route as TvAiringIndexRouteImport } from './routes/tv/airing/index'
-import { Route as MovieUpcomingIndexRouteImport } from './routes/movie/upcoming/index'
-import { Route as MovieTrendingIndexRouteImport } from './routes/movie/trending/index'
-import { Route as MoviePopularIndexRouteImport } from './routes/movie/popular/index'
-import { Route as MovieAiringIndexRouteImport } from './routes/movie/airing/index'
-import { Route as MangaUpcomingIndexRouteImport } from './routes/manga/upcoming/index'
-import { Route as MangaTopIndexRouteImport } from './routes/manga/top/index'
-import { Route as MangaRecommendationsIndexRouteImport } from './routes/manga/recommendations/index'
-import { Route as MangaPublishingIndexRouteImport } from './routes/manga/publishing/index'
-import { Route as GameUpcomingIndexRouteImport } from './routes/game/upcoming/index'
-import { Route as GameRecentIndexRouteImport } from './routes/game/recent/index'
-import { Route as GamePopularIndexRouteImport } from './routes/game/popular/index'
-import { Route as GameAnticipatedIndexRouteImport } from './routes/game/anticipated/index'
-import { Route as BookUpcomingIndexRouteImport } from './routes/book/upcoming/index'
-import { Route as BookTrendingIndexRouteImport } from './routes/book/trending/index'
-import { Route as AnimeUpcomingIndexRouteImport } from './routes/anime/upcoming/index'
-import { Route as AnimeTopIndexRouteImport } from './routes/anime/top/index'
-import { Route as AnimeRecommendationsIndexRouteImport } from './routes/anime/recommendations/index'
+import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AnimeIndexRouteImport } from './routes/anime/index'
+import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
+import { Route as BookIndexRouteImport } from './routes/book/index'
+import { Route as BookSlugRouteImport } from './routes/book/$slug'
+import { Route as GameIndexRouteImport } from './routes/game/index'
+import { Route as GameSlugRouteImport } from './routes/game/$slug'
+import { Route as ListSlugRouteImport } from './routes/list/$slug'
+import { Route as MangaIndexRouteImport } from './routes/manga/index'
+import { Route as MangaSlugRouteImport } from './routes/manga/$slug'
+import { Route as MovieIndexRouteImport } from './routes/movie/index'
+import { Route as MovieSlugRouteImport } from './routes/movie/$slug'
+import { Route as PostIdRouteImport } from './routes/post/$id'
+import { Route as ReviewIdRouteImport } from './routes/review/$id'
+import { Route as TvIndexRouteImport } from './routes/tv/index'
+import { Route as TvSlugRouteImport } from './routes/tv/$slug'
 import { Route as AnimeAiringIndexRouteImport } from './routes/anime/airing/index'
-import { Route as MovieFranchisesSlugRouteImport } from './routes/movie/franchises/$slug'
-import { Route as GameFranchisesSlugRouteImport } from './routes/game/franchises/$slug'
+import { Route as AnimeRecommendationsIndexRouteImport } from './routes/anime/recommendations/index'
+import { Route as AnimeTopIndexRouteImport } from './routes/anime/top/index'
+import { Route as AnimeUpcomingIndexRouteImport } from './routes/anime/upcoming/index'
 import { Route as BookFranchisesSlugRouteImport } from './routes/book/franchises/$slug'
-import { Route as AuthenticatedDonateSuccessIndexRouteImport } from './routes/_authenticated/donate/success/index'
+import { Route as BookTrendingIndexRouteImport } from './routes/book/trending/index'
+import { Route as BookUpcomingIndexRouteImport } from './routes/book/upcoming/index'
+import { Route as GameAnticipatedIndexRouteImport } from './routes/game/anticipated/index'
+import { Route as GameFranchisesSlugRouteImport } from './routes/game/franchises/$slug'
+import { Route as GamePopularIndexRouteImport } from './routes/game/popular/index'
+import { Route as GameRecentIndexRouteImport } from './routes/game/recent/index'
+import { Route as GameUpcomingIndexRouteImport } from './routes/game/upcoming/index'
+import { Route as MangaPublishingIndexRouteImport } from './routes/manga/publishing/index'
+import { Route as MangaRecommendationsIndexRouteImport } from './routes/manga/recommendations/index'
+import { Route as MangaTopIndexRouteImport } from './routes/manga/top/index'
+import { Route as MangaUpcomingIndexRouteImport } from './routes/manga/upcoming/index'
+import { Route as MovieAiringIndexRouteImport } from './routes/movie/airing/index'
+import { Route as MovieFranchisesSlugRouteImport } from './routes/movie/franchises/$slug'
+import { Route as MoviePopularIndexRouteImport } from './routes/movie/popular/index'
+import { Route as MovieTrendingIndexRouteImport } from './routes/movie/trending/index'
+import { Route as MovieUpcomingIndexRouteImport } from './routes/movie/upcoming/index'
+import { Route as TvAiringIndexRouteImport } from './routes/tv/airing/index'
+import { Route as TvPopularIndexRouteImport } from './routes/tv/popular/index'
+import { Route as TvTrendingIndexRouteImport } from './routes/tv/trending/index'
+import { Route as TvUpcomingIndexRouteImport } from './routes/tv/upcoming/index'
+import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
 import { Route as AuthenticatedDonateErrorIndexRouteImport } from './routes/_authenticated/donate/error/index'
+import { Route as AuthenticatedDonateSuccessIndexRouteImport } from './routes/_authenticated/donate/success/index'
 
-const TosRoute = TosRouteImport.update({
-  id: '/tos',
-  path: '/tos',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SearchRoute = SearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
-  id: '/privacy-policy',
-  path: '/privacy-policy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FeedRoute = FeedRouteImport.update({
-  id: '/feed',
-  path: '/feed',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DonateRoute = DonateRouteImport.update({
-  id: '/donate',
-  path: '/donate',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CreditsRoute = CreditsRouteImport.update({
-  id: '/credits',
-  path: '/credits',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CompareRoute = CompareRouteImport.update({
-  id: '/compare',
-  path: '/compare',
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AddDataRoute = AddDataRouteImport.update({
@@ -112,93 +81,49 @@ const AddDataRoute = AddDataRouteImport.update({
   path: '/add-data',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/_authenticated',
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CreditsRoute = CreditsRouteImport.update({
+  id: '/credits',
+  path: '/credits',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TvIndexRoute = TvIndexRouteImport.update({
-  id: '/tv/',
-  path: '/tv/',
+const DonateRoute = DonateRouteImport.update({
+  id: '/donate',
+  path: '/donate',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MovieIndexRoute = MovieIndexRouteImport.update({
-  id: '/movie/',
-  path: '/movie/',
+const FeedRoute = FeedRouteImport.update({
+  id: '/feed',
+  path: '/feed',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MangaIndexRoute = MangaIndexRouteImport.update({
-  id: '/manga/',
-  path: '/manga/',
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GameIndexRoute = GameIndexRouteImport.update({
-  id: '/game/',
-  path: '/game/',
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BookIndexRoute = BookIndexRouteImport.update({
-  id: '/book/',
-  path: '/book/',
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AnimeIndexRoute = AnimeIndexRouteImport.update({
-  id: '/anime/',
-  path: '/anime/',
+const TosRoute = TosRouteImport.update({
+  id: '/tos',
+  path: '/tos',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TvSlugRoute = TvSlugRouteImport.update({
-  id: '/tv/$slug',
-  path: '/tv/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReviewIdRoute = ReviewIdRouteImport.update({
-  id: '/review/$id',
-  path: '/review/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PostIdRoute = PostIdRouteImport.update({
-  id: '/post/$id',
-  path: '/post/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MovieSlugRoute = MovieSlugRouteImport.update({
-  id: '/movie/$slug',
-  path: '/movie/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MangaSlugRoute = MangaSlugRouteImport.update({
-  id: '/manga/$slug',
-  path: '/manga/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ListSlugRoute = ListSlugRouteImport.update({
-  id: '/list/$slug',
-  path: '/list/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GameSlugRoute = GameSlugRouteImport.update({
-  id: '/game/$slug',
-  path: '/game/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BookSlugRoute = BookSlugRouteImport.update({
-  id: '/book/$slug',
-  path: '/book/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnimeSlugRoute = AnimeSlugRouteImport.update({
-  id: '/anime/$slug',
-  path: '/anime/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
+const AuthenticatedBillingRoute = AuthenticatedBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedNotificationsRoute =
@@ -207,115 +132,89 @@ const AuthenticatedNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedBillingRoute = AuthenticatedBillingRouteImport.update({
-  id: '/billing',
-  path: '/billing',
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const UserUsernameIndexRoute = UserUsernameIndexRouteImport.update({
-  id: '/user/$username/',
-  path: '/user/$username/',
+const AnimeIndexRoute = AnimeIndexRouteImport.update({
+  id: '/anime/',
+  path: '/anime/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TvUpcomingIndexRoute = TvUpcomingIndexRouteImport.update({
-  id: '/tv/upcoming/',
-  path: '/tv/upcoming/',
+const AnimeSlugRoute = AnimeSlugRouteImport.update({
+  id: '/anime/$slug',
+  path: '/anime/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TvTrendingIndexRoute = TvTrendingIndexRouteImport.update({
-  id: '/tv/trending/',
-  path: '/tv/trending/',
+const BookIndexRoute = BookIndexRouteImport.update({
+  id: '/book/',
+  path: '/book/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TvPopularIndexRoute = TvPopularIndexRouteImport.update({
-  id: '/tv/popular/',
-  path: '/tv/popular/',
+const BookSlugRoute = BookSlugRouteImport.update({
+  id: '/book/$slug',
+  path: '/book/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TvAiringIndexRoute = TvAiringIndexRouteImport.update({
-  id: '/tv/airing/',
-  path: '/tv/airing/',
+const GameIndexRoute = GameIndexRouteImport.update({
+  id: '/game/',
+  path: '/game/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MovieUpcomingIndexRoute = MovieUpcomingIndexRouteImport.update({
-  id: '/movie/upcoming/',
-  path: '/movie/upcoming/',
+const GameSlugRoute = GameSlugRouteImport.update({
+  id: '/game/$slug',
+  path: '/game/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MovieTrendingIndexRoute = MovieTrendingIndexRouteImport.update({
-  id: '/movie/trending/',
-  path: '/movie/trending/',
+const ListSlugRoute = ListSlugRouteImport.update({
+  id: '/list/$slug',
+  path: '/list/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MoviePopularIndexRoute = MoviePopularIndexRouteImport.update({
-  id: '/movie/popular/',
-  path: '/movie/popular/',
+const MangaIndexRoute = MangaIndexRouteImport.update({
+  id: '/manga/',
+  path: '/manga/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MovieAiringIndexRoute = MovieAiringIndexRouteImport.update({
-  id: '/movie/airing/',
-  path: '/movie/airing/',
+const MangaSlugRoute = MangaSlugRouteImport.update({
+  id: '/manga/$slug',
+  path: '/manga/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MangaUpcomingIndexRoute = MangaUpcomingIndexRouteImport.update({
-  id: '/manga/upcoming/',
-  path: '/manga/upcoming/',
+const MovieIndexRoute = MovieIndexRouteImport.update({
+  id: '/movie/',
+  path: '/movie/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MangaTopIndexRoute = MangaTopIndexRouteImport.update({
-  id: '/manga/top/',
-  path: '/manga/top/',
+const MovieSlugRoute = MovieSlugRouteImport.update({
+  id: '/movie/$slug',
+  path: '/movie/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MangaRecommendationsIndexRoute =
-  MangaRecommendationsIndexRouteImport.update({
-    id: '/manga/recommendations/',
-    path: '/manga/recommendations/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const MangaPublishingIndexRoute = MangaPublishingIndexRouteImport.update({
-  id: '/manga/publishing/',
-  path: '/manga/publishing/',
+const PostIdRoute = PostIdRouteImport.update({
+  id: '/post/$id',
+  path: '/post/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GameUpcomingIndexRoute = GameUpcomingIndexRouteImport.update({
-  id: '/game/upcoming/',
-  path: '/game/upcoming/',
+const ReviewIdRoute = ReviewIdRouteImport.update({
+  id: '/review/$id',
+  path: '/review/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GameRecentIndexRoute = GameRecentIndexRouteImport.update({
-  id: '/game/recent/',
-  path: '/game/recent/',
+const TvIndexRoute = TvIndexRouteImport.update({
+  id: '/tv/',
+  path: '/tv/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GamePopularIndexRoute = GamePopularIndexRouteImport.update({
-  id: '/game/popular/',
-  path: '/game/popular/',
+const TvSlugRoute = TvSlugRouteImport.update({
+  id: '/tv/$slug',
+  path: '/tv/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GameAnticipatedIndexRoute = GameAnticipatedIndexRouteImport.update({
-  id: '/game/anticipated/',
-  path: '/game/anticipated/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BookUpcomingIndexRoute = BookUpcomingIndexRouteImport.update({
-  id: '/book/upcoming/',
-  path: '/book/upcoming/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BookTrendingIndexRoute = BookTrendingIndexRouteImport.update({
-  id: '/book/trending/',
-  path: '/book/trending/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnimeUpcomingIndexRoute = AnimeUpcomingIndexRouteImport.update({
-  id: '/anime/upcoming/',
-  path: '/anime/upcoming/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnimeTopIndexRoute = AnimeTopIndexRouteImport.update({
-  id: '/anime/top/',
-  path: '/anime/top/',
+const AnimeAiringIndexRoute = AnimeAiringIndexRouteImport.update({
+  id: '/anime/airing/',
+  path: '/anime/airing/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnimeRecommendationsIndexRoute =
@@ -324,19 +223,14 @@ const AnimeRecommendationsIndexRoute =
     path: '/anime/recommendations/',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AnimeAiringIndexRoute = AnimeAiringIndexRouteImport.update({
-  id: '/anime/airing/',
-  path: '/anime/airing/',
+const AnimeTopIndexRoute = AnimeTopIndexRouteImport.update({
+  id: '/anime/top/',
+  path: '/anime/top/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MovieFranchisesSlugRoute = MovieFranchisesSlugRouteImport.update({
-  id: '/movie/franchises/$slug',
-  path: '/movie/franchises/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GameFranchisesSlugRoute = GameFranchisesSlugRouteImport.update({
-  id: '/game/franchises/$slug',
-  path: '/game/franchises/$slug',
+const AnimeUpcomingIndexRoute = AnimeUpcomingIndexRouteImport.update({
+  id: '/anime/upcoming/',
+  path: '/anime/upcoming/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookFranchisesSlugRoute = BookFranchisesSlugRouteImport.update({
@@ -344,16 +238,122 @@ const BookFranchisesSlugRoute = BookFranchisesSlugRouteImport.update({
   path: '/book/franchises/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedDonateSuccessIndexRoute =
-  AuthenticatedDonateSuccessIndexRouteImport.update({
-    id: '/donate/success/',
-    path: '/donate/success/',
-    getParentRoute: () => AuthenticatedRoute,
+const BookTrendingIndexRoute = BookTrendingIndexRouteImport.update({
+  id: '/book/trending/',
+  path: '/book/trending/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookUpcomingIndexRoute = BookUpcomingIndexRouteImport.update({
+  id: '/book/upcoming/',
+  path: '/book/upcoming/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GameAnticipatedIndexRoute = GameAnticipatedIndexRouteImport.update({
+  id: '/game/anticipated/',
+  path: '/game/anticipated/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GameFranchisesSlugRoute = GameFranchisesSlugRouteImport.update({
+  id: '/game/franchises/$slug',
+  path: '/game/franchises/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GamePopularIndexRoute = GamePopularIndexRouteImport.update({
+  id: '/game/popular/',
+  path: '/game/popular/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GameRecentIndexRoute = GameRecentIndexRouteImport.update({
+  id: '/game/recent/',
+  path: '/game/recent/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GameUpcomingIndexRoute = GameUpcomingIndexRouteImport.update({
+  id: '/game/upcoming/',
+  path: '/game/upcoming/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MangaPublishingIndexRoute = MangaPublishingIndexRouteImport.update({
+  id: '/manga/publishing/',
+  path: '/manga/publishing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MangaRecommendationsIndexRoute =
+  MangaRecommendationsIndexRouteImport.update({
+    id: '/manga/recommendations/',
+    path: '/manga/recommendations/',
+    getParentRoute: () => rootRouteImport,
   } as any)
+const MangaTopIndexRoute = MangaTopIndexRouteImport.update({
+  id: '/manga/top/',
+  path: '/manga/top/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MangaUpcomingIndexRoute = MangaUpcomingIndexRouteImport.update({
+  id: '/manga/upcoming/',
+  path: '/manga/upcoming/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MovieAiringIndexRoute = MovieAiringIndexRouteImport.update({
+  id: '/movie/airing/',
+  path: '/movie/airing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MovieFranchisesSlugRoute = MovieFranchisesSlugRouteImport.update({
+  id: '/movie/franchises/$slug',
+  path: '/movie/franchises/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviePopularIndexRoute = MoviePopularIndexRouteImport.update({
+  id: '/movie/popular/',
+  path: '/movie/popular/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MovieTrendingIndexRoute = MovieTrendingIndexRouteImport.update({
+  id: '/movie/trending/',
+  path: '/movie/trending/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MovieUpcomingIndexRoute = MovieUpcomingIndexRouteImport.update({
+  id: '/movie/upcoming/',
+  path: '/movie/upcoming/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvAiringIndexRoute = TvAiringIndexRouteImport.update({
+  id: '/tv/airing/',
+  path: '/tv/airing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvPopularIndexRoute = TvPopularIndexRouteImport.update({
+  id: '/tv/popular/',
+  path: '/tv/popular/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvTrendingIndexRoute = TvTrendingIndexRouteImport.update({
+  id: '/tv/trending/',
+  path: '/tv/trending/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvUpcomingIndexRoute = TvUpcomingIndexRouteImport.update({
+  id: '/tv/upcoming/',
+  path: '/tv/upcoming/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserUsernameIndexRoute = UserUsernameIndexRouteImport.update({
+  id: '/user/$username/',
+  path: '/user/$username/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDonateErrorIndexRoute =
   AuthenticatedDonateErrorIndexRouteImport.update({
     id: '/donate/error/',
     path: '/donate/error/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedDonateSuccessIndexRoute =
+  AuthenticatedDonateSuccessIndexRouteImport.update({
+    id: '/donate/success/',
+    path: '/donate/success/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -768,67 +768,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tos': {
-      id: '/tos'
-      path: '/tos'
-      fullPath: '/tos'
-      preLoaderRoute: typeof TosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/search': {
-      id: '/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof SearchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy-policy': {
-      id: '/privacy-policy'
-      path: '/privacy-policy'
-      fullPath: '/privacy-policy'
-      preLoaderRoute: typeof PrivacyPolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/feed': {
-      id: '/feed'
-      path: '/feed'
-      fullPath: '/feed'
-      preLoaderRoute: typeof FeedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/donate': {
-      id: '/donate'
-      path: '/donate'
-      fullPath: '/donate'
-      preLoaderRoute: typeof DonateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/credits': {
-      id: '/credits'
-      path: '/credits'
-      fullPath: '/credits'
-      preLoaderRoute: typeof CreditsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/compare': {
-      id: '/compare'
-      path: '/compare'
-      fullPath: '/compare'
-      preLoaderRoute: typeof CompareRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/add-data': {
-      id: '/add-data'
-      path: '/add-data'
-      fullPath: '/add-data'
-      preLoaderRoute: typeof AddDataRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -838,123 +782,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/add-data': {
+      id: '/add-data'
+      path: '/add-data'
+      fullPath: '/add-data'
+      preLoaderRoute: typeof AddDataRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tv/': {
-      id: '/tv/'
-      path: '/tv'
-      fullPath: '/tv/'
-      preLoaderRoute: typeof TvIndexRouteImport
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/movie/': {
-      id: '/movie/'
-      path: '/movie'
-      fullPath: '/movie/'
-      preLoaderRoute: typeof MovieIndexRouteImport
+    '/credits': {
+      id: '/credits'
+      path: '/credits'
+      fullPath: '/credits'
+      preLoaderRoute: typeof CreditsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/manga/': {
-      id: '/manga/'
-      path: '/manga'
-      fullPath: '/manga/'
-      preLoaderRoute: typeof MangaIndexRouteImport
+    '/donate': {
+      id: '/donate'
+      path: '/donate'
+      fullPath: '/donate'
+      preLoaderRoute: typeof DonateRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/game/': {
-      id: '/game/'
-      path: '/game'
-      fullPath: '/game/'
-      preLoaderRoute: typeof GameIndexRouteImport
+    '/feed': {
+      id: '/feed'
+      path: '/feed'
+      fullPath: '/feed'
+      preLoaderRoute: typeof FeedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/book/': {
-      id: '/book/'
-      path: '/book'
-      fullPath: '/book/'
-      preLoaderRoute: typeof BookIndexRouteImport
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/anime/': {
-      id: '/anime/'
-      path: '/anime'
-      fullPath: '/anime/'
-      preLoaderRoute: typeof AnimeIndexRouteImport
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tv/$slug': {
-      id: '/tv/$slug'
-      path: '/tv/$slug'
-      fullPath: '/tv/$slug'
-      preLoaderRoute: typeof TvSlugRouteImport
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/review/$id': {
-      id: '/review/$id'
-      path: '/review/$id'
-      fullPath: '/review/$id'
-      preLoaderRoute: typeof ReviewIdRouteImport
+    '/tos': {
+      id: '/tos'
+      path: '/tos'
+      fullPath: '/tos'
+      preLoaderRoute: typeof TosRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/post/$id': {
-      id: '/post/$id'
-      path: '/post/$id'
-      fullPath: '/post/$id'
-      preLoaderRoute: typeof PostIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/movie/$slug': {
-      id: '/movie/$slug'
-      path: '/movie/$slug'
-      fullPath: '/movie/$slug'
-      preLoaderRoute: typeof MovieSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/manga/$slug': {
-      id: '/manga/$slug'
-      path: '/manga/$slug'
-      fullPath: '/manga/$slug'
-      preLoaderRoute: typeof MangaSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/list/$slug': {
-      id: '/list/$slug'
-      path: '/list/$slug'
-      fullPath: '/list/$slug'
-      preLoaderRoute: typeof ListSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/game/$slug': {
-      id: '/game/$slug'
-      path: '/game/$slug'
-      fullPath: '/game/$slug'
-      preLoaderRoute: typeof GameSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/book/$slug': {
-      id: '/book/$slug'
-      path: '/book/$slug'
-      fullPath: '/book/$slug'
-      preLoaderRoute: typeof BookSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/anime/$slug': {
-      id: '/anime/$slug'
-      path: '/anime/$slug'
-      fullPath: '/anime/$slug'
-      preLoaderRoute: typeof AnimeSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/settings': {
-      id: '/_authenticated/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+    '/_authenticated/billing': {
+      id: '/_authenticated/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof AuthenticatedBillingRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/notifications': {
@@ -964,165 +859,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/billing': {
-      id: '/_authenticated/billing'
-      path: '/billing'
-      fullPath: '/billing'
-      preLoaderRoute: typeof AuthenticatedBillingRouteImport
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/user/$username/': {
-      id: '/user/$username/'
-      path: '/user/$username'
-      fullPath: '/user/$username/'
-      preLoaderRoute: typeof UserUsernameIndexRouteImport
+    '/anime/': {
+      id: '/anime/'
+      path: '/anime'
+      fullPath: '/anime/'
+      preLoaderRoute: typeof AnimeIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tv/upcoming/': {
-      id: '/tv/upcoming/'
-      path: '/tv/upcoming'
-      fullPath: '/tv/upcoming/'
-      preLoaderRoute: typeof TvUpcomingIndexRouteImport
+    '/anime/$slug': {
+      id: '/anime/$slug'
+      path: '/anime/$slug'
+      fullPath: '/anime/$slug'
+      preLoaderRoute: typeof AnimeSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tv/trending/': {
-      id: '/tv/trending/'
-      path: '/tv/trending'
-      fullPath: '/tv/trending/'
-      preLoaderRoute: typeof TvTrendingIndexRouteImport
+    '/book/': {
+      id: '/book/'
+      path: '/book'
+      fullPath: '/book/'
+      preLoaderRoute: typeof BookIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tv/popular/': {
-      id: '/tv/popular/'
-      path: '/tv/popular'
-      fullPath: '/tv/popular/'
-      preLoaderRoute: typeof TvPopularIndexRouteImport
+    '/book/$slug': {
+      id: '/book/$slug'
+      path: '/book/$slug'
+      fullPath: '/book/$slug'
+      preLoaderRoute: typeof BookSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tv/airing/': {
-      id: '/tv/airing/'
-      path: '/tv/airing'
-      fullPath: '/tv/airing/'
-      preLoaderRoute: typeof TvAiringIndexRouteImport
+    '/game/': {
+      id: '/game/'
+      path: '/game'
+      fullPath: '/game/'
+      preLoaderRoute: typeof GameIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/movie/upcoming/': {
-      id: '/movie/upcoming/'
-      path: '/movie/upcoming'
-      fullPath: '/movie/upcoming/'
-      preLoaderRoute: typeof MovieUpcomingIndexRouteImport
+    '/game/$slug': {
+      id: '/game/$slug'
+      path: '/game/$slug'
+      fullPath: '/game/$slug'
+      preLoaderRoute: typeof GameSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/movie/trending/': {
-      id: '/movie/trending/'
-      path: '/movie/trending'
-      fullPath: '/movie/trending/'
-      preLoaderRoute: typeof MovieTrendingIndexRouteImport
+    '/list/$slug': {
+      id: '/list/$slug'
+      path: '/list/$slug'
+      fullPath: '/list/$slug'
+      preLoaderRoute: typeof ListSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/movie/popular/': {
-      id: '/movie/popular/'
-      path: '/movie/popular'
-      fullPath: '/movie/popular/'
-      preLoaderRoute: typeof MoviePopularIndexRouteImport
+    '/manga/': {
+      id: '/manga/'
+      path: '/manga'
+      fullPath: '/manga/'
+      preLoaderRoute: typeof MangaIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/movie/airing/': {
-      id: '/movie/airing/'
-      path: '/movie/airing'
-      fullPath: '/movie/airing/'
-      preLoaderRoute: typeof MovieAiringIndexRouteImport
+    '/manga/$slug': {
+      id: '/manga/$slug'
+      path: '/manga/$slug'
+      fullPath: '/manga/$slug'
+      preLoaderRoute: typeof MangaSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/manga/upcoming/': {
-      id: '/manga/upcoming/'
-      path: '/manga/upcoming'
-      fullPath: '/manga/upcoming/'
-      preLoaderRoute: typeof MangaUpcomingIndexRouteImport
+    '/movie/': {
+      id: '/movie/'
+      path: '/movie'
+      fullPath: '/movie/'
+      preLoaderRoute: typeof MovieIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/manga/top/': {
-      id: '/manga/top/'
-      path: '/manga/top'
-      fullPath: '/manga/top/'
-      preLoaderRoute: typeof MangaTopIndexRouteImport
+    '/movie/$slug': {
+      id: '/movie/$slug'
+      path: '/movie/$slug'
+      fullPath: '/movie/$slug'
+      preLoaderRoute: typeof MovieSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/manga/recommendations/': {
-      id: '/manga/recommendations/'
-      path: '/manga/recommendations'
-      fullPath: '/manga/recommendations/'
-      preLoaderRoute: typeof MangaRecommendationsIndexRouteImport
+    '/post/$id': {
+      id: '/post/$id'
+      path: '/post/$id'
+      fullPath: '/post/$id'
+      preLoaderRoute: typeof PostIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/manga/publishing/': {
-      id: '/manga/publishing/'
-      path: '/manga/publishing'
-      fullPath: '/manga/publishing/'
-      preLoaderRoute: typeof MangaPublishingIndexRouteImport
+    '/review/$id': {
+      id: '/review/$id'
+      path: '/review/$id'
+      fullPath: '/review/$id'
+      preLoaderRoute: typeof ReviewIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/game/upcoming/': {
-      id: '/game/upcoming/'
-      path: '/game/upcoming'
-      fullPath: '/game/upcoming/'
-      preLoaderRoute: typeof GameUpcomingIndexRouteImport
+    '/tv/': {
+      id: '/tv/'
+      path: '/tv'
+      fullPath: '/tv/'
+      preLoaderRoute: typeof TvIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/game/recent/': {
-      id: '/game/recent/'
-      path: '/game/recent'
-      fullPath: '/game/recent/'
-      preLoaderRoute: typeof GameRecentIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/game/popular/': {
-      id: '/game/popular/'
-      path: '/game/popular'
-      fullPath: '/game/popular/'
-      preLoaderRoute: typeof GamePopularIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/game/anticipated/': {
-      id: '/game/anticipated/'
-      path: '/game/anticipated'
-      fullPath: '/game/anticipated/'
-      preLoaderRoute: typeof GameAnticipatedIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/book/upcoming/': {
-      id: '/book/upcoming/'
-      path: '/book/upcoming'
-      fullPath: '/book/upcoming/'
-      preLoaderRoute: typeof BookUpcomingIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/book/trending/': {
-      id: '/book/trending/'
-      path: '/book/trending'
-      fullPath: '/book/trending/'
-      preLoaderRoute: typeof BookTrendingIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/anime/upcoming/': {
-      id: '/anime/upcoming/'
-      path: '/anime/upcoming'
-      fullPath: '/anime/upcoming/'
-      preLoaderRoute: typeof AnimeUpcomingIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/anime/top/': {
-      id: '/anime/top/'
-      path: '/anime/top'
-      fullPath: '/anime/top/'
-      preLoaderRoute: typeof AnimeTopIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/anime/recommendations/': {
-      id: '/anime/recommendations/'
-      path: '/anime/recommendations'
-      fullPath: '/anime/recommendations/'
-      preLoaderRoute: typeof AnimeRecommendationsIndexRouteImport
+    '/tv/$slug': {
+      id: '/tv/$slug'
+      path: '/tv/$slug'
+      fullPath: '/tv/$slug'
+      preLoaderRoute: typeof TvSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/anime/airing/': {
@@ -1132,18 +978,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnimeAiringIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/movie/franchises/$slug': {
-      id: '/movie/franchises/$slug'
-      path: '/movie/franchises/$slug'
-      fullPath: '/movie/franchises/$slug'
-      preLoaderRoute: typeof MovieFranchisesSlugRouteImport
+    '/anime/recommendations/': {
+      id: '/anime/recommendations/'
+      path: '/anime/recommendations'
+      fullPath: '/anime/recommendations/'
+      preLoaderRoute: typeof AnimeRecommendationsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/game/franchises/$slug': {
-      id: '/game/franchises/$slug'
-      path: '/game/franchises/$slug'
-      fullPath: '/game/franchises/$slug'
-      preLoaderRoute: typeof GameFranchisesSlugRouteImport
+    '/anime/top/': {
+      id: '/anime/top/'
+      path: '/anime/top'
+      fullPath: '/anime/top/'
+      preLoaderRoute: typeof AnimeTopIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anime/upcoming/': {
+      id: '/anime/upcoming/'
+      path: '/anime/upcoming'
+      fullPath: '/anime/upcoming/'
+      preLoaderRoute: typeof AnimeUpcomingIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/book/franchises/$slug': {
@@ -1153,18 +1006,165 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookFranchisesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/donate/success/': {
-      id: '/_authenticated/donate/success/'
-      path: '/donate/success'
-      fullPath: '/donate/success/'
-      preLoaderRoute: typeof AuthenticatedDonateSuccessIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
+    '/book/trending/': {
+      id: '/book/trending/'
+      path: '/book/trending'
+      fullPath: '/book/trending/'
+      preLoaderRoute: typeof BookTrendingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book/upcoming/': {
+      id: '/book/upcoming/'
+      path: '/book/upcoming'
+      fullPath: '/book/upcoming/'
+      preLoaderRoute: typeof BookUpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/anticipated/': {
+      id: '/game/anticipated/'
+      path: '/game/anticipated'
+      fullPath: '/game/anticipated/'
+      preLoaderRoute: typeof GameAnticipatedIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/franchises/$slug': {
+      id: '/game/franchises/$slug'
+      path: '/game/franchises/$slug'
+      fullPath: '/game/franchises/$slug'
+      preLoaderRoute: typeof GameFranchisesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/popular/': {
+      id: '/game/popular/'
+      path: '/game/popular'
+      fullPath: '/game/popular/'
+      preLoaderRoute: typeof GamePopularIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/recent/': {
+      id: '/game/recent/'
+      path: '/game/recent'
+      fullPath: '/game/recent/'
+      preLoaderRoute: typeof GameRecentIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/upcoming/': {
+      id: '/game/upcoming/'
+      path: '/game/upcoming'
+      fullPath: '/game/upcoming/'
+      preLoaderRoute: typeof GameUpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manga/publishing/': {
+      id: '/manga/publishing/'
+      path: '/manga/publishing'
+      fullPath: '/manga/publishing/'
+      preLoaderRoute: typeof MangaPublishingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manga/recommendations/': {
+      id: '/manga/recommendations/'
+      path: '/manga/recommendations'
+      fullPath: '/manga/recommendations/'
+      preLoaderRoute: typeof MangaRecommendationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manga/top/': {
+      id: '/manga/top/'
+      path: '/manga/top'
+      fullPath: '/manga/top/'
+      preLoaderRoute: typeof MangaTopIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manga/upcoming/': {
+      id: '/manga/upcoming/'
+      path: '/manga/upcoming'
+      fullPath: '/manga/upcoming/'
+      preLoaderRoute: typeof MangaUpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movie/airing/': {
+      id: '/movie/airing/'
+      path: '/movie/airing'
+      fullPath: '/movie/airing/'
+      preLoaderRoute: typeof MovieAiringIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movie/franchises/$slug': {
+      id: '/movie/franchises/$slug'
+      path: '/movie/franchises/$slug'
+      fullPath: '/movie/franchises/$slug'
+      preLoaderRoute: typeof MovieFranchisesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movie/popular/': {
+      id: '/movie/popular/'
+      path: '/movie/popular'
+      fullPath: '/movie/popular/'
+      preLoaderRoute: typeof MoviePopularIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movie/trending/': {
+      id: '/movie/trending/'
+      path: '/movie/trending'
+      fullPath: '/movie/trending/'
+      preLoaderRoute: typeof MovieTrendingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movie/upcoming/': {
+      id: '/movie/upcoming/'
+      path: '/movie/upcoming'
+      fullPath: '/movie/upcoming/'
+      preLoaderRoute: typeof MovieUpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv/airing/': {
+      id: '/tv/airing/'
+      path: '/tv/airing'
+      fullPath: '/tv/airing/'
+      preLoaderRoute: typeof TvAiringIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv/popular/': {
+      id: '/tv/popular/'
+      path: '/tv/popular'
+      fullPath: '/tv/popular/'
+      preLoaderRoute: typeof TvPopularIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv/trending/': {
+      id: '/tv/trending/'
+      path: '/tv/trending'
+      fullPath: '/tv/trending/'
+      preLoaderRoute: typeof TvTrendingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv/upcoming/': {
+      id: '/tv/upcoming/'
+      path: '/tv/upcoming'
+      fullPath: '/tv/upcoming/'
+      preLoaderRoute: typeof TvUpcomingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/user/$username/': {
+      id: '/user/$username/'
+      path: '/user/$username'
+      fullPath: '/user/$username/'
+      preLoaderRoute: typeof UserUsernameIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/donate/error/': {
       id: '/_authenticated/donate/error/'
       path: '/donate/error'
       fullPath: '/donate/error/'
       preLoaderRoute: typeof AuthenticatedDonateErrorIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/donate/success/': {
+      id: '/_authenticated/donate/success/'
+      path: '/donate/success'
+      fullPath: '/donate/success/'
+      preLoaderRoute: typeof AuthenticatedDonateSuccessIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
   }
@@ -1247,3 +1247,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

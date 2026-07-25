@@ -5,7 +5,8 @@ export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
   headers: {
-    "X-TrackGeek-Language": window?.localStorage?.getItem(LANGUAGE_TOKEN) ?? DEFAULT_LANGUAGE,
+    "X-TrackGeek-Language":
+      (typeof window !== "undefined" && window.localStorage?.getItem(LANGUAGE_TOKEN)) || DEFAULT_LANGUAGE,
     "X-TrackGeek-Version": "1.0.0",
   },
 });

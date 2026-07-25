@@ -40,6 +40,7 @@ import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
 
 export const Route = createFileRoute("/tv/$slug")({
+  ssr: "data-only",
   loader: async ({ params }) => {
     const item = await api.get(apiEndpoints.getTvShowDetails(params.slug)).then(({ data }) => data.tvShow);
     return { item };

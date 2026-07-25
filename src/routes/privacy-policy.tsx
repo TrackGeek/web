@@ -3,6 +3,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/privacy-policy")({
+  ssr: "data-only",
   head: () => ({
     meta: [...seo({ title: "Privacy Policy" })],
   }),

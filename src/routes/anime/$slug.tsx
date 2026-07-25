@@ -35,6 +35,7 @@ import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/anime/$slug")({
+  ssr: "data-only",
   loader: async ({ params }) => {
     const anime = await api.get(apiEndpoints.getAnimeDetails(params.slug)).then(({ data }) => data.anime);
     return { anime };

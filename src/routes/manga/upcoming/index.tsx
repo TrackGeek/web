@@ -10,6 +10,7 @@ import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/manga/upcoming/")({
+  ssr: "data-only",
   component: UpcomingMangaRoute,
   head: () => ({
     meta: [

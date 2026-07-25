@@ -8,26 +8,22 @@ RUN bun install --frozen-lockfile
 COPY . .
 
 ARG VITE_API_URL
+ARG VITE_SITE_URL
 ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_SITE_URL=$VITE_SITE_URL
 
 RUN bun run build
 
-FROM nginx:alpine
+FROM oven/bun:1-slim
 
-COPY --from=build /app/dist /usr/share/nginx/html
+WORKDIR /app
+ENV NODE_ENV=production
 
-RUN printf 'server {\n\
-  listen 80;\n\
-  root /usr/share/nginx/html;\n\
-  index index.html;\n\
-  location / {\n\
-    try_files $uri $uri/ /index.html;\n\
-  }\n\
-  location /assets/ {\n\
-    add_header Cache-Control "public, max-age=31536000, immutable";\n\
-  }\n\
-}\n' > /etc/nginx/conf.d/default.conf
+COPY --from=build /app/package.json /app/bun.lock ./
+RUN bun install --frozen-lockfile --production
 
-EXPOSE 80
+COPY --from=build /app/dist ./dist
 
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+
+CMD ["bun", "run", "start"]

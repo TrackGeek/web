@@ -91,6 +91,7 @@
   },
   "totalRereads": "Total Rereads",
   "totalReplays": "Total Replays",
+  "hoursPlayed": "Hours Played",
   "completionStatus": {
     "label": "Completion Status",
     "select": "Select a completion status",

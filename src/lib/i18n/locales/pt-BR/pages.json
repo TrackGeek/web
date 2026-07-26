@@ -18,7 +18,7 @@
     "markEpisode": "Marcar Episódio {{number}} como Assistido",
     "toastCongrats": "Parabéns! Você terminou esta série.",
     "toastMark": "Episódio {{number}} marcado como assistido!",
-    "CTATitle": "Ready to take control?",
+    "CTATitle": "Pronto para assumir o controle?",
     "CTADescription": "Junte-se a outros geeks organizando a sua mídia favorita hoje!",
     "CTAButton": "Comece gratuitamente",
     "alive": "Estamos vivos!",
@@ -39,8 +39,8 @@
     "booksDescription": "Para o mais literário, oferecemos uma opção também. Acompanhe as páginas que leu e quantas vezes você releu um livro."
   },
   "addData": {
-    "description": "TrackGeek relies on third-party databases like <tmdb>TMDB</tmdb> (The Movie Database), <mal>MAL</mal> (My Anime List), <al>Anilist</al>, <hc>HardCover</hc>, <igdb>IGDB</igdb> for its TV show, Movie, Game, Book, Anime and Manga data. If you find that a specific show, game, manga, book, anime or movie is missing from TrackGeek, you can add it to the corresponding database.",
-    "warning": "New entries may take up to 24 hours to appear in TrackGeek search, since we update our index daily.",
+    "description": "O TrackGeek depende de bancos de dados de terceiros como <tmdb>TMDB</tmdb> (The Movie Database), <mal>MAL</mal> (My Anime List), <al>Anilist</al>, <hc>HardCover</hc>, <igdb>IGDB</igdb> para os dados de Série, Filme, Jogos, Livro, Anime e Mangá. Se você encontrar que uma série, jogo, mangá, livro, anime ou filme específico está faltando no TrackGeek, você pode adicioná-lo ao banco de dados correspondente.",
+    "warning": "Novas entradas podem demorar até 24 horas para aparecerem na pesquisa do TrackGeek, já que atualizamos nosso índice diariamente.",
     "forAnimes": "Para animes",
     "forMovies": "Para filmes",
     "forGames": "Para jogos",
@@ -70,7 +70,7 @@
     "howWeUseData.list3": "Armazenar seus dados e preferências de rastreamento.",
     "howWeUseData.list4": "Melhorar a experiência da plataforma e do usuário.",
     "thirdParties.title": "Serviços de Terceiros",
-    "thirdParties.metadata": "TrackGeek uses third-party APIs (IGDB, TMDB, MyAnimeList, Anilist, HardCover) only to fetch metadata. No personal user data is shared with these providers.",
+    "thirdParties.metadata": "TrackGeek usa APIs de terceiros (IGDB, TMDB, Anilist, MyAnimeList, HardCover) apenas para buscar metadados. Nenhum dado de usuário pessoal é compartilhado com esses provedores.",
     "thirdParties.analytics": "O TrackGeek usa o Google Analytics para entender padrões gerais de uso e melhorar a plataforma. Os dados da análise são coletados apenas após o consentimento do usuário e processados de acordo com os requisitos do GDPR, incluindo anonimato de IP.",
     "payments.title": "Doações e pagamentos",
     "payments.info": "O TrackGeek pode oferecer níveis opcionais de doação através de plataformas de terceiros, como o Patreon. O processamento de pagamento é manipulado por essas plataformas, e o TrackGeek não armazena detalhes de pagamento.",
@@ -303,76 +303,76 @@
     }
   },
   "compare": {
-    "metaTitle": "TrackGeek vs other media trackers",
-    "metaDescription": "Compare TrackGeek against Simkl, AniList, Backloggd, MyLists and StoryGraph. See feature coverage, social tools and tracking depth.",
-    "heroTitle": "TrackGeek as an alternative",
-    "heroDescription": "Honest feature-by-feature view of major media tracking platforms. Pick tool matching your workflow.",
+    "metaTitle": "TrackGeek vs outros rastreadores de mídia",
+    "metaDescription": "Compare TrackGeek com Simkl, AniList, Backloggd, MyLists e StoryGraph. Veja cobertura de recursos, ferramentas sociais e profundidade do rastreamento.",
+    "heroTitle": "TrackGeek como uma alternativa",
+    "heroDescription": "Uma visualização honesta de recurso das principais plataformas de rastreamento de mídia. Escolha a ferramenta que corresponde ao seu fluxo de trabalho.",
     "table": {
-      "features": "Features",
-      "note": "Note: Platform updates may cause slight discrepancies in this table."
+      "features": "Recursos",
+      "note": "Nota: atualizações da plataforma podem causar ligeiras discrepâncias nesta tabela."
     },
     "support": {
-      "yes": "Supported",
-      "no": "Not supported",
-      "partial": "Partially supported"
+      "yes": "Suportado",
+      "no": "Não suportado",
+      "partial": "Parcialmente suportado"
     },
     "notes": {
-      "storygraphBooksOnly": "Reading progress for books only.",
-      "mylistsCommentsOnly": "Comments on lists instead of full reviews.",
-      "storygraphPartnerIntegrations": "Limited integrations for partner apps.",
-      "anilistCommunityApps": "No official app; community apps available.",
-      "backloggdLimitedExport": "Import available; export is limited."
+      "storygraphBooksOnly": "Progresso de leitura de livros somente.",
+      "mylistsCommentsOnly": "Comentários em listas em vez de avaliações completas.",
+      "storygraphPartnerIntegrations": "Integrações limitadas para aplicativos de parceiros.",
+      "anilistCommunityApps": "Nenhum aplicativo oficial; apps da comunidade disponíveis.",
+      "backloggdLimitedExport": "Importação disponível; exportação é limitada."
     },
     "criteria": {
       "anime": {
         "label": "Anime"
       },
       "manga": {
-        "label": "Manga"
+        "label": "Mangá"
       },
       "books": {
-        "label": "Books"
+        "label": "Livros"
       },
       "games": {
-        "label": "Games"
+        "label": "Jogos"
       },
       "movies": {
-        "label": "Movies"
+        "label": "Filmes"
       },
       "series": {
-        "label": "Series"
+        "label": "Séries"
       },
       "granular-progress": {
-        "label": "Granular progress",
-        "description": "Granular progress per episode/chapter/entry."
+        "label": "Progresso granular",
+        "description": "Progresso granular por episódio/capítulo/entrada."
       },
       "reviews": {
-        "label": "Reviews",
-        "description": "User-written reviews and scores."
+        "label": "Avaliações",
+        "description": "Avaliações e pontuações por escrito"
       },
       "custom-lists": {
-        "label": "Custom lists",
-        "description": "Create public or private custom lists."
+        "label": "Listas Personalizadas",
+        "description": "Criar listas personalizadas públicas ou privadas."
       },
       "public-profile": {
-        "label": "Public profile",
-        "description": "Share profile with other users."
+        "label": "Perfil público",
+        "description": "Compartilhar perfil com outros usuários."
       },
       "public-api": {
-        "label": "Public API",
-        "description": "Developer-facing public API."
+        "label": "API público",
+        "description": "API pública voltada para desenvolvedores."
       },
       "feed": {
-        "label": "Social feed",
-        "description": "Follow activity from friends/community."
+        "label": "Feed social",
+        "description": "Seguir atividade pelos amigos/comunidades."
       },
       "mobile": {
-        "label": "Mobile (PWA/App)",
-        "description": "Dedicated mobile experience."
+        "label": "Celular (PWA/App)",
+        "description": "Experiência móvel dedicada."
       },
       "import-export": {
-        "label": "Import / Export",
-        "description": "Move data in and out of platform."
+        "label": "Importar / Exportar",
+        "description": "Mover dados dentro e fora da plataforma."
       }
     }
   }

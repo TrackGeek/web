@@ -7,11 +7,11 @@
   "page_other": "Páginas",
   "moreOptions": "Mais Opções",
   "reviews": "avaliações",
-  "noReviews": "No reviews yet",
-  "noReviewsDescription": "Be the first to review this show.",
-  "noLists": "No lists yet",
-  "noListsDescription": "This show hasn't been added to any list yet.",
-  "noItems": "No items yet",
+  "noReviews": "Sem avaliações ainda",
+  "noReviewsDescription": "Seja o primeiro a avaliar este conteúdo.",
+  "noLists": "Não há listas ainda",
+  "noListsDescription": "Este conteúdo ainda não foi adicionado a nenhuma lista.",
+  "noItems": "Nenhum item ainda",
   "medium": "Médio",
   "days": "dias",
   "genres": "Gêneros",
@@ -48,7 +48,7 @@
   "season_other": "Temporadas",
   "episode": "Episódio",
   "episode_other": "Episódios",
-  "noEpisodes": "No episodes available for this season.",
+  "noEpisodes": "Nenhum episódio disponível para esta temporada.",
   "totalEpisodes": "Episódios Totais",
   "type": "Tipo",
   "tvShowCharacteristics": "Características da Série",
@@ -60,7 +60,7 @@
   "unmarkEpisode": "Desmarcar Episódio",
   "unmarkAll": "Desmarcar Todos",
   "unmarkSeason": "Desmarcar Temporada",
-  "progressUpdated": "Progress updated",
+  "progressUpdated": "Atualizações de progresso",
   "studios": "Estúdios",
   "producers": "Produtores",
   "rating": "Classificação indicativa",
@@ -238,5 +238,5 @@
     "battleRoyale": "Battle Royale",
     "massivelyMultiplayerOnline": "Massivamente Multijogador Online (MMORPG)"
   },
-  "users": "users"
+  "users": "usuários"
 }

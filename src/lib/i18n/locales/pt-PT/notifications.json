@@ -1,42 +1,42 @@
 {
-  "title": "Notifications",
-  "description": "Everything people did with your comments, reviews and activity.",
-  "markAllAsRead": "Mark all as read",
-  "markAllAsUnread": "Mark all as unread",
-  "markAsRead": "Mark as read",
-  "markAsUnread": "Mark as unread",
-  "delete": "Delete",
-  "deleteAll": "Delete all",
-  "deleteAllTitle": "Delete all notifications?",
-  "deleteAllDescription": "This permanently deletes every notification you have. This cannot be undone.",
-  "cancel": "Cancel",
+  "title": "Notificações",
+  "description": "Tudo o que as pessoas fizeram com os seus comentários, análises e atividade.",
+  "markAllAsRead": "Marcar tudo como lido",
+  "markAllAsUnread": "Marcar tudo como não lido",
+  "markAsRead": "Marcar como lida",
+  "markAsUnread": "Marcar como não lida",
+  "delete": "Apagar",
+  "deleteAll": "Apagar tudo",
+  "deleteAllTitle": "Excluir todas as notificações?",
+  "deleteAllDescription": "Isto exclui permanentemente cada notificação que tens. Isto não pode ser desfeito.",
+  "cancel": "Cancelar",
   "system": "TrackGeek",
-  "learnMore": "Learn more",
+  "learnMore": "Saber mais",
   "welcome": {
-    "title": "Welcome to TrackGeek",
-    "description": "Start tracking the anime, manga, shows, movies, games and books you love."
+    "title": "Bem-vindo ao TrackGeek",
+    "description": "Comece a seguir anime, mangá, séries, filmes, jogos e livros que amas."
   },
-  "unreadCount_one": "{{count}} unread notification",
-  "unreadCount_other": "{{count}} unread notifications",
+  "unreadCount_one": "{{count}} notificação não lida",
+  "unreadCount_other": "{{count}} notificações não lidas",
   "preferences": {
-    "title": "Notification preferences",
-    "description": "Choose which notifications you want to receive. System notifications are always delivered.",
-    "comment": "Comments",
-    "reaction": "Reactions"
+    "title": "Preferências de notificação",
+    "description": "Escolha quais notificações desejas receber. Notificações do sistema são sempre entregues.",
+    "comment": "Comentários",
+    "reaction": "Reações"
   },
   "empty": {
-    "title": "No notifications yet",
-    "description": "When someone comments on your profile or reacts to your content, it shows up here."
+    "title": "Nenhuma notificação ainda",
+    "description": "Quando alguém comenta no seu perfil ou reage ao seu conteúdo, ele aparece aqui."
   },
   "types": {
-    "CommentOnProfile": "commented on your profile",
-    "ReactionOnComment": "reacted to your comment",
-    "ReactionOnActivity": "reacted to your activity",
-    "ReactionOnAnimeReview": "reacted to your anime review",
-    "ReactionOnMangaReview": "reacted to your manga review",
-    "ReactionOnTvShowReview": "reacted to your TV show review",
-    "ReactionOnMovieReview": "reacted to your movie review",
-    "ReactionOnGameReview": "reacted to your game review",
-    "ReactionOnBookReview": "reacted to your book review"
+    "CommentOnProfile": "comentou no seu perfil",
+    "ReactionOnComment": "reagiu ao seu comentário",
+    "ReactionOnActivity": "reagiu à sua atividade",
+    "ReactionOnAnimeReview": "reagiu à sua análise de anime",
+    "ReactionOnMangaReview": "reagiu à sua análise de mangá",
+    "ReactionOnTvShowReview": "reagiu à sua análise de série",
+    "ReactionOnMovieReview": "reagiu à sua análise de filme",
+    "ReactionOnGameReview": "reagiu à sua análise de jogo",
+    "ReactionOnBookReview": "reagiu à sua análise de livro"
   }
 }

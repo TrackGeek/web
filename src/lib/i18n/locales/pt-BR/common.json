@@ -24,8 +24,8 @@
   "providers": {
     "IGDBMetadata": "Metadados do jogo fornecidos por",
     "TMDBMetadata": "Metadados de filmes e séries fornecidos por",
-    "MALMetadata": "Animes metadata provided by <mal /> and <jikan>Jikan</jikan>",
-    "ALMetadata": "Mangas metadata provided by <al />",
+    "MALMetadata": "Metadados de Animes fornecidos por <mal /> e <jikan>Jikan</jikan>",
+    "ALMetadata": "Metadados de Mangás fornecidos por <al />",
     "HardCoverMetadata": "Metadados de livros fornecidos por <1>HardCover</1>"
   },
   "continents": {
@@ -111,16 +111,16 @@
   "notFound": "A página que você está procurando pode ter sido <br />movida ou não existe.",
   "notLoggedIn": "Você precisa estar conectado.",
   "somethingWentWrong": "Algo deu errado. Por favor, tente novamente mais tarde.",
-  "tryAgainLater": "Please try again in a moment.",
-  "tryAgain": "Try again",
+  "tryAgainLater": "Por favor, tente mais tarde.",
+  "tryAgain": "Tente novamente",
   "internalError": "Uh oh! Não se preocupe! Não é você - somos nós.<br />Nós estamos tentando corrigir o problema. Tenta novamente mais tarde!",
   "reportError": "Relatar problemas",
-  "all": "All",
-  "joinedAt": "Joined at",
-  "tierStartedAt": "Tier started at",
+  "all": "Todos",
+  "joinedAt": "Entrou em",
+  "tierStartedAt": "Assinatura começou em",
   "tiers": {
-    "Tracker": "Tracker",
-    "Archivist": "Archivist",
-    "ArchiveMaster": "Archive Master"
+    "Tracker": "Rastreador",
+    "Archivist": "Arquivista",
+    "ArchiveMaster": "Mestre do Arquivo"
   }
 }

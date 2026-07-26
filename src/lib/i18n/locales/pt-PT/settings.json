@@ -1,7 +1,7 @@
 {
   "banner": {
     "title": "Banner",
-    "description": "Allowed Formats: JPG, JPEG, PNG, GIF. Max size: 5mb. Optimal dimensions: 1200x330",
+    "description": "Formatos permitidos: JPG, JPEG, PNG, GIF. Tamanho máximo: 5mb. Dimensões ideais: 1200x330",
     "upload": {
       "title": "Carregar banner",
       "success": "Banner carregado com sucesso.",
@@ -32,22 +32,22 @@
     "username": "Nome de utilizador",
     "about": "Sobre Mim",
     "errors": {
-      "nameMin": "Name must be at least 2 characters.",
-      "nameMax": "Name must be at most 50 characters.",
-      "usernameMin": "Username must be at least 3 characters.",
-      "usernameMax": "Username must be at most 30 characters.",
-      "usernameFormat": "Username can only contain letters, numbers and underscores.",
-      "aboutMax": "About must be at most 500 characters."
+      "nameMin": "O nome deve ter pelo menos 2 caracteres.",
+      "nameMax": "O nome deve ter no máximo 50 caracteres.",
+      "usernameMin": "O nome de utilizador deve ter pelo menos 3 caracteres",
+      "usernameMax": "O nome de utilizador deve ter no máximo 20 caracteres.",
+      "usernameFormat": "O nome de utilizador pode conter somente letras, números e subtraço.",
+      "aboutMax": "Sobre deve ter no máximo 500 caracteres."
     }
   },
   "color": {
     "title": "Cor do Tema",
-    "options": "Color Options",
+    "options": "Opções de Cores",
     "description": "Escolha a sua cor de tema preferida para a interface do aplicativo.",
     "custom": "Cor Personalizada",
-    "reset": "Reset to default",
+    "reset": "Repor para a predefinição",
     "errors": {
-      "invalid": "Color must be a valid hex code."
+      "invalid": "A cor deve ser um código hexadecimal válido."
     }
   },
   "save": {

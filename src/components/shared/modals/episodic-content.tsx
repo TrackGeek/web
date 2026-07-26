@@ -502,6 +502,8 @@ export function EpisodicContentModal({
                   id="rewatches"
                   type="number"
                   min={0}
+                  max={999}
+                  step={1}
                   placeholder="0"
                   className="bg-background"
                   {...progressForm.register("watchCount")}

@@ -55,7 +55,7 @@ function createProgressSchema(t: TFunction) {
   return z.object({
     status: z.string(),
     completion: z.string(),
-    progress: z.string(),
+    hoursPlayed: z.string(),
     playCount: z.string(),
     startDate: z.date().optional(),
     finishDate: z.date().optional(),
@@ -85,7 +85,7 @@ interface GameProgressData {
   status: ProgressStatus;
   playCount: number | null;
   completion: string | null;
-  progress: number | null;
+  hoursPlayed: number | null;
   notes: string | null;
   startedAt: string | null;
   completedAt: string | null;
@@ -129,7 +129,7 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
     defaultValues: {
       status: "",
       completion: "",
-      progress: "",
+      hoursPlayed: "",
       playCount: "",
       startDate: undefined,
       finishDate: undefined,
@@ -220,7 +220,7 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
     progressForm.reset({
       status: ENUM_TO_STATUS[progress.status] ?? "",
       completion: progress.completion ?? "",
-      progress: progress.progress != null ? String(progress.progress) : "",
+      hoursPlayed: progress.hoursPlayed != null ? String(progress.hoursPlayed) : "",
       playCount: progress.playCount != null ? String(progress.playCount) : "",
       notes: progress.notes ?? "",
       startDate: progress.startedAt ? new Date(progress.startedAt) : undefined,
@@ -258,7 +258,7 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
         status,
         playCount: data.playCount ? Number(data.playCount) : undefined,
         completion: data.completion || undefined,
-        progress: data.progress ? Number(data.progress) : undefined,
+        hoursPlayed: data.hoursPlayed ? Number(data.hoursPlayed) : undefined,
         notes: data.notes.trim() || undefined,
         startedAt: data.startDate ?? undefined,
         completedAt: status === "Completed" ? (data.finishDate ?? new Date()) : (data.finishDate ?? undefined),
@@ -476,20 +476,19 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="progress" className="text-sm font-medium">
-                  {t("feed:progress")}
+                <FieldLabel htmlFor="hoursPlayed" className="text-sm font-medium">
+                  {t("feed:hoursPlayed")}
                 </FieldLabel>
                 <InputGroup className="bg-background">
                   <InputGroupInput
-                    id="progress"
+                    id="hoursPlayed"
                     type="number"
                     min={0}
-                    max={100}
                     placeholder="0"
-                    {...progressForm.register("progress")}
+                    {...progressForm.register("hoursPlayed")}
                   />
                   <InputGroupAddon align="inline-end">
-                    <InputGroupText>%</InputGroupText>
+                    <InputGroupText>h</InputGroupText>
                   </InputGroupAddon>
                 </InputGroup>
               </Field>

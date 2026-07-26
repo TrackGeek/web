@@ -2,7 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import type { FavoriteItem } from "@/components/pages/user/overview-tab/favorite-card";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 
-const ITEMS_PER_PAGE = 18;
+const ITEMS_PER_PAGE = 200;
 
 type ProgressStatsKey = keyof ApiTypes.User["progressStats"];
 

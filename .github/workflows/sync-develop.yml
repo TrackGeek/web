@@ -5,11 +5,14 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -21,4 +24,4 @@ jobs:
           git merge origin/main --no-ff -m "chore: sync develop with main"
           git push origin develop
         env:
-          GITHUB_TOKEN: ${{ secrets.GHT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { api, apiEndpoints } from "@/lib/api.ts";
 
 interface GameProgress {
-  progress: number;
+  hoursPlayed: number;
   status: string | null;
   completionStatus: string | null;
   replays: number;

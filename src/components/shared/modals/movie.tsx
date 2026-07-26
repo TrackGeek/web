@@ -58,6 +58,7 @@ type ReviewFormData = z.infer<ReturnType<typeof createReviewSchema>>;
 interface MovieProgressData {
   id: string;
   status: ProgressStatus;
+  watchCount: number | null;
 }
 
 interface MovieModalProps {
@@ -73,6 +74,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
   const enabled = !!userId && !!movieId;
 
   const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [rewatchCount, setRewatchCount] = useState<string>("");
   const [newListInput, setNewListInput] = useState<string | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
@@ -147,6 +149,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
     if (!progress) return;
 
     setSelectedStatus(ENUM_TO_STATUS[progress.status] ?? "");
+    setRewatchCount(progress.watchCount != null ? String(progress.watchCount) : "");
   }, [progressQuery.data]);
 
   useEffect(() => {
@@ -171,10 +174,11 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
   };
 
   const saveProgressMutation = useMutation({
-    mutationFn: (status: string) =>
+    mutationFn: (data: { status: string; watchCount?: number }) =>
       api.post(apiEndpoints.movieProgress, {
         movieId,
-        status: STATUS_TO_ENUM[status],
+        status: STATUS_TO_ENUM[data.status],
+        watchCount: data.watchCount,
       }),
     onSuccess: invalidateProgress,
   });
@@ -263,7 +267,10 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
     }
 
     try {
-      await saveProgressMutation.mutateAsync(selectedStatus);
+      await saveProgressMutation.mutateAsync({
+        status: selectedStatus,
+        watchCount: rewatchCount ? Number(rewatchCount) : undefined,
+      });
 
       const review = reviewForm.getValues();
 
@@ -308,6 +315,24 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
                 </SelectGroup>
               </SelectContent>
             </Select>
+          </Field>
+
+          <Field className="mt-3">
+            <FieldLabel htmlFor="rewatches" className="text-sm font-medium">
+              {t("feed:totalRewatches")}
+            </FieldLabel>
+            <Input
+              id="rewatches"
+              type="number"
+              min={0}
+              max={999}
+              step={1}
+              placeholder="0"
+              className="bg-background"
+              value={rewatchCount}
+              onChange={(e) => setRewatchCount(e.target.value)}
+              aria-label={t("feed:totalRewatches")}
+            />
           </Field>
         </div>
 

@@ -143,7 +143,7 @@ export function UserReviewsTab({
                 coverURL={reviewMediaImage(contentType, review)}
                 reviewText={review.summary ?? ""}
                 notes={review.notes}
-                story={review.story}
+                story={mediaContent.hasStory ? review.story : undefined}
                 routeName={mediaContent.routeName}
                 entityId={entityId}
                 date={new Date(review.createdAt)}

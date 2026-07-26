@@ -9,16 +9,16 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Merge main into develop
         run: |
-          git config user.name "TrackGeekBot"
-          git config user.email "256638171+TrackGeekBot@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout develop
           git merge origin/main --no-ff -m "chore: sync develop with main"
           git push origin develop
         env:
-          GITHUB_TOKEN: ${{ secrets.GHT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

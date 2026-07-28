@@ -51,7 +51,6 @@
     }
   },
   "save": {
-    "title": "Save Changes",
     "success": "Settings saved successfully.",
     "error": "Failed to save settings. Please try again."
   },
@@ -59,7 +58,6 @@
     "title": "Preferences",
     "description": "Set your application preferences.",
     "language": {
-      "title": "Language",
       "placeholder": "Select your preferred language"
     },
     "timezone": {

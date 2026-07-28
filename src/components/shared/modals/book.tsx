@@ -67,7 +67,7 @@ export function BookModal({ mediaData: _, onStatusChange, onSaveSuccess }: BookM
           <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
             <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
               <Icon icon={"lucide:star"} className="size-4" />
-              {t("feed:progress")}
+              {t("common:progress")}
             </h3>
             <div className="space-y-3">
               <Field>
@@ -241,11 +241,11 @@ export function BookModal({ mediaData: _, onStatusChange, onSaveSuccess }: BookM
         </Button>
         <div className="flex gap-2">
           <Button variant="outline" size="sm">
-            {t("feed:cancel")}
+            {t("common:cancel")}
           </Button>
           <Button size="sm" className="gap-2" onClick={handleSave}>
             <Icon icon={"lucide:save"} className="size-4" />
-            {t("feed:save")}
+            {t("common:saveChanges")}
           </Button>
         </div>
       </div>

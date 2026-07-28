@@ -44,7 +44,7 @@ export function Footer() {
                       <Icon icon={"simple-icons:myanimelist"} />
                     </a>
                   ),
-                  jikan: <a href="https://jikan.moe" target="_blank" rel="noopener noreferrer" />,
+                  tenrai: <a href="https://tenrai.org" target="_blank" rel="noopener noreferrer" />,
                 }}
               />
             </p>

@@ -46,9 +46,9 @@ function createReviewSchema(t: TFunction) {
     direction: z.string(),
     production: z.string(),
     acting: z.string(),
-    summary: z.string().trim().max(SUMMARY_MAX_LENGTH, t("feed:review.errors.summaryMax")),
-    notes: z.string().trim().max(REVIEW_NOTES_MAX_LENGTH, t("feed:review.errors.notesMax")),
-    story: z.string().trim().max(STORY_MAX_LENGTH, t("feed:review.errors.storyMax")),
+    summary: z.string().trim().max(SUMMARY_MAX_LENGTH, t("feed:reviewSummaryMax")),
+    notes: z.string().trim().max(REVIEW_NOTES_MAX_LENGTH, t("feed:reviewNotesMax")),
+    story: z.string().trim().max(STORY_MAX_LENGTH, t("feed:reviewStoryMax")),
     recommended: z.boolean(),
   });
 }
@@ -294,7 +294,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
         <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
             <Icon icon={"lucide:star"} className="size-4" />
-            {t("feed:progress")}
+            {t("common:progress")}
           </h3>
 
           <Field>
@@ -564,7 +564,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
             </DialogHeader>
             <DialogFooter>
               <Button variant="outline" size="sm" onClick={() => setConfirmDeleteOpen(false)}>
-                {t("feed:cancel")}
+                {t("common:cancel")}
               </Button>
               <Button
                 variant="destructive"
@@ -579,11 +579,11 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
         </Dialog>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => onClose?.()}>
-            {t("feed:cancel")}
+            {t("common:cancel")}
           </Button>
           <Button size="sm" className="gap-2" onClick={handleSave} disabled={isSaving}>
             <Icon icon={"lucide:save"} className="size-4" />
-            {isSaving ? t("feed:saving") : t("feed:save")}
+            {isSaving ? t("feed:saving") : t("common:saveChanges")}
           </Button>
         </div>
       </div>

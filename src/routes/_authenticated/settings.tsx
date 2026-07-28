@@ -554,7 +554,7 @@ function SettingsRoute() {
 
         <CardContent className="flex flex-col gap-4">
           <Field className="w-full gap-2">
-            <FieldLabel>{t("settings:preferrences.language.title")}</FieldLabel>
+            <FieldLabel>{t("common:language")}</FieldLabel>
 
             <Controller
               control={profileForm.control}
@@ -615,7 +615,7 @@ function SettingsRoute() {
         <Button disabled={updateProfileMutation.isPending}>
           {updateProfileMutation.isPending && <Icon icon="eos-icons:loading" className="size-4 animate-spin" />}
 
-          {t("settings:save.title")}
+          {t("common:saveChanges")}
         </Button>
       </div>
     </form>

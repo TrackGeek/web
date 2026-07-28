@@ -111,8 +111,8 @@ export function NotificationItem({ notification, isPending, onToggleRead, onDele
             size="icon"
             disabled={isPending}
             onClick={onDelete}
-            aria-label={t("notifications:delete")}
-            title={t("notifications:delete")}
+            aria-label={t("common:delete")}
+            title={t("common:delete")}
           >
             <Icon icon="lucide:trash-2" className="size-4.5" />
           </Button>

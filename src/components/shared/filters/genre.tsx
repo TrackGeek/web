@@ -143,7 +143,7 @@ const GENRE_CONFIG: Record<ContentType, string[]> = {
   ],
 };
 
-const jikanApi = axios.create({ baseURL: "https://api.jikan.moe/v4" });
+const tenraiApi = axios.create({ baseURL: "https://api.tenrai.org/v1" });
 
 interface GenresProps {
   type: ContentType;
@@ -161,7 +161,7 @@ export function Genres({ type, value = [], onChange }: GenresProps) {
     setLoading(true);
     const fetchGenres = async () => {
       try {
-        const response = await jikanApi.get(`/genres/${type}`);
+        const response = await tenraiApi.get(`/genres/${type}`);
         setGenres(response.data.data);
       } catch {
         setGenres([]);

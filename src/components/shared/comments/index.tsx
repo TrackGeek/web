@@ -223,7 +223,7 @@ function CommentForm({
           </span>
           {onCancel && (
             <Button type="button" size="sm" variant="ghost" onClick={onCancel} disabled={isPending}>
-              {t("comments:cancel")}
+              {t("common:cancel")}
             </Button>
           )}
           <Button type="submit" size="sm" disabled={!form.formState.isValid || isPending} className="gap-2">
@@ -373,7 +373,7 @@ function CommentItem({
               className="flex w-fit items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-card-foreground"
             >
               <Icon icon="lucide:reply" className="size-3.5" />
-              {t("comments:reply")}
+              {t("common:reply")}
             </button>
           )}
         </div>

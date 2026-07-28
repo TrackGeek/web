@@ -106,6 +106,7 @@ export const REVIEW_CONTENT: Record<ApiTypes.ReviewContentType, ReviewContentCon
       { field: "characters", labelKey: "characters" },
       { field: "animation", labelKey: "animation" },
       { field: "sound", labelKey: "soundtrack" },
+      { field: "enjoyment", labelKey: "enjoyment" },
     ],
     mapCriteries: (r) => ({
       all: num(r.overall),
@@ -113,6 +114,7 @@ export const REVIEW_CONTENT: Record<ApiTypes.ReviewContentType, ReviewContentCon
       characters: num(r.characters),
       animation: num(r.animation),
       soundtrack: num(r.sound),
+      enjoyment: num(r.enjoyment),
     }),
   },
   book: {

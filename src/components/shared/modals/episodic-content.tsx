@@ -54,7 +54,7 @@ function createProgressSchema(t: TFunction) {
     watchCount: z.string(),
     startDate: z.date().optional(),
     finishDate: z.date().optional(),
-    notes: z.string().trim().max(PROGRESS_NOTES_MAX_LENGTH, t("feed:progress.errors.notesMax")),
+    notes: z.string().trim().max(PROGRESS_NOTES_MAX_LENGTH, t("feed:reviewNotesMax")),
   });
 }
 
@@ -71,9 +71,9 @@ function createReviewSchema(t: TFunction) {
     animation: z.string(),
     sound: z.string(),
     enjoyment: z.string(),
-    summary: z.string().trim().max(SUMMARY_MAX_LENGTH, t("feed:review.errors.summaryMax")),
-    notes: z.string().trim().max(REVIEW_NOTES_MAX_LENGTH, t("feed:review.errors.notesMax")),
-    storyText: z.string().trim().max(STORY_MAX_LENGTH, t("feed:review.errors.storyMax")),
+    summary: z.string().trim().max(SUMMARY_MAX_LENGTH, t("feed:reviewSummaryMax")),
+    notes: z.string().trim().max(REVIEW_NOTES_MAX_LENGTH, t("feed:reviewNotesMax")),
+    storyText: z.string().trim().max(STORY_MAX_LENGTH, t("feed:reviewStoryMax")),
     recommended: z.boolean(),
   });
 }
@@ -466,7 +466,7 @@ export function EpisodicContentModal({
 
     for (const criterion of cfg.reviewCriteria) {
       const raw = review[criterion.name as keyof MediaReviewData];
-      values[criterion.name] = raw != null ? String(Number(raw)) : "0";
+      (values as unknown as Record<string, string>)[criterion.name] = raw != null ? String(Number(raw)) : "0";
     }
 
     if (cfg.hasStoryText) {
@@ -628,7 +628,7 @@ export function EpisodicContentModal({
           <div className="bg-muted/30 rounded-lg h-72 p-4 border border-border/50">
             <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
               <Icon icon={"lucide:star"} className="size-4" />
-              {t("feed:progress")}
+              {t("common:progress")}
             </h3>
 
             <div className="space-y-3">
@@ -1004,7 +1004,7 @@ export function EpisodicContentModal({
             </DialogHeader>
             <DialogFooter>
               <Button variant="outline" size="sm" onClick={() => setConfirmDeleteOpen(false)}>
-                {t("feed:cancel")}
+                {t("common:cancel")}
               </Button>
               <Button
                 variant="destructive"
@@ -1019,11 +1019,11 @@ export function EpisodicContentModal({
         </Dialog>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => onClose?.()}>
-            {t("feed:cancel")}
+            {t("common:cancel")}
           </Button>
           <Button size="sm" className="gap-2" onClick={handleSave} disabled={isSaving}>
             <Icon icon={"lucide:save"} className="size-4" />
-            {isSaving ? t("feed:saving") : t("feed:save")}
+            {isSaving ? t("feed:saving") : t("common:saveChanges")}
           </Button>
         </div>
       </div>

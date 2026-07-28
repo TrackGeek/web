@@ -34,7 +34,7 @@ export function RefreshData({ sourceURL, onSubmit }: RefreshDataProps) {
                 setOpen(false);
               }}
             >
-              {t("feed:cancel")}
+              {t("common:cancel")}
             </Button>
             <div className="flex gap-2">
               <a href={sourceURL} target="_blank" rel="noopener">

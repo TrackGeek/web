@@ -123,10 +123,10 @@ export function ListItemsModal({ list, open, onOpenChange, editable = false }: L
                 />
                 <div className="flex gap-2">
                   <Button size="sm" onClick={handleSave} disabled={updateList.isPending || !name.trim()}>
-                    {t("user:save")}
+                    {t("common:save")}
                   </Button>
                   <Button size="sm" variant="outline" onClick={() => setEditing(false)}>
-                    {t("user:cancel")}
+                    {t("common:cancel")}
                   </Button>
                 </div>
               </div>
@@ -230,7 +230,7 @@ export function ListItemsModal({ list, open, onOpenChange, editable = false }: L
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setConfirmDeleteOpen(false)}>
-              {t("user:cancel")}
+              {t("common:cancel")}
             </Button>
             <Button variant="destructive" onClick={handleDelete} disabled={deleteList.isPending}>
               {t("user:deleteList")}

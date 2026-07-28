@@ -698,7 +698,7 @@ function TVShowDetailsPage() {
                 )}
                 {item.originalLanguage && (
                   <DetailsCard
-                    title={t("library:language")}
+                    title={t("common:language")}
                     icon={<Icon icon={"lucide:languages"} className="size-5 text-muted-foreground" />}
                     description={item.originalLanguage.toUpperCase()}
                   />

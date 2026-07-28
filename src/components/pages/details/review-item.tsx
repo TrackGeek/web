@@ -290,7 +290,7 @@ export function ReviewItem({
                   onClick={onDelete}
                   disabled={isDeleting}
                   className="flex items-center text-muted-foreground hover:text-red-500 transition-colors cursor-pointer disabled:opacity-50"
-                  aria-label={t("feed:delete")}
+                  aria-label={t("common:delete")}
                 >
                   <Icon
                     icon={isDeleting ? "lucide:loader-2" : "lucide:trash-2"}

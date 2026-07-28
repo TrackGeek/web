@@ -195,7 +195,7 @@ export function UserReviewsTab({
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" size="sm" onClick={() => setDeleting(null)}>
-              {t("user:cancel")}
+              {t("common:cancel")}
             </Button>
             <Button variant="destructive" size="sm" disabled={deleteReview.isPending} onClick={handleConfirmDelete}>
               {t("feed:removeConfirm")}

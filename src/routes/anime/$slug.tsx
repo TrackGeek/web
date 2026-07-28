@@ -213,6 +213,7 @@ function AnimeDetailsRoute() {
         animeId: anime?.id,
         status,
         ...(status === "Watching" && { startedAt: new Date() }),
+        ...(status === "Completed" && { completedAt: new Date() }),
       });
     },
     onSuccess: () => {

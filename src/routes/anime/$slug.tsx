@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -22,12 +22,15 @@ import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { EpisodicContentModal } from "@/components/shared/modals/episodic-content";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
+import { StarRating } from "@/components/shared/star-rating.tsx";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { REVIEW_CONTENT, useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
@@ -61,11 +64,6 @@ function AnimeDetailsRoute() {
   const { anime: loaderAnime } = Route.useLoaderData();
   const { t } = useTranslation();
   const [moreOpen, setMoreOpen] = useState(false);
-  const [mySeason, _setMySeason] = useState<SingleSeasonData>({
-    totalEpisodes: 12,
-    watchedEpisodes: [1, 2, 3, 4, 5],
-  });
-  const rating = 4.2;
 
   const {
     data: anime,
@@ -76,6 +74,8 @@ function AnimeDetailsRoute() {
     queryFn: () => api.get(apiEndpoints.getAnimeDetails(slug)).then(({ data }) => data.anime),
     initialData: loaderAnime,
   });
+
+  const rating = anime?.tgReviewScore ?? 0;
 
   const [episodesQuery, reviewsQuery] = useQueries({
     queries: [
@@ -109,10 +109,6 @@ function AnimeDetailsRoute() {
 
   const episodes = episodesQuery.data;
   const reviews = reviewsQuery.data;
-
-  function handleToggle(ep: number) {
-    console.log(ep);
-  }
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
@@ -192,6 +188,153 @@ function AnimeDetailsRoute() {
     onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
   });
 
+  const toggleReaction = useToggleReviewReaction("anime", userId ?? "");
+
+  const progressQuery = useQuery<AnimeProgress | null>({
+    queryKey: ["animeProgress", anime?.id, userId],
+    queryFn: () =>
+      api
+        .get(apiEndpoints.getAnimeProgress(userId as string, anime?.id as string))
+        .then(({ data }) => data.animeProgresses.items[0] ?? null),
+    enabled: isAuthenticated && !!userId && !!anime?.id,
+  });
+
+  const currentStatus = progressQuery.data?.status;
+
+  const setProgressMutation = useMutation({
+    mutationFn: (status: AnimeProgressStatus) => {
+      const current = progressQuery.data;
+
+      if (current && current.status === status) {
+        return api.delete(`${apiEndpoints.animeProgress}/${current.id}`);
+      }
+
+      return api.post(apiEndpoints.animeProgress, {
+        animeId: anime?.id,
+        status,
+        ...(status === "Watching" && { startedAt: new Date() }),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["animeProgress", anime?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["animeEpisodeWatch", anime?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["anime", slug] });
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
+
+  const episodeWatchQuery = useQuery<AnimeEpisodeWatch[]>({
+    queryKey: ["animeEpisodeWatch", anime?.id, userId],
+    queryFn: () =>
+      api
+        .get(apiEndpoints.getAnimeEpisodeWatch(userId as string, anime?.id as string))
+        .then(({ data }) => data.animeEpisodeWatch),
+    enabled: isAuthenticated && !!userId && !!anime?.id,
+  });
+
+  const watchedEpisodeNumbers = (episodeWatchQuery.data ?? [])
+    .filter((watch) => watch.status === "Completed")
+    .map((watch) => watch.episode);
+
+  const totalWatchedEpisodes = watchedEpisodeNumbers.length;
+
+  const mySeason: SingleSeasonData = {
+    totalEpisodes: anime?.numberOfEpisodes ?? 0,
+    watchedEpisodes: watchedEpisodeNumbers,
+  };
+
+  const toggleEpisodeMutation = useMutation({
+    mutationFn: ({ episode, watched }: { episode: number; watched: boolean }) => {
+      if (watched) {
+        return api.delete(apiEndpoints.animeEpisodeWatch, {
+          data: { animeId: anime?.id, episode },
+        });
+      }
+
+      return api.post(apiEndpoints.animeEpisodeWatch, {
+        animeId: anime?.id,
+        episodes: [{ episode, status: "Completed" }],
+      });
+    },
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: ["animeEpisodeWatch", anime?.id, userId] });
+    },
+    onError: () => {
+      return toast.error(t("api:INTERNAL_SERVER_ERROR"));
+    },
+  });
+
+  function handleToggle(episode: number) {
+    toggleEpisodeMutation.mutate({ episode, watched: watchedEpisodeNumbers.includes(episode) });
+  }
+
+  const favoriteQuery = useQuery<boolean>({
+    queryKey: ["animeFavorite", anime?.id, userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetFavoriteStatusResponse>(apiEndpoints.getFavoriteStatus, {
+          params: { type: "Anime", animeId: anime?.id },
+        })
+        .then(({ data }) => data.favorited),
+    enabled: isAuthenticated && !!userId && !!anime?.id,
+  });
+
+  const isFavorited = !!favoriteQuery.data;
+
+  const toggleFavoriteMutation = useMutation({
+    mutationFn: () => {
+      const body = { type: "Anime", animeId: anime?.id };
+
+      return isFavorited
+        ? api.delete(apiEndpoints.removeFavorite, { data: body })
+        : api.post(apiEndpoints.addFavorite, body);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["animeFavorite", anime?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    },
+    onError: () => {
+      queryClient.invalidateQueries({ queryKey: ["animeFavorite", anime?.id, userId] });
+      return toast.error(t("api:INTERNAL_SERVER_ERROR"));
+    },
+  });
+
+  const progressButtons = [
+    {
+      status: "Planning" as const,
+      label: t("feed:lists.planning"),
+      icon: "lucide:bookmark",
+      hoverBorder: "hover:border-purple-400",
+      hoverBg: "hover:bg-purple-400/20",
+      iconBg: "bg-linear-to-r from-purple-500/20 to-violet-500/20",
+      iconBorder: "border-purple-500/30",
+      iconColor: "text-purple-400",
+      activeClass: "border-purple-400 bg-purple-400/20",
+    },
+    {
+      status: "Watching" as const,
+      label: t("feed:lists.watching"),
+      icon: "lucide:tv-minimal-play",
+      hoverBorder: "hover:border-primary",
+      hoverBg: "hover:bg-primary/20",
+      iconBg: "bg-linear-to-r from-primary/20 to-secondary/20",
+      iconBorder: "border-primary/30",
+      iconColor: "text-primary",
+      activeClass: "border-primary bg-primary/20",
+    },
+    {
+      status: "Completed" as const,
+      label: t("feed:lists.completed"),
+      icon: "lucide:check-square",
+      hoverBorder: "hover:border-chart-3",
+      hoverBg: "hover:bg-chart-3/20",
+      iconBg: "bg-linear-to-r from-chart-3/20 to-amber-500/20",
+      iconBorder: "border-chart-3/30",
+      iconColor: "text-chart-3",
+      activeClass: "border-chart-3 bg-chart-3/20",
+    },
+  ] as const;
+
   if (isLoading) return <LoadingDetails />;
   if (isError || !anime) return <ErrorComponent />;
 
@@ -206,35 +349,21 @@ function AnimeDetailsRoute() {
       {isAuthenticated && (
         <>
           <QuickStatusButtons
-            buttons={[
-              {
-                label: t("feed:lists.planning"),
-                icon: "lucide:bookmark",
-                hoverBorder: "hover:border-purple-400",
-                hoverBg: "hover:bg-purple-400/20",
-                iconBg: "bg-linear-to-r from-purple-500/20 to-violet-500/20",
-                iconBorder: "border-purple-500/30",
-                iconColor: "text-purple-400",
-              },
-              {
-                label: t("feed:lists.watching"),
-                icon: "lucide:tv-minimal-play",
-                hoverBorder: "hover:border-primary",
-                hoverBg: "hover:bg-primary/20",
-                iconBg: "bg-linear-to-r from-primary/20 to-secondary/20",
-                iconBorder: "border-primary/30",
-                iconColor: "text-primary",
-              },
-              {
-                label: t("feed:lists.completed"),
-                icon: "lucide:check-square",
-                hoverBorder: "hover:border-chart-3",
-                hoverBg: "hover:bg-chart-3/20",
-                iconBg: "bg-linear-to-r from-chart-3/20 to-amber-500/20",
-                iconBorder: "border-chart-3/30",
-                iconColor: "text-chart-3",
-              },
-            ]}
+            buttons={
+              progressButtons.map((button) => ({
+                label: button.label,
+                icon: button.icon,
+                hoverBorder: button.hoverBorder,
+                hoverBg: button.hoverBg,
+                iconBg: button.iconBg,
+                iconBorder: button.iconBorder,
+                iconColor: button.iconColor,
+                activeClass: button.activeClass,
+                isActive: currentStatus === button.status,
+                disabled: setProgressMutation.isPending,
+                onClick: () => setProgressMutation.mutate(button.status),
+              })) as Parameters<typeof QuickStatusButtons>[0]["buttons"]
+            }
           />
           <MoreOptionsDialog
             title={anime.title}
@@ -245,8 +374,18 @@ function AnimeDetailsRoute() {
             triggerLabel={t("library:moreOptions")}
             open={moreOpen}
             onOpenChange={setMoreOpen}
+            isFavorited={isFavorited}
+            onToggleFavorite={() => toggleFavoriteMutation.mutate()}
+            favoriteDisabled={toggleFavoriteMutation.isPending || favoriteQuery.isFetching}
           >
-            <EpisodicContentModal />
+            <EpisodicContentModal
+              mediaType="anime"
+              animeId={anime.id}
+              slug={slug}
+              totalEpisodes={anime.numberOfEpisodes ?? 0}
+              watchedEpisodes={totalWatchedEpisodes}
+              onClose={() => setMoreOpen(false)}
+            />
           </MoreOptionsDialog>
         </>
       )}
@@ -360,13 +499,7 @@ function AnimeDetailsRoute() {
         <div className="flex flex-wrap items-center gap-6 border-b border-border pb-5">
           {!reviewsQuery.isLoading && !reviewsQuery.isError && reviews?.total >= 1 && (
             <div className="flex items-center gap-2">
-              <div className="flex">
-                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-                <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
-              </div>
+              <StarRating value={rating} className="mr-1" />
               <span className="font-semibold text-card-foreground">{rating}</span>
               <span className="text-muted-foreground">
                 ({reviews?.total ?? 0} {t("library:reviews")})
@@ -445,24 +578,54 @@ function AnimeDetailsRoute() {
                   <DetailsCard
                     title={t("library:studios")}
                     icon={<Icon icon={"lucide:building-2"} className="size-5 text-muted-foreground" />}
-                    description={anime.studios.map((st: { name: string; malId: number }, index: number) => (
-                      <Link to="/" key={st.malId} search={{ landing: "true" }}>
-                        {st.name}
-                        {index < anime.studios.length - 1 && ", "}
-                      </Link>
-                    ))}
+                    description={
+                      <span className="flex min-w-0 items-center gap-1.5">
+                        <span className="truncate">{anime.studios[0].name}</span>
+                        {anime.studios.length > 1 && (
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="shrink-0 cursor-default rounded-md bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
+                                +{anime.studios.length - 1}
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <ul className="flex flex-col gap-0.5">
+                                {anime.studios.slice(1).map((st: { name: string; malId: number }) => (
+                                  <li key={st.malId}>{st.name}</li>
+                                ))}
+                              </ul>
+                            </TooltipContent>
+                          </Tooltip>
+                        )}
+                      </span>
+                    }
                   />
                 )}
                 {anime.producers.length >= 1 && (
                   <DetailsCard
                     title={t("library:producers")}
                     icon={<Icon icon={"lucide:languages"} className="size-5 text-muted-foreground" />}
-                    description={anime.producers.map((pd: { name: string; malId: number }, index: number) => (
-                      <Link to="/" key={pd.malId} search={{ landing: "true" }}>
-                        {pd.name}
-                        {index < anime.producers.length - 1 && ", "}
-                      </Link>
-                    ))}
+                    description={
+                      <span className="flex min-w-0 items-center gap-1.5">
+                        <span className="truncate">{anime.producers[0].name}</span>
+                        {anime.producers.length > 1 && (
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="shrink-0 cursor-default rounded-md bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
+                                +{anime.producers.length - 1}
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <ul className="flex flex-col gap-0.5">
+                                {anime.producers.slice(1).map((pd: { name: string; malId: number }) => (
+                                  <li key={pd.malId}>{pd.name}</li>
+                                ))}
+                              </ul>
+                            </TooltipContent>
+                          </Tooltip>
+                        )}
+                      </span>
+                    }
                   />
                 )}
               </Grid>
@@ -485,25 +648,25 @@ function AnimeDetailsRoute() {
                     label: t("feed:lists.planning"),
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
-                    value: "5%",
+                    value: `${anime.progressStats?.planToWatch?.percentage ?? 0}%`,
                   },
                   {
                     label: t("feed:lists.watching"),
                     icon: "lucide:tv-minimal-play",
                     iconClass: "text-chart-1",
-                    value: "15%",
+                    value: `${anime.progressStats?.watching?.percentage ?? 0}%`,
                   },
                   {
                     label: t("feed:lists.completed"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
-                    value: "72%",
+                    value: `${anime.progressStats?.completed?.percentage ?? 0}%`,
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
-                    value: "8%",
+                    value: `${anime.progressStats?.dropped?.percentage ?? 0}%`,
                   },
                 ]}
               />
@@ -655,22 +818,7 @@ function AnimeDetailsRoute() {
             </Button>
           )}
         </div>
-        {!reviewsQuery.isLoading && !reviewsQuery.isError && (reviews?.total ?? 0) >= 1 ? (
-          <ReviewItem
-            user={
-              {
-                name: "John Doe",
-                avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
-                slug: "john-doe",
-              } as unknown as ApiTypes.User
-            }
-            reviewText={
-              "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
-            }
-            criteries={{ language: 5, characters: 4, all: 10, story: 8, theme: 9 }}
-            date={new Date("2023-06-19")}
-          />
-        ) : (
+        {!reviews || reviews.items.length === 0 ? (
           <Empty className="border-0">
             <EmptyHeader>
               <EmptyMedia variant="icon">
@@ -680,8 +828,44 @@ function AnimeDetailsRoute() {
               <EmptyDescription>{t("library:noReviewsDescription")}</EmptyDescription>
             </EmptyHeader>
           </Empty>
+        ) : (
+          <div className="flex flex-col divide-y divide-border/30">
+            {reviews.items.map((review: ApiTypes.Review) => (
+              <ReviewItem
+                key={review.id}
+                user={review.user}
+                reviewText={review.summary ?? ""}
+                notes={review.notes}
+                date={new Date(review.createdAt)}
+                criteries={REVIEW_CONTENT.anime.mapCriteries(review)}
+                reviewId={review.id}
+                reactions={review.reactions}
+                onReact={(emoji, currentReaction) =>
+                  toggleReaction.mutate(
+                    { reviewId: review.id, currentReaction, emoji },
+                    { onSuccess: () => queryClient.invalidateQueries({ queryKey: ["animeReviews", anime.id] }) },
+                  )
+                }
+                isReacting={toggleReaction.isPending && toggleReaction.variables?.reviewId === review.id}
+              />
+            ))}
+          </div>
         )}
       </div>
     </>
   );
+}
+
+type AnimeProgressStatus = "Planning" | "Watching" | "Completed";
+
+interface AnimeProgress {
+  id: string;
+  status: AnimeProgressStatus;
+  animeId: string;
+  userId: string;
+}
+
+interface AnimeEpisodeWatch {
+  episode: number;
+  status: string;
 }

@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import type { TFunction } from "i18next";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -66,16 +66,139 @@ function createReviewSchema(t: TFunction) {
     direction: z.string(),
     production: z.string(),
     acting: z.string(),
+    story: z.string(),
+    characters: z.string(),
+    animation: z.string(),
+    sound: z.string(),
+    enjoyment: z.string(),
     summary: z.string().trim().max(SUMMARY_MAX_LENGTH, t("feed:review.errors.summaryMax")),
     notes: z.string().trim().max(REVIEW_NOTES_MAX_LENGTH, t("feed:review.errors.notesMax")),
-    story: z.string().trim().max(STORY_MAX_LENGTH, t("feed:review.errors.storyMax")),
+    storyText: z.string().trim().max(STORY_MAX_LENGTH, t("feed:review.errors.storyMax")),
     recommended: z.boolean(),
   });
 }
 
 type ReviewFormData = z.infer<ReturnType<typeof createReviewSchema>>;
 
-interface TVShowProgressData {
+const DEFAULT_REVIEW_VALUES: ReviewFormData = {
+  overall: "0",
+  direction: "0",
+  production: "0",
+  acting: "0",
+  story: "0",
+  characters: "0",
+  animation: "0",
+  sound: "0",
+  enjoyment: "0",
+  summary: "",
+  notes: "",
+  storyText: "",
+  recommended: false,
+};
+
+type MediaType = "tv" | "anime";
+
+interface ReviewCriterion {
+  name: keyof ReviewFormData;
+  labelKey: string;
+}
+
+interface MediaConfig {
+  idKey: "tvShowId" | "animeId";
+  listType: "TVShow" | "Anime";
+  hasSeasons: boolean;
+  hasProgressNotes: boolean;
+  hasStoryText: boolean;
+  progressEndpoint: string;
+  getProgress: (userId: string, id: string) => string;
+  progressResponseKey: "tvShowProgresses" | "animeProgresses";
+  reviewEndpoint: string;
+  reviewsResponseKey: "tvShowReviews" | "animeReviews";
+  episodeWatchEndpoint: string;
+  episodeWatchAllEndpoint: string;
+  getEpisodeWatch: (userId: string, id: string) => string;
+  episodeWatchResponseKey: "tvShowEpisodeWatch" | "animeEpisodeWatch";
+  reviewCriteria: ReviewCriterion[];
+  keys: {
+    progress: string;
+    review: string;
+    reviews: string;
+    episodeWatch: string;
+    lists: string;
+    listStatus: string;
+    containingLists: string;
+    root: string;
+  };
+}
+
+const MEDIA_CONFIG: Record<MediaType, MediaConfig> = {
+  tv: {
+    idKey: "tvShowId",
+    listType: "TVShow",
+    hasSeasons: true,
+    hasProgressNotes: true,
+    hasStoryText: true,
+    progressEndpoint: apiEndpoints.tvShowProgress,
+    getProgress: apiEndpoints.getTvShowProgress,
+    progressResponseKey: "tvShowProgresses",
+    reviewEndpoint: apiEndpoints.tvShowReview,
+    reviewsResponseKey: "tvShowReviews",
+    episodeWatchEndpoint: apiEndpoints.tvShowEpisodeWatch,
+    episodeWatchAllEndpoint: apiEndpoints.tvShowEpisodeWatchAll,
+    getEpisodeWatch: apiEndpoints.getTvShowEpisodeWatch,
+    episodeWatchResponseKey: "tvShowEpisodeWatch",
+    reviewCriteria: [
+      { name: "direction", labelKey: "feed:criteries.direction" },
+      { name: "production", labelKey: "feed:criteries.production" },
+      { name: "acting", labelKey: "feed:criteries.acting" },
+    ],
+    keys: {
+      progress: "tvProgress",
+      review: "tvReview",
+      reviews: "tvReviews",
+      episodeWatch: "tvEpisodeWatch",
+      lists: "tvLists",
+      listStatus: "tvListStatus",
+      containingLists: "tvContainingLists",
+      root: "tv",
+    },
+  },
+  anime: {
+    idKey: "animeId",
+    listType: "Anime",
+    hasSeasons: false,
+    hasProgressNotes: false,
+    hasStoryText: false,
+    progressEndpoint: apiEndpoints.animeProgress,
+    getProgress: apiEndpoints.getAnimeProgress,
+    progressResponseKey: "animeProgresses",
+    reviewEndpoint: apiEndpoints.animeReview,
+    reviewsResponseKey: "animeReviews",
+    episodeWatchEndpoint: apiEndpoints.animeEpisodeWatch,
+    episodeWatchAllEndpoint: apiEndpoints.animeEpisodeWatchAll,
+    getEpisodeWatch: apiEndpoints.getAnimeEpisodeWatch,
+    episodeWatchResponseKey: "animeEpisodeWatch",
+    reviewCriteria: [
+      { name: "story", labelKey: "feed:criteries.story" },
+      { name: "characters", labelKey: "feed:criteries.characters" },
+      { name: "animation", labelKey: "feed:criteries.animation" },
+      { name: "sound", labelKey: "feed:criteries.soundtrack" },
+      { name: "enjoyment", labelKey: "feed:criteries.enjoyment" },
+    ],
+    keys: {
+      progress: "animeProgress",
+      review: "animeReview",
+      reviews: "animeReviews",
+      episodeWatch: "animeEpisodeWatch",
+      lists: "animeLists",
+      listStatus: "animeListStatus",
+      containingLists: "animeContainingLists",
+      root: "anime",
+    },
+  },
+};
+
+interface MediaProgressData {
   id: string;
   status: ProgressStatus;
   watchCount: number | null;
@@ -84,8 +207,26 @@ interface TVShowProgressData {
   completedAt: string | null;
 }
 
+interface MediaReviewData {
+  id: string;
+  overall: number | string;
+  direction?: number | string | null;
+  production?: number | string | null;
+  acting?: number | string | null;
+  story?: number | string | null;
+  characters?: number | string | null;
+  animation?: number | string | null;
+  sound?: number | string | null;
+  enjoyment?: number | string | null;
+  summary: string | null;
+  notes: string | null;
+  recommended: boolean | null;
+}
+
 interface EpisodicContentModalProps {
+  mediaType?: MediaType;
   tvShowId?: string;
+  animeId?: string;
   slug?: string;
   totalEpisodes?: number;
   watchedEpisodes?: number;
@@ -98,13 +239,20 @@ interface SeasonDetails {
 }
 
 interface EpisodeWatch {
-  season: number;
+  season?: number;
   episode: number;
   status: string;
 }
 
+interface OrderedEpisode {
+  season?: number;
+  episode: number;
+}
+
 export function EpisodicContentModal({
+  mediaType = "tv",
   tvShowId,
+  animeId,
   slug,
   totalEpisodes = 0,
   watchedEpisodes = 0,
@@ -114,7 +262,15 @@ export function EpisodicContentModal({
   const queryClient = useQueryClient();
   const session = useSession();
   const userId = session?.data?.user?.id;
-  const enabled = !!userId && !!tvShowId;
+
+  const cfg = MEDIA_CONFIG[mediaType];
+  const mediaId = mediaType === "anime" ? animeId : tvShowId;
+  const enabled = !!userId && !!mediaId;
+
+  const episodeKey = useCallback(
+    (season: number | undefined, episode: number) => (cfg.hasSeasons ? `${season}-${episode}` : `${episode}`),
+    [cfg.hasSeasons],
+  );
 
   const progressSchema = useMemo(() => createProgressSchema(t), [t]);
 
@@ -136,49 +292,40 @@ export function EpisodicContentModal({
 
   const reviewForm = useForm<ReviewFormData>({
     resolver: zodResolver(reviewSchema),
-    defaultValues: {
-      overall: "0",
-      direction: "0",
-      production: "0",
-      acting: "0",
-      summary: "",
-      notes: "",
-      story: "",
-      recommended: false,
-    },
+    defaultValues: DEFAULT_REVIEW_VALUES,
   });
 
   const summary = reviewForm.watch("summary") ?? "";
-  const story = reviewForm.watch("story") ?? "";
+  const storyText = reviewForm.watch("storyText") ?? "";
   const reviewNotes = reviewForm.watch("notes") ?? "";
 
   const [newListInput, setNewListInput] = useState<string | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
-  const progressQuery = useQuery<TVShowProgressData | null>({
-    queryKey: ["tvProgress", tvShowId, userId],
+  const progressQuery = useQuery<MediaProgressData | null>({
+    queryKey: [cfg.keys.progress, mediaId, userId],
     queryFn: () =>
       api
-        .get(apiEndpoints.getTvShowProgress(userId as string, tvShowId as string))
-        .then(({ data }) => data.tvShowProgresses.items[0] ?? null),
+        .get(cfg.getProgress(userId as string, mediaId as string))
+        .then(({ data }) => data[cfg.progressResponseKey].items[0] ?? null),
     enabled,
   });
 
-  const reviewQuery = useQuery<ApiTypes.TVShowReview | null>({
-    queryKey: ["tvReview", tvShowId, userId],
+  const reviewQuery = useQuery<MediaReviewData | null>({
+    queryKey: [cfg.keys.review, mediaId, userId],
     queryFn: () =>
       api
-        .get<ApiTypes.GetTVShowReviewsResponse>(`${apiEndpoints.tvShowReview}/?tvShowId=${tvShowId}&userId=${userId}`)
-        .then(({ data }) => data.tvShowReviews.items[0] ?? null),
+        .get(`${cfg.reviewEndpoint}/?${cfg.idKey}=${mediaId}&userId=${userId}`)
+        .then(({ data }) => data[cfg.reviewsResponseKey].items[0] ?? null),
     enabled,
   });
 
   const listsQuery = useQuery<ApiTypes.List[]>({
-    queryKey: ["tvLists", userId],
+    queryKey: [cfg.keys.lists, userId],
     queryFn: () =>
       api
         .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId as string), {
-          params: { type: "TVShow", itemsPerPage: 50 },
+          params: { type: cfg.listType, itemsPerPage: 50 },
         })
         .then(({ data }) => data.lists.items),
     enabled,
@@ -187,11 +334,11 @@ export function EpisodicContentModal({
   const lists = listsQuery.data ?? [];
 
   const listStatusQuery = useQuery<string[]>({
-    queryKey: ["tvListStatus", tvShowId, userId],
+    queryKey: [cfg.keys.listStatus, mediaId, userId],
     queryFn: () =>
       api
         .get<ApiTypes.GetListStatusResponse>(apiEndpoints.getListStatus, {
-          params: { type: "TVShow", tvShowId },
+          params: { type: cfg.listType, [cfg.idKey]: mediaId },
         })
         .then(({ data }) => data.listIds),
     enabled,
@@ -204,36 +351,38 @@ export function EpisodicContentModal({
   const seasonsQuery = useQuery<SeasonDetails[]>({
     queryKey: ["tvSeason", slug],
     queryFn: () => api.get(apiEndpoints.getTvShowSeasonDetails(slug as string)).then(({ data }) => data.seasons),
-    enabled: !!slug,
+    enabled: cfg.hasSeasons && !!slug,
   });
 
   const episodeWatchQuery = useQuery<EpisodeWatch[]>({
-    queryKey: ["tvEpisodeWatch", tvShowId, userId],
+    queryKey: [cfg.keys.episodeWatch, mediaId, userId],
     queryFn: () =>
       api
-        .get(apiEndpoints.getTvShowEpisodeWatch(userId as string, tvShowId as string))
-        .then(({ data }) => data.tvShowEpisodeWatch),
+        .get(cfg.getEpisodeWatch(userId as string, mediaId as string))
+        .then(({ data }) => data[cfg.episodeWatchResponseKey]),
     enabled,
   });
 
-  const orderedEpisodes = useMemo(
-    () =>
-      (seasonsQuery.data ?? [])
-        .filter((season) => season.numberOfEpisodes > 0 && season.seasonNumber > 0)
-        .sort((a, b) => a.seasonNumber - b.seasonNumber)
-        .flatMap((season) =>
-          Array.from({ length: season.numberOfEpisodes }, (_, i) => ({ season: season.seasonNumber, episode: i + 1 })),
-        ),
-    [seasonsQuery.data],
-  );
+  const orderedEpisodes = useMemo<OrderedEpisode[]>(() => {
+    if (!cfg.hasSeasons) {
+      return Array.from({ length: totalEpisodes }, (_, i) => ({ episode: i + 1 }));
+    }
+
+    return (seasonsQuery.data ?? [])
+      .filter((season) => season.numberOfEpisodes > 0 && season.seasonNumber > 0)
+      .sort((a, b) => a.seasonNumber - b.seasonNumber)
+      .flatMap((season) =>
+        Array.from({ length: season.numberOfEpisodes }, (_, i) => ({ season: season.seasonNumber, episode: i + 1 })),
+      );
+  }, [cfg.hasSeasons, seasonsQuery.data, totalEpisodes]);
 
   const watchedSet = useMemo(() => {
     const set = new Set<string>();
     for (const watch of episodeWatchQuery.data ?? []) {
-      if (watch.status === "Completed") set.add(`${watch.season}-${watch.episode}`);
+      if (watch.status === "Completed") set.add(episodeKey(watch.season, watch.episode));
     }
     return set;
-  }, [episodeWatchQuery.data]);
+  }, [episodeWatchQuery.data, episodeKey]);
 
   const [episodeInput, setEpisodeInput] = useState(String(watchedEpisodes));
 
@@ -245,28 +394,34 @@ export function EpisodicContentModal({
     mutationFn: async (target: number) => {
       const clamped = Math.max(0, Math.min(target, orderedEpisodes.length));
 
-      const toAdd = orderedEpisodes.slice(0, clamped).filter((e) => !watchedSet.has(`${e.season}-${e.episode}`));
-      const toRemove = orderedEpisodes.slice(clamped).filter((e) => watchedSet.has(`${e.season}-${e.episode}`));
+      const toAdd = orderedEpisodes.slice(0, clamped).filter((e) => !watchedSet.has(episodeKey(e.season, e.episode)));
+      const toRemove = orderedEpisodes.slice(clamped).filter((e) => watchedSet.has(episodeKey(e.season, e.episode)));
 
       if (toAdd.length > 0) {
-        await api.post(apiEndpoints.tvShowEpisodeWatch, {
-          tvShowId,
-          episodes: toAdd.map((e) => ({ season: e.season, episode: e.episode, status: "Completed" })),
+        await api.post(cfg.episodeWatchEndpoint, {
+          [cfg.idKey]: mediaId,
+          episodes: toAdd.map((e) =>
+            cfg.hasSeasons
+              ? { season: e.season, episode: e.episode, status: "Completed" }
+              : { episode: e.episode, status: "Completed" },
+          ),
         });
       }
 
       await Promise.all(
         toRemove.map((e) =>
-          api.delete(apiEndpoints.tvShowEpisodeWatch, {
-            data: { tvShowId, season: e.season, episode: e.episode },
+          api.delete(cfg.episodeWatchEndpoint, {
+            data: cfg.hasSeasons
+              ? { [cfg.idKey]: mediaId, season: e.season, episode: e.episode }
+              : { [cfg.idKey]: mediaId, episode: e.episode },
           }),
         ),
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tvEpisodeWatch", tvShowId, userId] });
-      queryClient.invalidateQueries({ queryKey: ["tvProgress", tvShowId, userId] });
-      queryClient.invalidateQueries({ queryKey: ["tv"] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.episodeWatch, mediaId, userId] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.progress, mediaId, userId] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.root] });
     },
     onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
   });
@@ -301,75 +456,106 @@ export function EpisodicContentModal({
     const review = reviewQuery.data;
     if (!review) return;
 
-    reviewForm.reset({
+    const values: ReviewFormData = {
+      ...DEFAULT_REVIEW_VALUES,
       overall: String(Number(review.overall)),
-      direction: review.direction != null ? String(Number(review.direction)) : "0",
-      production: review.production != null ? String(Number(review.production)) : "0",
-      acting: review.acting != null ? String(Number(review.acting)) : "0",
       summary: review.summary ?? "",
       notes: review.notes ?? "",
-      story: review.story ?? "",
       recommended: !!review.recommended,
-    });
-  }, [reviewQuery.data, reviewForm.reset]);
+    };
+
+    for (const criterion of cfg.reviewCriteria) {
+      const raw = review[criterion.name as keyof MediaReviewData];
+      values[criterion.name] = raw != null ? String(Number(raw)) : "0";
+    }
+
+    if (cfg.hasStoryText) {
+      values.storyText = (review.story as string | null) ?? "";
+    }
+
+    reviewForm.reset(values);
+  }, [reviewQuery.data, reviewForm.reset, cfg.hasStoryText, cfg.reviewCriteria]);
 
   const invalidateProgress = () => {
-    queryClient.invalidateQueries({ queryKey: ["tvProgress", tvShowId, userId] });
-    queryClient.invalidateQueries({ queryKey: ["tvEpisodeWatch", tvShowId, userId] });
-    queryClient.invalidateQueries({ queryKey: ["tv"] });
+    queryClient.invalidateQueries({ queryKey: [cfg.keys.progress, mediaId, userId] });
+    queryClient.invalidateQueries({ queryKey: [cfg.keys.episodeWatch, mediaId, userId] });
+    queryClient.invalidateQueries({ queryKey: [cfg.keys.root] });
   };
 
   const saveProgressMutation = useMutation({
     mutationFn: (data: ProgressFormData) => {
       const status = STATUS_TO_ENUM[data.status];
 
-      return api.post(apiEndpoints.tvShowProgress, {
-        tvShowId,
+      const body: Record<string, unknown> = {
+        [cfg.idKey]: mediaId,
         status,
         watchCount: data.watchCount ? Number(data.watchCount) : undefined,
-        notes: data.notes.trim() || undefined,
         startedAt: data.startDate ?? undefined,
         completedAt: status === "Completed" ? (data.finishDate ?? new Date()) : (data.finishDate ?? undefined),
-      });
+      };
+
+      if (cfg.hasProgressNotes) {
+        body.notes = data.notes.trim() || undefined;
+      }
+
+      return api.post(cfg.progressEndpoint, body);
     },
     onSuccess: invalidateProgress,
   });
 
   const saveReviewMutation = useMutation({
     mutationFn: (data: ReviewFormData) => {
-      const body = {
-        tvShowId,
+      const body: Record<string, unknown> = {
+        [cfg.idKey]: mediaId,
         overall: Number(data.overall),
-        direction: Number(data.direction) || undefined,
-        production: Number(data.production) || undefined,
-        acting: Number(data.acting) || undefined,
         summary: data.summary.trim() || undefined,
         notes: data.notes.trim() || undefined,
-        story: data.story.trim() || undefined,
         recommended: data.recommended,
       };
 
+      for (const criterion of cfg.reviewCriteria) {
+        body[criterion.name] = Number(data[criterion.name]) || undefined;
+      }
+
+      if (cfg.hasStoryText) {
+        body.story = data.storyText.trim() || undefined;
+      }
+
       const existing = reviewQuery.data;
 
-      return existing
-        ? api.patch(`${apiEndpoints.tvShowReview}/${existing.id}`, body)
-        : api.post(apiEndpoints.tvShowReview, body);
+      return existing ? api.patch(`${cfg.reviewEndpoint}/${existing.id}`, body) : api.post(cfg.reviewEndpoint, body);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tvReview", tvShowId, userId] });
-      queryClient.invalidateQueries({ queryKey: ["tvReviews", tvShowId] });
-      queryClient.invalidateQueries({ queryKey: ["tv"] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.review, mediaId, userId] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.reviews, mediaId] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.root] });
     },
   });
 
   const deleteProgressMutation = useMutation({
-    mutationFn: () => api.delete(apiEndpoints.resetTvShowTracking(tvShowId as string)),
+    mutationFn: async () => {
+      if (mediaType === "tv") {
+        return api.delete(apiEndpoints.resetTvShowTracking(mediaId as string));
+      }
+
+      const ops: Promise<unknown>[] = [api.delete(cfg.episodeWatchAllEndpoint, { data: { [cfg.idKey]: mediaId } })];
+
+      if (progressQuery.data) {
+        ops.push(api.delete(`${cfg.progressEndpoint}/${progressQuery.data.id}`));
+      }
+
+      if (reviewQuery.data) {
+        ops.push(api.delete(`${cfg.reviewEndpoint}/${reviewQuery.data.id}`));
+      }
+
+      await Promise.all(ops);
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tvProgress", tvShowId, userId] });
-      queryClient.invalidateQueries({ queryKey: ["tvReview", tvShowId, userId] });
-      queryClient.invalidateQueries({ queryKey: ["tvEpisodeWatch", tvShowId, userId] });
-      queryClient.invalidateQueries({ queryKey: ["tvReviews", tvShowId] });
-      queryClient.invalidateQueries({ queryKey: ["tv"] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.progress, mediaId, userId] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.review, mediaId, userId] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.episodeWatch, mediaId, userId] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.reviews, mediaId] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.root] });
       setConfirmDeleteOpen(false);
       onClose?.();
     },
@@ -378,23 +564,23 @@ export function EpisodicContentModal({
 
   const toggleListMutation = useMutation({
     mutationFn: ({ listId, isMember }: { listId: string; isMember: boolean }) => {
-      const body = { type: "TVShow", listId, userId, tvShowId };
+      const body = { type: cfg.listType, listId, userId, [cfg.idKey]: mediaId };
 
       return isMember
         ? api.delete(apiEndpoints.listItem(listId), { data: body })
         : api.post(apiEndpoints.listItem(listId), body);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tvListStatus", tvShowId, userId] });
-      queryClient.invalidateQueries({ queryKey: ["tvContainingLists", tvShowId] });
-      queryClient.invalidateQueries({ queryKey: ["tv"] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.listStatus, mediaId, userId] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.containingLists, mediaId] });
+      queryClient.invalidateQueries({ queryKey: [cfg.keys.root] });
     },
     onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
   });
 
   const createListMutation = useMutation({
-    mutationFn: (name: string) => api.post(apiEndpoints.list, { name, userId, type: "TVShow" }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tvLists", userId] }),
+    mutationFn: (name: string) => api.post(apiEndpoints.list, { name, userId, type: cfg.listType }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [cfg.keys.lists, userId] }),
     onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
   });
 
@@ -409,7 +595,7 @@ export function EpisodicContentModal({
   const handleSave = async () => {
     const progress = progressForm.getValues();
 
-    if (!tvShowId || !progress.status) {
+    if (!mediaId || !progress.status) {
       onClose?.();
       return;
     }
@@ -586,29 +772,37 @@ export function EpisodicContentModal({
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="bg-muted/30 rounded-lg h-72 p-4 border border-border/50 flex flex-col">
-            <h3 className="font-semibold text-foreground mb-3">{t("feed:notes")}</h3>
-            <Textarea
-              placeholder={t("feed:notesPlaceholder")}
-              className="flex-1 bg-background resize-none"
-              maxLength={PROGRESS_NOTES_MAX_LENGTH}
-              aria-invalid={Boolean(progressForm.formState.errors.notes)}
-              aria-label={t("feed:notes")}
-              {...progressForm.register("notes")}
-            />
-            <div className="flex items-center justify-between gap-2 mt-2">
-              {progressForm.formState.errors.notes?.message ? (
-                <FieldError>{progressForm.formState.errors.notes.message}</FieldError>
-              ) : (
-                <span />
-              )}
-              <span className="text-xs text-muted-foreground">
-                {progressNotes.length}/{PROGRESS_NOTES_MAX_LENGTH}
-              </span>
+          {cfg.hasProgressNotes && (
+            <div className="bg-muted/30 rounded-lg h-72 p-4 border border-border/50 flex flex-col">
+              <h3 className="font-semibold text-foreground mb-3">{t("feed:notes")}</h3>
+              <Textarea
+                placeholder={t("feed:notesPlaceholder")}
+                className="flex-1 bg-background resize-none"
+                maxLength={PROGRESS_NOTES_MAX_LENGTH}
+                aria-invalid={Boolean(progressForm.formState.errors.notes)}
+                aria-label={t("feed:notes")}
+                {...progressForm.register("notes")}
+              />
+              <div className="flex items-center justify-between gap-2 mt-2">
+                {progressForm.formState.errors.notes?.message ? (
+                  <FieldError>{progressForm.formState.errors.notes.message}</FieldError>
+                ) : (
+                  <span />
+                )}
+                <span className="text-xs text-muted-foreground">
+                  {progressNotes.length}/{PROGRESS_NOTES_MAX_LENGTH}
+                </span>
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className="bg-muted/30 rounded-lg p-4 border border-border/50 flex flex-col h-55">
+          <div
+            className={
+              cfg.hasProgressNotes
+                ? "bg-muted/30 rounded-lg p-4 border border-border/50 flex flex-col h-55"
+                : "bg-muted/30 rounded-lg p-4 border border-border/50 flex flex-col flex-1 min-h-[18rem]"
+            }
+          >
             <div className="flex items-center justify-between mb-3 shrink-0">
               <h3 className="font-semibold text-foreground">{t("feed:customLists")}</h3>
               <Button variant="ghost" size="sm" className="h-6 px-2" onClick={() => setNewListInput("")}>
@@ -677,54 +871,24 @@ export function EpisodicContentModal({
                   )}
                 />
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{t("feed:criteries.direction")}</span>
-                <Controller
-                  control={reviewForm.control}
-                  name="direction"
-                  render={({ field }) => (
-                    <RatingGroupAdvanced
-                      max={5}
-                      allowHalf
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      allowClear
-                    />
-                  )}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{t("feed:criteries.production")}</span>
-                <Controller
-                  control={reviewForm.control}
-                  name="production"
-                  render={({ field }) => (
-                    <RatingGroupAdvanced
-                      max={5}
-                      allowHalf
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      allowClear
-                    />
-                  )}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{t("feed:criteries.acting")}</span>
-                <Controller
-                  control={reviewForm.control}
-                  name="acting"
-                  render={({ field }) => (
-                    <RatingGroupAdvanced
-                      max={5}
-                      allowHalf
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      allowClear
-                    />
-                  )}
-                />
-              </div>
+              {cfg.reviewCriteria.map((criterion) => (
+                <div key={criterion.name} className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{t(criterion.labelKey)}</span>
+                  <Controller
+                    control={reviewForm.control}
+                    name={criterion.name}
+                    render={({ field }) => (
+                      <RatingGroupAdvanced
+                        max={5}
+                        allowHalf
+                        value={field.value as string}
+                        onValueChange={field.onChange}
+                        allowClear
+                      />
+                    )}
+                  />
+                </div>
+              ))}
             </div>
             <Field>
               <FieldLabel htmlFor="summary" className="text-sm font-medium">
@@ -774,30 +938,32 @@ export function EpisodicContentModal({
                 </span>
               </div>
             </Field>
-            <Field>
-              <FieldLabel htmlFor="story" className="text-sm font-medium">
-                {t("feed:story")}
-              </FieldLabel>
-              <Textarea
-                id="story"
-                placeholder={t("feed:storyPlaceholder")}
-                className="bg-background resize-none min-h-25"
-                maxLength={STORY_MAX_LENGTH}
-                aria-invalid={Boolean(reviewForm.formState.errors.story)}
-                aria-label={t("feed:story")}
-                {...reviewForm.register("story")}
-              />
-              <div className="flex items-center justify-between gap-2">
-                {reviewForm.formState.errors.story?.message ? (
-                  <FieldError>{reviewForm.formState.errors.story.message}</FieldError>
-                ) : (
-                  <span />
-                )}
-                <span className="text-xs text-muted-foreground">
-                  {story.length}/{STORY_MAX_LENGTH}
-                </span>
-              </div>
-            </Field>
+            {cfg.hasStoryText && (
+              <Field>
+                <FieldLabel htmlFor="story" className="text-sm font-medium">
+                  {t("feed:story")}
+                </FieldLabel>
+                <Textarea
+                  id="story"
+                  placeholder={t("feed:storyPlaceholder")}
+                  className="bg-background resize-none min-h-25"
+                  maxLength={STORY_MAX_LENGTH}
+                  aria-invalid={Boolean(reviewForm.formState.errors.storyText)}
+                  aria-label={t("feed:story")}
+                  {...reviewForm.register("storyText")}
+                />
+                <div className="flex items-center justify-between gap-2">
+                  {reviewForm.formState.errors.storyText?.message ? (
+                    <FieldError>{reviewForm.formState.errors.storyText.message}</FieldError>
+                  ) : (
+                    <span />
+                  )}
+                  <span className="text-xs text-muted-foreground">
+                    {storyText.length}/{STORY_MAX_LENGTH}
+                  </span>
+                </div>
+              </Field>
+            )}
             <Field orientation="horizontal">
               <Controller
                 control={reviewForm.control}

@@ -32,6 +32,7 @@ interface ReviewItemProps {
     art?: number;
     worldbuilding?: number;
     animation?: number;
+    enjoyment?: number;
     all?: number;
   };
   reviewName?: string;

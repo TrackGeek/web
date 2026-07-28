@@ -348,7 +348,11 @@ function TVShowDetailsPage() {
         return api.delete(`${apiEndpoints.tvShowProgress}/${current.id}`);
       }
 
-      return api.post(apiEndpoints.tvShowProgress, { tvShowId: item?.id, status });
+      return api.post(apiEndpoints.tvShowProgress, {
+        tvShowId: item?.id,
+        status,
+        ...(status === "Watching" && { startedAt: new Date() }),
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tvProgress", item?.id, userId] });

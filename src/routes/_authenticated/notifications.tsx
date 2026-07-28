@@ -108,7 +108,7 @@ function NotificationsRoute() {
 
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">{t("notifications:cancel")}</Button>
+              <Button variant="outline">{t("common:cancel")}</Button>
             </DialogClose>
 
             <Button

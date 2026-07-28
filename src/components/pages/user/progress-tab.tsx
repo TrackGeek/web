@@ -46,7 +46,9 @@ export function UserProgressTab({
   const { t } = useTranslation();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedSection, setSelectedSection] = useState<ApiTypes.ProgressStatus | null>(null);
+  const [selectedSection, setSelectedSection] = useState<ApiTypes.ProgressStatus>(
+    PROGRESS_CONTENT[contentType].activeStatus,
+  );
   const [isRandomizing, setIsRandomizing] = useState(false);
   const navigate = useNavigate();
   const debouncedQuery = useDebounce(searchQuery, 600);
@@ -104,7 +106,7 @@ export function UserProgressTab({
         };
       })
       .filter((section) => section.items.length > 0)
-      .filter((section) => !selectedSection || section.status === selectedSection);
+      .filter((section) => section.status === selectedSection);
   }, [rows, contentType, typeStats, normalizedQuery, selectedSection]);
 
   useEffect(() => {
@@ -115,7 +117,7 @@ export function UserProgressTab({
       progressQuery.fetchNextPage();
     } else {
       const allItems = rows
-        .filter((row) => !selectedSection || row.status === selectedSection)
+        .filter((row) => row.status === selectedSection)
         .map((row) => progressToItem(contentType, row))
         .filter((item): item is FavoriteItem => item !== null)
         .filter((item) => !normalizedQuery || item.title.toLowerCase().includes(normalizedQuery));
@@ -139,10 +141,14 @@ export function UserProgressTab({
     navigate,
   ]);
 
+  useEffect(() => {
+    setSelectedSection(PROGRESS_CONTENT[contentType].activeStatus);
+  }, [contentType]);
+
   const handleContentTypeChange = (value: ApiTypes.ReviewContentType) => {
     onContentTypeChange(value);
     setSearchQuery("");
-    setSelectedSection(null);
+    setSelectedSection(PROGRESS_CONTENT[value].activeStatus);
     setIsRandomizing(false);
   };
 
@@ -185,22 +191,11 @@ export function UserProgressTab({
         </div>
 
         <div className="flex md:flex-col gap-1 overflow-x-auto">
-          <button
-            type="button"
-            onClick={() => setSelectedSection(null)}
-            className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0",
-              !selectedSection ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted",
-            )}
-          >
-            <Icon icon="lucide:layers" className="size-3.5 shrink-0" />
-            <span>{t("common:all")}</span>
-          </button>
           {sidebarSections.map((section) => (
             <button
               key={section.status}
               type="button"
-              onClick={() => setSelectedSection(selectedSection === section.status ? null : section.status)}
+              onClick={() => setSelectedSection(section.status)}
               className={cn(
                 "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0",
                 selectedSection === section.status

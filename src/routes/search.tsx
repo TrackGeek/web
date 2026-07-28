@@ -153,7 +153,9 @@ const SearchResults = memo(
 function RouteComponent() {
   const [contentType, setContentType] = useQueryState(
     "type",
-    parseAsStringLiteral(CONTENT_TYPES.map((c) => c.value)).withDefault("anime"),
+    parseAsStringLiteral(CONTENT_TYPES.map((c) => c.value))
+      .withDefault("movie")
+      .withOptions({ clearOnDefault: false }),
   );
 
   const [searchQuery, setSearchQuery] = useQueryState("query", parseAsString.withDefault(""));
@@ -175,8 +177,15 @@ function RouteComponent() {
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       const pagination = getPaginationFromPage(lastPage, contentType);
+      if (!pagination) return undefined;
 
-      return pagination?.hasNextPage ? pagination.nextCursor : undefined;
+      const current = pagination.inPage ?? 1;
+
+      if (pagination.pages != null) return current < pagination.pages ? current + 1 : undefined;
+      if (pagination.itemsPerPage != null)
+        return pagination.itemsInPage >= pagination.itemsPerPage ? current + 1 : undefined;
+
+      return undefined;
     },
   });
 

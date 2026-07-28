@@ -517,7 +517,7 @@ function GameDetailsRoute() {
               </TabsTrigger>
               {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
                 <TabsTrigger value="screenshots">
-                  {t("library:screenshots")} ({screenshots?.length ?? 0})
+                  {t("common:screenshots")} ({screenshots?.length ?? 0})
                 </TabsTrigger>
               )}
             </TabsList>

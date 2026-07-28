@@ -107,7 +107,7 @@ function UserDetailsRoute() {
             <TabsTrigger value="activity">{t("user:activity")}</TabsTrigger>
 
             <TabsTrigger value="progress">
-              {t("user:progress")} ({totalProgress})
+              {t("common:progress")} ({totalProgress})
             </TabsTrigger>
 
             <TabsTrigger value="reviews">
@@ -122,7 +122,7 @@ function UserDetailsRoute() {
               {t("user:favorites")} ({userQuery.data.counts.favorites})
             </TabsTrigger>
 
-            <TabsTrigger value="screenshots">{t("user:screenshots")} (0)</TabsTrigger>
+            <TabsTrigger value="screenshots">{t("common:screenshots")} (0)</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">

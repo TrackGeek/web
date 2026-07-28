@@ -23,7 +23,6 @@
   "entry_plural": "Entries",
   "follower": "Follower",
   "follower_plural": "Followers",
-  "following": "Following",
   "follow": "Follow",
   "unfollow": "Unfollow",
   "followsYou": "Follows you",
@@ -35,7 +34,6 @@
   "random": "Random",
   "statistics": "Statistics",
   "reviews": "Reviews",
-  "screenshots": "Screenshots",
   "search": "Search",
   "feed": "Feed",
   "activity": "Activity",
@@ -45,7 +43,6 @@
   "activityLastYear": "{{value}} activities in the last year",
   "activityNoCount": "No",
   "lists": "Lists",
-  "progress": "Progress",
   "noProgress": "No progress yet.",
   "noProgressDescription": "Titles this user is tracking will show up here.",
   "copyProfileUsernameSuccess": "Username copied to clipboard!",
@@ -66,7 +63,5 @@
   "listDeleted": "List deleted",
   "listName": "List name",
   "listDescription": "Description",
-  "save": "Save",
-  "cancel": "Cancel",
   "error": "Something went wrong"
 }

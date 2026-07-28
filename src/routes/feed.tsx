@@ -29,7 +29,7 @@ function FeedRoute() {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <div className="flex items-center justify-between gap-3 mb-2">
             <TabsList className="md:w-2/4">
-              {isAuthenticated && <TabsTrigger value="following">{t("feed:following")}</TabsTrigger>}
+              {isAuthenticated && <TabsTrigger value="following">{t("common:following")}</TabsTrigger>}
               <TabsTrigger value="global">{t("feed:global")}</TabsTrigger>
             </TabsList>
           </div>

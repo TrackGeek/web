@@ -300,10 +300,10 @@ export function ReviewModal({
 
           <div className="border-t border-border px-6 py-4 flex justify-between gap-3 bg-background rounded-b-lg">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              {t("feed:cancel")}
+              {t("common:cancel")}
             </Button>
             <Button type="submit" className="gap-2" disabled={updateReview.isPending}>
-              {updateReview.isPending ? t("feed:saving") : t("feed:save")}
+              {updateReview.isPending ? t("feed:saving") : t("common:saveChanges")}
             </Button>
           </div>
         </form>

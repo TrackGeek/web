@@ -153,7 +153,9 @@ const SearchResults = memo(
 function RouteComponent() {
   const [contentType, setContentType] = useQueryState(
     "type",
-    parseAsStringLiteral(CONTENT_TYPES.map((c) => c.value)).withDefault("anime"),
+    parseAsStringLiteral(CONTENT_TYPES.map((c) => c.value))
+      .withDefault("movie")
+      .withOptions({ clearOnDefault: false }),
   );
 
   const [searchQuery, setSearchQuery] = useQueryState("query", parseAsString.withDefault(""));

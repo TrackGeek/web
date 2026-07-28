@@ -78,7 +78,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
     <html lang="en">
       <head>
         <HeadContent />
-        
+
         <script
           defer
           src="https://dataxamas.izakdvlpr.com/dataxamas.js"

@@ -45,6 +45,8 @@
   "lists": "Lists",
   "noProgress": "No progress yet.",
   "noProgressDescription": "Titles this user is tracking will show up here.",
+  "noScreenshots": "No screenshots yet.",
+  "noScreenshotsDescription": "Screenshots this user uploads will show up here.",
   "copyProfileUsernameSuccess": "Username copied to clipboard!",
   "sort": {
     "placeholder": "Sort by:",

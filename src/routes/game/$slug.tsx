@@ -30,6 +30,7 @@ import { ImageZoom } from "@/components/ui/image-zoom";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { gameScreenshotsQueryKey } from "@/hooks/game";
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
@@ -209,9 +210,13 @@ function GameDetailsRoute() {
         enabled: !!game?.id,
       },
       {
-        queryKey: ["gameScreenshots", game?.id],
+        queryKey: gameScreenshotsQueryKey({ gameId: game?.id }),
         queryFn: () =>
-          api.get(`${apiEndpoints.gameReviewScreenshot}/?gameId=${game?.id}`).then(({ data }) => data.screenshots),
+          api
+            .get<ApiTypes.GetGameScreenshotsResponse>(`${apiEndpoints.gameScreenshot}/`, {
+              params: { gameId: game?.id },
+            })
+            .then(({ data }) => data.screenshots),
         enabled: !!game?.id,
       },
     ],
@@ -516,7 +521,7 @@ function GameDetailsRoute() {
               </TabsTrigger>
               {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
                 <TabsTrigger value="screenshots">
-                  {t("common:screenshots")} ({screenshots?.length ?? 0})
+                  {t("common:screenshots")} ({screenshots?.total ?? 0})
                 </TabsTrigger>
               )}
             </TabsList>
@@ -738,10 +743,8 @@ function GameDetailsRoute() {
           {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
             <TabsContent value="screenshots">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {screenshots?.map((screenshot: { checksum: string; imageId: string }) => (
-                  <ImageZoom key={screenshot.checksum}>
-                    <img src={screenshot.imageId} alt="" />
-                  </ImageZoom>
+                {screenshots?.items.map((screenshot) => (
+                  <UserScreenshot key={screenshot.id} screenshot={screenshot} />
                 ))}
               </div>
             </TabsContent>
@@ -802,5 +805,37 @@ function GameDetailsRoute() {
         )}
       </div>
     </>
+  );
+}
+
+function UserScreenshot({ screenshot }: { screenshot: ApiTypes.GameScreenshot }) {
+  const [revealed, setRevealed] = useState(!screenshot.isSpoiler);
+
+  if (!revealed) {
+    return (
+      <button
+        type="button"
+        className="relative rounded-lg overflow-hidden"
+        onClick={() => setRevealed(true)}
+        aria-label={t("comments:spoilerReveal")}
+      >
+        <img src={screenshot.url} alt="" className="blur-xl" />
+        <span className="absolute inset-0 flex items-center justify-center gap-2 text-sm font-medium text-white bg-black/40">
+          <Icon icon="lucide:eye-off" className="size-4" />
+          {t("comments:spoilerReveal")}
+        </span>
+      </button>
+    );
+  }
+
+  return (
+    <figure>
+      <ImageZoom>
+        <img src={screenshot.url} alt={screenshot.description ?? ""} />
+      </ImageZoom>
+      {screenshot.description && (
+        <figcaption className="text-sm text-muted-foreground mt-1">{screenshot.description}</figcaption>
+      )}
+    </figure>
   );
 }

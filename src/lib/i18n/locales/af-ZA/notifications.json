@@ -5,11 +5,9 @@
   "markAllAsUnread": "Mark all as unread",
   "markAsRead": "Mark as read",
   "markAsUnread": "Mark as unread",
-  "delete": "Delete",
   "deleteAll": "Delete all",
   "deleteAllTitle": "Delete all notifications?",
   "deleteAllDescription": "This permanently deletes every notification you have. This cannot be undone.",
-  "cancel": "Cancel",
   "system": "TrackGeek",
   "learnMore": "Learn more",
   "welcome": {

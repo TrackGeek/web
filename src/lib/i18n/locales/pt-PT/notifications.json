@@ -5,11 +5,9 @@
   "markAllAsUnread": "Marcar tudo como não lido",
   "markAsRead": "Marcar como lida",
   "markAsUnread": "Marcar como não lida",
-  "delete": "Apagar",
   "deleteAll": "Apagar tudo",
   "deleteAllTitle": "Excluir todas as notificações?",
   "deleteAllDescription": "Isto exclui permanentemente cada notificação que tens. Isto não pode ser desfeito.",
-  "cancel": "Cancelar",
   "system": "TrackGeek",
   "learnMore": "Saber mais",
   "welcome": {

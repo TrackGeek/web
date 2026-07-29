@@ -23,7 +23,6 @@
   "entry_plural": "Entradas",
   "follower": "Seguidor",
   "follower_plural": "Seguidores",
-  "following": "Seguindo",
   "follow": "Seguir",
   "unfollow": "Deixar de seguir",
   "followsYou": "Segue você",
@@ -35,7 +34,6 @@
   "random": "Aleatório",
   "statistics": "Estatísticas",
   "reviews": "Avaliações",
-  "screenshots": "Capturas de Tela",
   "search": "Pesquisar",
   "feed": "Feed",
   "activity": "Atividade",
@@ -45,9 +43,10 @@
   "activityLastYear": "Atividades {{value}} no último ano",
   "activityNoCount": "Não",
   "lists": "Listas",
-  "progress": "Progresso",
   "noProgress": "Nenhum progresso ainda.",
   "noProgressDescription": "Títulos que este usuário está rastreando serão exibidos aqui.",
+  "noScreenshots": "No screenshots yet.",
+  "noScreenshotsDescription": "Screenshots this user uploads will show up here.",
   "copyProfileUsernameSuccess": "Nome de usuário copiado para a área de transferência!",
   "sort": {
     "placeholder": "Ordenar por:",
@@ -66,7 +65,5 @@
   "listDeleted": "Lista excluída",
   "listName": "Nome da lista",
   "listDescription": "Descrição",
-  "save": "Salvar",
-  "cancel": "Cancelar",
   "error": "Algo inesperado aconteceu"
 }

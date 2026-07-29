@@ -51,7 +51,6 @@
     }
   },
   "save": {
-    "title": "Salvar alterações",
     "success": "Configurações salvas com sucesso.",
     "error": "Não foi possível salvar as configurações. Por favor, tente novamente."
   },
@@ -59,7 +58,6 @@
     "title": "Preferências",
     "description": "Configure suas preferências de aplicação.",
     "language": {
-      "title": "Idioma",
       "placeholder": "Selecione seu idioma de preferência"
     },
     "timezone": {

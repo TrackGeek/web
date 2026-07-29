@@ -12,8 +12,6 @@
   "addError": "Falha ao publicar comentário.",
   "deleteSuccess": "Comentário apagado.",
   "deleteError": "Falha ao apagar comentário.",
-  "reply": "Responder",
-  "cancel": "Cancelar",
   "spoiler": "Marcar como spoiler",
   "spoilerReveal": "Spoiler — clique para revelar"
 }

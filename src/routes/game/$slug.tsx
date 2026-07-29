@@ -57,7 +57,6 @@ const websiteIconMap: Record<string, { icon: string; hex?: string }> = {
 };
 
 export const Route = createFileRoute("/game/$slug")({
-  ssr: "data-only",
   loader: async ({ params }) => {
     const game = await api.get(apiEndpoints.getGameDetails(params.slug)).then(({ data }) => data.game);
     return { game };

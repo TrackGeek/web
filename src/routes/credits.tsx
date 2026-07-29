@@ -12,7 +12,6 @@ import { cn } from "@/lib/utils";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/credits")({
-  ssr: "data-only",
   head: () => ({
     meta: [...seo({ title: "Credits" })],
   }),

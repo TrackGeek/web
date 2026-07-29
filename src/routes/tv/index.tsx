@@ -13,7 +13,6 @@ import { AVATAR_BLUR } from "@/lib/image.ts";
 import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/tv/")({
-  ssr: "data-only",
   component: SerieRoute,
   head: () => ({
     meta: [

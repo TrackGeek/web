@@ -10,7 +10,6 @@ import { seo } from "@/lib/utils/seo.ts";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
 
 export const Route = createFileRoute("/game/recent/")({
-  ssr: "data-only",
   component: RecentGameRoute,
   head: () => ({
     meta: [

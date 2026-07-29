@@ -1,15 +1,24 @@
-import "@/lib/i18n/config";
-
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts, useRouterState } from "@tanstack/react-router";
+import { createIsomorphicFn } from "@tanstack/react-start";
+import { getCookie } from "@tanstack/react-start/server";
 import { type ReactNode, useEffect } from "react";
 import { Layout } from "@/components/layouts";
 import appCss from "@/global.css?url";
 import type { authClient } from "@/lib/auth";
+import i18n, { DEFAULT_LANGUAGE, getClientLanguage, isSupportedLanguage, LANGUAGE_TOKEN } from "@/lib/i18n/config";
 import { RootProvider } from "@/providers";
 
 interface RouterContext {
   auth: typeof authClient;
 }
+
+const resolveLanguage = createIsomorphicFn()
+  .server(() => {
+    const language = getCookie(LANGUAGE_TOKEN);
+
+    return isSupportedLanguage(language) ? language : DEFAULT_LANGUAGE;
+  })
+  .client(() => getClientLanguage());
 
 declare module "@tanstack/react-router" {
   interface StaticDataRouteOption {
@@ -18,7 +27,15 @@ declare module "@tanstack/react-router" {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  ssr: "data-only",
+  beforeLoad: async () => {
+    const language = resolveLanguage();
+
+    if (i18n.language !== language) {
+      await i18n.changeLanguage(language);
+    }
+
+    return { language };
+  },
   head: () => ({
     meta: [
       { charSet: "UTF-8" },
@@ -36,6 +53,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { rel: "stylesheet", href: appCss },
     ],
     scripts: [
+      {
+        children: 'document.documentElement.classList.add("js")',
+      },
       {
         src: "https://cdn.jsdelivr.net/npm/sienna-accessibility@latest/dist/sienna-accessibility.umd.js",
         defer: true,
@@ -75,7 +95,7 @@ function RootLayout() {
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang={i18n.language} className={typeof document === "undefined" ? undefined : "js"}>
       <head>
         <HeadContent />
 
@@ -86,8 +106,10 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
           data-allow-localhost="false"
         />
       </head>
+      
       <body>
         {children}
+        
         <Scripts />
       </body>
     </html>

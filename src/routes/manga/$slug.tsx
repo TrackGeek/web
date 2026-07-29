@@ -33,7 +33,6 @@ import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/manga/$slug")({
-  ssr: "data-only",
   loader: async ({ params }) => {
     const manga = await api.get(apiEndpoints.getMangaDetails(params.slug)).then(({ data }) => data.manga);
     return { manga };

@@ -107,6 +107,10 @@
     font-variation-settings: "wdth" 100;
   }
 
+  .js .anim-hidden {
+    @apply opacity-0;
+  }
+
   .asw-menu-btn svg {
     @apply size-7! min-w-7! min-h-7! max-w-7! max-h-7!;
   }

@@ -1,14 +1,18 @@
 import axios from "axios";
-import { DEFAULT_LANGUAGE, LANGUAGE_TOKEN } from "./i18n/config";
+import i18n, { DEFAULT_LANGUAGE } from "./i18n/config";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
   headers: {
-    "X-TrackGeek-Language":
-      (typeof window !== "undefined" && window.localStorage?.getItem(LANGUAGE_TOKEN)) || DEFAULT_LANGUAGE,
     "X-TrackGeek-Version": "1.0.0",
   },
+});
+
+api.interceptors.request.use((config) => {
+  config.headers.set("X-TrackGeek-Language", i18n.language || DEFAULT_LANGUAGE);
+
+  return config;
 });
 
 export namespace ApiTypes {

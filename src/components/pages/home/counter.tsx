@@ -46,7 +46,7 @@ export function Counter() {
   return (
     <section className="border-y border-border bg-secondary/20 py-20">
       <div className="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-        <div className="stat-item opacity-0">
+        <div className="stat-item anim-hidden">
           <div className="text-4xl font-bold mb-3">
             <span className="counter tabular-nums" data-target="350">
               0
@@ -56,7 +56,7 @@ export function Counter() {
           <div className="text-sm text-muted-foreground">{t("common:types.game_other")}</div>
         </div>
 
-        <div className="stat-item opacity-0">
+        <div className="stat-item anim-hidden">
           <div className="text-4xl font-bold mb-3">
             <span className="counter tabular-nums" data-target="1.1">
               0
@@ -66,7 +66,7 @@ export function Counter() {
           <div className="text-sm text-muted-foreground">{t("common:types.movie_other")}</div>
         </div>
 
-        <div className="stat-item opacity-0">
+        <div className="stat-item anim-hidden">
           <div className="text-4xl font-bold mb-3">
             <span className="counter tabular-nums" data-target="214">
               0
@@ -76,7 +76,7 @@ export function Counter() {
           <div className="text-sm text-muted-foreground">{t("common:types.tv_other")}</div>
         </div>
 
-        <div className="stat-item opacity-0">
+        <div className="stat-item anim-hidden">
           <div className="text-4xl font-bold mb-3">
             <span className="counter tabular-nums" data-target="1.6">
               0

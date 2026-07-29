@@ -7,7 +7,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/add-data")({
-  ssr: "data-only",
   head: () => ({
     meta: [...seo({ title: "Add Data" })],
   }),

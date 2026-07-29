@@ -47,7 +47,6 @@ interface MovieProgress {
 }
 
 export const Route = createFileRoute("/movie/$slug")({
-  ssr: "data-only",
   loader: async ({ params }) => {
     const movie = await api.get(apiEndpoints.getMovieDetails(params.slug)).then(({ data }) => data.movie);
     return { movie };

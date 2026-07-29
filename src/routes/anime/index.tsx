@@ -12,7 +12,6 @@ import { api, apiEndpoints } from "@/lib/api";
 import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/anime/")({
-  ssr: "data-only",
   component: AnimeRoute,
   head: () => ({
     meta: [

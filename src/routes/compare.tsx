@@ -8,7 +8,6 @@ import { comparisonCriteria, comparisonEntries, comparisonPlatforms } from "@/li
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/compare")({
-  ssr: "data-only",
   head: () => ({
     meta: [
       ...seo({

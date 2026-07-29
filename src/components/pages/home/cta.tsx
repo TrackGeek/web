@@ -44,7 +44,7 @@ export function CTA() {
 
   return (
     <section className="py-24 text-center px-4">
-      <div className="max-w-2xl mx-auto space-y-6 cta-final opacity-0 scale-90">
+      <div className="max-w-2xl mx-auto space-y-6 cta-final anim-hidden scale-90">
         <h2 className="text-3xl md:text-5xl font-bold">{t("pages:landing.CTATitle")}</h2>
         <p className="text-muted-foreground text-lg">{t("pages:landing.CTADescription")}</p>
         <div className="flex justify-center gap-4 pt-4">

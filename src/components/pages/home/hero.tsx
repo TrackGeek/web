@@ -66,12 +66,12 @@ export function Hero() {
   return (
     <section className="relative pt-24 pb-24 overflow-hidden">
       <div className="container mx-auto px-4 text-center relative z-10">
-        <div className="inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 text-sm font-medium text-secondary mb-8 hero-badge opacity-0 translate-y-4">
+        <div className="inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 text-sm font-medium text-secondary mb-8 hero-badge anim-hidden translate-y-4">
           <span className="flex size-2 rounded-full bg-green-500 mr-2"></span>
           {t("pages:landing.alive")}
         </div>
 
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 hero-text opacity-0 max-w-lg mx-auto">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 hero-text anim-hidden max-w-lg mx-auto">
           <Trans
             i18nKey="pages:landing.heroTitle"
             components={{
@@ -80,11 +80,11 @@ export function Hero() {
           ></Trans>
         </h1>
 
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 hero-text opacity-0 leading-relaxed">
+        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 hero-text anim-hidden leading-relaxed">
           {t("pages:landing.heroDescription")}
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 hero-cta opacity-0 translate-y-8">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 hero-cta anim-hidden translate-y-8">
           {username ? (
             <Link to="/user/$username" params={{ username }} search={{ tab: "overview" }}>
               <Button className="h-12 px-8 rounded-lg font-medium text-base hover:scale-105 transition-transform duration-200 shadow-lg shadow-primary/20">
@@ -108,7 +108,7 @@ export function Hero() {
       </div>
 
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-full pointer-events-none z-0 hidden lg:block">
-        <div className="hero-card absolute top-[10%] left-[10%] w-64 p-4 rounded-xl border border-border bg-card shadow-2xl opacity-0 transform -rotate-6">
+        <div className="hero-card absolute top-[10%] left-[10%] w-64 p-4 rounded-xl border border-border bg-card shadow-2xl anim-hidden transform -rotate-6">
           <div className="flex items-center gap-3 mb-3">
             <div className="size-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
               <Icon icon={"lucide:ghost"} />
@@ -125,7 +125,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="hero-card absolute top-[20%] right-[10%] w-64 p-4 rounded-xl border border-border bg-card shadow-2xl opacity-0 transform rotate-[4deg]">
+        <div className="hero-card absolute top-[20%] right-[10%] w-64 p-4 rounded-xl border border-border bg-card shadow-2xl anim-hidden transform rotate-[4deg]">
           <div className="flex items-center gap-3 mb-3">
             <div className="size-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
               <Icon icon={"lucide:gamepad"} />
@@ -146,7 +146,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="hero-card absolute bottom-[15%] left-[20%] w-64 p-4 rounded-xl border border-border bg-card shadow-2xl opacity-0 transform -rotate-3">
+        <div className="hero-card absolute bottom-[15%] left-[20%] w-64 p-4 rounded-xl border border-border bg-card shadow-2xl anim-hidden transform -rotate-3">
           <div className="flex items-center gap-3 mb-3">
             <div className="size-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400">
               <Icon icon={"lucide:book"} />

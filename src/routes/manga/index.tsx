@@ -12,7 +12,6 @@ import { api, apiEndpoints } from "@/lib/api.ts";
 import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/manga/")({
-  ssr: "data-only",
   component: MangaRoute,
   head: () => ({
     meta: [

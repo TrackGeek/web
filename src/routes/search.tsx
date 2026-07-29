@@ -28,7 +28,6 @@ const CONTENT_TYPES: { value: ContentType; labelKey: string }[] = [
 ];
 
 export const Route = createFileRoute("/search")({
-  ssr: "data-only",
   head: () => ({
     meta: [...seo({ title: "Search" })],
   }),

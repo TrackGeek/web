@@ -37,7 +37,7 @@ export function Features() {
   return (
     <section className="py-24 bg-secondary/10">
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16 feature-head opacity-0">
+        <div className="text-center max-w-3xl mx-auto mb-16 feature-head anim-hidden">
           <h2 className="text-3xl font-bold mb-3">{t("pages:landing.featuresTitle")}</h2>
           <p className="text-muted-foreground">{t("pages:landing.featuresDescription")}</p>
         </div>
@@ -84,7 +84,7 @@ export function Features() {
             return (
               <div
                 key={item.title}
-                className="feature-card group p-6 rounded-xl border border-border bg-card hover:border-primary/50 transition-all duration-300 opacity-0 translate-y-8 hover:-translate-y-1"
+                className="feature-card group p-6 rounded-xl border border-border bg-card hover:border-primary/50 transition-all duration-300 anim-hidden translate-y-8 hover:-translate-y-1"
               >
                 <div
                   className={cn(

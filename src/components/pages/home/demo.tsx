@@ -105,7 +105,7 @@ export function Demo() {
     <>
       <section className="py-24 relative overflow-hidden">
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-16">
-          <div className="lg:w-1/2 space-y-6 demo-text opacity-0">
+          <div className="lg:w-1/2 space-y-6 demo-text anim-hidden">
             <div className="size-12 rounded-lg bg-primary/20 text-primary flex items-center justify-center text-xl mb-4">
               <Icon icon={"lucide:wand"} />
             </div>
@@ -132,7 +132,7 @@ export function Demo() {
             </ul>
           </div>
 
-          <div className="lg:w-1/2 w-full demo-ui opacity-0 sm:translate-x-7.5">
+          <div className="lg:w-1/2 w-full demo-ui anim-hidden sm:translate-x-7.5">
             <div className="max-w-md mx-auto bg-card border border-border rounded-xl overflow-hidden shadow-2xl relative">
               <div className="h-40 bg-linear-to-r from-muted/50 to-muted relative p-6 flex flex-col justify-end">
                 <div className="absolute inset-0 bg-[url('https://image.tmdb.org/t/p/original/pjBUCUZ6dZgapy2SRoPw0WFEzrf.jpg')] bg-cover opacity-70 mix-blend-overlay"></div>

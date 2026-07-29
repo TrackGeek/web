@@ -106,10 +106,10 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
           data-allow-localhost="false"
         />
       </head>
-      
+
       <body>
         {children}
-        
+
         <Scripts />
       </body>
     </html>

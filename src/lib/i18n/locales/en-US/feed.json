@@ -94,6 +94,11 @@
     "endless": "Endless"
   },
   "uploadScreenshot": "Drag and drop or <span>choose screenshots</span> to upload",
+  "screenshotDescription": "Add a description",
+  "screenshotUploading": "Uploading...",
+  "screenshotUploadFailed": "Couldn't upload the screenshot. Try again.",
+  "screenshotTooLarge": "{{name}} is larger than 5 MB.",
+  "screenshotTypeInvalid": "{{name}} is not a supported image (jpg, jpeg, png, gif, webp).",
   "addNegative": "Add a Negative Point",
   "addPositive": "Add a Positive Point",
   "pros": "Pros",

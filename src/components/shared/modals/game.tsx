@@ -9,7 +9,14 @@ import { Controller, useForm } from "react-hook-form";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import z from "zod";
-import { useUploadImage } from "@/hooks/game.ts";
+import {
+  useCreateGameScreenshot,
+  useDeleteGameScreenshot,
+  useGameScreenshots,
+  useUpdateGameScreenshot,
+  useUploadImage,
+  validateScreenshotFile,
+} from "@/hooks/game.ts";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { Button } from "../../ui/button";
@@ -50,6 +57,8 @@ const COMPLETION_OPTIONS = ["mainStory", "mainStoryPlusExtras", "100%", "endless
 const SUMMARY_MAX_LENGTH = 500;
 const REVIEW_NOTES_MAX_LENGTH = 1000;
 const PROGRESS_NOTES_MAX_LENGTH = 1000;
+// Mirrors the `@MaxLength(255)` on CreateGameScreenshotDto.description.
+const SCREENSHOT_DESCRIPTION_MAX_LENGTH = 255;
 
 function createProgressSchema(t: TFunction) {
   return z.object({
@@ -103,11 +112,9 @@ interface GameReviewData {
   recommended: boolean | null;
 }
 
-interface PendingScreenshot {
-  file: File;
+interface UploadingScreenshot {
+  tempId: string;
   previewUrl: string;
-  isSpoiler: boolean;
-  description: string;
 }
 
 interface GameModalProps {
@@ -161,11 +168,21 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
 
   const [newListInput, setNewListInput] = useState<string | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-  const [pendingScreenshots, setPendingScreenshots] = useState<PendingScreenshot[]>([]);
+  const [uploadingScreenshots, setUploadingScreenshots] = useState<UploadingScreenshot[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadImageMutation = useUploadImage();
+  const createScreenshotMutation = useCreateGameScreenshot();
+  const updateScreenshotMutation = useUpdateGameScreenshot();
+  const deleteScreenshotMutation = useDeleteGameScreenshot();
+
+  const screenshotsQuery = useGameScreenshots({ userId, gameId });
+
+  const screenshots = useMemo(
+    () => screenshotsQuery.data?.pages.flatMap((page) => page.items) ?? [],
+    [screenshotsQuery.data],
+  );
 
   const progressQuery = useQuery<GameProgressData | null>({
     queryKey: ["gameProgress", gameId, userId],
@@ -244,6 +261,18 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
     });
   }, [reviewQuery.data, reviewForm.reset]);
 
+  const uploadingScreenshotsRef = useRef<UploadingScreenshot[]>([]);
+  uploadingScreenshotsRef.current = uploadingScreenshots;
+
+  useEffect(
+    () => () => {
+      for (const screenshot of uploadingScreenshotsRef.current) {
+        URL.revokeObjectURL(screenshot.previewUrl);
+      }
+    },
+    [],
+  );
+
   const invalidateProgress = () => {
     queryClient.invalidateQueries({ queryKey: ["gameProgress", gameId, userId] });
     queryClient.invalidateQueries({ queryKey: ["game"] });
@@ -304,7 +333,7 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
       queryClient.invalidateQueries({ queryKey: ["gameProgress", gameId, userId] });
       queryClient.invalidateQueries({ queryKey: ["gameReview", gameId, userId] });
       queryClient.invalidateQueries({ queryKey: ["gameReviews", gameId] });
-      queryClient.invalidateQueries({ queryKey: ["gameScreenshots", gameId] });
+      queryClient.invalidateQueries({ queryKey: ["game-screenshots"] });
       queryClient.invalidateQueries({ queryKey: ["game"] });
       setConfirmDeleteOpen(false);
       onClose?.();
@@ -341,43 +370,43 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
     setNewListInput(null);
   };
 
+  const uploadScreenshot = async (file: File) => {
+    const tempId = crypto.randomUUID();
+    const previewUrl = URL.createObjectURL(file);
+
+    setUploadingScreenshots((prev) => [...prev, { tempId, previewUrl }]);
+
+    try {
+      const url = await uploadImageMutation.mutateAsync(file);
+
+      await createScreenshotMutation.mutateAsync({ gameId: gameId as string, url });
+    } catch {
+      toast.error(t("feed:screenshotUploadFailed"));
+    } finally {
+      setUploadingScreenshots((prev) => prev.filter((screenshot) => screenshot.tempId !== tempId));
+      URL.revokeObjectURL(previewUrl);
+    }
+  };
+
   const handleFileSelect = (files: FileList | null) => {
-    if (!files) return;
-    const newScreenshots: PendingScreenshot[] = Array.from(files).map((file) => ({
-      file,
-      previewUrl: URL.createObjectURL(file),
-      isSpoiler: false,
-      description: "",
-    }));
-    setPendingScreenshots((prev) => [...prev, ...newScreenshots]);
+    if (!files || !gameId) return;
+
+    for (const file of Array.from(files)) {
+      const error = validateScreenshotFile(file);
+
+      if (error) {
+        toast.error(t(error, { name: file.name }));
+        continue;
+      }
+
+      // Each file uploads on its own so a single failure doesn't drop the others.
+      void uploadScreenshot(file);
+    }
   };
 
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     handleFileSelect(event.dataTransfer.files);
-  };
-
-  const handleRemoveScreenshot = (index: number) => {
-    setPendingScreenshots((prev) => {
-      URL.revokeObjectURL(prev[index].previewUrl);
-      return prev.filter((_, i) => i !== index);
-    });
-  };
-
-  const uploadScreenshots = async (gameReviewId: string) => {
-    await Promise.all(
-      pendingScreenshots.map(async (screenshot) => {
-        const imageUrl = await uploadImageMutation.mutateAsync(screenshot.file);
-        await api.post(apiEndpoints.gameReviewScreenshot, {
-          gameReviewId,
-          isSpoiler: screenshot.isSpoiler,
-          url: imageUrl,
-          description: screenshot.description || undefined,
-        });
-      }),
-    );
-    setPendingScreenshots([]);
-    queryClient.invalidateQueries({ queryKey: ["gameScreenshots", gameId] });
   };
 
   const handleSave = async () => {
@@ -398,11 +427,7 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
       if ((progress.status === "played" || progress.status === "dropped") && Number(review.overall) > 0) {
         if (!(await reviewForm.trigger())) return;
 
-        const reviewId = await saveReviewMutation.mutateAsync(review);
-
-        if (reviewId && pendingScreenshots.length > 0) {
-          await uploadScreenshots(reviewId);
-        }
+        await saveReviewMutation.mutateAsync(review);
       }
 
       onClose?.();
@@ -411,7 +436,7 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
     }
   };
 
-  const isSaving = saveProgressMutation.isPending || saveReviewMutation.isPending || uploadImageMutation.isPending;
+  const isSaving = saveProgressMutation.isPending || saveReviewMutation.isPending;
 
   return (
     <div className="flex flex-col gap-6 p-6">
@@ -581,94 +606,88 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
             </div>
           </div>
 
-          {/** biome-ignore lint/a11y/useSemanticElements: false */}
-          <div
-            role={"button"}
-            tabIndex={0}
-            className="flex flex-col justify-center rounded-md border mt-2 border-dashed border-input px-6 py-8 text-muted-foreground cursor-pointer"
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={handleDrop}
-            onClick={() => fileInputRef.current?.click()}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                fileInputRef.current?.click();
-              }
-            }}
-          >
-            <Icon icon={"lucide:image"} className="mx-auto size-12" aria-hidden={true} />
-            <p className="relative text-sm font-medium text-center mt-2">
-              <Trans
-                i18nKey={"feed:uploadScreenshot"}
-                components={{
-                  span: <span className="text-primary hover:underline" />,
-                }}
-              />
-            </p>
-            <input
-              ref={fileInputRef}
-              id="screenshot"
-              name="screenshot"
-              type="file"
-              multiple
-              className="sr-only"
-              accept=".png, .jpeg, .jpg, .webp"
-              onChange={(e) => handleFileSelect(e.target.files)}
-            />
-          </div>
+          <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
+            <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+              <Icon icon={"lucide:images"} className="size-4" />
+              {t("common:screenshots")}
+            </h3>
 
-          {pendingScreenshots.length > 0 && (
-            <div className="space-y-2">
-              {pendingScreenshots.map((screenshot, index) => (
-                <div
-                  key={screenshot.previewUrl}
-                  className="flex items-start gap-3 bg-muted/30 rounded-lg p-3 border border-border/50"
-                >
-                  <Image
-                    src={screenshot.previewUrl}
-                    width={56}
-                    height={56}
-                    alt="Screenshot preview"
-                    className="size-14 object-cover rounded-md shrink-0"
-                  />
-                  <div className="flex-1 space-y-1.5 min-w-0">
-                    <Input
-                      placeholder={t("feed:screenshotDescription")}
-                      className="h-7 text-xs bg-background"
-                      value={screenshot.description}
-                      onChange={(e) =>
-                        setPendingScreenshots((prev) =>
-                          prev.map((s, i) => (i === index ? { ...s, description: e.target.value } : s)),
-                        )
-                      }
-                    />
-                    <Field orientation="horizontal">
-                      <Checkbox
-                        id={`spoiler-${index}`}
-                        checked={screenshot.isSpoiler}
-                        onCheckedChange={(checked) =>
-                          setPendingScreenshots((prev) =>
-                            prev.map((s, i) => (i === index ? { ...s, isSpoiler: !!checked } : s)),
-                          )
-                        }
-                      />
-                      <FieldLabel htmlFor={`spoiler-${index}`} className="text-xs cursor-pointer">
-                        {t("feed:spoiler")}
-                      </FieldLabel>
-                    </Field>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="xs"
-                    className="shrink-0 text-muted-foreground hover:text-destructive"
-                    onClick={() => handleRemoveScreenshot(index)}
-                  >
-                    <Icon icon={"lucide:x"} className="size-3.5" />
-                  </Button>
-                </div>
-              ))}
+            {/** biome-ignore lint/a11y/useSemanticElements: false */}
+            <div
+              role={"button"}
+              tabIndex={0}
+              className="flex flex-col justify-center rounded-md border border-dashed border-input px-6 py-8 text-muted-foreground cursor-pointer"
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }
+              }}
+            >
+              <Icon icon={"lucide:image"} className="mx-auto size-12" aria-hidden={true} />
+              <p className="relative text-sm font-medium text-center mt-2">
+                <Trans
+                  i18nKey={"feed:uploadScreenshot"}
+                  components={{
+                    span: <span className="text-primary hover:underline" />,
+                  }}
+                />
+              </p>
+              <input
+                ref={fileInputRef}
+                id="screenshot"
+                name="screenshot"
+                type="file"
+                multiple
+                className="sr-only"
+                accept=".png, .jpeg, .jpg, .gif, .webp"
+                onChange={(e) => handleFileSelect(e.target.files)}
+              />
             </div>
-          )}
+
+            {(screenshots.length > 0 || uploadingScreenshots.length > 0) && (
+              <div className="space-y-2 mt-3 max-h-72 overflow-y-auto pr-1">
+                {uploadingScreenshots.map((screenshot) => (
+                  <div
+                    key={screenshot.tempId}
+                    className="flex items-center gap-3 bg-background/50 rounded-lg p-3 border border-border/50"
+                  >
+                    <Image
+                      src={screenshot.previewUrl}
+                      width={56}
+                      height={56}
+                      alt=""
+                      className="size-14 object-cover rounded-md shrink-0 opacity-50"
+                    />
+                    <span className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Icon icon={"lucide:loader-circle"} className="size-3.5 animate-spin" />
+                      {t("feed:screenshotUploading")}
+                    </span>
+                  </div>
+                ))}
+
+                {screenshots.map((screenshot) => (
+                  <ScreenshotRow
+                    key={screenshot.id}
+                    screenshot={screenshot}
+                    onDescriptionChange={(description) =>
+                      updateScreenshotMutation.mutate({ screenshotId: screenshot.id, description })
+                    }
+                    onSpoilerChange={(isSpoiler) =>
+                      updateScreenshotMutation.mutate({ screenshotId: screenshot.id, isSpoiler })
+                    }
+                    onRemove={() => deleteScreenshotMutation.mutate(screenshot.id)}
+                    isRemoving={
+                      deleteScreenshotMutation.isPending && deleteScreenshotMutation.variables === screenshot.id
+                    }
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="space-y-4">
@@ -939,6 +958,74 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
           </Button>
         </div>
       </div>
+    </div>
+  );
+}
+
+interface ScreenshotRowProps {
+  screenshot: ApiTypes.GameScreenshot;
+  onDescriptionChange: (description: string) => void;
+  onSpoilerChange: (isSpoiler: boolean) => void;
+  onRemove: () => void;
+  isRemoving: boolean;
+}
+
+/**
+ * Keeps the description in local state so typing never fights the refetch that
+ * follows each PATCH; the change is only committed on blur.
+ */
+function ScreenshotRow({ screenshot, onDescriptionChange, onSpoilerChange, onRemove, isRemoving }: ScreenshotRowProps) {
+  const { t } = useTranslation();
+
+  const [description, setDescription] = useState(screenshot.description ?? "");
+
+  const handleBlur = () => {
+    if (description === (screenshot.description ?? "")) return;
+
+    onDescriptionChange(description);
+  };
+
+  return (
+    <div className="flex items-start gap-3 bg-background/50 rounded-lg p-3 border border-border/50">
+      <Image
+        src={screenshot.url}
+        width={56}
+        height={56}
+        alt={screenshot.description ?? ""}
+        className={`size-14 object-cover rounded-md shrink-0 ${screenshot.isSpoiler ? "blur-sm" : ""}`}
+      />
+      <div className="flex-1 space-y-1.5 min-w-0">
+        <Input
+          placeholder={t("feed:screenshotDescription")}
+          className="h-7 text-xs bg-background"
+          maxLength={SCREENSHOT_DESCRIPTION_MAX_LENGTH}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          onBlur={handleBlur}
+        />
+        <Field orientation="horizontal">
+          <Checkbox
+            id={`spoiler-${screenshot.id}`}
+            checked={screenshot.isSpoiler}
+            onCheckedChange={(checked) => onSpoilerChange(!!checked)}
+          />
+          <FieldLabel htmlFor={`spoiler-${screenshot.id}`} className="text-xs cursor-pointer">
+            {t("feed:spoiler")}
+          </FieldLabel>
+        </Field>
+      </div>
+      <Button
+        variant="ghost"
+        size="xs"
+        className="shrink-0 text-muted-foreground hover:text-destructive"
+        disabled={isRemoving}
+        onClick={onRemove}
+      >
+        <Icon
+          icon={isRemoving ? "lucide:loader-circle" : "lucide:x"}
+          className={`size-3.5 ${isRemoving ? "animate-spin" : ""}`}
+        />
+      </Button>
     </div>
   );
 }

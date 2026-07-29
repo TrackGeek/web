@@ -298,6 +298,7 @@ export namespace ApiTypes {
       lists: number;
       favorites: number;
       reviews: number;
+      screenshots: number;
     };
     latestReviewType: ReviewContentType | null;
     latestProgressType: ReviewContentType | null;
@@ -693,6 +694,32 @@ export namespace ApiTypes {
     mangaReviews?: PaginatedResponse<Review>;
   }
 
+  export interface GameScreenshotGame {
+    id: string;
+    igdbId: number;
+    name: string;
+    coverUrl: string | null;
+  }
+
+  export interface GameScreenshot {
+    id: string;
+    url: string;
+    description: string | null;
+    isSpoiler: boolean;
+    userId: string;
+    gameId: string;
+    createdAt: string;
+    game: GameScreenshotGame;
+  }
+
+  export interface GetGameScreenshotsResponse {
+    screenshots: PaginatedResponse<GameScreenshot>;
+  }
+
+  export interface GameScreenshotResponse {
+    screenshot: GameScreenshot;
+  }
+
   export type ActivityType =
     | "AccountCreated"
     | "ListCreated"
@@ -862,7 +889,8 @@ export const apiEndpoints = {
   getGameComing: "/game/top?filter=coming",
   getGameAnticipated: "/game/top?filter=antecipated",
   getGameRecentlyReleased: "/game/top?filter=recentlyReleased",
-  gameReviewScreenshot: "/game/review/screenshot",
+  gameScreenshot: "/game/screenshot",
+  gameScreenshotById: (screenshotId: string) => `/game/screenshot/${screenshotId}`,
   gameReview: "/game/review",
   gameProgress: "/game/progress",
   getGameProgress: (userId: string, gameId: string) => `/game/progress?userId=${userId}&gameId=${gameId}`,

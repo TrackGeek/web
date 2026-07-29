@@ -115,7 +115,7 @@ function SettingsRoute() {
 
       if (variables.language !== i18n.language) {
         setLanguageCookie(variables.language);
-        
+
         window.localStorage.setItem(LANGUAGE_TOKEN, variables.language);
 
         await i18n.changeLanguage(variables.language);

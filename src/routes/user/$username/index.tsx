@@ -121,7 +121,9 @@ function UserDetailsRoute() {
               {t("user:favorites")} ({userQuery.data.counts.favorites})
             </TabsTrigger>
 
-            <TabsTrigger value="screenshots">{t("common:screenshots")} (0)</TabsTrigger>
+            <TabsTrigger value="screenshots">
+              {t("common:screenshots")} ({userQuery.data.counts.screenshots})
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -167,7 +169,7 @@ function UserDetailsRoute() {
           </TabsContent>
 
           <TabsContent value="screenshots">
-            <UserScreenshotsTab />
+            <UserScreenshotsTab userId={userQuery.data.id} />
           </TabsContent>
 
           <TabsContent value="followers">

@@ -1,17 +1,32 @@
 import { Icon } from "@iconify/react";
 import { Image } from "@unpic/react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog";
+
+export interface ScreenshotImage {
+  id: string;
+  url: string;
+  description?: string | null;
+  isSpoiler: boolean;
+}
 
 interface ScreenshotProps {
   title: string;
   imageURL: string;
-  images: string[];
+  images: ScreenshotImage[];
 }
 
 export function ScreenshotItem({ title, imageURL, images }: ScreenshotProps) {
+  const { t } = useTranslation();
+
+  const [revealed, setRevealed] = useState<string[]>([]);
+
+  const isRevealed = (image: ScreenshotImage) => !image.isSpoiler || revealed.includes(image.id);
+
   return (
-    <Dialog>
+    <Dialog onOpenChange={(open) => !open && setRevealed([])}>
       <DialogTrigger asChild>
         <div className={"cursor-pointer"}>
           <div className="relative rounded-xl border border-border overflow-hidden aspect-3/4 group">
@@ -43,14 +58,31 @@ export function ScreenshotItem({ title, imageURL, images }: ScreenshotProps) {
         >
           <CarouselContent>
             {images.map((image, index) => (
-              <CarouselItem key={image}>
-                <Image
-                  src={image}
-                  layout="fullWidth"
-                  aspectRatio={16 / 9}
-                  className="w-full aspect-video object-contain"
-                  alt={`${title} – screenshot ${index + 1} of ${images.length}`}
-                />
+              <CarouselItem key={image.id}>
+                <div className="relative">
+                  <Image
+                    src={image.url}
+                    layout="fullWidth"
+                    aspectRatio={16 / 9}
+                    className={`w-full aspect-video object-contain transition-all duration-300 ${
+                      isRevealed(image) ? "" : "blur-xl"
+                    }`}
+                    alt={`${title} – screenshot ${index + 1} of ${images.length}`}
+                  />
+                  {!isRevealed(image) && (
+                    <button
+                      type="button"
+                      className="absolute inset-0 flex items-center justify-center gap-2 text-sm font-medium text-white bg-black/40"
+                      onClick={() => setRevealed((prev) => [...prev, image.id])}
+                    >
+                      <Icon icon={"lucide:eye-off"} className="size-4" />
+                      {t("comments:spoilerReveal")}
+                    </button>
+                  )}
+                </div>
+                {image.description && (
+                  <p className="text-sm text-muted-foreground text-center mt-3 px-4">{image.description}</p>
+                )}
               </CarouselItem>
             ))}
           </CarouselContent>

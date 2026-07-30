@@ -335,8 +335,8 @@ function BookDetailsRoute() {
     },
   });
 
-  if (isLoading || reviewsQuery.isLoading) return <LoadingDetails />;
-  if (isError || reviewsQuery.isError || !book) return <ErrorComponent />;
+  if (isLoading) return <LoadingDetails />;
+  if (isError || !book) return <ErrorComponent />;
 
   const coverUrl = coverOf(book.imageUrl) ?? "/placeholder/cover.webp";
   const authors = authorNames(book.contributions);

@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth";
 import { AVATAR_BLUR } from "@/lib/image";
+import { ogUrl } from "@/lib/og/url";
 import { seo } from "@/lib/utils/seo";
 
 async function getUser(username: string) {
@@ -49,7 +50,7 @@ export const Route = createFileRoute("/user/$username/")({
     }
   },
   head: ({ params }) => ({
-    meta: [...seo({ title: `@${params.username}` })],
+    meta: [...seo({ title: `@${params.username}`, image: ogUrl.user(params.username) })],
   }),
   component: UserDetailsRoute,
   errorComponent: ErrorComponent,

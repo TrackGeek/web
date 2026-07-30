@@ -1,11 +1,12 @@
 import { Icon } from "@iconify/react";
-import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { AnimeEpisodeProgress, type SingleSeasonData } from "@/components/pages/details/anime-progress";
+import { BackfillEpisodesDialog } from "@/components/pages/details/backfill-episodes-dialog";
 import { CastItem } from "@/components/pages/details/cast";
 import { CharacterItem } from "@/components/pages/details/character";
 import { CommunityStats } from "@/components/pages/details/community-stats";
@@ -28,28 +29,55 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { REVIEW_CONTENT, useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
+import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
+import {
+  getBackfillPreference,
+  getUnwatchedPreviousEpisodes,
+  setBackfillPreference,
+} from "@/lib/utils/episode-backfill";
 import { getGenreLabel } from "@/lib/utils/genre-utils";
+import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
+
+interface AnimeEpisode {
+  malId: number;
+  title: string;
+  episodeNumber: string;
+  imageUrl: string | null;
+}
 
 export const Route = createFileRoute("/anime/$slug")({
   loader: async ({ params }) => {
     const anime = await api.get(apiEndpoints.getAnimeDetails(params.slug)).then(({ data }) => data.anime);
     return { anime };
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     const anime = loaderData?.anime;
     return {
       meta: [
         ...seo({
           title: anime?.title ? anime.title : "Anime Details",
           description: anime?.synopsis ?? undefined,
+          image: ogUrl.media("anime", params.slug),
+        }),
+      ],
+      scripts: [
+        mediaJsonLd({
+          type: "CreativeWork",
+          name: anime?.title,
+          description: anime?.synopsis ?? undefined,
           image: anime?.imageUrl ?? undefined,
+          rating: anime?.tgReviewScore ?? undefined,
+          extra: {
+            genre: anime?.genres,
+          },
         }),
       ],
     };
@@ -76,20 +104,21 @@ function AnimeDetailsRoute() {
 
   const rating = anime?.tgReviewScore ?? 0;
 
-  const [episodesQuery, reviewsQuery] = useQueries({
-    queries: [
-      {
-        queryKey: ["animeEpisodes", slug],
-        queryFn: () => api.get(apiEndpoints.getAnimeEpisodeDetails(slug)).then(({ data }) => data.episodes.items),
-        enabled: !!anime,
-      },
-      {
-        queryKey: ["animeReviews", anime?.id],
-        queryFn: () =>
-          api.get(`${apiEndpoints.animeReview}/?animeId=${anime?.id}`).then(({ data }) => data.animeReviews),
-        enabled: !!anime?.id,
-      },
-    ],
+  const episodesQuery = useInfiniteQuery({
+    queryKey: ["animeEpisodes", slug],
+    queryFn: ({ pageParam }) =>
+      api
+        .get(apiEndpoints.getAnimeEpisodeDetails(slug), { params: { page: pageParam } })
+        .then(({ data }) => data.episodes),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => (lastPage.inPage < lastPage.pages ? lastPage.inPage + 1 : undefined),
+    enabled: !!anime,
+  });
+
+  const reviewsQuery = useQuery({
+    queryKey: ["animeReviews", anime?.id],
+    queryFn: () => api.get(`${apiEndpoints.animeReview}/?animeId=${anime?.id}`).then(({ data }) => data.animeReviews),
+    enabled: !!anime?.id,
   });
 
   const queryClient = useQueryClient();
@@ -106,8 +135,29 @@ function AnimeDetailsRoute() {
     },
   });
 
-  const episodes = episodesQuery.data;
+  const episodes = useMemo<AnimeEpisode[]>(
+    () => (episodesQuery.data?.pages ?? []).flatMap((page) => page.items ?? []),
+    [episodesQuery.data],
+  );
   const reviews = reviewsQuery.data;
+
+  const [episodesSentinel, setEpisodesSentinel] = useState<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!episodesSentinel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && episodesQuery.hasNextPage && !episodesQuery.isFetchingNextPage) {
+          episodesQuery.fetchNextPage();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+
+    observer.observe(episodesSentinel);
+    return () => observer.disconnect();
+  }, [episodesSentinel, episodesQuery.hasNextPage, episodesQuery.isFetchingNextPage, episodesQuery.fetchNextPage]);
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
@@ -243,6 +293,32 @@ function AnimeDetailsRoute() {
     watchedEpisodes: watchedEpisodeNumbers,
   };
 
+  const backfillKey = `anime:${anime?.id}`;
+
+  const [backfillPrompt, setBackfillPrompt] = useState<{ target: number; previous: number[] } | null>(null);
+
+  const startWatchingMutation = useMutation({
+    mutationFn: () =>
+      api.post(apiEndpoints.animeProgress, {
+        animeId: anime?.id,
+        status: "Watching",
+        startedAt: new Date(),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["animeProgress", anime?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["anime", slug] });
+    },
+  });
+
+  function startWatchingIfNeeded() {
+    const current = progressQuery.data;
+
+    if (current && current.status !== "Planning") return;
+    if (startWatchingMutation.isPending) return;
+
+    startWatchingMutation.mutate();
+  }
+
   const toggleEpisodeMutation = useMutation({
     mutationFn: ({ episode, watched }: { episode: number; watched: boolean }) => {
       if (watched) {
@@ -256,7 +332,26 @@ function AnimeDetailsRoute() {
         episodes: [{ episode, status: "Completed" }],
       });
     },
+    onSuccess: (_data, variables) => {
+      if (!variables.watched) startWatchingIfNeeded();
+
+      return queryClient.invalidateQueries({ queryKey: ["animeEpisodeWatch", anime?.id, userId] });
+    },
+    onError: () => {
+      return toast.error(t("api:INTERNAL_SERVER_ERROR"));
+    },
+  });
+
+  const markEpisodesMutation = useMutation({
+    mutationFn: (episodes: number[]) =>
+      api.post(apiEndpoints.animeEpisodeWatch, {
+        animeId: anime?.id,
+        episodes: episodes.map((episode) => ({ episode, status: "Completed" })),
+      }),
     onSuccess: () => {
+      setBackfillPrompt(null);
+      startWatchingIfNeeded();
+
       return queryClient.invalidateQueries({ queryKey: ["animeEpisodeWatch", anime?.id, userId] });
     },
     onError: () => {
@@ -265,7 +360,46 @@ function AnimeDetailsRoute() {
   });
 
   function handleToggle(episode: number) {
-    toggleEpisodeMutation.mutate({ episode, watched: watchedEpisodeNumbers.includes(episode) });
+    const watched = watchedEpisodeNumbers.includes(episode);
+
+    if (watched) {
+      toggleEpisodeMutation.mutate({ episode, watched });
+      return;
+    }
+
+    const previous = getUnwatchedPreviousEpisodes(
+      [{ seasonNumber: 1, totalEpisodes: mySeason.totalEpisodes, watchedEpisodes: watchedEpisodeNumbers }],
+      1,
+      episode,
+    ).map((ref) => ref.episode);
+    const preference = getBackfillPreference(backfillKey);
+
+    if (previous.length === 0 || preference === "never") {
+      toggleEpisodeMutation.mutate({ episode, watched });
+      return;
+    }
+
+    if (preference === "always") {
+      markEpisodesMutation.mutate([...previous, episode]);
+      return;
+    }
+
+    setBackfillPrompt({ target: episode, previous });
+  }
+
+  function handleBackfillConfirm(remember: boolean) {
+    if (!backfillPrompt) return;
+    if (remember) setBackfillPreference(backfillKey, "always");
+
+    markEpisodesMutation.mutate([...backfillPrompt.previous, backfillPrompt.target]);
+  }
+
+  function handleBackfillDecline(remember: boolean) {
+    if (!backfillPrompt) return;
+    if (remember) setBackfillPreference(backfillKey, "never");
+
+    toggleEpisodeMutation.mutate({ episode: backfillPrompt.target, watched: false });
+    setBackfillPrompt(null);
   }
 
   const favoriteQuery = useQuery<boolean>({
@@ -512,7 +646,7 @@ function AnimeDetailsRoute() {
           <div className="flex items-center justify-between gap-3 mb-2">
             <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-              {!episodesQuery.isLoading && !episodesQuery.isError && episodes?.length > 0 && (
+              {!episodesQuery.isLoading && !episodesQuery.isError && episodes.length > 0 && (
                 <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
               )}
               <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
@@ -638,7 +772,19 @@ function AnimeDetailsRoute() {
               </div>
             ) : null}
 
-            {isAuthenticated && <AnimeEpisodeProgress season={mySeason} onToggle={handleToggle} />}
+            {isAuthenticated && (
+              <>
+                <AnimeEpisodeProgress season={mySeason} onToggle={handleToggle} />
+                <BackfillEpisodesDialog
+                  open={!!backfillPrompt}
+                  onOpenChange={(open) => !open && setBackfillPrompt(null)}
+                  episodeCount={backfillPrompt?.previous.length ?? 0}
+                  isLoading={markEpisodesMutation.isPending || toggleEpisodeMutation.isPending}
+                  onConfirm={handleBackfillConfirm}
+                  onDecline={handleBackfillDecline}
+                />
+              </>
+            )}
 
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
@@ -682,23 +828,26 @@ function AnimeDetailsRoute() {
               />
             )}
           </TabsContent>
-          {!episodesQuery.isLoading && !episodesQuery.isError && episodes?.length > 0 && (
+          {!episodesQuery.isLoading && !episodesQuery.isError && episodes.length > 0 && (
             <TabsContent value="episodes">
               <Grid minColSize={"200px"} className="gap-4">
-                {episodes
-                  .sort((a: { malId: number }, b: { malId: number }) => a.malId - b.malId)
-                  .map((episode: { malId: number; title: string; imageUrl: string }) => (
-                    <EpisodeItem
-                      key={episode.malId}
-                      title={episode.title}
-                      number={episode.malId}
-                      imageURL={episode.imageUrl.replace(
-                        "https://myanimelist.net/images/icon-banned-youtube.png",
-                        "/placeholder/banner-1.webp",
-                      )}
-                    />
+                {episodes.map((episode) => (
+                  <EpisodeItem
+                    key={episode.malId}
+                    title={episode.title}
+                    number={episode.malId}
+                    imageURL={(episode.imageUrl ?? "/placeholder/banner-1.webp").replace(
+                      "https://myanimelist.net/images/icon-banned-youtube.png",
+                      "/placeholder/banner-1.webp",
+                    )}
+                  />
+                ))}
+                {episodesQuery.isFetchingNextPage &&
+                  Array.from({ length: 4 }).map((_, index) => (
+                    <Skeleton key={index} className="rounded-xl aspect-video" />
                   ))}
               </Grid>
+              <div ref={setEpisodesSentinel} className="h-px" />
             </TabsContent>
           )}
           <TabsContent value="lists" className="space-y-4">

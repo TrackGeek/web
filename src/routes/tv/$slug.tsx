@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
+import { BackfillEpisodesDialog } from "@/components/pages/details/backfill-episodes-dialog";
 import { CastItem } from "@/components/pages/details/cast";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { EpisodeItem } from "@/components/pages/details/episode";
@@ -34,8 +35,16 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
+import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
+import {
+  type EpisodeRef,
+  getBackfillPreference,
+  getUnwatchedPreviousEpisodes,
+  setBackfillPreference,
+} from "@/lib/utils/episode-backfill";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
+import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
 
@@ -44,14 +53,28 @@ export const Route = createFileRoute("/tv/$slug")({
     const item = await api.get(apiEndpoints.getTvShowDetails(params.slug)).then(({ data }) => data.tvShow);
     return { item };
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     const item = loaderData?.item;
     return {
       meta: [
         ...seo({
           title: item?.name ? item.name : "TV Show Details",
-          description: item?.tagline ?? item?.tagline ?? undefined,
+          description: item?.overview ?? item?.tagline ?? undefined,
+          image: ogUrl.media("tv", params.slug),
+        }),
+      ],
+      scripts: [
+        mediaJsonLd({
+          type: "TVSeries",
+          name: item?.name,
+          description: item?.overview ?? item?.tagline ?? undefined,
           image: item?.posterUrl ?? undefined,
+          rating: item?.tgReviewScore ?? undefined,
+          extra: {
+            genre: item?.genres,
+            numberOfSeasons: item?.numberOfSeasons ?? undefined,
+            numberOfEpisodes: item?.numberOfEpisodes ?? undefined,
+          },
         }),
       ],
     };
@@ -241,6 +264,32 @@ function TVShowDetailsPage() {
     },
   });
 
+  const backfillKey = `tv:${item?.id}`;
+
+  const [backfillPrompt, setBackfillPrompt] = useState<{ target: EpisodeRef; previous: EpisodeRef[] } | null>(null);
+
+  const startWatchingMutation = useMutation({
+    mutationFn: () =>
+      api.post(apiEndpoints.tvShowProgress, {
+        tvShowId: item?.id,
+        status: "Watching",
+        startedAt: new Date(),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tvProgress", item?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["tv", slug] });
+    },
+  });
+
+  function startWatchingIfNeeded() {
+    const current = progressQuery.data;
+
+    if (current && current.status !== "Planning") return;
+    if (startWatchingMutation.isPending) return;
+
+    startWatchingMutation.mutate();
+  }
+
   const toggleEpisodeMutation = useMutation({
     mutationFn: ({ season, episode, watched }: { season: number; episode: number; watched: boolean }) => {
       if (watched) {
@@ -254,7 +303,26 @@ function TVShowDetailsPage() {
         episodes: [{ season, episode, status: "Completed" }],
       });
     },
+    onSuccess: (_data, variables) => {
+      if (!variables.watched) startWatchingIfNeeded();
+
+      return queryClient.invalidateQueries({ queryKey: ["tvEpisodeWatch", item?.id, userId] });
+    },
+    onError: () => {
+      return toast.error(t("api:INTERNAL_SERVER_ERROR"));
+    },
+  });
+
+  const markEpisodesMutation = useMutation({
+    mutationFn: (episodes: EpisodeRef[]) =>
+      api.post(apiEndpoints.tvShowEpisodeWatch, {
+        tvShowId: item?.id,
+        episodes: episodes.map(({ season, episode }) => ({ season, episode, status: "Completed" })),
+      }),
     onSuccess: () => {
+      setBackfillPrompt(null);
+      startWatchingIfNeeded();
+
       return queryClient.invalidateQueries({ queryKey: ["tvEpisodeWatch", item?.id, userId] });
     },
     onError: () => {
@@ -263,9 +331,42 @@ function TVShowDetailsPage() {
   });
 
   function handleWatchEpisodeToggle(season: number, episode: number) {
-    const watched = mySeasons.find((s) => s.seasonNumber === season)?.watchedEpisodes.includes(episode);
+    const watched = !!mySeasons.find((s) => s.seasonNumber === season)?.watchedEpisodes.includes(episode);
 
-    toggleEpisodeMutation.mutate({ season, episode, watched: !!watched });
+    if (watched) {
+      toggleEpisodeMutation.mutate({ season, episode, watched });
+      return;
+    }
+
+    const previous = getUnwatchedPreviousEpisodes(mySeasons, season, episode);
+    const preference = getBackfillPreference(backfillKey);
+
+    if (previous.length === 0 || preference === "never") {
+      toggleEpisodeMutation.mutate({ season, episode, watched });
+      return;
+    }
+
+    if (preference === "always") {
+      markEpisodesMutation.mutate([...previous, { season, episode }]);
+      return;
+    }
+
+    setBackfillPrompt({ target: { season, episode }, previous });
+  }
+
+  function handleBackfillConfirm(remember: boolean) {
+    if (!backfillPrompt) return;
+    if (remember) setBackfillPreference(backfillKey, "always");
+
+    markEpisodesMutation.mutate([...backfillPrompt.previous, backfillPrompt.target]);
+  }
+
+  function handleBackfillDecline(remember: boolean) {
+    if (!backfillPrompt) return;
+    if (remember) setBackfillPreference(backfillKey, "never");
+
+    toggleEpisodeMutation.mutate({ ...backfillPrompt.target, watched: false });
+    setBackfillPrompt(null);
   }
 
   const toggleSeasonMutation = useMutation({
@@ -292,8 +393,11 @@ function TVShowDetailsPage() {
         ),
       );
     },
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       toast.success(t("library:progressUpdated"));
+
+      if (variables.watched) startWatchingIfNeeded();
+
       return queryClient.invalidateQueries({ queryKey: ["tvEpisodeWatch", item?.id, userId] });
     },
     onError: () => {
@@ -747,19 +851,32 @@ function TVShowDetailsPage() {
             </div>
 
             {isAuthenticated && (
-              <EpisodeProgress
-                seasons={mySeasons}
-                defaultSeason={1}
-                seasonCustomNames={{
-                  0: t("library:specials"),
-                }}
-                isLoading={
-                  toggleSeasonMutation.isPending || toggleAllMutation.isPending || toggleEpisodeMutation.isPending
-                }
-                onToggleEpisode={handleWatchEpisodeToggle}
-                onToggleSeason={handleWatchSeasonToggle}
-                onToggleAll={handleWatchAllToggle}
-              />
+              <>
+                <EpisodeProgress
+                  seasons={mySeasons}
+                  defaultSeason={1}
+                  seasonCustomNames={{
+                    0: t("library:specials"),
+                  }}
+                  isLoading={
+                    toggleSeasonMutation.isPending ||
+                    toggleAllMutation.isPending ||
+                    toggleEpisodeMutation.isPending ||
+                    markEpisodesMutation.isPending
+                  }
+                  onToggleEpisode={handleWatchEpisodeToggle}
+                  onToggleSeason={handleWatchSeasonToggle}
+                  onToggleAll={handleWatchAllToggle}
+                />
+                <BackfillEpisodesDialog
+                  open={!!backfillPrompt}
+                  onOpenChange={(open) => !open && setBackfillPrompt(null)}
+                  episodeCount={backfillPrompt?.previous.length ?? 0}
+                  isLoading={markEpisodesMutation.isPending || toggleEpisodeMutation.isPending}
+                  onConfirm={handleBackfillConfirm}
+                  onDecline={handleBackfillDecline}
+                />
+              </>
             )}
 
             <div>

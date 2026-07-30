@@ -914,6 +914,7 @@ export const apiEndpoints = {
   getBookComingSoon: "/book/top?filter=comingSoon",
   bookReview: "/book/review",
   bookProgress: "/book/progress",
+  getBookProgress: (userId: string, bookId: string) => `/book/progress?userId=${userId}&bookId=${bookId}`,
   refreshBookData: "/book/refresh",
   getMovieDetails: (id: string) => `/movie/detail/${id}`,
   getMovieAiring: "/movie/top?filter=airing",

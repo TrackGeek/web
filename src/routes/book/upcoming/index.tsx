@@ -52,13 +52,13 @@ function UpcomingBookRoute() {
         {books?.map((book) => (
           <CardItem
             title={book.title}
-            url={`/book/${book.id}`}
+            url={`/book/${book.hardcoverId}`}
             imageURL={book.imageUrl}
             rating={0}
             year={book.releaseYear}
             synopsis={book.description}
             mediaType={"book"}
-            key={book.id}
+            key={book.hardcoverId}
           />
         ))}
       </Grid>

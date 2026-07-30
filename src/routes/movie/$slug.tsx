@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { type ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,8 +34,10 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
+import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils";
+import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
 
@@ -51,14 +53,31 @@ export const Route = createFileRoute("/movie/$slug")({
     const movie = await api.get(apiEndpoints.getMovieDetails(params.slug)).then(({ data }) => data.movie);
     return { movie };
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     const movie = loaderData?.movie;
     return {
       meta: [
         ...seo({
           title: movie?.title ? movie.title : "Movie Details",
           description: movie?.overview ?? undefined,
+          image: ogUrl.media("movie", params.slug),
+        }),
+      ],
+      scripts: [
+        mediaJsonLd({
+          type: "Movie",
+          name: movie?.title,
+          description: movie?.overview ?? undefined,
           image: movie?.posterUrl ?? undefined,
+          rating: movie?.tgReviewScore ?? undefined,
+          extra: {
+            genre: movie?.genres,
+            director: movie?.crew
+              ?.filter((c: { job: string }) => c.job === "Director")
+              .map((c: { name: string }) => ({ "@type": "Person", name: c.name })),
+            duration: movie?.runtime > 0 ? `PT${movie.runtime}M` : undefined,
+            datePublished: movie?.releaseDate ? new Date(movie.releaseDate).toISOString().slice(0, 10) : undefined,
+          },
         }),
       ],
     };
@@ -255,6 +274,10 @@ function MovieDetailsRoute() {
     return <ErrorComponent />;
   }
 
+  const directors: string[] = (movie.crew ?? [])
+    .filter((c: { job: string }) => c.job === "Director")
+    .map((c: { name: string }) => c.name);
+
   const sidebar = (
     <>
       <div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
@@ -448,15 +471,13 @@ function MovieDetailsRoute() {
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:movieCharacteristics")}</h3>
               <Grid minColSize={"200px"} className="gap-4">
-                <DetailsCard
-                  title={t("library:directors")}
-                  icon={<Icon icon={"lucide:clapperboard"} className="size-5 text-muted-foreground" />}
-                  description={
-                    <Link to="/" search={{ landing: "true" }} className="font-medium text-card-foreground">
-                      Tom Gormican
-                    </Link>
-                  }
-                />
+                {directors.length > 0 && (
+                  <DetailsCard
+                    title={t("library:directors")}
+                    icon={<Icon icon={"lucide:clapperboard"} className="size-5 text-muted-foreground" />}
+                    description={directors.join(", ")}
+                  />
+                )}
                 {movie.budget > 0 && (
                   <DetailsCard
                     title={t("library:budget")}

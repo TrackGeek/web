@@ -20,3 +20,7 @@ export function getGenreLabel(t: TFunction<"translation", undefined>, genreName:
 
   return t(translationKey, genreName);
 }
+
+export function isKnownGenre(t: TFunction<"translation", undefined>, genreName: string): boolean {
+  return t(`library:genresList.${formatGenreKey(genreName)}`, { defaultValue: "" }) !== "";
+}

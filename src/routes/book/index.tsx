@@ -64,7 +64,7 @@ function BookRoute() {
         <CarouselContent>
           {trendingQuery?.slice(0, 3).map((book: any, index: number) => {
             return (
-              <CarouselItem key={book.id}>
+              <CarouselItem key={book.hardcoverId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
                   <Image
                     src={`/placeholder/banner-${index + 1}.webp`}
@@ -88,7 +88,7 @@ function BookRoute() {
 
                     <Link
                       to={"/book/$slug"}
-                      params={{ slug: book.id }}
+                      params={{ slug: book.hardcoverId }}
                       className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
                     >
                       {t("common:viewDetails")}
@@ -113,13 +113,13 @@ function BookRoute() {
           {trendingQuery?.slice(0, 16).map((book: any) => (
             <CardItem
               title={book.title}
-              url={`/book/${book.id}`}
+              url={`/book/${book.hardcoverId}`}
               imageURL={book.imageUrl}
               rating={0}
               year={book.releaseYear}
               synopsis={book.description}
               mediaType={"book"}
-              key={book.id}
+              key={book.hardcoverId}
             />
           ))}
         </Grid>
@@ -133,13 +133,13 @@ function BookRoute() {
           {comingSoonQuery?.slice(0, 16).map((book: any) => (
             <CardItem
               title={book.title}
-              url={`/book/${book.id}`}
+              url={`/book/${book.hardcoverId}`}
               imageURL={book.imageUrl}
               rating={0}
               year={book.releaseYear}
               synopsis={book.description}
               mediaType={"book"}
-              key={book.id}
+              key={book.hardcoverId}
             />
           ))}
         </Grid>

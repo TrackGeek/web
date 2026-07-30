@@ -200,7 +200,20 @@ function RouteComponent() {
     }
   };
 
-  const items = useMemo(() => data?.pages.flatMap((p) => getItemsFromPage(p, contentType)) ?? [], [data, contentType]);
+  const items = useMemo(() => {
+    const seen = new Set<number | string>();
+
+    return (data?.pages.flatMap((p) => getItemsFromPage(p, contentType)) ?? []).filter((item: any) => {
+      const id = item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId;
+
+      if (id == null) return true;
+      if (seen.has(id)) return false;
+
+      seen.add(id);
+
+      return true;
+    });
+  }, [data, contentType]);
 
   return (
     <div>

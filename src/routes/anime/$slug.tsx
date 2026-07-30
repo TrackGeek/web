@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
-import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -29,6 +29,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { REVIEW_CONTENT, useToggleReviewReaction } from "@/hooks/review";
@@ -43,6 +44,13 @@ import {
 import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
+
+interface AnimeEpisode {
+  malId: number;
+  title: string;
+  episodeNumber: string;
+  imageUrl: string | null;
+}
 
 export const Route = createFileRoute("/anime/$slug")({
   loader: async ({ params }) => {
@@ -95,20 +103,21 @@ function AnimeDetailsRoute() {
 
   const rating = anime?.tgReviewScore ?? 0;
 
-  const [episodesQuery, reviewsQuery] = useQueries({
-    queries: [
-      {
-        queryKey: ["animeEpisodes", slug],
-        queryFn: () => api.get(apiEndpoints.getAnimeEpisodeDetails(slug)).then(({ data }) => data.episodes.items),
-        enabled: !!anime,
-      },
-      {
-        queryKey: ["animeReviews", anime?.id],
-        queryFn: () =>
-          api.get(`${apiEndpoints.animeReview}/?animeId=${anime?.id}`).then(({ data }) => data.animeReviews),
-        enabled: !!anime?.id,
-      },
-    ],
+  const episodesQuery = useInfiniteQuery({
+    queryKey: ["animeEpisodes", slug],
+    queryFn: ({ pageParam }) =>
+      api
+        .get(apiEndpoints.getAnimeEpisodeDetails(slug), { params: { page: pageParam } })
+        .then(({ data }) => data.episodes),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => (lastPage.inPage < lastPage.pages ? lastPage.inPage + 1 : undefined),
+    enabled: !!anime,
+  });
+
+  const reviewsQuery = useQuery({
+    queryKey: ["animeReviews", anime?.id],
+    queryFn: () => api.get(`${apiEndpoints.animeReview}/?animeId=${anime?.id}`).then(({ data }) => data.animeReviews),
+    enabled: !!anime?.id,
   });
 
   const queryClient = useQueryClient();
@@ -125,8 +134,29 @@ function AnimeDetailsRoute() {
     },
   });
 
-  const episodes = episodesQuery.data;
+  const episodes = useMemo<AnimeEpisode[]>(
+    () => (episodesQuery.data?.pages ?? []).flatMap((page) => page.items ?? []),
+    [episodesQuery.data],
+  );
   const reviews = reviewsQuery.data;
+
+  const [episodesSentinel, setEpisodesSentinel] = useState<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!episodesSentinel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && episodesQuery.hasNextPage && !episodesQuery.isFetchingNextPage) {
+          episodesQuery.fetchNextPage();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+
+    observer.observe(episodesSentinel);
+    return () => observer.disconnect();
+  }, [episodesSentinel, episodesQuery.hasNextPage, episodesQuery.isFetchingNextPage, episodesQuery.fetchNextPage]);
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
@@ -615,7 +645,7 @@ function AnimeDetailsRoute() {
           <div className="flex items-center justify-between gap-3 mb-2">
             <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-              {!episodesQuery.isLoading && !episodesQuery.isError && episodes?.length > 0 && (
+              {!episodesQuery.isLoading && !episodesQuery.isError && episodes.length > 0 && (
                 <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
               )}
               <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
@@ -797,23 +827,26 @@ function AnimeDetailsRoute() {
               />
             )}
           </TabsContent>
-          {!episodesQuery.isLoading && !episodesQuery.isError && episodes?.length > 0 && (
+          {!episodesQuery.isLoading && !episodesQuery.isError && episodes.length > 0 && (
             <TabsContent value="episodes">
               <Grid minColSize={"200px"} className="gap-4">
-                {episodes
-                  .sort((a: { malId: number }, b: { malId: number }) => a.malId - b.malId)
-                  .map((episode: { malId: number; title: string; imageUrl: string }) => (
-                    <EpisodeItem
-                      key={episode.malId}
-                      title={episode.title}
-                      number={episode.malId}
-                      imageURL={episode.imageUrl.replace(
-                        "https://myanimelist.net/images/icon-banned-youtube.png",
-                        "/placeholder/banner-1.webp",
-                      )}
-                    />
+                {episodes.map((episode) => (
+                  <EpisodeItem
+                    key={episode.malId}
+                    title={episode.title}
+                    number={episode.malId}
+                    imageURL={(episode.imageUrl ?? "/placeholder/banner-1.webp").replace(
+                      "https://myanimelist.net/images/icon-banned-youtube.png",
+                      "/placeholder/banner-1.webp",
+                    )}
+                  />
+                ))}
+                {episodesQuery.isFetchingNextPage &&
+                  Array.from({ length: 4 }).map((_, index) => (
+                    <Skeleton key={index} className="rounded-xl aspect-video" />
                   ))}
               </Grid>
+              <div ref={setEpisodesSentinel} className="h-px" />
             </TabsContent>
           )}
           <TabsContent value="lists" className="space-y-4">

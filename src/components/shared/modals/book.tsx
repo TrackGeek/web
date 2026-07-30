@@ -213,10 +213,10 @@ export function BookModal({ bookId, totalPages, onClose }: BookModalProps) {
       return api.post(apiEndpoints.bookProgress, {
         bookId,
         status,
-        chaptersRead: Number(data.pagesRead) || undefined,
-        readCount: Number(data.readCount) || undefined,
+        chaptersRead: data.pagesRead.trim() === "" ? undefined : Number(data.pagesRead),
+        readCount: data.readCount.trim() === "" ? undefined : Number(data.readCount),
         startedAt: data.startDate ?? undefined,
-        completedAt: status === "Completed" ? (data.finishDate ?? new Date()) : (data.finishDate ?? undefined),
+        completedAt: status === "Completed" ? (data.finishDate ?? new Date()) : data.finishDate,
       });
     },
     onSuccess: () => {
@@ -347,7 +347,7 @@ export function BookModal({ bookId, totalPages, onClose }: BookModalProps) {
                 name="status"
                 render={({ field }) => (
                   <Select value={field.value || undefined} onValueChange={field.onChange}>
-                    <SelectTrigger className="w-full bg-background">
+                    <SelectTrigger id="status" className="w-full bg-background">
                       <SelectValue placeholder={t("feed:selectStatus")} />
                     </SelectTrigger>
                     <SelectContent>

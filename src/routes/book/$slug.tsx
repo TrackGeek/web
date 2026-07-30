@@ -347,7 +347,12 @@ function BookDetailsRoute() {
   const edition = primaryEdition(book);
   const series: BookSeriesEntry[] = book.bookSeries ?? [];
   const releaseDate = book.releaseDate
-    ? new Date(book.releaseDate).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })
+    ? new Date(book.releaseDate).toLocaleDateString(i18n.language, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone: "UTC",
+      })
     : null;
 
   const sidebar = (

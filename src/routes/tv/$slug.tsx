@@ -35,6 +35,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
+import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
 import {
   type EpisodeRef,
@@ -52,14 +53,14 @@ export const Route = createFileRoute("/tv/$slug")({
     const item = await api.get(apiEndpoints.getTvShowDetails(params.slug)).then(({ data }) => data.tvShow);
     return { item };
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     const item = loaderData?.item;
     return {
       meta: [
         ...seo({
           title: item?.name ? item.name : "TV Show Details",
           description: item?.tagline ?? item?.tagline ?? undefined,
-          image: item?.posterUrl ?? undefined,
+          image: ogUrl.media("tv", params.slug),
         }),
       ],
       scripts: [

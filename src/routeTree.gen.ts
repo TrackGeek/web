@@ -42,6 +42,7 @@ import { Route as AnimeAiringIndexRouteImport } from './routes/anime/airing/inde
 import { Route as AnimeRecommendationsIndexRouteImport } from './routes/anime/recommendations/index'
 import { Route as AnimeTopIndexRouteImport } from './routes/anime/top/index'
 import { Route as AnimeUpcomingIndexRouteImport } from './routes/anime/upcoming/index'
+import { Route as ApiOgPageRouteImport } from './routes/api/og/page'
 import { Route as BookFranchisesSlugRouteImport } from './routes/book/franchises/$slug'
 import { Route as BookTrendingIndexRouteImport } from './routes/book/trending/index'
 import { Route as BookUpcomingIndexRouteImport } from './routes/book/upcoming/index'
@@ -66,6 +67,8 @@ import { Route as TvUpcomingIndexRouteImport } from './routes/tv/upcoming/index'
 import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
 import { Route as AuthenticatedDonateErrorIndexRouteImport } from './routes/_authenticated/donate/error/index'
 import { Route as AuthenticatedDonateSuccessIndexRouteImport } from './routes/_authenticated/donate/success/index'
+import { Route as ApiOgUserUsernameRouteImport } from './routes/api/og/user.$username'
+import { Route as ApiOgMediaTypeSlugRouteImport } from './routes/api/og/media.$type.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -233,6 +236,11 @@ const AnimeUpcomingIndexRoute = AnimeUpcomingIndexRouteImport.update({
   path: '/anime/upcoming/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiOgPageRoute = ApiOgPageRouteImport.update({
+  id: '/api/og/page',
+  path: '/api/og/page',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BookFranchisesSlugRoute = BookFranchisesSlugRouteImport.update({
   id: '/book/franchises/$slug',
   path: '/book/franchises/$slug',
@@ -356,6 +364,16 @@ const AuthenticatedDonateSuccessIndexRoute =
     path: '/donate/success/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const ApiOgUserUsernameRoute = ApiOgUserUsernameRouteImport.update({
+  id: '/api/og/user/$username',
+  path: '/api/og/user/$username',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiOgMediaTypeSlugRoute = ApiOgMediaTypeSlugRouteImport.update({
+  id: '/api/og/media/$type/$slug',
+  path: '/api/og/media/$type/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -386,6 +404,7 @@ export interface FileRoutesByFullPath {
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/api/og/page': typeof ApiOgPageRoute
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
@@ -412,8 +431,10 @@ export interface FileRoutesByFullPath {
   '/tv/trending/': typeof TvTrendingIndexRoute
   '/tv/upcoming/': typeof TvUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
+  '/api/og/user/$username': typeof ApiOgUserUsernameRoute
   '/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
+  '/api/og/media/$type/$slug': typeof ApiOgMediaTypeSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -444,6 +465,7 @@ export interface FileRoutesByTo {
   '/manga': typeof MangaIndexRoute
   '/movie': typeof MovieIndexRoute
   '/tv': typeof TvIndexRoute
+  '/api/og/page': typeof ApiOgPageRoute
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
@@ -470,8 +492,10 @@ export interface FileRoutesByTo {
   '/tv/trending': typeof TvTrendingIndexRoute
   '/tv/upcoming': typeof TvUpcomingIndexRoute
   '/user/$username': typeof UserUsernameIndexRoute
+  '/api/og/user/$username': typeof ApiOgUserUsernameRoute
   '/donate/error': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success': typeof AuthenticatedDonateSuccessIndexRoute
+  '/api/og/media/$type/$slug': typeof ApiOgMediaTypeSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -504,6 +528,7 @@ export interface FileRoutesById {
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/api/og/page': typeof ApiOgPageRoute
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
@@ -530,8 +555,10 @@ export interface FileRoutesById {
   '/tv/trending/': typeof TvTrendingIndexRoute
   '/tv/upcoming/': typeof TvUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
+  '/api/og/user/$username': typeof ApiOgUserUsernameRoute
   '/_authenticated/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/_authenticated/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
+  '/api/og/media/$type/$slug': typeof ApiOgMediaTypeSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -564,6 +591,7 @@ export interface FileRouteTypes {
     | '/manga/'
     | '/movie/'
     | '/tv/'
+    | '/api/og/page'
     | '/book/franchises/$slug'
     | '/game/franchises/$slug'
     | '/movie/franchises/$slug'
@@ -590,8 +618,10 @@ export interface FileRouteTypes {
     | '/tv/trending/'
     | '/tv/upcoming/'
     | '/user/$username/'
+    | '/api/og/user/$username'
     | '/donate/error/'
     | '/donate/success/'
+    | '/api/og/media/$type/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -622,6 +652,7 @@ export interface FileRouteTypes {
     | '/manga'
     | '/movie'
     | '/tv'
+    | '/api/og/page'
     | '/book/franchises/$slug'
     | '/game/franchises/$slug'
     | '/movie/franchises/$slug'
@@ -648,8 +679,10 @@ export interface FileRouteTypes {
     | '/tv/trending'
     | '/tv/upcoming'
     | '/user/$username'
+    | '/api/og/user/$username'
     | '/donate/error'
     | '/donate/success'
+    | '/api/og/media/$type/$slug'
   id:
     | '__root__'
     | '/'
@@ -681,6 +714,7 @@ export interface FileRouteTypes {
     | '/manga/'
     | '/movie/'
     | '/tv/'
+    | '/api/og/page'
     | '/book/franchises/$slug'
     | '/game/franchises/$slug'
     | '/movie/franchises/$slug'
@@ -707,8 +741,10 @@ export interface FileRouteTypes {
     | '/tv/trending/'
     | '/tv/upcoming/'
     | '/user/$username/'
+    | '/api/og/user/$username'
     | '/_authenticated/donate/error/'
     | '/_authenticated/donate/success/'
+    | '/api/og/media/$type/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -738,6 +774,7 @@ export interface RootRouteChildren {
   MangaIndexRoute: typeof MangaIndexRoute
   MovieIndexRoute: typeof MovieIndexRoute
   TvIndexRoute: typeof TvIndexRoute
+  ApiOgPageRoute: typeof ApiOgPageRoute
   BookFranchisesSlugRoute: typeof BookFranchisesSlugRoute
   GameFranchisesSlugRoute: typeof GameFranchisesSlugRoute
   MovieFranchisesSlugRoute: typeof MovieFranchisesSlugRoute
@@ -764,6 +801,8 @@ export interface RootRouteChildren {
   TvTrendingIndexRoute: typeof TvTrendingIndexRoute
   TvUpcomingIndexRoute: typeof TvUpcomingIndexRoute
   UserUsernameIndexRoute: typeof UserUsernameIndexRoute
+  ApiOgUserUsernameRoute: typeof ApiOgUserUsernameRoute
+  ApiOgMediaTypeSlugRoute: typeof ApiOgMediaTypeSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -999,6 +1038,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnimeUpcomingIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/og/page': {
+      id: '/api/og/page'
+      path: '/api/og/page'
+      fullPath: '/api/og/page'
+      preLoaderRoute: typeof ApiOgPageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/book/franchises/$slug': {
       id: '/book/franchises/$slug'
       path: '/book/franchises/$slug'
@@ -1167,6 +1213,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDonateSuccessIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/api/og/user/$username': {
+      id: '/api/og/user/$username'
+      path: '/api/og/user/$username'
+      fullPath: '/api/og/user/$username'
+      preLoaderRoute: typeof ApiOgUserUsernameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/og/media/$type/$slug': {
+      id: '/api/og/media/$type/$slug'
+      path: '/api/og/media/$type/$slug'
+      fullPath: '/api/og/media/$type/$slug'
+      preLoaderRoute: typeof ApiOgMediaTypeSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1217,6 +1277,7 @@ const rootRouteChildren: RootRouteChildren = {
   MangaIndexRoute: MangaIndexRoute,
   MovieIndexRoute: MovieIndexRoute,
   TvIndexRoute: TvIndexRoute,
+  ApiOgPageRoute: ApiOgPageRoute,
   BookFranchisesSlugRoute: BookFranchisesSlugRoute,
   GameFranchisesSlugRoute: GameFranchisesSlugRoute,
   MovieFranchisesSlugRoute: MovieFranchisesSlugRoute,
@@ -1243,6 +1304,8 @@ const rootRouteChildren: RootRouteChildren = {
   TvTrendingIndexRoute: TvTrendingIndexRoute,
   TvUpcomingIndexRoute: TvUpcomingIndexRoute,
   UserUsernameIndexRoute: UserUsernameIndexRoute,
+  ApiOgUserUsernameRoute: ApiOgUserUsernameRoute,
+  ApiOgMediaTypeSlugRoute: ApiOgMediaTypeSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

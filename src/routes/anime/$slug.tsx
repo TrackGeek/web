@@ -35,6 +35,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { REVIEW_CONTENT, useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
+import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
 import {
   getBackfillPreference,
@@ -57,14 +58,14 @@ export const Route = createFileRoute("/anime/$slug")({
     const anime = await api.get(apiEndpoints.getAnimeDetails(params.slug)).then(({ data }) => data.anime);
     return { anime };
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     const anime = loaderData?.anime;
     return {
       meta: [
         ...seo({
           title: anime?.title ? anime.title : "Anime Details",
           description: anime?.synopsis ?? undefined,
-          image: anime?.imageUrl ?? undefined,
+          image: ogUrl.media("anime", params.slug),
         }),
       ],
       scripts: [

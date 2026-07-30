@@ -34,6 +34,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
+import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
@@ -52,14 +53,14 @@ export const Route = createFileRoute("/movie/$slug")({
     const movie = await api.get(apiEndpoints.getMovieDetails(params.slug)).then(({ data }) => data.movie);
     return { movie };
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     const movie = loaderData?.movie;
     return {
       meta: [
         ...seo({
           title: movie?.title ? movie.title : "Movie Details",
           description: movie?.overview ?? undefined,
-          image: movie?.posterUrl ?? undefined,
+          image: ogUrl.media("movie", params.slug),
         }),
       ],
       scripts: [
@@ -75,9 +76,7 @@ export const Route = createFileRoute("/movie/$slug")({
               ?.filter((c: { job: string }) => c.job === "Director")
               .map((c: { name: string }) => ({ "@type": "Person", name: c.name })),
             duration: movie?.runtime > 0 ? `PT${movie.runtime}M` : undefined,
-            datePublished: movie?.releaseDate
-              ? new Date(movie.releaseDate).toISOString().slice(0, 10)
-              : undefined,
+            datePublished: movie?.releaseDate ? new Date(movie.releaseDate).toISOString().slice(0, 10) : undefined,
           },
         }),
       ],

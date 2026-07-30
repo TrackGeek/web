@@ -35,6 +35,7 @@ import { gameScreenshotsQueryKey } from "@/hooks/game";
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
+import { ogUrl } from "@/lib/og/url";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
@@ -64,14 +65,14 @@ export const Route = createFileRoute("/game/$slug")({
     const game = await api.get(apiEndpoints.getGameDetails(params.slug)).then(({ data }) => data.game);
     return { game };
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     const game = loaderData?.game;
     return {
       meta: [
         ...seo({
           title: game?.name ? game.name : "Game Details",
           description: game?.summary ?? undefined,
-          image: game?.coverUrl ?? undefined,
+          image: ogUrl.media("game", params.slug),
         }),
       ],
       scripts: [
@@ -85,9 +86,7 @@ export const Route = createFileRoute("/game/$slug")({
             applicationCategory: "Game",
             genre: game?.genres?.map((g: { name: string }) => g.name),
             gamePlatform: game?.platforms?.map((p: { name: string }) => p.name),
-            datePublished: game?.firstReleaseDate
-              ? new Date(game.firstReleaseDate).toISOString()
-              : undefined,
+            datePublished: game?.firstReleaseDate ? new Date(game.firstReleaseDate).toISOString() : undefined,
           },
         }),
       ],

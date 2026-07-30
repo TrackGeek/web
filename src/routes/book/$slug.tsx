@@ -31,6 +31,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
+import { ogUrl } from "@/lib/og/url";
 import { getGenreLabel, isKnownGenre } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
@@ -93,7 +94,7 @@ export const Route = createFileRoute("/book/$slug")({
     const book = await api.get(apiEndpoints.getBookDetails(params.slug)).then(({ data }) => data.book);
     return { book };
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     const book = loaderData?.book;
     const authors = authorNames(book?.contributions).join(", ");
     const edition = book ? primaryEdition(book) : null;
@@ -104,7 +105,7 @@ export const Route = createFileRoute("/book/$slug")({
         ...seo({
           title: book?.title ? book.title : "Book Details",
           description: book?.description ? `${authors ? `${authors} · ` : ""}${book.description}` : undefined,
-          image: cover,
+          image: ogUrl.media("book", params.slug),
         }),
       ],
       scripts: [

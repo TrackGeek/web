@@ -28,6 +28,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
+import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
@@ -38,14 +39,14 @@ export const Route = createFileRoute("/manga/$slug")({
     const manga = await api.get(apiEndpoints.getMangaDetails(params.slug)).then(({ data }) => data.manga);
     return { manga };
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     const manga = loaderData?.manga;
     return {
       meta: [
         ...seo({
           title: manga?.title ? manga.title : "Manga Details",
           description: manga?.synopsis ?? undefined,
-          image: manga?.imageUrl ?? undefined,
+          image: ogUrl.media("manga", params.slug),
         }),
       ],
       scripts: [

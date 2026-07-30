@@ -158,7 +158,7 @@ function ListWithMore({ items }: { items: string[] }) {
 function BookDetailsRoute() {
   const { slug } = Route.useParams();
   const { book: loaderBook } = Route.useLoaderData();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [moreOpen, setMoreOpen] = useState(false);
   const [newListName, setNewListName] = useState("");

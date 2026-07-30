@@ -59,7 +59,7 @@ export const Route = createFileRoute("/tv/$slug")({
       meta: [
         ...seo({
           title: item?.name ? item.name : "TV Show Details",
-          description: item?.tagline ?? item?.tagline ?? undefined,
+          description: item?.overview ?? item?.tagline ?? undefined,
           image: ogUrl.media("tv", params.slug),
         }),
       ],

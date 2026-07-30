@@ -135,6 +135,9 @@ const SOURCES: Record<OgMediaType, MediaSource> = {
 export async function loadMediaCard(type: OgMediaType, slug: string): Promise<MediaCardProps> {
   const source = SOURCES[type];
   const { data } = await api.get<Record<string, RawMedia>>(source.endpoint(slug));
+  const raw = data[source.envelope];
 
-  return { kindLabel: source.kindLabel, ...source.toCard(data[source.envelope] ?? {}) };
+  if (!raw || typeof raw !== "object") throw new Error(`Missing "${source.envelope}" in ${type} response`);
+
+  return { kindLabel: source.kindLabel, ...source.toCard(raw) };
 }

@@ -15,7 +15,7 @@ const clean = (obj: JsonLdObject): JsonLdObject =>
 
 export const jsonLdScript = (data: JsonLdObject) => ({
   type: "application/ld+json" as const,
-  children: JSON.stringify({ "@context": "https://schema.org", ...data }),
+  children: JSON.stringify({ "`@context`": "https://schema.org", ...data }).replace(/</g, "\\u003c"),
 });
 
 export const organizationJsonLd = () =>

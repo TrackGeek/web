@@ -28,6 +28,7 @@ export function truncate(value: string | null | undefined, max: number) {
 
 export function formatCount(value: number) {
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1).replace(/\.0$/, "")}M`;
+  if (value >= 999_500) return "1M";
   if (value >= 10_000) return `${(value / 1_000).toFixed(0)}K`;
   if (value >= 1_000) return `${(value / 1_000).toFixed(1).replace(/\.0$/, "")}K`;
 

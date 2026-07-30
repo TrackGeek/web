@@ -29,7 +29,14 @@ async function withFallback(build: () => Promise<ReactElement>, fallback: ReactE
   try {
     return await toImage(await build());
   } catch {
-    return toImage(fallback);
+    try {
+      return await toImage(fallback);
+    } catch {
+      return new Response("Unable to render image", {
+        status: 500,
+        headers: { "cache-control": "no-store" },
+      });
+    }
   }
 }
 

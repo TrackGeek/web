@@ -25,6 +25,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
+import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/book/$slug")({
@@ -42,6 +43,22 @@ export const Route = createFileRoute("/book/$slug")({
           title: book?.title ? book.title : "Book Details",
           description: book?.description ? `${authors ? `${authors} · ` : ""}${book.description}` : undefined,
           image: book?.imageUrl ?? undefined,
+        }),
+      ],
+      scripts: [
+        mediaJsonLd({
+          type: "Book",
+          name: book?.title,
+          description: book?.description ?? undefined,
+          image: book?.imageUrl ?? undefined,
+          extra: {
+            author: book?.contributions?.map((c: { author: { name: string } }) => ({
+              "@type": "Person",
+              name: c.author.name,
+            })),
+            isbn: book?.isbn13 ?? book?.isbn10 ?? undefined,
+            numberOfPages: book?.pageCount ?? undefined,
+          },
         }),
       ],
     };

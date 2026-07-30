@@ -30,11 +30,13 @@ import { ImageZoom } from "@/components/ui/image-zoom";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { gameScreenshotsQueryKey } from "@/hooks/game";
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
+import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
 
 const websiteIconMap: Record<string, { icon: string; hex?: string }> = {
@@ -70,6 +72,23 @@ export const Route = createFileRoute("/game/$slug")({
           title: game?.name ? game.name : "Game Details",
           description: game?.summary ?? undefined,
           image: game?.coverUrl ?? undefined,
+        }),
+      ],
+      scripts: [
+        mediaJsonLd({
+          type: "VideoGame",
+          name: game?.name,
+          description: game?.summary ?? undefined,
+          image: game?.coverUrl ?? undefined,
+          rating: game?.tgReviewScore ?? undefined,
+          extra: {
+            applicationCategory: "Game",
+            genre: game?.genres?.map((g: { name: string }) => g.name),
+            gamePlatform: game?.platforms?.map((p: { name: string }) => p.name),
+            datePublished: game?.firstReleaseDate
+              ? new Date(game.firstReleaseDate).toISOString()
+              : undefined,
+          },
         }),
       ],
     };
@@ -185,6 +204,31 @@ const buildRelationsData = (game: GameRelations) => {
 
   return { nodes, edges };
 };
+
+function ListWithMore({ items }: { items: string[] }) {
+  if (items.length === 0) return null;
+  return (
+    <span className="flex min-w-0 items-center gap-1.5">
+      <span className="truncate">{items[0]}</span>
+      {items.length > 1 && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className="shrink-0 cursor-default rounded-md bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
+              +{items.length - 1}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <ul className="flex flex-col gap-0.5">
+              {items.slice(1).map((i) => (
+                <li key={i}>{i}</li>
+              ))}
+            </ul>
+          </TooltipContent>
+        </Tooltip>
+      )}
+    </span>
+  );
+}
 
 function GameDetailsRoute() {
   const { slug } = Route.useParams();
@@ -385,6 +429,24 @@ function GameDetailsRoute() {
     day: "numeric",
   });
 
+  const developers = game.involvedCompanies
+    .filter((c: { developer: string }) => c.developer)
+    .map((c: { companyName: string }) => c.companyName);
+  const publishers = game.involvedCompanies
+    .filter((c: { publisher: string }) => c.publisher)
+    .map((c: { companyName: string }) => c.companyName);
+  const platformNames = game.platforms
+    .map((p: { name: string }) => p.name)
+    .sort((a: string, b: string) => {
+      if (a === "PC (Microsoft Windows)") return -1;
+      if (b === "PC (Microsoft Windows)") return 1;
+      return 0;
+    });
+  const themes: string[] = game.themes;
+  const gameModes = game.gameModes.map((m: { name: string }) => m.name);
+  const playerPerspectives = game.playerPerspectives.map((p: { name: string }) => p.name);
+  const hasScreenshots = (screenshots?.total ?? 0) > 0;
+
   const sidebar = (
     <>
       <div className="mb-2 w-full h-auto mx-auto shadow-xl rounded-lg overflow-hidden">
@@ -519,7 +581,7 @@ function GameDetailsRoute() {
               <TabsTrigger value="lists">
                 {t("library:lists")} ({listsQuery.data?.total ?? 0})
               </TabsTrigger>
-              {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
+              {hasScreenshots && (
                 <TabsTrigger value="screenshots">
                   {t("common:screenshots")} ({screenshots?.total ?? 0})
                 </TabsTrigger>
@@ -539,42 +601,48 @@ function GameDetailsRoute() {
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:gameCharacteristics")}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <DetailsCard
-                  title={t("library:developers")}
-                  icon={<Icon icon={"lucide:code"} className="size-5 text-muted-foreground" />}
-                  description={game.involvedCompanies
-                    .filter((c: { developer: string }) => c.developer)
-                    .map((c: { companyName: string }) => c.companyName)
-                    .join(", ")}
-                />
-                <DetailsCard
-                  title={t("library:publishers")}
-                  icon={<Icon icon={"lucide:building-2"} className="size-5 text-muted-foreground" />}
-                  description={game.involvedCompanies
-                    .filter((c: { publisher: string }) => c.publisher)
-                    .map((c: { companyName: string }) => c.companyName)
-                    .join(", ")}
-                />
-                <DetailsCard
-                  title={t("library:platforms")}
-                  icon={<Icon icon={"lucide:computer"} className="size-5 text-muted-foreground" />}
-                  description={game.platforms.map((p: { name: string }) => p.name).join(", ")}
-                />
-                <DetailsCard
-                  title={t("library:themes")}
-                  icon={<Icon icon={"lucide:tree-deciduous"} className="size-5 text-muted-foreground" />}
-                  description={game.themes.join(", ")}
-                />
-                <DetailsCard
-                  title={t("library:gameModes")}
-                  icon={<Icon icon={"lucide:ethernet-port"} className="size-5 text-muted-foreground" />}
-                  description={game.gameModes.map((m: { name: string }) => m.name).join(", ")}
-                />
-                <DetailsCard
-                  title={t("library:playerPerspectives")}
-                  icon={<Icon icon={"lucide:cctv"} className="size-5 text-muted-foreground" />}
-                  description={game.playerPerspectives.map((p: { name: string }) => p.name).join(", ")}
-                />
+                {developers.length > 0 && (
+                  <DetailsCard
+                    title={t("library:developers")}
+                    icon={<Icon icon={"lucide:code"} className="size-5 text-muted-foreground" />}
+                    description={<ListWithMore items={developers} />}
+                  />
+                )}
+                {publishers.length > 0 && (
+                  <DetailsCard
+                    title={t("library:publishers")}
+                    icon={<Icon icon={"lucide:building-2"} className="size-5 text-muted-foreground" />}
+                    description={<ListWithMore items={publishers} />}
+                  />
+                )}
+                {platformNames.length > 0 && (
+                  <DetailsCard
+                    title={t("library:platforms")}
+                    icon={<Icon icon={"lucide:computer"} className="size-5 text-muted-foreground" />}
+                    description={<ListWithMore items={platformNames} />}
+                  />
+                )}
+                {themes.length > 0 && (
+                  <DetailsCard
+                    title={t("library:themes")}
+                    icon={<Icon icon={"lucide:tree-deciduous"} className="size-5 text-muted-foreground" />}
+                    description={<ListWithMore items={themes} />}
+                  />
+                )}
+                {gameModes.length > 0 && (
+                  <DetailsCard
+                    title={t("library:gameModes")}
+                    icon={<Icon icon={"lucide:ethernet-port"} className="size-5 text-muted-foreground" />}
+                    description={<ListWithMore items={gameModes} />}
+                  />
+                )}
+                {playerPerspectives.length > 0 && (
+                  <DetailsCard
+                    title={t("library:playerPerspectives")}
+                    icon={<Icon icon={"lucide:cctv"} className="size-5 text-muted-foreground" />}
+                    description={<ListWithMore items={playerPerspectives} />}
+                  />
+                )}
                 {game.gameEngines.length > 0 && (
                   <DetailsCard
                     title={t("library:gameEngine")}
@@ -740,7 +808,7 @@ function GameDetailsRoute() {
               </div>
             )}
           </TabsContent>
-          {!screenshotsQuery.isLoading && !screenshotsQuery.isError && (
+          {hasScreenshots && (
             <TabsContent value="screenshots">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {screenshots?.items.map((screenshot) => (

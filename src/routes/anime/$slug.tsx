@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { AnimeEpisodeProgress, type SingleSeasonData } from "@/components/pages/details/anime-progress";
+import { BackfillEpisodesDialog } from "@/components/pages/details/backfill-episodes-dialog";
 import { CastItem } from "@/components/pages/details/cast";
 import { CharacterItem } from "@/components/pages/details/character";
 import { CommunityStats } from "@/components/pages/details/community-stats";
@@ -34,7 +35,13 @@ import { REVIEW_CONTENT, useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
+import {
+  getBackfillPreference,
+  getUnwatchedPreviousEpisodes,
+  setBackfillPreference,
+} from "@/lib/utils/episode-backfill";
 import { getGenreLabel } from "@/lib/utils/genre-utils";
+import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/anime/$slug")({
@@ -50,6 +57,18 @@ export const Route = createFileRoute("/anime/$slug")({
           title: anime?.title ? anime.title : "Anime Details",
           description: anime?.synopsis ?? undefined,
           image: anime?.imageUrl ?? undefined,
+        }),
+      ],
+      scripts: [
+        mediaJsonLd({
+          type: "CreativeWork",
+          name: anime?.title,
+          description: anime?.synopsis ?? undefined,
+          image: anime?.imageUrl ?? undefined,
+          rating: anime?.tgReviewScore ?? undefined,
+          extra: {
+            genre: anime?.genres,
+          },
         }),
       ],
     };
@@ -243,6 +262,32 @@ function AnimeDetailsRoute() {
     watchedEpisodes: watchedEpisodeNumbers,
   };
 
+  const backfillKey = `anime:${anime?.id}`;
+
+  const [backfillPrompt, setBackfillPrompt] = useState<{ target: number; previous: number[] } | null>(null);
+
+  const startWatchingMutation = useMutation({
+    mutationFn: () =>
+      api.post(apiEndpoints.animeProgress, {
+        animeId: anime?.id,
+        status: "Watching",
+        startedAt: new Date(),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["animeProgress", anime?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["anime", slug] });
+    },
+  });
+
+  function startWatchingIfNeeded() {
+    const current = progressQuery.data;
+
+    if (current && current.status !== "Planning") return;
+    if (startWatchingMutation.isPending) return;
+
+    startWatchingMutation.mutate();
+  }
+
   const toggleEpisodeMutation = useMutation({
     mutationFn: ({ episode, watched }: { episode: number; watched: boolean }) => {
       if (watched) {
@@ -256,7 +301,26 @@ function AnimeDetailsRoute() {
         episodes: [{ episode, status: "Completed" }],
       });
     },
+    onSuccess: (_data, variables) => {
+      if (!variables.watched) startWatchingIfNeeded();
+
+      return queryClient.invalidateQueries({ queryKey: ["animeEpisodeWatch", anime?.id, userId] });
+    },
+    onError: () => {
+      return toast.error(t("api:INTERNAL_SERVER_ERROR"));
+    },
+  });
+
+  const markEpisodesMutation = useMutation({
+    mutationFn: (episodes: number[]) =>
+      api.post(apiEndpoints.animeEpisodeWatch, {
+        animeId: anime?.id,
+        episodes: episodes.map((episode) => ({ episode, status: "Completed" })),
+      }),
     onSuccess: () => {
+      setBackfillPrompt(null);
+      startWatchingIfNeeded();
+
       return queryClient.invalidateQueries({ queryKey: ["animeEpisodeWatch", anime?.id, userId] });
     },
     onError: () => {
@@ -265,7 +329,46 @@ function AnimeDetailsRoute() {
   });
 
   function handleToggle(episode: number) {
-    toggleEpisodeMutation.mutate({ episode, watched: watchedEpisodeNumbers.includes(episode) });
+    const watched = watchedEpisodeNumbers.includes(episode);
+
+    if (watched) {
+      toggleEpisodeMutation.mutate({ episode, watched });
+      return;
+    }
+
+    const previous = getUnwatchedPreviousEpisodes(
+      [{ seasonNumber: 1, totalEpisodes: mySeason.totalEpisodes, watchedEpisodes: watchedEpisodeNumbers }],
+      1,
+      episode,
+    ).map((ref) => ref.episode);
+    const preference = getBackfillPreference(backfillKey);
+
+    if (previous.length === 0 || preference === "never") {
+      toggleEpisodeMutation.mutate({ episode, watched });
+      return;
+    }
+
+    if (preference === "always") {
+      markEpisodesMutation.mutate([...previous, episode]);
+      return;
+    }
+
+    setBackfillPrompt({ target: episode, previous });
+  }
+
+  function handleBackfillConfirm(remember: boolean) {
+    if (!backfillPrompt) return;
+    if (remember) setBackfillPreference(backfillKey, "always");
+
+    markEpisodesMutation.mutate([...backfillPrompt.previous, backfillPrompt.target]);
+  }
+
+  function handleBackfillDecline(remember: boolean) {
+    if (!backfillPrompt) return;
+    if (remember) setBackfillPreference(backfillKey, "never");
+
+    toggleEpisodeMutation.mutate({ episode: backfillPrompt.target, watched: false });
+    setBackfillPrompt(null);
   }
 
   const favoriteQuery = useQuery<boolean>({
@@ -638,7 +741,19 @@ function AnimeDetailsRoute() {
               </div>
             ) : null}
 
-            {isAuthenticated && <AnimeEpisodeProgress season={mySeason} onToggle={handleToggle} />}
+            {isAuthenticated && (
+              <>
+                <AnimeEpisodeProgress season={mySeason} onToggle={handleToggle} />
+                <BackfillEpisodesDialog
+                  open={!!backfillPrompt}
+                  onOpenChange={(open) => !open && setBackfillPrompt(null)}
+                  episodeCount={backfillPrompt?.previous.length ?? 0}
+                  isLoading={markEpisodesMutation.isPending || toggleEpisodeMutation.isPending}
+                  onConfirm={handleBackfillConfirm}
+                  onDecline={handleBackfillDecline}
+                />
+              </>
+            )}
 
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>

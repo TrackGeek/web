@@ -6,6 +6,7 @@ import { Layout } from "@/components/layouts";
 import appCss from "@/global.css?url";
 import type { authClient } from "@/lib/auth";
 import i18n, { DEFAULT_LANGUAGE, getClientLanguage, isSupportedLanguage, LANGUAGE_TOKEN } from "@/lib/i18n/config";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/utils/json-ld";
 import { RootProvider } from "@/providers";
 
 interface RouterContext {
@@ -60,6 +61,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         src: "https://cdn.jsdelivr.net/npm/sienna-accessibility@latest/dist/sienna-accessibility.umd.js",
         defer: true,
       },
+      organizationJsonLd(),
+      websiteJsonLd(),
     ],
   }),
   shellComponent: RootDocument,

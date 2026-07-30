@@ -30,6 +30,7 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth.ts";
 import { cn } from "@/lib/utils";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
+import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/manga/$slug")({
@@ -45,6 +46,18 @@ export const Route = createFileRoute("/manga/$slug")({
           title: manga?.title ? manga.title : "Manga Details",
           description: manga?.synopsis ?? undefined,
           image: manga?.imageUrl ?? undefined,
+        }),
+      ],
+      scripts: [
+        mediaJsonLd({
+          type: "Book",
+          name: manga?.title,
+          description: manga?.synopsis ?? undefined,
+          image: manga?.imageUrl ?? undefined,
+          extra: {
+            bookFormat: "https://schema.org/GraphicNovel",
+            genre: manga?.genres,
+          },
         }),
       ],
     };

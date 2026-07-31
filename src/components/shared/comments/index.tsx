@@ -25,7 +25,7 @@ import {
   useToggleCommentReaction,
 } from "@/hooks/comment.ts";
 import type { ApiTypes } from "@/lib/api.ts";
-import { useSession } from "@/lib/auth.ts";
+import { useSession } from "@/lib/auth/client";
 import { QUICK_REACTIONS } from "@/lib/reactions";
 import { cn } from "@/lib/utils";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";

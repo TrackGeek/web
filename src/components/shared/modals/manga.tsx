@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { api, apiEndpoints } from "@/lib/api.ts";
-import { useSession } from "@/lib/auth.ts";
+import { useSession } from "@/lib/auth/client";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";

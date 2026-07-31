@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
-import { type JSX, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -17,30 +17,13 @@ import {
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { getLastUsedLoginMethod, requestPasswordReset, signIn, signUp } from "@/lib/auth";
-import { type AuthModalTab, setAuthModalOpen, useAuthModal } from "@/lib/auth-modal";
+import { getLastUsedLoginMethod, requestPasswordReset, signIn, signUp } from "@/lib/auth/client";
+import { type AuthModalTab, setAuthModalOpen, setAuthModalStep, useAuthModal } from "@/lib/auth/modal";
+import { authProviders } from "@/lib/auth/providers";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
-
-const providers: { id: string; icon: JSX.Element }[] = [
-  { id: "discord", icon: <Icon icon={"simple-icons:discord"} className="size-6" /> },
-  { id: "github", icon: <Icon icon={"simple-icons:github"} className="size-5" /> },
-  { id: "google", icon: <Icon className="size-6" icon="fa7-brands:google" /> },
-  { id: "kick", icon: <Icon icon={"simple-icons:kick"} className="size-5" /> },
-  { id: "twitch", icon: <Icon icon={"simple-icons:twitch"} className="size-5" /> },
-  { id: "twitter", icon: <Icon icon={"simple-icons:x"} className="size-5" /> },
-  { id: "notion", icon: <Icon icon={"simple-icons:notion"} className="size-5" /> },
-  { id: "microsoft", icon: <Icon className="size-6" icon="fluent:store-microsoft-20-filled" /> },
-  { id: "spotify", icon: <Icon icon={"simple-icons:spotify"} className="size-5" /> },
-  { id: "slack", icon: <Icon className="size-5" icon="mdi:slack" /> },
-  // { id: "tiktok", icon: <SiTiktok className="size-5" /> },
-  // { id: "roblox", icon: <SiRoblox className="size-5" /> },
-  // { id: "apple", icon: <SiApple className="size-5" /> },
-  // { id: "facebook", icon: <SiFacebook className="size-5" /> },
-  // { id: "reddit", icon: <SiReddit className="size-5" /> },
-  // { id: "linkedin", icon: <Linkedin className="size-5" /> },
-];
+import { TwoFactorForm } from "./two-factor-form";
 
 const passwordSchema = z.object({
   email: z.email(),
@@ -78,7 +61,7 @@ type RequestPasswordResetFormData = z.infer<typeof requestPasswordResetSchema>;
 export function AuthModal() {
   const { t } = useTranslation();
 
-  const { open: authModalOpen, tab } = useAuthModal();
+  const { open: authModalOpen, tab, step } = useAuthModal();
   const [lastMethod, setLastMethod] = useState<string | null>(null);
   const [authTab, setAuthTab] = useState<AuthModalTab>("login");
   const [isRequestForgotPassword, setIsRequestForgotPassword] = useState(false);
@@ -129,6 +112,16 @@ export function AuthModal() {
 
     if (data.error) {
       toast.error(t("auth:failedToLogin"));
+
+      return;
+    }
+
+    // No session yet: the two factor step owns the rest of the flow.
+    if (data.data?.twoFactorRedirect) {
+      passwordForm.reset();
+      passwordForm.clearErrors();
+
+      setAuthModalStep("twoFactor");
 
       return;
     }
@@ -256,7 +249,19 @@ export function AuthModal() {
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md">
-        {!isRequestForgotPassword ? (
+        {step === "twoFactor" && (
+          <>
+            <DialogHeader>
+              <DialogTitle>{t("auth:twoFactor.title")}</DialogTitle>
+
+              <DialogDescription>{t("auth:twoFactor.description")}</DialogDescription>
+            </DialogHeader>
+
+            <TwoFactorForm onBack={() => setAuthModalStep("form")} onSuccess={() => setAuthModalOpen(false)} />
+          </>
+        )}
+
+        {step === "form" && !isRequestForgotPassword && (
           <>
             <DialogHeader>
               <DialogTitle>{t("auth:welcome.title")}</DialogTitle>
@@ -274,24 +279,22 @@ export function AuthModal() {
                 </div>
 
                 <div className="grid grid-cols-5 gap-2 w-full">
-                  {providers
-                    .sort((a, b) => a.id.localeCompare(b.id))
-                    .map((provider) => (
-                      <Tooltip key={provider.id}>
-                        <TooltipTrigger asChild>
-                          <Button
-                            key={provider.id}
-                            variant="outline"
-                            className={cn(lastMethod === provider.id && "bg-primary/10 border-primary border-2")}
-                            onClick={() => handleLoginWithProvider(provider.id)}
-                          >
-                            {provider.icon}
-                          </Button>
-                        </TooltipTrigger>
+                  {authProviders.map((provider) => (
+                    <Tooltip key={provider.id}>
+                      <TooltipTrigger asChild>
+                        <Button
+                          key={provider.id}
+                          variant="outline"
+                          className={cn(lastMethod === provider.id && "bg-primary/10 border-primary border-2")}
+                          onClick={() => handleLoginWithProvider(provider.id)}
+                        >
+                          {provider.icon}
+                        </Button>
+                      </TooltipTrigger>
 
-                        <TooltipContent side="bottom">{t(`auth:providers.${provider.id}`)}</TooltipContent>
-                      </Tooltip>
-                    ))}
+                      <TooltipContent side="bottom">{t(`auth:providers.${provider.id}`)}</TooltipContent>
+                    </Tooltip>
+                  ))}
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -495,7 +498,9 @@ export function AuthModal() {
               </div>
             </Tabs>
           </>
-        ) : (
+        )}
+
+        {step === "form" && isRequestForgotPassword && (
           <>
             <DialogHeader>
               <DialogTitle>{t("auth:requestPasswordReset.title")}</DialogTitle>

@@ -1,6 +1,6 @@
 import { createRouter } from "@tanstack/react-router";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
-import { authClient } from "@/lib/auth";
+import { authClient } from "@/lib/auth/client";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {

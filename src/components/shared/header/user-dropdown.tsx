@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUnreadNotificationsCount } from "@/hooks/notification";
-import { signOut, useSession } from "@/lib/auth";
+import { signOut, useSession } from "@/lib/auth/client";
 import { AVATAR_BLUR } from "@/lib/image";
 import { getInitialsFromName } from "@/lib/utils";
 

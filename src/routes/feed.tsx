@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { FeedListFollowing } from "@/components/pages/feed/user-following";
 import { FeedListGlobal } from "@/components/pages/feed/user-global";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useSession } from "@/lib/auth.ts";
+import { useSession } from "@/lib/auth/client";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/feed")({

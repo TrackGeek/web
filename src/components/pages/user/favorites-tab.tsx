@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFavorites, useRemoveFavorite } from "@/hooks/favorite";
 import type { ApiTypes } from "@/lib/api";
-import { useSession } from "@/lib/auth";
+import { useSession } from "@/lib/auth/client";
 import { useDebounce } from "@/lib/utils/useDebounce";
 
 const CONTENT_TYPES: { type: ApiTypes.FavoriteType; labelKey: string }[] = [

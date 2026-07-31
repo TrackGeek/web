@@ -30,7 +30,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
-import { useSession } from "@/lib/auth.ts";
+import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
 import { getGenreLabel, isKnownGenre } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";

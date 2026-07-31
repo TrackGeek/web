@@ -2,7 +2,7 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tansta
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
-import { useSession } from "@/lib/auth";
+import { useSession } from "@/lib/auth/client";
 
 const ITEMS_PER_PAGE = 18;
 

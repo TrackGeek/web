@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import z from "zod";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
-import { useSession } from "@/lib/auth.ts";
+import { useSession } from "@/lib/auth/client";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";

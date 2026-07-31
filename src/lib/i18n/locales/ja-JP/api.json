@@ -29,6 +29,17 @@
   "COMMENT_NOT_FOUND": "The requested comment was not found.",
   "REACTION_NOT_FOUND": "The requested reaction was not found.",
   "betterAuth": {
-    "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "A user with this email already exists. Please use a different email address."
+    "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "A user with this email already exists. Please use a different email address.",
+    "INVALID_CODE": "Invalid code. Please try again.",
+    "INVALID_BACKUP_CODE": "Invalid backup code. Each code can only be used once.",
+    "INVALID_PASSWORD": "Incorrect password.",
+    "PASSWORD_TOO_SHORT": "Password is too short. It must be at least 8 characters.",
+    "PASSWORD_TOO_LONG": "Password is too long.",
+    "CREDENTIAL_ACCOUNT_NOT_FOUND": "This account has no password set.",
+    "TOTP_NOT_ENABLED": "Two-factor authentication is not set up for this account.",
+    "TWO_FACTOR_NOT_ENABLED": "Two-factor authentication is not enabled for this account.",
+    "BACKUP_CODES_NOT_ENABLED": "Backup codes are not available for this account.",
+    "TOO_MANY_ATTEMPTS_REQUEST_NEW_CODE": "Too many attempts. Please wait and try again.",
+    "INVALID_TWO_FACTOR_COOKIE": "Your verification session expired. Please sign in again."
   }
 }

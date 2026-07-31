@@ -1,4 +1,25 @@
 {
+  "tabs": {
+    "preferences": "Preferences",
+    "profile": "Profile",
+    "security": "Security",
+    "connections": "Connections"
+  },
+  "connections": {
+    "title": "Connections",
+    "description": "Link social accounts to sign in with any of them.",
+    "connected": "Connected",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "lastMethod": "You can't disconnect your only login method.",
+    "link": {
+      "error": "Failed to connect this account. Please try again."
+    },
+    "unlink": {
+      "success": "Account disconnected successfully.",
+      "error": "Failed to disconnect this account. Please try again."
+    }
+  },
   "banner": {
     "title": "Banner",
     "description": "Allowed Formats: JPG, JPEG, PNG, GIF. Max size: 5mb. Optimal dimensions: 1200x330",
@@ -63,6 +84,61 @@
     "timezone": {
       "title": "Timezone",
       "placeholder": "Select your timezone"
+    }
+  },
+  "password": {
+    "title": "Password",
+    "description": "Set a password for your account or change the one you already use to sign in.",
+    "noPassword": "You signed up with a social provider and don't have a password yet. We'll email you a link to set one.",
+    "current": "Current password",
+    "new": "New password",
+    "confirm": "Confirm new password",
+    "set": {
+      "button": "Send set-password link",
+      "success": "Check your inbox — we sent you a link to set your password.",
+      "error": "Failed to send the set-password link. Please try again."
+    },
+    "change": {
+      "button": "Change password",
+      "success": "Password changed. Your other devices have been signed out.",
+      "error": "Failed to change your password. Please try again."
+    },
+    "errors": {
+      "min": "Password must be at least 8 characters.",
+      "mismatch": "Passwords do not match.",
+      "same": "The new password must be different from the current one."
+    }
+  },
+  "twoFactor": {
+    "title": "Two-Factor Authentication",
+    "description": "Require a code from your authenticator app when signing in with your email and password.",
+    "active": "Active",
+    "confirm": "Confirm",
+    "noPassword": "You signed up with a social provider. Set a password for your account to use two-factor authentication.",
+    "scanInstructions": "Scan this QR code with your authenticator app, then enter the generated code below.",
+    "manualEntry": "Can't scan? Enter this key manually:",
+    "verifyLabel": "Enter the 6-digit code",
+    "enable": {
+      "button": "Enable",
+      "success": "Two-factor authentication is now enabled.",
+      "error": "Failed to enable two-factor authentication. Please try again."
+    },
+    "disable": {
+      "button": "Disable",
+      "success": "Two-factor authentication has been disabled.",
+      "error": "Failed to disable two-factor authentication. Please try again."
+    },
+    "regenerate": {
+      "button": "New backup codes",
+      "success": "New backup codes generated. Your old codes no longer work.",
+      "error": "Failed to generate backup codes. Please try again."
+    },
+    "backupCodes": {
+      "title": "Backup codes",
+      "warning": "Save these somewhere safe. They are shown only once and each one works a single time.",
+      "copy": "Copy",
+      "download": "Download",
+      "copied": "Backup codes copied to clipboard."
     }
   }
 }

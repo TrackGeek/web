@@ -17,7 +17,7 @@ import {
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { getLastUsedLoginMethod, requestPasswordReset, signIn, signUp } from "@/lib/auth/client";
+import { getLastUsedLoginMethod, isTwoFactorRedirect, requestPasswordReset, signIn, signUp } from "@/lib/auth/client";
 import { type AuthModalTab, setAuthModalOpen, setAuthModalStep, useAuthModal } from "@/lib/auth/modal";
 import { authProviders } from "@/lib/auth/providers";
 import { cn } from "@/lib/utils";
@@ -117,7 +117,7 @@ export function AuthModal() {
     }
 
     // No session yet: the two factor step owns the rest of the flow.
-    if (data.data?.twoFactorRedirect) {
+    if (isTwoFactorRedirect(data.data)) {
       passwordForm.reset();
       passwordForm.clearErrors();
 

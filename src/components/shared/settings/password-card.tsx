@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import type { TFunction } from "i18next";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { type TFunction, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import z from "zod";
 import { Button } from "@/components/ui/button";

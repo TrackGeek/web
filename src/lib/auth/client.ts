@@ -66,6 +66,10 @@ export const {
   unlinkAccount,
 } = authClient;
 
+export function isTwoFactorRedirect(data: unknown): boolean {
+  return typeof data === "object" && data !== null && "twoFactorRedirect" in data && data.twoFactorRedirect === true;
+}
+
 export type Session = typeof authClient.$Infer.Session;
 
 export type User = Omit<typeof authClient.$Infer.Session.user, "image"> & {

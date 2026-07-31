@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
-import { useSession } from "@/lib/auth";
+import { useSession } from "@/lib/auth/client";
 import { AVATAR_BLUR } from "@/lib/image";
 import { getInitialsFromName } from "@/lib/utils";
 

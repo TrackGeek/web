@@ -5,7 +5,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import type { ApiTypes } from "@/lib/api";
-import { useSession } from "@/lib/auth";
+import { useSession } from "@/lib/auth/client";
 import { QUICK_REACTIONS } from "@/lib/reactions";
 import type { FeedItemData, FeedProfile } from "./normalize";
 

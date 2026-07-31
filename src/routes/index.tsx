@@ -4,7 +4,7 @@ import { CTA } from "@/components/pages/home/cta";
 import { Demo } from "@/components/pages/home/demo";
 import { Features } from "@/components/pages/home/features";
 import { Hero } from "@/components/pages/home/hero";
-import { authClient } from "@/lib/auth.ts";
+import { authClient } from "@/lib/auth/client";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/")({

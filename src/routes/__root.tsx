@@ -4,7 +4,7 @@ import { getCookie } from "@tanstack/react-start/server";
 import { type ReactNode, useEffect } from "react";
 import { Layout } from "@/components/layouts";
 import appCss from "@/global.css?url";
-import type { authClient } from "@/lib/auth";
+import type { authClient } from "@/lib/auth/client";
 import i18n, { DEFAULT_LANGUAGE, getClientLanguage, isSupportedLanguage, LANGUAGE_TOKEN } from "@/lib/i18n/config";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/utils/json-ld";
 import { RootProvider } from "@/providers";

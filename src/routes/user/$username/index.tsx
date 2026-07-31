@@ -18,7 +18,7 @@ import { NotFoundComponent } from "@/components/shared/404";
 import { ErrorComponent } from "@/components/shared/error";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
-import { useSession } from "@/lib/auth";
+import { useSession } from "@/lib/auth/client";
 import { AVATAR_BLUR } from "@/lib/image";
 import { ogUrl } from "@/lib/og/url";
 import { seo } from "@/lib/utils/seo";

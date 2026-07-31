@@ -8,7 +8,7 @@ import z from "zod";
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { resetPassword } from "@/lib/auth";
+import { resetPassword } from "@/lib/auth/client";
 
 const resetPasswordSchema = z
   .object({

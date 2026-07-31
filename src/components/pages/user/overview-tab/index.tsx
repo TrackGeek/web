@@ -1,6 +1,6 @@
 import { Comments } from "@/components/shared/comments";
 import type { ApiTypes } from "@/lib/api";
-import { useSession } from "@/lib/auth";
+import { useSession } from "@/lib/auth/client";
 import { AboutCard } from "./about-card";
 import { ActivityCard } from "./activity-card";
 import { FavoritesCard } from "./favorites-card";

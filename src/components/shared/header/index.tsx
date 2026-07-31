@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useSession } from "@/lib/auth";
+import { useSession } from "@/lib/auth/client";
 import { AuthModal } from "./auth-modal";
 import { UserDropdown } from "./user-dropdown";
 

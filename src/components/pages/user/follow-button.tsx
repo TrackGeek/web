@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { useFollowStatus, useFollowUser, useUnfollowUser } from "@/hooks/follow";
-import { useSession } from "@/lib/auth";
+import { useSession } from "@/lib/auth/client";
 
 export interface FollowButtonProps {
   userId: string;

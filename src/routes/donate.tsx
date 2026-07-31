@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
-import { useSession } from "@/lib/auth";
+import { useSession } from "@/lib/auth/client";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/donate")({

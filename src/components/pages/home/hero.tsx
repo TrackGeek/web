@@ -4,8 +4,8 @@ import { createTimeline, random, stagger } from "animejs";
 import { useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import { useSession } from "@/lib/auth";
-import { openAuthModal } from "@/lib/auth-modal";
+import { useSession } from "@/lib/auth/client";
+import { openAuthModal } from "@/lib/auth/modal";
 
 export function Hero() {
   const { t } = useTranslation();

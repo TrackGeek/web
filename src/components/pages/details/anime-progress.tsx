@@ -21,7 +21,6 @@ export function AnimeEpisodeProgress({ season, onToggle }: AnimeEpisodeProgressP
       <div className="p-3">
         <div className="flex items-center justify-between mb-3">
           <p className="text-sm text-muted-foreground">{t("library:selectWatchedEpisodes")}</p>
-          <p>{t("library:markAll")}</p>
         </div>
 
         <div className="flex flex-wrap gap-3">

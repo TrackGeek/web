@@ -717,7 +717,9 @@ function MovieDetailsRoute() {
               size="sm"
               className="shrink-0 gap-2"
               onClick={() => {
-                setProgressMutation.mutate("Completed");
+                if (currentStatus !== "Completed") {
+                  setProgressMutation.mutate("Completed");
+                }
                 setMoreOpen(true);
               }}
             >

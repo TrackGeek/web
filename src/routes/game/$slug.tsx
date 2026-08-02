@@ -376,7 +376,12 @@ function GameDetailsRoute() {
         return api.delete(`${apiEndpoints.gameProgress}/${current.id}`);
       }
 
-      return api.post(apiEndpoints.gameProgress, { gameId: game?.id, status });
+      return api.post(apiEndpoints.gameProgress, {
+        gameId: game?.id,
+        status,
+        ...(status === "Playing" && { startedAt: new Date() }),
+        ...(status === "Completed" && { completedAt: new Date() }),
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["gameProgress", game?.id, userId] });
@@ -825,7 +830,17 @@ function GameDetailsRoute() {
             {t("library:reviews")} ({reviews?.total ?? 0})
           </h3>
           {isAuthenticated && (
-            <Button variant="outline" size="sm" className="shrink-0 gap-2" onClick={() => setMoreOpen(true)}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="shrink-0 gap-2"
+              onClick={() => {
+                if (currentStatus !== "Completed") {
+                  setProgressMutation.mutate("Completed");
+                }
+                setMoreOpen(true);
+              }}
+            >
               <Icon icon="lucide:pen-line" className="size-4" />
               {t("feed:review")}
             </Button>

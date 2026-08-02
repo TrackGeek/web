@@ -18,7 +18,7 @@ export interface UserCardProps {
 
 const CARD_WIDTH = 1120;
 const CARD_HEIGHT = 550;
-const BANNER_HEIGHT = 190;
+const BANNER_HEIGHT = 168;
 const AVATAR_SIZE = 148;
 
 export function UserCard({ displayName, username, about, avatarUrl, bannerUrl, stats }: UserCardProps) {
@@ -57,7 +57,7 @@ export function UserCard({ displayName, username, about, avatarUrl, bannerUrl, s
             width={CARD_WIDTH}
             height={BANNER_HEIGHT}
             alt=""
-            style={{ objectFit: "cover", width: CARD_WIDTH, height: BANNER_HEIGHT }}
+            style={{ objectFit: "cover", width: CARD_WIDTH, height: BANNER_HEIGHT, flexShrink: 0 }}
           />
         ) : (
           <div
@@ -65,6 +65,7 @@ export function UserCard({ displayName, username, about, avatarUrl, bannerUrl, s
               display: "flex",
               width: CARD_WIDTH,
               height: BANNER_HEIGHT,
+              flexShrink: 0,
               backgroundImage: `linear-gradient(120deg, ${OG_COLORS.primaryDeep} 0%, ${OG_COLORS.primary} 55%, #065f46 100%)`,
             }}
           />
@@ -124,22 +125,30 @@ export function UserCard({ displayName, username, about, avatarUrl, bannerUrl, s
             display: "flex",
             flexDirection: "column",
             flexGrow: 1,
-            padding: "20px 44px 36px 44px",
+            padding: "20px 44px 28px 44px",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column", marginLeft: AVATAR_SIZE + 32, minHeight: 96 }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              flexShrink: 0,
+              marginLeft: AVATAR_SIZE + 32,
+              minHeight: 90,
+            }}
+          >
             <span style={{ fontSize: 46, fontWeight: 800, letterSpacing: -1.2, lineClamp: 1 }}>{name}</span>
             <span style={{ fontSize: 26, fontWeight: 500, color: OG_COLORS.muted, marginTop: 4 }}>@{username}</span>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", marginTop: 26 }}>
+          <div style={{ display: "flex", flexDirection: "column", flexShrink: 0, marginTop: 16 }}>
             <span style={{ fontSize: 19, fontWeight: 700, color: OG_COLORS.mutedStrong, letterSpacing: 2 }}>
               ABOUT ME
             </span>
             <span
               style={{
-                fontSize: 26,
-                lineHeight: 1.4,
+                fontSize: 24,
+                lineHeight: 1.3,
                 color: bio ? OG_COLORS.foreground : OG_COLORS.mutedStrong,
                 marginTop: 10,
                 lineClamp: 2,
@@ -152,7 +161,7 @@ export function UserCard({ displayName, username, about, avatarUrl, bannerUrl, s
 
           <div style={{ display: "flex", flexGrow: 1 }} />
 
-          <div style={{ display: "flex", flexDirection: "row", gap: 16 }}>
+          <div style={{ display: "flex", flexDirection: "row", flexShrink: 0, gap: 16 }}>
             {stats.map((stat) => (
               <StatChip key={stat.label} {...stat} />
             ))}
@@ -171,7 +180,7 @@ function StatChip({ label, value, highlight }: UserCardStat) {
         flexDirection: "column",
         flexGrow: 1,
         flexBasis: 0,
-        padding: "16px 22px",
+        padding: "14px 20px",
         borderRadius: 18,
         backgroundColor: highlight ? "rgba(16,185,129,0.12)" : OG_COLORS.surfaceElevated,
         border: `1px solid ${highlight ? OG_COLORS.primaryDeep : OG_COLORS.outline}`,

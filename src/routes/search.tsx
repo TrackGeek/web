@@ -131,9 +131,9 @@ const SearchResults = memo(
           <Grid minColSize="128px" className="grid gap-6">
             {items.map((item: any) => (
               <CardItem
-                key={item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}
+                key={item.anilistId ?? item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}
                 title={item.title ?? item.name}
-                url={`/${contentType}/${item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}`}
+                url={`/${contentType}/${item.anilistId ?? item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}`}
                 imageURL={item.imageUrl ?? item.coverUrl ?? item.posterUrl ?? null}
                 isAdult={item.isAdult}
               />

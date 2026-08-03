@@ -92,7 +92,7 @@ const SOURCES: Record<OgMediaType, MediaSource> = {
     toCard: (manga) => ({
       title: manga.title,
       year: yearOf(manga.published?.string),
-      facts: facts(...names(manga.genres, 2), manga.chapters > 0 ? `${manga.chapters} chapters` : null),
+      facts: facts(...names(manga.genres, 2), manga.numberOfChapters > 0 ? `${manga.numberOfChapters} chapters` : null),
       description: manga.synopsis,
       score: manga.tgReviewScore,
       posterUrl: manga.imageUrl,

@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -10,6 +10,7 @@ import { CommunityStats } from "@/components/pages/details/community-stats";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { GenrePills } from "@/components/pages/details/genre-pills";
 import { ListItem } from "@/components/pages/details/list";
+import { ListWithMore } from "@/components/pages/details/list-with-more";
 import { MoreOptionsDialog } from "@/components/pages/details/more-options-dialog";
 import { QuickStatusButtons } from "@/components/pages/details/quick-status-buttons";
 import { Relations } from "@/components/pages/details/relations";
@@ -20,12 +21,14 @@ import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { MangaModal } from "@/components/shared/modals/manga";
 import { RefreshData } from "@/components/shared/modals/refresh-data";
+import { StarRating } from "@/components/shared/star-rating";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
@@ -72,7 +75,6 @@ function MangaDetailsRoute() {
   const { slug } = Route.useParams();
   const { manga: loaderManga } = Route.useLoaderData();
 
-  const rating = 4.2;
   const { t } = useTranslation();
 
   const { data, isLoading, isError } = useQuery({
@@ -82,18 +84,20 @@ function MangaDetailsRoute() {
   });
   const manga = data;
 
-  const reviewsData = useQuery({
+  const rating = manga?.tgReviewScore ?? 0;
+
+  const reviewsData = useQuery<ApiTypes.PaginatedResponse<ApiTypes.Review>>({
     queryKey: ["mangaReviews", manga.id],
     queryFn: () => api.get(`${apiEndpoints.mangaReview}/?mangaId=${manga.id}`).then(({ data }) => data.mangaReviews),
     enabled: !!manga?.id,
   });
-  const reviews = reviewsData?.data ?? { total: 0 };
+  const reviews = reviewsData?.data;
 
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: () => {
-      return api.post(apiEndpoints.refreshMangaData, { malId: Number(slug) });
+      return api.post(apiEndpoints.refreshMangaData, { anilistId: Number(slug) });
     },
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: ["manga", slug] });
@@ -108,6 +112,41 @@ function MangaDetailsRoute() {
   const userId = session?.data?.user?.id;
   const [moreOpen, setMoreOpen] = useState(false);
   const [newListName, setNewListName] = useState("");
+
+  const toggleReaction = useToggleReviewReaction("manga", userId ?? "");
+
+  const progressQuery = useQuery<ApiTypes.Progress | null>({
+    queryKey: ["mangaProgress", manga?.id, userId],
+    queryFn: () =>
+      api
+        .get(apiEndpoints.getMangaProgress(userId as string, manga?.id as string))
+        .then(({ data }) => data.mangaProgresses.items[0] ?? null),
+    enabled: isAuthenticated && !!userId && !!manga?.id,
+  });
+
+  const currentStatus = progressQuery.data?.status;
+
+  const setProgressMutation = useMutation({
+    mutationFn: (status: ApiTypes.ProgressStatus) => {
+      const current = progressQuery.data;
+
+      if (current && current.status === status) {
+        return api.delete(`${apiEndpoints.mangaProgress}/${current.id}`);
+      }
+
+      return api.post(apiEndpoints.mangaProgress, {
+        mangaId: manga?.id,
+        status,
+        ...(status === "Reading" && { startedAt: new Date() }),
+        ...(status === "Completed" && { completedAt: new Date() }),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["mangaProgress", manga?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["manga", slug] });
+    },
+    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+  });
 
   const listsQuery = useQuery<ApiTypes.PaginatedResponse<ApiTypes.ListWithPreview>>({
     queryKey: ["mangaContainingLists", manga?.id],
@@ -187,6 +226,13 @@ function MangaDetailsRoute() {
 
   const coverUrl = manga.imageUrl || "/placeholder/cover.webp";
 
+  const withRole = (person: { name: string; role: string | null }) =>
+    person.role ? `${person.name} (${person.role})` : person.name;
+
+  const themes: string[] = (manga.themes ?? []).map((theme: string) => getGenreLabel(t, theme));
+  const authors: string[] = (manga.authors ?? []).map(withRole);
+  const staff: string[] = (manga.serializations ?? []).map(withRole);
+
   const sidebar = (
     <>
       <div className="w-full mx-auto shadow-xl rounded-lg overflow-hidden">
@@ -205,6 +251,10 @@ function MangaDetailsRoute() {
                 iconBg: "bg-linear-to-r from-purple-500/20 to-violet-500/20",
                 iconBorder: "border-purple-500/30",
                 iconColor: "text-purple-400",
+                activeClass: "border-purple-400 bg-purple-400/20",
+                isActive: currentStatus === "Planning",
+                disabled: setProgressMutation.isPending,
+                onClick: () => setProgressMutation.mutate("Planning"),
               },
               {
                 label: t("feed:lists.reading"),
@@ -214,6 +264,10 @@ function MangaDetailsRoute() {
                 iconBg: "bg-linear-to-r from-primary/20 to-secondary/20",
                 iconBorder: "border-primary/30",
                 iconColor: "text-primary",
+                activeClass: "border-primary bg-primary/20",
+                isActive: currentStatus === "Reading",
+                disabled: setProgressMutation.isPending,
+                onClick: () => setProgressMutation.mutate("Reading"),
               },
               {
                 label: t("feed:lists.read"),
@@ -223,6 +277,10 @@ function MangaDetailsRoute() {
                 iconBg: "bg-linear-to-r from-chart-3/20 to-amber-500/20",
                 iconBorder: "border-chart-3/30",
                 iconColor: "text-chart-3",
+                activeClass: "border-chart-3 bg-chart-3/20",
+                isActive: currentStatus === "Completed",
+                disabled: setProgressMutation.isPending,
+                onClick: () => setProgressMutation.mutate("Completed"),
               },
             ]}
           />
@@ -236,7 +294,7 @@ function MangaDetailsRoute() {
             open={moreOpen}
             onOpenChange={setMoreOpen}
           >
-            <MangaModal />
+            <MangaModal mangaId={manga.id} totalChapters={manga.numberOfChapters} onClose={() => setMoreOpen(false)} />
           </MoreOptionsDialog>
         </>
       )}
@@ -256,7 +314,7 @@ function MangaDetailsRoute() {
         </div>
       </Grid>
       {isAuthenticated && <RefreshData sourceURL={manga.url} onSubmit={() => mutation.mutate()} />}
-      {manga.external.length >= 1 && (
+      {(manga.external?.length >= 1 || manga.anilistId) && (
         <div className="flex flex-wrap gap-3 items-center justify-center">
           {(() => {
             const extArr = manga.external || [];
@@ -317,6 +375,14 @@ function MangaDetailsRoute() {
               links.push({ href: url, key: `link-${i}`, icon: <Icon icon={"lucide:external-link"} /> });
             });
 
+            if (manga.anilistId) {
+              links.push({
+                href: `https://anilist.co/manga/${manga.anilistId}`,
+                key: "anilist",
+                icon: <Icon icon={"simple-icons:anilist"} />,
+              });
+            }
+
             if (manga.malId) {
               links.push({
                 href: `https://myanimelist.net/manga/${manga.malId}`,
@@ -344,21 +410,13 @@ function MangaDetailsRoute() {
         </h1>
 
         <div className="flex flex-wrap items-center gap-6 border-b border-border pb-5">
-          {reviews.total >= 1 && (
-            <div className="flex items-center gap-2">
-              <div className="flex">
-                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-                <Icon icon={"lucide:star"} className="size-5 text-chart-3 fill-chart-3" />
-                <Icon icon={"lucide:star"} className="size-5 text-muted-foreground" />
-              </div>
-              <span className="font-semibold text-card-foreground">{rating}</span>
-              <span className="text-muted-foreground">
-                ({reviews?.total ?? 0} {t("library:reviews")})
-              </span>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            <StarRating value={rating} className="mr-1" />
+            <span className="font-semibold text-card-foreground">{rating}</span>
+            <span className="text-muted-foreground">
+              ({reviews?.total ?? 0} {t("library:reviews")})
+            </span>
+          </div>
         </div>
 
         <Tabs defaultValue="info">
@@ -402,42 +460,25 @@ function MangaDetailsRoute() {
                     description={manga.numberOfVolumes}
                   />
                 )}
-                {manga.themes.length >= 1 && (
+                {themes.length >= 1 && (
                   <DetailsCard
                     title={t("library:themes")}
                     icon={<Icon icon={"lucide:tree-palm"} className="size-5 text-muted-foreground" />}
-                    description={manga.themes.map((theme: string, index: number) => (
-                      <span key={theme}>
-                        <Link to="/" search={{ landing: "true" }}>
-                          {getGenreLabel(t, theme)}
-                        </Link>
-                        {index < manga.themes.length - 1 && ", "}
-                      </span>
-                    ))}
+                    description={<ListWithMore items={themes} />}
                   />
                 )}
-                {manga.authors.length >= 1 && (
+                {authors.length >= 1 && (
                   <DetailsCard
                     title={t("library:authors")}
                     icon={<Icon icon={"lucide:pen"} className="size-5 text-muted-foreground" />}
-                    description={manga.authors.map((au: { name: string; malId: number }, index: number) => (
-                      <Link to="/" key={au.malId} search={{ landing: "true" }}>
-                        {au.name}
-                        {index < manga.authors.length - 1 && "; "}
-                      </Link>
-                    ))}
+                    description={<ListWithMore items={authors} />}
                   />
                 )}
-                {manga.serializations && (
+                {staff.length >= 1 && (
                   <DetailsCard
-                    title={t("library:publisher")}
+                    title={t("library:staff")}
                     icon={<Icon icon={"lucide:notebook"} className="size-5 text-muted-foreground" />}
-                    description={manga.serializations.map((sz: { name: string; malId: number }, index: number) => (
-                      <Link to="/" key={sz.malId} search={{ landing: "true" }}>
-                        {sz.name}
-                        {index < manga.serializations.length - 1 && ", "}
-                      </Link>
-                    ))}
+                    description={<ListWithMore items={staff} />}
                   />
                 )}
               </Grid>
@@ -458,25 +499,25 @@ function MangaDetailsRoute() {
                     label: t("feed:lists.planning"),
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
-                    value: "5%",
+                    value: `${manga.progressStats?.planning?.percentage ?? 0}%`,
                   },
                   {
                     label: t("feed:lists.reading"),
                     icon: "lucide:book-open-text",
                     iconClass: "text-chart-1",
-                    value: "15%",
+                    value: `${manga.progressStats?.reading?.percentage ?? 0}%`,
                   },
                   {
                     label: t("feed:lists.read"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
-                    value: "72%",
+                    value: `${manga.progressStats?.completed?.percentage ?? 0}%`,
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
-                    value: "8%",
+                    value: `${manga.progressStats?.dropped?.percentage ?? 0}%`,
                   },
                 ]}
               />
@@ -557,15 +598,8 @@ function MangaDetailsRoute() {
           </TabsContent>
           <TabsContent value="characters">
             <Grid minColSize={"150px"} className="gap-4">
-              {manga.characters?.map((character: { name: string; imageUrl: string }) => (
-                <CharacterItem
-                  key={character.name}
-                  name={character.name}
-                  imageUrl={character.imageUrl.replace(
-                    "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
-                    "",
-                  )}
-                />
+              {manga.characters?.map((character: { anilistId: number; name: string; imageUrl: string | null }) => (
+                <CharacterItem key={character.anilistId} name={character.name} imageUrl={character.imageUrl ?? ""} />
               ))}
             </Grid>
           </TabsContent>
@@ -575,31 +609,26 @@ function MangaDetailsRoute() {
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-3">
           <h3 className="font-semibold text-card-foreground text-lg capitalize">
-            {t("library:reviews")} ({reviews.total})
+            {t("library:reviews")} ({reviews?.total ?? 0})
           </h3>
           {isAuthenticated && (
-            <Button variant="outline" size="sm" className="shrink-0 gap-2" onClick={() => setMoreOpen(true)}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="shrink-0 gap-2"
+              onClick={() => {
+                if (currentStatus !== "Completed") {
+                  setProgressMutation.mutate("Completed");
+                }
+                setMoreOpen(true);
+              }}
+            >
               <Icon icon="lucide:pen-line" className="size-4" />
               {t("feed:review")}
             </Button>
           )}
         </div>
-        {reviews.total >= 1 ? (
-          <ReviewItem
-            user={
-              {
-                name: "John Doe",
-                avatarURL: "https://assets.hardcover.app/editions/30399846/4434002844651.jpg",
-                slug: "john-doe",
-              } as unknown as ApiTypes.User
-            }
-            reviewText={
-              "Very foda! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA Este livro é uma obra-prima que merece ser lida por todos os amantes de boa literatura. BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA BLA A forma como o autor desenvolve os personagens é simplesmente magnífica, cada um com sua própria voz e personalidade única."
-            }
-            criteries={{ language: 5, characters: 4, all: 10, story: 8, theme: 9 }}
-            date={new Date("2023-06-19")}
-          />
-        ) : (
+        {!reviews || reviews.items.length === 0 ? (
           <Empty className="border-0">
             <EmptyHeader>
               <EmptyMedia variant="icon">
@@ -609,6 +638,33 @@ function MangaDetailsRoute() {
               <EmptyDescription>{t("library:noReviewsDescription")}</EmptyDescription>
             </EmptyHeader>
           </Empty>
+        ) : (
+          <div className="flex flex-col divide-y divide-border/30">
+            {reviews.items.map((review: ApiTypes.Review) => (
+              <ReviewItem
+                key={review.id}
+                user={review.user}
+                reviewText={review.summary ?? ""}
+                notes={review.notes}
+                story={review.story}
+                date={new Date(review.createdAt)}
+                criteries={{
+                  all: Number(review.overall),
+                  art: review.art != null ? Number(review.art) : undefined,
+                  worldbuilding: review.worldbuilding != null ? Number(review.worldbuilding) : undefined,
+                }}
+                reviewId={review.id}
+                reactions={review.reactions}
+                onReact={(emoji, currentReaction) =>
+                  toggleReaction.mutate(
+                    { reviewId: review.id, currentReaction, emoji },
+                    { onSuccess: () => queryClient.invalidateQueries({ queryKey: ["mangaReviews", manga.id] }) },
+                  )
+                }
+                isReacting={toggleReaction.isPending && toggleReaction.variables?.reviewId === review.id}
+              />
+            ))}
+          </div>
         )}
       </div>
     </>

@@ -11,6 +11,7 @@ import { CommunityStats } from "@/components/pages/details/community-stats";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { GenrePills } from "@/components/pages/details/genre-pills";
 import { ListItem } from "@/components/pages/details/list";
+import { ListWithMore } from "@/components/pages/details/list-with-more";
 import { MoreOptionsDialog } from "@/components/pages/details/more-options-dialog";
 import { QuickStatusButtons } from "@/components/pages/details/quick-status-buttons";
 import { Relations } from "@/components/pages/details/relations";
@@ -30,7 +31,6 @@ import { ImageZoom } from "@/components/ui/image-zoom";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { gameScreenshotsQueryKey } from "@/hooks/game";
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
@@ -203,31 +203,6 @@ const buildRelationsData = (game: GameRelations) => {
 
   return { nodes, edges };
 };
-
-function ListWithMore({ items }: { items: string[] }) {
-  if (items.length === 0) return null;
-  return (
-    <span className="flex min-w-0 items-center gap-1.5">
-      <span className="truncate">{items[0]}</span>
-      {items.length > 1 && (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="shrink-0 cursor-default rounded-md bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
-              +{items.length - 1}
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>
-            <ul className="flex flex-col gap-0.5">
-              {items.slice(1).map((i) => (
-                <li key={i}>{i}</li>
-              ))}
-            </ul>
-          </TooltipContent>
-        </Tooltip>
-      )}
-    </span>
-  );
-}
 
 function GameDetailsRoute() {
   const { slug } = Route.useParams();

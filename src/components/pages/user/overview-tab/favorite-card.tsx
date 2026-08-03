@@ -44,7 +44,7 @@ export function favoriteToItem(favorite: ApiTypes.Favorite): FavoriteItem | null
         title: favorite.manga.title,
         image: favorite.manga.imageUrl ?? "",
         contentType: "manga",
-        slug: String(favorite.manga.malId),
+        slug: String(favorite.manga.anilistId ?? favorite.manga.malId),
         mediaId: favorite.manga.id,
       };
     case "TVShow":

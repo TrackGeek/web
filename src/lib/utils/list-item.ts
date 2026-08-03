@@ -40,7 +40,7 @@ export function listItemToLink(item: ApiTypes.ListItem): ListItemLink | null {
   if (item.manga) {
     return {
       to: "/manga/$slug",
-      slug: String(item.manga.malId),
+      slug: String(item.manga.anilistId ?? item.manga.malId),
       title: item.manga.title,
       image: item.manga.imageUrl ?? "",
     };

@@ -80,6 +80,7 @@
   "volumes": "Volumes",
   "authors": "Authors",
   "publisher": "Publisher",
+  "staff": "Staff",
   "relationships": {
     "sequel": "Sequel",
     "prequel": "Prequel",

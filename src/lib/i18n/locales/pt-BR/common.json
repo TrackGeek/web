@@ -93,6 +93,10 @@
   "clipboard": {
     "paste": "Colar"
   },
+  "linkCopied": "Link copied to clipboard!",
+  "franchise": "Franchise",
+  "franchiseEntries_one": "{{count}} title",
+  "franchiseEntries_other": "{{count}} titles",
   "minEpisodes": "Mínimo de episódios",
   "minChapters": "Mínimo de capítulos",
   "minPages": "Mínimo de páginas",
@@ -131,5 +135,14 @@
     "Tracker": "Rastreador",
     "Archivist": "Arquivista",
     "ArchiveMaster": "Mestre do Arquivo"
+  },
+  "pwa": {
+    "installTitle": "Install TrackGeek",
+    "installDescription": "Add TrackGeek to your home screen for a faster, app-like experience.",
+    "installIOS": "Tap <share /> in the browser bar, then choose \"Add to Home Screen\".",
+    "install": "Install",
+    "notNow": "Not now",
+    "updateTitle": "A new version is available.",
+    "updateAction": "Reload"
   }
 }

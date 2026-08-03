@@ -29,13 +29,10 @@ import { Route as BookIndexRouteImport } from './routes/book/index'
 import { Route as BookSlugRouteImport } from './routes/book/$slug'
 import { Route as GameIndexRouteImport } from './routes/game/index'
 import { Route as GameSlugRouteImport } from './routes/game/$slug'
-import { Route as ListSlugRouteImport } from './routes/list/$slug'
 import { Route as MangaIndexRouteImport } from './routes/manga/index'
 import { Route as MangaSlugRouteImport } from './routes/manga/$slug'
 import { Route as MovieIndexRouteImport } from './routes/movie/index'
 import { Route as MovieSlugRouteImport } from './routes/movie/$slug'
-import { Route as PostIdRouteImport } from './routes/post/$id'
-import { Route as ReviewIdRouteImport } from './routes/review/$id'
 import { Route as TvIndexRouteImport } from './routes/tv/index'
 import { Route as TvSlugRouteImport } from './routes/tv/$slug'
 import { Route as AnimeAiringIndexRouteImport } from './routes/anime/airing/index'
@@ -170,11 +167,6 @@ const GameSlugRoute = GameSlugRouteImport.update({
   path: '/game/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ListSlugRoute = ListSlugRouteImport.update({
-  id: '/list/$slug',
-  path: '/list/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MangaIndexRoute = MangaIndexRouteImport.update({
   id: '/manga/',
   path: '/manga/',
@@ -193,16 +185,6 @@ const MovieIndexRoute = MovieIndexRouteImport.update({
 const MovieSlugRoute = MovieSlugRouteImport.update({
   id: '/movie/$slug',
   path: '/movie/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PostIdRoute = PostIdRouteImport.update({
-  id: '/post/$id',
-  path: '/post/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReviewIdRoute = ReviewIdRouteImport.update({
-  id: '/review/$id',
-  path: '/review/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TvIndexRoute = TvIndexRouteImport.update({
@@ -392,11 +374,8 @@ export interface FileRoutesByFullPath {
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
   '/game/$slug': typeof GameSlugRoute
-  '/list/$slug': typeof ListSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
-  '/post/$id': typeof PostIdRoute
-  '/review/$id': typeof ReviewIdRoute
   '/tv/$slug': typeof TvSlugRoute
   '/anime/': typeof AnimeIndexRoute
   '/book/': typeof BookIndexRoute
@@ -453,11 +432,8 @@ export interface FileRoutesByTo {
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
   '/game/$slug': typeof GameSlugRoute
-  '/list/$slug': typeof ListSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
-  '/post/$id': typeof PostIdRoute
-  '/review/$id': typeof ReviewIdRoute
   '/tv/$slug': typeof TvSlugRoute
   '/anime': typeof AnimeIndexRoute
   '/book': typeof BookIndexRoute
@@ -516,11 +492,8 @@ export interface FileRoutesById {
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
   '/game/$slug': typeof GameSlugRoute
-  '/list/$slug': typeof ListSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
-  '/post/$id': typeof PostIdRoute
-  '/review/$id': typeof ReviewIdRoute
   '/tv/$slug': typeof TvSlugRoute
   '/anime/': typeof AnimeIndexRoute
   '/book/': typeof BookIndexRoute
@@ -579,11 +552,8 @@ export interface FileRouteTypes {
     | '/anime/$slug'
     | '/book/$slug'
     | '/game/$slug'
-    | '/list/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
-    | '/post/$id'
-    | '/review/$id'
     | '/tv/$slug'
     | '/anime/'
     | '/book/'
@@ -640,11 +610,8 @@ export interface FileRouteTypes {
     | '/anime/$slug'
     | '/book/$slug'
     | '/game/$slug'
-    | '/list/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
-    | '/post/$id'
-    | '/review/$id'
     | '/tv/$slug'
     | '/anime'
     | '/book'
@@ -702,11 +669,8 @@ export interface FileRouteTypes {
     | '/anime/$slug'
     | '/book/$slug'
     | '/game/$slug'
-    | '/list/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
-    | '/post/$id'
-    | '/review/$id'
     | '/tv/$slug'
     | '/anime/'
     | '/book/'
@@ -762,11 +726,8 @@ export interface RootRouteChildren {
   AnimeSlugRoute: typeof AnimeSlugRoute
   BookSlugRoute: typeof BookSlugRoute
   GameSlugRoute: typeof GameSlugRoute
-  ListSlugRoute: typeof ListSlugRoute
   MangaSlugRoute: typeof MangaSlugRoute
   MovieSlugRoute: typeof MovieSlugRoute
-  PostIdRoute: typeof PostIdRoute
-  ReviewIdRoute: typeof ReviewIdRoute
   TvSlugRoute: typeof TvSlugRoute
   AnimeIndexRoute: typeof AnimeIndexRoute
   BookIndexRoute: typeof BookIndexRoute
@@ -947,13 +908,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GameSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/list/$slug': {
-      id: '/list/$slug'
-      path: '/list/$slug'
-      fullPath: '/list/$slug'
-      preLoaderRoute: typeof ListSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/manga/': {
       id: '/manga/'
       path: '/manga'
@@ -980,20 +934,6 @@ declare module '@tanstack/react-router' {
       path: '/movie/$slug'
       fullPath: '/movie/$slug'
       preLoaderRoute: typeof MovieSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/post/$id': {
-      id: '/post/$id'
-      path: '/post/$id'
-      fullPath: '/post/$id'
-      preLoaderRoute: typeof PostIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/review/$id': {
-      id: '/review/$id'
-      path: '/review/$id'
-      fullPath: '/review/$id'
-      preLoaderRoute: typeof ReviewIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tv/': {
@@ -1265,11 +1205,8 @@ const rootRouteChildren: RootRouteChildren = {
   AnimeSlugRoute: AnimeSlugRoute,
   BookSlugRoute: BookSlugRoute,
   GameSlugRoute: GameSlugRoute,
-  ListSlugRoute: ListSlugRoute,
   MangaSlugRoute: MangaSlugRoute,
   MovieSlugRoute: MovieSlugRoute,
-  PostIdRoute: PostIdRoute,
-  ReviewIdRoute: ReviewIdRoute,
   TvSlugRoute: TvSlugRoute,
   AnimeIndexRoute: AnimeIndexRoute,
   BookIndexRoute: BookIndexRoute,

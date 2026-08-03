@@ -106,7 +106,7 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         title: row.manga.title,
         image: row.manga.imageUrl ?? "",
         contentType: "manga",
-        slug: String(row.manga.malId),
+        slug: String(row.manga.anilistId ?? row.manga.malId),
         mediaId: row.manga.id,
       };
     case "tv":

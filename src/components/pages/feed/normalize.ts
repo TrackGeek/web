@@ -88,7 +88,7 @@ function resolveMedia(refs: ApiTypes.ActivityMediaRefs | null | undefined): Reso
     return {
       title: refs.manga.title ?? "",
       cover: refs.manga.imageUrl ?? "",
-      media: { to: "/manga/$slug", slug: String(refs.manga.malId ?? refs.manga.id) },
+      media: { to: "/manga/$slug", slug: String(refs.manga.anilistId ?? refs.manga.malId ?? refs.manga.id) },
     };
   }
   if (refs.tvShow) {

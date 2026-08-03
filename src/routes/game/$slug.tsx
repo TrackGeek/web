@@ -11,6 +11,7 @@ import { CommunityStats } from "@/components/pages/details/community-stats";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { GenrePills } from "@/components/pages/details/genre-pills";
 import { ListItem } from "@/components/pages/details/list";
+import { ListWithMore } from "@/components/pages/details/list-with-more";
 import { MoreOptionsDialog } from "@/components/pages/details/more-options-dialog";
 import { QuickStatusButtons } from "@/components/pages/details/quick-status-buttons";
 import { Relations } from "@/components/pages/details/relations";
@@ -30,12 +31,12 @@ import { ImageZoom } from "@/components/ui/image-zoom";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { gameScreenshotsQueryKey } from "@/hooks/game";
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
+import { formatLongDate } from "@/lib/utils/date";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
@@ -204,36 +205,11 @@ const buildRelationsData = (game: GameRelations) => {
   return { nodes, edges };
 };
 
-function ListWithMore({ items }: { items: string[] }) {
-  if (items.length === 0) return null;
-  return (
-    <span className="flex min-w-0 items-center gap-1.5">
-      <span className="truncate">{items[0]}</span>
-      {items.length > 1 && (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="shrink-0 cursor-default rounded-md bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
-              +{items.length - 1}
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>
-            <ul className="flex flex-col gap-0.5">
-              {items.slice(1).map((i) => (
-                <li key={i}>{i}</li>
-              ))}
-            </ul>
-          </TooltipContent>
-        </Tooltip>
-      )}
-    </span>
-  );
-}
-
 function GameDetailsRoute() {
   const { slug } = Route.useParams();
   const { game: loaderGame } = Route.useLoaderData();
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [moreOpen, setMoreOpen] = useState(false);
 
   const { data, isLoading, isError } = useQuery({
@@ -376,7 +352,12 @@ function GameDetailsRoute() {
         return api.delete(`${apiEndpoints.gameProgress}/${current.id}`);
       }
 
-      return api.post(apiEndpoints.gameProgress, { gameId: game?.id, status });
+      return api.post(apiEndpoints.gameProgress, {
+        gameId: game?.id,
+        status,
+        ...(status === "Playing" && { startedAt: new Date() }),
+        ...(status === "Completed" && { completedAt: new Date() }),
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["gameProgress", game?.id, userId] });
@@ -422,11 +403,7 @@ function GameDetailsRoute() {
   if (isError || reviewsQuery.isError || !game) return <ErrorComponent />;
 
   const coverUrl = game.coverUrl || "/placeholder/cover.webp";
-  const releaseDate = new Date(game.firstReleaseDate).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const releaseDate = formatLongDate(game.firstReleaseDate, i18n.language);
 
   const developers = game.involvedCompanies
     .filter((c: { developer: string }) => c.developer)
@@ -523,10 +500,12 @@ function GameDetailsRoute() {
             <p className="font-semibold text-card-foreground">Early Access</p>
           </div>
         )}
-        <div className="bg-muted/50 p-4 rounded-lg border border-border">
-          <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
-          <p className="font-semibold text-card-foreground">{releaseDate}</p>
-        </div>
+        {releaseDate && (
+          <div className="bg-muted/50 p-4 rounded-lg border border-border">
+            <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
+            <p className="font-semibold text-card-foreground">{releaseDate}</p>
+          </div>
+        )}
       </Grid>
       {isAuthenticated && (
         <RefreshData sourceURL={`https://www.igdb.com/games/${game.slug}`} onSubmit={() => mutation.mutate()} />
@@ -825,7 +804,17 @@ function GameDetailsRoute() {
             {t("library:reviews")} ({reviews?.total ?? 0})
           </h3>
           {isAuthenticated && (
-            <Button variant="outline" size="sm" className="shrink-0 gap-2" onClick={() => setMoreOpen(true)}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="shrink-0 gap-2"
+              onClick={() => {
+                if (currentStatus !== "Completed") {
+                  setProgressMutation.mutate("Completed");
+                }
+                setMoreOpen(true);
+              }}
+            >
               <Icon icon="lucide:pen-line" className="size-4" />
               {t("feed:review")}
             </Button>

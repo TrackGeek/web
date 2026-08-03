@@ -71,12 +71,12 @@ function MangaRoute() {
         }}
       >
         <CarouselContent>
-          {publishing?.slice(0, 3).map((manga: any, index: number) => {
+          {publishing?.slice(0, 3).map((manga: any) => {
             return (
-              <CarouselItem key={manga.malId}>
+              <CarouselItem key={manga.anilistId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">
                   <Image
-                    src={`/placeholder/banner-${index + 1}.webp`}
+                    src={manga.bannerUrl}
                     layout="fullWidth"
                     aspectRatio={16 / 9}
                     className="w-full h-60 md:h-120 object-cover"
@@ -97,7 +97,7 @@ function MangaRoute() {
 
                     <Link
                       to={"/manga/$slug"}
-                      params={{ slug: manga.malId }}
+                      params={{ slug: manga.anilistId }}
                       className="bg-primary text-primary-foreground w-fit px-6 py-2 rounded-full font-semibold hover:brightness-110 transition-all shadow-lg"
                     >
                       {t("common:viewDetails")}
@@ -122,17 +122,14 @@ function MangaRoute() {
           {publishing?.slice(0, 16).map((manga: any) => (
             <CardItem
               title={manga.title}
-              url={`/manga/${manga.malId}`}
-              imageURL={manga.imageUrl.replace(
-                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-                "/placeholder/cover.webp",
-              )}
-              rating={manga.rating}
+              url={`/manga/${manga.anilistId}`}
+              imageURL={manga.imageUrl ?? "/placeholder/cover.webp"}
+              rating={manga.anilistScore}
               year={new Date(manga.publishedFrom).getFullYear()}
               synopsis={manga.synopsis}
               isAdult={manga.isAdult}
               mediaType={"manga"}
-              key={manga.malId}
+              key={manga.anilistId}
             />
           ))}
         </Grid>
@@ -146,17 +143,14 @@ function MangaRoute() {
           {recommendations?.slice(0, 16).map((manga: any) => (
             <CardItem
               title={manga.title}
-              url={`/manga/${manga.malId}`}
-              imageURL={manga.imageUrl.replace(
-                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-                "/placeholder/cover.webp",
-              )}
-              rating={manga.rating}
+              url={`/manga/${manga.anilistId}`}
+              imageURL={manga.imageUrl ?? "/placeholder/cover.webp"}
+              rating={manga.anilistScore}
               year={new Date(manga.publishedFrom).getFullYear()}
               synopsis={manga.synopsis}
               isAdult={manga.isAdult}
               mediaType={"manga"}
-              key={manga.malId}
+              key={manga.anilistId}
             />
           ))}
         </Grid>
@@ -170,17 +164,14 @@ function MangaRoute() {
           {upcoming?.slice(0, 16).map((manga: any) => (
             <CardItem
               title={manga.title}
-              url={`/manga/${manga.malId}`}
-              imageURL={manga.imageUrl.replace(
-                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-                "/placeholder/cover.webp",
-              )}
-              rating={manga.rating}
+              url={`/manga/${manga.anilistId}`}
+              imageURL={manga.imageUrl ?? "/placeholder/cover.webp"}
+              rating={manga.anilistScore}
               year={new Date(manga.publishedFrom).getFullYear()}
               synopsis={manga.synopsis}
               isAdult={manga.isAdult}
               mediaType={"manga"}
-              key={manga.malId}
+              key={manga.anilistId}
             />
           ))}
         </Grid>
@@ -194,17 +185,14 @@ function MangaRoute() {
           {favorite?.slice(0, 16).map((manga: any) => (
             <CardItem
               title={manga.title}
-              url={`/manga/${manga.malId}`}
-              imageURL={manga.imageUrl.replace(
-                "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-                "/placeholder/cover.webp",
-              )}
-              rating={manga.rating}
+              url={`/manga/${manga.anilistId}`}
+              imageURL={manga.imageUrl ?? "/placeholder/cover.webp"}
+              rating={manga.anilistScore}
               year={new Date(manga.publishedFrom).getFullYear()}
               synopsis={manga.synopsis}
               isAdult={manga.isAdult}
               mediaType={"manga"}
-              key={manga.malId}
+              key={manga.anilistId}
             />
           ))}
         </Grid>

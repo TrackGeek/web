@@ -21,6 +21,7 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth/client";
 import { AVATAR_BLUR } from "@/lib/image";
 import { ogUrl } from "@/lib/og/url";
+import { profileThemeStyle } from "@/lib/utils/profile-theme";
 import { seo } from "@/lib/utils/seo";
 
 async function getUser(username: string) {
@@ -75,7 +76,7 @@ function UserDetailsRoute() {
   const totalProgress = Object.values(progressStats).reduce((sum, stats) => sum + stats.total, 0);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5" style={profileThemeStyle(userQuery.data.profile.color)}>
       <div className="relative">
         {userQuery.data.profile.bannerUrl ? (
           <Image

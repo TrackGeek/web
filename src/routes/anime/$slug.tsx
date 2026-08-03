@@ -37,6 +37,7 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
+import { formatSeason } from "@/lib/utils/date";
 import {
   getBackfillPreference,
   getUnwatchedPreviousEpisodes,
@@ -536,7 +537,7 @@ function AnimeDetailsRoute() {
         {anime.season && anime.year && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
             <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
-            <p className="font-semibold text-card-foreground capitalize">{`${anime.season} ${anime.year}`}</p>
+            <p className="font-semibold text-card-foreground capitalize">{formatSeason(anime.season, anime.year, t)}</p>
           </div>
         )}
       </Grid>
@@ -961,7 +962,17 @@ function AnimeDetailsRoute() {
             {t("library:reviews")} ({reviews?.total ?? 0})
           </h3>
           {isAuthenticated && (
-            <Button variant="outline" size="sm" className="shrink-0 gap-2" onClick={() => setMoreOpen(true)}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="shrink-0 gap-2"
+              onClick={() => {
+                if (currentStatus !== "Completed") {
+                  setProgressMutation.mutate("Completed");
+                }
+                setMoreOpen(true);
+              }}
+            >
               <Icon icon="lucide:pen-line" className="size-4" />
               {t("feed:review")}
             </Button>

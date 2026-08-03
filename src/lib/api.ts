@@ -487,7 +487,13 @@ export namespace ApiTypes {
     type: FavoriteType;
     createdAt: string;
     anime: { id: string; malId: number; title: string; imageUrl: string | null } | null;
-    manga: { id: string; malId: number; title: string; imageUrl: string | null } | null;
+    manga: {
+      id: string;
+      anilistId: number | null;
+      malId: number | null;
+      title: string;
+      imageUrl: string | null;
+    } | null;
     tvShow: { id: string; tmdbId: number; name: string; posterUrl: string | null } | null;
     movie: { id: string; tmdbId: number; title: string; posterUrl: string | null } | null;
     game: { id: string; igdbId: number; name: string; coverUrl: string | null } | null;
@@ -519,7 +525,13 @@ export namespace ApiTypes {
     id: string;
     status: ProgressStatus;
     anime: { id: string; malId: number; title: string; imageUrl: string | null } | null;
-    manga: { id: string; malId: number; title: string; imageUrl: string | null } | null;
+    manga: {
+      id: string;
+      anilistId: number | null;
+      malId: number | null;
+      title: string;
+      imageUrl: string | null;
+    } | null;
     tvShow: { id: string; tmdbId: number; name: string; posterUrl: string | null } | null;
     movie: { id: string; tmdbId: number; title: string; posterUrl: string | null } | null;
     game: { id: string; igdbId: number; name: string; coverUrl: string | null } | null;
@@ -587,7 +599,13 @@ export namespace ApiTypes {
   export interface ListItem {
     id: string;
     anime: { id: string; malId: number; title: string; imageUrl: string | null } | null;
-    manga: { id: string; malId: number; title: string; imageUrl: string | null } | null;
+    manga: {
+      id: string;
+      anilistId: number | null;
+      malId: number | null;
+      title: string;
+      imageUrl: string | null;
+    } | null;
     tvShow: { id: string; tmdbId: number; name: string; posterUrl: string | null } | null;
     movie: { id: string; tmdbId: number; title: string; posterUrl: string | null } | null;
     game: { id: string; igdbId: number; name: string; coverUrl: string | null } | null;
@@ -736,6 +754,7 @@ export namespace ApiTypes {
 
   export interface ActivityMediaSummary {
     id?: string;
+    anilistId?: number | string | null;
     malId?: number | string | null;
     tmdbId?: number | string | null;
     igdbId?: number | string | null;
@@ -885,6 +904,7 @@ export const apiEndpoints = {
   deleteProfileBanner: "/profile/banner",
   uploadImage: "/upload/image",
   getGameDetails: (id: string) => `/game/detail/${id}`,
+  getGameFranchise: (slug: string) => `/game/franchise/${slug}`,
   getGamePopular: "/game/top?filter=popular",
   getGameComing: "/game/top?filter=coming",
   getGameAnticipated: "/game/top?filter=antecipated",
@@ -910,6 +930,7 @@ export const apiEndpoints = {
   getAnimeEpisodeWatch: (userId: string, animeId: string) => `/anime/episode/watch?userId=${userId}&animeId=${animeId}`,
   refreshAnimeData: "/anime/refresh",
   getBookDetails: (id: string) => `/book/detail/${id}`,
+  getBookFranchise: (slug: string) => `/book/franchise/${slug}`,
   getBookTrending: "/book/top?filter=trending",
   getBookComingSoon: "/book/top?filter=comingSoon",
   bookReview: "/book/review",
@@ -917,6 +938,7 @@ export const apiEndpoints = {
   getBookProgress: (userId: string, bookId: string) => `/book/progress?userId=${userId}&bookId=${bookId}`,
   refreshBookData: "/book/refresh",
   getMovieDetails: (id: string) => `/movie/detail/${id}`,
+  getMovieFranchise: (slug: string) => `/movie/franchise/${slug}`,
   getMovieAiring: "/movie/top?filter=airing",
   getMovieUpcoming: "/movie/top?filter=upcoming",
   getMovieTrending: "/movie/top?filter=trending",
@@ -948,6 +970,7 @@ export const apiEndpoints = {
   getMangaRecommendations: "/manga/top?filter=bypopularity",
   mangaReview: "/manga/review",
   mangaProgress: "/manga/progress",
+  getMangaProgress: (userId: string, mangaId: string) => `/manga/progress?userId=${userId}&mangaId=${mangaId}`,
   refreshMangaData: "/manga/refresh",
   list: "/list",
   getListsByUserId: (userId: string) => `/list/user/${userId}`,

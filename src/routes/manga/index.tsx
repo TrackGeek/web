@@ -71,7 +71,7 @@ function MangaRoute() {
         }}
       >
         <CarouselContent>
-          {publishing?.slice(0, 3).map((manga: any, index: number) => {
+          {publishing?.slice(0, 3).map((manga: any) => {
             return (
               <CarouselItem key={manga.anilistId}>
                 <div className="relative w-full overflow-hidden rounded-xl border border-border">

@@ -2,6 +2,7 @@ import { StartClient } from "@tanstack/react-start/client";
 import { StrictMode, startTransition } from "react";
 import { hydrateRoot } from "react-dom/client";
 import i18n, { getClientLanguage } from "@/lib/i18n/config";
+import { registerServiceWorker } from "@/lib/pwa";
 
 const language = getClientLanguage();
 
@@ -18,4 +19,8 @@ startTransition(() => {
       <StartClient />
     </StrictMode>,
   );
+});
+
+window.addEventListener("load", () => {
+  registerServiceWorker();
 });

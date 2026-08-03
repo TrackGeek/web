@@ -131,5 +131,14 @@
     "Tracker": "Tracker",
     "Archivist": "Archivist",
     "ArchiveMaster": "Archive Master"
+  },
+  "pwa": {
+    "installTitle": "Install TrackGeek",
+    "installDescription": "Add TrackGeek to your home screen for a faster, app-like experience.",
+    "installIOS": "Tap <share /> in the browser bar, then choose \"Add to Home Screen\".",
+    "install": "Install",
+    "notNow": "Not now",
+    "updateTitle": "A new version is available.",
+    "updateAction": "Reload"
   }
 }

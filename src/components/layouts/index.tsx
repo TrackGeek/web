@@ -1,5 +1,6 @@
 import { Footer } from "../shared/footer";
 import { Header } from "../shared/header";
+import { InstallPrompt } from "../shared/install-prompt";
 
 interface LayoutProps {
   variant: "full" | "main";
@@ -19,6 +20,8 @@ export function Layout({ variant, children }: LayoutProps) {
       <div className={contentClassName[variant]}>{children}</div>
 
       <Footer />
+
+      <InstallPrompt />
     </div>
   );
 }

@@ -36,6 +36,7 @@ import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
+import { formatLongDate } from "@/lib/utils/date";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
@@ -208,7 +209,7 @@ function GameDetailsRoute() {
   const { slug } = Route.useParams();
   const { game: loaderGame } = Route.useLoaderData();
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [moreOpen, setMoreOpen] = useState(false);
 
   const { data, isLoading, isError } = useQuery({
@@ -402,11 +403,7 @@ function GameDetailsRoute() {
   if (isError || reviewsQuery.isError || !game) return <ErrorComponent />;
 
   const coverUrl = game.coverUrl || "/placeholder/cover.webp";
-  const releaseDate = new Date(game.firstReleaseDate).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const releaseDate = formatLongDate(game.firstReleaseDate, i18n.language);
 
   const developers = game.involvedCompanies
     .filter((c: { developer: string }) => c.developer)
@@ -503,10 +500,12 @@ function GameDetailsRoute() {
             <p className="font-semibold text-card-foreground">Early Access</p>
           </div>
         )}
-        <div className="bg-muted/50 p-4 rounded-lg border border-border">
-          <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
-          <p className="font-semibold text-card-foreground">{releaseDate}</p>
-        </div>
+        {releaseDate && (
+          <div className="bg-muted/50 p-4 rounded-lg border border-border">
+            <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
+            <p className="font-semibold text-card-foreground">{releaseDate}</p>
+          </div>
+        )}
       </Grid>
       {isAuthenticated && (
         <RefreshData sourceURL={`https://www.igdb.com/games/${game.slug}`} onSubmit={() => mutation.mutate()} />

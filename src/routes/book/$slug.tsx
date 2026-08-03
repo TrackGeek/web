@@ -32,6 +32,7 @@ import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
+import { formatLongDate } from "@/lib/utils/date";
 import { getGenreLabel, isKnownGenre } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
@@ -347,14 +348,7 @@ function BookDetailsRoute() {
   const editions: BookEdition[] = book.editions ?? [];
   const edition = primaryEdition(book);
   const series: BookSeriesEntry[] = book.bookSeries ?? [];
-  const releaseDate = book.releaseDate
-    ? new Date(book.releaseDate).toLocaleDateString(i18n.language, {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        timeZone: "UTC",
-      })
-    : null;
+  const releaseDate = formatLongDate(book.releaseDate, i18n.language);
 
   const sidebar = (
     <>

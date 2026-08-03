@@ -7,15 +7,10 @@ import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { formatLongDate } from "@/lib/utils/date";
 
-function getDateSuffix(day: number) {
-  if (day > 3 && day < 21) return "th";
-
-  return ["th", "st", "nd", "rd"][day % 10] || "th";
-}
-
-function formatNumber(value: number) {
-  const formatter = new Intl.NumberFormat("en-US");
+function formatNumber(value: number, locale: string) {
+  const formatter = new Intl.NumberFormat(locale);
 
   return formatter.format(value);
 }
@@ -41,18 +36,17 @@ function getCalendarDateProps() {
 const renderRect =
   (
     t: TFunction,
+    locale: string,
     handleMouseEnter: (date: string) => void,
     handleTooltip: (pos: { x: number; y: number } | null) => void,
   ): SVGProps["rectRender"] =>
   (props, data) => {
     const [year, month, day] = String(data.date).split(/[-/]/).map(Number);
-    const date = new Date(year, month - 1, day);
-
-    const formattedDate = `${date.toLocaleDateString("en-US", { month: "long" })} ${date.getDate()}${getDateSuffix(date.getDate())}, ${date.getFullYear()}`;
+    const date = new Date(Date.UTC(year, month - 1, day));
 
     const tileInfo = t("user:activityTooltip", {
-      value: data.count ? formatNumber(data.count) : t("user:activityNoCount"),
-      date: formattedDate,
+      value: data.count ? formatNumber(data.count, locale) : t("user:activityNoCount"),
+      date: formatLongDate(date, locale),
     });
 
     return (
@@ -74,7 +68,7 @@ interface ActivityCardProps {
 }
 
 export function ActivityCard({ userId }: ActivityCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const activityCalendarQuery = useQuery({
     queryKey: ["user-activity-calendar", userId],
     queryFn: () =>
@@ -85,7 +79,7 @@ export function ActivityCard({ userId }: ActivityCardProps) {
   });
 
   const totalActivities = activityCalendarQuery.data?.total ?? 0;
-  const defaultValue = t("user:activityLastYear", { value: formatNumber(totalActivities) });
+  const defaultValue = t("user:activityLastYear", { value: formatNumber(totalActivities, i18n.language) });
 
   const { weeks, ...dateProps } = getCalendarDateProps();
 
@@ -152,7 +146,7 @@ export function ActivityCard({ userId }: ActivityCardProps) {
               rectSize={rectSize}
               space={space}
               rectProps={{ rx: 4 }}
-              rectRender={renderRect(t, (date) => setHoveredTile(date), setTooltipPos)}
+              rectRender={renderRect(t, i18n.language, (date) => setHoveredTile(date), setTooltipPos)}
               height={height}
               width={width}
               style={{

@@ -37,6 +37,7 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
+import { formatDateRange } from "@/lib/utils/date";
 import {
   type EpisodeRef,
   getBackfillPreference,
@@ -88,7 +89,7 @@ function TVShowDetailsPage() {
   const { slug } = Route.useParams();
   const { item: loaderItem } = Route.useLoaderData();
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [openSeason, setOpenSeason] = useState<string | undefined>("item-1");
   const [moreOpen, setMoreOpen] = useState(false);
 
@@ -643,11 +644,11 @@ function TVShowDetailsPage() {
           </div>
         )}
 
-        {item.firstAirDate && item.lastAirDate && (
+        {item.firstAirDate && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
             <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
             <p className="font-semibold text-card-foreground">
-              {new Date(item.firstAirDate).getFullYear()} - {new Date(item.lastAirDate).getFullYear()}
+              {formatDateRange(item.firstAirDate, item.lastAirDate, i18n.language, t)}
             </p>
           </div>
         )}

@@ -33,6 +33,7 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
+import { formatDateRange } from "@/lib/utils/date";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
@@ -75,7 +76,7 @@ function MangaDetailsRoute() {
   const { slug } = Route.useParams();
   const { manga: loaderManga } = Route.useLoaderData();
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["manga", slug],
@@ -225,6 +226,8 @@ function MangaDetailsRoute() {
   if (isError || reviewsData.isError || !manga) return <ErrorComponent />;
 
   const coverUrl = manga.imageUrl || "/placeholder/cover.webp";
+  const publishedRange =
+    formatDateRange(manga.published?.from, manga.published?.to, i18n.language, t) ?? manga.published?.string ?? null;
 
   const withRole = (person: { name: string; role: string | null }) =>
     person.role ? `${person.name} (${person.role})` : person.name;
@@ -288,7 +291,7 @@ function MangaDetailsRoute() {
             title={manga.title}
             coverUrl={coverUrl}
             rating={rating}
-            subtitle={manga.published.string}
+            subtitle={publishedRange}
             description={manga.synopsis}
             triggerLabel={t("library:moreOptions")}
             open={moreOpen}
@@ -308,10 +311,12 @@ function MangaDetailsRoute() {
             <p className="font-semibold text-card-foreground">{manga.status}</p>
           </div>
         )}
-        <div className="bg-muted/50 p-4 rounded-lg border border-border">
-          <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
-          <p className="font-semibold text-card-foreground">{manga.published.string}</p>
-        </div>
+        {publishedRange && (
+          <div className="bg-muted/50 p-4 rounded-lg border border-border">
+            <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
+            <p className="font-semibold text-card-foreground">{publishedRange}</p>
+          </div>
+        )}
       </Grid>
       {isAuthenticated && <RefreshData sourceURL={manga.url} onSubmit={() => mutation.mutate()} />}
       {(manga.external?.length >= 1 || manga.anilistId) && (

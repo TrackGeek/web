@@ -36,6 +36,7 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
+import { formatLongDate } from "@/lib/utils/date";
 import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
@@ -106,7 +107,7 @@ function MovieDetailsRoute() {
   const reviews = reviewsData?.data;
 
   const rating = movie.tgReviewScore;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const queryClient = useQueryClient();
 
@@ -362,7 +363,7 @@ function MovieDetailsRoute() {
         </div>
         <div className="bg-muted/50 p-4 rounded-lg border border-border">
           <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
-          <p className="font-semibold text-card-foreground">{new Date(movie.releaseDate as string).getFullYear()}</p>
+          <p className="font-semibold text-card-foreground">{formatLongDate(movie.releaseDate, i18n.language)}</p>
         </div>
       </Grid>
       {isAuthenticated && (

@@ -37,6 +37,7 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
+import { formatDateRange } from "@/lib/utils/date";
 import {
   type EpisodeRef,
   getBackfillPreference,
@@ -88,7 +89,7 @@ function TVShowDetailsPage() {
   const { slug } = Route.useParams();
   const { item: loaderItem } = Route.useLoaderData();
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [openSeason, setOpenSeason] = useState<string | undefined>("item-1");
   const [moreOpen, setMoreOpen] = useState(false);
 
@@ -455,6 +456,7 @@ function TVShowDetailsPage() {
         tvShowId: item?.id,
         status,
         ...(status === "Watching" && { startedAt: new Date() }),
+        ...(status === "Completed" && { completedAt: new Date() }),
       });
     },
     onSuccess: () => {
@@ -642,11 +644,11 @@ function TVShowDetailsPage() {
           </div>
         )}
 
-        {item.firstAirDate && item.lastAirDate && (
+        {item.firstAirDate && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
             <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
             <p className="font-semibold text-card-foreground">
-              {new Date(item.firstAirDate).getFullYear()} - {new Date(item.lastAirDate).getFullYear()}
+              {formatDateRange(item.firstAirDate, item.lastAirDate, i18n.language, t)}
             </p>
           </div>
         )}
@@ -1105,7 +1107,17 @@ function TVShowDetailsPage() {
             {t("library:reviews")} ({reviews?.total ?? 0})
           </h3>
           {isAuthenticated && (
-            <Button variant="outline" size="sm" className="shrink-0 gap-2" onClick={() => setMoreOpen(true)}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="shrink-0 gap-2"
+              onClick={() => {
+                if (currentStatus !== "Completed") {
+                  setProgressMutation.mutate("Completed");
+                }
+                setMoreOpen(true);
+              }}
+            >
               <Icon icon="lucide:pen-line" className="size-4" />
               {t("feed:review")}
             </Button>

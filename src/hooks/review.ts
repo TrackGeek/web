@@ -143,7 +143,7 @@ export const REVIEW_CONTENT: Record<ApiTypes.ReviewContentType, ReviewContentCon
     responseKey: "mangaReviews",
     mediaKey: "manga",
     routeName: "/manga",
-    entityId: "malId",
+    entityId: "anilistId",
     reactionType: "MangaReview",
     reactionIdField: "mangaReviewId",
     hasStory: true,

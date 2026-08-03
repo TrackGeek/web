@@ -18,7 +18,7 @@ export interface UserProfileHeaderProps {
 }
 
 export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabChange }: UserProfileHeaderProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const session = useSession();
   const navigate = useNavigate();
 
@@ -100,7 +100,7 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
 
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">
-              {t("common:joinedAt")} {new Date(user.createdAt).toLocaleDateString()}
+              {t("common:joinedAt")} {new Date(user.createdAt).toLocaleDateString(i18n.language)}
             </span>
 
             {user.tierStartedAt && (
@@ -108,7 +108,7 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
                 <span className="text-sm text-muted-foreground">•</span>
 
                 <span className="text-sm text-muted-foreground">
-                  {t("common:tierStartedAt")} {new Date(user.tierStartedAt).toLocaleDateString()}
+                  {t("common:tierStartedAt")} {new Date(user.tierStartedAt).toLocaleDateString(i18n.language)}
                 </span>
 
                 <span className="text-sm text-muted-foreground">•</span>

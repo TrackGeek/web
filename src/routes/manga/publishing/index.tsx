@@ -52,17 +52,14 @@ function PublishingMangaRoute() {
         {mangas?.map((manga) => (
           <CardItem
             title={manga.title}
-            url={`/manga/${manga.malId}`}
-            imageURL={manga.imageUrl.replace(
-              "https://myanimelist.net/img/sp/icon/apple-touch-icon-256.png",
-              "/placeholder/cover.webp",
-            )}
-            rating={manga.rating}
+            url={`/manga/${manga.anilistId}`}
+            imageURL={manga.imageUrl ?? "/placeholder/cover.webp"}
+            rating={manga.anilistScore}
             year={new Date(manga.publishedFrom).getFullYear()}
             synopsis={manga.synopsis}
             isAdult={manga.isAdult}
             mediaType={"manga"}
-            key={manga.malId}
+            key={manga.anilistId}
           />
         ))}
       </Grid>

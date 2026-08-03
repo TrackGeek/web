@@ -5,6 +5,17 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function franchiseSlug(id: number, name: string): string {
+  const slug = name
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return slug ? `${id}-${slug}` : String(id);
+}
+
 export function getInitialsFromName(name: string): string {
   const words = name.trim().split(" ");
   if (words.length === 0) return "";

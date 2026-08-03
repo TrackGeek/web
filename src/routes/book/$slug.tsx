@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -32,6 +32,7 @@ import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
+import { franchiseSlug } from "@/lib/utils";
 import { formatLongDate } from "@/lib/utils/date";
 import { getGenreLabel, isKnownGenre } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
@@ -452,9 +453,17 @@ function BookDetailsRoute() {
           <div className="flex items-center gap-2">
             <Icon icon={"lucide:book-copy"} className="size-5 shrink-0 text-muted-foreground" />
             <span className="text-xl text-muted-foreground">
-              {series
-                .map((entry) => (entry.position ? `${entry.series.name} #${entry.position}` : entry.series.name))
-                .join(", ")}
+              {series.map((entry, index) => (
+                <span key={entry.id}>
+                  {index > 0 && ", "}
+                  <Link
+                    to={"/book/franchises/$slug"}
+                    params={{ slug: franchiseSlug(entry.series.id, entry.series.name) }}
+                  >
+                    {entry.position ? `${entry.series.name} #${entry.position}` : entry.series.name}
+                  </Link>
+                </span>
+              ))}
             </span>
           </div>
         )}

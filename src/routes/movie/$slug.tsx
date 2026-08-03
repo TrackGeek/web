@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { type ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -35,7 +35,7 @@ import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
-import { cn } from "@/lib/utils";
+import { cn, franchiseSlug } from "@/lib/utils";
 import { formatLongDate } from "@/lib/utils/date";
 import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
@@ -432,14 +432,20 @@ function MovieDetailsRoute() {
           {movie.title}
         </h1>
 
-        {/* {movie?.belongsToCollection?.name && (
-        <div className="flex items-center space-x-2">
-          <Icon icon={"lucide:box"} className="size-5 text-muted-foreground" />
-          <a href={`/movies-collection/${movie?.belongsToCollection?.id}`} className="text-xl text-muted-foreground">
-            {movie?.belongsToCollection?.name}
-          </a>
-        </div>
-      )} */}
+        {movie?.belongsToCollection?.name && (
+          <div className="flex items-center space-x-2">
+            <Icon icon={"lucide:box"} className="size-5 text-muted-foreground" />
+            <Link
+              to={"/movie/franchises/$slug"}
+              params={{
+                slug: franchiseSlug(movie.belongsToCollection.id, movie.belongsToCollection.name),
+              }}
+              className="text-xl text-muted-foreground"
+            >
+              {movie.belongsToCollection.name}
+            </Link>
+          </div>
+        )}
 
         <div className="flex flex-wrap items-center gap-6 border-b border-border">
           <div className="flex items-center mb-3 space-x-1">

@@ -1,68 +1,51 @@
-import { Icon } from "@iconify/react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Image } from "@unpic/react";
-import { useCallback, useState } from "react";
-import { type FilterParams, Filters } from "@/components/layouts/filters.tsx";
-import { Grid } from "@/components/layouts/grid.tsx";
-import { CardItem } from "@/components/shared/cards/card.tsx";
-import booksData from "@/lib/mockups/books.json";
+import { FranchisePage } from "@/components/pages/franchise/franchise-page.tsx";
+import { NotFoundComponent } from "@/components/shared/404.tsx";
+import { ErrorComponent } from "@/components/shared/error.tsx";
+import { api, apiEndpoints } from "@/lib/api.ts";
+import { seo } from "@/lib/utils/seo.ts";
 
 export const Route = createFileRoute("/book/franchises/$slug")({
+  loader: async ({ params }) => {
+    const franchise = await api.get(apiEndpoints.getBookFranchise(params.slug)).then(({ data }) => data.franchise);
+    return { franchise };
+  },
+  head: ({ loaderData }) => {
+    const franchise = loaderData?.franchise;
+    return {
+      meta: [
+        ...seo({
+          title: franchise?.name ? `${franchise.name} Books` : "Book Series",
+          description: franchise?.description ?? undefined,
+          image: franchise?.imageUrl ?? undefined,
+        }),
+      ],
+    };
+  },
   component: BookFranchisesRoute,
+  errorComponent: ErrorComponent,
+  notFoundComponent: NotFoundComponent,
 });
 
+interface SeriesBook {
+  hardcoverId: number;
+  title: string;
+  imageUrl: string | null;
+}
+
 function BookFranchisesRoute() {
-  const { slug: _ } = Route.useParams();
-  const books = booksData;
-
-  const [filters, setFilters] = useState<FilterParams>({});
-
-  const handleFilterChange = useCallback((patch: Partial<FilterParams>) => {
-    setFilters((prev) => ({ ...prev, ...patch }));
-  }, []);
+  const { franchise } = Route.useLoaderData();
 
   return (
-    <div className="mx-auto w-full space-y-4">
-      {books.slice(0, 1).map((book) => {
-        return (
-          <div className="relative w-full overflow-hidden rounded-xl border border-border" key={book.id}>
-            <Image
-              src={"/placeholder/banner-1.webp"}
-              layout="fullWidth"
-              aspectRatio={16 / 9}
-              className="w-full h-60 md:h-100 object-cover"
-              alt={book.title}
-            />
-
-            <div
-              className="absolute inset-0 bg-linear-to-t from-primary-foreground/80 via-primary-foreground/30
- to-transparent"
-            />
-            <Icon icon={"lucide:heart"} className="absolute top-4 right-14 z-10" />
-            <Icon icon={"lucide:share"} className="absolute top-4 right-4 z-10" />
-            <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end gap-4">
-              <h2 className="text-4xl font-bold drop-shadow-lg">{book.title}</h2>
-            </div>
-          </div>
-        );
-      })}
-      <div className="flex max-sm:flex-col gap-5 py-6">
-        <Filters values={filters} onChange={handleFilterChange} type={"book"} />
-        <Grid minColSize={"120px"} className={"grid-cols-5"}>
-          {books.map((book) => (
-            <CardItem
-              title={book.title}
-              url={`/book/${book.hardcoverId}`}
-              imageURL={book.imageUrl}
-              rating={0}
-              year={book.releaseYear}
-              synopsis={book.description}
-              mediaType={"book"}
-              key={book.hardcoverId}
-            />
-          ))}
-        </Grid>
-      </div>
-    </div>
+    <FranchisePage
+      name={franchise.name}
+      description={franchise.description}
+      items={(franchise.books as SeriesBook[]).map((book) => ({
+        key: book.hardcoverId,
+        title: book.title,
+        url: `/book/${book.hardcoverId}`,
+        imageUrl: book.imageUrl,
+      }))}
+    />
   );
 }

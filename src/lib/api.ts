@@ -955,6 +955,7 @@ export const apiEndpoints = {
   bookProgress: "/book/progress",
   getBookProgress: (userId: string, bookId: string) => `/book/progress?userId=${userId}&bookId=${bookId}`,
   refreshBookData: "/book/refresh",
+  getPerson: (slug: string) => `/person/${slug}`,
   getMovieDetails: (id: string) => `/movie/detail/${id}`,
   getMovieFranchise: (slug: string) => `/movie/franchise/${slug}`,
   getMovieAiring: "/movie/top?filter=airing",

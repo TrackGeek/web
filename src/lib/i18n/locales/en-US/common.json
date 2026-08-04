@@ -145,5 +145,6 @@
     "notNow": "Not now",
     "updateTitle": "A new version is available.",
     "updateAction": "Reload"
-  }
+  },
+  "loadMore": "Load More"
 }

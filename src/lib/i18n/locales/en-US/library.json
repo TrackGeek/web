@@ -248,5 +248,25 @@
     "battleRoyale": "Battle Royale",
     "massivelyMultiplayerOnline": "Massively Multiplayer Online (MMORPG)"
   },
-  "users": "users"
+  "users": "users",
+  "filmography": "Filmography",
+  "biography": "Biography",
+  "alsoKnownAs": "Also Known As",
+  "crew": "Crew",
+  "role": "Role",
+  "mediaType": "Media Type",
+  "sortBy": "Sort by",
+  "newestFirst": "Newest",
+  "oldestFirst": "Oldest",
+  "topRated": "Top Rated",
+  "searchCredits": "Search credits",
+  "noCreditsFound": "No credits found",
+  "noCreditsFoundDescription": "Try adjusting the filters or your search.",
+  "showLess": "Show Less",
+  "creditCount_one": "{{count}} credit",
+  "creditCount_other": "{{count}} credits",
+  "yearsOld_one": "{{count}} year old",
+  "yearsOld_other": "{{count}} years old",
+  "episodeCount_one": "{{count}} ep",
+  "episodeCount_other": "{{count}} eps"
 }

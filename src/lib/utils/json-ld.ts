@@ -44,6 +44,44 @@ export const websiteJsonLd = () => {
   });
 };
 
+interface PersonJsonLdOptions {
+  name?: string;
+  description?: string;
+  image?: string;
+  url?: string;
+  birthDate?: string;
+  deathDate?: string;
+  birthPlace?: string;
+  jobTitle?: string;
+  sameAs?: string[];
+}
+
+export const personJsonLd = ({
+  name,
+  description,
+  image,
+  url,
+  birthDate,
+  deathDate,
+  birthPlace,
+  jobTitle,
+  sameAs,
+}: PersonJsonLdOptions) =>
+  jsonLdScript(
+    clean({
+      "@type": "Person",
+      name,
+      description,
+      image: absoluteUrl(image),
+      url: url ?? getUrl(),
+      birthDate,
+      deathDate,
+      birthPlace: birthPlace ? { "@type": "Place", name: birthPlace } : undefined,
+      jobTitle,
+      sameAs: sameAs && sameAs.length > 0 ? sameAs : undefined,
+    }),
+  );
+
 interface MediaJsonLdOptions {
   type: "VideoGame" | "Movie" | "TVSeries" | "Book" | "CreativeWork";
   name?: string;

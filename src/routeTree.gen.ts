@@ -27,6 +27,7 @@ import { Route as AnimeIndexRouteImport } from './routes/anime/index'
 import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
 import { Route as BookIndexRouteImport } from './routes/book/index'
 import { Route as BookSlugRouteImport } from './routes/book/$slug'
+import { Route as CastSlugRouteImport } from './routes/cast/$slug'
 import { Route as GameIndexRouteImport } from './routes/game/index'
 import { Route as GameSlugRouteImport } from './routes/game/$slug'
 import { Route as MangaIndexRouteImport } from './routes/manga/index'
@@ -155,6 +156,11 @@ const BookIndexRoute = BookIndexRouteImport.update({
 const BookSlugRoute = BookSlugRouteImport.update({
   id: '/book/$slug',
   path: '/book/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CastSlugRoute = CastSlugRouteImport.update({
+  id: '/cast/$slug',
+  path: '/cast/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GameIndexRoute = GameIndexRouteImport.update({
@@ -373,6 +379,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
+  '/cast/$slug': typeof CastSlugRoute
   '/game/$slug': typeof GameSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
@@ -431,6 +438,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
+  '/cast/$slug': typeof CastSlugRoute
   '/game/$slug': typeof GameSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
@@ -491,6 +499,7 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
+  '/cast/$slug': typeof CastSlugRoute
   '/game/$slug': typeof GameSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
@@ -551,6 +560,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/anime/$slug'
     | '/book/$slug'
+    | '/cast/$slug'
     | '/game/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
@@ -609,6 +619,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/anime/$slug'
     | '/book/$slug'
+    | '/cast/$slug'
     | '/game/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
@@ -668,6 +679,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/anime/$slug'
     | '/book/$slug'
+    | '/cast/$slug'
     | '/game/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
@@ -725,6 +737,7 @@ export interface RootRouteChildren {
   TosRoute: typeof TosRoute
   AnimeSlugRoute: typeof AnimeSlugRoute
   BookSlugRoute: typeof BookSlugRoute
+  CastSlugRoute: typeof CastSlugRoute
   GameSlugRoute: typeof GameSlugRoute
   MangaSlugRoute: typeof MangaSlugRoute
   MovieSlugRoute: typeof MovieSlugRoute
@@ -892,6 +905,13 @@ declare module '@tanstack/react-router' {
       path: '/book/$slug'
       fullPath: '/book/$slug'
       preLoaderRoute: typeof BookSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cast/$slug': {
+      id: '/cast/$slug'
+      path: '/cast/$slug'
+      fullPath: '/cast/$slug'
+      preLoaderRoute: typeof CastSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/game/': {
@@ -1204,6 +1224,7 @@ const rootRouteChildren: RootRouteChildren = {
   TosRoute: TosRoute,
   AnimeSlugRoute: AnimeSlugRoute,
   BookSlugRoute: BookSlugRoute,
+  CastSlugRoute: CastSlugRoute,
   GameSlugRoute: GameSlugRoute,
   MangaSlugRoute: MangaSlugRoute,
   MovieSlugRoute: MovieSlugRoute,

@@ -160,6 +160,37 @@ function MangaDetailsRoute() {
     enabled: !!manga?.id,
   });
 
+  const favoriteQuery = useQuery<boolean>({
+    queryKey: ["mangaFavorite", manga?.id, userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetFavoriteStatusResponse>(apiEndpoints.getFavoriteStatus, {
+          params: { type: "Manga", mangaId: manga?.id },
+        })
+        .then(({ data }) => data.favorited),
+    enabled: isAuthenticated && !!userId && !!manga?.id,
+  });
+
+  const isFavorited = !!favoriteQuery.data;
+
+  const toggleFavoriteMutation = useMutation({
+    mutationFn: () => {
+      const body = { type: "Manga", mangaId: manga?.id };
+
+      return isFavorited
+        ? api.delete(apiEndpoints.removeFavorite, { data: body })
+        : api.post(apiEndpoints.addFavorite, body);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["mangaFavorite", manga?.id, userId] });
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    },
+    onError: () => {
+      queryClient.invalidateQueries({ queryKey: ["mangaFavorite", manga?.id, userId] });
+      return toast.error(t("api:INTERNAL_SERVER_ERROR"));
+    },
+  });
+
   const userListsQuery = useQuery<ApiTypes.List[]>({
     queryKey: ["mangaLists", userId],
     queryFn: () =>
@@ -296,6 +327,9 @@ function MangaDetailsRoute() {
             triggerLabel={t("library:moreOptions")}
             open={moreOpen}
             onOpenChange={setMoreOpen}
+            isFavorited={isFavorited}
+            onToggleFavorite={() => toggleFavoriteMutation.mutate()}
+            favoriteDisabled={toggleFavoriteMutation.isPending || favoriteQuery.isFetching}
           >
             <MangaModal mangaId={manga.id} totalChapters={manga.numberOfChapters} onClose={() => setMoreOpen(false)} />
           </MoreOptionsDialog>

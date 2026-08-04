@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { BackfillEpisodesDialog } from "@/components/pages/details/backfill-episodes-dialog";
-import { CastItem } from "@/components/pages/details/cast";
+import { CastItem, PersonLink } from "@/components/pages/details/cast";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { EpisodeItem } from "@/components/pages/details/episode";
 import { ListItem } from "@/components/pages/details/list";
@@ -130,7 +130,7 @@ function TVShowDetailsPage() {
     enabled: !!item?.id,
   });
 
-  const rating = item.tgReviewScore;
+  const rating = item?.tgReviewScore;
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -751,7 +751,7 @@ function TVShowDetailsPage() {
               <p className="text-muted-foreground leading-relaxed">{item.tagline}</p>
               <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
               <div className="flex flex-wrap gap-2">
-                {item.genres.map((genre: string, index: number) => {
+                {(item.genres ?? []).map((genre: string, index: number) => {
                   const colors = [
                     "bg-chart-1/20 text-chart-1 border-chart-1/30 from-chart-1/20 to-chart-1/30",
                     "bg-chart-2/20 text-chart-2 border-chart-2/30 from-chart-2/20 to-chart-2/30",
@@ -776,15 +776,20 @@ function TVShowDetailsPage() {
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:tvShowCharacteristics")}</h3>
               <Grid minColSize={"200px"} className="gap-4 items-start">
-                {item?.createdBy.length >= 1 && (
+                {item?.createdBy?.length >= 1 && (
                   <DetailsCard
                     title={t("library:creators")}
                     icon={<Icon icon={"lucide:file-pen-line"} className="size-5 text-muted-foreground" />}
-                    description={item.createdBy
-                      .map((cb: { name: string }) => {
-                        return cb.name;
-                      })
-                      .join(", ")}
+                    description={
+                      <span className="flex flex-wrap gap-x-1.5">
+                        {item.createdBy.map((creator: TvCastCredit, index: number) => (
+                          <span key={creator.id}>
+                            <PersonLink slug={creator.slug}>{creator.name}</PersonLink>
+                            {index < item.createdBy.length - 1 && ","}
+                          </span>
+                        ))}
+                      </span>
+                    }
                   />
                 )}
                 {item.numberOfSeasons && (
@@ -1086,13 +1091,14 @@ function TVShowDetailsPage() {
 
           <TabsContent value="cast">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              {item.cast?.map((cast: { character: string; name: string; profileUrl: string }) => {
+              {item.cast?.map((cast: TvCastCredit) => {
                 return (
                   <CastItem
-                    key={cast.character}
+                    key={`${cast.id}-${cast.character}`}
                     name={cast.name}
                     character={cast.character}
                     imageUrl={cast.profileUrl}
+                    slug={cast.slug}
                   />
                 );
               })}
@@ -1123,7 +1129,7 @@ function TVShowDetailsPage() {
             </Button>
           )}
         </div>
-        {reviews.items.length === 0 ? (
+        {!reviews?.items?.length ? (
           <Empty className="border-0">
             <EmptyHeader>
               <EmptyMedia variant="icon">
@@ -1135,7 +1141,7 @@ function TVShowDetailsPage() {
           </Empty>
         ) : (
           <div className="flex flex-col divide-y divide-border/30">
-            {reviews.items.map((review: ApiTypes.TVShowReview) => (
+            {reviews?.items.map((review: ApiTypes.TVShowReview) => (
               <ReviewItem
                 key={review.id}
                 user={review.user}
@@ -1165,6 +1171,14 @@ function TVShowDetailsPage() {
       </div>
     </>
   );
+}
+
+interface TvCastCredit {
+  id: number;
+  name: string;
+  character: string;
+  profileUrl: string | null;
+  slug: string | null;
 }
 
 interface SeasonDetails {

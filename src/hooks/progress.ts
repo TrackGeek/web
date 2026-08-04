@@ -1,88 +1,73 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { FavoriteItem } from "@/components/pages/user/overview-tab/favorite-card";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 
 const ITEMS_PER_PAGE = 50;
 
-type ProgressStatsKey = keyof ApiTypes.User["progressStats"];
-
 interface ProgressContentConfig {
   endpoint: string;
-  responseKey: keyof ApiTypes.GetProgressResponse;
-  /** Key into `progressStats` (note: content type "tv" maps to stats key "tvShow"). */
-  statsKey: ProgressStatsKey;
+  responseKey: keyof Omit<ApiTypes.GetProgressResponse, "statusCounts">;
   /** Active-progress status for this content type. */
   activeStatus: ApiTypes.ProgressStatus;
-  /** `progressStats` sub-key + `feed:lists.*` i18n key for the active status. */
-  activeStatsKey: "watching" | "playing" | "reading" | "planning";
+  /** `feed:lists.*` i18n key for the active status. */
+  activeLabelKey: "watching" | "playing" | "reading" | "planning";
 }
 
 export const PROGRESS_CONTENT: Record<ApiTypes.ReviewContentType, ProgressContentConfig> = {
   anime: {
     endpoint: apiEndpoints.animeProgress,
     responseKey: "animeProgresses",
-    statsKey: "anime",
     activeStatus: "Watching",
-    activeStatsKey: "watching",
+    activeLabelKey: "watching",
   },
   manga: {
     endpoint: apiEndpoints.mangaProgress,
     responseKey: "mangaProgresses",
-    statsKey: "manga",
     activeStatus: "Reading",
-    activeStatsKey: "reading",
+    activeLabelKey: "reading",
   },
   tv: {
     endpoint: apiEndpoints.tvShowProgress,
     responseKey: "tvShowProgresses",
-    statsKey: "tvShow",
     activeStatus: "Watching",
-    activeStatsKey: "watching",
+    activeLabelKey: "watching",
   },
   movie: {
     endpoint: apiEndpoints.movieProgress,
     responseKey: "movieProgresses",
-    statsKey: "movie",
     activeStatus: "Planning",
-    activeStatsKey: "planning",
+    activeLabelKey: "planning",
   },
   game: {
     endpoint: apiEndpoints.gameProgress,
     responseKey: "gameProgresses",
-    statsKey: "game",
     activeStatus: "Playing",
-    activeStatsKey: "playing",
+    activeLabelKey: "playing",
   },
   book: {
     endpoint: apiEndpoints.bookProgress,
     responseKey: "bookProgresses",
-    statsKey: "book",
     activeStatus: "Reading",
-    activeStatsKey: "reading",
+    activeLabelKey: "reading",
   },
 };
 
 export interface ProgressStatusSection {
-  /** `ProgressStatus` value used to bucket the loaded rows. */
   status: ApiTypes.ProgressStatus;
-  /** Key into `progressStats[type]` for the accurate total count. */
-  statsKey: string;
   /** `feed:lists.*` i18n key for the section heading. */
   labelKey: string;
 }
 
-/** Ordered status sections for a content type: active first, then paused/dropped/completed/planning. */
+/** Ordered status sections for a content type: active first, then planning/completed/paused/dropped. */
 export function progressStatusSections(contentType: ApiTypes.ReviewContentType): ProgressStatusSection[] {
-  const { activeStatus, activeStatsKey } = PROGRESS_CONTENT[contentType];
+  const { activeStatus, activeLabelKey } = PROGRESS_CONTENT[contentType];
 
   return [
-    { status: activeStatus, statsKey: activeStatsKey, labelKey: `feed:lists.${activeStatsKey}` },
-    ...(activeStatus !== "Planning"
-      ? [{ status: "Planning" as const, statsKey: "planning", labelKey: "feed:lists.planning" }]
-      : []),
-    { status: "Completed" as const, statsKey: "completed", labelKey: "feed:lists.completed" },
-    { status: "Paused" as const, statsKey: "paused", labelKey: "feed:lists.paused" },
-    { status: "Dropped" as const, statsKey: "dropped", labelKey: "feed:lists.dropped" },
+    { status: activeStatus, labelKey: `feed:lists.${activeLabelKey}` },
+    ...(activeStatus !== "Planning" ? [{ status: "Planning" as const, labelKey: "feed:lists.planning" }] : []),
+    { status: "Completed" as const, labelKey: "feed:lists.completed" },
+    { status: "Paused" as const, labelKey: "feed:lists.paused" },
+    { status: "Dropped" as const, labelKey: "feed:lists.dropped" },
   ];
 }
 
@@ -154,22 +139,134 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
   }
 }
 
-export function userProgressQueryKey(contentType: ApiTypes.ReviewContentType, userId: string) {
-  return ["user-progress", contentType, userId];
+const FULL_YEAR = /^\d{4}$/;
+
+/** Media-level filters applied server-side, so pagination and counts stay consistent. */
+export interface ProgressFilters {
+  genres: string[];
+  /** Raw input value — only sent once the user typed a full year. */
+  year: string;
+  /** `null` keeps everything, `true`/`false` narrows to released/unreleased media. */
+  released: boolean | null;
+  releaseStates: ApiTypes.MediaReleaseState[];
+  search: string;
 }
 
-export function useUserProgress(contentType: ApiTypes.ReviewContentType, userId: string) {
+export const EMPTY_PROGRESS_FILTERS: ProgressFilters = {
+  genres: [],
+  year: "",
+  released: null,
+  releaseStates: [],
+  search: "",
+};
+
+export function isYearApplied(year: string) {
+  return FULL_YEAR.test(year.trim());
+}
+
+export function countActiveFilters(filters: ProgressFilters) {
+  return (
+    (filters.genres.length > 0 ? 1 : 0) +
+    (isYearApplied(filters.year) ? 1 : 0) +
+    (filters.released !== null ? 1 : 0) +
+    (filters.releaseStates.length > 0 ? 1 : 0)
+  );
+}
+
+function toQueryParams(filters: ProgressFilters) {
+  const search = filters.search.trim();
+
+  return {
+    ...(filters.genres.length > 0 && { genres: filters.genres.join(",") }),
+    ...(isYearApplied(filters.year) && { year: Number(filters.year.trim()) }),
+    ...(filters.released !== null && { released: filters.released }),
+    ...(filters.releaseStates.length > 0 && { releaseStates: filters.releaseStates.join(",") }),
+    ...(search && { search }),
+  };
+}
+
+interface ProgressPage {
+  page: ApiTypes.PaginatedResponse<ApiTypes.Progress>;
+  statusCounts: ApiTypes.ProgressStatusCounts;
+}
+
+function fetchProgressPage(
+  contentType: ApiTypes.ReviewContentType,
+  params: Record<string, unknown>,
+): Promise<ProgressPage> {
   const config = PROGRESS_CONTENT[contentType];
 
+  return api.get<ApiTypes.GetProgressResponse>(`${config.endpoint}/`, { params }).then(({ data }) => ({
+    page: data[config.responseKey] as ApiTypes.PaginatedResponse<ApiTypes.Progress>,
+    statusCounts: data.statusCounts,
+  }));
+}
+
+export function userProgressQueryKey(
+  contentType: ApiTypes.ReviewContentType,
+  userId: string,
+  status?: ApiTypes.ProgressStatus,
+  filters?: ProgressFilters,
+) {
+  return ["user-progress", contentType, userId, status, filters && toQueryParams(filters)];
+}
+
+export function useUserProgress(
+  contentType: ApiTypes.ReviewContentType,
+  userId: string,
+  status: ApiTypes.ProgressStatus,
+  filters: ProgressFilters,
+) {
   return useInfiniteQuery({
-    queryKey: userProgressQueryKey(contentType, userId),
+    queryKey: userProgressQueryKey(contentType, userId, status, filters),
     queryFn: ({ pageParam }) =>
-      api
-        .get<ApiTypes.GetProgressResponse>(`${config.endpoint}/`, {
-          params: { userId, page: pageParam, itemsPerPage: ITEMS_PER_PAGE },
-        })
-        .then(({ data }) => data[config.responseKey] as ApiTypes.PaginatedResponse<ApiTypes.Progress>),
+      fetchProgressPage(contentType, {
+        userId,
+        status,
+        ...toQueryParams(filters),
+        page: pageParam,
+        itemsPerPage: ITEMS_PER_PAGE,
+      }),
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => (lastPage.inPage < lastPage.pages ? lastPage.inPage + 1 : undefined),
+    getNextPageParam: ({ page }) => (page.inPage < page.pages ? page.inPage + 1 : undefined),
+    // Keeps the grid and the sidebar counts on screen while a new filter combination loads.
+    placeholderData: keepPreviousData,
   });
+}
+
+export function useProgressFilterOptions(contentType: ApiTypes.ReviewContentType, userId: string) {
+  return useQuery({
+    queryKey: ["user-progress-filters", contentType, userId],
+    queryFn: () =>
+      api
+        .get<ApiTypes.GetProgressFiltersResponse>(`${PROGRESS_CONTENT[contentType].endpoint}/filters`, {
+          params: { userId },
+        })
+        .then(({ data }) => data.filters),
+  });
+}
+
+/**
+ * Picks a random entry by asking the API for a single item at a random offset,
+ * which avoids pulling the whole list into memory.
+ */
+export async function fetchRandomProgress(
+  contentType: ApiTypes.ReviewContentType,
+  userId: string,
+  status: ApiTypes.ProgressStatus,
+  filters: ProgressFilters,
+): Promise<FavoriteItem | null> {
+  const params = { userId, status, ...toQueryParams(filters), itemsPerPage: 1 };
+  const { page } = await fetchProgressPage(contentType, { ...params, page: 1 });
+
+  if (page.total === 0) return null;
+
+  const { page: randomPage } = await fetchProgressPage(contentType, {
+    ...params,
+    page: Math.floor(Math.random() * page.total) + 1,
+  });
+
+  const row = randomPage.items[0];
+
+  return row ? progressToItem(contentType, row) : null;
 }

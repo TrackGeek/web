@@ -54,6 +54,36 @@ interface AnimeEpisode {
   imageUrl: string | null;
 }
 
+interface AnimeVoiceActor {
+  malId: number;
+  name: string;
+  imageUrl: string | null;
+  language: string;
+  slug: string | null;
+}
+
+interface AnimeStaff {
+  malId: number;
+  name: string;
+  imageUrl: string | null;
+  positions: string[];
+  slug: string | null;
+}
+
+interface AnimeCharacter {
+  malId: number;
+  name: string;
+  imageUrl: string | null;
+  role: string;
+  voiceActors: AnimeVoiceActor[];
+}
+
+const MAL_PLACEHOLDER_IMAGE = "https://cdn.myanimelist.net/images/questionmark_23.gif";
+
+function malImage(imageUrl: string | null): string | null {
+  return imageUrl?.startsWith(MAL_PLACEHOLDER_IMAGE) ? null : imageUrl;
+}
+
 export const Route = createFileRoute("/anime/$slug")({
   loader: async ({ params }) => {
     const anime = await api.get(apiEndpoints.getAnimeDetails(params.slug)).then(({ data }) => data.anime);
@@ -926,29 +956,26 @@ function AnimeDetailsRoute() {
           </TabsContent>
           <TabsContent value="cast">
             <Grid minColSize={"150px"} className="gap-4">
-              {anime.cast?.map((cast: { role: string; name: string; imageUrl: string; positions: string[] }) => (
+              {anime.cast?.map((cast: AnimeStaff) => (
                 <CastItem
-                  key={cast.role}
+                  key={cast.malId}
                   name={cast.name}
-                  character={cast.positions.map((positions) => positions).join(", ") as string}
-                  imageUrl={cast.imageUrl.replace(
-                    "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
-                    "",
-                  )}
+                  character={cast.positions.join(", ")}
+                  imageUrl={malImage(cast.imageUrl)}
+                  slug={cast.slug}
                 />
               ))}
             </Grid>
           </TabsContent>
           <TabsContent value="characters">
             <Grid minColSize={"150px"} className="gap-4">
-              {anime.characters?.map((character: { name: string; imageUrl: string }) => (
+              {anime.characters?.map((character: AnimeCharacter) => (
                 <CharacterItem
-                  key={character.name}
+                  key={character.malId}
                   name={character.name}
-                  imageUrl={character.imageUrl.replace(
-                    "https://cdn.myanimelist.net/images/questionmark_23.gif?s=f7dcbc4a4603d18356d3dfef8abd655c",
-                    "",
-                  )}
+                  role={character.role}
+                  imageUrl={malImage(character.imageUrl)}
+                  voiceActors={character.voiceActors}
                 />
               ))}
             </Grid>

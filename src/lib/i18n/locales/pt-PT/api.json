@@ -28,9 +28,9 @@
   "PROFILE_NOT_FOUND": "O perfil solicitado não foi encontrado.",
   "COMMENT_NOT_FOUND": "O comentário solicitado não foi encontrado.",
   "REACTION_NOT_FOUND": "A reação requisitada não foi encontrada.",
-  "MOVIE_FRANCHISE_NOT_FOUND": "The requested franchise was not found.",
-  "GAME_FRANCHISE_NOT_FOUND": "The requested franchise was not found.",
-  "BOOK_FRANCHISE_NOT_FOUND": "The requested franchise was not found.",
+  "MOVIE_FRANCHISE_NOT_FOUND": "A franquia solicitada não foi encontrada.",
+  "GAME_FRANCHISE_NOT_FOUND": "A franquia solicitada não foi encontrada.",
+  "BOOK_FRANCHISE_NOT_FOUND": "A franquia solicitada não foi encontrada.",
   "betterAuth": {
     "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "Já existe um usuário com este e-mail. Por favor, use um endereço de e-mail diferente.",
     "INVALID_CODE": "Código inválido. Por favor, tente novamente.",

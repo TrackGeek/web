@@ -93,10 +93,10 @@
   "clipboard": {
     "paste": "Colar da área de transferência"
   },
-  "linkCopied": "Link copied to clipboard!",
-  "franchise": "Franchise",
-  "franchiseEntries_one": "{{count}} title",
-  "franchiseEntries_other": "{{count}} titles",
+  "linkCopied": "Link copiado para a área de transferência!",
+  "franchise": "Franquia",
+  "franchiseEntries_one": "{{count}} título",
+  "franchiseEntries_other": "{{count}} títulos",
   "minEpisodes": "Mínimo de episódios",
   "minChapters": "Mínimo de capítulos",
   "minPages": "Mínimo de páginas",
@@ -129,6 +129,7 @@
   "internalError": "Uh oh! Não te preocupes! Não és tu - somos nós.<br />Nós já estamos a tentar corrigir o problema. Tenta novamente mais tarde!",
   "reportError": "Comunicar erro",
   "all": "Todos",
+  "clear": "Clear",
   "joinedAt": "Entrou a",
   "tierStartedAt": "Assinatura começou em",
   "tiers": {
@@ -137,12 +138,13 @@
     "ArchiveMaster": "Mestre do Arquivo"
   },
   "pwa": {
-    "installTitle": "Install TrackGeek",
-    "installDescription": "Add TrackGeek to your home screen for a faster, app-like experience.",
-    "installIOS": "Tap <share /> in the browser bar, then choose \"Add to Home Screen\".",
-    "install": "Install",
-    "notNow": "Not now",
-    "updateTitle": "A new version is available.",
-    "updateAction": "Reload"
-  }
+    "installTitle": "Instale TrackGeek",
+    "installDescription": "Adicione TrackGeek à sua tela inicial para uma experiência mais rápida como a de um aplicativo.",
+    "installIOS": "Toque em <share /> na barra do navegador e então escolha \"Adicionar à Tela Inicial\".",
+    "install": "Instalar",
+    "notNow": "Não agora",
+    "updateTitle": "Uma nova versão está disponível.",
+    "updateAction": "Recarregar"
+  },
+  "loadMore": "Load More"
 }

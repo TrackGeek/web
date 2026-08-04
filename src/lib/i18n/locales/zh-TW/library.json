@@ -26,6 +26,7 @@
   "info": "Info",
   "readMore": "Read More",
   "releaseDate": "Release Date",
+  "present": "Present",
   "status": "Status",
   "gameCharacteristics": "Game Characteristics",
   "developers": "Developers",
@@ -80,6 +81,7 @@
   "volumes": "Volumes",
   "authors": "Authors",
   "publisher": "Publisher",
+  "staff": "Staff",
   "relationships": {
     "sequel": "Sequel",
     "prequel": "Prequel",
@@ -122,8 +124,10 @@
     "discontinued": "Discontinued",
     "notYetPublished": "Not yet published",
     "released": "Released",
-    "unreleased": "Unreleased"
+    "unreleased": "Unreleased",
+    "earlyAccess": "Early Access"
   },
+  "availability": "Availability",
   "ageRating": {
     "G": "G - All Ages",
     "PG": "PG - Children",
@@ -187,7 +191,7 @@
     "shounen": "Shounen",
     "scienceFiction": "Science Fiction",
     "sciFi&Fantasy": "Sci-Fi & Fantasy",
-    "simulator": "simulator",
+    "simulator": "Simulator",
     "sliceOfLife": "Slice of Life",
     "shooter": "Shooter",
     "sports": "Sports",
@@ -244,5 +248,25 @@
     "battleRoyale": "Battle Royale",
     "massivelyMultiplayerOnline": "Massively Multiplayer Online (MMORPG)"
   },
-  "users": "users"
+  "users": "users",
+  "filmography": "Filmography",
+  "biography": "Biography",
+  "alsoKnownAs": "Also Known As",
+  "crew": "Crew",
+  "role": "Role",
+  "mediaType": "Media Type",
+  "sortBy": "Sort by",
+  "newestFirst": "Newest",
+  "oldestFirst": "Oldest",
+  "topRated": "Top Rated",
+  "searchCredits": "Search credits",
+  "noCreditsFound": "No credits found",
+  "noCreditsFoundDescription": "Try adjusting the filters or your search.",
+  "showLess": "Show Less",
+  "creditCount_one": "{{count}} credit",
+  "creditCount_other": "{{count}} credits",
+  "yearsOld_one": "{{count}} year old",
+  "yearsOld_other": "{{count}} years old",
+  "episodeCount_one": "{{count}} ep",
+  "episodeCount_other": "{{count}} eps"
 }

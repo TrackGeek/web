@@ -6,7 +6,7 @@ import { type ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
-import { CastItem } from "@/components/pages/details/cast";
+import { CastItem, PersonLink } from "@/components/pages/details/cast";
 import { CommunityStats } from "@/components/pages/details/community-stats";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { GenrePills } from "@/components/pages/details/genre-pills";
@@ -43,6 +43,22 @@ import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
 
 type MovieProgressStatus = "Planning" | "Watching" | "Completed" | "Paused" | "Dropped";
+
+interface CastCredit {
+  id: number;
+  name: string;
+  character: string;
+  profileUrl: string | null;
+  slug: string | null;
+}
+
+interface CrewCredit {
+  id: number;
+  name: string;
+  job: string;
+  profileUrl: string | null;
+  slug: string | null;
+}
 
 interface MovieProgress {
   id: string;
@@ -275,9 +291,7 @@ function MovieDetailsRoute() {
     return <ErrorComponent />;
   }
 
-  const directors: string[] = (movie.crew ?? [])
-    .filter((c: { job: string }) => c.job === "Director")
-    .map((c: { name: string }) => c.name);
+  const directors: CrewCredit[] = (movie.crew ?? []).filter((c: CrewCredit) => c.job === "Director");
 
   const sidebar = (
     <>
@@ -482,7 +496,16 @@ function MovieDetailsRoute() {
                   <DetailsCard
                     title={t("library:directors")}
                     icon={<Icon icon={"lucide:clapperboard"} className="size-5 text-muted-foreground" />}
-                    description={directors.join(", ")}
+                    description={
+                      <span className="flex flex-wrap gap-x-1.5">
+                        {directors.map((director, index) => (
+                          <span key={director.id}>
+                            <PersonLink slug={director.slug}>{director.name}</PersonLink>
+                            {index < directors.length - 1 && ","}
+                          </span>
+                        ))}
+                      </span>
+                    }
                   />
                 )}
                 {movie.budget > 0 && (
@@ -705,8 +728,14 @@ function MovieDetailsRoute() {
           </TabsContent>
           <TabsContent value="cast">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {movie.cast?.map((cast: { character: string; name: string; profileUrl: string }) => (
-                <CastItem key={cast.character} name={cast.name} character={cast.character} imageUrl={cast.profileUrl} />
+              {movie.cast?.map((cast: CastCredit) => (
+                <CastItem
+                  key={`${cast.id}-${cast.character}`}
+                  name={cast.name}
+                  character={cast.character}
+                  imageUrl={cast.profileUrl}
+                  slug={cast.slug}
+                />
               ))}
             </div>
           </TabsContent>

@@ -24,7 +24,7 @@
   "providers": {
     "IGDBMetadata": "Metadados do jogo fornecidos por",
     "TMDBMetadata": "Metadados de filmes e séries fornecidos por",
-    "MALMetadata": "Animes metadata provided by <mal /> and <tenrai>Tenrai</tenrai>",
+    "MALMetadata": "Metadados de Animes fornecidos por <mal /> e <tenrai>Tenrai</tenrai>",
     "ALMetadata": "Metadados de Mangás fornecidos por <al />",
     "HardCoverMetadata": "Metadados de livros fornecidos por <1>HardCover</1>"
   },
@@ -93,6 +93,10 @@
   "clipboard": {
     "paste": "Colar"
   },
+  "linkCopied": "Link copiado!",
+  "franchise": "Franquia",
+  "franchiseEntries_one": "{{count}} título",
+  "franchiseEntries_other": "{{count}} títulos",
   "minEpisodes": "Mínimo de episódios",
   "minChapters": "Mínimo de capítulos",
   "minPages": "Mínimo de páginas",
@@ -107,15 +111,15 @@
   "topManga": "Melhores Mangás",
   "startWriting": "Comece a digitar...",
   "send": "Enviar",
-  "cancel": "Cancel",
-  "delete": "Delete",
-  "save": "Save",
-  "saveChanges": "Save Changes",
-  "reply": "Reply",
-  "following": "Following",
-  "progress": "Progress",
-  "screenshots": "Screenshots",
-  "language": "Language",
+  "cancel": "Cancelar",
+  "delete": "Apagar",
+  "save": "Salvar",
+  "saveChanges": "Salvar alterações",
+  "reply": "Responder",
+  "following": "Seguindo",
+  "progress": "Progresso",
+  "screenshots": "Capturas de Tela",
+  "language": "Idioma",
   "goHome": "Ir para a página inicial",
   "notFound": "A página que você está procurando pode ter sido <br />movida ou não existe.",
   "notLoggedIn": "Você precisa estar conectado.",
@@ -125,11 +129,22 @@
   "internalError": "Uh oh! Não se preocupe! Não é você - somos nós.<br />Nós estamos tentando corrigir o problema. Tenta novamente mais tarde!",
   "reportError": "Relatar problemas",
   "all": "Todos",
+  "clear": "Clear",
   "joinedAt": "Entrou em",
   "tierStartedAt": "Assinatura começou em",
   "tiers": {
     "Tracker": "Rastreador",
     "Archivist": "Arquivista",
     "ArchiveMaster": "Mestre do Arquivo"
-  }
+  },
+  "pwa": {
+    "installTitle": "Instalar TrackGeek",
+    "installDescription": "Adicione TrackGeek à sua tela inicial para uma experiência mais rápida como a de um aplicativo.",
+    "installIOS": "Toque em <share /> na barra do navegador e então escolha \"Adicionar à Tela Inicial\".",
+    "install": "Instalar",
+    "notNow": "Agora não",
+    "updateTitle": "Uma nova versão está disponível.",
+    "updateAction": "Recarregar"
+  },
+  "loadMore": "Load More"
 }

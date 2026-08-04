@@ -45,8 +45,8 @@
   "lists": "Listas",
   "noProgress": "Nenhum progresso ainda.",
   "noProgressDescription": "Títulos que este usuário está rastreando serão exibidos aqui.",
-  "noScreenshots": "No screenshots yet.",
-  "noScreenshotsDescription": "Screenshots this user uploads will show up here.",
+  "noScreenshots": "Sem capturas de tela ainda.",
+  "noScreenshotsDescription": "As capturas de tela desse usuário serão exibidas aqui.",
   "copyProfileUsernameSuccess": "Nome de usuário copiado para a área de transferência!",
   "sort": {
     "placeholder": "Ordenar por:",

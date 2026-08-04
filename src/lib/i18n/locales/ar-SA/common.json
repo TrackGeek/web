@@ -93,6 +93,10 @@
   "clipboard": {
     "paste": "Paste from clipboard"
   },
+  "linkCopied": "Link copied to clipboard!",
+  "franchise": "Franchise",
+  "franchiseEntries_one": "{{count}} title",
+  "franchiseEntries_other": "{{count}} titles",
   "minEpisodes": "Min Episodes",
   "minChapters": "Min Chapters",
   "minPages": "Min Pages",
@@ -125,11 +129,22 @@
   "internalError": "Uh oh! Don't worry! It's not you - it's us.<br />We're trying to fix the problem. Try again later!",
   "reportError": "Report error",
   "all": "All",
+  "clear": "Clear",
   "joinedAt": "Joined at",
   "tierStartedAt": "Tier started at",
   "tiers": {
     "Tracker": "Tracker",
     "Archivist": "Archivist",
     "ArchiveMaster": "Archive Master"
-  }
+  },
+  "pwa": {
+    "installTitle": "Install TrackGeek",
+    "installDescription": "Add TrackGeek to your home screen for a faster, app-like experience.",
+    "installIOS": "Tap <share /> in the browser bar, then choose \"Add to Home Screen\".",
+    "install": "Install",
+    "notNow": "Not now",
+    "updateTitle": "A new version is available.",
+    "updateAction": "Reload"
+  },
+  "loadMore": "Load More"
 }

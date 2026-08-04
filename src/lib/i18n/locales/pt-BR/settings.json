@@ -1,23 +1,23 @@
 {
   "tabs": {
-    "preferences": "Preferences",
-    "profile": "Profile",
-    "security": "Security",
-    "connections": "Connections"
+    "preferences": "Preferências",
+    "profile": "Perfil",
+    "security": "Segurança",
+    "connections": "Conexões"
   },
   "connections": {
-    "title": "Connections",
-    "description": "Link social accounts to sign in with any of them.",
-    "connected": "Connected",
-    "connect": "Connect",
-    "disconnect": "Disconnect",
-    "lastMethod": "You can't disconnect your only login method.",
+    "title": "Conexões",
+    "description": "Associe as redes sociais a qualquer uma delas.",
+    "connected": "Conectado",
+    "connect": "Conectar",
+    "disconnect": "Desconectar",
+    "lastMethod": "Você não pode desconectar seu único método de login.",
     "link": {
-      "error": "Failed to connect this account. Please try again."
+      "error": "Falha ao conectar esta conta. Por favor, tente novamente."
     },
     "unlink": {
-      "success": "Account disconnected successfully.",
-      "error": "Failed to disconnect this account. Please try again."
+      "success": "Conta desconectada com sucesso.",
+      "error": "Falha ao desconectar esta conta. Por favor, tente novamente."
     }
   },
   "banner": {
@@ -87,58 +87,58 @@
     }
   },
   "password": {
-    "title": "Password",
-    "description": "Set a password for your account or change the one you already use to sign in.",
-    "noPassword": "You signed up with a social provider and don't have a password yet. We'll email you a link to set one.",
-    "current": "Current password",
-    "new": "New password",
-    "confirm": "Confirm new password",
+    "title": "Senha",
+    "description": "Defina uma senha para a sua conta ou altere a senha que você já usa para entrar.",
+    "noPassword": "Você se cadastrou com um provedor social e ainda não tem uma senha. Nós lhe enviaremos um link para definir uma.",
+    "current": "Senha atual",
+    "new": "Nova senha",
+    "confirm": "Confirmar nova senha",
     "set": {
-      "button": "Send set-password link",
-      "success": "Check your inbox — we sent you a link to set your password.",
-      "error": "Failed to send the set-password link. Please try again."
+      "button": "Enviar link de definição de senha",
+      "success": "Verifique sua caixa de entrada — enviamos um link para definir sua senha.",
+      "error": "Falha ao enviar o link de definir sua senha. Por favor, tente novamente."
     },
     "change": {
-      "button": "Change password",
-      "success": "Password changed. Your other devices have been signed out.",
-      "error": "Failed to change your password. Please try again."
+      "button": "Mudar senha",
+      "success": "A senha foi alterada. Seus outros dispositivos foram desconectados.",
+      "error": "Falha ao alterar sua senha. Por favor, tente novamente."
     },
     "errors": {
-      "min": "Password must be at least 8 characters.",
-      "mismatch": "Passwords do not match.",
-      "same": "The new password must be different from the current one."
+      "min": "A senha deve conter pelo menos 8 caracteres.",
+      "mismatch": "As senhas digitadas não são as mesmas.",
+      "same": "A nova senha deve ser diferente da atual."
     }
   },
   "twoFactor": {
-    "title": "Two-Factor Authentication",
-    "description": "Require a code from your authenticator app when signing in with your email and password.",
-    "active": "Active",
-    "confirm": "Confirm",
-    "noPassword": "You signed up with a social provider. Set a password for your account to use two-factor authentication.",
-    "scanInstructions": "Scan this QR code with your authenticator app, then enter the generated code below.",
-    "manualEntry": "Can't scan? Enter this key manually:",
-    "verifyLabel": "Enter the 6-digit code",
+    "title": "Autenticação em dois fatores",
+    "description": "Exigir código do seu aplicativo autenticador ao entrar com seu e-mail e senha.",
+    "active": "Ativo",
+    "confirm": "Confirmar",
+    "noPassword": "Você se cadastrou com um provedor social. Defina uma senha para sua conta utilizar a autenticação de dois fatores.",
+    "scanInstructions": "Escaneie este código QR com o seu aplicativo de autenticação, e digite o código gerado abaixo.",
+    "manualEntry": "Não é possível verificar? Digite esta chave manualmente:",
+    "verifyLabel": "Insira o código de 6 dígitos",
     "enable": {
-      "button": "Enable",
-      "success": "Two-factor authentication is now enabled.",
-      "error": "Failed to enable two-factor authentication. Please try again."
+      "button": "Habilitar",
+      "success": "A autenticação de dois fatores está ativada.",
+      "error": "Falha ao ativar a autenticação de dois fatores. Por favor, tente novamente."
     },
     "disable": {
-      "button": "Disable",
-      "success": "Two-factor authentication has been disabled.",
-      "error": "Failed to disable two-factor authentication. Please try again."
+      "button": "Desativar",
+      "success": "A autenticação de dois fatores foi desativada.",
+      "error": "Falha ao desativar a autenticação de dois fatores. Por favor tente novamente."
     },
     "regenerate": {
-      "button": "New backup codes",
-      "success": "New backup codes generated. Your old codes no longer work.",
-      "error": "Failed to generate backup codes. Please try again."
+      "button": "Novos códigos de backup",
+      "success": "Novos códigos de backup gerados. Seus códigos antigos não funcionaram mais.",
+      "error": "Falha ao gerar códigos de backup. Por favor, tente novamente."
     },
     "backupCodes": {
-      "title": "Backup codes",
-      "warning": "Save these somewhere safe. They are shown only once and each one works a single time.",
-      "copy": "Copy",
-      "download": "Download",
-      "copied": "Backup codes copied to clipboard."
+      "title": "Códigos de backup",
+      "warning": "Salve esses em um lugar seguro. Eles são mostrados apenas uma vez e cada um funciona por vez.",
+      "copy": "Copiar",
+      "download": "Baixar",
+      "copied": "Códigos de backup copiados para área de transferência."
     }
   }
 }

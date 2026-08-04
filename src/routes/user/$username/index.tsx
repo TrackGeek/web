@@ -146,7 +146,6 @@ function UserDetailsRoute() {
           <TabsContent value="progress">
             <UserProgressTab
               userId={userQuery.data.id}
-              progressStats={progressStats}
               contentType={progressType}
               onContentTypeChange={setProgressType}
             />

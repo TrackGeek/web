@@ -538,6 +538,11 @@ export namespace ApiTypes {
     book: { id: string; hardcoverId: number; title: string; imageUrl: string | null } | null;
   }
 
+  /** Provider-agnostic release state of a media (mirrors the backend `MediaReleaseState` enum). */
+  export type MediaReleaseState = "Unreleased" | "Ongoing" | "Hiatus" | "Finished" | "Cancelled";
+
+  export type ProgressStatusCounts = Partial<Record<ProgressStatus, number>>;
+
   export interface GetProgressResponse {
     animeProgresses?: PaginatedResponse<Progress>;
     mangaProgresses?: PaginatedResponse<Progress>;
@@ -545,6 +550,19 @@ export namespace ApiTypes {
     movieProgresses?: PaginatedResponse<Progress>;
     gameProgresses?: PaginatedResponse<Progress>;
     bookProgresses?: PaginatedResponse<Progress>;
+    /** Totals per progress status under the same filters, regardless of the requested status. */
+    statusCounts: ProgressStatusCounts;
+  }
+
+  /** Filter values present in the user's library — options that cannot match are never offered. */
+  export interface ProgressFilterOptions {
+    genres: string[];
+    years: number[];
+    releaseStates: MediaReleaseState[];
+  }
+
+  export interface GetProgressFiltersResponse {
+    filters: ProgressFilterOptions;
   }
 
   export interface FavoriteRequest {

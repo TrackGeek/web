@@ -129,6 +129,7 @@
   "internalError": "Uh oh! Don't worry! It's not you - it's us.<br />We're trying to fix the problem. Try again later!",
   "reportError": "Report error",
   "all": "All",
+  "clear": "Clear",
   "joinedAt": "Joined at",
   "tierStartedAt": "Tier started at",
   "tiers": {

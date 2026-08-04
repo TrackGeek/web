@@ -4,11 +4,22 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
 import type { FavoriteItem } from "@/components/pages/user/overview-tab/favorite-card";
+import { ProgressFiltersPanel } from "@/components/pages/user/progress-filters";
 import { CardItem } from "@/components/shared/cards/card";
 import { SearchInput } from "@/components/shared/search-input";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PROGRESS_CONTENT, progressStatusSections, progressToItem, useUserProgress } from "@/hooks/progress";
+import {
+  countActiveFilters,
+  EMPTY_PROGRESS_FILTERS,
+  fetchRandomProgress,
+  PROGRESS_CONTENT,
+  type ProgressFilters,
+  progressStatusSections,
+  progressToItem,
+  useProgressFilterOptions,
+  useUserProgress,
+} from "@/hooks/progress";
 import type { ApiTypes } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@/lib/utils/useDebounce";
@@ -34,28 +45,36 @@ const SECTION_ICONS: Partial<Record<string, string>> = {
 
 export function UserProgressTab({
   userId,
-  progressStats,
   contentType,
   onContentTypeChange,
 }: {
   userId: string;
-  progressStats: ApiTypes.User["progressStats"];
   contentType: ApiTypes.ReviewContentType;
   onContentTypeChange: (contentType: ApiTypes.ReviewContentType) => void;
 }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedSection, setSelectedSection] = useState<ApiTypes.ProgressStatus>(
+  const [filters, setFilters] = useState<ProgressFilters>(EMPTY_PROGRESS_FILTERS);
+  const [selectedStatus, setSelectedStatus] = useState<ApiTypes.ProgressStatus>(
     PROGRESS_CONTENT[contentType].activeStatus,
   );
   const [isRandomizing, setIsRandomizing] = useState(false);
-  const navigate = useNavigate();
-  const debouncedQuery = useDebounce(searchQuery, 600);
-  const normalizedQuery = debouncedQuery.trim().toLowerCase();
 
-  const progressQuery = useUserProgress(contentType, userId);
+  const debouncedSearch = useDebounce(searchQuery, 600);
+  // Free-text inputs are debounced so typing doesn't fire a request per keystroke.
+  const debouncedYear = useDebounce(filters.year, 500);
+  const appliedFilters = useMemo<ProgressFilters>(
+    () => ({ ...filters, year: debouncedYear, search: debouncedSearch }),
+    [filters, debouncedYear, debouncedSearch],
+  );
+
+  const optionsQuery = useProgressFilterOptions(contentType, userId);
+  const progressQuery = useUserProgress(contentType, userId, selectedStatus, appliedFilters);
   const sentinelRef = useRef<HTMLDivElement>(null);
+
+  const { hasNextPage, isFetchingNextPage, fetchNextPage } = progressQuery;
 
   useEffect(() => {
     const el = sentinelRef.current;
@@ -63,8 +82,8 @@ export function UserProgressTab({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && progressQuery.hasNextPage && !progressQuery.isFetchingNextPage) {
-          progressQuery.fetchNextPage();
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
         }
       },
       { rootMargin: "200px" },
@@ -72,97 +91,67 @@ export function UserProgressTab({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [progressQuery.hasNextPage, progressQuery.isFetchingNextPage, progressQuery.fetchNextPage]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const rows = useMemo(() => progressQuery.data?.pages.flatMap((page) => page.items) ?? [], [progressQuery.data]);
-
-  const typeStats = useMemo(
-    () => progressStats[PROGRESS_CONTENT[contentType].statsKey] as unknown as Record<string, { count: number }>,
-    [contentType, progressStats],
+  const items = useMemo(
+    () =>
+      (progressQuery.data?.pages ?? [])
+        .flatMap(({ page }) => page.items)
+        .map((row) => progressToItem(contentType, row))
+        .filter((item): item is FavoriteItem => item !== null),
+    [progressQuery.data, contentType],
   );
 
-  const sidebarSections = useMemo(
+  const statusCounts = progressQuery.data?.pages[0]?.statusCounts ?? {};
+  const totalInStatus = progressQuery.data?.pages[0]?.page.total ?? 0;
+
+  const sections = useMemo(
     () =>
       progressStatusSections(contentType).map((section) => ({
         ...section,
-        count: typeStats[section.statsKey]?.count ?? 0,
+        count: statusCounts[section.status] ?? 0,
       })),
-    [contentType, typeStats],
+    [contentType, statusCounts],
   );
 
-  const sections = useMemo(() => {
-    return progressStatusSections(contentType)
-      .map((section) => {
-        const items = rows
-          .filter((row) => row.status === section.status)
-          .map((row) => progressToItem(contentType, row))
-          .filter((item): item is FavoriteItem => item !== null)
-          .filter((item) => !normalizedQuery || item.title.toLowerCase().includes(normalizedQuery));
+  const activeSection = sections.find((section) => section.status === selectedStatus);
+  const activeFilterCount = countActiveFilters(filters);
 
-        return {
-          ...section,
-          count: normalizedQuery ? items.length : (typeStats[section.statsKey]?.count ?? 0),
-          items,
-        };
-      })
-      .filter((section) => section.items.length > 0)
-      .filter((section) => section.status === selectedSection);
-  }, [rows, contentType, typeStats, normalizedQuery, selectedSection]);
-
+  // Filters and status are content-type specific, so they reset whenever the type changes —
+  // including when another tab switches it through `onContentTypeChange`.
   useEffect(() => {
-    if (!isRandomizing) return;
-    if (progressQuery.isLoading || progressQuery.isFetchingNextPage) return;
-
-    if (progressQuery.hasNextPage) {
-      progressQuery.fetchNextPage();
-    } else {
-      const allItems = rows
-        .filter((row) => row.status === selectedSection)
-        .map((row) => progressToItem(contentType, row))
-        .filter((item): item is FavoriteItem => item !== null)
-        .filter((item) => !normalizedQuery || item.title.toLowerCase().includes(normalizedQuery));
-
-      if (allItems.length > 0) {
-        const randomItem = allItems[Math.floor(Math.random() * allItems.length)];
-        void navigate({ to: `/${randomItem.contentType}/${randomItem.slug}` as string });
-      }
-      setIsRandomizing(false);
-    }
-  }, [
-    isRandomizing,
-    progressQuery.isLoading,
-    progressQuery.isFetchingNextPage,
-    progressQuery.hasNextPage,
-    progressQuery.fetchNextPage,
-    rows,
-    contentType,
-    selectedSection,
-    normalizedQuery,
-    navigate,
-  ]);
-
-  useEffect(() => {
-    setSelectedSection(PROGRESS_CONTENT[contentType].activeStatus);
+    setSearchQuery("");
+    setFilters(EMPTY_PROGRESS_FILTERS);
+    setSelectedStatus(PROGRESS_CONTENT[contentType].activeStatus);
+    setIsRandomizing(false);
   }, [contentType]);
 
-  const handleContentTypeChange = (value: ApiTypes.ReviewContentType) => {
-    onContentTypeChange(value);
-    setSearchQuery("");
-    setSelectedSection(PROGRESS_CONTENT[value].activeStatus);
-    setIsRandomizing(false);
+  const handleRandom = async () => {
+    setIsRandomizing(true);
+
+    try {
+      const item = await fetchRandomProgress(contentType, userId, selectedStatus, appliedFilters);
+
+      if (item) {
+        await navigate({ to: `/${item.contentType}/${item.slug}` as string });
+      }
+    } finally {
+      setIsRandomizing(false);
+    }
   };
 
-  const isEmpty = !progressQuery.isLoading && sections.length === 0;
+  const isEmpty = !progressQuery.isLoading && items.length === 0;
+  const hasQuery = Boolean(debouncedSearch.trim()) || activeFilterCount > 0;
 
   return (
     <div className="flex flex-col md:flex-row gap-6">
-      <aside className="flex flex-col gap-3 md:w-52 shrink-0">
+      <aside className="flex flex-col gap-3 md:w-56 shrink-0">
         <div className="flex md:flex-col gap-1 overflow-x-auto">
           {CONTENT_TYPES.map(({ type, labelKey, icon }) => (
             <button
               key={type}
               type="button"
-              onClick={() => handleContentTypeChange(type)}
+              onClick={() => onContentTypeChange(type)}
               className={cn(
                 "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0",
                 contentType === type ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted",
@@ -178,8 +167,8 @@ export function UserProgressTab({
           <SearchInput value={searchQuery} onChange={setSearchQuery} />
           <button
             type="button"
-            onClick={() => setIsRandomizing(true)}
-            disabled={isRandomizing || progressQuery.isLoading}
+            onClick={handleRandom}
+            disabled={isRandomizing || progressQuery.isLoading || totalInStatus === 0}
             title="Random"
             className="bg-primary flex items-center justify-center size-9 shrink-0 rounded-lg transition-colors text-primary-foreground hover:text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
           >
@@ -191,14 +180,14 @@ export function UserProgressTab({
         </div>
 
         <div className="flex md:flex-col gap-1 overflow-x-auto">
-          {sidebarSections.map((section) => (
+          {sections.map((section) => (
             <button
               key={section.status}
               type="button"
-              onClick={() => setSelectedSection(section.status)}
+              onClick={() => setSelectedStatus(section.status)}
               className={cn(
                 "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0",
-                selectedSection === section.status
+                selectedStatus === section.status
                   ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:bg-muted",
               )}
@@ -208,6 +197,18 @@ export function UserProgressTab({
               {section.count > 0 && <span className="text-xs opacity-60 tabular-nums">{section.count}</span>}
             </button>
           ))}
+        </div>
+
+        <div className="px-1 pt-1">
+          <ProgressFiltersPanel
+            contentType={contentType}
+            options={optionsQuery.data}
+            isLoading={optionsQuery.isLoading}
+            value={filters}
+            activeCount={activeFilterCount}
+            onChange={(patch) => setFilters((current) => ({ ...current, ...patch }))}
+            onClear={() => setFilters(EMPTY_PROGRESS_FILTERS)}
+          />
         </div>
       </aside>
 
@@ -222,33 +223,31 @@ export function UserProgressTab({
           <Empty className="border-0">
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Icon icon={normalizedQuery ? "lucide:search-x" : "lucide:chart-line"} />
+                <Icon icon={hasQuery ? "lucide:search-x" : "lucide:chart-line"} />
               </EmptyMedia>
-              <EmptyTitle>{normalizedQuery ? t("user:noSearchResults") : t("user:noProgress")}</EmptyTitle>
+              <EmptyTitle>{hasQuery ? t("user:noSearchResults") : t("user:noProgress")}</EmptyTitle>
               <EmptyDescription>
-                {normalizedQuery ? t("user:noSearchResultsDescription") : t("user:noProgressDescription")}
+                {hasQuery ? t("user:noSearchResultsDescription") : t("user:noProgressDescription")}
               </EmptyDescription>
             </EmptyHeader>
           </Empty>
         ) : (
-          sections.map((section) => (
-            <div key={section.status} className="flex flex-col gap-3">
-              <h4 className="text-lg font-semibold text-card-foreground">
-                {t(section.labelKey)} ({section.count})
-              </h4>
-              <Grid minColSize={"128px"} className="grid-cols-5">
-                {section.items.map((item) => (
-                  <CardItem
-                    key={item.id}
-                    title={item.title}
-                    url={`/${item.contentType}/${item.slug}`}
-                    imageURL={item.image}
-                    rating={item.score ?? undefined}
-                  />
-                ))}
-              </Grid>
-            </div>
-          ))
+          <div className="flex flex-col gap-3">
+            <h4 className="text-lg font-semibold text-card-foreground">
+              {t(activeSection?.labelKey ?? "")} ({totalInStatus})
+            </h4>
+            <Grid minColSize={"128px"} className="grid-cols-5">
+              {items.map((item) => (
+                <CardItem
+                  key={item.id}
+                  title={item.title}
+                  url={`/${item.contentType}/${item.slug}`}
+                  imageURL={item.image}
+                  rating={item.score ?? undefined}
+                />
+              ))}
+            </Grid>
+          </div>
         )}
 
         <div ref={sentinelRef} />

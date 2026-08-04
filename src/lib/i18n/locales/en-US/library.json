@@ -124,8 +124,10 @@
     "discontinued": "Discontinued",
     "notYetPublished": "Not yet published",
     "released": "Released",
-    "unreleased": "Unreleased"
+    "unreleased": "Unreleased",
+    "earlyAccess": "Early Access"
   },
+  "availability": "Availability",
   "ageRating": {
     "G": "G - All Ages",
     "PG": "PG - Children",

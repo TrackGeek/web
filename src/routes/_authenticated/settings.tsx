@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQueryState } from "nuqs";
 import { useTranslation } from "react-i18next";
 import { SettingsPreferencesTab } from "@/components/pages/settings/preferences-tab";
 import { SettingsProfileTab } from "@/components/pages/settings/profile-tab";
@@ -8,6 +7,7 @@ import { PasswordCard } from "@/components/shared/settings/password-card";
 import { TwoFactorCard } from "@/components/shared/settings/two-factor-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { seo } from "@/lib/utils/seo";
+import { useState } from 'react';
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/_authenticated/settings")({
 function SettingsRoute() {
   const { t } = useTranslation();
 
-  const [activeTab, setActiveTab] = useQueryState("tab", { defaultValue: "profile" });
+  const [activeTab, setActiveTab] = useState("profile");
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>

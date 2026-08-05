@@ -7,7 +7,7 @@ import { PasswordCard } from "@/components/shared/settings/password-card";
 import { TwoFactorCard } from "@/components/shared/settings/two-factor-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { seo } from "@/lib/utils/seo";
-import { useState } from 'react';
+import { useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({

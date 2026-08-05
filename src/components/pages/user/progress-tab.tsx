@@ -133,7 +133,7 @@ export function UserProgressTab({
       const item = await fetchRandomProgress(contentType, userId, selectedStatus, appliedFilters);
 
       if (item) {
-        await navigate({ to: `/${item.contentType}/${item.slug}` as string });
+        window.open(`/${item.contentType}/${item.slug}`, "_blank", "noopener,noreferrer");
       }
     } finally {
       setIsRandomizing(false);

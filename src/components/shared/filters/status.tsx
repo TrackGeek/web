@@ -2,7 +2,12 @@ import { useTranslation } from "react-i18next";
 import type { ContentType } from "@/components/layouts/filters.tsx";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
 
-const STATUS_OPTIONS: Record<ContentType, { value: string; labelKey: string }[]> = {
+/**
+ * Values must match what the search endpoints accept: `TenraiAnimeStatus`, `AnilistMangaStatus`
+ * and the raw IGDB `game_status.status` strings. Movies, TV shows and books are omitted because
+ * their providers expose no status filter on search.
+ */
+const STATUS_OPTIONS: Partial<Record<ContentType, { value: string; labelKey: string }[]>> = {
   anime: [
     { value: "upcoming", labelKey: "library:statusAir.notYetAired" },
     { value: "airing", labelKey: "library:statusAir.currentlyAiring" },
@@ -15,26 +20,24 @@ const STATUS_OPTIONS: Record<ContentType, { value: string; labelKey: string }[]>
     { value: "hiatus", labelKey: "library:statusAir.onHiatus" },
     { value: "discontinued", labelKey: "library:statusAir.discontinued" },
   ],
-  book: [
-    { value: "released", labelKey: "library:statusAir.released" },
-    { value: "unreleased", labelKey: "library:statusAir.unreleased" },
-  ],
   game: [
-    { value: "released", labelKey: "library:statusAir.released" },
-    { value: "unreleased", labelKey: "library:statusAir.unreleased" },
-  ],
-  movie: [
-    { value: "released", labelKey: "library:statusAir.released" },
-    { value: "unreleased", labelKey: "library:statusAir.unreleased" },
-  ],
-  tv: [
-    { value: "notYetAired", labelKey: "library:statusAir.notYetAired" },
-    { value: "currentlyAiring", labelKey: "library:statusAir.currentlyAiring" },
-    { value: "finishedAiring", labelKey: "library:statusAir.finishedAiring" },
+    { value: "Released", labelKey: "library:statusAir.released" },
+    { value: "Not Released", labelKey: "library:statusAir.unreleased" },
+    { value: "Early Access", labelKey: "library:statusAir.earlyAccess" },
+    { value: "Alpha", labelKey: "library:statusAir.alpha" },
+    { value: "Beta", labelKey: "library:statusAir.beta" },
+    { value: "Delisted", labelKey: "library:statusAir.delisted" },
+    { value: "Offline", labelKey: "library:statusAir.offline" },
+    { value: "Cancelled", labelKey: "library:statusAir.cancelled" },
+    { value: "Rumored", labelKey: "library:statusAir.rumored" },
   ],
 };
 
 const CLEAR_VALUE = "__clear__";
+
+export function hasStatusFilter(type: ContentType) {
+  return !!STATUS_OPTIONS[type];
+}
 
 interface StatusProps {
   type: ContentType;
@@ -44,6 +47,10 @@ interface StatusProps {
 
 export function Status({ type, value, onChange }: StatusProps) {
   const { t } = useTranslation();
+
+  const options = STATUS_OPTIONS[type];
+
+  if (!options) return null;
 
   return (
     <div>
@@ -55,7 +62,7 @@ export function Status({ type, value, onChange }: StatusProps) {
         <SelectContent>
           <SelectGroup>
             <SelectItem value={CLEAR_VALUE}>{t("common:all")}</SelectItem>
-            {STATUS_OPTIONS[type].map((option) => (
+            {options.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {t(option.labelKey)}
               </SelectItem>

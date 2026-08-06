@@ -2,10 +2,10 @@ import { Icon } from "@iconify/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import type { AxiosResponse } from "axios";
-import { parseAsString, parseAsStringLiteral, useQueryState } from "nuqs";
-import { memo, useMemo, useState } from "react";
+import { parseAsArrayOf, parseAsFloat, parseAsString, parseAsStringLiteral, useQueryState, useQueryStates } from "nuqs";
+import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { type ContentType, type FilterParams } from "@/components/layouts/filters.tsx";
+import { type ContentType, type FilterParams, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid";
 import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
@@ -39,22 +39,57 @@ export const Route = createFileRoute("/search")({
   component: RouteComponent,
 });
 
-function buildSearchUrl(contentType: ContentType, query: string = "A", filters: FilterParams, page: number): string {
+function buildSearchUrl(contentType: ContentType, query: string, filters: FilterParams, page: number): string {
   const qs = new URLSearchParams();
 
   if (page > 1) qs.set("page", String(page));
   if (query) qs.set("query", query);
+  if (filters.type) qs.set("type", filters.type);
   if (filters.status) qs.set("status", filters.status);
   if (filters.genres?.length) qs.set("genres", filters.genres.join(","));
   if (filters.year) qs.set("year", filters.year);
   if (filters.sort) qs.set("orderBy", filters.sort);
-  if (filters.minEpisodes != null) qs.set("minEpisodes", String(filters.minEpisodes));
-  if (filters.minReading != null) qs.set("minReading", String(filters.minReading));
-  if (filters.gameModes?.length) qs.set("gameModes", filters.gameModes.join(","));
+  if (filters.gameMode) qs.set("gameMode", filters.gameMode);
+  if (filters.platforms?.length) qs.set("platforms", filters.platforms.join(","));
+  if (filters.minTgScore != null) qs.set("minTgScore", String(filters.minTgScore));
 
   const qsStr = qs.toString();
   return qsStr ? `/${contentType}/search?${qsStr}` : `/${contentType}/search`;
 }
+
+// `type` is already taken by the content type, so the anime/manga format filter rides on `format`.
+const FILTER_QUERY_PARSERS = {
+  minTgScore: parseAsFloat,
+  format: parseAsString,
+  status: parseAsString,
+  genres: parseAsArrayOf(parseAsString),
+  year: parseAsString,
+  sort: parseAsString,
+  gameMode: parseAsString,
+  platforms: parseAsArrayOf(parseAsString),
+};
+
+type FilterQueryState = {
+  minTgScore: number | null;
+  format: string | null;
+  status: string | null;
+  genres: string[] | null;
+  year: string | null;
+  sort: string | null;
+  gameMode: string | null;
+  platforms: string[] | null;
+};
+
+const CLEARED_FILTER_QUERY: FilterQueryState = {
+  minTgScore: null,
+  format: null,
+  status: null,
+  genres: null,
+  year: null,
+  sort: null,
+  gameMode: null,
+  platforms: null,
+};
 
 function getItemsFromPage(page: AxiosResponse, contentType: ContentType) {
   const data = page?.data;
@@ -158,16 +193,45 @@ function RouteComponent() {
   );
 
   const [searchQuery, setSearchQuery] = useQueryState("query", parseAsString.withDefault(""));
-  const [filters, setFilters] = useState<FilterParams>({});
+  const [filterQuery, setFilterQuery] = useQueryStates(FILTER_QUERY_PARSERS);
 
   const debouncedQuery = useDebounce(searchQuery, 600);
 
   const { t } = useTranslation();
 
+  const filters = useMemo<FilterParams>(
+    () => ({
+      minTgScore: filterQuery.minTgScore ?? undefined,
+      type: filterQuery.format ?? undefined,
+      status: filterQuery.status ?? undefined,
+      genres: filterQuery.genres ?? undefined,
+      year: filterQuery.year ?? undefined,
+      sort: filterQuery.sort ?? undefined,
+      gameMode: filterQuery.gameMode ?? undefined,
+      platforms: filterQuery.platforms ?? undefined,
+    }),
+    [filterQuery],
+  );
+
+  const handleFilterChange = (patch: Partial<FilterParams>) => {
+    const next: Partial<FilterQueryState> = {};
+
+    if ("minTgScore" in patch) next.minTgScore = patch.minTgScore ?? null;
+    if ("type" in patch) next.format = patch.type ?? null;
+    if ("status" in patch) next.status = patch.status ?? null;
+    if ("genres" in patch) next.genres = patch.genres ?? null;
+    if ("year" in patch) next.year = patch.year ?? null;
+    if ("sort" in patch) next.sort = patch.sort ?? null;
+    if ("gameMode" in patch) next.gameMode = patch.gameMode ?? null;
+    if ("platforms" in patch) next.platforms = patch.platforms ?? null;
+
+    setFilterQuery(next);
+  };
+
   const handleContentTypeChange = (value: string) => {
     setContentType(value as ContentType);
     setSearchQuery("");
-    setFilters({});
+    setFilterQuery(CLEARED_FILTER_QUERY);
   };
 
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
@@ -253,7 +317,14 @@ function RouteComponent() {
           </div>
         </div>
 
-        <div className="flex max-sm:flex-col gap-5">
+        <div className="flex max-md:flex-col gap-5">
+          <Filters
+            type={contentType}
+            values={filters}
+            onChange={handleFilterChange}
+            onClear={() => setFilterQuery(CLEARED_FILTER_QUERY)}
+          />
+
           <SearchResults
             items={items}
             contentType={contentType}

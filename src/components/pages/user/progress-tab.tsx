@@ -133,7 +133,7 @@ export function UserProgressTab({
       const item = await fetchRandomProgress(contentType, userId, selectedStatus, appliedFilters);
 
       if (item) {
-        await navigate({ to: `/${item.contentType}/${item.slug}` as string });
+        window.open(`/${item.contentType}/${item.slug}`, "_blank", "noopener,noreferrer");
       }
     } finally {
       setIsRandomizing(false);
@@ -153,7 +153,7 @@ export function UserProgressTab({
               type="button"
               onClick={() => onContentTypeChange(type)}
               className={cn(
-                "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0",
+                "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer",
                 contentType === type ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted",
               )}
             >
@@ -170,7 +170,7 @@ export function UserProgressTab({
             onClick={handleRandom}
             disabled={isRandomizing || progressQuery.isLoading || totalInStatus === 0}
             title="Random"
-            className="bg-primary flex items-center justify-center size-9 shrink-0 rounded-lg transition-colors text-primary-foreground hover:text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary cursor-pointer flex items-center justify-center size-9 shrink-0 rounded-lg transition-colors text-primary-foreground hover:text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Icon
               icon={isRandomizing ? "lucide:loader-circle" : "lucide:shuffle"}
@@ -186,7 +186,7 @@ export function UserProgressTab({
               type="button"
               onClick={() => setSelectedStatus(section.status)}
               className={cn(
-                "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0",
+                "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer",
                 selectedStatus === section.status
                   ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:bg-muted",

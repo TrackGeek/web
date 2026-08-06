@@ -55,8 +55,6 @@ function NotificationsRoute() {
 
   return (
     <div className="flex flex-col gap-6">
-      <NotificationPreferences />
-
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -98,6 +96,7 @@ function NotificationsRoute() {
         </CardContent>
       </Card>
 
+      <NotificationPreferences />
       <Dialog open={isDeleteAllOpen} onOpenChange={setIsDeleteAllOpen}>
         <DialogContent>
           <DialogHeader>

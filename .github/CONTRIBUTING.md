@@ -101,7 +101,7 @@ your activity is suitable for deployment.
 # Suggestions
 
 If you have some suggestions about our guidelines, you should contact
-us @ [TrackGeek's Discord server](https://discord.trackgeek.app) and we will check them!
+us @ [TrackGeek's Discord server](https://discord.trackgeek.net) and we will check them!
 
 # Contributions
 

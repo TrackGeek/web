@@ -1,5 +1,4 @@
 import { Icon } from "@iconify/react";
-import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -53,7 +52,6 @@ export function UserProgressTab({
   onContentTypeChange: (contentType: ApiTypes.ReviewContentType) => void;
 }) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<ProgressFilters>(EMPTY_PROGRESS_FILTERS);

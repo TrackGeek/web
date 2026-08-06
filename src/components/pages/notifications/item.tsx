@@ -191,7 +191,12 @@ function ReleaseCover({ release }: { release: ReleaseNotificationData }) {
   }
 
   return (
-    <Link to={release.media.to} params={{ slug: release.media.slug }} className="shrink-0">
+    <Link
+      to={release.media.to}
+      params={{ slug: release.media.slug }}
+      className="shrink-0"
+      aria-label={release.mediaTitle}
+    >
       {cover}
     </Link>
   );

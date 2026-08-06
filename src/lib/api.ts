@@ -407,7 +407,38 @@ export namespace ApiTypes {
     | "ReactionOnTvShowReview"
     | "ReactionOnMovieReview"
     | "ReactionOnGameReview"
-    | "ReactionOnBookReview";
+    | "ReactionOnBookReview"
+    | "NewEpisodeReleased"
+    | "NewChapterReleased"
+    | "NewGameReleased"
+    | "SequelAdded";
+
+  export type CatchupMediaType = "Anime" | "Manga" | "TvShow" | "Game";
+
+  export type ReleaseEventType = "NewEpisodeReleased" | "NewChapterReleased" | "NewGameReleased" | "SequelAdded";
+
+  // Release that triggered a catch-up notification, with the media relation it was matched to so the
+  // notification can show a cover and link to the title page.
+  export interface NotificationReleaseEvent {
+    id: string;
+    type: ReleaseEventType;
+    mediaType: CatchupMediaType;
+    title: string;
+    unitTitle: string | null;
+    unitNumber: number | null;
+    containerNumber: number | null;
+    releaseAt: string;
+    anime: { id: string; malId: number; title: string; imageUrl: string | null } | null;
+    manga: {
+      id: string;
+      anilistId: number | null;
+      malId: number | null;
+      title: string;
+      imageUrl: string | null;
+    } | null;
+    tvShow: { id: string; tmdbId: number; name: string | null; posterUrl: string | null } | null;
+    game: { id: string; igdbId: number; slug: string | null; name: string; coverUrl: string | null } | null;
+  }
 
   // titleKey/descriptionKey are i18n keys resolved at render time; title/description are literals
   // used when the content has no translation.
@@ -438,6 +469,7 @@ export namespace ApiTypes {
     movieReviewId: string | null;
     gameReviewId: string | null;
     bookReviewId: string | null;
+    releaseEventId: string | null;
     actor: {
       id: string;
       name: string;
@@ -457,6 +489,7 @@ export namespace ApiTypes {
       type: ReactionType;
       emoji: string;
     } | null;
+    releaseEvent: NotificationReleaseEvent | null;
   }
 
   export interface GetNotificationsResponse {
@@ -470,6 +503,11 @@ export namespace ApiTypes {
   export interface NotificationPreferences {
     comment: boolean;
     reaction: boolean;
+    newEpisode: boolean;
+    newChapter: boolean;
+    gameRelease: boolean;
+    sequelAdded: boolean;
+    reopenedCompleted: boolean;
   }
 
   export interface GetNotificationPreferencesResponse {

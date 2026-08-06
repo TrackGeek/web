@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -182,6 +182,13 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
                   </Button>
                 )}
               </div>
+            </div>
+          )}
+          {session.data?.user && session.data?.user.id === user.id && (
+            <div className="hidden lg:flex items-center gap-3">
+              <Link to={"/settings"} className="flex items-center gap-2 capitalize">
+                <Button variant="outline">{t("user:editProfile")}</Button>
+              </Link>
             </div>
           )}
         </div>

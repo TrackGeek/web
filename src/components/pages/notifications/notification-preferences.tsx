@@ -8,9 +8,42 @@ import { Switch } from "@/components/ui/switch";
 import { useNotificationPreferences, useUpdateNotificationPreferences } from "@/hooks/notification";
 import type { ApiTypes } from "@/lib/api.ts";
 
-const CATEGORIES: { key: keyof ApiTypes.NotificationPreferences; labelKey: string }[] = [
-  { key: "comment", labelKey: "notifications:preferences.comment" },
-  { key: "reaction", labelKey: "notifications:preferences.reaction" },
+const CATEGORIES: { key: keyof ApiTypes.NotificationPreferences; labelKey: string; descriptionKey: string }[] = [
+  {
+    key: "comment",
+    labelKey: "notifications:preferences.comment",
+    descriptionKey: "notifications:preferences.commentDescription",
+  },
+  {
+    key: "reaction",
+    labelKey: "notifications:preferences.reaction",
+    descriptionKey: "notifications:preferences.reactionDescription",
+  },
+  {
+    key: "newEpisode",
+    labelKey: "notifications:preferences.newEpisode",
+    descriptionKey: "notifications:preferences.newEpisodeDescription",
+  },
+  {
+    key: "newChapter",
+    labelKey: "notifications:preferences.newChapter",
+    descriptionKey: "notifications:preferences.newChapterDescription",
+  },
+  {
+    key: "gameRelease",
+    labelKey: "notifications:preferences.gameRelease",
+    descriptionKey: "notifications:preferences.gameReleaseDescription",
+  },
+  {
+    key: "sequelAdded",
+    labelKey: "notifications:preferences.sequelAdded",
+    descriptionKey: "notifications:preferences.sequelAddedDescription",
+  },
+  {
+    key: "reopenedCompleted",
+    labelKey: "notifications:preferences.reopenedCompleted",
+    descriptionKey: "notifications:preferences.reopenedCompletedDescription",
+  },
 ];
 
 export function NotificationPreferences() {
@@ -34,15 +67,19 @@ export function NotificationPreferences() {
       </CardHeader>
 
       <CardContent className="flex flex-col gap-4">
-        {CATEGORIES.map(({ key, labelKey }) => (
+        {CATEGORIES.map(({ key, labelKey, descriptionKey }) => (
           <div key={key} className="flex items-center justify-between gap-4">
-            <Label htmlFor={`notification-pref-${key}`}>{t(labelKey)}</Label>
+            <div className="flex flex-col gap-0.5 min-w-0">
+              <Label htmlFor={`notification-pref-${key}`}>{t(labelKey)}</Label>
+              <p className="text-xs text-muted-foreground">{t(descriptionKey)}</p>
+            </div>
 
             {isLoading || !preferences ? (
-              <Skeleton className="h-[1.15rem] w-8 rounded-full" />
+              <Skeleton className="h-[1.15rem] w-8 rounded-full shrink-0" />
             ) : (
               <Switch
                 id={`notification-pref-${key}`}
+                className="shrink-0"
                 checked={preferences[key]}
                 disabled={updatePreferences.isPending}
                 onCheckedChange={(value) => onToggle(key, value)}

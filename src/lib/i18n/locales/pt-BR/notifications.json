@@ -20,7 +20,30 @@
     "title": "Preferências de notificação",
     "description": "Escolha quais notificações você deseja receber. Notificações do sistema são sempre entregues.",
     "comment": "Comentários",
-    "reaction": "Reações"
+    "commentDescription": "When someone comments on your profile.",
+    "reaction": "Reações",
+    "reactionDescription": "When someone reacts to your comments, reviews or activity.",
+    "newEpisode": "New episodes",
+    "newEpisodeDescription": "When an anime or TV show you are watching releases a new episode.",
+    "newChapter": "New chapters",
+    "newChapterDescription": "When a manga you are reading releases a new chapter.",
+    "gameRelease": "Game releases",
+    "gameReleaseDescription": "When a game you are tracking or favorited is released.",
+    "sequelAdded": "Anime sequels",
+    "sequelAddedDescription": "When a sequel of an anime you completed is announced.",
+    "reopenedCompleted": "Reopened titles",
+    "reopenedCompletedDescription": "When a title you completed goes back to watching because new content arrived."
+  },
+  "release": {
+    "episode": "Episode {{number}} of {{title}} has released",
+    "seasonEpisode": "Season {{season}}, episode {{number}} of {{title}} has released",
+    "episodeUnknown": "A new episode of {{title}} has released",
+    "chapter": "Chapter {{number}} of {{title}} has released",
+    "chapterUnknown": "A new chapter of {{title}} has released",
+    "game": "{{title}} has released",
+    "sequel": "{{title}} has been added as a sequel",
+    "reopened": "Back to watching",
+    "viewTitle": "View title"
   },
   "empty": {
     "title": "Nenhuma notificação ainda",

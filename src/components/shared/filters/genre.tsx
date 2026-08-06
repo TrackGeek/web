@@ -105,7 +105,7 @@ const GENRE_CONFIG: Record<ContentType, string[]> = {
   movie: [
     "Animation",
     "Adventure",
-    "Cinema TV",
+    "TV Movie",
     "Action",
     "Comedy",
     "Drama",
@@ -158,6 +158,14 @@ export function Genres({ type, value = [], onChange }: GenresProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Tenrai only catalogues anime and manga genres; the rest come from the static config below.
+    if (type !== "anime" && type !== "manga") {
+      setGenres([]);
+      setLoading(false);
+
+      return;
+    }
+
     setLoading(true);
     const fetchGenres = async () => {
       try {

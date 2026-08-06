@@ -36,15 +36,9 @@ const RELEASE_STATE_LABELS: Record<ApiTypes.ReviewContentType, Partial<Record<Ap
     Finished: "library:statusAir.released",
     Unreleased: "library:statusAir.unreleased",
   },
-  movie: {
-    Finished: "library:statusAir.released",
-    Unreleased: "library:statusAir.unreleased",
-    Cancelled: "library:statusAir.discontinued",
-  },
+  movie: {},
   game: {
     Ongoing: "library:statusAir.earlyAccess",
-    Finished: "library:statusAir.released",
-    Unreleased: "library:statusAir.unreleased",
     Cancelled: "library:statusAir.discontinued",
   },
 };
@@ -106,7 +100,7 @@ export function ProgressFiltersPanel({
           <button
             type="button"
             onClick={onClear}
-            className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-primary transition-colors"
+            className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer"
           >
             <Icon icon="lucide:x" className="size-3" />
             {t("common:clear")}
@@ -231,7 +225,7 @@ function FilterChip({
       aria-pressed={selected}
       onClick={onClick}
       className={cn(
-        "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap bg-muted/30",
+        "px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap bg-muted/30 cursor-pointer",
         selected ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted",
       )}
     >

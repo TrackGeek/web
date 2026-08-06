@@ -55,6 +55,7 @@
     "lastAdded": "Last Added",
     "rating": "Rating",
     "releaseDate": "Release Date",
+    "endDate": "End Date",
     "title": "Title"
   },
   "editList": "Edit list",
@@ -65,5 +66,6 @@
   "listDeleted": "List deleted",
   "listName": "List name",
   "listDescription": "Description",
-  "error": "Something went wrong"
+  "error": "Something went wrong",
+  "editProfile": "Edit profile"
 }

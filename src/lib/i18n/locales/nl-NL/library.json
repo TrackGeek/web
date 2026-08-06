@@ -71,6 +71,7 @@
   "studios": "Studios",
   "producers": "Producers",
   "rating": "Age Rating",
+  "tgRating": "Rating",
   "broadcast": "Broadcast",
   "source": "Source",
   "characters": "Characters",
@@ -125,7 +126,13 @@
     "notYetPublished": "Not yet published",
     "released": "Released",
     "unreleased": "Unreleased",
-    "earlyAccess": "Early Access"
+    "earlyAccess": "Early Access",
+    "alpha": "Alpha",
+    "beta": "Beta",
+    "delisted": "Delisted",
+    "offline": "Offline",
+    "cancelled": "Cancelled",
+    "rumored": "Rumored"
   },
   "availability": "Availability",
   "ageRating": {

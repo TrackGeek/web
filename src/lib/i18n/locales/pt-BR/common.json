@@ -16,6 +16,8 @@
   "alreadyObtained": "Já adquirido",
   "translate": "Traduzir",
   "settings": "Configurações",
+  "previous": "Previous",
+  "next": "Next",
   "notifications": "Notificações",
   "profile": "Perfil",
   "credits": "Créditos",
@@ -129,7 +131,7 @@
   "internalError": "Uh oh! Não se preocupe! Não é você - somos nós.<br />Nós estamos tentando corrigir o problema. Tenta novamente mais tarde!",
   "reportError": "Relatar problemas",
   "all": "Todos",
-  "clear": "Clear",
+  "clear": "Limpar",
   "joinedAt": "Entrou em",
   "tierStartedAt": "Assinatura começou em",
   "tiers": {
@@ -146,5 +148,5 @@
     "updateTitle": "Uma nova versão está disponível.",
     "updateAction": "Recarregar"
   },
-  "loadMore": "Load More"
+  "loadMore": "Carregar Mais"
 }

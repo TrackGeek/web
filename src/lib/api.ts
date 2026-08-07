@@ -974,6 +974,7 @@ export const apiEndpoints = {
   refreshGameData: "/game/refresh",
   getAnimeDetails: (id: string) => `/anime/detail/${id}`,
   getAnimeEpisodeDetails: (id: string) => `/anime/detail/${id}/episode`,
+  getAnimeRelations: (id: string) => `/anime/detail/${id}/relation`,
   getAnimeAiring: "/anime/top?filter=airing",
   getAnimeRecommendations: "/anime/top?filter=bypopularity",
   getAnimeComingSoon: "/anime/top?filter=upcoming",

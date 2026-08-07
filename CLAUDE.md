@@ -33,6 +33,7 @@ Use `bun`, never `npm`. No test runner configured — do not add curl/fetch/bash
 - Double quotes, 2-space indent, 120-char width (Biome). `useImportType` + `noArrayIndexKey` off; `noExplicitAny` off under `src/routes/**` only.
 - Icons via Iconify: `import { Icon } from "@iconify/react"` → `<Icon icon="lucide:home" />`. Don't add per-icon lucide-react packages.
 - Commits/PRs: Angular convention (`feat(...)`, `fix(...)`) — see `.github/COMMIT_CONVENTION.md`.
+- Don't make comments on the code.
 
 ## i18n — STRICT RULES
 

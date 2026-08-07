@@ -65,6 +65,7 @@ import { Route as TvUpcomingIndexRouteImport } from './routes/tv/upcoming/index'
 import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
 import { Route as AuthenticatedDonateErrorIndexRouteImport } from './routes/_authenticated/donate/error/index'
 import { Route as AuthenticatedDonateSuccessIndexRouteImport } from './routes/_authenticated/donate/success/index'
+import { Route as AuthenticatedSettingsImportBackloggdRouteImport } from './routes/_authenticated/settings_.import.backloggd'
 import { Route as ApiOgUserUsernameRouteImport } from './routes/api/og/user.$username'
 import { Route as ApiOgMediaTypeSlugRouteImport } from './routes/api/og/media.$type.$slug'
 
@@ -352,6 +353,12 @@ const AuthenticatedDonateSuccessIndexRoute =
     path: '/donate/success/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedSettingsImportBackloggdRoute =
+  AuthenticatedSettingsImportBackloggdRouteImport.update({
+    id: '/settings_/import/backloggd',
+    path: '/settings/import/backloggd',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const ApiOgUserUsernameRoute = ApiOgUserUsernameRouteImport.update({
   id: '/api/og/user/$username',
   path: '/api/og/user/$username',
@@ -417,6 +424,7 @@ export interface FileRoutesByFullPath {
   '/tv/trending/': typeof TvTrendingIndexRoute
   '/tv/upcoming/': typeof TvUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
+  '/settings/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
   '/api/og/user/$username': typeof ApiOgUserUsernameRoute
   '/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
@@ -476,6 +484,7 @@ export interface FileRoutesByTo {
   '/tv/trending': typeof TvTrendingIndexRoute
   '/tv/upcoming': typeof TvUpcomingIndexRoute
   '/user/$username': typeof UserUsernameIndexRoute
+  '/settings/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
   '/api/og/user/$username': typeof ApiOgUserUsernameRoute
   '/donate/error': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success': typeof AuthenticatedDonateSuccessIndexRoute
@@ -537,6 +546,7 @@ export interface FileRoutesById {
   '/tv/trending/': typeof TvTrendingIndexRoute
   '/tv/upcoming/': typeof TvUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
+  '/_authenticated/settings_/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
   '/api/og/user/$username': typeof ApiOgUserUsernameRoute
   '/_authenticated/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/_authenticated/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
@@ -598,6 +608,7 @@ export interface FileRouteTypes {
     | '/tv/trending/'
     | '/tv/upcoming/'
     | '/user/$username/'
+    | '/settings/import/backloggd'
     | '/api/og/user/$username'
     | '/donate/error/'
     | '/donate/success/'
@@ -657,6 +668,7 @@ export interface FileRouteTypes {
     | '/tv/trending'
     | '/tv/upcoming'
     | '/user/$username'
+    | '/settings/import/backloggd'
     | '/api/og/user/$username'
     | '/donate/error'
     | '/donate/success'
@@ -717,6 +729,7 @@ export interface FileRouteTypes {
     | '/tv/trending/'
     | '/tv/upcoming/'
     | '/user/$username/'
+    | '/_authenticated/settings_/import/backloggd'
     | '/api/og/user/$username'
     | '/_authenticated/donate/error/'
     | '/_authenticated/donate/success/'
@@ -1173,6 +1186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDonateSuccessIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/settings_/import/backloggd': {
+      id: '/_authenticated/settings_/import/backloggd'
+      path: '/settings/import/backloggd'
+      fullPath: '/settings/import/backloggd'
+      preLoaderRoute: typeof AuthenticatedSettingsImportBackloggdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/api/og/user/$username': {
       id: '/api/og/user/$username'
       path: '/api/og/user/$username'
@@ -1194,6 +1214,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedSettingsImportBackloggdRoute: typeof AuthenticatedSettingsImportBackloggdRoute
   AuthenticatedDonateErrorIndexRoute: typeof AuthenticatedDonateErrorIndexRoute
   AuthenticatedDonateSuccessIndexRoute: typeof AuthenticatedDonateSuccessIndexRoute
 }
@@ -1202,6 +1223,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedBillingRoute: AuthenticatedBillingRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedSettingsImportBackloggdRoute:
+    AuthenticatedSettingsImportBackloggdRoute,
   AuthenticatedDonateErrorIndexRoute: AuthenticatedDonateErrorIndexRoute,
   AuthenticatedDonateSuccessIndexRoute: AuthenticatedDonateSuccessIndexRoute,
 }

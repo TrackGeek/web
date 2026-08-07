@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { SettingsImportTab } from "@/components/pages/settings/import-tab";
 import { SettingsPreferencesTab } from "@/components/pages/settings/preferences-tab";
 import { SettingsProfileTab } from "@/components/pages/settings/profile-tab";
 import { ConnectionsCard } from "@/components/shared/settings/connections-card";
@@ -7,7 +9,6 @@ import { PasswordCard } from "@/components/shared/settings/password-card";
 import { TwoFactorCard } from "@/components/shared/settings/two-factor-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { seo } from "@/lib/utils/seo";
-import { useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
@@ -31,6 +32,8 @@ function SettingsRoute() {
         <TabsTrigger value="security">{t("settings:tabs.security")}</TabsTrigger>
 
         <TabsTrigger value="connections">{t("settings:tabs.connections")}</TabsTrigger>
+
+        <TabsTrigger value="import">{t("settings:tabs.import")}</TabsTrigger>
       </TabsList>
 
       <TabsContent value="profile">
@@ -51,6 +54,10 @@ function SettingsRoute() {
 
       <TabsContent value="connections">
         <ConnectionsCard />
+      </TabsContent>
+
+      <TabsContent value="import">
+        <SettingsImportTab />
       </TabsContent>
     </Tabs>
   );

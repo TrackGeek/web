@@ -523,7 +523,7 @@ function MangaDetailsRoute() {
               </Grid>
             </div>
 
-            {manga.relations?.nodes?.length > 0 || manga.relations?.edges?.length > 0 ? (
+            {manga.relations?.edges?.length > 0 && manga.relations?.nodes?.length > 1 ? (
               <div>
                 <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:relations")}</h3>
                 <Relations nodes={manga.relations.nodes} edges={manga.relations.edges} />

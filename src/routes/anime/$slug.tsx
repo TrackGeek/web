@@ -78,10 +78,81 @@ interface AnimeCharacter {
   voiceActors: AnimeVoiceActor[];
 }
 
+interface AnimeRelationEntry {
+  malId: number;
+  title: string;
+  type: string;
+  imageUrl: string | null;
+}
+
+interface AnimeRelation {
+  relationType: string;
+  entry: AnimeRelationEntry[];
+}
+
+type FlowNode = { id: string; image: string; name: string; link: string; relationShip: string };
+type FlowEdge = { id: string; source: string; target: string };
+
 const MAL_PLACEHOLDER_IMAGE = "https://cdn.myanimelist.net/images/questionmark_23.gif";
 
 function malImage(imageUrl: string | null): string | null {
   return imageUrl?.startsWith(MAL_PLACEHOLDER_IMAGE) ? null : imageUrl;
+}
+
+const RELATION_LABEL_KEYS: Record<string, string> = {
+  sequel: "sequel",
+  prequel: "prequel",
+  "side story": "sideStory",
+  "parent story": "parent",
+  "alternative version": "alternative",
+  "alternative setting": "alternative",
+  "spin-off": "spinOff",
+  adaptation: "adaptation",
+  summary: "summary",
+  character: "character",
+  "full story": "fullStory",
+  other: "other",
+};
+
+function buildRelationsData(
+  anime: { malId: number; title: string; imageUrl: string | null },
+  relations: AnimeRelation[],
+  t: (key: string) => string,
+) {
+  const rootId = String(anime.malId);
+  const nodes: FlowNode[] = [
+    {
+      id: rootId,
+      name: anime.title,
+      image: malImage(anime.imageUrl) ?? "/placeholder/cover.webp",
+      link: `/anime/${anime.malId}`,
+      relationShip: t("library:relationships.now"),
+    },
+  ];
+  const edges: FlowEdge[] = [];
+
+  for (const relation of relations) {
+    const key = RELATION_LABEL_KEYS[relation.relationType?.toLowerCase()];
+    const label = key ? t(`library:relationships.${key}`) : relation.relationType;
+
+    for (const entry of relation.entry ?? []) {
+      if (entry.type !== "anime") continue;
+
+      const id = String(entry.malId);
+      if (nodes.some((node) => node.id === id)) continue;
+
+      nodes.push({
+        id,
+        name: entry.title,
+        image: malImage(entry.imageUrl) ?? "/placeholder/cover.webp",
+        link: `/anime/${entry.malId}`,
+        relationShip: label,
+      });
+      edges.push({ id: `${rootId}-${id}`, source: rootId, target: id });
+    }
+  }
+
+  return { nodes, edges };
 }
 
 export const Route = createFileRoute("/anime/$slug")({
@@ -143,6 +214,12 @@ function AnimeDetailsRoute() {
         .then(({ data }) => data.episodes),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => (lastPage.inPage < lastPage.pages ? lastPage.inPage + 1 : undefined),
+    enabled: !!anime,
+  });
+
+  const relationsQuery = useQuery<AnimeRelation[]>({
+    queryKey: ["animeRelations", slug],
+    queryFn: () => api.get(apiEndpoints.getAnimeRelations(slug)).then(({ data }) => data.relations),
     enabled: !!anime,
   });
 
@@ -796,12 +873,16 @@ function AnimeDetailsRoute() {
               </Grid>
             </div>
 
-            {anime.relations?.nodes?.length > 0 || anime.relations?.edges?.length > 0 ? (
-              <div>
-                <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:relations")}</h3>
-                <Relations nodes={anime.relations.nodes} edges={anime.relations.edges} />
-              </div>
-            ) : null}
+            {(() => {
+              const { nodes, edges } = buildRelationsData(anime, relationsQuery.data ?? [], t);
+              if (edges.length === 0) return null;
+              return (
+                <div>
+                  <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:relations")}</h3>
+                  <Relations nodes={nodes} edges={edges} />
+                </div>
+              );
+            })()}
 
             {isAuthenticated && (
               <>

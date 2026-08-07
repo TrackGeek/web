@@ -66,6 +66,7 @@ import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/i
 import { Route as AuthenticatedDonateErrorIndexRouteImport } from './routes/_authenticated/donate/error/index'
 import { Route as AuthenticatedDonateSuccessIndexRouteImport } from './routes/_authenticated/donate/success/index'
 import { Route as AuthenticatedSettingsImportBackloggdRouteImport } from './routes/_authenticated/settings_.import.backloggd'
+import { Route as AuthenticatedSettingsImportMyanimelistRouteImport } from './routes/_authenticated/settings_.import.myanimelist'
 import { Route as ApiOgUserUsernameRouteImport } from './routes/api/og/user.$username'
 import { Route as ApiOgMediaTypeSlugRouteImport } from './routes/api/og/media.$type.$slug'
 
@@ -359,6 +360,12 @@ const AuthenticatedSettingsImportBackloggdRoute =
     path: '/settings/import/backloggd',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedSettingsImportMyanimelistRoute =
+  AuthenticatedSettingsImportMyanimelistRouteImport.update({
+    id: '/settings_/import/myanimelist',
+    path: '/settings/import/myanimelist',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const ApiOgUserUsernameRoute = ApiOgUserUsernameRouteImport.update({
   id: '/api/og/user/$username',
   path: '/api/og/user/$username',
@@ -425,6 +432,7 @@ export interface FileRoutesByFullPath {
   '/tv/upcoming/': typeof TvUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
   '/settings/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
+  '/settings/import/myanimelist': typeof AuthenticatedSettingsImportMyanimelistRoute
   '/api/og/user/$username': typeof ApiOgUserUsernameRoute
   '/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
@@ -485,6 +493,7 @@ export interface FileRoutesByTo {
   '/tv/upcoming': typeof TvUpcomingIndexRoute
   '/user/$username': typeof UserUsernameIndexRoute
   '/settings/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
+  '/settings/import/myanimelist': typeof AuthenticatedSettingsImportMyanimelistRoute
   '/api/og/user/$username': typeof ApiOgUserUsernameRoute
   '/donate/error': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success': typeof AuthenticatedDonateSuccessIndexRoute
@@ -547,6 +556,7 @@ export interface FileRoutesById {
   '/tv/upcoming/': typeof TvUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
   '/_authenticated/settings_/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
+  '/_authenticated/settings_/import/myanimelist': typeof AuthenticatedSettingsImportMyanimelistRoute
   '/api/og/user/$username': typeof ApiOgUserUsernameRoute
   '/_authenticated/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/_authenticated/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
@@ -609,6 +619,7 @@ export interface FileRouteTypes {
     | '/tv/upcoming/'
     | '/user/$username/'
     | '/settings/import/backloggd'
+    | '/settings/import/myanimelist'
     | '/api/og/user/$username'
     | '/donate/error/'
     | '/donate/success/'
@@ -669,6 +680,7 @@ export interface FileRouteTypes {
     | '/tv/upcoming'
     | '/user/$username'
     | '/settings/import/backloggd'
+    | '/settings/import/myanimelist'
     | '/api/og/user/$username'
     | '/donate/error'
     | '/donate/success'
@@ -730,6 +742,7 @@ export interface FileRouteTypes {
     | '/tv/upcoming/'
     | '/user/$username/'
     | '/_authenticated/settings_/import/backloggd'
+    | '/_authenticated/settings_/import/myanimelist'
     | '/api/og/user/$username'
     | '/_authenticated/donate/error/'
     | '/_authenticated/donate/success/'
@@ -1193,6 +1206,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsImportBackloggdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/settings_/import/myanimelist': {
+      id: '/_authenticated/settings_/import/myanimelist'
+      path: '/settings/import/myanimelist'
+      fullPath: '/settings/import/myanimelist'
+      preLoaderRoute: typeof AuthenticatedSettingsImportMyanimelistRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/api/og/user/$username': {
       id: '/api/og/user/$username'
       path: '/api/og/user/$username'
@@ -1215,6 +1235,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedSettingsImportBackloggdRoute: typeof AuthenticatedSettingsImportBackloggdRoute
+  AuthenticatedSettingsImportMyanimelistRoute: typeof AuthenticatedSettingsImportMyanimelistRoute
   AuthenticatedDonateErrorIndexRoute: typeof AuthenticatedDonateErrorIndexRoute
   AuthenticatedDonateSuccessIndexRoute: typeof AuthenticatedDonateSuccessIndexRoute
 }
@@ -1225,6 +1246,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedSettingsImportBackloggdRoute:
     AuthenticatedSettingsImportBackloggdRoute,
+  AuthenticatedSettingsImportMyanimelistRoute:
+    AuthenticatedSettingsImportMyanimelistRoute,
   AuthenticatedDonateErrorIndexRoute: AuthenticatedDonateErrorIndexRoute,
   AuthenticatedDonateSuccessIndexRoute: AuthenticatedDonateSuccessIndexRoute,
 }

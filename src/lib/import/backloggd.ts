@@ -1,6 +1,14 @@
-import axios from "axios";
 import z from "zod";
 import { api, apiEndpoints } from "@/lib/api";
+import {
+  detailLimiter,
+  type ImportEntry,
+  type ImportRunner,
+  MEDIA_NOT_FOUND,
+  type OnRetry,
+  upsertReview,
+  withRetry,
+} from "@/lib/import/shared";
 
 const RATING_DIVISOR = 2;
 
@@ -49,9 +57,7 @@ type Playthrough = z.infer<typeof playthroughSchema>;
 
 export type ProgressStatus = "Planning" | "Playing" | "Completed" | "Paused" | "Dropped";
 
-export interface MappedEntry {
-  igdbId: string;
-  name: string;
+export interface MappedEntry extends ImportEntry {
   status: ProgressStatus;
   hoursPlayed?: number;
   startedAt?: string;
@@ -101,7 +107,7 @@ export function mapEntry(entry: BackloggdEntry): MappedEntry | null {
   const rating = entry.game_log.rating || playthrough?.rating || 0;
 
   return {
-    igdbId: entry.id,
+    id: entry.id,
     name: entry.name,
     status,
     hoursPlayed: hours >= MIN_TRACKED_HOURS ? hours : undefined,
@@ -111,24 +117,6 @@ export function mapEntry(entry: BackloggdEntry): MappedEntry | null {
   };
 }
 
-export type ImportItemState = "pending" | "running" | "waiting" | "done" | "error";
-
-export interface ImportItem {
-  igdbId: string;
-  name: string;
-  status: ProgressStatus;
-  state: ImportItemState;
-  attempt?: number;
-  errorKey?: string;
-}
-
-export interface ImportProgress {
-  items: ImportItem[];
-  done: number;
-  failed: number;
-  total: number;
-}
-
 export function parseExport(raw: unknown): { entries: MappedEntry[]; ignored: number } {
   const parsed = backloggdExportSchema.parse(raw);
   const entries = parsed.map(mapEntry).filter((entry) => entry !== null);
@@ -136,165 +124,17 @@ export function parseExport(raw: unknown): { entries: MappedEntry[]; ignored: nu
   return { entries, ignored: parsed.length - entries.length };
 }
 
-const GAME_NOT_FOUND = "GAME_NOT_FOUND";
-
-export const DETAIL_REQUESTS_PER_SECOND = 4;
-
-const RATE_WINDOW_MS = 1000;
-
-const BASE_BACKOFF_MS = 1000;
-
-const MAX_BACKOFF_MS = 30_000;
-
-/**
- * Safety net: with the capped backoff this spans a few minutes of retrying, long enough for
- * any real outage, while stopping an unforeseen deterministic error from hanging the import.
- */
-const MAX_ATTEMPTS = 10;
-
-class RateLimiter {
-  private starts: number[] = [];
-
-  private readonly limit: number;
-
-  private readonly windowMs: number;
-
-  constructor(limit: number, windowMs: number) {
-    this.limit = limit;
-    this.windowMs = windowMs;
-  }
-
-  async acquire(signal: AbortSignal) {
-    while (true) {
-      const now = Date.now();
-
-      this.starts = this.starts.filter((start) => now - start < this.windowMs);
-
-      if (this.starts.length < this.limit) {
-        this.starts.push(now);
-        return;
-      }
-
-      await delay(this.windowMs - (now - this.starts[0]), signal);
-    }
-  }
-}
-
-const detailLimiter = new RateLimiter(DETAIL_REQUESTS_PER_SECOND, RATE_WINDOW_MS);
-
-function delay(ms: number, signal: AbortSignal) {
-  return new Promise<void>((resolve, reject) => {
-    if (signal.aborted) {
-      reject(signal.reason);
-      return;
-    }
-
-    const onAbort = () => {
-      clearTimeout(timer);
-      reject(signal.reason);
-    };
-
-    const timer = setTimeout(() => {
-      signal.removeEventListener("abort", onAbort);
-      resolve();
-    }, ms);
-
-    signal.addEventListener("abort", onAbort, { once: true });
-  });
-}
-
-/**
- * Statuses for a request that can never succeed as sent: a game the API doesn't know (404)
- * and a row that already exists (409, Prisma P2002). Retrying either one just stalls the import.
- */
-const TERMINAL_STATUSES = [404, 409];
-
-function isRetryable(error: unknown): boolean {
-  if (error instanceof Error && error.message === GAME_NOT_FOUND) return false;
-
-  if (!axios.isAxiosError(error)) return false;
-
-  const status = error.response?.status;
-
-  return status === undefined || !TERMINAL_STATUSES.includes(status);
-}
-
-function retryAfterMs(error: unknown): number | null {
-  if (!axios.isAxiosError(error)) return null;
-
-  const header = error.response?.headers?.["retry-after"];
-
-  if (!header) return null;
-
-  const seconds = Number(header);
-
-  if (Number.isFinite(seconds)) return seconds * RATE_WINDOW_MS;
-
-  const date = new Date(String(header)).getTime();
-
-  return Number.isNaN(date) ? null : Math.max(0, date - Date.now());
-}
-
-function backoffMs(attempt: number) {
-  const capped = Math.min(BASE_BACKOFF_MS * 2 ** (attempt - 1), MAX_BACKOFF_MS);
-
-  return capped * (0.75 + Math.random() * 0.5);
-}
-
-async function withRetry<T>(
-  operation: () => Promise<T>,
-  signal: AbortSignal,
-  onRetry: (attempt: number) => void,
-): Promise<T> {
-  for (let attempt = 1; ; attempt++) {
-    try {
-      return await operation();
-    } catch (error) {
-      if (signal.aborted || !isRetryable(error) || attempt >= MAX_ATTEMPTS) throw error;
-
-      onRetry(attempt);
-
-      await delay(retryAfterMs(error) ?? backoffMs(attempt), signal);
-    }
-  }
-}
-
-/**
- * `POST /game/review` only ever creates, and the table is unique on (userId, gameId), so a
- * game the user already reviewed answers 409. Mirrors the modal: look the review up first
- * and PATCH it when it exists.
- */
-async function upsertReview(
-  gameId: string,
-  userId: string,
-  overall: number,
-  signal: AbortSignal,
-  onRetry: (attempt: number) => void,
-) {
-  const existing = await withRetry(
-    () =>
-      api
-        .get(`${apiEndpoints.gameReview}/`, { params: { gameId, userId }, signal })
-        .then(({ data }) => data?.gameReviews?.items?.[0] ?? null),
-    signal,
-    onRetry,
-  );
-
-  await withRetry(
-    () =>
-      existing
-        ? api.patch(`${apiEndpoints.gameReview}/${existing.id}`, { gameId, overall }, { signal })
-        : api.post(apiEndpoints.gameReview, { gameId, overall }, { signal }),
-    signal,
-    onRetry,
-  );
-}
+const REVIEW_TARGET = {
+  endpoint: apiEndpoints.gameReview,
+  idKey: "gameId",
+  responseKey: "gameReviews",
+} as const;
 
 async function importEntry(
   entry: MappedEntry,
   userId: string,
   signal: AbortSignal,
-  onRetry: (attempt: number) => void,
+  onRetry: OnRetry,
   onResume: () => void,
 ) {
   const gameId = await withRetry(
@@ -303,11 +143,11 @@ async function importEntry(
 
       onResume();
 
-      const { data } = await api.get(apiEndpoints.getGameDetails(entry.igdbId), { signal });
+      const { data } = await api.get(apiEndpoints.getGameDetails(entry.id), { signal });
 
       const id = data?.game?.id;
 
-      if (!id) throw new Error(GAME_NOT_FOUND);
+      if (!id) throw new Error(MEDIA_NOT_FOUND);
 
       return id as string;
     },
@@ -333,81 +173,13 @@ async function importEntry(
   );
 
   if (entry.rating) {
-    await upsertReview(gameId, userId, entry.rating, signal, onRetry);
+    await upsertReview(REVIEW_TARGET, gameId, userId, entry.rating, signal, onRetry);
   }
 }
 
-function errorKeyFor(error: unknown): string {
-  if (error instanceof Error && error.message === GAME_NOT_FOUND) return "settings:import.errors.notFound";
-
-  if (axios.isAxiosError(error) && error.response?.status === 404) return "settings:import.errors.notFound";
-
-  return "settings:import.errors.failed";
-}
-
-const CONCURRENCY = DETAIL_REQUESTS_PER_SECOND;
-
-export async function runImport(
-  entries: MappedEntry[],
-  userId: string,
-  signal: AbortSignal,
-  onProgress: (progress: ImportProgress) => void,
-): Promise<ImportProgress> {
-  const items: ImportItem[] = entries.map((entry) => ({
-    igdbId: entry.igdbId,
-    name: entry.name,
-    status: entry.status,
-    state: "pending",
-  }));
-
-  const progress: ImportProgress = { items, done: 0, failed: 0, total: entries.length };
-
-  const emit = () => onProgress({ ...progress, items: [...progress.items] });
-
-  emit();
-
-  let cursor = 0;
-
-  const worker = async () => {
-    while (cursor < entries.length) {
-      if (signal.aborted) return;
-
-      const index = cursor++;
-
-      items[index] = { ...items[index], state: "running" };
-      emit();
-
-      try {
-        await importEntry(
-          entries[index],
-          userId,
-          signal,
-          (attempt) => {
-            items[index] = { ...items[index], state: "waiting", attempt };
-            emit();
-          },
-          () => {
-            if (items[index].state === "running") return;
-
-            items[index] = { ...items[index], state: "running" };
-            emit();
-          },
-        );
-
-        items[index] = { ...items[index], state: "done", attempt: undefined };
-        progress.done++;
-      } catch (error) {
-        if (signal.aborted) return;
-
-        items[index] = { ...items[index], state: "error", attempt: undefined, errorKey: errorKeyFor(error) };
-        progress.failed++;
-      }
-
-      emit();
-    }
+export function backloggdRunner(userId: string): ImportRunner<MappedEntry> {
+  return {
+    importEntry: (entry, signal, onRetry, onResume) => importEntry(entry, userId, signal, onRetry, onResume),
+    notFoundKey: "settings:import.errors.notFound",
   };
-
-  await Promise.all(Array.from({ length: Math.min(CONCURRENCY, entries.length) }, worker));
-
-  return progress;
 }

@@ -10,7 +10,10 @@ interface ImportProvider {
   to: string;
 }
 
-const PROVIDERS: ImportProvider[] = [{ id: "backloggd", icon: "lucide:gamepad-2", to: "/settings/import/backloggd" }];
+const PROVIDERS: ImportProvider[] = [
+  { id: "backloggd", icon: "lucide:gamepad-2", to: "/settings/import/backloggd" },
+  { id: "myanimelist_anime", icon: "thesvg-color:myanimelist", to: "/settings/import/myanimelist" },
+];
 
 export function SettingsImportTab() {
   const { t } = useTranslation();

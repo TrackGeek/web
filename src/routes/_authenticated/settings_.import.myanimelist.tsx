@@ -9,25 +9,24 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { useSession } from "@/lib/auth/client";
-import { backloggdRunner, type MappedEntry, parseExport } from "@/lib/import/backloggd";
+import { type MalEntry, myanimelistRunner, parseExport, readExportFile } from "@/lib/import/myanimelist";
 import { DETAIL_REQUESTS_PER_SECOND, type ImportProgress, runImport } from "@/lib/import/shared";
 import { seo } from "@/lib/utils/seo";
 
-const FIREFOX_ADDON_URL = "https://addons.mozilla.org/en-US/firefox/addon/backloggd-plus/";
-const GITHUB_URL = "https://github.com/jolacdev/backloggd-plus";
+const EXPORT_URL = "https://myanimelist.net/panel.php?go=export";
 
 const MAX_FILE_SIZE = 1024 * 1024 * 20;
 
-const CHROMIUM_STEPS = ["extract", "openExtensions", "developerMode", "loadUnpacked"] as const;
+const EXPORT_STEPS = ["openPanel", "pickAnime", "download", "upload"] as const;
 
-export const Route = createFileRoute("/_authenticated/settings_/import/backloggd")({
+export const Route = createFileRoute("/_authenticated/settings_/import/myanimelist")({
   head: () => ({
-    meta: [...seo({ title: "Import from Backloggd" })],
+    meta: [...seo({ title: "Import from MyAnimeList" })],
   }),
-  component: BackloggdImportRoute,
+  component: MyAnimeListImportRoute,
 });
 
-function BackloggdImportRoute() {
+function MyAnimeListImportRoute() {
   const { t } = useTranslation();
 
   const userId = useSession()?.data?.user?.id;
@@ -36,7 +35,7 @@ function BackloggdImportRoute() {
   const abortRef = useRef<AbortController | null>(null);
 
   const [fileName, setFileName] = useState<string | null>(null);
-  const [entries, setEntries] = useState<MappedEntry[] | null>(null);
+  const [entries, setEntries] = useState<MalEntry[] | null>(null);
   const [ignored, setIgnored] = useState(0);
   const [progress, setProgress] = useState<ImportProgress | null>(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -50,10 +49,10 @@ function BackloggdImportRoute() {
     }
 
     try {
-      const { entries: mapped, ignored: skipped } = parseExport(JSON.parse(await file.text()));
+      const { entries: mapped, ignored: skipped } = parseExport(await readExportFile(file));
 
       if (mapped.length === 0) {
-        toast.error(t("settings:import.backloggd.emptyFile"));
+        toast.error(t("settings:import.myanimelist.emptyFile"));
         return;
       }
 
@@ -62,7 +61,7 @@ function BackloggdImportRoute() {
       setIgnored(skipped);
       setProgress(null);
     } catch {
-      toast.error(t("settings:import.backloggd.invalidFile"));
+      toast.error(t("settings:import.myanimelist.invalidFile"));
     }
   };
 
@@ -81,10 +80,10 @@ function BackloggdImportRoute() {
     setIsRunning(true);
 
     try {
-      const result = await runImport(entries, backloggdRunner(userId), controller.signal, setProgress);
+      const result = await runImport(entries, myanimelistRunner(userId), controller.signal, setProgress);
 
       if (!controller.signal.aborted) {
-        toast.success(t("settings:import.backloggd.finished", { count: result.done }));
+        toast.success(t("settings:import.myanimelist.finished", { count: result.done }));
       }
     } finally {
       setIsRunning(false);
@@ -111,16 +110,16 @@ function BackloggdImportRoute() {
   /** Plain text so the user can re-check or re-add the leftovers by hand. */
   const downloadFailures = () => {
     const lines = [
-      `TrackGeek — Backloggd import failures (${new Date().toISOString()})`,
+      `TrackGeek — MyAnimeList import failures (${new Date().toISOString()})`,
       `${failed.length} of ${progress?.total ?? 0} entries failed`,
       "",
       ...failed.map((item) =>
         [
           item.name,
-          `igdb:${item.id}`,
+          `mal:${item.id}`,
           `status:${item.status}`,
           t(item.errorKey ?? "settings:import.errors.failed"),
-          `${window.location.origin}/game/${item.id}`,
+          `${window.location.origin}/anime/${item.id}`,
         ].join(" | "),
       ),
     ];
@@ -129,7 +128,7 @@ function BackloggdImportRoute() {
     const link = document.createElement("a");
 
     link.href = url;
-    link.download = "trackgeek-backloggd-import-failures.txt";
+    link.download = "trackgeek-myanimelist-import-failures.txt";
     link.click();
 
     URL.revokeObjectURL(url);
@@ -150,54 +149,25 @@ function BackloggdImportRoute() {
           <CardTitle>
             <Icon icon={"lucide:book-open-text"} className="size-5" />
 
-            {t("settings:import.backloggd.instructions.title")}
+            {t("settings:import.myanimelist.instructions.title")}
           </CardTitle>
 
-          <CardDescription>{t("settings:import.backloggd.instructions.description")}</CardDescription>
+          <CardDescription>{t("settings:import.myanimelist.instructions.description")}</CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col gap-4 text-sm">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="flex flex-col gap-2 rounded-lg border border-border/50 bg-muted/30 p-4">
-              <span className="flex items-center gap-2 font-medium">
-                <Icon icon={"simple-icons:firefox"} className="size-4" />
-                Firefox
-              </span>
-
-              <p className="flex-1 text-muted-foreground">{t("settings:import.backloggd.instructions.firefox")}</p>
-
-              <Button asChild size="sm" variant="outline" className="w-fit gap-2">
-                <a href={FIREFOX_ADDON_URL} target="_blank" rel="noreferrer">
-                  <Icon icon={"lucide:external-link"} className="size-4" />
-                  {t("settings:import.backloggd.instructions.firefoxAction")}
-                </a>
-              </Button>
-            </div>
-
-            <div className="flex flex-col gap-2 rounded-lg border border-border/50 bg-muted/30 p-4">
-              <span className="flex items-center gap-2 font-medium">
-                <Icon icon={"simple-icons:googlechrome"} className="size-4" />
-                {t("settings:import.backloggd.instructions.chromium")}
-              </span>
-
-              <p className="flex-1 text-muted-foreground">
-                {t("settings:import.backloggd.instructions.chromiumDescription")}
-              </p>
-
-              <Button asChild size="sm" variant="outline" className="w-fit gap-2">
-                <a href={GITHUB_URL} target="_blank" rel="noreferrer">
-                  <Icon icon={"simple-icons:github"} className="size-4" />
-                  {t("settings:import.backloggd.instructions.chromiumAction")}
-                </a>
-              </Button>
-            </div>
-          </div>
+          <Button asChild size="sm" variant="outline" className="w-fit gap-2">
+            <a href={EXPORT_URL} target="_blank" rel="noreferrer">
+              <Icon icon={"lucide:external-link"} className="size-4" />
+              {t("settings:import.myanimelist.instructions.action")}
+            </a>
+          </Button>
 
           <ol className="flex list-inside list-decimal flex-col gap-1.5 text-muted-foreground">
-            {CHROMIUM_STEPS.map((step) => (
+            {EXPORT_STEPS.map((step) => (
               <li key={step}>
                 <Trans
-                  i18nKey={`settings:import.backloggd.instructions.chromiumSteps.${step}`}
+                  i18nKey={`settings:import.myanimelist.instructions.steps.${step}`}
                   components={{ code: <code className="rounded bg-muted px-1 py-0.5 text-xs text-foreground" /> }}
                 />
               </li>
@@ -209,12 +179,12 @@ function BackloggdImportRoute() {
       <Card>
         <CardHeader>
           <CardTitle>
-            <Icon icon={"lucide:file-json"} className="size-5" />
+            <Icon icon={"lucide:file-code"} className="size-5" />
 
-            {t("settings:import.backloggd.upload.title")}
+            {t("settings:import.myanimelist.upload.title")}
           </CardTitle>
 
-          <CardDescription>{t("settings:import.backloggd.upload.description")}</CardDescription>
+          <CardDescription>{t("settings:import.myanimelist.upload.description")}</CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col gap-4">
@@ -240,7 +210,7 @@ function BackloggdImportRoute() {
 
             <p className="relative mt-2 text-center text-sm font-medium">
               <Trans
-                i18nKey={"settings:import.backloggd.upload.dropzone"}
+                i18nKey={"settings:import.myanimelist.upload.dropzone"}
                 components={{ span: <span className="text-primary hover:underline" /> }}
               />
             </p>
@@ -248,7 +218,7 @@ function BackloggdImportRoute() {
             <input
               ref={fileInputRef}
               type="file"
-              accept="application/json,.json"
+              accept=".xml,.gz,application/xml,text/xml,application/gzip"
               className="sr-only"
               onChange={(e) => handleFileSelect(e.target.files)}
             />
@@ -258,12 +228,12 @@ function BackloggdImportRoute() {
             <div className="flex flex-col gap-3">
               <div className="flex flex-wrap items-center gap-2 text-sm">
                 <Badge variant="secondary" className="gap-1.5">
-                  <Icon icon={"lucide:file-json"} className="size-3.5" />
+                  <Icon icon={"lucide:file-code"} className="size-3.5" />
                   {fileName}
                 </Badge>
 
                 <span className="text-muted-foreground">
-                  {t("settings:import.backloggd.summary", { count: entries.length })}
+                  {t("settings:import.myanimelist.summary", { count: entries.length })}
                 </span>
 
                 {ignored > 0 && (
@@ -311,9 +281,9 @@ function BackloggdImportRoute() {
               <Icon icon={"lucide:inbox"} className="size-6" />
             </EmptyMedia>
 
-            <EmptyTitle>{t("settings:import.backloggd.empty.title")}</EmptyTitle>
+            <EmptyTitle>{t("settings:import.myanimelist.empty.title")}</EmptyTitle>
 
-            <EmptyDescription>{t("settings:import.backloggd.empty.description")}</EmptyDescription>
+            <EmptyDescription>{t("settings:import.myanimelist.empty.description")}</EmptyDescription>
           </EmptyHeader>
         </Empty>
       )}

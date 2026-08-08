@@ -132,6 +132,8 @@
   "reportError": "Report error",
   "all": "All",
   "clear": "Clear",
+  "ascending": "Ascending",
+  "descending": "Descending",
   "joinedAt": "Joined at",
   "tierStartedAt": "Tier started at",
   "tiers": {

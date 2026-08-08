@@ -181,6 +181,10 @@
       "placeholder": "Select your timezone"
     }
   },
+  "contentTypes": {
+    "title": "Content types",
+    "description": "Choose which content types appear across TrackGeek. At least one must stay enabled."
+  },
   "password": {
     "title": "Password",
     "description": "Set a password for your account or change the one you already use to sign in.",

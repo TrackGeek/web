@@ -31,6 +31,7 @@
   "MOVIE_FRANCHISE_NOT_FOUND": "A franquia solicitada não foi encontrada.",
   "GAME_FRANCHISE_NOT_FOUND": "A franquia solicitada não foi encontrada.",
   "BOOK_FRANCHISE_NOT_FOUND": "A franquia solicitada não foi encontrada.",
+  "COMPANY_NOT_FOUND": "The requested company was not found.",
   "betterAuth": {
     "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "Usuário com este e-mail já existe. Por favor, use um endereço de e-mail diferente.",
     "INVALID_CODE": "Código inválido. Tente novamente.",

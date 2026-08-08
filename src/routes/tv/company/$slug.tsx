@@ -33,8 +33,10 @@ export const Route = createFileRoute("/tv/company/$slug")({
           name: company?.name,
           description: company?.description ?? undefined,
           logo: company?.logoUrl ?? undefined,
+          url: company?.homepage ?? undefined,
+          foundingDate: company?.foundedAt ?? undefined,
           location: company?.headquarters ?? undefined,
-          sameAs: company?.homepage ? [company.homepage] : undefined,
+          sameAs: company?.external.map((link) => link.url),
         }),
       ],
     };

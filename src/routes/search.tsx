@@ -7,6 +7,7 @@ import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { type ContentType, type FilterParams, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid";
+import { UserSearchResults } from "@/components/pages/search/user-results";
 import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
@@ -26,6 +27,13 @@ const CONTENT_TYPES: { value: ContentType; labelKey: string }[] = [
   { value: "anime", labelKey: "common:types.anime" },
   { value: "manga", labelKey: "common:types.manga" },
   { value: "book", labelKey: "common:types.book" },
+];
+
+type SearchType = ContentType | "user";
+
+const SEARCH_TYPES: { value: SearchType; labelKey: string }[] = [
+  ...CONTENT_TYPES,
+  { value: "user", labelKey: "common:profile" },
 ];
 
 export const Route = createFileRoute("/search")({
@@ -186,12 +194,15 @@ const SearchResults = memo(
 );
 
 function RouteComponent() {
-  const [contentType, setContentType] = useQueryState(
+  const [searchType, setSearchType] = useQueryState(
     "type",
-    parseAsStringLiteral(CONTENT_TYPES.map((c) => c.value))
+    parseAsStringLiteral(SEARCH_TYPES.map((c) => c.value))
       .withDefault("movie")
       .withOptions({ clearOnDefault: false }),
   );
+
+  const isUserSearch = searchType === "user";
+  const contentType: ContentType = isUserSearch ? "movie" : searchType;
 
   const [searchQuery, setSearchQuery] = useQueryState("query", parseAsString.withDefault(""));
   const [filterQuery, setFilterQuery] = useQueryStates(FILTER_QUERY_PARSERS);
@@ -229,15 +240,15 @@ function RouteComponent() {
     setFilterQuery(next);
   };
 
-  const handleContentTypeChange = (value: string) => {
-    setContentType(value as ContentType);
+  const handleSearchTypeChange = (value: string) => {
+    setSearchType(value as SearchType);
     setSearchQuery("");
     setFilterQuery(CLEARED_FILTER_QUERY);
   };
 
-  const { hiddenClass } = useContentTypes();
+  const { hiddenClass, visible } = useContentTypes();
 
-  useVisibleContentType(contentType, handleContentTypeChange);
+  useVisibleContentType(isUserSearch ? visible[0] : contentType, handleSearchTypeChange);
 
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["search", contentType, debouncedQuery, filters],
@@ -255,6 +266,7 @@ function RouteComponent() {
 
       return undefined;
     },
+    enabled: !isUserSearch,
   });
 
   const sentinelRef = useInfiniteScroll(fetchNextPage, hasNextPage && !isFetchingNextPage);
@@ -289,14 +301,18 @@ function RouteComponent() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 flex flex-col sm:flex-row gap-4 sm:items-end">
           <div className="w-full sm:w-32">
-            <Select value={contentType} onValueChange={handleContentTypeChange}>
+            <Select value={searchType} onValueChange={handleSearchTypeChange}>
               <SelectTrigger className="w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  {CONTENT_TYPES.map((type) => (
-                    <SelectItem key={type.value} value={type.value} className={hiddenClass(type.value)}>
+                  {SEARCH_TYPES.map((type) => (
+                    <SelectItem
+                      key={type.value}
+                      value={type.value}
+                      className={type.value === "user" ? "" : hiddenClass(type.value)}
+                    >
                       {t(type.labelKey)}
                     </SelectItem>
                   ))}
@@ -322,23 +338,27 @@ function RouteComponent() {
           </div>
         </div>
 
-        <div className="flex max-md:flex-col gap-5">
-          <Filters
-            type={contentType}
-            values={filters}
-            onChange={handleFilterChange}
-            onClear={() => setFilterQuery(CLEARED_FILTER_QUERY)}
-          />
+        {isUserSearch ? (
+          <UserSearchResults query={debouncedQuery} />
+        ) : (
+          <div className="flex max-md:flex-col gap-5">
+            <Filters
+              type={contentType}
+              values={filters}
+              onChange={handleFilterChange}
+              onClear={() => setFilterQuery(CLEARED_FILTER_QUERY)}
+            />
 
-          <SearchResults
-            items={items}
-            contentType={contentType}
-            isLoading={isLoading}
-            isError={isError}
-            isFetchingNextPage={isFetchingNextPage}
-            sentinelRef={sentinelRef}
-          />
-        </div>
+            <SearchResults
+              items={items}
+              contentType={contentType}
+              isLoading={isLoading}
+              isError={isError}
+              isFetchingNextPage={isFetchingNextPage}
+              sentinelRef={sentinelRef}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

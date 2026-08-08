@@ -335,6 +335,17 @@ export namespace ApiTypes {
     following?: FollowUser;
   }
 
+  export interface SearchUser {
+    id: string;
+    name: string;
+    username: string;
+    profile: { id: string; avatarUrl: string | null } | null;
+  }
+
+  export interface SearchUsersResponse {
+    users: PaginatedResponse<SearchUser>;
+  }
+
   export interface GetFollowersResponse {
     followers: PaginatedResponse<Following>;
   }
@@ -1051,6 +1062,7 @@ export const apiEndpoints = {
   updateList: (listId: string) => `/list/${listId}`,
   deleteList: (listId: string) => `/list/${listId}`,
   getUserByUsername: (username: string) => `/user/username/${username}`,
+  searchUsers: "/user/search",
   followUser: (followId: string) => `/user/follow/${followId}`,
   unfollowUser: (unfollowId: string) => `/user/unfollow/${unfollowId}`,
   getFollowers: "/user/follower",

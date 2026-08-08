@@ -103,11 +103,11 @@
     "now": "Agora",
     "parent": "Parente",
     "bundle": "Pacote",
-    "adaptation": "Adaptation",
-    "summary": "Summary",
-    "character": "Character",
-    "fullStory": "Full Story",
-    "other": "Other"
+    "adaptation": "Adaptação",
+    "summary": "Resumo",
+    "character": "Personagem",
+    "fullStory": "História Completa",
+    "other": "Outro"
   },
   "types": {
     "Music": "Música",
@@ -279,6 +279,16 @@
   "creditCount_other": "{{count}} créditos",
   "yearsOld_one": "{{count}} ano",
   "yearsOld_other": "{{count}} anos",
+  "company": "Company",
+  "companyAbout": "About",
+  "founded": "Founded",
+  "headquarters": "Headquarters",
+  "catalog": "Catalog",
+  "searchTitles": "Search titles",
+  "noTitlesFound": "No titles found",
+  "noTitlesFoundDescription": "Try adjusting your search.",
+  "titleCount_one": "{{count}} title",
+  "titleCount_other": "{{count}} titles",
   "episodeCount_one": "{{count}} ep",
   "episodeCount_other": "{{count}} eps"
 }

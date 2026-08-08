@@ -279,6 +279,16 @@
   "creditCount_other": "{{count}} credits",
   "yearsOld_one": "{{count}} year old",
   "yearsOld_other": "{{count}} years old",
+  "company": "Company",
+  "companyAbout": "About",
+  "founded": "Founded",
+  "headquarters": "Headquarters",
+  "catalog": "Catalog",
+  "searchTitles": "Search titles",
+  "noTitlesFound": "No titles found",
+  "noTitlesFoundDescription": "Try adjusting your search.",
+  "titleCount_one": "{{count}} title",
+  "titleCount_other": "{{count}} titles",
   "episodeCount_one": "{{count}} ep",
   "episodeCount_other": "{{count}} eps"
 }

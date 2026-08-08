@@ -260,6 +260,26 @@ export function useUserProgress(
   });
 }
 
+/** Small, unfiltered slice of the user's active list — sized for sidebar previews. */
+export function useActiveProgress(contentType: ApiTypes.ReviewContentType, userId: string, limit: number) {
+  const { activeStatus } = PROGRESS_CONTENT[contentType];
+
+  return useQuery({
+    queryKey: ["active-progress", contentType, userId, activeStatus, limit],
+    queryFn: () =>
+      fetchProgressPage(contentType, {
+        userId,
+        status: activeStatus,
+        sortBy: "updatedAt",
+        sortOrder: "desc",
+        page: 1,
+        itemsPerPage: limit,
+      }),
+    enabled: Boolean(userId),
+    select: ({ page }: ProgressPage) => page.items.flatMap((row) => progressToItem(contentType, row) ?? []),
+  });
+}
+
 export function useProgressFilterOptions(contentType: ApiTypes.ReviewContentType, userId: string) {
   return useQuery({
     queryKey: ["user-progress-filters", contentType, userId],

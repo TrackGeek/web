@@ -55,7 +55,7 @@
     "lastAdded": "Adicionados Recentemente",
     "rating": "Avaliação",
     "releaseDate": "Data de Lançamento",
-    "endDate": "End Date",
+    "endDate": "Data final",
     "title": "Título"
   },
   "editList": "Editar lista",
@@ -67,5 +67,5 @@
   "listName": "Nome da lista",
   "listDescription": "Descrição",
   "error": "Algo inesperado aconteceu",
-  "editProfile": "Edit profile"
+  "editProfile": "Editar perfil"
 }

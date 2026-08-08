@@ -71,7 +71,7 @@
   "studios": "Estúdios",
   "producers": "Produtores",
   "rating": "Classificação Etária",
-  "tgRating": "Rating",
+  "tgRating": "Avaliação",
   "broadcast": "Emissão",
   "source": "Fonte",
   "characters": "Personagens",
@@ -102,7 +102,12 @@
     "update": "Atualização",
     "now": "Agora",
     "parent": "Pai",
-    "bundle": "Pacote"
+    "bundle": "Pacote",
+    "adaptation": "Adaptation",
+    "summary": "Summary",
+    "character": "Character",
+    "fullStory": "Full Story",
+    "other": "Other"
   },
   "types": {
     "Music": "Música",
@@ -127,12 +132,12 @@
     "released": "Lançado",
     "unreleased": "Não Lançado",
     "earlyAccess": "Acesso Antecipado",
-    "alpha": "Alpha",
+    "alpha": "Alfa",
     "beta": "Beta",
-    "delisted": "Delisted",
+    "delisted": "Retirado das lojas",
     "offline": "Offline",
-    "cancelled": "Cancelled",
-    "rumored": "Rumored"
+    "cancelled": "Cancelado",
+    "rumored": "Rumorizado"
   },
   "availability": "Disponibilidade",
   "ageRating": {

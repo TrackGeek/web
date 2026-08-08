@@ -160,6 +160,29 @@ export const EMPTY_PROGRESS_FILTERS: ProgressFilters = {
   search: "",
 };
 
+export interface ProgressSort {
+  by: ApiTypes.ProgressSortBy;
+  order: ApiTypes.ProgressSortOrder;
+}
+
+export const DEFAULT_PROGRESS_SORT: ProgressSort = { by: "addedAt", order: "desc" };
+
+const SORT_LABEL_KEYS: Record<ApiTypes.ProgressSortBy, string> = {
+  name: "user:sort.title",
+  addedAt: "user:sort.lastAdded",
+  updatedAt: "user:sort.lastUpdated",
+  releaseDate: "user:sort.releaseDate",
+};
+
+/** Manga only stores its release date inside a JSON column, which the API cannot sort by. */
+export function progressSortOptions(contentType: ApiTypes.ReviewContentType) {
+  const fields = Object.keys(SORT_LABEL_KEYS) as ApiTypes.ProgressSortBy[];
+
+  return fields
+    .filter((field) => field !== "releaseDate" || contentType !== "manga")
+    .map((field) => ({ value: field, labelKey: SORT_LABEL_KEYS[field] }));
+}
+
 export function isYearApplied(year: string) {
   return FULL_YEAR.test(year.trim());
 }
@@ -173,7 +196,7 @@ export function countActiveFilters(filters: ProgressFilters) {
   );
 }
 
-function toQueryParams(filters: ProgressFilters) {
+function toQueryParams(filters: ProgressFilters, sort?: ProgressSort) {
   const search = filters.search.trim();
 
   return {
@@ -182,6 +205,7 @@ function toQueryParams(filters: ProgressFilters) {
     ...(filters.released !== null && { released: filters.released }),
     ...(filters.releaseStates.length > 0 && { releaseStates: filters.releaseStates.join(",") }),
     ...(search && { search }),
+    ...(sort && { sortBy: sort.by, sortOrder: sort.order }),
   };
 }
 
@@ -207,8 +231,9 @@ export function userProgressQueryKey(
   userId: string,
   status?: ApiTypes.ProgressStatus,
   filters?: ProgressFilters,
+  sort?: ProgressSort,
 ) {
-  return ["user-progress", contentType, userId, status, filters && toQueryParams(filters)];
+  return ["user-progress", contentType, userId, status, filters && toQueryParams(filters, sort)];
 }
 
 export function useUserProgress(
@@ -216,14 +241,15 @@ export function useUserProgress(
   userId: string,
   status: ApiTypes.ProgressStatus,
   filters: ProgressFilters,
+  sort: ProgressSort,
 ) {
   return useInfiniteQuery({
-    queryKey: userProgressQueryKey(contentType, userId, status, filters),
+    queryKey: userProgressQueryKey(contentType, userId, status, filters, sort),
     queryFn: ({ pageParam }) =>
       fetchProgressPage(contentType, {
         userId,
         status,
-        ...toQueryParams(filters),
+        ...toQueryParams(filters, sort),
         page: pageParam,
         itemsPerPage: ITEMS_PER_PAGE,
       }),

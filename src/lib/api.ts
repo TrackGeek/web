@@ -581,6 +581,11 @@ export namespace ApiTypes {
 
   export type ProgressStatusCounts = Partial<Record<ProgressStatus, number>>;
 
+  /** Sortable columns of a progress listing (mirrors the backend `ProgressSortBy` enum). */
+  export type ProgressSortBy = "name" | "addedAt" | "updatedAt" | "releaseDate";
+
+  export type ProgressSortOrder = "asc" | "desc";
+
   export interface GetProgressResponse {
     animeProgresses?: PaginatedResponse<Progress>;
     mangaProgresses?: PaginatedResponse<Progress>;

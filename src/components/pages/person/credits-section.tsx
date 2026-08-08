@@ -60,10 +60,7 @@ export function CreditsSection({ credits: allCredits }: { credits: PersonCredit[
   const visibleRef = useRef(visible);
   visibleRef.current = visible;
 
-  const credits = useMemo(
-    () => allCredits.filter((credit) => isVisible(credit.mediaType)),
-    [allCredits, isVisible],
-  );
+  const credits = useMemo(() => allCredits.filter((credit) => isVisible(credit.mediaType)), [allCredits, isVisible]);
 
   useEffect(() => {
     if (media === "all" || isVisible(media)) return;

@@ -13,9 +13,10 @@ export const CONTENT_TYPE_API: Record<ContentTypeSlug, ApiTypes.ContentType> = {
   book: "Book",
 };
 
-const SLUG_BY_API = Object.fromEntries(
-  CONTENT_TYPE_SLUGS.map((slug) => [CONTENT_TYPE_API[slug], slug]),
-) as Record<ApiTypes.ContentType, ContentTypeSlug>;
+const SLUG_BY_API = Object.fromEntries(CONTENT_TYPE_SLUGS.map((slug) => [CONTENT_TYPE_API[slug], slug])) as Record<
+  ApiTypes.ContentType,
+  ContentTypeSlug
+>;
 
 export const CONTENT_TYPE_LABELS: Record<ContentTypeSlug, string> = {
   movie: "common:types.movie_other",

@@ -14,9 +14,7 @@ export function useContentTypes(): VisibleContentTypes {
   const stored = session.data?.user?.profile?.contentTypes as string[] | undefined;
 
   const visible = useMemo(() => {
-    const slugs = (stored ?? [])
-      .map(toContentTypeSlug)
-      .filter((slug): slug is ContentTypeSlug => slug !== null);
+    const slugs = (stored ?? []).map(toContentTypeSlug).filter((slug): slug is ContentTypeSlug => slug !== null);
 
     if (slugs.length === 0) return CONTENT_TYPE_SLUGS;
 

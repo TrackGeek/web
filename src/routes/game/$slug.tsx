@@ -18,6 +18,7 @@ import { Relations } from "@/components/pages/details/relations";
 import { ReviewItem } from "@/components/pages/details/review-item";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
+import { CompanyLink } from "@/components/shared/company-link";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { GameModal } from "@/components/shared/modals/game";
@@ -405,12 +406,17 @@ function GameDetailsRoute() {
   const coverUrl = game.coverUrl || "/placeholder/cover.webp";
   const releaseDate = formatLongDate(game.firstReleaseDate, i18n.language);
 
-  const developers = game.involvedCompanies
-    .filter((c: { developer: string }) => c.developer)
-    .map((c: { companyName: string }) => c.companyName);
-  const publishers = game.involvedCompanies
-    .filter((c: { publisher: string }) => c.publisher)
-    .map((c: { companyName: string }) => c.companyName);
+  const toCompanyEntry = (c: { companyId: number | null; companyName: string }) => ({
+    key: `${c.companyId ?? c.companyName}`,
+    label: (
+      <CompanyLink mediaType="game" id={c.companyId}>
+        {c.companyName}
+      </CompanyLink>
+    ),
+  });
+
+  const developers = game.involvedCompanies.filter((c: { developer: boolean }) => c.developer).map(toCompanyEntry);
+  const publishers = game.involvedCompanies.filter((c: { publisher: boolean }) => c.publisher).map(toCompanyEntry);
   const platformNames = game.platforms
     .map((p: { name: string }) => p.name)
     .sort((a: string, b: string) => {

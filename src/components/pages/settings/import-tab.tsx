@@ -3,20 +3,31 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useContentTypes } from "@/hooks/content-type";
+import type { ContentTypeSlug } from "@/lib/content-types";
+import { cn } from "@/lib/utils";
 
 interface ImportProvider {
   id: string;
   icon: string;
   to: string;
+  contentType: ContentTypeSlug;
 }
 
 const PROVIDERS: ImportProvider[] = [
-  { id: "backloggd", icon: "lucide:gamepad-2", to: "/settings/import/backloggd" },
-  { id: "myanimelist_anime", icon: "thesvg-color:myanimelist", to: "/settings/import/myanimelist" },
+  { id: "backloggd", icon: "lucide:gamepad-2", to: "/settings/import/backloggd", contentType: "game" },
+  {
+    id: "myanimelist_anime",
+    icon: "thesvg-color:myanimelist",
+    to: "/settings/import/myanimelist",
+    contentType: "anime",
+  },
 ];
 
 export function SettingsImportTab() {
   const { t } = useTranslation();
+
+  const { hiddenClass } = useContentTypes();
 
   return (
     <div className="flex flex-col gap-4 lg:gap-8">
@@ -35,7 +46,10 @@ export function SettingsImportTab() {
           {PROVIDERS.map((provider) => (
             <div
               key={provider.id}
-              className="flex flex-col gap-3 rounded-lg border border-border/50 bg-muted/30 p-4 sm:flex-row sm:items-center sm:justify-between"
+              className={cn(
+                "flex flex-col gap-3 rounded-lg border border-border/50 bg-muted/30 p-4 sm:flex-row sm:items-center sm:justify-between",
+                hiddenClass(provider.contentType),
+              )}
             >
               <div className="flex items-center gap-3">
                 <Icon icon={provider.icon} className="size-8 shrink-0 text-muted-foreground" />

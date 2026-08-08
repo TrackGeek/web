@@ -15,8 +15,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { api, apiEndpoints } from "@/lib/api";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { useContentTypes } from "@/hooks/content-type";
+import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth/client";
+import {
+  CONTENT_TYPE_API,
+  CONTENT_TYPE_ICONS,
+  CONTENT_TYPE_LABELS,
+  CONTENT_TYPE_SLUGS,
+  type ContentTypeSlug,
+} from "@/lib/content-types";
 import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES, setLanguageCookie } from "@/lib/i18n/config";
 import { useDebounce } from "@/lib/utils/useDebounce";
 
@@ -42,6 +52,7 @@ type ProfilePreferences = {
   color?: string;
   language?: string;
   timezone?: string;
+  contentTypes?: ApiTypes.ContentType[];
 };
 
 export function SettingsPreferencesTab() {
@@ -53,9 +64,14 @@ export function SettingsPreferencesTab() {
   const serverLanguage = session.data?.user?.profile?.language ?? i18n.language;
   const serverTimezone = session.data?.user?.profile?.timezone ?? new Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+  const { visible: serverContentTypes } = useContentTypes();
+
   const [color, setColor] = useState(serverColor);
   const [language, setLanguage] = useState(serverLanguage);
   const [timezone, setTimezone] = useState(serverTimezone);
+  const [contentTypes, setContentTypes] = useState<ContentTypeSlug[]>(serverContentTypes);
+
+  useEffect(() => setContentTypes(serverContentTypes), [serverContentTypes]);
 
   const lastSavedColorRef = useRef(serverColor);
 
@@ -98,6 +114,18 @@ export function SettingsPreferencesTab() {
     lastSavedColorRef.current = value;
 
     updatePreferencesMutation.mutate({ color: value });
+  }
+
+  function toggleContentType(type: ContentTypeSlug, enabled: boolean) {
+    const next = enabled
+      ? CONTENT_TYPE_SLUGS.filter((slug) => slug === type || contentTypes.includes(slug))
+      : contentTypes.filter((slug) => slug !== type);
+
+    if (next.length === 0) return;
+
+    setContentTypes(next);
+
+    updatePreferencesMutation.mutate({ contentTypes: next.map((slug) => CONTENT_TYPE_API[slug]) });
   }
 
   const debouncedColor = useDebounce(color, COLOR_DEBOUNCE_DELAY);
@@ -252,6 +280,43 @@ export function SettingsPreferencesTab() {
               </SelectContent>
             </Select>
           </Field>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="gap-2">
+          <CardTitle>
+            <Icon icon={"lucide:layers"} className="size-5" />
+
+            {t("settings:contentTypes.title")}
+          </CardTitle>
+
+          <CardDescription>{t("settings:contentTypes.description")}</CardDescription>
+        </CardHeader>
+
+        <CardContent className="flex flex-col gap-4">
+          {CONTENT_TYPE_SLUGS.map((slug) => {
+            const checked = contentTypes.includes(slug);
+            const isLastEnabled = checked && contentTypes.length === 1;
+
+            return (
+              <div key={slug} className="flex items-center justify-between gap-4">
+                <Label htmlFor={`content-type-${slug}`} className="flex items-center gap-2 min-w-0">
+                  <Icon icon={CONTENT_TYPE_ICONS[slug]} className="size-4 shrink-0 text-muted-foreground" />
+
+                  {t(CONTENT_TYPE_LABELS[slug])}
+                </Label>
+
+                <Switch
+                  id={`content-type-${slug}`}
+                  className="shrink-0"
+                  checked={checked}
+                  disabled={isLastEnabled || updatePreferencesMutation.isPending}
+                  onCheckedChange={(value) => toggleContentType(slug, value)}
+                />
+              </div>
+            );
+          })}
         </CardContent>
       </Card>
     </div>

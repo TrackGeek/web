@@ -7,13 +7,18 @@ import { ProgressFiltersPanel } from "@/components/pages/user/progress-filters";
 import { CardItem } from "@/components/shared/cards/card";
 import { SearchInput } from "@/components/shared/search-input";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useContentTypes, useVisibleContentType } from "@/hooks/content-type";
 import {
   countActiveFilters,
+  DEFAULT_PROGRESS_SORT,
   EMPTY_PROGRESS_FILTERS,
   fetchRandomProgress,
   PROGRESS_CONTENT,
   type ProgressFilters,
+  type ProgressSort,
+  progressSortOptions,
   progressStatusSections,
   progressToItem,
   useProgressFilterOptions,
@@ -53,8 +58,13 @@ export function UserProgressTab({
 }) {
   const { t } = useTranslation();
 
+  const { hiddenClass } = useContentTypes();
+
+  useVisibleContentType(contentType, onContentTypeChange);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<ProgressFilters>(EMPTY_PROGRESS_FILTERS);
+  const [sort, setSort] = useState<ProgressSort>(DEFAULT_PROGRESS_SORT);
   const [selectedStatus, setSelectedStatus] = useState<ApiTypes.ProgressStatus>(
     PROGRESS_CONTENT[contentType].activeStatus,
   );
@@ -69,7 +79,8 @@ export function UserProgressTab({
   );
 
   const optionsQuery = useProgressFilterOptions(contentType, userId);
-  const progressQuery = useUserProgress(contentType, userId, selectedStatus, appliedFilters);
+  const progressQuery = useUserProgress(contentType, userId, selectedStatus, appliedFilters, sort);
+  const sortOptions = useMemo(() => progressSortOptions(contentType), [contentType]);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   const { hasNextPage, isFetchingNextPage, fetchNextPage } = progressQuery;
@@ -120,6 +131,7 @@ export function UserProgressTab({
   useEffect(() => {
     setSearchQuery("");
     setFilters(EMPTY_PROGRESS_FILTERS);
+    setSort(DEFAULT_PROGRESS_SORT);
     setSelectedStatus(PROGRESS_CONTENT[contentType].activeStatus);
     setIsRandomizing(false);
   }, [contentType]);
@@ -153,6 +165,7 @@ export function UserProgressTab({
               className={cn(
                 "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer",
                 contentType === type ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted",
+                hiddenClass(type),
               )}
             >
               <Icon icon={icon} className="size-4 shrink-0" />
@@ -195,6 +208,36 @@ export function UserProgressTab({
               {section.count > 0 && <span className="text-xs opacity-60 tabular-nums">{section.count}</span>}
             </button>
           ))}
+        </div>
+
+        <div className="px-1 flex gap-1.5">
+          <Select
+            value={sort.by}
+            onValueChange={(by) => setSort((current) => ({ ...current, by: by as ApiTypes.ProgressSortBy }))}
+          >
+            <SelectTrigger className="flex-1 min-w-0 bg-muted/50">
+              <SelectValue placeholder={t("user:sort.placeholder")} />
+            </SelectTrigger>
+            <SelectContent>
+              {sortOptions.map(({ value, labelKey }) => (
+                <SelectItem key={value} value={value}>
+                  {t(labelKey)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <button
+            type="button"
+            onClick={() => setSort((current) => ({ ...current, order: current.order === "asc" ? "desc" : "asc" }))}
+            title={sort.order === "asc" ? t("common:ascending") : t("common:descending")}
+            aria-label={sort.order === "asc" ? t("common:ascending") : t("common:descending")}
+            className="bg-muted/50 cursor-pointer flex items-center justify-center size-9 shrink-0 rounded-md border border-input text-muted-foreground transition-colors hover:bg-muted hover:text-card-foreground"
+          >
+            <Icon
+              icon={sort.order === "asc" ? "lucide:arrow-up-narrow-wide" : "lucide:arrow-down-wide-narrow"}
+              className="size-4"
+            />
+          </button>
         </div>
 
         <div className="px-1 pt-1">

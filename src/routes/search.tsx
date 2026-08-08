@@ -13,6 +13,7 @@ import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useContentTypes, useVisibleContentType } from "@/hooks/content-type";
 import { api } from "@/lib/api";
 import { seo } from "@/lib/utils/seo";
 import { useDebounce } from "@/lib/utils/useDebounce.ts";
@@ -234,6 +235,10 @@ function RouteComponent() {
     setFilterQuery(CLEARED_FILTER_QUERY);
   };
 
+  const { hiddenClass } = useContentTypes();
+
+  useVisibleContentType(contentType, handleContentTypeChange);
+
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["search", contentType, debouncedQuery, filters],
     queryFn: ({ pageParam }) => api.get(buildSearchUrl(contentType, debouncedQuery, filters, pageParam as number)),
@@ -291,7 +296,7 @@ function RouteComponent() {
               <SelectContent>
                 <SelectGroup>
                   {CONTENT_TYPES.map((type) => (
-                    <SelectItem key={type.value} value={type.value}>
+                    <SelectItem key={type.value} value={type.value} className={hiddenClass(type.value)}>
                       {t(type.labelKey)}
                     </SelectItem>
                   ))}

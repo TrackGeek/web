@@ -142,6 +142,7 @@ export namespace ApiTypes {
       about: string;
       bannerUrl: string;
       avatarUrl: string;
+      contentTypes: ContentType[];
       createdAt: string;
       updatedAt: string;
     };
@@ -518,7 +519,9 @@ export namespace ApiTypes {
     preferences: NotificationPreferences;
   }
 
-  export type FavoriteType = "Anime" | "Manga" | "TVShow" | "Movie" | "Game" | "Book";
+  export type ContentType = "Anime" | "Manga" | "TVShow" | "Movie" | "Game" | "Book";
+
+  export type FavoriteType = ContentType;
 
   export interface Favorite {
     id: string;
@@ -580,6 +583,11 @@ export namespace ApiTypes {
   export type MediaReleaseState = "Unreleased" | "Ongoing" | "Hiatus" | "Finished" | "Cancelled";
 
   export type ProgressStatusCounts = Partial<Record<ProgressStatus, number>>;
+
+  /** Sortable columns of a progress listing (mirrors the backend `ProgressSortBy` enum). */
+  export type ProgressSortBy = "name" | "addedAt" | "updatedAt" | "releaseDate";
+
+  export type ProgressSortOrder = "asc" | "desc";
 
   export interface GetProgressResponse {
     animeProgresses?: PaginatedResponse<Progress>;
@@ -995,6 +1003,10 @@ export const apiEndpoints = {
   getBookProgress: (userId: string, bookId: string) => `/book/progress?userId=${userId}&bookId=${bookId}`,
   refreshBookData: "/book/refresh",
   getPerson: (slug: string) => `/person/${slug}`,
+  getMovieCompany: (slug: string) => `/movie/company/${slug}`,
+  getTvShowCompany: (slug: string) => `/tv/company/${slug}`,
+  getAnimeCompany: (slug: string) => `/anime/company/${slug}`,
+  getGameCompany: (slug: string) => `/game/company/${slug}`,
   getMovieDetails: (id: string) => `/movie/detail/${id}`,
   getMovieFranchise: (slug: string) => `/movie/franchise/${slug}`,
   getMovieAiring: "/movie/top?filter=airing",

@@ -16,6 +16,7 @@ import {
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useContentTypes, useVisibleContentType } from "@/hooks/content-type";
 import {
   REVIEW_CONTENT,
   reviewMediaImage,
@@ -51,6 +52,11 @@ export function UserReviewsTab({
   const [contentType, setContentType] = useState<ApiTypes.ReviewContentType>(initialContentType);
   const [searchQuery, setSearchQuery] = useState("");
   const [editing, setEditing] = useState<ApiTypes.Review | null>(null);
+
+  const { hiddenClass } = useContentTypes();
+
+  useVisibleContentType(contentType, setContentType);
+
   const [deleting, setDeleting] = useState<ApiTypes.Review | null>(null);
 
   const debouncedQuery = useDebounce(searchQuery, 600);
@@ -104,7 +110,7 @@ export function UserReviewsTab({
             <SelectContent>
               <SelectGroup>
                 {CONTENT_TYPES.map(({ type, labelKey }) => (
-                  <SelectItem key={type} value={type}>
+                  <SelectItem key={type} value={type} className={hiddenClass(type)}>
                     {t(labelKey)}
                   </SelectItem>
                 ))}

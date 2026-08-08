@@ -37,6 +37,7 @@ import { Route as MovieSlugRouteImport } from './routes/movie/$slug'
 import { Route as TvIndexRouteImport } from './routes/tv/index'
 import { Route as TvSlugRouteImport } from './routes/tv/$slug'
 import { Route as AnimeAiringIndexRouteImport } from './routes/anime/airing/index'
+import { Route as AnimeCompanySlugRouteImport } from './routes/anime/company/$slug'
 import { Route as AnimeRecommendationsIndexRouteImport } from './routes/anime/recommendations/index'
 import { Route as AnimeTopIndexRouteImport } from './routes/anime/top/index'
 import { Route as AnimeUpcomingIndexRouteImport } from './routes/anime/upcoming/index'
@@ -45,6 +46,7 @@ import { Route as BookFranchisesSlugRouteImport } from './routes/book/franchises
 import { Route as BookTrendingIndexRouteImport } from './routes/book/trending/index'
 import { Route as BookUpcomingIndexRouteImport } from './routes/book/upcoming/index'
 import { Route as GameAnticipatedIndexRouteImport } from './routes/game/anticipated/index'
+import { Route as GameCompanySlugRouteImport } from './routes/game/company/$slug'
 import { Route as GameFranchisesSlugRouteImport } from './routes/game/franchises/$slug'
 import { Route as GamePopularIndexRouteImport } from './routes/game/popular/index'
 import { Route as GameRecentIndexRouteImport } from './routes/game/recent/index'
@@ -54,11 +56,13 @@ import { Route as MangaRecommendationsIndexRouteImport } from './routes/manga/re
 import { Route as MangaTopIndexRouteImport } from './routes/manga/top/index'
 import { Route as MangaUpcomingIndexRouteImport } from './routes/manga/upcoming/index'
 import { Route as MovieAiringIndexRouteImport } from './routes/movie/airing/index'
+import { Route as MovieCompanySlugRouteImport } from './routes/movie/company/$slug'
 import { Route as MovieFranchisesSlugRouteImport } from './routes/movie/franchises/$slug'
 import { Route as MoviePopularIndexRouteImport } from './routes/movie/popular/index'
 import { Route as MovieTrendingIndexRouteImport } from './routes/movie/trending/index'
 import { Route as MovieUpcomingIndexRouteImport } from './routes/movie/upcoming/index'
 import { Route as TvAiringIndexRouteImport } from './routes/tv/airing/index'
+import { Route as TvCompanySlugRouteImport } from './routes/tv/company/$slug'
 import { Route as TvPopularIndexRouteImport } from './routes/tv/popular/index'
 import { Route as TvTrendingIndexRouteImport } from './routes/tv/trending/index'
 import { Route as TvUpcomingIndexRouteImport } from './routes/tv/upcoming/index'
@@ -210,6 +214,11 @@ const AnimeAiringIndexRoute = AnimeAiringIndexRouteImport.update({
   path: '/anime/airing/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnimeCompanySlugRoute = AnimeCompanySlugRouteImport.update({
+  id: '/anime/company/$slug',
+  path: '/anime/company/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnimeRecommendationsIndexRoute =
   AnimeRecommendationsIndexRouteImport.update({
     id: '/anime/recommendations/',
@@ -249,6 +258,11 @@ const BookUpcomingIndexRoute = BookUpcomingIndexRouteImport.update({
 const GameAnticipatedIndexRoute = GameAnticipatedIndexRouteImport.update({
   id: '/game/anticipated/',
   path: '/game/anticipated/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GameCompanySlugRoute = GameCompanySlugRouteImport.update({
+  id: '/game/company/$slug',
+  path: '/game/company/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GameFranchisesSlugRoute = GameFranchisesSlugRouteImport.update({
@@ -297,6 +311,11 @@ const MovieAiringIndexRoute = MovieAiringIndexRouteImport.update({
   path: '/movie/airing/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MovieCompanySlugRoute = MovieCompanySlugRouteImport.update({
+  id: '/movie/company/$slug',
+  path: '/movie/company/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MovieFranchisesSlugRoute = MovieFranchisesSlugRouteImport.update({
   id: '/movie/franchises/$slug',
   path: '/movie/franchises/$slug',
@@ -320,6 +339,11 @@ const MovieUpcomingIndexRoute = MovieUpcomingIndexRouteImport.update({
 const TvAiringIndexRoute = TvAiringIndexRouteImport.update({
   id: '/tv/airing/',
   path: '/tv/airing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvCompanySlugRoute = TvCompanySlugRouteImport.update({
+  id: '/tv/company/$slug',
+  path: '/tv/company/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TvPopularIndexRoute = TvPopularIndexRouteImport.update({
@@ -404,10 +428,14 @@ export interface FileRoutesByFullPath {
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/anime/company/$slug': typeof AnimeCompanySlugRoute
   '/api/og/page': typeof ApiOgPageRoute
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
+  '/game/company/$slug': typeof GameCompanySlugRoute
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
+  '/movie/company/$slug': typeof MovieCompanySlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
+  '/tv/company/$slug': typeof TvCompanySlugRoute
   '/anime/airing/': typeof AnimeAiringIndexRoute
   '/anime/recommendations/': typeof AnimeRecommendationsIndexRoute
   '/anime/top/': typeof AnimeTopIndexRoute
@@ -465,10 +493,14 @@ export interface FileRoutesByTo {
   '/manga': typeof MangaIndexRoute
   '/movie': typeof MovieIndexRoute
   '/tv': typeof TvIndexRoute
+  '/anime/company/$slug': typeof AnimeCompanySlugRoute
   '/api/og/page': typeof ApiOgPageRoute
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
+  '/game/company/$slug': typeof GameCompanySlugRoute
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
+  '/movie/company/$slug': typeof MovieCompanySlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
+  '/tv/company/$slug': typeof TvCompanySlugRoute
   '/anime/airing': typeof AnimeAiringIndexRoute
   '/anime/recommendations': typeof AnimeRecommendationsIndexRoute
   '/anime/top': typeof AnimeTopIndexRoute
@@ -528,10 +560,14 @@ export interface FileRoutesById {
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/anime/company/$slug': typeof AnimeCompanySlugRoute
   '/api/og/page': typeof ApiOgPageRoute
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
+  '/game/company/$slug': typeof GameCompanySlugRoute
   '/game/franchises/$slug': typeof GameFranchisesSlugRoute
+  '/movie/company/$slug': typeof MovieCompanySlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
+  '/tv/company/$slug': typeof TvCompanySlugRoute
   '/anime/airing/': typeof AnimeAiringIndexRoute
   '/anime/recommendations/': typeof AnimeRecommendationsIndexRoute
   '/anime/top/': typeof AnimeTopIndexRoute
@@ -591,10 +627,14 @@ export interface FileRouteTypes {
     | '/manga/'
     | '/movie/'
     | '/tv/'
+    | '/anime/company/$slug'
     | '/api/og/page'
     | '/book/franchises/$slug'
+    | '/game/company/$slug'
     | '/game/franchises/$slug'
+    | '/movie/company/$slug'
     | '/movie/franchises/$slug'
+    | '/tv/company/$slug'
     | '/anime/airing/'
     | '/anime/recommendations/'
     | '/anime/top/'
@@ -652,10 +692,14 @@ export interface FileRouteTypes {
     | '/manga'
     | '/movie'
     | '/tv'
+    | '/anime/company/$slug'
     | '/api/og/page'
     | '/book/franchises/$slug'
+    | '/game/company/$slug'
     | '/game/franchises/$slug'
+    | '/movie/company/$slug'
     | '/movie/franchises/$slug'
+    | '/tv/company/$slug'
     | '/anime/airing'
     | '/anime/recommendations'
     | '/anime/top'
@@ -714,10 +758,14 @@ export interface FileRouteTypes {
     | '/manga/'
     | '/movie/'
     | '/tv/'
+    | '/anime/company/$slug'
     | '/api/og/page'
     | '/book/franchises/$slug'
+    | '/game/company/$slug'
     | '/game/franchises/$slug'
+    | '/movie/company/$slug'
     | '/movie/franchises/$slug'
+    | '/tv/company/$slug'
     | '/anime/airing/'
     | '/anime/recommendations/'
     | '/anime/top/'
@@ -774,10 +822,14 @@ export interface RootRouteChildren {
   MangaIndexRoute: typeof MangaIndexRoute
   MovieIndexRoute: typeof MovieIndexRoute
   TvIndexRoute: typeof TvIndexRoute
+  AnimeCompanySlugRoute: typeof AnimeCompanySlugRoute
   ApiOgPageRoute: typeof ApiOgPageRoute
   BookFranchisesSlugRoute: typeof BookFranchisesSlugRoute
+  GameCompanySlugRoute: typeof GameCompanySlugRoute
   GameFranchisesSlugRoute: typeof GameFranchisesSlugRoute
+  MovieCompanySlugRoute: typeof MovieCompanySlugRoute
   MovieFranchisesSlugRoute: typeof MovieFranchisesSlugRoute
+  TvCompanySlugRoute: typeof TvCompanySlugRoute
   AnimeAiringIndexRoute: typeof AnimeAiringIndexRoute
   AnimeRecommendationsIndexRoute: typeof AnimeRecommendationsIndexRoute
   AnimeTopIndexRoute: typeof AnimeTopIndexRoute
@@ -1003,6 +1055,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnimeAiringIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/anime/company/$slug': {
+      id: '/anime/company/$slug'
+      path: '/anime/company/$slug'
+      fullPath: '/anime/company/$slug'
+      preLoaderRoute: typeof AnimeCompanySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/anime/recommendations/': {
       id: '/anime/recommendations/'
       path: '/anime/recommendations'
@@ -1057,6 +1116,13 @@ declare module '@tanstack/react-router' {
       path: '/game/anticipated'
       fullPath: '/game/anticipated/'
       preLoaderRoute: typeof GameAnticipatedIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/company/$slug': {
+      id: '/game/company/$slug'
+      path: '/game/company/$slug'
+      fullPath: '/game/company/$slug'
+      preLoaderRoute: typeof GameCompanySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/game/franchises/$slug': {
@@ -1122,6 +1188,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MovieAiringIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/movie/company/$slug': {
+      id: '/movie/company/$slug'
+      path: '/movie/company/$slug'
+      fullPath: '/movie/company/$slug'
+      preLoaderRoute: typeof MovieCompanySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/movie/franchises/$slug': {
       id: '/movie/franchises/$slug'
       path: '/movie/franchises/$slug'
@@ -1155,6 +1228,13 @@ declare module '@tanstack/react-router' {
       path: '/tv/airing'
       fullPath: '/tv/airing/'
       preLoaderRoute: typeof TvAiringIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv/company/$slug': {
+      id: '/tv/company/$slug'
+      path: '/tv/company/$slug'
+      fullPath: '/tv/company/$slug'
+      preLoaderRoute: typeof TvCompanySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tv/popular/': {
@@ -1281,10 +1361,14 @@ const rootRouteChildren: RootRouteChildren = {
   MangaIndexRoute: MangaIndexRoute,
   MovieIndexRoute: MovieIndexRoute,
   TvIndexRoute: TvIndexRoute,
+  AnimeCompanySlugRoute: AnimeCompanySlugRoute,
   ApiOgPageRoute: ApiOgPageRoute,
   BookFranchisesSlugRoute: BookFranchisesSlugRoute,
+  GameCompanySlugRoute: GameCompanySlugRoute,
   GameFranchisesSlugRoute: GameFranchisesSlugRoute,
+  MovieCompanySlugRoute: MovieCompanySlugRoute,
   MovieFranchisesSlugRoute: MovieFranchisesSlugRoute,
+  TvCompanySlugRoute: TvCompanySlugRoute,
   AnimeAiringIndexRoute: AnimeAiringIndexRoute,
   AnimeRecommendationsIndexRoute: AnimeRecommendationsIndexRoute,
   AnimeTopIndexRoute: AnimeTopIndexRoute,

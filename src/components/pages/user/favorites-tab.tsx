@@ -6,18 +6,20 @@ import { SearchInput } from "@/components/shared/search-input";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useContentTypes } from "@/hooks/content-type";
 import { useFavorites, useRemoveFavorite } from "@/hooks/favorite";
 import type { ApiTypes } from "@/lib/api";
 import { useSession } from "@/lib/auth/client";
+import { CONTENT_TYPE_API, type ContentTypeSlug, toContentTypeSlug } from "@/lib/content-types";
 import { useDebounce } from "@/lib/utils/useDebounce";
 
-const CONTENT_TYPES: { type: ApiTypes.FavoriteType; labelKey: string }[] = [
-  { type: "Anime", labelKey: "common:types.anime_other" },
-  { type: "Manga", labelKey: "common:types.manga_other" },
-  { type: "TVShow", labelKey: "common:types.tv_other" },
-  { type: "Movie", labelKey: "common:types.movie_other" },
-  { type: "Game", labelKey: "common:types.game_other" },
-  { type: "Book", labelKey: "common:types.book_other" },
+const CONTENT_TYPES: { type: ApiTypes.FavoriteType; slug: ContentTypeSlug; labelKey: string }[] = [
+  { type: "Anime", slug: "anime", labelKey: "common:types.anime_other" },
+  { type: "Manga", slug: "manga", labelKey: "common:types.manga_other" },
+  { type: "TVShow", slug: "tv", labelKey: "common:types.tv_other" },
+  { type: "Movie", slug: "movie", labelKey: "common:types.movie_other" },
+  { type: "Game", slug: "game", labelKey: "common:types.game_other" },
+  { type: "Book", slug: "book", labelKey: "common:types.book_other" },
 ];
 
 export function UserFavoritesTab({
@@ -35,6 +37,16 @@ export function UserFavoritesTab({
   const [contentType, setContentType] = useState<ApiTypes.FavoriteType>(initialContentType);
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedQuery = useDebounce(searchQuery, 600);
+
+  const { visible, hiddenClass } = useContentTypes();
+
+  useEffect(() => {
+    const slug = toContentTypeSlug(contentType);
+
+    if (slug && visible.includes(slug)) return;
+
+    setContentType(CONTENT_TYPE_API[visible[0]]);
+  }, [visible, contentType]);
 
   const favoritesQuery = useFavorites(userId, debouncedQuery);
   const removeFavorite = useRemoveFavorite();
@@ -87,8 +99,8 @@ export function UserFavoritesTab({
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {CONTENT_TYPES.map(({ type, labelKey }) => (
-                  <SelectItem key={type} value={type}>
+                {CONTENT_TYPES.map(({ type, slug, labelKey }) => (
+                  <SelectItem key={type} value={type} className={hiddenClass(slug)}>
                     {t(labelKey)}
                   </SelectItem>
                 ))}

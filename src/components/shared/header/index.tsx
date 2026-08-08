@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useContentTypes } from "@/hooks/content-type";
 import { useSession } from "@/lib/auth/client";
 import { AuthModal } from "./auth-modal";
 import { UserDropdown } from "./user-dropdown";
@@ -17,6 +18,8 @@ export function Header() {
   const { t } = useTranslation();
 
   const session = useSession();
+
+  const { hiddenClass } = useContentTypes();
 
   return (
     <>
@@ -48,37 +51,37 @@ export function Header() {
                   {t("common:feed")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem asChild className={hiddenClass("anime")}>
                 <Link to="/anime" className="cursor-pointer">
                   <Icon icon={"lucide:mountain"} className="text-white size-4.5" />
                   {t("common:types.anime_other")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem asChild className={hiddenClass("book")}>
                 <Link to="/book" className="cursor-pointer">
                   <Icon icon={"lucide:book"} className="text-white size-4.5" />
                   {t("common:types.book_other")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem asChild className={hiddenClass("game")}>
                 <Link to="/game" className="cursor-pointer">
                   <Icon icon={"lucide:gamepad-2"} className="text-white size-4.5" />
                   {t("common:types.game_other")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem asChild className={hiddenClass("tv")}>
                 <Link to="/tv" className="cursor-pointer">
                   <Icon icon={"lucide:tv-minimal-play"} className="text-white size-4.5" />
                   {t("common:types.tv_other")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem asChild className={hiddenClass("manga")}>
                 <Link to="/manga" className="cursor-pointer">
                   <Icon icon={"lucide:library-big"} className="text-white size-4.5" />
                   {t("common:types.manga_other")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem asChild className={hiddenClass("movie")}>
                 <Link to="/movie" className="cursor-pointer">
                   <Icon icon={"lucide:clapperboard"} className="text-white size-4.5" />
                   {t("common:types.movie_other")}

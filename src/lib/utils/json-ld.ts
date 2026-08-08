@@ -82,6 +82,30 @@ export const personJsonLd = ({
     }),
   );
 
+interface CompanyJsonLdOptions {
+  name?: string;
+  description?: string;
+  logo?: string;
+  url?: string;
+  foundingDate?: string;
+  location?: string;
+  sameAs?: string[];
+}
+
+export const companyJsonLd = ({ name, description, logo, url, foundingDate, location, sameAs }: CompanyJsonLdOptions) =>
+  jsonLdScript(
+    clean({
+      "@type": "Organization",
+      name,
+      description,
+      logo: absoluteUrl(logo),
+      url: url ?? getUrl(),
+      foundingDate,
+      location: location ? { "@type": "Place", name: location } : undefined,
+      sameAs: sameAs && sameAs.length > 0 ? sameAs : undefined,
+    }),
+  );
+
 interface MediaJsonLdOptions {
   type: "VideoGame" | "Movie" | "TVSeries" | "Book" | "CreativeWork";
   name?: string;

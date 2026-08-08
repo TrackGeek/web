@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import type { ContentType } from "@/components/layouts/filters.tsx";
 
 const colors = [
   "bg-chart-1/20 text-chart-1 border-chart-1/30 from-chart-1/20 to-chart-1/30",
@@ -10,18 +11,19 @@ const colors = [
 
 interface GenrePillsProps {
   genres: string[];
+  type: ContentType;
   getLabel?: (genre: string) => string;
 }
 
-export function GenrePills({ genres, getLabel }: GenrePillsProps) {
+export function GenrePills({ genres, type, getLabel }: GenrePillsProps) {
   return (
     <div className="flex flex-wrap gap-2">
       {genres.map((genre, index) => (
         <Link
           key={genre}
-          to="/"
-          search={{ landing: "true" }}
-          className={`px-3 py-1.5 bg-linear-to-r ${colors[index % colors.length]} border rounded-full text-sm font-medium`}
+          to="/search"
+          search={{ type, genres: genre }}
+          className={`px-3 py-1.5 bg-linear-to-r ${colors[index % colors.length]} border rounded-full text-sm font-medium transition-colors hover:brightness-125`}
         >
           {getLabel ? getLabel(genre) : genre}
         </Link>

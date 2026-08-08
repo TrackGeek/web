@@ -472,7 +472,7 @@ function MangaDetailsRoute() {
             <div className={"space-y-3"}>
               <p className="text-muted-foreground leading-relaxed">{manga.synopsis}</p>
               <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
-              <GenrePills genres={manga.genres} getLabel={(g) => getGenreLabel(t, g)} />
+              <GenrePills genres={manga.genres} type="manga" getLabel={(g) => getGenreLabel(t, g)} />
             </div>
 
             <div>

@@ -487,7 +487,7 @@ function MovieDetailsRoute() {
             <div className={"space-y-3"}>
               <p className="text-muted-foreground leading-relaxed">{movie.overview}</p>
               <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
-              <GenrePills genres={movie.genres} getLabel={(g) => getGenreLabel(t, g)} />
+              <GenrePills genres={movie.genres} type="movie" getLabel={(g) => getGenreLabel(t, g)} />
             </div>
 
             <div>

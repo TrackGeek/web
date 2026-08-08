@@ -578,6 +578,7 @@ function GameDetailsRoute() {
               <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
               <GenrePills
                 genres={game.genres.map((g: { name: string }) => g.name)}
+                type="game"
                 getLabel={(g) => getGenreLabel(t, g)}
               />
             </div>

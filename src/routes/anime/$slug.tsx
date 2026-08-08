@@ -19,6 +19,7 @@ import { QuickStatusButtons } from "@/components/pages/details/quick-status-butt
 import { Relations } from "@/components/pages/details/relations";
 import { ReviewItem } from "@/components/pages/details/review-item";
 import { DetailsCard } from "@/components/shared/cards/details";
+import { CompanyLink } from "@/components/shared/company-link";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { EpisodicContentModal } from "@/components/shared/modals/episodic-content";
@@ -822,7 +823,11 @@ function AnimeDetailsRoute() {
                     icon={<Icon icon={"lucide:building-2"} className="size-5 text-muted-foreground" />}
                     description={
                       <span className="flex min-w-0 items-center gap-1.5">
-                        <span className="truncate">{anime.studios[0].name}</span>
+                        <span className="truncate">
+                          <CompanyLink mediaType="anime" id={anime.studios[0].malId}>
+                            {anime.studios[0].name}
+                          </CompanyLink>
+                        </span>
                         {anime.studios.length > 1 && (
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -833,7 +838,11 @@ function AnimeDetailsRoute() {
                             <TooltipContent>
                               <ul className="flex flex-col gap-0.5">
                                 {anime.studios.slice(1).map((st: { name: string; malId: number }) => (
-                                  <li key={st.malId}>{st.name}</li>
+                                  <li key={st.malId}>
+                                    <CompanyLink mediaType="anime" id={st.malId}>
+                                      {st.name}
+                                    </CompanyLink>
+                                  </li>
                                 ))}
                               </ul>
                             </TooltipContent>
@@ -849,7 +858,11 @@ function AnimeDetailsRoute() {
                     icon={<Icon icon={"lucide:languages"} className="size-5 text-muted-foreground" />}
                     description={
                       <span className="flex min-w-0 items-center gap-1.5">
-                        <span className="truncate">{anime.producers[0].name}</span>
+                        <span className="truncate">
+                          <CompanyLink mediaType="anime" id={anime.producers[0].malId}>
+                            {anime.producers[0].name}
+                          </CompanyLink>
+                        </span>
                         {anime.producers.length > 1 && (
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -860,7 +873,11 @@ function AnimeDetailsRoute() {
                             <TooltipContent>
                               <ul className="flex flex-col gap-0.5">
                                 {anime.producers.slice(1).map((pd: { name: string; malId: number }) => (
-                                  <li key={pd.malId}>{pd.name}</li>
+                                  <li key={pd.malId}>
+                                    <CompanyLink mediaType="anime" id={pd.malId}>
+                                      {pd.name}
+                                    </CompanyLink>
+                                  </li>
                                 ))}
                               </ul>
                             </TooltipContent>

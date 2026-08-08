@@ -17,6 +17,7 @@ import { ReviewItem } from "@/components/pages/details/review-item";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { Comments } from "@/components/shared/comments";
+import { CompanyLink } from "@/components/shared/company-link";
 import { ErrorComponent } from "@/components/shared/error.tsx";
 import { LoadingDetails } from "@/components/shared/loadings/details.tsx";
 import { MovieModal } from "@/components/shared/modals/movie";
@@ -539,7 +540,11 @@ function MovieDetailsRoute() {
                     icon={<Icon icon={"lucide:building"} className="size-5 text-muted-foreground" />}
                     description={
                       <span className="flex min-w-0 items-center gap-1.5">
-                        <span className="truncate">{movie.productionCompanies[0].name}</span>
+                        <span className="truncate">
+                          <CompanyLink mediaType="movie" id={movie.productionCompanies[0].id}>
+                            {movie.productionCompanies[0].name}
+                          </CompanyLink>
+                        </span>
                         {movie.productionCompanies.length > 1 && (
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -549,8 +554,12 @@ function MovieDetailsRoute() {
                             </TooltipTrigger>
                             <TooltipContent>
                               <ul className="flex flex-col gap-0.5">
-                                {movie.productionCompanies.slice(1).map((pc: { name: string }) => (
-                                  <li key={pc.name}>{pc.name}</li>
+                                {movie.productionCompanies.slice(1).map((pc: { id: number; name: string }) => (
+                                  <li key={pc.id}>
+                                    <CompanyLink mediaType="movie" id={pc.id}>
+                                      {pc.name}
+                                    </CompanyLink>
+                                  </li>
                                 ))}
                               </ul>
                             </TooltipContent>

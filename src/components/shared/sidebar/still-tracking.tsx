@@ -3,8 +3,10 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { CardItem } from "@/components/shared/cards/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useContentTypes } from "@/hooks/content-type";
 import { useActiveProgress } from "@/hooks/progress";
 import type { ApiTypes } from "@/lib/api";
+import { cn } from "@/lib/utils";
 
 const PREVIEW_LIMIT = 6;
 
@@ -19,16 +21,27 @@ interface TrackingPanelProps {
 function TrackingPanel({ title, icon, types, userId, username }: TrackingPanelProps) {
   const { t } = useTranslation();
 
-  const primary = useActiveProgress(types[0], userId, PREVIEW_LIMIT);
-  const secondary = useActiveProgress(types[1], userId, PREVIEW_LIMIT);
+  const { isVisible } = useContentTypes();
 
-  const isLoading = primary.isPending || secondary.isPending;
+  const [primaryType, secondaryType] = types;
+  const isPrimaryVisible = isVisible(primaryType);
+  const isSecondaryVisible = isVisible(secondaryType);
+
+  const primary = useActiveProgress(primaryType, isPrimaryVisible ? userId : "", PREVIEW_LIMIT);
+  const secondary = useActiveProgress(secondaryType, isSecondaryVisible ? userId : "", PREVIEW_LIMIT);
+
+  const isLoading = (isPrimaryVisible && primary.isPending) || (isSecondaryVisible && secondary.isPending);
   const items = [...(primary.data ?? []), ...(secondary.data ?? [])].slice(0, PREVIEW_LIMIT);
 
   if (!isLoading && items.length === 0) return null;
 
   return (
-    <section className="bg-border/30 backdrop-blur border border-border w-full p-3 gap-3 flex flex-col rounded-xl">
+    <section
+      className={cn(
+        "bg-border/30 backdrop-blur border border-border w-full p-3 gap-3 flex flex-col rounded-xl",
+        !isPrimaryVisible && !isSecondaryVisible && "hidden",
+      )}
+    >
       <div className="flex items-center justify-between gap-2">
         <span className="flex items-center gap-2 font-bold">
           <Icon icon={icon} className="size-4 text-muted-foreground" />

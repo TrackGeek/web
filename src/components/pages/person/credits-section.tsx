@@ -5,6 +5,7 @@ import { Grid } from "@/components/layouts/grid";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
+import { useContentTypes } from "@/hooks/content-type";
 import { cn } from "@/lib/utils";
 import { CreditCard } from "./credit-card";
 import type { PersonCredit, PersonCreditMediaType } from "./types";
@@ -18,11 +19,13 @@ type SortOrder = "newest" | "oldest" | "rating";
 function FilterChip({
   isActive,
   count,
+  className,
   onClick,
   children,
 }: {
   isActive: boolean;
   count?: number;
+  className?: string;
   onClick: () => void;
   children: React.ReactNode;
 }) {
@@ -33,7 +36,7 @@ function FilterChip({
       size="sm"
       aria-pressed={isActive}
       onClick={onClick}
-      className={cn("rounded-full", !isActive && "text-muted-foreground")}
+      className={cn("rounded-full", !isActive && "text-muted-foreground", className)}
     >
       {children}
       {count !== undefined && (
@@ -45,8 +48,9 @@ function FilterChip({
   );
 }
 
-export function CreditsSection({ credits }: { credits: PersonCredit[] }) {
+export function CreditsSection({ credits: allCredits }: { credits: PersonCredit[] }) {
   const { t } = useTranslation();
+  const { isVisible, hiddenClass } = useContentTypes();
   const [media, setMedia] = useState<MediaFilter>("all");
   const [role, setRole] = useState<RoleFilter>("all");
   const [sort, setSort] = useState<SortOrder>("newest");
@@ -55,6 +59,17 @@ export function CreditsSection({ credits }: { credits: PersonCredit[] }) {
   const sentinelRef = useRef<HTMLDivElement>(null);
   const visibleRef = useRef(visible);
   visibleRef.current = visible;
+
+  const credits = useMemo(
+    () => allCredits.filter((credit) => isVisible(credit.mediaType)),
+    [allCredits, isVisible],
+  );
+
+  useEffect(() => {
+    if (media === "all" || isVisible(media)) return;
+
+    setMedia("all");
+  }, [media, isVisible]);
 
   const counts = useMemo(
     () => ({
@@ -184,6 +199,7 @@ export function CreditsSection({ credits }: { credits: PersonCredit[] }) {
                     key={filter.value}
                     isActive={media === filter.value}
                     count={filter.count}
+                    className={filter.value === "all" ? undefined : hiddenClass(filter.value)}
                     onClick={() => resetPaging(setMedia)(filter.value)}
                   >
                     {filter.label}

@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Trans, useTranslation } from "react-i18next";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { useContentTypes } from "@/hooks/content-type";
 import { seo } from "@/lib/utils/seo";
 
 export const Route = createFileRoute("/add-data")({
@@ -15,6 +16,8 @@ export const Route = createFileRoute("/add-data")({
 
 function AddDataRoute() {
   const { t } = useTranslation();
+
+  const { hiddenClass } = useContentTypes();
 
   return (
     <div className="flex flex-col gap-8">
@@ -42,7 +45,7 @@ function AddDataRoute() {
               <Icon icon={"lucide:alert-circle"} /> {t("pages:addData.warning")}
             </p>
             <Accordion type="multiple">
-              <AccordionItem value="anime">
+              <AccordionItem value="anime" className={hiddenClass("anime")}>
                 <AccordionTrigger className="bg-linear-to-br from-muted/50 to-muted px-5">
                   {t("pages:addData.forAnimes")}
                 </AccordionTrigger>
@@ -78,7 +81,7 @@ function AddDataRoute() {
                   </ul>
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="movies">
+              <AccordionItem value="movies" className={hiddenClass("movie")}>
                 <AccordionTrigger className="bg-linear-to-br from-muted/50 to-muted px-5">
                   {t("pages:addData.forMovies")}
                 </AccordionTrigger>
@@ -102,7 +105,7 @@ function AddDataRoute() {
                   </ul>
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="games">
+              <AccordionItem value="games" className={hiddenClass("game")}>
                 <AccordionTrigger className="bg-linear-to-br from-muted/50 to-muted px-5">
                   {t("pages:addData.forGames")}
                 </AccordionTrigger>
@@ -126,7 +129,7 @@ function AddDataRoute() {
                   </ul>
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="books">
+              <AccordionItem value="books" className={hiddenClass("book")}>
                 <AccordionTrigger className="bg-linear-to-br from-muted/50 to-muted px-5">
                   {t("pages:addData.forBooks")}
                 </AccordionTrigger>
@@ -150,7 +153,7 @@ function AddDataRoute() {
                   </ul>
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="manga">
+              <AccordionItem value="manga" className={hiddenClass("manga")}>
                 <AccordionTrigger className="bg-linear-to-br from-muted/50 to-muted px-5">
                   {t("pages:addData.forManga")}
                 </AccordionTrigger>
@@ -174,7 +177,7 @@ function AddDataRoute() {
                   </ul>
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="tv">
+              <AccordionItem value="tv" className={hiddenClass("tv")}>
                 <AccordionTrigger className="bg-linear-to-br from-muted/50 to-muted px-5">
                   {t("pages:addData.forTVShows")}
                 </AccordionTrigger>

@@ -10,6 +10,8 @@ interface GridProps {
 
   className?: string;
 
+  autoFit?: boolean;
+
   preset?: "auto" | "8col" | "4col" | "2col" | "1col";
 }
 
@@ -21,13 +23,13 @@ const PRESET_CONFIGS: Record<Exclude<GridProps["preset"], undefined>, { minColSi
   "1col": { minColSize: "100%" },
 };
 
-export function Grid({ children, minColSize, gap = "gap-4", className, preset = "auto" }: GridProps) {
+export function Grid({ children, minColSize, gap = "gap-4", className, autoFit, preset = "auto" }: GridProps) {
   const config = PRESET_CONFIGS[preset];
   const finalMinColSize = minColSize || config.minColSize;
 
   const gridStyle: CSSProperties = {
     display: "grid",
-    gridTemplateColumns: `repeat(auto-fill, minmax(min(${finalMinColSize}, 100%), 1fr))`,
+    gridTemplateColumns: `repeat(${autoFit ? "auto-fit" : "auto-fill"}, minmax(min(${finalMinColSize}, 100%), 1fr))`,
     gap: preset === "auto" ? undefined : "1rem",
   } as CSSProperties;
 

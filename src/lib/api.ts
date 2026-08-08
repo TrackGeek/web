@@ -142,6 +142,7 @@ export namespace ApiTypes {
       about: string;
       bannerUrl: string;
       avatarUrl: string;
+      contentTypes: ContentType[];
       createdAt: string;
       updatedAt: string;
     };
@@ -518,7 +519,9 @@ export namespace ApiTypes {
     preferences: NotificationPreferences;
   }
 
-  export type FavoriteType = "Anime" | "Manga" | "TVShow" | "Movie" | "Game" | "Book";
+  export type ContentType = "Anime" | "Manga" | "TVShow" | "Movie" | "Game" | "Book";
+
+  export type FavoriteType = ContentType;
 
   export interface Favorite {
     id: string;

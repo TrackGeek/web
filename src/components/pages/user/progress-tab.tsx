@@ -9,6 +9,7 @@ import { SearchInput } from "@/components/shared/search-input";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useContentTypes, useVisibleContentType } from "@/hooks/content-type";
 import {
   countActiveFilters,
   DEFAULT_PROGRESS_SORT,
@@ -56,6 +57,10 @@ export function UserProgressTab({
   onContentTypeChange: (contentType: ApiTypes.ReviewContentType) => void;
 }) {
   const { t } = useTranslation();
+
+  const { hiddenClass } = useContentTypes();
+
+  useVisibleContentType(contentType, onContentTypeChange);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<ProgressFilters>(EMPTY_PROGRESS_FILTERS);
@@ -160,6 +165,7 @@ export function UserProgressTab({
               className={cn(
                 "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer",
                 contentType === type ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted",
+                hiddenClass(type),
               )}
             >
               <Icon icon={icon} className="size-4 shrink-0" />

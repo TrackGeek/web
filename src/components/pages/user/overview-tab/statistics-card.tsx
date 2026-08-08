@@ -1,6 +1,8 @@
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
+import { Grid } from "@/components/layouts/grid.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useContentTypes } from "@/hooks/content-type";
 import type { ApiTypes } from "@/lib/api";
 
 interface StatisticsCardProps {
@@ -84,6 +86,7 @@ function MediaTile({
   border,
   iconColor,
   total,
+  hidden,
   onClick,
 }: {
   icon: string;
@@ -92,6 +95,7 @@ function MediaTile({
   border: string;
   iconColor: string;
   total: number;
+  hidden: string;
   onClick?: () => void;
 }) {
   const { t } = useTranslation();
@@ -101,7 +105,7 @@ function MediaTile({
       type="button"
       onClick={onClick}
       disabled={!onClick}
-      className={`flex flex-col gap-3 rounded-2xl border bg-linear-to-br to-transparent p-4 text-left transition-shadow enabled:cursor-pointer enabled:hover:shadow-lg ${gradient} ${border}`}
+      className={`flex flex-col gap-3 rounded-2xl border bg-linear-to-br to-transparent p-4 text-left transition-shadow enabled:cursor-pointer enabled:hover:shadow-lg ${gradient} ${border} ${hidden}`}
     >
       <div className="flex size-9 items-center justify-center rounded-xl bg-white/5">
         <Icon icon={icon} className={`size-5 ${iconColor}`} />
@@ -118,6 +122,8 @@ function MediaTile({
 export function StatisticsCard({ user, onSeeProgress }: StatisticsCardProps) {
   const { t } = useTranslation();
 
+  const { hiddenClass } = useContentTypes();
+
   return (
     <Card>
       <CardHeader>
@@ -129,7 +135,7 @@ export function StatisticsCard({ user, onSeeProgress }: StatisticsCardProps) {
       </CardHeader>
 
       <CardContent>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <Grid minColSize={"185px"} autoFit>
           {MEDIA_CONFIG.map(({ key, contentType, icon, label, gradient, border, iconColor }) => (
             <MediaTile
               key={key}
@@ -139,10 +145,11 @@ export function StatisticsCard({ user, onSeeProgress }: StatisticsCardProps) {
               border={border}
               iconColor={iconColor}
               total={user.progressStats[key].total}
+              hidden={hiddenClass(contentType)}
               onClick={onSeeProgress ? () => onSeeProgress(contentType) : undefined}
             />
           ))}
-        </div>
+        </Grid>
       </CardContent>
     </Card>
   );

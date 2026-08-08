@@ -35,15 +35,8 @@ export function WorkCard({ mediaType, work }: { mediaType: CompanyMediaType; wor
 
         <div className="absolute top-1.5 left-1.5 flex items-center gap-1 rounded-md bg-black/65 px-1.5 py-0.5 text-white text-xs backdrop-blur-sm">
           <Icon icon={MEDIA_ICONS[mediaType]} className="size-3" aria-hidden="true" />
-          {work.year ?? "—"}
+          {work.year ?? ""}
         </div>
-
-        {work.externalReviewScore !== null && work.externalReviewScore > 0 && (
-          <span className="absolute right-1.5 bottom-1.5 flex items-center gap-1 rounded-md bg-black/65 px-1.5 py-0.5 text-white text-xs backdrop-blur-sm">
-            <Icon icon="lucide:star" className="size-3 text-yellow-400" aria-hidden="true" />
-            {work.externalReviewScore.toFixed(1)}
-          </span>
-        )}
       </div>
 
       <div className="min-w-0 space-y-0.5">

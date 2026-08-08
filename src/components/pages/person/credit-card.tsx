@@ -36,7 +36,7 @@ export function CreditCard({ credit }: { credit: PersonCredit }) {
 
         <div className="absolute top-1.5 left-1.5 flex items-center gap-1 rounded-md bg-black/65 px-1.5 py-0.5 text-white text-xs backdrop-blur-sm">
           <Icon icon={MEDIA_ICONS[credit.mediaType]} className="size-3" aria-hidden="true" />
-          {credit.year ?? "—"}
+          {credit.year ?? ""}
         </div>
 
         {credit.episodeCount !== null && credit.episodeCount > 1 && (

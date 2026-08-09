@@ -1,4 +1,3 @@
-import { Icon } from "@iconify/react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox.tsx";
@@ -48,20 +47,10 @@ interface ProgressFiltersPanelProps {
   options?: ApiTypes.ProgressFilterOptions;
   isLoading: boolean;
   value: ProgressFilters;
-  activeCount: number;
   onChange: (patch: Partial<ProgressFilters>) => void;
-  onClear: () => void;
 }
 
-export function ProgressFiltersPanel({
-  contentType,
-  options,
-  isLoading,
-  value,
-  activeCount,
-  onChange,
-  onClear,
-}: ProgressFiltersPanelProps) {
+export function ProgressFiltersPanel({ contentType, options, isLoading, value, onChange }: ProgressFiltersPanelProps) {
   const { t } = useTranslation();
   const [genreSearch, setGenreSearch] = useState("");
 
@@ -94,20 +83,7 @@ export function ProgressFiltersPanel({
   }
 
   return (
-    <div className="flex flex-col gap-2.5">
-      <div className="flex items-center justify-end gap-2 -mb-2">
-        {activeCount > 0 && (
-          <button
-            type="button"
-            onClick={onClear}
-            className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer"
-          >
-            <Icon icon="lucide:x" className="size-3" />
-            {t("common:clear")}
-          </button>
-        )}
-      </div>
-
+    <div className="flex flex-col gap-2">
       {genreOptions.length > 0 && (
         <FilterGroup label={""}>
           <Combobox

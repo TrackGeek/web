@@ -57,7 +57,7 @@ export function CollapsibleFilters({
 
       <div
         className={cn(
-          "grid transition-[grid-template-rows] duration-300 ease-out md:grid-rows-[1fr]",
+          "max-md:grid transition-[grid-template-rows] duration-300 ease-out md:grid-rows-[1fr]",
           open ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
         )}
       >

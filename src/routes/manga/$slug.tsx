@@ -363,16 +363,66 @@ function MangaDetailsRoute() {
               const name = (e.name || "").toLowerCase();
               const url = e.url;
 
-              if (/official/i.test(name)) {
-                links.push({ href: url, key: `official-${i}`, icon: <Icon icon={"lucide:external-link"} /> });
-                return;
-              }
               if (name.includes("instagram")) {
                 links.push({
                   href: url,
                   key: `instagram-${i}`,
                   className: cn(`hover:text-[#FF0069]`),
                   icon: <Icon icon={"simple-icons:instagram"} />,
+                });
+                return;
+              }
+              if (name.includes("bilibili")) {
+                links.push({
+                  href: url,
+                  key: `bilibili-${i}`,
+                  className: cn(`hover:text-[#00a1d6]`),
+                  icon: <Icon icon={"mingcute:bilibili-fill"} />,
+                });
+                return;
+              }
+              if (name.includes("naver series")) {
+                links.push({
+                  href: url,
+                  key: `naver-${i}`,
+                  className: cn(`hover:text-[#03c75a]`),
+                  icon: <Icon icon={"simple-icons:naver"} />,
+                });
+                return;
+              }
+              if (name.includes("kakaopage")) {
+                links.push({
+                  href: url,
+                  key: `kakao-${i}`,
+                  className: cn(`hover:text-[#ffcd00]`),
+                  icon: <Icon icon={"simple-icons:kakao"} />,
+                });
+                return;
+              }
+              if (name.includes("shonen jump")) {
+                links.push({
+                  href: url,
+                  key: `shonenjump-${i}`,
+                  className: cn(`hover:text-white`),
+                  icon: <Icon icon={"arcticons:shonen-jump"} />,
+                });
+                return;
+              }
+              if (name.includes("piccoma")) {
+                links.push({
+                  href: url,
+                  key: `piccoma-${i}`,
+                  className: cn(`hover:text-white`),
+                  icon: <Icon icon={"arcticons:piccoma"} />,
+                });
+                return;
+              }
+              if (name.includes("viz")) {
+                links.push({
+                  href: url,
+                  key: `viz-${i}`,
+                  className: cn(`hover:text-white`),
+                  icon: <Icon icon={"arcticons:viz-manga"} />,
                 });
                 return;
               }
@@ -385,7 +435,7 @@ function MangaDetailsRoute() {
                 });
                 return;
               }
-              if (name.startsWith("@")) {
+              if (name.includes("twitter")) {
                 links.push({
                   href: url,
                   key: `twitter-${i}`,

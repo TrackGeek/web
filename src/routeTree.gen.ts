@@ -18,7 +18,9 @@ import { Route as DonateRouteImport } from './routes/donate'
 import { Route as FeedRouteImport } from './routes/feed'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TosRouteImport } from './routes/tos'
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated/billing'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
@@ -34,6 +36,7 @@ import { Route as MangaIndexRouteImport } from './routes/manga/index'
 import { Route as MangaSlugRouteImport } from './routes/manga/$slug'
 import { Route as MovieIndexRouteImport } from './routes/movie/index'
 import { Route as MovieSlugRouteImport } from './routes/movie/$slug'
+import { Route as SitemapChar123sectionChar125DotxmlRouteImport } from './routes/sitemap/{$section}[.]xml'
 import { Route as TvIndexRouteImport } from './routes/tv/index'
 import { Route as TvSlugRouteImport } from './routes/tv/$slug'
 import { Route as AnimeAiringIndexRouteImport } from './routes/anime/airing/index'
@@ -118,9 +121,19 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TosRoute = TosRouteImport.update({
@@ -199,6 +212,12 @@ const MovieSlugRoute = MovieSlugRouteImport.update({
   path: '/movie/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapChar123sectionChar125DotxmlRoute =
+  SitemapChar123sectionChar125DotxmlRouteImport.update({
+    id: '/sitemap/{$section}.xml',
+    path: '/sitemap/{$section}.xml',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const TvIndexRoute = TvIndexRouteImport.update({
   id: '/tv/',
   path: '/tv/',
@@ -410,7 +429,9 @@ export interface FileRoutesByFullPath {
   '/feed': typeof FeedRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tos': typeof TosRoute
   '/billing': typeof AuthenticatedBillingRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
@@ -421,6 +442,7 @@ export interface FileRoutesByFullPath {
   '/game/$slug': typeof GameSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
+  '/sitemap/{$section}.xml': typeof SitemapChar123sectionChar125DotxmlRoute
   '/tv/$slug': typeof TvSlugRoute
   '/anime/': typeof AnimeIndexRoute
   '/book/': typeof BookIndexRoute
@@ -475,7 +497,9 @@ export interface FileRoutesByTo {
   '/feed': typeof FeedRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tos': typeof TosRoute
   '/billing': typeof AuthenticatedBillingRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
@@ -486,6 +510,7 @@ export interface FileRoutesByTo {
   '/game/$slug': typeof GameSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
+  '/sitemap/{$section}.xml': typeof SitemapChar123sectionChar125DotxmlRoute
   '/tv/$slug': typeof TvSlugRoute
   '/anime': typeof AnimeIndexRoute
   '/book': typeof BookIndexRoute
@@ -542,7 +567,9 @@ export interface FileRoutesById {
   '/feed': typeof FeedRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tos': typeof TosRoute
   '/_authenticated/billing': typeof AuthenticatedBillingRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
@@ -553,6 +580,7 @@ export interface FileRoutesById {
   '/game/$slug': typeof GameSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
+  '/sitemap/{$section}.xml': typeof SitemapChar123sectionChar125DotxmlRoute
   '/tv/$slug': typeof TvSlugRoute
   '/anime/': typeof AnimeIndexRoute
   '/book/': typeof BookIndexRoute
@@ -609,7 +637,9 @@ export interface FileRouteTypes {
     | '/feed'
     | '/privacy-policy'
     | '/reset-password'
+    | '/robots.txt'
     | '/search'
+    | '/sitemap.xml'
     | '/tos'
     | '/billing'
     | '/notifications'
@@ -620,6 +650,7 @@ export interface FileRouteTypes {
     | '/game/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
+    | '/sitemap/{$section}.xml'
     | '/tv/$slug'
     | '/anime/'
     | '/book/'
@@ -674,7 +705,9 @@ export interface FileRouteTypes {
     | '/feed'
     | '/privacy-policy'
     | '/reset-password'
+    | '/robots.txt'
     | '/search'
+    | '/sitemap.xml'
     | '/tos'
     | '/billing'
     | '/notifications'
@@ -685,6 +718,7 @@ export interface FileRouteTypes {
     | '/game/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
+    | '/sitemap/{$section}.xml'
     | '/tv/$slug'
     | '/anime'
     | '/book'
@@ -740,7 +774,9 @@ export interface FileRouteTypes {
     | '/feed'
     | '/privacy-policy'
     | '/reset-password'
+    | '/robots.txt'
     | '/search'
+    | '/sitemap.xml'
     | '/tos'
     | '/_authenticated/billing'
     | '/_authenticated/notifications'
@@ -751,6 +787,7 @@ export interface FileRouteTypes {
     | '/game/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
+    | '/sitemap/{$section}.xml'
     | '/tv/$slug'
     | '/anime/'
     | '/book/'
@@ -807,7 +844,9 @@ export interface RootRouteChildren {
   FeedRoute: typeof FeedRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
   SearchRoute: typeof SearchRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TosRoute: typeof TosRoute
   AnimeSlugRoute: typeof AnimeSlugRoute
   BookSlugRoute: typeof BookSlugRoute
@@ -815,6 +854,7 @@ export interface RootRouteChildren {
   GameSlugRoute: typeof GameSlugRoute
   MangaSlugRoute: typeof MangaSlugRoute
   MovieSlugRoute: typeof MovieSlugRoute
+  SitemapChar123sectionChar125DotxmlRoute: typeof SitemapChar123sectionChar125DotxmlRoute
   TvSlugRoute: typeof TvSlugRoute
   AnimeIndexRoute: typeof AnimeIndexRoute
   BookIndexRoute: typeof BookIndexRoute
@@ -922,11 +962,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/search': {
       id: '/search'
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tos': {
@@ -1032,6 +1086,13 @@ declare module '@tanstack/react-router' {
       path: '/movie/$slug'
       fullPath: '/movie/$slug'
       preLoaderRoute: typeof MovieSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap/{$section}.xml': {
+      id: '/sitemap/{$section}.xml'
+      path: '/sitemap/{$section}.xml'
+      fullPath: '/sitemap/{$section}.xml'
+      preLoaderRoute: typeof SitemapChar123sectionChar125DotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tv/': {
@@ -1346,7 +1407,9 @@ const rootRouteChildren: RootRouteChildren = {
   FeedRoute: FeedRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
   SearchRoute: SearchRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TosRoute: TosRoute,
   AnimeSlugRoute: AnimeSlugRoute,
   BookSlugRoute: BookSlugRoute,
@@ -1354,6 +1417,8 @@ const rootRouteChildren: RootRouteChildren = {
   GameSlugRoute: GameSlugRoute,
   MangaSlugRoute: MangaSlugRoute,
   MovieSlugRoute: MovieSlugRoute,
+  SitemapChar123sectionChar125DotxmlRoute:
+    SitemapChar123sectionChar125DotxmlRoute,
   TvSlugRoute: TvSlugRoute,
   AnimeIndexRoute: AnimeIndexRoute,
   BookIndexRoute: BookIndexRoute,

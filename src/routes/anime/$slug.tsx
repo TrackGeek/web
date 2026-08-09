@@ -684,6 +684,33 @@ function AnimeDetailsRoute() {
                 });
                 return;
               }
+              if (name.includes("youtube")) {
+                links.push({
+                  href: url,
+                  key: `youtube-${i}`,
+                  className: cn(`hover:text-red-500`),
+                  icon: <Icon icon={"simple-icons:youtube"} />,
+                });
+                return;
+              }
+              if (name.includes("baidu")) {
+                links.push({
+                  href: url,
+                  key: `baidu-${i}`,
+                  className: cn(`hover:text-[#2932e1]`),
+                  icon: <Icon icon={"simple-icons:baidu"} />,
+                });
+                return;
+              }
+              if (name.includes("douban")) {
+                links.push({
+                  href: url,
+                  key: `douban-${i}`,
+                  className: cn(`hover:text-[#2d963d]`),
+                  icon: <Icon icon={"simple-icons:douban"} />,
+                });
+                return;
+              }
               if (name.startsWith("@")) {
                 links.push({
                   href: url,
@@ -769,7 +796,7 @@ function AnimeDetailsRoute() {
             <div className={"space-y-3"}>
               <p className="text-muted-foreground leading-relaxed">{anime.synopsis}</p>
               <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
-              <GenrePills genres={anime.genres} getLabel={(g) => getGenreLabel(t, g)} />
+              <GenrePills genres={anime.genres} type="anime" getLabel={(g) => getGenreLabel(t, g)} />
             </div>
 
             <div>

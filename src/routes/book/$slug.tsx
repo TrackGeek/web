@@ -508,7 +508,7 @@ function BookDetailsRoute() {
               {tags.length > 0 && (
                 <>
                   <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
-                  <GenrePills genres={tags} getLabel={(g) => getGenreLabel(t, g)} />
+                  <GenrePills genres={tags} type="book" getLabel={(g) => getGenreLabel(t, g)} />
                 </>
               )}
             </div>

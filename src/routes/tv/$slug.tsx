@@ -10,6 +10,7 @@ import { BackfillEpisodesDialog } from "@/components/pages/details/backfill-epis
 import { CastItem, PersonLink } from "@/components/pages/details/cast";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { EpisodeItem } from "@/components/pages/details/episode";
+import { GenrePills } from "@/components/pages/details/genre-pills";
 import { ListItem } from "@/components/pages/details/list";
 import { EpisodeProgress, type SeasonData } from "@/components/pages/details/progress";
 import { ReviewItem } from "@/components/pages/details/review-item";
@@ -751,27 +752,7 @@ function TVShowDetailsPage() {
             <div className={"space-y-3"}>
               <p className="text-muted-foreground leading-relaxed">{item.tagline}</p>
               <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
-              <div className="flex flex-wrap gap-2">
-                {(item.genres ?? []).map((genre: string, index: number) => {
-                  const colors = [
-                    "bg-chart-1/20 text-chart-1 border-chart-1/30 from-chart-1/20 to-chart-1/30",
-                    "bg-chart-2/20 text-chart-2 border-chart-2/30 from-chart-2/20 to-chart-2/30",
-                    "bg-chart-3/20 text-chart-3 border-chart-3/30 from-chart-3/20 to-chart-3/30",
-                    "bg-chart-4/20 text-chart-4 border-chart-4/30 from-chart-4/20 to-chart-4/30",
-                    "bg-chart-5/20 text-chart-5 border-chart-5/30 from-chart-5/20 to-chart-5/30",
-                  ];
-                  const color = colors[index % colors.length];
-
-                  return (
-                    <span
-                      key={genre}
-                      className={`px-3 py-1.5 bg-linear-to-r ${color} border rounded-full text-sm font-medium`}
-                    >
-                      {getGenreLabel(t, genre)}
-                    </span>
-                  );
-                })}
-              </div>
+              <GenrePills genres={item.genres ?? []} type="tv" getLabel={(g) => getGenreLabel(t, g)} />
             </div>
 
             <div>

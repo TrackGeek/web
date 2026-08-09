@@ -1,7 +1,7 @@
 import { type QueryKey, useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 50;
 
 export function userActivitiesQueryKey(userId: string) {
   return ["user-activities", userId];

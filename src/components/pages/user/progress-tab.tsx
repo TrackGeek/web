@@ -5,6 +5,7 @@ import { Grid } from "@/components/layouts/grid.tsx";
 import type { FavoriteItem } from "@/components/pages/user/overview-tab/favorite-card";
 import { ProgressFiltersPanel } from "@/components/pages/user/progress-filters";
 import { CardItem } from "@/components/shared/cards/card";
+import { CollapsibleFilters } from "@/components/shared/filters/collapsible";
 import { SearchInput } from "@/components/shared/search-input";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -174,22 +175,6 @@ export function UserProgressTab({
           ))}
         </div>
 
-        <div className="px-1 flex gap-1.5">
-          <SearchInput value={searchQuery} onChange={setSearchQuery} />
-          <button
-            type="button"
-            onClick={handleRandom}
-            disabled={isRandomizing || progressQuery.isLoading || totalInStatus === 0}
-            title="Random"
-            className="bg-primary cursor-pointer flex items-center justify-center size-9 shrink-0 rounded-lg transition-colors text-primary-foreground hover:text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <Icon
-              icon={isRandomizing ? "lucide:loader-circle" : "lucide:shuffle"}
-              className={cn("size-4", isRandomizing && "animate-spin")}
-            />
-          </button>
-        </div>
-
         <div className="flex md:flex-col gap-1 overflow-x-auto">
           {sections.map((section) => (
             <button
@@ -210,46 +195,61 @@ export function UserProgressTab({
           ))}
         </div>
 
-        <div className="px-1 flex gap-1.5">
-          <Select
-            value={sort.by}
-            onValueChange={(by) => setSort((current) => ({ ...current, by: by as ApiTypes.ProgressSortBy }))}
-          >
-            <SelectTrigger className="flex-1 min-w-0 bg-muted/50">
-              <SelectValue placeholder={t("user:sort.placeholder")} />
-            </SelectTrigger>
-            <SelectContent>
-              {sortOptions.map(({ value, labelKey }) => (
-                <SelectItem key={value} value={value}>
-                  {t(labelKey)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <button
-            type="button"
-            onClick={() => setSort((current) => ({ ...current, order: current.order === "asc" ? "desc" : "asc" }))}
-            title={sort.order === "asc" ? t("common:ascending") : t("common:descending")}
-            aria-label={sort.order === "asc" ? t("common:ascending") : t("common:descending")}
-            className="bg-muted/50 cursor-pointer flex items-center justify-center size-9 shrink-0 rounded-md border border-input text-muted-foreground transition-colors hover:bg-muted hover:text-card-foreground"
-          >
-            <Icon
-              icon={sort.order === "asc" ? "lucide:arrow-up-narrow-wide" : "lucide:arrow-down-wide-narrow"}
-              className="size-4"
-            />
-          </button>
-        </div>
-
         <div className="px-1 pt-1">
-          <ProgressFiltersPanel
-            contentType={contentType}
-            options={optionsQuery.data}
-            isLoading={optionsQuery.isLoading}
-            value={filters}
-            activeCount={activeFilterCount}
-            onChange={(patch) => setFilters((current) => ({ ...current, ...patch }))}
-            onClear={() => setFilters(EMPTY_PROGRESS_FILTERS)}
-          />
+          <CollapsibleFilters activeCount={activeFilterCount} onClear={() => setFilters(EMPTY_PROGRESS_FILTERS)}>
+            <div className="pt-2 md:pt-0 flex gap-1.5">
+              <SearchInput value={searchQuery} onChange={setSearchQuery} />
+              <button
+                type="button"
+                onClick={handleRandom}
+                disabled={isRandomizing || progressQuery.isLoading || totalInStatus === 0}
+                title="Random"
+                className="bg-primary cursor-pointer flex items-center justify-center size-9 shrink-0 rounded-lg transition-colors text-primary-foreground hover:text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Icon
+                  icon={isRandomizing ? "lucide:loader-circle" : "lucide:shuffle"}
+                  className={cn("size-4", isRandomizing && "animate-spin")}
+                />
+              </button>
+            </div>
+
+            <div className="flex gap-1.5">
+              <Select
+                value={sort.by}
+                onValueChange={(by) => setSort((current) => ({ ...current, by: by as ApiTypes.ProgressSortBy }))}
+              >
+                <SelectTrigger className="flex-1 min-w-0 bg-muted/50">
+                  <SelectValue placeholder={t("user:sort.placeholder")} />
+                </SelectTrigger>
+                <SelectContent>
+                  {sortOptions.map(({ value, labelKey }) => (
+                    <SelectItem key={value} value={value}>
+                      {t(labelKey)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <button
+                type="button"
+                onClick={() => setSort((current) => ({ ...current, order: current.order === "asc" ? "desc" : "asc" }))}
+                title={sort.order === "asc" ? t("common:ascending") : t("common:descending")}
+                aria-label={sort.order === "asc" ? t("common:ascending") : t("common:descending")}
+                className="bg-muted/50 cursor-pointer flex items-center justify-center size-9 shrink-0 rounded-md border border-input text-muted-foreground transition-colors hover:bg-muted hover:text-card-foreground"
+              >
+                <Icon
+                  icon={sort.order === "asc" ? "lucide:arrow-up-narrow-wide" : "lucide:arrow-down-wide-narrow"}
+                  className="size-4"
+                />
+              </button>
+            </div>
+            <ProgressFiltersPanel
+              contentType={contentType}
+              options={optionsQuery.data}
+              isLoading={optionsQuery.isLoading}
+              value={filters}
+              onChange={(patch) => setFilters((current) => ({ ...current, ...patch }))}
+            />
+          </CollapsibleFilters>
         </div>
       </aside>
 

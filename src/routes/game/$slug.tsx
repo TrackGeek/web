@@ -100,8 +100,9 @@ export const Route = createFileRoute("/game/$slug")({
 });
 
 const LAYOUT = {
-  H_SPACING: 200,
-  V_SPACING: 180,
+  H_SPACING: 220,
+  V_SPACING: 210,
+  MAX_PER_LINE: 5,
   CENTER: { x: 0, y: 0 },
 };
 
@@ -135,7 +136,13 @@ type GameRelations = {
 type FlowNode = { id: string; image: string; name: string; link: string; relationShip: string; x: number; y: number };
 type FlowEdge = { id: string; source: string; target: string };
 
-const buildRelationsData = (game: GameRelations) => {
+type Relation = { data: RelatedGame; label: string };
+
+const centeredOffset = (total: number, index: number, spacing: number) => (index - (total - 1) / 2) * spacing;
+
+const gridLines = (total: number) => Math.max(1, Math.ceil(total / LAYOUT.MAX_PER_LINE));
+
+const buildRelationsData = (game: GameRelations, currentSlug: string) => {
   const nodes: FlowNode[] = [];
   const edges: FlowEdge[] = [];
   let nodeId = 0;
@@ -146,25 +153,14 @@ const buildRelationsData = (game: GameRelations) => {
     return id;
   };
 
-  const columnOffset = (items: unknown[], index: number) => {
-    const total = items.length;
-    return (index - (total - 1) / 2) * LAYOUT.V_SPACING;
-  };
+  const mainId = addNode(game.name, game.coverUrl, `/game/${currentSlug}`, t("library:relationships.now"), 0, 0);
 
-  const mainId = addNode(game.name, game.coverUrl, `/game/${game.id}`, t("library:relationships.now"), 0, 0);
-
-  const leftRelations = [
+  const leftRelations: Relation[] = [
     ...(game.parentGame?.id ? [{ data: game.parentGame, label: t("library:relationships.parent") }] : []),
     ...(game.prequels?.map((g) => ({ data: g, label: t("library:relationships.prequel") })) ?? []),
   ];
 
-  leftRelations.forEach(({ data, label }, i) => {
-    const y = columnOffset(leftRelations, i);
-    const id = addNode(data.name, data.coverUrl, `/game/${data.id}`, label, -LAYOUT.H_SPACING, y);
-    edges.push({ id: `edge-left-${i}`, source: id, target: mainId });
-  });
-
-  const rightRelations = [
+  const rightRelations: Relation[] = [
     ...(game.expandedGames?.map((g) => ({ data: g, label: t("library:relationships.expandedGame") })) ?? []),
     ...(game.sequels?.map((g) => ({ data: g, label: t("library:relationships.sequel") })) ?? []),
     ...(game.dlcs?.map((g) => ({ data: g, label: t("library:relationships.dlc") })) ?? []),
@@ -172,36 +168,71 @@ const buildRelationsData = (game: GameRelations) => {
     ...(game.ports?.map((g) => ({ data: g, label: t("library:relationships.port") })) ?? []),
   ];
 
-  rightRelations.forEach(({ data, label }, i) => {
-    const y = columnOffset(rightRelations, i);
-    const id = addNode(data.name, data.coverUrl, `/game/${data.id}`, label, LAYOUT.H_SPACING, y);
-    edges.push({ id: `edge-right-${i}`, source: mainId, target: id });
-  });
-
-  const bottomRelations = [
+  const bottomRelations: Relation[] = [
     ...(game.remakes?.map((g) => ({ data: g, label: t("library:relationships.remake") })) ?? []),
     ...(game.remasters?.map((g) => ({ data: g, label: t("library:relationships.remaster") })) ?? []),
   ];
 
-  bottomRelations.forEach(({ data, label }, i) => {
-    const x = columnOffset(bottomRelations, i);
-    const id = addNode(data.name, data.coverUrl, `/game/${data.id}`, label, x, LAYOUT.V_SPACING * 2);
-    edges.push({ id: `edge-bottom-${i}`, source: id, target: mainId });
-  });
+  const topRelations: Relation[] =
+    game.bundles?.map((g) => ({ data: g, label: t("library:relationships.bundle") })) ?? [];
 
-  const bundles = game.bundles ?? [];
-  bundles.forEach((data, i) => {
-    const x = columnOffset(bundles, i);
-    const id = addNode(
-      data.name,
-      data.coverUrl,
-      `/game/${data.id}`,
-      t("library:relationships.bundle"),
-      x,
-      -LAYOUT.V_SPACING * 2,
-    );
-    edges.push({ id: `edge-top-${i}`, source: mainId, target: id });
-  });
+  const placeColumn = (relations: Relation[], direction: -1 | 1, prefix: string) => {
+    const columns = gridLines(relations.length);
+    const rows = Math.ceil(relations.length / columns);
+
+    relations.forEach(({ data, label }, i) => {
+      const column = Math.floor(i / rows);
+      const row = i % rows;
+      const rowsInColumn = Math.min(rows, relations.length - column * rows);
+      const id = addNode(
+        data.name,
+        data.coverUrl,
+        `/game/${data.id}`,
+        label,
+        direction * LAYOUT.H_SPACING * (column + 1),
+        centeredOffset(rowsInColumn, row, LAYOUT.V_SPACING),
+      );
+      edges.push(
+        direction === -1
+          ? { id: `edge-${prefix}-${i}`, source: id, target: mainId }
+          : { id: `edge-${prefix}-${i}`, source: mainId, target: id },
+      );
+    });
+
+    return rows;
+  };
+
+  const leftRows = placeColumn(leftRelations, -1, "left");
+  const rightRows = placeColumn(rightRelations, 1, "right");
+
+  const bandOffset = ((Math.max(leftRows, rightRows) - 1) / 2) * LAYOUT.V_SPACING + LAYOUT.V_SPACING;
+
+  const placeRow = (relations: Relation[], direction: -1 | 1, prefix: string) => {
+    const rows = gridLines(relations.length);
+    const columns = Math.ceil(relations.length / rows);
+
+    relations.forEach(({ data, label }, i) => {
+      const row = Math.floor(i / columns);
+      const column = i % columns;
+      const columnsInRow = Math.min(columns, relations.length - row * columns);
+      const id = addNode(
+        data.name,
+        data.coverUrl,
+        `/game/${data.id}`,
+        label,
+        centeredOffset(columnsInRow, column, LAYOUT.H_SPACING),
+        direction * (bandOffset + row * LAYOUT.V_SPACING),
+      );
+      edges.push(
+        direction === 1
+          ? { id: `edge-${prefix}-${i}`, source: id, target: mainId }
+          : { id: `edge-${prefix}-${i}`, source: mainId, target: id },
+      );
+    });
+  };
+
+  placeRow(bottomRelations, 1, "bottom");
+  placeRow(topRelations, -1, "top");
 
   return { nodes, edges };
 };
@@ -639,7 +670,7 @@ function GameDetailsRoute() {
             </div>
 
             {(() => {
-              const { nodes, edges } = buildRelationsData(game);
+              const { nodes, edges } = buildRelationsData(game, slug);
               if (edges.length === 0) return null;
               return (
                 <div>

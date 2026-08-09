@@ -11,10 +11,10 @@ export const SITEMAP_SECTIONS = ["pages", ...CONTENT_TYPE_SLUGS, "user"] as cons
 
 export type SitemapSection = (typeof SITEMAP_SECTIONS)[number];
 
-const MAX_PAGES = 500;
 const PAGE_BATCH_SIZE = 25;
 const ITEMS_PER_PAGE = 50;
 const MAX_URLS = 45000;
+const MAX_PAGES = Math.ceil(MAX_URLS / ITEMS_PER_PAGE);
 const CACHE_TTL = 60 * 60 * 1000;
 
 const cache = new Map<SitemapSection, { expiresAt: number; entries: SitemapEntry[] }>();

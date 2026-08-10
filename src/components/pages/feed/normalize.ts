@@ -1,4 +1,3 @@
-import type { TFunction } from "i18next";
 import type { ApiTypes } from "@/lib/api";
 
 export type FeedMediaRoute =
@@ -14,6 +13,10 @@ export interface FeedMediaLink {
   slug: string;
 }
 
+export type FeedHighlightLink =
+  | { to: FeedMediaRoute; params: { slug: string } }
+  | { to: "/user/$username"; params: { username: string }; search: { tab: string } };
+
 export interface FeedProfile {
   name: string;
   avatarURL: string;
@@ -28,7 +31,11 @@ export interface FeedCriteria {
 export interface FeedItemData {
   coverURL: string;
   icon?: string;
-  title: string;
+  titleKey: string;
+  titleValues?: Record<string, string | number>;
+  /** Target of the `<strong>` chunk inside the title, when it points somewhere. */
+  titleLink?: FeedHighlightLink;
+  mediaTitle?: string;
   content?: string;
   time: Date;
   likes?: number;
@@ -166,6 +173,14 @@ function firstProgress(activity: ApiTypes.Activity): ApiTypes.ActivityProgress |
   return null;
 }
 
+function mediaHighlight(media: FeedMediaLink): FeedHighlightLink {
+  return { to: media.to, params: { slug: media.slug } };
+}
+
+function userHighlight(username: string, tab: string): FeedHighlightLink {
+  return { to: "/user/$username", params: { username }, search: { tab } };
+}
+
 function buildProfile(user: ApiTypes.ActivityUser): FeedProfile {
   return {
     name: user.name || user.username,
@@ -179,7 +194,7 @@ function buildProfile(user: ApiTypes.ActivityUser): FeedProfile {
  * rendered. Uses the first item of the group as the representative row and the
  * group `count` for pluralised titles.
  */
-export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFunction): FeedRenderItem | null {
+export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRenderItem | null {
   const activity = group.items[0];
   if (!activity?.user) return null;
 
@@ -208,7 +223,10 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFuncti
           item: {
             coverURL: media.cover,
             media: media.media,
-            title: t("feed:reviewed", { content: media.title }),
+            mediaTitle: media.title,
+            titleKey: "feed:reviewed",
+            titleValues: { content: media.title },
+            titleLink: mediaHighlight(media.media),
             content: review.summary ?? undefined,
             time,
             likes,
@@ -227,18 +245,17 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFuncti
         const to = meta.to;
         if (from == null || to == null) return null;
 
-        const title =
-          from === to
-            ? t("feed:watchedEpisodes", { episodeNumber: from, content: media.title })
-            : t("feed:watchedEpisodesRange", { from, to, content: media.title });
-
         return {
           kind: "item",
           profile,
           item: {
             coverURL: media.cover,
             media: media.media,
-            title,
+            mediaTitle: media.title,
+            titleKey: from === to ? "feed:watchedEpisodes" : "feed:watchedEpisodesRange",
+            titleValues:
+              from === to ? { episodeNumber: from, content: media.title } : { from, to, content: media.title },
+            titleLink: mediaHighlight(media.media),
             time,
             likes,
           },
@@ -267,7 +284,10 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFuncti
           item: {
             coverURL: media.cover,
             media: media.media,
-            title: t(key, { content: media.title }),
+            mediaTitle: media.title,
+            titleKey: key,
+            titleValues: { content: media.title },
+            titleLink: mediaHighlight(media.media),
             time,
             likes,
           },
@@ -284,7 +304,10 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFuncti
           item: {
             coverURL: media.cover,
             media: media.media,
-            title: t("feed:favorited", { content: media.title }),
+            mediaTitle: media.title,
+            titleKey: "feed:favorited",
+            titleValues: { content: media.title },
+            titleLink: mediaHighlight(media.media),
             time,
             likes,
           },
@@ -301,7 +324,10 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFuncti
           item: {
             coverURL: media.cover,
             media: media.media,
-            title: t("feed:addedToList", { content: media.title }),
+            mediaTitle: media.title,
+            titleKey: "feed:addedToList",
+            titleValues: { content: media.title },
+            titleLink: mediaHighlight(media.media),
             time,
             likes,
           },
@@ -316,7 +342,9 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFuncti
           profile,
           item: {
             coverURL: "",
-            title: t("feed:createdList", { content: activity.list.name }),
+            titleKey: "feed:createdList",
+            titleValues: { content: activity.list.name },
+            titleLink: profile.username ? userHighlight(profile.username, "lists") : undefined,
             time,
             likes,
           },
@@ -332,7 +360,9 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFuncti
           profile,
           item: {
             coverURL: "",
-            title: t("feed:followed", { content: target.name || target.username }),
+            titleKey: "feed:followed",
+            titleValues: { content: target.name || target.username },
+            titleLink: target.username ? userHighlight(target.username, "overview") : undefined,
             time,
             likes,
           },
@@ -347,7 +377,8 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFuncti
           profile,
           item: {
             coverURL: "",
-            title: t("feed:earnedMedal", { content: activity.userMedal.medal.name }),
+            titleKey: "feed:earnedMedal",
+            titleValues: { content: activity.userMedal.medal.name },
             time,
             likes,
           },
@@ -360,7 +391,7 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup, t: TFuncti
           profile,
           item: {
             coverURL: "",
-            title: t("feed:joined"),
+            titleKey: "feed:joined",
             time,
             likes,
           },

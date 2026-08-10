@@ -31,6 +31,22 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
   const hasMediaLink = Boolean(item.media);
   const mediaLink = item.media ? ({ to: item.media.to, params: { slug: item.media.slug } } as const) : null;
 
+  const highlightClass = "font-bold text-foreground hover:text-primary transition-colors";
+  const highlight = item.titleLink ? (
+    item.titleLink.to === "/user/$username" ? (
+      <Link
+        to="/user/$username"
+        params={item.titleLink.params}
+        search={item.titleLink.search}
+        className={highlightClass}
+      />
+    ) : (
+      <Link to={item.titleLink.to} params={item.titleLink.params} className={highlightClass} />
+    )
+  ) : (
+    <strong />
+  );
+
   return (
     <Card className="p-0">
       <CardContent className="flex flex-row p-0 gap-0">
@@ -42,7 +58,7 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
                   src={item.coverURL}
                   layout="fullWidth"
                   aspectRatio={3 / 4}
-                  alt={item.title}
+                  alt={item.mediaTitle ?? ""}
                   className="w-full h-35 rounded-l-xl object-cover"
                 />
               ) : (
@@ -57,7 +73,7 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
                 src={item.coverURL}
                 layout="fullWidth"
                 aspectRatio={3 / 4}
-                alt={item.title}
+                alt={item.mediaTitle ?? ""}
                 className="w-full h-35 rounded-l-xl object-cover"
               />
             ) : (
@@ -69,7 +85,7 @@ export function ActivityItem({ profile, item, onReact, isReacting = false }: fee
         <div className="p-4 sm:py-6 sm:px-6 flex flex-1 min-w-0 flex-col sm:flex-row sm:justify-between gap-3 items-start">
           <div className="flex flex-col items-start justify-between gap-3 min-w-0 h-full">
             <span className="text-md font-semibold capitalize">
-              <Trans>{item.title}</Trans>
+              <Trans i18nKey={item.titleKey} values={item.titleValues} components={{ strong: highlight }} />
             </span>
 
             <div className="flex items-center gap-3">

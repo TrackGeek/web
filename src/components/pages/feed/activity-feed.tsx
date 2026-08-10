@@ -25,13 +25,13 @@ export function ActivityFeed({ query, toggleReaction, emptyTitle, emptyDescripti
     return groups
       .map((group, index) => ({
         key: `${group.type}-${group.createdAt}-${index}`,
-        entry: normalizeActivityGroup(group, t),
+        entry: normalizeActivityGroup(group),
       }))
       .filter(
         (row): row is { key: string; entry: NonNullable<ReturnType<typeof normalizeActivityGroup>> } =>
           row.entry !== null,
       );
-  }, [data, t]);
+  }, [data]);
 
   const sentinelRef = useInfiniteScroll(fetchNextPage, hasNextPage && !isFetchingNextPage);
 

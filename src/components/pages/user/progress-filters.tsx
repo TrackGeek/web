@@ -53,6 +53,7 @@ interface ProgressFiltersPanelProps {
 export function ProgressFiltersPanel({ contentType, options, isLoading, value, onChange }: ProgressFiltersPanelProps) {
   const { t } = useTranslation();
   const [genreSearch, setGenreSearch] = useState("");
+  const [genresOpen, setGenresOpen] = useState(false);
 
   // Hardcover ships free-form tags instead of genres, so only recognized ones are offered.
   const genreOptions = useMemo(() => {
@@ -68,6 +69,11 @@ export function ProgressFiltersPanel({ contentType, options, isLoading, value, o
 
     return genreOptions.filter((genre) => getGenreLabel(t, genre).toLowerCase().includes(query));
   }, [genreOptions, genreSearch, t]);
+
+  const selectedGenresLabel = useMemo(
+    () => value.genres.map((genre) => getGenreLabel(t, genre)).join(", "),
+    [value.genres, t],
+  );
 
   const years = options?.years ?? [];
   const releaseStates = options?.releaseStates ?? [];
@@ -89,15 +95,23 @@ export function ProgressFiltersPanel({ contentType, options, isLoading, value, o
           <Combobox
             items={visibleGenres}
             multiple
+            open={genresOpen}
+            onOpenChange={(open) => {
+              setGenresOpen(open);
+              if (!open) setGenreSearch("");
+            }}
             value={value.genres}
             onValueChange={(genres: string[]) => onChange({ genres })}
           >
             <ComboboxInput
               placeholder={t("library:genres")}
-              showClear
+              showClear={value.genres.length > 0}
               className="bg-muted/50"
-              value={genreSearch}
-              onChange={(event) => setGenreSearch(event.target.value)}
+              title={selectedGenresLabel}
+              value={genresOpen ? genreSearch : selectedGenresLabel}
+              onChange={(event) => {
+                if (genresOpen) setGenreSearch(event.target.value);
+              }}
             />
             <ComboboxContent>
               <ComboboxList>

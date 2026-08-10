@@ -523,7 +523,7 @@ function GameDetailsRoute() {
             onToggleFavorite={() => toggleFavoriteMutation.mutate()}
             favoriteDisabled={toggleFavoriteMutation.isPending || favoriteQuery.isFetching}
           >
-            <GameModal gameId={game.id} onClose={() => setMoreOpen(false)} />
+            <GameModal gameId={game.id} platforms={game.platforms} onClose={() => setMoreOpen(false)} />
           </MoreOptionsDialog>
         </>
       )}

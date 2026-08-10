@@ -19,9 +19,12 @@ import {
 } from "@/hooks/game.ts";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
+import { cn } from "@/lib/utils";
+import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../../ui/command";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../ui/dialog";
 import { Field, FieldError, FieldLabel } from "../../ui/field";
 import { Input } from "../../ui/input";
@@ -64,6 +67,7 @@ function createProgressSchema(t: TFunction) {
   return z.object({
     status: z.string(),
     completion: z.string(),
+    platforms: z.array(z.string()),
     hoursPlayed: z.string(),
     playCount: z.string(),
     startDate: z.date().optional(),
@@ -94,6 +98,7 @@ interface GameProgressData {
   status: ProgressStatus;
   playCount: number | null;
   completion: string | null;
+  platforms: string[] | null;
   hoursPlayed: number | null;
   notes: string | null;
   startedAt: string | null;
@@ -117,17 +122,31 @@ interface UploadingScreenshot {
   previewUrl: string;
 }
 
+interface GamePlatform {
+  name?: string | null;
+  slug?: string | null;
+}
+
 interface GameModalProps {
   gameId?: string;
+  platforms?: GamePlatform[];
   onClose?: () => void;
 }
 
-export function GameModal({ gameId, onClose }: GameModalProps) {
+export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const session = useSession();
   const userId = session?.data?.user?.id;
   const enabled = !!userId && !!gameId;
+
+  const platformOptions = useMemo(
+    () =>
+      (platforms ?? []).flatMap((platform) =>
+        platform.name && platform.slug ? [{ name: platform.name, slug: platform.slug }] : [],
+      ),
+    [platforms],
+  );
 
   const progressSchema = useMemo(() => createProgressSchema(t), [t]);
 
@@ -136,6 +155,7 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
     defaultValues: {
       status: "",
       completion: "",
+      platforms: [],
       hoursPlayed: "",
       playCount: "",
       startDate: undefined,
@@ -234,16 +254,23 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
     const progress = progressQuery.data;
     if (!progress) return;
 
+    const nameBySlug = new Map(platformOptions.map((platform) => [platform.slug, platform.name]));
+
     progressForm.reset({
       status: ENUM_TO_STATUS[progress.status] ?? "",
       completion: progress.completion ?? "",
+      platforms: (progress.platforms ?? []).flatMap((slug) => {
+        const name = nameBySlug.get(slug);
+
+        return name ? [name] : [];
+      }),
       hoursPlayed: progress.hoursPlayed != null ? String(progress.hoursPlayed) : "",
       playCount: progress.playCount != null ? String(progress.playCount) : "",
       notes: progress.notes ?? "",
       startDate: progress.startedAt ? new Date(progress.startedAt) : undefined,
       finishDate: progress.completedAt ? new Date(progress.completedAt) : undefined,
     });
-  }, [progressQuery.data, progressForm.reset]);
+  }, [progressQuery.data, progressForm.reset, platformOptions]);
 
   useEffect(() => {
     const review = reviewQuery.data;
@@ -287,6 +314,7 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
         status,
         playCount: data.playCount ? Number(data.playCount) : undefined,
         completion: data.completion || undefined,
+        platforms: platformOptions.length > 0 ? data.platforms : undefined,
         hoursPlayed: data.hoursPlayed ? Number(data.hoursPlayed) : undefined,
         notes: data.notes.trim() || undefined,
         startedAt: data.startDate ?? undefined,
@@ -499,6 +527,72 @@ export function GameModal({ gameId, onClose }: GameModalProps) {
                   )}
                 />
               </Field>
+
+              {platformOptions.length > 0 && (
+                <Field>
+                  <FieldLabel htmlFor="platforms" className="text-sm font-medium">
+                    {t("library:platforms")}
+                  </FieldLabel>
+                  <Controller
+                    control={progressForm.control}
+                    name="platforms"
+                    render={({ field }) => (
+                      <Popover>
+                        <PopoverTrigger
+                          id="platforms"
+                          className="border-input focus-visible:border-ring focus-visible:ring-ring/50 dark:bg-input/30 dark:hover:bg-input/50 flex min-h-9 w-full cursor-pointer items-center justify-between gap-2 rounded-md border bg-background px-3 py-1.5 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px]"
+                        >
+                          {field.value.length > 0 ? (
+                            <span className="flex flex-wrap gap-1">
+                              {field.value.map((platform) => (
+                                <Badge key={platform} variant="secondary">
+                                  {platform}
+                                </Badge>
+                              ))}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground">{t("feed:selectPlatforms")}</span>
+                          )}
+                          <Icon icon={"lucide:chevron-down"} className="size-4 shrink-0 opacity-50" />
+                        </PopoverTrigger>
+                        <PopoverContent align="start" className="w-(--radix-popover-trigger-width) p-0">
+                          <Command>
+                            <CommandInput placeholder={t("user:search")} />
+                            <CommandList>
+                              <CommandEmpty>{t("common:noResults")}</CommandEmpty>
+                              <CommandGroup>
+                                {platformOptions.map((platform) => (
+                                  <CommandItem
+                                    key={platform.slug}
+                                    value={platform.name}
+                                    className="cursor-pointer pr-8"
+                                    onSelect={() =>
+                                      field.onChange(
+                                        field.value.includes(platform.name)
+                                          ? field.value.filter((selected) => selected !== platform.name)
+                                          : [...field.value, platform.name],
+                                      )
+                                    }
+                                  >
+                                    {platform.name}
+                                    <Icon
+                                      icon={"lucide:check"}
+                                      className={cn(
+                                        "absolute right-2 size-4 text-foreground",
+                                        field.value.includes(platform.name) ? "opacity-100" : "opacity-0",
+                                      )}
+                                    />
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                    )}
+                  />
+                </Field>
+              )}
 
               <Field>
                 <FieldLabel htmlFor="hoursPlayed" className="text-sm font-medium">

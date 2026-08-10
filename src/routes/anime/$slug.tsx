@@ -429,14 +429,16 @@ function AnimeDetailsRoute() {
   }
 
   const toggleEpisodeMutation = useMutation({
-    mutationFn: ({ episode, watched }: { episode: number; watched: boolean }) => {
+    mutationFn: async ({ episode, watched }: { episode: number; watched: boolean }) => {
       if (watched) {
-        return api.delete(apiEndpoints.animeEpisodeWatch, {
+        await api.delete(apiEndpoints.animeEpisodeWatch, {
           data: { animeId: anime?.id, episode },
         });
+
+        return;
       }
 
-      return api.post(apiEndpoints.animeEpisodeWatch, {
+      await api.post(apiEndpoints.animeEpisodeWatch, {
         animeId: anime?.id,
         episodes: [{ episode, status: "Completed" }],
       });

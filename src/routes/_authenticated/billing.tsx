@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { createColumnHelper, FlexRender, tableFeatures, useTable } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { useQueryState } from "nuqs";
 import { useMemo, useState } from "react";
@@ -28,7 +28,9 @@ export const Route = createFileRoute("/_authenticated/billing")({
   component: BillingRoute,
 });
 
-const columnHelper = createColumnHelper<ApiTypes.Payment>();
+const features = tableFeatures({});
+
+const columnHelper = createColumnHelper<typeof features, ApiTypes.Payment>();
 
 function formatCurrency(value: number, currency: string) {
   return new Intl.NumberFormat("en-US", {
@@ -375,40 +377,41 @@ function BillingRoute() {
   const payments = paymentsQuery.data?.payments?.items ?? [];
 
   const columns = useMemo(
-    () => [
-      columnHelper.accessor("name", {
-        header: () => t("pages:billing.payments.columns.name"),
-        cell: (info) => <span className="font-medium">{info.getValue()}</span>,
-      }),
-      columnHelper.accessor("createdAt", {
-        header: () => (
-          <span className="flex items-center gap-1">
-            <Icon icon={"lucide:calendar"} className="size-3.5" />
-            {t("pages:billing.payments.columns.date")}
-          </span>
-        ),
-        cell: (info) => format(new Date(info.getValue()), "dd/MM/yyyy HH:mm:ss"),
-      }),
-      columnHelper.accessor("value", {
-        header: () => t("pages:billing.payments.columns.amount"),
-        cell: (info) => formatCurrency(info.getValue(), info.row.original.currency),
-      }),
-      columnHelper.accessor("frequency", {
-        header: () => t("pages:billing.payments.columns.frequency"),
-        cell: (info) => t(`pages:billing.payments.frequencies.${info.getValue()}`),
-      }),
-      columnHelper.accessor("status", {
-        header: () => t("pages:billing.payments.columns.status"),
-        cell: (info) => <PaymentStatusBadge status={info.getValue()} />,
-      }),
-    ],
+    () =>
+      columnHelper.columns([
+        columnHelper.accessor("name", {
+          header: () => t("pages:billing.payments.columns.name"),
+          cell: (info) => <span className="font-medium">{info.getValue()}</span>,
+        }),
+        columnHelper.accessor("createdAt", {
+          header: () => (
+            <span className="flex items-center gap-1">
+              <Icon icon={"lucide:calendar"} className="size-3.5" />
+              {t("pages:billing.payments.columns.date")}
+            </span>
+          ),
+          cell: (info) => format(new Date(info.getValue()), "dd/MM/yyyy HH:mm:ss"),
+        }),
+        columnHelper.accessor("value", {
+          header: () => t("pages:billing.payments.columns.amount"),
+          cell: (info) => formatCurrency(info.getValue(), info.row.original.currency),
+        }),
+        columnHelper.accessor("frequency", {
+          header: () => t("pages:billing.payments.columns.frequency"),
+          cell: (info) => t(`pages:billing.payments.frequencies.${info.getValue()}`),
+        }),
+        columnHelper.accessor("status", {
+          header: () => t("pages:billing.payments.columns.status"),
+          cell: (info) => <PaymentStatusBadge status={info.getValue()} />,
+        }),
+      ]),
     [t],
   );
 
-  const table = useReactTable({
-    data: payments,
+  const table = useTable({
+    features,
     columns,
-    getCoreRowModel: getCoreRowModel(),
+    data: payments,
   });
 
   return (
@@ -452,7 +455,7 @@ function BillingRoute() {
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <TableHead key={header.id}>
-                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                        {header.isPlaceholder ? null : <FlexRender header={header} />}
                       </TableHead>
                     ))}
                   </TableRow>
@@ -467,8 +470,10 @@ function BillingRoute() {
                       setPaymentId(row.original.id);
                     }}
                   >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                    {row.getAllCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        <FlexRender cell={cell} />
+                      </TableCell>
                     ))}
                   </TableRow>
                 ))}

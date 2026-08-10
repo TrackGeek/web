@@ -294,14 +294,16 @@ function TVShowDetailsPage() {
   }
 
   const toggleEpisodeMutation = useMutation({
-    mutationFn: ({ season, episode, watched }: { season: number; episode: number; watched: boolean }) => {
+    mutationFn: async ({ season, episode, watched }: { season: number; episode: number; watched: boolean }) => {
       if (watched) {
-        return api.delete(apiEndpoints.tvShowEpisodeWatch, {
+        await api.delete(apiEndpoints.tvShowEpisodeWatch, {
           data: { tvShowId: item?.id, season, episode },
         });
+
+        return;
       }
 
-      return api.post(apiEndpoints.tvShowEpisodeWatch, {
+      await api.post(apiEndpoints.tvShowEpisodeWatch, {
         tvShowId: item?.id,
         episodes: [{ season, episode, status: "Completed" }],
       });

@@ -464,8 +464,8 @@ export const EditorProvider = ({ className, extensions, limit, placeholder, ...p
     Subscript,
     Slash.configure({
       suggestion: {
-        items: async ({ editor, query }) => {
-          const items = await defaultSlashSuggestions({ editor, query });
+        items: async ({ editor, query, signal }) => {
+          const items = await defaultSlashSuggestions({ editor, query, signal });
 
           if (!query) {
             return items;

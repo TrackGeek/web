@@ -590,12 +590,10 @@ export namespace ApiTypes {
     book: { id: string; hardcoverId: number; title: string; imageUrl: string | null } | null;
   }
 
-  /** Provider-agnostic release state of a media (mirrors the backend `MediaReleaseState` enum). */
   export type MediaReleaseState = "Unreleased" | "Ongoing" | "Hiatus" | "Finished" | "Cancelled";
 
   export type ProgressStatusCounts = Partial<Record<ProgressStatus, number>>;
 
-  /** Sortable columns of a progress listing (mirrors the backend `ProgressSortBy` enum). */
   export type ProgressSortBy = "name" | "addedAt" | "updatedAt" | "releaseDate";
 
   export type ProgressSortOrder = "asc" | "desc";

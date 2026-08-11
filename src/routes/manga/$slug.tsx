@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -45,6 +45,16 @@ interface MangaCast {
   role: string | null;
   imageUrl: string | null;
 }
+
+interface MangaTitle {
+  type: string;
+  title: string;
+}
+
+const TITLE_TYPE_LANG: Record<string, string | undefined> = {
+  Japanese: "ja",
+  English: "en",
+};
 
 export const Route = createFileRoute("/manga/$slug")({
   loader: async ({ params }) => {
@@ -101,6 +111,16 @@ function MangaDetailsRoute() {
     enabled: !!manga?.id,
   });
   const reviews = reviewsData?.data;
+
+  const alternativeTitles = useMemo<MangaTitle[]>(() => {
+    const seen = new Set<string>([manga?.title?.trim().toLowerCase()].filter(Boolean));
+    return ((manga?.titles ?? []) as MangaTitle[]).filter((entry) => {
+      const key = entry.title?.trim().toLowerCase();
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [manga?.titles, manga?.title]);
 
   const queryClient = useQueryClient();
 
@@ -371,6 +391,28 @@ function MangaDetailsRoute() {
           </div>
         )}
       </Grid>
+
+      {alternativeTitles.length > 0 && (
+        <div className="bg-muted/50 rounded-lg border border-border overflow-hidden">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
+            <Icon icon="lucide:languages" className="size-4 text-muted-foreground" />
+            <p className="text-sm font-medium text-muted-foreground">{t("library:alternativeTitles")}</p>
+          </div>
+          <ul className="divide-y divide-border">
+            {alternativeTitles.map((entry) => (
+              <li key={`${entry.type}-${entry.title}`} className="px-4 py-3 space-y-1">
+                <p
+                  className="text-sm font-medium text-card-foreground wrap-break-word"
+                  lang={TITLE_TYPE_LANG[entry.type]}
+                >
+                  {entry.title}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {isAuthenticated && <RefreshData sourceURL={manga.url} onSubmit={() => mutation.mutate()} />}
       {(manga.external?.length >= 1 || manga.anilistId) && (
         <div className="flex flex-wrap gap-3 items-center justify-center">

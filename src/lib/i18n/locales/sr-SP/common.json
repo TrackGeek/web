@@ -123,6 +123,7 @@
   "screenshots": "Screenshots",
   "language": "Language",
   "goHome": "Go Home",
+  "noResults": "No results found",
   "notFound": "The page you're looking for might have been <br />moved or doesn't exist.",
   "notLoggedIn": "You need to be logged in.",
   "somethingWentWrong": "Something went wrong. Please try again later.",

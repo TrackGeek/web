@@ -182,8 +182,8 @@
     }
   },
   "contentTypes": {
-    "title": "Content types",
-    "description": "Choose which content types appear across TrackGeek. At least one must stay enabled."
+    "title": "Tipos de conteúdo",
+    "description": "Escolha quais tipos de conteúdo aparecem no TrackGeek. Pelo menos um deve permanecer ativado."
   },
   "password": {
     "title": "Senha",

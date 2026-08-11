@@ -3,6 +3,7 @@ import { useQueryState } from "nuqs";
 import { useTranslation } from "react-i18next";
 import { FeedListFollowing } from "@/components/pages/feed/user-following";
 import { FeedListGlobal } from "@/components/pages/feed/user-global";
+import { FeedListTrending } from "@/components/pages/feed/user-trending";
 import { StillReading, StillWatching } from "@/components/shared/sidebar/still-tracking";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "@/lib/auth/client";
@@ -32,6 +33,7 @@ function FeedRoute() {
             <TabsList className="md:w-2/4">
               {isAuthenticated && <TabsTrigger value="following">{t("common:following")}</TabsTrigger>}
               <TabsTrigger value="global">{t("feed:global")}</TabsTrigger>
+              <TabsTrigger value="trending">{t("feed:trending")}</TabsTrigger>
             </TabsList>
           </div>
 
@@ -43,6 +45,10 @@ function FeedRoute() {
 
           <TabsContent value="global">
             <FeedListGlobal />
+          </TabsContent>
+
+          <TabsContent value="trending">
+            <FeedListTrending enabled={activeTab === "trending"} />
           </TabsContent>
         </Tabs>
       </div>

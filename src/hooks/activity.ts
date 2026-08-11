@@ -15,6 +15,10 @@ export function followingActivitiesQueryKey() {
   return ["following-activities"];
 }
 
+export function trendingActivitiesQueryKey() {
+  return ["trending-activities"];
+}
+
 export function useUserActivities(userId: string) {
   return useInfiniteQuery({
     queryKey: userActivitiesQueryKey(userId),
@@ -47,6 +51,24 @@ export function useGlobalActivities() {
         .then(({ data }) => data.activities),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => (lastPage.inPage < lastPage.pages ? lastPage.inPage + 1 : undefined),
+  });
+}
+
+export function useTrendingActivities(enabled = true) {
+  return useInfiniteQuery({
+    queryKey: trendingActivitiesQueryKey(),
+    queryFn: ({ pageParam }) =>
+      api
+        .get<ApiTypes.GetActivitiesByUserResponse>(apiEndpoints.getActivitiesTrending, {
+          params: {
+            page: pageParam,
+            itemsPerPage: ITEMS_PER_PAGE,
+          },
+        })
+        .then(({ data }) => data.activities),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => (lastPage.inPage < lastPage.pages ? lastPage.inPage + 1 : undefined),
+    enabled,
   });
 }
 

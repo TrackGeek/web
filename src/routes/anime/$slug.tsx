@@ -79,6 +79,16 @@ interface AnimeCharacter {
   voiceActors: AnimeVoiceActor[];
 }
 
+interface AnimeTitle {
+  type: string;
+  title: string;
+}
+
+const TITLE_TYPE_LANG: Record<string, string | undefined> = {
+  Japanese: "ja",
+  English: "en",
+};
+
 interface AnimeRelationEntry {
   malId: number;
   title: string;
@@ -249,6 +259,16 @@ function AnimeDetailsRoute() {
     [episodesQuery.data],
   );
   const reviews = reviewsQuery.data;
+
+  const alternativeTitles = useMemo<AnimeTitle[]>(() => {
+    const seen = new Set<string>([anime?.title?.trim().toLowerCase()].filter(Boolean));
+    return ((anime?.titles ?? []) as AnimeTitle[]).filter((entry) => {
+      const key = entry.title?.trim().toLowerCase();
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [anime?.titles, anime?.title]);
 
   const [episodesSentinel, setEpisodesSentinel] = useState<HTMLDivElement | null>(null);
 
@@ -651,6 +671,28 @@ function AnimeDetailsRoute() {
           </div>
         )}
       </Grid>
+
+      {alternativeTitles.length > 0 && (
+        <div className="bg-muted/50 rounded-lg border border-border overflow-hidden">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
+            <Icon icon="lucide:languages" className="size-4 text-muted-foreground" />
+            <p className="text-sm font-medium text-muted-foreground">{t("library:alternativeTitles")}</p>
+          </div>
+          <ul className="divide-y divide-border">
+            {alternativeTitles.map((entry) => (
+              <li key={`${entry.type}-${entry.title}`} className="px-4 py-3 space-y-1">
+                <p
+                  className="text-sm font-medium text-card-foreground wrap-break-word"
+                  lang={TITLE_TYPE_LANG[entry.type]}
+                >
+                  {entry.title}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {isAuthenticated && (
         <RefreshData sourceURL={`https://myanimelist.net/anime/${anime.malId}`} onSubmit={() => mutation.mutate()} />
       )}

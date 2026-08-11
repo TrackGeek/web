@@ -1,14 +1,16 @@
 import { Icon } from "@iconify/react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Markdown } from "@/components/shared/comments/markdown";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { CreditsSection } from "./credits-section";
 import { PersonHero } from "./person-hero";
 import type { Person } from "./types";
 
 const BIOGRAPHY_CLAMP_LENGTH = 480;
 
-function Biography({ biography, name }: { biography: string; name: string }) {
+function Biography({ biography, name, markdown }: { biography: string; name: string; markdown?: boolean }) {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const isLong = biography.length > BIOGRAPHY_CLAMP_LENGTH;
@@ -19,9 +21,15 @@ function Biography({ biography, name }: { biography: string; name: string }) {
         {t("library:biography")}
       </h2>
 
-      <p className="whitespace-pre-line text-muted-foreground leading-relaxed">
-        {isLong && !expanded ? `${biography.slice(0, BIOGRAPHY_CLAMP_LENGTH).trimEnd()}…` : biography}
-      </p>
+      {markdown ? (
+        <Markdown className={cn("text-base text-muted-foreground", isLong && !expanded && "line-clamp-6")}>
+          {biography}
+        </Markdown>
+      ) : (
+        <p className="whitespace-pre-line text-muted-foreground leading-relaxed">
+          {isLong && !expanded ? `${biography.slice(0, BIOGRAPHY_CLAMP_LENGTH).trimEnd()}…` : biography}
+        </p>
+      )}
 
       {isLong && (
         <Button
@@ -38,7 +46,7 @@ function Biography({ biography, name }: { biography: string; name: string }) {
   );
 }
 
-export function PersonPage({ person }: { person: Person }) {
+export function PersonPage({ person, creditsHeading }: { person: Person; creditsHeading?: string }) {
   const { t } = useTranslation();
   const backdropUrl = useMemo(
     () => person.credits.find((credit) => credit.backdropUrl)?.backdropUrl ?? null,
@@ -49,7 +57,9 @@ export function PersonPage({ person }: { person: Person }) {
     <div className="mx-auto w-full space-y-8">
       <PersonHero person={person} backdropUrl={backdropUrl} />
 
-      {person.biography && <Biography biography={person.biography} name={person.name} />}
+      {person.biography && (
+        <Biography biography={person.biography} name={person.name} markdown={person.source === "anilist"} />
+      )}
 
       {person.alsoKnownAs.length > 0 && (
         <section className="space-y-3" aria-labelledby="also-known-as-heading">
@@ -69,7 +79,7 @@ export function PersonPage({ person }: { person: Person }) {
         </section>
       )}
 
-      <CreditsSection credits={person.credits} />
+      <CreditsSection credits={person.credits} heading={creditsHeading} />
     </div>
   );
 }

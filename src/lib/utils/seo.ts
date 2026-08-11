@@ -7,6 +7,14 @@ interface SeoOptions {
   keywords?: string;
 }
 
+export const stripMarkdown = (text: string) =>
+  text
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/[*_~`>#]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
 export const seo = ({
   title,
   description = "The ultimate tracker for anime, games, movies, TV shows, manga, and books. Discover stats, connect with friends, and never lose track of your progress. Open-source, self-hostable, and free.",

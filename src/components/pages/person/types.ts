@@ -1,4 +1,4 @@
-export type PersonCreditMediaType = "movie" | "tv" | "anime";
+export type PersonCreditMediaType = "movie" | "tv" | "anime" | "manga";
 
 export interface PersonCredit {
   key: string;
@@ -24,6 +24,7 @@ export interface PersonStats {
   movies: number;
   tvShows: number;
   anime: number;
+  manga?: number;
   tracked: number;
 }
 
@@ -33,6 +34,7 @@ export interface Person {
   name: string;
   tmdbId: number | null;
   malId: number | null;
+  anilistId?: number | null;
   imageUrl: string | null;
   biography: string | null;
   birthday: string | null;
@@ -45,7 +47,7 @@ export interface Person {
   popularity: number | null;
   images: string[];
   external: Record<string, string | null> | null;
-  source: "tmdb" | "mal";
+  source: "tmdb" | "mal" | "anilist";
   credits: PersonCredit[];
   stats: PersonStats;
 }

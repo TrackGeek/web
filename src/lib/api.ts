@@ -1012,6 +1012,7 @@ export const apiEndpoints = {
   getBookProgress: (userId: string, bookId: string) => `/book/progress?userId=${userId}&bookId=${bookId}`,
   refreshBookData: "/book/refresh",
   getPerson: (slug: string) => `/person/${slug}`,
+  getMangaCast: (slug: string) => `/manga/cast/${slug}`,
   getMovieCompany: (slug: string) => `/movie/company/${slug}`,
   getTvShowCompany: (slug: string) => `/tv/company/${slug}`,
   getAnimeCompany: (slug: string) => `/anime/company/${slug}`,

@@ -8,10 +8,11 @@ const MEDIA_ICONS: Record<PersonCredit["mediaType"], string> = {
   movie: "lucide:clapperboard",
   tv: "lucide:tv",
   anime: "lucide:sparkles",
+  manga: "lucide:library-big",
 };
 
 export function creditUrl(credit: PersonCredit) {
-  return `/${credit.mediaType === "anime" ? "anime" : credit.mediaType}/${credit.id}`;
+  return `/${credit.mediaType}/${credit.id}`;
 }
 
 export function CreditCard({ credit }: { credit: PersonCredit }) {

@@ -1078,6 +1078,7 @@ export const apiEndpoints = {
   deleteReaction: (reactionId: string) => `/reaction/${reactionId}`,
   getActivities: "/activities/global",
   getActivitiesFollowing: "/activities/following",
+  getActivitiesTrending: "/activities/trending",
   getActivitiesByUserId: (userId: string) => `/activities/user/${userId}`,
   getCalendarActivitiesByUserId: (userId: string) => `/activities/user/${userId}/calendar`,
   getNotifications: "/notifications",

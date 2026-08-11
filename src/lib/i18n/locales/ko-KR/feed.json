@@ -6,6 +6,8 @@
   "emptyFollowingDescription": "Follow people to see their activity here.",
   "emptyGlobalTitle": "No activity yet",
   "emptyGlobalDescription": "Activity from across TrackGeek will show up here.",
+  "emptyTrendingTitle": "Nothing trending yet",
+  "emptyTrendingDescription": "The most reacted activity from the last 7 days will show up here.",
   "reviewed": "reviewed <strong>{{content}}</strong>",
   "addScreenshots": "added screenshots of <strong>{{content}}</strong>",
   "rewatched": "rewatched <strong>{{content}}</strong>",
@@ -74,6 +76,7 @@
   "customLists": "Custom Lists",
   "timeline": "Timeline",
   "selectStatus": "Select a status",
+  "selectPlatforms": "Select platforms",
   "format": "Format",
   "selectFormat": "Select a format",
   "formats": {

@@ -48,7 +48,7 @@ function FilterChip({
   );
 }
 
-export function CreditsSection({ credits: allCredits }: { credits: PersonCredit[] }) {
+export function CreditsSection({ credits: allCredits, heading }: { credits: PersonCredit[]; heading?: string }) {
   const { t } = useTranslation();
   const { isVisible, hiddenClass } = useContentTypes();
   const [media, setMedia] = useState<MediaFilter>("all");
@@ -74,6 +74,7 @@ export function CreditsSection({ credits: allCredits }: { credits: PersonCredit[
       movie: credits.filter((credit) => credit.mediaType === "movie").length,
       tv: credits.filter((credit) => credit.mediaType === "tv").length,
       anime: credits.filter((credit) => credit.mediaType === "anime").length,
+      manga: credits.filter((credit) => credit.mediaType === "manga").length,
       cast: credits.filter((credit) => credit.isCast).length,
       crew: credits.filter((credit) => !credit.isCast).length,
     }),
@@ -146,6 +147,7 @@ export function CreditsSection({ credits: allCredits }: { credits: PersonCredit[
     { value: "movie", label: t("common:types.movie", { count: 2 }), count: counts.movie },
     { value: "tv", label: t("common:types.tv", { count: 2 }), count: counts.tv },
     { value: "anime", label: t("common:types.anime", { count: 2 }), count: counts.anime },
+    { value: "manga", label: t("common:types.manga", { count: 2 }), count: counts.manga },
   ];
 
   const roleFilters: { value: RoleFilter; label: string; count: number }[] = [
@@ -164,7 +166,7 @@ export function CreditsSection({ credits: allCredits }: { credits: PersonCredit[
     <section className="space-y-4" aria-labelledby="filmography-heading">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 id="filmography-heading" className="font-bold text-2xl text-card-foreground">
-          {t("library:filmography")}
+          {heading ?? t("library:filmography")}
         </h2>
 
         <div className="relative w-full sm:w-64">

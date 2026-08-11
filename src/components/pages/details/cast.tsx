@@ -4,11 +4,14 @@ import { Image } from "@unpic/react";
 import type { ReactNode } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
+type CastLinkTarget = "/cast/$slug" | "/manga/cast/$slug";
+
 interface CastItemProps {
   imageUrl?: string | null;
   name: string;
   character: string;
   slug?: string | null;
+  to?: CastLinkTarget;
 }
 
 function CastCard({ imageUrl, name, character, isLinked }: CastItemProps & { isLinked: boolean }) {
@@ -45,7 +48,7 @@ function CastCard({ imageUrl, name, character, isLinked }: CastItemProps & { isL
   );
 }
 
-export function CastItem({ imageUrl, character, name, slug }: CastItemProps) {
+export function CastItem({ imageUrl, character, name, slug, to = "/cast/$slug" }: CastItemProps) {
   const card = <CastCard imageUrl={imageUrl} name={name} character={character} isLinked={!!slug} />;
 
   if (!slug) {
@@ -54,7 +57,7 @@ export function CastItem({ imageUrl, character, name, slug }: CastItemProps) {
 
   return (
     <Link
-      to="/cast/$slug"
+      to={to}
       params={{ slug }}
       className="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >

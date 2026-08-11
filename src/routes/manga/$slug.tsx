@@ -1,16 +1,17 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import { type ReactNode, useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { type ReactNode, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
+import { CastItem } from "@/components/pages/details/cast";
 import { CharacterItem } from "@/components/pages/details/character";
 import { CommunityStats } from "@/components/pages/details/community-stats";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { GenrePills } from "@/components/pages/details/genre-pills";
 import { ListItem } from "@/components/pages/details/list";
-import { ListWithMore } from "@/components/pages/details/list-with-more";
+import { ListWithMore, type ListWithMoreEntry } from "@/components/pages/details/list-with-more";
 import { MoreOptionsDialog } from "@/components/pages/details/more-options-dialog";
 import { QuickStatusButtons } from "@/components/pages/details/quick-status-buttons";
 import { Relations } from "@/components/pages/details/relations";
@@ -37,6 +38,23 @@ import { formatDateRange } from "@/lib/utils/date";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
+
+interface MangaCast {
+  anilistId: number;
+  name: string;
+  role: string | null;
+  imageUrl: string | null;
+}
+
+interface MangaTitle {
+  type: string;
+  title: string;
+}
+
+const TITLE_TYPE_LANG: Record<string, string | undefined> = {
+  Japanese: "ja",
+  English: "en",
+};
 
 export const Route = createFileRoute("/manga/$slug")({
   loader: async ({ params }) => {
@@ -93,6 +111,16 @@ function MangaDetailsRoute() {
     enabled: !!manga?.id,
   });
   const reviews = reviewsData?.data;
+
+  const alternativeTitles = useMemo<MangaTitle[]>(() => {
+    const seen = new Set<string>([manga?.title?.trim().toLowerCase()].filter(Boolean));
+    return ((manga?.titles ?? []) as MangaTitle[]).filter((entry) => {
+      const key = entry.title?.trim().toLowerCase();
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [manga?.titles, manga?.title]);
 
   const queryClient = useQueryClient();
 
@@ -260,12 +288,23 @@ function MangaDetailsRoute() {
   const publishedRange =
     formatDateRange(manga.published?.from, manga.published?.to, i18n.language, t) ?? manga.published?.string ?? null;
 
-  const withRole = (person: { name: string; role: string | null }) =>
-    person.role ? `${person.name} (${person.role})` : person.name;
+  const castEntry = (person: MangaCast, index: number): ListWithMoreEntry => ({
+    key: `${person.anilistId}-${index}`,
+    label: (
+      <Link
+        to="/manga/cast/$slug"
+        params={{ slug: String(person.anilistId) }}
+        className="underline-offset-4 transition-colors hover:text-primary hover:underline"
+      >
+        {person.role ? `${person.name} (${person.role})` : person.name}
+      </Link>
+    ),
+  });
 
   const themes: string[] = (manga.themes ?? []).map((theme: string) => getGenreLabel(t, theme));
-  const authors: string[] = (manga.authors ?? []).map(withRole);
-  const staff: string[] = (manga.serializations ?? []).map(withRole);
+  const authors: ListWithMoreEntry[] = (manga.authors ?? []).map(castEntry);
+  const staff: ListWithMoreEntry[] = (manga.serializations ?? []).map(castEntry);
+  const cast: MangaCast[] = [...(manga.authors ?? []), ...(manga.serializations ?? [])];
 
   const sidebar = (
     <>
@@ -352,6 +391,28 @@ function MangaDetailsRoute() {
           </div>
         )}
       </Grid>
+
+      {alternativeTitles.length > 0 && (
+        <div className="bg-muted/50 rounded-lg border border-border overflow-hidden">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
+            <Icon icon="lucide:languages" className="size-4 text-muted-foreground" />
+            <p className="text-sm font-medium text-muted-foreground">{t("library:alternativeTitles")}</p>
+          </div>
+          <ul className="divide-y divide-border">
+            {alternativeTitles.map((entry) => (
+              <li key={`${entry.type}-${entry.title}`} className="px-4 py-3 space-y-1">
+                <p
+                  className="text-sm font-medium text-card-foreground wrap-break-word"
+                  lang={TITLE_TYPE_LANG[entry.type]}
+                >
+                  {entry.title}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {isAuthenticated && <RefreshData sourceURL={manga.url} onSubmit={() => mutation.mutate()} />}
       {(manga.external?.length >= 1 || manga.anilistId) && (
         <div className="flex flex-wrap gap-3 items-center justify-center">
@@ -513,6 +574,7 @@ function MangaDetailsRoute() {
             <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
               <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
+              {cast.length >= 1 && <TabsTrigger value="staff">{t("library:staff")}</TabsTrigger>}
               <TabsTrigger value="lists">
                 {t("library:lists")} ({listsQuery.data?.total ?? 0})
               </TabsTrigger>
@@ -689,6 +751,20 @@ function MangaDetailsRoute() {
             <Grid minColSize={"150px"} className="gap-4">
               {manga.characters?.map((character: { anilistId: number; name: string; imageUrl: string | null }) => (
                 <CharacterItem key={character.anilistId} name={character.name} imageUrl={character.imageUrl ?? ""} />
+              ))}
+            </Grid>
+          </TabsContent>
+          <TabsContent value="staff">
+            <Grid minColSize={"150px"} className="gap-4">
+              {cast.map((person, index) => (
+                <CastItem
+                  key={`${person.anilistId}-${index}`}
+                  to="/manga/cast/$slug"
+                  slug={String(person.anilistId)}
+                  name={person.name}
+                  character={person.role ?? ""}
+                  imageUrl={person.imageUrl}
+                />
               ))}
             </Grid>
           </TabsContent>

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { ShareButton } from "@/components/shared/share-button";
 import { formatLongDate } from "@/lib/utils/date";
+import { stripMarkdown } from "@/lib/utils/seo";
 import type { Person } from "./types";
 
 function ageFrom(birthday: string | null, deathday: string | null): number | null {
@@ -75,6 +76,16 @@ function externalLinks(person: Person) {
     });
   }
 
+  if (external.anilist) {
+    links.push({
+      key: "anilist",
+      href: external.anilist,
+      icon: "simple-icons:anilist",
+      label: "AniList",
+      hover: "hover:text-[#02A9FF]",
+    });
+  }
+
   if (person.homepage) {
     links.push({
       key: "homepage",
@@ -101,6 +112,8 @@ export function PersonHero({ person, backdropUrl }: { person: Person; backdropUr
   const { t, i18n } = useTranslation();
   const age = ageFrom(person.birthday, person.deathday);
   const links = externalLinks(person);
+  const shareText =
+    person.source === "anilist" && person.biography ? stripMarkdown(person.biography) : (person.biography ?? undefined);
 
   return (
     <header className="relative overflow-hidden rounded-xl border border-border">
@@ -116,7 +129,7 @@ export function PersonHero({ person, backdropUrl }: { person: Person; backdropUr
         <div className="absolute inset-0 bg-linear-to-t from-background via-background/85 to-background/50" />
       </div>
 
-      <ShareButton title={person.name} text={person.biography ?? undefined} className="absolute top-4 right-4 z-10" />
+      <ShareButton title={person.name} text={shareText} className="absolute top-4 right-4 z-10" />
 
       <div className="relative flex flex-col items-center gap-6 p-6 sm:flex-row sm:items-end md:gap-8 md:p-8">
         <div className="w-36 shrink-0 overflow-hidden rounded-xl border border-border shadow-2xl sm:w-44 md:w-52">

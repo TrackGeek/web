@@ -995,24 +995,28 @@ function AnimeDetailsRoute() {
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
                     value: `${anime.progressStats?.planToWatch?.percentage ?? 0}%`,
+                    sub: `${anime.progressStats?.planToWatch?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.watching"),
                     icon: "lucide:tv-minimal-play",
                     iconClass: "text-chart-1",
                     value: `${anime.progressStats?.watching?.percentage ?? 0}%`,
+                    sub: `${anime.progressStats?.watching?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.completed"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
                     value: `${anime.progressStats?.completed?.percentage ?? 0}%`,
+                    sub: `${anime.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
                     value: `${anime.progressStats?.dropped?.percentage ?? 0}%`,
+                    sub: `${anime.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
                   },
                 ]}
               />

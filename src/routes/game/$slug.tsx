@@ -689,24 +689,28 @@ function GameDetailsRoute() {
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
                     value: `${game.progressStats?.planToPlay?.percentage ?? 0}%`,
+                    sub: `${game.progressStats?.planToPlay?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.playing"),
                     icon: "lucide:gamepad",
                     iconClass: "text-chart-1",
                     value: `${game.progressStats?.playing?.percentage ?? 0}%`,
+                    sub: `${game.progressStats?.playing?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.played"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
                     value: `${game.progressStats?.completed?.percentage ?? 0}%`,
+                    sub: `${game.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
                     value: `${game.progressStats?.dropped?.percentage ?? 0}%`,
+                    sub: `${game.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
                   },
                 ]}
               />

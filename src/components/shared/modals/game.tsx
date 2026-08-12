@@ -58,7 +58,8 @@ const ENUM_TO_STATUS: Record<ProgressStatus, string> = {
 const COMPLETION_OPTIONS = ["mainStory", "mainStoryPlusExtras", "100%", "endless"] as const;
 
 const SUMMARY_MAX_LENGTH = 500;
-const REVIEW_NOTES_MAX_LENGTH = 1000;
+const REVIEW_NOTES_MAX_LENGTH = 10000;
+const RECOMMENDED_THRESHOLD = 2.5;
 const PROGRESS_NOTES_MAX_LENGTH = 1000;
 // Mirrors the `@MaxLength(255)` on CreateGameScreenshotDto.description.
 const SCREENSHOT_DESCRIPTION_MAX_LENGTH = 255;
@@ -389,6 +390,11 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["gameLists", userId] }),
     onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
   });
+
+  const handleOverallChange = (onChange: (value: string) => void) => (value: string) => {
+    onChange(value);
+    reviewForm.setValue("recommended", Number(value) > RECOMMENDED_THRESHOLD);
+  };
 
   const handleNewListBlur = () => {
     const trimmed = newListInput?.trim();
@@ -870,7 +876,7 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
                       max={5}
                       allowHalf
                       value={field.value}
-                      onValueChange={field.onChange}
+                      onValueChange={handleOverallChange(field.onChange)}
                       allowClear
                     />
                   )}

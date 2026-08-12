@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { BackfillEpisodesDialog } from "@/components/pages/details/backfill-episodes-dialog";
 import { CastItem, PersonLink } from "@/components/pages/details/cast";
+import { CommunityStats } from "@/components/pages/details/community-stats.tsx";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { EpisodeItem } from "@/components/pages/details/episode";
 import { GenrePills } from "@/components/pages/details/genre-pills";
@@ -880,54 +881,38 @@ function TVShowDetailsPage() {
 
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {(
-                  [
-                    {
-                      key: "planToWatch",
-                      label: t("feed:lists.planning"),
-                      icon: "lucide:bookmark",
-                      iconClassName: "text-purple-400",
-                    },
-                    {
-                      key: "watching",
-                      label: t("feed:lists.watching"),
-                      icon: "lucide:tv-minimal-play",
-                      iconClassName: "text-chart-1",
-                    },
-                    {
-                      key: "completed",
-                      label: t("feed:lists.completed"),
-                      icon: "lucide:check-circle",
-                      iconClassName: "text-secondary",
-                    },
-                    {
-                      key: "dropped",
-                      label: t("feed:lists.dropped"),
-                      icon: "lucide:x-circle",
-                      iconClassName: "text-destructive",
-                    },
-                  ] as const
-                ).map((stat) => {
-                  const value = item.progressStats?.[stat.key] ?? { count: 0, percentage: 0 };
-
-                  return (
-                    <div
-                      key={stat.key}
-                      className="bg-linear-to-br from-muted/50 to-muted p-4 rounded-xl border border-border"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-muted-foreground">{stat.label}</span>
-                        <Icon icon={stat.icon} className={cn("size-5", stat.iconClassName)} />
-                      </div>
-                      <p className="text-2xl font-bold text-card-foreground">{value.percentage}%</p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {value.count} {t("library:users")}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
+              <CommunityStats
+                stats={[
+                  {
+                    label: t("feed:lists.planning"),
+                    icon: "lucide:bookmark",
+                    iconClass: "text-purple-400",
+                    value: `${item.progressStats?.planToWatch?.percentage ?? 0}%`,
+                    sub: `${item.progressStats?.planToWatch?.count ?? 0} ${t("library:users")}`,
+                  },
+                  {
+                    label: t("feed:lists.watching"),
+                    icon: "lucide:tv-minimal-play",
+                    iconClass: "text-chart-1",
+                    value: `${item.progressStats?.watching?.percentage ?? 0}%`,
+                    sub: `${item.progressStats?.watching?.count ?? 0} ${t("library:users")}`,
+                  },
+                  {
+                    label: t("feed:lists.completed"),
+                    icon: "lucide:check-circle",
+                    iconClass: "text-secondary",
+                    value: `${item.progressStats?.completed?.percentage ?? 0}%`,
+                    sub: `${item.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
+                  },
+                  {
+                    label: t("feed:lists.dropped"),
+                    icon: "lucide:x-circle",
+                    iconClass: "text-destructive",
+                    value: `${item.progressStats?.dropped?.percentage ?? 0}%`,
+                    sub: `${item.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
+                  },
+                ]}
+              />
             </div>
 
             {(item.trailerId || item.backdrops?.length >= 1) && (

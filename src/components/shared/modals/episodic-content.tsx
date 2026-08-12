@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import z from "zod";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
+import { cn } from "@/lib/utils";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";
@@ -45,8 +46,9 @@ const ENUM_TO_STATUS: Record<ProgressStatus, string> = {
 
 const SUMMARY_MAX_LENGTH = 500;
 const STORY_MAX_LENGTH = 500;
-const REVIEW_NOTES_MAX_LENGTH = 1000;
+const REVIEW_NOTES_MAX_LENGTH = 10000;
 const PROGRESS_NOTES_MAX_LENGTH = 1000;
+const RECOMMENDED_THRESHOLD = 2.5;
 
 function createProgressSchema(t: TFunction) {
   return z.object({
@@ -296,7 +298,6 @@ export function EpisodicContentModal({
   });
 
   const summary = reviewForm.watch("summary") ?? "";
-  const storyText = reviewForm.watch("storyText") ?? "";
   const reviewNotes = reviewForm.watch("notes") ?? "";
 
   const [newListInput, setNewListInput] = useState<string | null>(null);
@@ -584,6 +585,11 @@ export function EpisodicContentModal({
     onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
   });
 
+  const handleOverallChange = (onChange: (value: string) => void) => (value: string) => {
+    onChange(value);
+    reviewForm.setValue("recommended", Number(value) > RECOMMENDED_THRESHOLD);
+  };
+
   const handleNewListBlur = () => {
     const trimmed = newListInput?.trim();
     if (trimmed) {
@@ -623,9 +629,14 @@ export function EpisodicContentModal({
 
   return (
     <div className="flex flex-col gap-6 p-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-        <div className="flex flex-col gap-4">
-          <div className="bg-muted/30 rounded-lg h-72 p-4 border border-border/50">
+      <div
+        className={cn(
+          "grid grid-cols-1 gap-6",
+          cfg.hasProgressNotes ? "lg:grid-cols-2 items-stretch" : "lg:grid-cols-3",
+        )}
+      >
+        <div className={cn(cfg.hasProgressNotes ? "flex flex-col gap-4" : "contents")}>
+          <div className={cn("bg-muted/30 rounded-lg p-4 border border-border/50", cfg.hasProgressNotes && "h-72")}>
             <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
               <Icon icon={"lucide:star"} className="size-4" />
               {t("common:progress")}
@@ -699,7 +710,7 @@ export function EpisodicContentModal({
             </div>
           </div>
 
-          <div className="bg-muted/30 rounded-lg p-4 border h-55 border-border/50">
+          <div className={cn("bg-muted/30 rounded-lg p-4 border border-border/50", cfg.hasProgressNotes && "h-55")}>
             <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
               <Icon icon={"lucide:calendar"} className="size-4" />
               {t("feed:timeline")}
@@ -771,7 +782,7 @@ export function EpisodicContentModal({
           </div>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className={cn(cfg.hasProgressNotes ? "flex flex-col gap-4" : "contents")}>
           {cfg.hasProgressNotes && (
             <div className="bg-muted/30 rounded-lg h-72 p-4 border border-border/50 flex flex-col">
               <h3 className="font-semibold text-foreground mb-3">{t("feed:notes")}</h3>
@@ -797,11 +808,10 @@ export function EpisodicContentModal({
           )}
 
           <div
-            className={
-              cfg.hasProgressNotes
-                ? "bg-muted/30 rounded-lg p-4 border border-border/50 flex flex-col h-55"
-                : "bg-muted/30 rounded-lg p-4 border border-border/50 flex flex-col flex-1 min-h-[18rem]"
-            }
+            className={cn(
+              "bg-muted/30 rounded-lg p-4 border border-border/50 flex flex-col",
+              cfg.hasProgressNotes && "h-55",
+            )}
           >
             <div className="flex items-center justify-between mb-3 shrink-0">
               <h3 className="font-semibold text-foreground">{t("feed:customLists")}</h3>
@@ -809,7 +819,7 @@ export function EpisodicContentModal({
                 <Icon icon={"lucide:plus"} className="size-3" />
               </Button>
             </div>
-            <div className="space-y-2 flex-1 min-h-0 overflow-y-auto pr-1">
+            <div className={cn("space-y-2 flex-1 min-h-0 overflow-y-auto pr-1", !cfg.hasProgressNotes && "max-h-55")}>
               {lists.map((list) => (
                 <Field key={list.id} orientation="horizontal">
                   <Checkbox
@@ -865,7 +875,7 @@ export function EpisodicContentModal({
                       max={5}
                       allowHalf
                       value={field.value}
-                      onValueChange={field.onChange}
+                      onValueChange={handleOverallChange(field.onChange)}
                       allowClear
                     />
                   )}
@@ -938,32 +948,6 @@ export function EpisodicContentModal({
                 </span>
               </div>
             </Field>
-            {cfg.hasStoryText && (
-              <Field>
-                <FieldLabel htmlFor="story" className="text-sm font-medium">
-                  {t("feed:story")}
-                </FieldLabel>
-                <Textarea
-                  id="story"
-                  placeholder={t("feed:storyPlaceholder")}
-                  className="bg-background resize-none min-h-25"
-                  maxLength={STORY_MAX_LENGTH}
-                  aria-invalid={Boolean(reviewForm.formState.errors.storyText)}
-                  aria-label={t("feed:story")}
-                  {...reviewForm.register("storyText")}
-                />
-                <div className="flex items-center justify-between gap-2">
-                  {reviewForm.formState.errors.storyText?.message ? (
-                    <FieldError>{reviewForm.formState.errors.storyText.message}</FieldError>
-                  ) : (
-                    <span />
-                  )}
-                  <span className="text-xs text-muted-foreground">
-                    {storyText.length}/{STORY_MAX_LENGTH}
-                  </span>
-                </div>
-              </Field>
-            )}
             <Field orientation="horizontal">
               <Controller
                 control={reviewForm.control}

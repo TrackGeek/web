@@ -556,24 +556,28 @@ function BookDetailsRoute() {
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
                     value: `${book.progressStats?.planToRead?.percentage ?? 0}%`,
+                    sub: `${book.progressStats?.planToRead?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.reading"),
                     icon: "lucide:book-open-text",
                     iconClass: "text-chart-1",
                     value: `${book.progressStats?.reading?.percentage ?? 0}%`,
+                    sub: `${book.progressStats?.reading?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.read"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
                     value: `${book.progressStats?.completed?.percentage ?? 0}%`,
+                    sub: `${book.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
                     value: `${book.progressStats?.dropped?.percentage ?? 0}%`,
+                    sub: `${book.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
                   },
                 ]}
               />

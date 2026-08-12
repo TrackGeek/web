@@ -38,7 +38,8 @@ const ENUM_TO_STATUS: Record<ProgressStatus, string> = {
 
 const SUMMARY_MAX_LENGTH = 500;
 const STORY_MAX_LENGTH = 500;
-const REVIEW_NOTES_MAX_LENGTH = 1000;
+const REVIEW_NOTES_MAX_LENGTH = 10000;
+const RECOMMENDED_THRESHOLD = 2.5;
 
 function createReviewSchema(t: TFunction) {
   return z.object({
@@ -95,7 +96,6 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
   });
 
   const summary = reviewForm.watch("summary") ?? "";
-  const story = reviewForm.watch("story") ?? "";
   const reviewNotes = reviewForm.watch("notes") ?? "";
 
   const progressQuery = useQuery<MovieProgressData | null>({
@@ -252,6 +252,11 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
     onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
   });
 
+  const handleOverallChange = (onChange: (value: string) => void) => (value: string) => {
+    onChange(value);
+    reviewForm.setValue("recommended", Number(value) > RECOMMENDED_THRESHOLD);
+  };
+
   const handleNewListBlur = () => {
     const trimmed = newListInput?.trim();
     if (trimmed) {
@@ -398,7 +403,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
                       max={5}
                       allowHalf
                       value={field.value}
-                      onValueChange={field.onChange}
+                      onValueChange={handleOverallChange(field.onChange)}
                       allowClear
                     />
                   )}
@@ -498,30 +503,6 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
                 )}
                 <span className="text-xs text-muted-foreground">
                   {reviewNotes.length}/{REVIEW_NOTES_MAX_LENGTH}
-                </span>
-              </div>
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="story" className="text-sm font-medium">
-                {t("feed:story")}
-              </FieldLabel>
-              <Textarea
-                id="story"
-                placeholder={t("feed:storyPlaceholder")}
-                className="bg-background resize-none min-h-25"
-                maxLength={STORY_MAX_LENGTH}
-                aria-invalid={Boolean(reviewForm.formState.errors.story)}
-                aria-label={t("feed:story")}
-                {...reviewForm.register("story")}
-              />
-              <div className="flex items-center justify-between gap-2">
-                {reviewForm.formState.errors.story?.message ? (
-                  <FieldError>{reviewForm.formState.errors.story.message}</FieldError>
-                ) : (
-                  <span />
-                )}
-                <span className="text-xs text-muted-foreground">
-                  {story.length}/{STORY_MAX_LENGTH}
                 </span>
               </div>
             </Field>

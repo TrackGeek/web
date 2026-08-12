@@ -16,7 +16,8 @@ import type { ApiTypes } from "@/lib/api.ts";
 
 const SUMMARY_MAX_LENGTH = 500;
 const STORY_MAX_LENGTH = 500;
-const NOTES_MAX_LENGTH = 1000;
+const NOTES_MAX_LENGTH = 10000;
+const RECOMMENDED_THRESHOLD = 2.5;
 
 interface ReviewModalProps {
   open: boolean;
@@ -106,6 +107,11 @@ export function ReviewModal({
   const notes = String(form.watch("notes") ?? "");
   const story = String(form.watch("story") ?? "");
 
+  const handleOverallChange = (onChange: (value: string) => void) => (value: string) => {
+    onChange(value);
+    form.setValue("recommended", Number(value) > RECOMMENDED_THRESHOLD);
+  };
+
   const handleSubmit = form.handleSubmit(async (data) => {
     const payload: Record<string, unknown> = {
       [`${config.mediaKey}Id`]: review[config.mediaKey]?.id,
@@ -173,7 +179,7 @@ export function ReviewModal({
                       allowHalf
                       allowClear
                       value={String(field.value ?? "0")}
-                      onValueChange={field.onChange}
+                      onValueChange={handleOverallChange(field.onChange)}
                     />
                   )}
                 />

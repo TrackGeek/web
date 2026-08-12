@@ -46,7 +46,8 @@ const ENUM_TO_STATUS: Record<ProgressStatus, string> = {
 const REVIEW_STATUSES = ["completed", "dropped", "rereading"];
 
 const SUMMARY_MAX_LENGTH = 500;
-const REVIEW_NOTES_MAX_LENGTH = 1000;
+const REVIEW_NOTES_MAX_LENGTH = 10000;
+const RECOMMENDED_THRESHOLD = 2.5;
 
 function createProgressSchema() {
   return z.object({
@@ -292,6 +293,19 @@ export function BookModal({ bookId, totalPages, onClose }: BookModalProps) {
     onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
   });
 
+  const handleStatusChange = (onChange: (value: string) => void) => (value: string) => {
+    onChange(value);
+
+    if (value === "completed" && totalPages) {
+      progressForm.setValue("pagesRead", String(totalPages));
+    }
+  };
+
+  const handleOverallChange = (onChange: (value: string) => void) => (value: string) => {
+    onChange(value);
+    reviewForm.setValue("recommended", Number(value) > RECOMMENDED_THRESHOLD);
+  };
+
   const handleNewListBlur = () => {
     const trimmed = newListInput?.trim();
     if (trimmed) {
@@ -346,7 +360,7 @@ export function BookModal({ bookId, totalPages, onClose }: BookModalProps) {
                 control={progressForm.control}
                 name="status"
                 render={({ field }) => (
-                  <Select value={field.value || undefined} onValueChange={field.onChange}>
+                  <Select value={field.value || undefined} onValueChange={handleStatusChange(field.onChange)}>
                     <SelectTrigger id="status" className="w-full bg-background">
                       <SelectValue placeholder={t("feed:selectStatus")} />
                     </SelectTrigger>
@@ -533,7 +547,7 @@ export function BookModal({ bookId, totalPages, onClose }: BookModalProps) {
                       max={5}
                       allowHalf
                       value={field.value}
-                      onValueChange={field.onChange}
+                      onValueChange={handleOverallChange(field.onChange)}
                       allowClear
                     />
                   )}

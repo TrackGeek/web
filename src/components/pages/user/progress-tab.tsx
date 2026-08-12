@@ -72,7 +72,6 @@ export function UserProgressTab({
   const [isRandomizing, setIsRandomizing] = useState(false);
 
   const debouncedSearch = useDebounce(searchQuery, 600);
-  // Free-text inputs are debounced so typing doesn't fire a request per keystroke.
   const debouncedYear = useDebounce(filters.year, 500);
   const appliedFilters = useMemo<ProgressFilters>(
     () => ({ ...filters, year: debouncedYear, search: debouncedSearch }),
@@ -127,8 +126,6 @@ export function UserProgressTab({
   const activeSection = sections.find((section) => section.status === selectedStatus);
   const activeFilterCount = countActiveFilters(filters);
 
-  // Filters and status are content-type specific, so they reset whenever the type changes —
-  // including when another tab switches it through `onContentTypeChange`.
   useEffect(() => {
     setSearchQuery("");
     setFilters(EMPTY_PROGRESS_FILTERS);
@@ -283,7 +280,7 @@ export function UserProgressTab({
                   key={item.id}
                   title={item.title}
                   url={`/${item.contentType}/${item.slug}`}
-                  imageURL={item.image}
+                  imageURL={item.image || "/placeholder/cover.webp"}
                   rating={item.score ?? undefined}
                 />
               ))}

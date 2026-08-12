@@ -651,24 +651,28 @@ function MangaDetailsRoute() {
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
                     value: `${manga.progressStats?.planning?.percentage ?? 0}%`,
+                    sub: `${manga.progressStats?.planning?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.reading"),
                     icon: "lucide:book-open-text",
                     iconClass: "text-chart-1",
                     value: `${manga.progressStats?.reading?.percentage ?? 0}%`,
+                    sub: `${manga.progressStats?.reading?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.read"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
                     value: `${manga.progressStats?.completed?.percentage ?? 0}%`,
+                    sub: `${manga.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
                     value: `${manga.progressStats?.dropped?.percentage ?? 0}%`,
+                    sub: `${manga.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
                   },
                 ]}
               />

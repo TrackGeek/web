@@ -11,6 +11,10 @@ interface ProgressContentConfig {
   activeStatus: ApiTypes.ProgressStatus;
   /** `feed:lists.*` i18n key for the active status. */
   activeLabelKey: "watching" | "playing" | "reading" | "planning";
+  /** Repeat-consumption status, when the content type has one. */
+  repeatStatus?: ApiTypes.ProgressStatus;
+  /** `feed:lists.*` i18n key for the repeat status. */
+  repeatLabelKey?: "rewatching" | "replaying" | "rereading";
 }
 
 export const PROGRESS_CONTENT: Record<ApiTypes.ReviewContentType, ProgressContentConfig> = {
@@ -19,18 +23,24 @@ export const PROGRESS_CONTENT: Record<ApiTypes.ReviewContentType, ProgressConten
     responseKey: "animeProgresses",
     activeStatus: "Watching",
     activeLabelKey: "watching",
+    repeatStatus: "Rewatching",
+    repeatLabelKey: "rewatching",
   },
   manga: {
     endpoint: apiEndpoints.mangaProgress,
     responseKey: "mangaProgresses",
     activeStatus: "Reading",
     activeLabelKey: "reading",
+    repeatStatus: "Rereading",
+    repeatLabelKey: "rereading",
   },
   tv: {
     endpoint: apiEndpoints.tvShowProgress,
     responseKey: "tvShowProgresses",
     activeStatus: "Watching",
     activeLabelKey: "watching",
+    repeatStatus: "Rewatching",
+    repeatLabelKey: "rewatching",
   },
   movie: {
     endpoint: apiEndpoints.movieProgress,
@@ -43,12 +53,16 @@ export const PROGRESS_CONTENT: Record<ApiTypes.ReviewContentType, ProgressConten
     responseKey: "gameProgresses",
     activeStatus: "Playing",
     activeLabelKey: "playing",
+    repeatStatus: "Replaying",
+    repeatLabelKey: "replaying",
   },
   book: {
     endpoint: apiEndpoints.bookProgress,
     responseKey: "bookProgresses",
     activeStatus: "Reading",
     activeLabelKey: "reading",
+    repeatStatus: "Rereading",
+    repeatLabelKey: "rereading",
   },
 };
 
@@ -58,12 +72,13 @@ export interface ProgressStatusSection {
   labelKey: string;
 }
 
-/** Ordered status sections for a content type: active first, then planning/completed/paused/dropped. */
+/** Ordered status sections for a content type: active and repeat first, then planning/completed/paused/dropped. */
 export function progressStatusSections(contentType: ApiTypes.ReviewContentType): ProgressStatusSection[] {
-  const { activeStatus, activeLabelKey } = PROGRESS_CONTENT[contentType];
+  const { activeStatus, activeLabelKey, repeatStatus, repeatLabelKey } = PROGRESS_CONTENT[contentType];
 
   return [
     { status: activeStatus, labelKey: `feed:lists.${activeLabelKey}` },
+    ...(repeatStatus && repeatLabelKey ? [{ status: repeatStatus, labelKey: `feed:lists.${repeatLabelKey}` }] : []),
     ...(activeStatus !== "Planning" ? [{ status: "Planning" as const, labelKey: "feed:lists.planning" }] : []),
     { status: "Completed" as const, labelKey: "feed:lists.completed" },
     { status: "Paused" as const, labelKey: "feed:lists.paused" },

@@ -17,11 +17,15 @@ export function RefreshData({ sourceURL, onSubmit, lastRefreshedAt }: RefreshDat
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
+        const relativeTime = formatRelativeTime(lastRefreshedAt, i18n.language);
+
         <Button variant="outline" className="w-full group">
           {t("library:refreshData")}
-          <span className="text-muted-foreground -ml-1 group-hover:text-muted">
-            • {formatRelativeTime(lastRefreshedAt, i18n.language)}
-          </span>
+          {relativeTime && (
+            <span className="text-muted-foreground -ml-1 group-hover:text-muted">
+              • {relativeTime}
+            </span>
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent>

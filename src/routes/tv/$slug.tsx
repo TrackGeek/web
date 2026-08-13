@@ -15,6 +15,7 @@ import { GenrePills } from "@/components/pages/details/genre-pills";
 import { ListItem } from "@/components/pages/details/list";
 import { EpisodeProgress, type SeasonData } from "@/components/pages/details/progress";
 import { ReviewItem } from "@/components/pages/details/review-item";
+import { WatchProviders } from "@/components/pages/details/watch-providers";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { Comments } from "@/components/shared/comments";
@@ -849,6 +850,8 @@ function TVShowDetailsPage() {
                 )}
               </Grid>
             </div>
+
+            <WatchProviders mediaType="tv" slug={slug} />
 
             {isAuthenticated && (
               <>

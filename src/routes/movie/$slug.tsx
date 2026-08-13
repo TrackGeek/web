@@ -384,6 +384,7 @@ function MovieDetailsRoute() {
       </Grid>
       {isAuthenticated && (
         <RefreshData
+          lastRefreshedAt={movie.lastRefreshedAt}
           sourceURL={`https://www.themoviedb.org/movie/${movie.tmdbId}`}
           onSubmit={() => mutation.mutate()}
         />

@@ -663,6 +663,7 @@ function TVShowDetailsPage() {
       {isAuthenticated && (
         <RefreshData
           sourceURL={`https://www.themoviedb.org/tv/${item.tmdbId}`}
+          lastRefreshedAt={item.lastRefreshedAt}
           onSubmit={() => {
             mutation.mutate();
           }}
@@ -851,8 +852,6 @@ function TVShowDetailsPage() {
               </Grid>
             </div>
 
-            <WatchProviders mediaType="tv" slug={slug} />
-
             {isAuthenticated && (
               <>
                 <EpisodeProgress
@@ -881,6 +880,8 @@ function TVShowDetailsPage() {
                 />
               </>
             )}
+
+            <WatchProviders mediaType="tv" slug={slug} />
 
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>

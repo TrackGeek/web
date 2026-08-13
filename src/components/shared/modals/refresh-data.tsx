@@ -14,11 +14,10 @@ interface RefreshDataProps {
 export function RefreshData({ sourceURL, onSubmit, lastRefreshedAt }: RefreshDataProps) {
   const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
+  const relativeTime = formatRelativeTime(lastRefreshedAt, i18n.language);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        const relativeTime = formatRelativeTime(lastRefreshedAt, i18n.language);
-
         <Button variant="outline" className="w-full group">
           {t("library:refreshData")}
           {relativeTime && (

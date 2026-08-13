@@ -34,7 +34,7 @@ import { RatingGroupAdvanced } from "../../ui/rating-group-advanced";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import { Textarea } from "../../ui/textarea";
 
-type ProgressStatus = "Planning" | "Playing" | "Completed" | "Paused" | "Dropped";
+type ProgressStatus = "Planning" | "Playing" | "Replaying" | "Completed" | "Paused" | "Dropped";
 
 const STATUS_OPTIONS = ["planning", "playing", "played", "replaying", "dropped", "paused"] as const;
 
@@ -42,7 +42,7 @@ const STATUS_TO_ENUM: Record<string, ProgressStatus> = {
   planning: "Planning",
   playing: "Playing",
   played: "Completed",
-  replaying: "Playing",
+  replaying: "Replaying",
   dropped: "Dropped",
   paused: "Paused",
 };
@@ -50,6 +50,7 @@ const STATUS_TO_ENUM: Record<string, ProgressStatus> = {
 const ENUM_TO_STATUS: Record<ProgressStatus, string> = {
   Planning: "planning",
   Playing: "playing",
+  Replaying: "replaying",
   Completed: "played",
   Paused: "paused",
   Dropped: "dropped",

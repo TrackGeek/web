@@ -437,7 +437,11 @@ function BookDetailsRoute() {
         )}
       </Grid>
       {isAuthenticated && (
-        <RefreshData sourceURL={`https://hardcover.app/books/${book.slug}`} onSubmit={() => mutation.mutate()} />
+        <RefreshData
+          lastRefreshedAt={book.lastRefreshedAt}
+          sourceURL={`https://hardcover.app/books/${book.slug}`}
+          onSubmit={() => mutation.mutate()}
+        />
       )}
     </>
   );

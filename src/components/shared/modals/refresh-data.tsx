@@ -1,22 +1,30 @@
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { formatRelativeTime } from "@/lib/utils/date";
 import { Button } from "../../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../ui/dialog";
 
 interface RefreshDataProps {
   sourceURL: string;
   onSubmit?: () => void;
+  lastRefreshedAt: Date;
 }
 
-export function RefreshData({ sourceURL, onSubmit }: RefreshDataProps) {
-  const { t } = useTranslation();
+export function RefreshData({ sourceURL, onSubmit, lastRefreshedAt }: RefreshDataProps) {
+  const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
+  const relativeTime = formatRelativeTime(lastRefreshedAt, i18n.language);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full group">
           {t("library:refreshData")}
+          {relativeTime && (
+            <span className="text-muted-foreground -ml-1 group-hover:text-muted">
+              • {relativeTime}
+            </span>
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent>

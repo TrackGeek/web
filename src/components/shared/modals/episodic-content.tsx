@@ -23,7 +23,7 @@ import { RatingGroupAdvanced } from "../../ui/rating-group-advanced";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import { Textarea } from "../../ui/textarea";
 
-type ProgressStatus = "Planning" | "Watching" | "Completed" | "Paused" | "Dropped";
+type ProgressStatus = "Planning" | "Watching" | "Rewatching" | "Completed" | "Paused" | "Dropped";
 
 const STATUS_OPTIONS = ["planning", "watching", "completed", "rewatching", "dropped", "paused"] as const;
 
@@ -31,7 +31,7 @@ const STATUS_TO_ENUM: Record<string, ProgressStatus> = {
   planning: "Planning",
   watching: "Watching",
   completed: "Completed",
-  rewatching: "Watching",
+  rewatching: "Rewatching",
   dropped: "Dropped",
   paused: "Paused",
 };
@@ -39,10 +39,13 @@ const STATUS_TO_ENUM: Record<string, ProgressStatus> = {
 const ENUM_TO_STATUS: Record<ProgressStatus, string> = {
   Planning: "planning",
   Watching: "watching",
+  Rewatching: "rewatching",
   Completed: "completed",
   Paused: "paused",
   Dropped: "dropped",
 };
+
+const REVIEW_STATUSES = ["completed", "dropped", "rewatching"];
 
 const SUMMARY_MAX_LENGTH = 500;
 const STORY_MAX_LENGTH = 500;
@@ -613,7 +616,7 @@ export function EpisodicContentModal({
 
       const review = reviewForm.getValues();
 
-      if (progress.status === "completed" && Number(review.overall) > 0) {
+      if (REVIEW_STATUSES.includes(progress.status) && Number(review.overall) > 0) {
         if (!(await reviewForm.trigger())) return;
 
         await saveReviewMutation.mutateAsync(review);
@@ -856,7 +859,7 @@ export function EpisodicContentModal({
         </div>
       </div>
 
-      {(progressStatus === "completed" || progressStatus === "dropped") && (
+      {REVIEW_STATUSES.includes(progressStatus) && (
         <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
             <Icon icon={"lucide:pen-line"} className="size-4" />

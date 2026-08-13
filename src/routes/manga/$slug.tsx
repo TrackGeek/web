@@ -413,7 +413,9 @@ function MangaDetailsRoute() {
         </div>
       )}
 
-      {isAuthenticated && <RefreshData sourceURL={manga.url} onSubmit={() => mutation.mutate()} />}
+      {isAuthenticated && (
+        <RefreshData lastRefreshedAt={manga.lastRefreshedAt} sourceURL={manga.url} onSubmit={() => mutation.mutate()} />
+      )}
       {(manga.external?.length >= 1 || manga.anilistId) && (
         <div className="flex flex-wrap gap-3 items-center justify-center">
           {(() => {

@@ -568,6 +568,9 @@ export namespace ApiTypes {
     | "Watching"
     | "Playing"
     | "Reading"
+    | "Rewatching"
+    | "Replaying"
+    | "Rereading"
     | "Completed"
     | "Paused"
     | "Dropped"
@@ -958,6 +961,35 @@ export namespace ApiTypes {
       items: ActivityCalendarItem[];
     };
   }
+
+  export type WatchProviderOffer = "flatrate" | "free" | "ads" | "rent" | "buy";
+
+  export interface WatchProvider {
+    id: number;
+    name: string;
+    logoUrl: string | null;
+    displayPriority: number | null;
+  }
+
+  export type WatchProviders = Record<WatchProviderOffer, WatchProvider[]> & {
+    region: string;
+    link: string | null;
+    availableRegions: string[];
+  };
+
+  export interface WatchProviderRegion {
+    code: string;
+    name: string;
+    nativeName: string;
+  }
+
+  export interface GetWatchProvidersResponse {
+    watchProviders: WatchProviders;
+  }
+
+  export interface GetWatchProviderRegionsResponse {
+    regions: WatchProviderRegion[];
+  }
 }
 
 export const apiEndpoints = {
@@ -1018,6 +1050,8 @@ export const apiEndpoints = {
   getAnimeCompany: (slug: string) => `/anime/company/${slug}`,
   getGameCompany: (slug: string) => `/game/company/${slug}`,
   getMovieDetails: (id: string) => `/movie/detail/${id}`,
+  getMovieWatchProviders: (id: string) => `/movie/detail/${id}/watch/provider`,
+  getWatchProviderRegions: "/movie/watch/provider/region",
   getMovieFranchise: (slug: string) => `/movie/franchise/${slug}`,
   getMovieAiring: "/movie/top?filter=airing",
   getMovieUpcoming: "/movie/top?filter=upcoming",
@@ -1028,6 +1062,7 @@ export const apiEndpoints = {
   getMovieProgress: (userId: string, movieId: string) => `/movie/progress?userId=${userId}&movieId=${movieId}`,
   refreshMovieData: "/movie/refresh",
   getTvShowDetails: (id: string) => `/tv/detail/${id}`,
+  getTvShowWatchProviders: (id: string) => `/tv/detail/${id}/watch/provider`,
   getTvShowSeasonDetails: (id: string) => `/tv/detail/${id}/season`,
   getTvShowSeasonEpisodes: (id: string, seasonNumber: number) => `/tv/detail/${id}/season/${seasonNumber}/episode`,
   getTvShowAiring: "/tv/top?filter=airing",

@@ -15,6 +15,7 @@ import { GenrePills } from "@/components/pages/details/genre-pills";
 import { ListItem } from "@/components/pages/details/list";
 import { EpisodeProgress, type SeasonData } from "@/components/pages/details/progress";
 import { ReviewItem } from "@/components/pages/details/review-item";
+import { WatchProviders } from "@/components/pages/details/watch-providers";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { Comments } from "@/components/shared/comments";
@@ -662,6 +663,7 @@ function TVShowDetailsPage() {
       {isAuthenticated && (
         <RefreshData
           sourceURL={`https://www.themoviedb.org/tv/${item.tmdbId}`}
+          lastRefreshedAt={item.lastRefreshedAt}
           onSubmit={() => {
             mutation.mutate();
           }}
@@ -878,6 +880,8 @@ function TVShowDetailsPage() {
                 />
               </>
             )}
+
+            <WatchProviders mediaType="tv" slug={slug} />
 
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>

@@ -14,6 +14,7 @@ import { ListItem } from "@/components/pages/details/list";
 import { MoreOptionsDialog } from "@/components/pages/details/more-options-dialog";
 import { QuickStatusButtons } from "@/components/pages/details/quick-status-buttons";
 import { ReviewItem } from "@/components/pages/details/review-item";
+import { WatchProviders } from "@/components/pages/details/watch-providers";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { Comments } from "@/components/shared/comments";
@@ -383,6 +384,7 @@ function MovieDetailsRoute() {
       </Grid>
       {isAuthenticated && (
         <RefreshData
+          lastRefreshedAt={movie.lastRefreshedAt}
           sourceURL={`https://www.themoviedb.org/movie/${movie.tmdbId}`}
           onSubmit={() => mutation.mutate()}
         />
@@ -578,6 +580,8 @@ function MovieDetailsRoute() {
                 )}
               </Grid>
             </div>
+
+            <WatchProviders mediaType="movie" slug={slug} />
 
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>

@@ -291,5 +291,18 @@
   "titleCount_one": "{{count}} title",
   "titleCount_other": "{{count}} titles",
   "episodeCount_one": "{{count}} ep",
-  "episodeCount_other": "{{count}} eps"
+  "episodeCount_other": "{{count}} eps",
+  "watchProviders": {
+    "title": "Where to Watch",
+    "searchCountry": "Search country",
+    "stream": "Stream",
+    "free": "Free",
+    "ads": "Free with ads",
+    "rent": "Rent",
+    "buy": "Buy",
+    "notAvailable": "Not available in {{country}}",
+    "notAvailableDescription": "Nothing is listed for this country right now. Try another one.",
+    "attribution": "Streaming availability provided by JustWatch",
+    "viewAll": "See all options"
+  }
 }

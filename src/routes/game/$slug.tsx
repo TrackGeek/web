@@ -434,7 +434,7 @@ function GameDetailsRoute() {
   if (isLoading || reviewsQuery.isLoading) return <LoadingDetails />;
   if (isError || reviewsQuery.isError || !game) return <ErrorComponent />;
 
-  const coverUrl = game.coverUrl || "/placeholder/cover.webp";
+  const coverUrl = game.coverUrl.replace("t_cover_big", "t_original") || "/placeholder/cover.webp";
   const releaseDate = formatLongDate(game.firstReleaseDate, i18n.language);
 
   const toCompanyEntry = (c: { companyId: number | null; companyName: string }) => ({

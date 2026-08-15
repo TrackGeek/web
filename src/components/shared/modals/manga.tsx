@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import z from "zod";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
+import { registerInteger } from "@/lib/utils";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";
@@ -386,7 +387,7 @@ export function MangaModal({ mangaId, totalChapters, onClose }: MangaModalProps)
                   min={0}
                   max={totalChapters ?? undefined}
                   placeholder="0"
-                  {...progressForm.register("chaptersRead")}
+                  {...registerInteger(progressForm.register("chaptersRead"))}
                 />
                 {!!totalChapters && (
                   <InputGroupAddon align="inline-end">
@@ -406,7 +407,7 @@ export function MangaModal({ mangaId, totalChapters, onClose }: MangaModalProps)
                 min={0}
                 placeholder="0"
                 className="bg-background"
-                {...progressForm.register("readCount")}
+                {...registerInteger(progressForm.register("readCount"))}
               />
             </Field>
           </div>

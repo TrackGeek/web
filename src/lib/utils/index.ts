@@ -1,8 +1,34 @@
 import { type ClassValue, clsx } from "clsx";
+import type { ChangeEvent, KeyboardEvent } from "react";
+import type { UseFormRegisterReturn } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+const NON_INTEGER_KEYS = [".", ",", "e", "E", "+", "-"];
+
+export function blockNonIntegerKeys(event: KeyboardEvent<HTMLInputElement>) {
+  if (NON_INTEGER_KEYS.includes(event.key)) {
+    event.preventDefault();
+  }
+}
+
+export function toIntegerValue(value: string): string {
+  return value.split(/[.,]/)[0].replace(/[^0-9]/g, "");
+}
+
+export function registerInteger<T extends string>(field: UseFormRegisterReturn<T>) {
+  return {
+    ...field,
+    step: 1,
+    onKeyDown: blockNonIntegerKeys,
+    onChange: (event: ChangeEvent<HTMLInputElement>) => {
+      event.target.value = toIntegerValue(event.target.value);
+      return field.onChange(event);
+    },
+  };
 }
 
 export function franchiseSlug(id: number, name: string): string {

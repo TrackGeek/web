@@ -19,7 +19,7 @@ import {
 } from "@/hooks/game.ts";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
-import { cn } from "@/lib/utils";
+import { cn, registerInteger } from "@/lib/utils";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
@@ -611,7 +611,7 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
                     type="number"
                     min={0}
                     placeholder="0"
-                    {...progressForm.register("hoursPlayed")}
+                    {...registerInteger(progressForm.register("hoursPlayed"))}
                   />
                   <InputGroupAddon align="inline-end">
                     <InputGroupText>h</InputGroupText>
@@ -629,7 +629,7 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
                   min={0}
                   placeholder="0"
                   className="bg-background"
-                  {...progressForm.register("playCount")}
+                  {...registerInteger(progressForm.register("playCount"))}
                 />
               </Field>
             </div>

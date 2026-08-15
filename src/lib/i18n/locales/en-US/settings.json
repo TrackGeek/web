@@ -239,5 +239,19 @@
       "download": "Download",
       "copied": "Backup codes copied to clipboard."
     }
+  },
+  "deleteAccount": {
+    "title": "Delete account",
+    "description": "Permanently erase your account and everything tracked on it.",
+    "warning": "Your library, lists, reviews, screenshots, comments and activity are erased for good. An active donation subscription is cancelled. This cannot be undone.",
+    "button": "Delete account",
+    "dialog": {
+      "title": "Delete your account?",
+      "description": "We'll email <strong>{{email}}</strong> a confirmation link. Your account is only deleted after you open that link, and it expires in 3 hours.",
+      "confirmLabel": "Type <strong>{{username}}</strong> to confirm",
+      "confirm": "Send confirmation email"
+    },
+    "success": "Check your inbox — open the link we sent to finish deleting your account.",
+    "error": "Failed to start the account deletion. Please try again."
   }
 }

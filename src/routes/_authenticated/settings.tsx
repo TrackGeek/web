@@ -5,6 +5,7 @@ import { SettingsImportTab } from "@/components/pages/settings/import-tab";
 import { SettingsPreferencesTab } from "@/components/pages/settings/preferences-tab";
 import { SettingsProfileTab } from "@/components/pages/settings/profile-tab";
 import { ConnectionsCard } from "@/components/shared/settings/connections-card";
+import { DeleteAccountCard } from "@/components/shared/settings/delete-account-card";
 import { PasswordCard } from "@/components/shared/settings/password-card";
 import { TwoFactorCard } from "@/components/shared/settings/two-factor-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -49,6 +50,8 @@ function SettingsRoute() {
           <PasswordCard />
 
           <TwoFactorCard />
+
+          <DeleteAccountCard />
         </div>
       </TabsContent>
 

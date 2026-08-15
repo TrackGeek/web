@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { SettingsExportCard } from "@/components/pages/settings/export-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useContentTypes } from "@/hooks/content-type";
@@ -31,6 +32,8 @@ export function SettingsImportTab() {
 
   return (
     <div className="flex flex-col gap-4 lg:gap-8">
+      <SettingsExportCard />
+
       <Card>
         <CardHeader>
           <CardTitle>

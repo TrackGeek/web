@@ -41,6 +41,7 @@ import { formatLongDate } from "@/lib/utils/date";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { seo } from "@/lib/utils/seo";
+import { parseVideoUrl, videoEmbedUrl, videoProviderIcon, videoThumbnailUrl } from "@/lib/utils/video";
 
 const websiteIconMap: Record<string, { icon: string; hex?: string }> = {
   Steam: { icon: "simple-icons:steam" },
@@ -780,12 +781,14 @@ function GameDetailsRoute() {
                           createAndAddListMutation.mutate(newListName.trim());
                         }
                       }}
+                      aria-label={t("feed:newList")}
                     />
                     <Button
                       size="icon"
                       className="size-7 shrink-0"
                       disabled={!newListName.trim() || createAndAddListMutation.isPending}
                       onClick={() => createAndAddListMutation.mutate(newListName.trim())}
+                      aria-label={t("feed:newList")}
                     >
                       <Icon icon="lucide:plus" className="size-3.5" />
                     </Button>
@@ -912,6 +915,10 @@ function GameDetailsRoute() {
 
 function UserScreenshot({ screenshot }: { screenshot: ApiTypes.GameScreenshot }) {
   const [revealed, setRevealed] = useState(!screenshot.isSpoiler);
+  const [playing, setPlaying] = useState(false);
+
+  const video = screenshot.type === "Video" ? parseVideoUrl(screenshot.url) : null;
+  const thumbnail = video ? videoThumbnailUrl(video) : null;
 
   if (!revealed) {
     return (
@@ -921,7 +928,13 @@ function UserScreenshot({ screenshot }: { screenshot: ApiTypes.GameScreenshot })
         onClick={() => setRevealed(true)}
         aria-label={t("comments:spoilerReveal")}
       >
-        <img src={screenshot.url} alt="" className="blur-xl" />
+        {video ? (
+          <div className="flex aspect-video w-full items-center justify-center bg-neutral-950">
+            {thumbnail && <img src={thumbnail} alt="" className="size-full object-cover blur-xl" />}
+          </div>
+        ) : (
+          <img src={screenshot.url} alt="" className="blur-xl" />
+        )}
         <span className="absolute inset-0 flex items-center justify-center gap-2 text-sm font-medium text-white bg-black/40">
           <Icon icon="lucide:eye-off" className="size-4" />
           {t("comments:spoilerReveal")}
@@ -932,9 +945,33 @@ function UserScreenshot({ screenshot }: { screenshot: ApiTypes.GameScreenshot })
 
   return (
     <figure>
-      <ImageZoom>
-        <img src={screenshot.url} alt={screenshot.description ?? ""} />
-      </ImageZoom>
+      {video ? (
+        playing ? (
+          <iframe
+            src={videoEmbedUrl(video)}
+            title={screenshot.description ?? video.url}
+            className="aspect-video w-full rounded-lg"
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+            allowFullScreen
+          />
+        ) : (
+          <button
+            type="button"
+            className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-lg bg-neutral-950"
+            onClick={() => setPlaying(true)}
+            aria-label={screenshot.description ?? video.url}
+          >
+            {thumbnail && <img src={thumbnail} alt="" className="size-full object-cover" />}
+            <span className="absolute inset-0 flex items-center justify-center">
+              <Icon icon={videoProviderIcon(video.provider)} className="size-12 text-white/70" />
+            </span>
+          </button>
+        )
+      ) : (
+        <ImageZoom>
+          <img src={screenshot.url} alt={screenshot.description ?? ""} />
+        </ImageZoom>
+      )}
       {screenshot.description && (
         <figcaption className="text-sm text-muted-foreground mt-1">{screenshot.description}</figcaption>
       )}

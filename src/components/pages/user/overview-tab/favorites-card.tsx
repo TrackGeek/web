@@ -1,8 +1,22 @@
 import { Icon } from "@iconify/react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFavorites } from "@/hooks/favorite";
 import { FavoriteCard, type FavoriteItem, favoriteToItem } from "./favorite-card";
+
+const VISIBLE_ITEMS = 6;
+
+function pickRandom<T>(source: T[], count: number) {
+  const pool = [...source];
+
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+
+  return pool.slice(0, count);
+}
 
 interface FavoritesCardProps {
   userId: string;
@@ -16,10 +30,14 @@ export function FavoritesCard({ userId, onSeeMore }: FavoritesCardProps) {
 
   const firstPage = favoritesQuery.data?.pages[0];
   const total = firstPage?.total ?? 0;
-  const items = (firstPage?.items ?? [])
-    .map(favoriteToItem)
-    .filter((item): item is FavoriteItem => item !== null)
-    .slice(0, 6);
+
+  const items = useMemo(() => {
+    const available = (firstPage?.items ?? [])
+      .map(favoriteToItem)
+      .filter((item): item is FavoriteItem => item !== null);
+
+    return pickRandom(available, VISIBLE_ITEMS);
+  }, [firstPage]);
 
   return (
     <Card>
@@ -31,7 +49,7 @@ export function FavoritesCard({ userId, onSeeMore }: FavoritesCardProps) {
             {t("user:favorites")}
           </div>
 
-          {total > 6 && (
+          {total > VISIBLE_ITEMS && (
             <button
               type="button"
               onClick={onSeeMore}

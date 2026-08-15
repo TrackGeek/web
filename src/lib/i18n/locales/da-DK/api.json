@@ -14,6 +14,7 @@
   "FAILED_TO_UPLOAD_IMAGE": "Failed to upload the image.",
   "RATE_LIMIT_EXCEEDED": "Rate limit exceeded. Please try again later.",
   "GAME_NOT_FOUND": "The requested game was not found.",
+  "INVALID_VIDEO_URL": "Only YouTube videos and Twitch videos or clips are supported.",
   "GAME_ALREADY_REFRESHED": "The game has already been refreshed recently. Please wait before refreshing again.",
   "TV_SHOW_ALREADY_REFRESHED": "The tv show has already been refreshed recently. Please wait before refreshing again.",
   "MOVIE_ALREADY_REFRESHED": "The movie has already been refreshed recently. Please wait before refreshing again.",

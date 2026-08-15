@@ -14,6 +14,7 @@
   "FAILED_TO_UPLOAD_IMAGE": "Falha ao carregar a imagem.",
   "RATE_LIMIT_EXCEEDED": "Limite de restrição excedido. Por favor, tente novamente mais tarde.",
   "GAME_NOT_FOUND": "O jogo solicitado não foi encontrado.",
+  "INVALID_VIDEO_URL": "Only YouTube videos and Twitch videos or clips are supported.",
   "GAME_ALREADY_REFRESHED": "O jogo já foi atualizado recentemente. Aguarde antes de atualizar novamente.",
   "TV_SHOW_ALREADY_REFRESHED": "A série já foi atualizada recentemente. Aguarde antes de atualizar novamente.",
   "MOVIE_ALREADY_REFRESHED": "O filme já foi atualizado recentemente. Aguarde antes de atualizar novamente.",

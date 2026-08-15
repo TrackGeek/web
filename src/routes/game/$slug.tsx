@@ -205,7 +205,7 @@ const buildRelationsData = (game: GameRelations, currentSlug: string) => {
   const leftRows = placeColumn(leftRelations, -1, "left");
   const rightRows = placeColumn(rightRelations, 1, "right");
 
-  const bandOffset = ((Math.max(leftRows, rightRows) - 1) / 2) * LAYOUT.V_SPACING + LAYOUT.V_SPACING;
+  const bandOffset = ((Math.max(leftRows, rightRows, 1) - 1) / 2) * LAYOUT.V_SPACING + LAYOUT.V_SPACING;
 
   const placeRow = (relations: Relation[], direction: -1 | 1, prefix: string) => {
     const rows = gridLines(relations.length);

@@ -805,9 +805,15 @@ export namespace ApiTypes {
     coverUrl: string | null;
   }
 
+  export type GameMediaType = "Image" | "Video";
+
+  export type GameVideoProvider = "YouTube" | "Twitch";
+
   export interface GameScreenshot {
     id: string;
     url: string;
+    type: GameMediaType;
+    provider: GameVideoProvider | null;
     description: string | null;
     isSpoiler: boolean;
     userId: string;

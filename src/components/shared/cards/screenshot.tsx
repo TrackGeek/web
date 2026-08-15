@@ -10,11 +10,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import type { ApiTypes } from "@/lib/api.ts";
+import { parseVideoUrl, videoEmbedUrl, videoProviderIcon, videoThumbnailUrl } from "@/lib/utils/video";
 import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog";
 
 export interface ScreenshotImage {
   id: string;
   url: string;
+  type: ApiTypes.GameMediaType;
   description?: string | null;
   isSpoiler: boolean;
 }
@@ -83,14 +86,13 @@ export function ScreenshotItem({ title, imageURL, images }: ScreenshotProps) {
             {images.map((image, index) => (
               <CarouselItem key={image.id} className="pl-0">
                 <div className="relative flex h-[85vh] w-full items-center justify-center">
-                  <Image
-                    src={image.url}
-                    layout="fullWidth"
-                    aspectRatio={16 / 9}
-                    className={`max-h-full w-full object-contain transition-all duration-300 ${
-                      isRevealed(image) ? "" : "blur-2xl"
-                    }`}
-                    alt={`${title} – screenshot ${index + 1} of ${images.length}`}
+                  <ScreenshotMedia
+                    image={image}
+                    title={title}
+                    index={index}
+                    total={images.length}
+                    isActive={index + 1 === current}
+                    isRevealed={isRevealed(image)}
                   />
                   {!isRevealed(image) && (
                     <button
@@ -130,5 +132,64 @@ export function ScreenshotItem({ title, imageURL, images }: ScreenshotProps) {
         </Carousel>
       </DialogContent>
     </Dialog>
+  );
+}
+
+interface ScreenshotMediaProps {
+  image: ScreenshotImage;
+  title: string;
+  index: number;
+  total: number;
+  isActive: boolean;
+  isRevealed: boolean;
+}
+
+function ScreenshotMedia({ image, title, index, total, isActive, isRevealed }: ScreenshotMediaProps) {
+  const blur = isRevealed ? "" : "blur-2xl";
+  const label = `${title} – ${index + 1} of ${total}`;
+
+  const video = image.type === "Video" ? parseVideoUrl(image.url) : null;
+
+  if (!video) {
+    return (
+      <Image
+        src={image.url}
+        layout="fullWidth"
+        aspectRatio={16 / 9}
+        className={`max-h-full w-full object-contain transition-all duration-300 ${blur}`}
+        alt={label}
+      />
+    );
+  }
+
+  const thumbnail = videoThumbnailUrl(video);
+
+  if (!isActive || !isRevealed) {
+    return (
+      <div className="flex aspect-video max-h-full w-full items-center justify-center bg-neutral-950">
+        {thumbnail && (
+          <Image
+            src={thumbnail}
+            layout="fullWidth"
+            aspectRatio={16 / 9}
+            className={`max-h-full w-full object-contain transition-all duration-300 ${blur}`}
+            alt={label}
+          />
+        )}
+        <span className="absolute inset-0 flex items-center justify-center">
+          <Icon icon={videoProviderIcon(video.provider)} className="size-16 text-white/70" />
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <iframe
+      src={videoEmbedUrl(video)}
+      title={label}
+      className="aspect-video max-h-full w-full"
+      allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+      allowFullScreen
+    />
   );
 }

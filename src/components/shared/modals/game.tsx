@@ -20,6 +20,7 @@ import {
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { cn, registerInteger } from "@/lib/utils";
+import { parseVideoUrl, videoProviderIcon, videoThumbnailUrl } from "@/lib/utils/video";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
@@ -62,7 +63,6 @@ const SUMMARY_MAX_LENGTH = 500;
 const REVIEW_NOTES_MAX_LENGTH = 10000;
 const RECOMMENDED_THRESHOLD = 2.5;
 const PROGRESS_NOTES_MAX_LENGTH = 1000;
-// Mirrors the `@MaxLength(255)` on CreateGameScreenshotDto.description.
 const SCREENSHOT_DESCRIPTION_MAX_LENGTH = 255;
 
 function createProgressSchema(t: TFunction) {
@@ -191,6 +191,7 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
   const [newListInput, setNewListInput] = useState<string | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [uploadingScreenshots, setUploadingScreenshots] = useState<UploadingScreenshot[]>([]);
+  const [videoUrl, setVideoUrl] = useState("");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -434,7 +435,6 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
         continue;
       }
 
-      // Each file uploads on its own so a single failure doesn't drop the others.
       void uploadScreenshot(file);
     }
   };
@@ -442,6 +442,24 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     handleFileSelect(event.dataTransfer.files);
+  };
+
+  const handleAddVideo = async () => {
+    if (!gameId) return;
+
+    const video = parseVideoUrl(videoUrl);
+
+    if (!video) {
+      toast.error(t("feed:videoUrlInvalid"));
+      return;
+    }
+
+    try {
+      await createScreenshotMutation.mutateAsync({ gameId, url: video.url, type: "Video" });
+      setVideoUrl("");
+    } catch {
+      toast.error(t("feed:videoAddFailed"));
+    }
   };
 
   const handleSave = async () => {
@@ -629,6 +647,7 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
                   min={0}
                   placeholder="0"
                   className="bg-background"
+                  aria-label={t("feed:totalReplays")}
                   {...registerInteger(progressForm.register("playCount"))}
                 />
               </Field>
@@ -747,6 +766,31 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
                 accept=".png, .jpeg, .jpg, .gif, .webp"
                 onChange={(e) => handleFileSelect(e.target.files)}
               />
+            </div>
+
+            <div className="flex items-center gap-2 mt-3">
+              <Input
+                id="videoUrl"
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key !== "Enter") return;
+                  e.preventDefault();
+                  void handleAddVideo();
+                }}
+                placeholder={t("feed:videoUrlPlaceholder")}
+                className="h-8 text-xs bg-background"
+                aria-label={t("feed:addVideo")}
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                className="shrink-0"
+                disabled={!videoUrl.trim() || createScreenshotMutation.isPending}
+                onClick={handleAddVideo}
+              >
+                <Icon icon={"lucide:plus"} className="size-4" />
+              </Button>
             </div>
 
             {(screenshots.length > 0 || uploadingScreenshots.length > 0) && (
@@ -1071,14 +1115,17 @@ interface ScreenshotRowProps {
   isRemoving: boolean;
 }
 
-/**
- * Keeps the description in local state so typing never fights the refetch that
- * follows each PATCH; the change is only committed on blur.
- */
 function ScreenshotRow({ screenshot, onDescriptionChange, onSpoilerChange, onRemove, isRemoving }: ScreenshotRowProps) {
   const { t } = useTranslation();
 
   const [description, setDescription] = useState(screenshot.description ?? "");
+
+  const video = useMemo(
+    () => (screenshot.type === "Video" ? parseVideoUrl(screenshot.url) : null),
+    [screenshot.type, screenshot.url],
+  );
+
+  const thumbnail = screenshot.type === "Video" ? video && videoThumbnailUrl(video) : screenshot.url;
 
   const handleBlur = () => {
     if (description === (screenshot.description ?? "")) return;
@@ -1088,13 +1135,32 @@ function ScreenshotRow({ screenshot, onDescriptionChange, onSpoilerChange, onRem
 
   return (
     <div className="flex items-start gap-3 bg-background/50 rounded-lg p-3 border border-border/50">
-      <Image
-        src={screenshot.url}
-        width={56}
-        height={56}
-        alt={screenshot.description ?? ""}
-        className={`size-14 object-cover rounded-md shrink-0 ${screenshot.isSpoiler ? "blur-sm" : ""}`}
-      />
+      <div className="relative size-14 shrink-0">
+        {thumbnail ? (
+          <>
+            <Image
+              src={thumbnail}
+              width={56}
+              height={56}
+              alt={screenshot.description ?? ""}
+              className={cn("size-14 object-cover rounded-md", screenshot.isSpoiler && "blur-sm")}
+            />
+            {video && (
+              <span className="absolute inset-0 flex items-center justify-center rounded-md bg-black/40">
+                <Icon icon={"lucide:play"} className="size-5 text-white" />
+              </span>
+            )}
+          </>
+        ) : (
+          <div className="flex size-14 items-center justify-center rounded-md bg-muted">
+            <Icon
+              icon={video ? videoProviderIcon(video.provider) : "lucide:video"}
+              className="size-6 text-muted-foreground"
+              aria-hidden={true}
+            />
+          </div>
+        )}
+      </div>
       <div className="flex-1 space-y-1.5 min-w-0">
         <Input
           placeholder={t("feed:screenshotDescription")}
@@ -1103,6 +1169,7 @@ function ScreenshotRow({ screenshot, onDescriptionChange, onSpoilerChange, onRem
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           onBlur={handleBlur}
+          aria-label={t("feed:screenshotDescription")}
         />
         <Field orientation="horizontal">
           <Checkbox

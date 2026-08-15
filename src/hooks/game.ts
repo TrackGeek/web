@@ -38,6 +38,7 @@ interface GameScreenshotsFilters {
 interface CreateGameScreenshotPayload {
   gameId: string;
   url: string;
+  type?: ApiTypes.GameMediaType;
   description?: string;
   isSpoiler?: boolean;
 }
@@ -82,10 +83,6 @@ export function useUploadImage() {
   });
 }
 
-/**
- * Mirrors the multer `imageConfig` used by the API so the user gets feedback
- * before the file leaves the browser. Returns an i18n key, or null when valid.
- */
 export function validateScreenshotFile(file: File): string | null {
   if (!SCREENSHOT_EXTENSIONS.test(file.name)) return "feed:screenshotTypeInvalid";
   if (file.size > SCREENSHOT_MAX_SIZE) return "feed:screenshotTooLarge";

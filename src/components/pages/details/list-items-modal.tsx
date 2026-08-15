@@ -16,29 +16,34 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useDeleteList, useRemoveItemFromList, useUpdateList } from "@/hooks/list";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
-import { listItemToLink } from "@/lib/utils/list-item";
+import { LIST_TYPE_LABEL_KEY, listItemToLink } from "@/lib/utils/list-item";
 
 interface ListItemsModalProps {
-  list: ApiTypes.ListWithPreview;
+  group: ApiTypes.ListGroup;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   editable?: boolean;
 }
 
-export function ListItemsModal({ list, open, onOpenChange, editable = false }: ListItemsModalProps) {
+export function ListItemsModal({ group, open, onOpenChange, editable = false }: ListItemsModalProps) {
   const { t } = useTranslation();
 
+  const [activeListId, setActiveListId] = useState(group.lists[0].id);
   const [editing, setEditing] = useState(false);
-  const [name, setName] = useState(list.name);
-  const [description, setDescription] = useState(list.description ?? "");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
-  const updateList = useUpdateList(list.id);
-  const deleteList = useDeleteList(list.id);
-  const removeItem = useRemoveItemFromList(list);
+  const activeList = group.lists.find((list) => list.id === activeListId) ?? group.lists[0];
+  const hasVariants = group.lists.length > 1;
+
+  const updateList = useUpdateList(activeList.id);
+  const deleteList = useDeleteList(activeList.id);
+  const removeItem = useRemoveItemFromList(activeList);
 
   useEffect(() => {
     if (!open) {
@@ -48,10 +53,10 @@ export function ListItemsModal({ list, open, onOpenChange, editable = false }: L
   }, [open]);
 
   const itemsQuery = useQuery<ApiTypes.ListItem[]>({
-    queryKey: ["listItems", list.id],
+    queryKey: ["listItems", activeList.id],
     queryFn: () =>
       api
-        .get<ApiTypes.GetItemsByListIdResponse>(apiEndpoints.getItemsByListId(list.id), {
+        .get<ApiTypes.GetItemsByListIdResponse>(apiEndpoints.getItemsByListId(activeList.id), {
           params: { itemsPerPage: 50 },
         })
         .then(({ data }) => data.listItems.items),
@@ -60,9 +65,14 @@ export function ListItemsModal({ list, open, onOpenChange, editable = false }: L
 
   const items = itemsQuery.data ?? [];
 
+  function selectList(listId: string) {
+    setActiveListId(listId);
+    setEditing(false);
+  }
+
   function startEditing() {
-    setName(list.name);
-    setDescription(list.description ?? "");
+    setName(activeList.name);
+    setDescription(activeList.description ?? "");
     setEditing(true);
   }
 
@@ -102,6 +112,45 @@ export function ListItemsModal({ list, open, onOpenChange, editable = false }: L
     });
   }
 
+  const itemsGrid = itemsQuery.isLoading ? (
+    <p className="text-muted-foreground">{t("user:loading")}</p>
+  ) : items.length === 0 ? (
+    <p className="text-muted-foreground">{t("library:noItems")}</p>
+  ) : (
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {items.map((item) => {
+        const link = listItemToLink(item);
+        if (!link) return null;
+
+        return (
+          <div key={item.id} className="space-y-2">
+            <div className="relative rounded-lg border border-border overflow-hidden aspect-3/4 group">
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:opacity-80"
+                style={{ backgroundImage: `url("${link.image ?? "/placeholder/cover.webp"}")` }}
+              />
+              <Link to={link.to} params={{ slug: link.slug }} className="absolute inset-0" />
+              {editable && (
+                <button
+                  type="button"
+                  disabled={removeItem.isPending}
+                  onClick={() => handleRemoveItem(item)}
+                  aria-label={t("user:removeItem")}
+                  className="absolute top-2 right-2 z-10 flex size-7 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity hover:bg-black/80 group-hover:opacity-100 disabled:opacity-50"
+                >
+                  <Icon icon="lucide:x" className="size-4" />
+                </button>
+              )}
+            </div>
+            <p className="font-bold text-card-foreground hover:text-primary transition-colors line-clamp-2">
+              {link.title}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  );
+
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -133,7 +182,9 @@ export function ListItemsModal({ list, open, onOpenChange, editable = false }: L
             ) : (
               <>
                 <div className="flex items-start justify-between gap-2">
-                  <DialogTitle className="text-card-foreground font-bold text-xl">{list.name}</DialogTitle>
+                  <DialogTitle className="text-card-foreground font-bold text-xl">
+                    {hasVariants ? group.name : activeList.name}
+                  </DialogTitle>
 
                   {editable && (
                     <div className="flex gap-1 shrink-0">
@@ -153,72 +204,49 @@ export function ListItemsModal({ list, open, onOpenChange, editable = false }: L
                   )}
                 </div>
 
-                {list.description && <DialogDescription>{list.description}</DialogDescription>}
+                {activeList.description && <DialogDescription>{activeList.description}</DialogDescription>}
 
                 <Link
                   to="/user/$username"
-                  params={{ username: list.user.username }}
+                  params={{ username: activeList.user.username }}
                   className="flex gap-2 items-center mt-1 w-max"
                 >
                   <Avatar size="sm">
-                    {list.user.profile?.avatarUrl ? (
+                    {activeList.user.profile?.avatarUrl ? (
                       <Image
                         className="aspect-square size-full"
-                        src={list.user.profile.avatarUrl}
+                        src={activeList.user.profile.avatarUrl}
                         width={24}
                         height={24}
-                        alt={list.user.name}
+                        alt={activeList.user.name}
                       />
                     ) : (
-                      <AvatarFallback>{list.user.name.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>{activeList.user.name.charAt(0)}</AvatarFallback>
                     )}
                   </Avatar>
-                  <span className="text-sm font-medium text-muted-foreground">{list.user.name}</span>
+                  <span className="text-sm font-medium text-muted-foreground">{activeList.user.name}</span>
                 </Link>
               </>
             )}
           </DialogHeader>
 
-          <div className="overflow-y-auto max-h-[calc(90vh-8rem)] p-6">
-            {itemsQuery.isLoading ? (
-              <p className="text-muted-foreground">{t("user:loading")}</p>
-            ) : items.length === 0 ? (
-              <p className="text-muted-foreground">{t("library:noItems")}</p>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {items.map((item) => {
-                  const link = listItemToLink(item);
-                  if (!link) return null;
+          {hasVariants ? (
+            <Tabs value={activeList.id} onValueChange={selectList} className="min-h-0 gap-3">
+              <TabsList className="mx-6 max-w-[calc(100%-3rem)] overflow-x-auto">
+                {group.lists.map((list) => (
+                  <TabsTrigger key={list.id} value={list.id}>
+                    {t(`common:types.${LIST_TYPE_LABEL_KEY[list.type]}`, { count: 2 })}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
 
-                  return (
-                    <div key={item.id} className="space-y-2">
-                      <div className="relative rounded-lg border border-border overflow-hidden aspect-3/4 group">
-                        <div
-                          className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:opacity-80"
-                          style={{ backgroundImage: `url("${link.image ?? "/placeholder/cover.webp"}")` }}
-                        />
-                        <Link to={link.to} params={{ slug: link.slug }} className="absolute inset-0" />
-                        {editable && (
-                          <button
-                            type="button"
-                            disabled={removeItem.isPending}
-                            onClick={() => handleRemoveItem(item)}
-                            aria-label={t("user:removeItem")}
-                            className="absolute top-2 right-2 z-10 flex size-7 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity hover:bg-black/80 group-hover:opacity-100 disabled:opacity-50"
-                          >
-                            <Icon icon="lucide:x" className="size-4" />
-                          </button>
-                        )}
-                      </div>
-                      <p className="font-bold text-card-foreground hover:text-primary transition-colors line-clamp-2">
-                        {link.title}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+              <TabsContent value={activeList.id} className="overflow-y-auto max-h-[calc(90vh-13rem)] px-6 pb-6">
+                {itemsGrid}
+              </TabsContent>
+            </Tabs>
+          ) : (
+            <div className="overflow-y-auto max-h-[calc(90vh-8rem)] p-6">{itemsGrid}</div>
+          )}
         </DialogContent>
       </Dialog>
 

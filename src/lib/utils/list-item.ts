@@ -67,6 +67,15 @@ export function listItemToLink(item: ApiTypes.ListItem): ListItemLink | null {
   return null;
 }
 
+export const LIST_TYPE_LABEL_KEY: Record<ApiTypes.ListType, string> = {
+  Anime: "anime",
+  Manga: "manga",
+  TVShow: "tv",
+  Movie: "movie",
+  Game: "game",
+  Book: "book",
+};
+
 const LIST_ID_FIELD_BY_TYPE: Record<ApiTypes.ListType, keyof ApiTypes.ListItem> = {
   Anime: "anime",
   Manga: "manga",

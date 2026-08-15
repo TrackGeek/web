@@ -13,10 +13,27 @@ interface ListItemProps {
 }
 
 export function ListItem({ list, editable = false }: ListItemProps) {
+  return <ListGroupItem group={{ key: list.id, name: list.name, lists: [list] }} editable={editable} />;
+}
+
+interface ListGroupItemProps {
+  group: ApiTypes.ListGroup;
+  editable?: boolean;
+}
+
+export function ListGroupItem({ group, editable = false }: ListGroupItemProps) {
   const [open, setOpen] = useState(false);
 
-  const total = list._count.listItems;
-  const previews = list.listItems.slice(0, PREVIEW_COUNT).map((item) => ({ item, link: listItemToLink(item) }));
+  const [first] = group.lists;
+
+  if (!first) return null;
+
+  const title = group.lists.length > 1 ? group.name : first.name;
+  const total = group.lists.reduce((sum, list) => sum + list._count.listItems, 0);
+  const previews = group.lists
+    .flatMap((list) => list.listItems)
+    .slice(0, PREVIEW_COUNT)
+    .map((item) => ({ item, link: listItemToLink(item) }));
   const remaining = total - previews.length;
 
   return (
@@ -49,26 +66,26 @@ export function ListItem({ list, editable = false }: ListItemProps) {
             )}
           </AvatarGroup>
         </div>
-        <p className="text-card-foreground font-bold line-clamp-1">{list.name}</p>
+        <p className="text-card-foreground font-bold line-clamp-1">{title}</p>
         <div className="flex items-center gap-2 mt-2">
           <Avatar size="sm">
-            {list.user.profile?.avatarUrl ? (
+            {first.user.profile?.avatarUrl ? (
               <Image
                 className="aspect-square size-full"
-                src={list.user.profile.avatarUrl}
+                src={first.user.profile.avatarUrl}
                 width={24}
                 height={24}
-                alt={list.user.name}
+                alt={first.user.name}
               />
             ) : (
-              <AvatarFallback>{list.user.name.charAt(0)}</AvatarFallback>
+              <AvatarFallback>{first.user.name.charAt(0)}</AvatarFallback>
             )}
           </Avatar>
-          <p className="text-sm font-bold text-muted-foreground">{list.user.name}</p>
+          <p className="text-sm font-bold text-muted-foreground">{first.user.name}</p>
         </div>
       </button>
 
-      <ListItemsModal list={list} open={open} onOpenChange={setOpen} editable={editable} />
+      <ListItemsModal group={group} open={open} onOpenChange={setOpen} editable={editable} />
     </>
   );
 }

@@ -697,6 +697,16 @@ export namespace ApiTypes {
     listItems: ListItem[];
   }
 
+  export interface ListGroup {
+    key: string;
+    name: string;
+    lists: ListWithPreview[];
+  }
+
+  export interface GetGroupedListsByUserIdResponse {
+    lists: PaginatedResponse<ListGroup>;
+  }
+
   export interface GetListsContainingItemResponse {
     lists: PaginatedResponse<ListWithPreview>;
   }

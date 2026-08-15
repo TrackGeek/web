@@ -1,4 +1,8 @@
 {
+  "accountDeleted": {
+    "title": "Your account has been deleted",
+    "description": "Everything tracked on it is gone for good. Thanks for the time you spent with us — you're welcome back any time."
+  },
   "landing": {
     "demoTitle": "Seamless and Comprehensive Tracking Experience",
     "demoDescription": "Try it yourself. Our tracking system is fast and responsive. Click the button on the right side to simulate an episode's progress.",

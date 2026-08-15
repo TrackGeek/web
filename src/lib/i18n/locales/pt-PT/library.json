@@ -293,16 +293,16 @@
   "episodeCount_one": "{{count}} ep",
   "episodeCount_other": "{{count}} eps",
   "watchProviders": {
-    "title": "Where to Watch",
-    "searchCountry": "Search country",
-    "stream": "Stream",
-    "free": "Free",
-    "ads": "Free with ads",
-    "rent": "Rent",
-    "buy": "Buy",
-    "notAvailable": "Not available in {{country}}",
-    "notAvailableDescription": "Nothing is listed for this country right now. Try another one.",
-    "attribution": "Streaming availability provided by JustWatch",
-    "viewAll": "See all options"
+    "title": "Onde ver",
+    "searchCountry": "Procurar país",
+    "stream": "Transmissão",
+    "free": "Grátis",
+    "ads": "Grátis com anúncios",
+    "rent": "Aluguer",
+    "buy": "Comprar",
+    "notAvailable": "Não disponível em {{country}}",
+    "notAvailableDescription": "No momento não há nada listado para este país. Experimente outro.",
+    "attribution": "Disponibilidade de streaming fornecida pelo JustWatch",
+    "viewAll": "Ver todas as opções"
   }
 }

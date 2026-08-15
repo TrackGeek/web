@@ -37,7 +37,6 @@ export function UserScreenshotsTab({ userId }: { userId: string }) {
     return () => observer.disconnect();
   }, [screenshotsQuery.hasNextPage, screenshotsQuery.isFetchingNextPage, screenshotsQuery.fetchNextPage]);
 
-  // Groups by game keeping the order the screenshots came in (newest first).
   const groups = useMemo(() => {
     const screenshots = screenshotsQuery.data?.pages.flatMap((page) => page.items) ?? [];
     const byGame = new Map<string, GameScreenshotGroup>();
@@ -48,6 +47,7 @@ export function UserScreenshotsTab({ userId }: { userId: string }) {
       group.images.push({
         id: screenshot.id,
         url: screenshot.url,
+        type: screenshot.type,
         description: screenshot.description,
         isSpoiler: screenshot.isSpoiler,
       });

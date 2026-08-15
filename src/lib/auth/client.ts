@@ -64,6 +64,7 @@ export const {
   listAccounts,
   linkSocial,
   unlinkAccount,
+  deleteUser,
 } = authClient;
 
 export function isTwoFactorRedirect(data: unknown): boolean {

@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import z from "zod";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
-import { cn } from "@/lib/utils";
+import { blockNonIntegerKeys, cn, registerInteger, toIntegerValue } from "@/lib/utils";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";
@@ -682,11 +682,15 @@ export function EpisodicContentModal({
                     type="number"
                     min={0}
                     max={orderedEpisodes.length || totalEpisodes}
+                    step={1}
                     value={episodeInput}
                     disabled={orderedEpisodes.length === 0 || setEpisodesMutation.isPending}
-                    onChange={(e) => setEpisodeInput(e.target.value)}
+                    onChange={(e) => setEpisodeInput(toIntegerValue(e.target.value))}
                     onBlur={commitEpisodeCount}
-                    onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
+                    onKeyDown={(e) => {
+                      blockNonIntegerKeys(e);
+                      if (e.key === "Enter") e.currentTarget.blur();
+                    }}
                   />
                   <InputGroupAddon align="inline-end">
                     <InputGroupText>/{totalEpisodes}</InputGroupText>
@@ -703,10 +707,9 @@ export function EpisodicContentModal({
                   type="number"
                   min={0}
                   max={999}
-                  step={1}
                   placeholder="0"
                   className="bg-background"
-                  {...progressForm.register("watchCount")}
+                  {...registerInteger(progressForm.register("watchCount"))}
                   aria-label={t("feed:totalRewatches")}
                 />
               </Field>

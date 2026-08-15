@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import z from "zod";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
+import { registerInteger } from "@/lib/utils";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";
@@ -390,7 +391,7 @@ export function BookModal({ bookId, totalPages, onClose }: BookModalProps) {
                   min={0}
                   max={totalPages ?? undefined}
                   placeholder="0"
-                  {...progressForm.register("pagesRead")}
+                  {...registerInteger(progressForm.register("pagesRead"))}
                 />
                 {!!totalPages && (
                   <InputGroupAddon align="inline-end">
@@ -410,7 +411,7 @@ export function BookModal({ bookId, totalPages, onClose }: BookModalProps) {
                 min={0}
                 placeholder="0"
                 className="bg-background"
-                {...progressForm.register("readCount")}
+                {...registerInteger(progressForm.register("readCount"))}
               />
             </Field>
           </div>

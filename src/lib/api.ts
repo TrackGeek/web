@@ -697,6 +697,16 @@ export namespace ApiTypes {
     listItems: ListItem[];
   }
 
+  export interface ListGroup {
+    key: string;
+    name: string;
+    lists: ListWithPreview[];
+  }
+
+  export interface GetGroupedListsByUserIdResponse {
+    lists: PaginatedResponse<ListGroup>;
+  }
+
   export interface GetListsContainingItemResponse {
     lists: PaginatedResponse<ListWithPreview>;
   }
@@ -795,9 +805,15 @@ export namespace ApiTypes {
     coverUrl: string | null;
   }
 
+  export type GameMediaType = "Image" | "Video";
+
+  export type GameVideoProvider = "YouTube" | "Twitch";
+
   export interface GameScreenshot {
     id: string;
     url: string;
+    type: GameMediaType;
+    provider: GameVideoProvider | null;
     description: string | null;
     isSpoiler: boolean;
     userId: string;

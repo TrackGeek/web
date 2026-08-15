@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import z from "zod";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
+import { blockNonIntegerKeys, toIntegerValue } from "@/lib/utils";
 import { Button } from "../../ui/button";
 import { Checkbox } from "../../ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../ui/dialog";
@@ -335,7 +336,8 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
               placeholder="0"
               className="bg-background"
               value={rewatchCount}
-              onChange={(e) => setRewatchCount(e.target.value)}
+              onChange={(e) => setRewatchCount(toIntegerValue(e.target.value))}
+              onKeyDown={blockNonIntegerKeys}
               aria-label={t("feed:totalRewatches")}
             />
           </Field>

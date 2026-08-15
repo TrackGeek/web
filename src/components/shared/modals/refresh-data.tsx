@@ -20,11 +20,7 @@ export function RefreshData({ sourceURL, onSubmit, lastRefreshedAt }: RefreshDat
       <DialogTrigger asChild>
         <Button variant="outline" className="w-full group">
           {t("library:refreshData")}
-          {relativeTime && (
-            <span className="text-muted-foreground -ml-1 group-hover:text-muted">
-              • {relativeTime}
-            </span>
-          )}
+          {relativeTime && <span className="text-muted-foreground -ml-1 group-hover:text-muted">• {relativeTime}</span>}
         </Button>
       </DialogTrigger>
       <DialogContent>

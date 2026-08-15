@@ -94,8 +94,8 @@ export function ImportProgressCard({ progress, onDownloadFailures }: ImportProgr
                   <span className="truncate text-sm font-medium">{item.name}</span>
 
                   <span className="text-xs text-muted-foreground">
-                    {t(`feed:lists.${item.status.toLowerCase()}`)}
-                    {item.errorKey ? ` · ${t(item.errorKey)}` : ""}
+                    {item.status ? t(`feed:lists.${item.status.toLowerCase()}`) : ""}
+                    {item.errorKey ? `${item.status ? " · " : ""}${t(item.errorKey)}` : ""}
                   </span>
                 </div>
 

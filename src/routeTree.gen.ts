@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AccountDeletedRouteImport } from './routes/account-deleted'
 import { Route as AddDataRouteImport } from './routes/add-data'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CreditsRouteImport } from './routes/credits'
@@ -75,6 +76,7 @@ import { Route as AuthenticatedDonateErrorIndexRouteImport } from './routes/_aut
 import { Route as AuthenticatedDonateSuccessIndexRouteImport } from './routes/_authenticated/donate/success/index'
 import { Route as AuthenticatedSettingsImportBackloggdRouteImport } from './routes/_authenticated/settings_.import.backloggd'
 import { Route as AuthenticatedSettingsImportMyanimelistRouteImport } from './routes/_authenticated/settings_.import.myanimelist'
+import { Route as AuthenticatedSettingsImportTrackgeekRouteImport } from './routes/_authenticated/settings_.import.trackgeek'
 import { Route as ApiOgUserUsernameRouteImport } from './routes/api/og/user.$username'
 import { Route as ApiOgMediaTypeSlugRouteImport } from './routes/api/og/media.$type.$slug'
 
@@ -85,6 +87,11 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountDeletedRoute = AccountDeletedRouteImport.update({
+  id: '/account-deleted',
+  path: '/account-deleted',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AddDataRoute = AddDataRouteImport.update({
@@ -415,6 +422,12 @@ const AuthenticatedSettingsImportMyanimelistRoute =
     path: '/settings/import/myanimelist',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedSettingsImportTrackgeekRoute =
+  AuthenticatedSettingsImportTrackgeekRouteImport.update({
+    id: '/settings_/import/trackgeek',
+    path: '/settings/import/trackgeek',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const ApiOgUserUsernameRoute = ApiOgUserUsernameRouteImport.update({
   id: '/api/og/user/$username',
   path: '/api/og/user/$username',
@@ -428,6 +441,7 @@ const ApiOgMediaTypeSlugRoute = ApiOgMediaTypeSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/account-deleted': typeof AccountDeletedRoute
   '/add-data': typeof AddDataRoute
   '/compare': typeof CompareRoute
   '/credits': typeof CreditsRoute
@@ -490,6 +504,7 @@ export interface FileRoutesByFullPath {
   '/user/$username/': typeof UserUsernameIndexRoute
   '/settings/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
   '/settings/import/myanimelist': typeof AuthenticatedSettingsImportMyanimelistRoute
+  '/settings/import/trackgeek': typeof AuthenticatedSettingsImportTrackgeekRoute
   '/api/og/user/$username': typeof ApiOgUserUsernameRoute
   '/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
@@ -497,6 +512,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/account-deleted': typeof AccountDeletedRoute
   '/add-data': typeof AddDataRoute
   '/compare': typeof CompareRoute
   '/credits': typeof CreditsRoute
@@ -559,6 +575,7 @@ export interface FileRoutesByTo {
   '/user/$username': typeof UserUsernameIndexRoute
   '/settings/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
   '/settings/import/myanimelist': typeof AuthenticatedSettingsImportMyanimelistRoute
+  '/settings/import/trackgeek': typeof AuthenticatedSettingsImportTrackgeekRoute
   '/api/og/user/$username': typeof ApiOgUserUsernameRoute
   '/donate/error': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success': typeof AuthenticatedDonateSuccessIndexRoute
@@ -568,6 +585,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/account-deleted': typeof AccountDeletedRoute
   '/add-data': typeof AddDataRoute
   '/compare': typeof CompareRoute
   '/credits': typeof CreditsRoute
@@ -630,6 +648,7 @@ export interface FileRoutesById {
   '/user/$username/': typeof UserUsernameIndexRoute
   '/_authenticated/settings_/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
   '/_authenticated/settings_/import/myanimelist': typeof AuthenticatedSettingsImportMyanimelistRoute
+  '/_authenticated/settings_/import/trackgeek': typeof AuthenticatedSettingsImportTrackgeekRoute
   '/api/og/user/$username': typeof ApiOgUserUsernameRoute
   '/_authenticated/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/_authenticated/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
@@ -639,6 +658,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/account-deleted'
     | '/add-data'
     | '/compare'
     | '/credits'
@@ -701,6 +721,7 @@ export interface FileRouteTypes {
     | '/user/$username/'
     | '/settings/import/backloggd'
     | '/settings/import/myanimelist'
+    | '/settings/import/trackgeek'
     | '/api/og/user/$username'
     | '/donate/error/'
     | '/donate/success/'
@@ -708,6 +729,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/account-deleted'
     | '/add-data'
     | '/compare'
     | '/credits'
@@ -770,6 +792,7 @@ export interface FileRouteTypes {
     | '/user/$username'
     | '/settings/import/backloggd'
     | '/settings/import/myanimelist'
+    | '/settings/import/trackgeek'
     | '/api/og/user/$username'
     | '/donate/error'
     | '/donate/success'
@@ -778,6 +801,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/account-deleted'
     | '/add-data'
     | '/compare'
     | '/credits'
@@ -840,6 +864,7 @@ export interface FileRouteTypes {
     | '/user/$username/'
     | '/_authenticated/settings_/import/backloggd'
     | '/_authenticated/settings_/import/myanimelist'
+    | '/_authenticated/settings_/import/trackgeek'
     | '/api/og/user/$username'
     | '/_authenticated/donate/error/'
     | '/_authenticated/donate/success/'
@@ -849,6 +874,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  AccountDeletedRoute: typeof AccountDeletedRoute
   AddDataRoute: typeof AddDataRoute
   CompareRoute: typeof CompareRoute
   CreditsRoute: typeof CreditsRoute
@@ -924,6 +950,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account-deleted': {
+      id: '/account-deleted'
+      path: '/account-deleted'
+      fullPath: '/account-deleted'
+      preLoaderRoute: typeof AccountDeletedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/add-data': {
@@ -1374,6 +1407,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsImportMyanimelistRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/settings_/import/trackgeek': {
+      id: '/_authenticated/settings_/import/trackgeek'
+      path: '/settings/import/trackgeek'
+      fullPath: '/settings/import/trackgeek'
+      preLoaderRoute: typeof AuthenticatedSettingsImportTrackgeekRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/api/og/user/$username': {
       id: '/api/og/user/$username'
       path: '/api/og/user/$username'
@@ -1397,6 +1437,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedSettingsImportBackloggdRoute: typeof AuthenticatedSettingsImportBackloggdRoute
   AuthenticatedSettingsImportMyanimelistRoute: typeof AuthenticatedSettingsImportMyanimelistRoute
+  AuthenticatedSettingsImportTrackgeekRoute: typeof AuthenticatedSettingsImportTrackgeekRoute
   AuthenticatedDonateErrorIndexRoute: typeof AuthenticatedDonateErrorIndexRoute
   AuthenticatedDonateSuccessIndexRoute: typeof AuthenticatedDonateSuccessIndexRoute
 }
@@ -1409,6 +1450,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
     AuthenticatedSettingsImportBackloggdRoute,
   AuthenticatedSettingsImportMyanimelistRoute:
     AuthenticatedSettingsImportMyanimelistRoute,
+  AuthenticatedSettingsImportTrackgeekRoute:
+    AuthenticatedSettingsImportTrackgeekRoute,
   AuthenticatedDonateErrorIndexRoute: AuthenticatedDonateErrorIndexRoute,
   AuthenticatedDonateSuccessIndexRoute: AuthenticatedDonateSuccessIndexRoute,
 }
@@ -1420,6 +1463,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  AccountDeletedRoute: AccountDeletedRoute,
   AddDataRoute: AddDataRoute,
   CompareRoute: CompareRoute,
   CreditsRoute: CreditsRoute,

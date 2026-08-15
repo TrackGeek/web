@@ -61,6 +61,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.4.0",
     "embla-carousel-react": "^8.6.0",
+    "fflate": "^0.8.3",
     "framer-motion": "^13.0.0",
     "fuse.js": "^7.5.0",
     "i18next": "^26.3.6",

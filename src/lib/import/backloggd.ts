@@ -301,7 +301,7 @@ async function importEntry(
   );
 
   if (entry.rating) {
-    await upsertReview(REVIEW_TARGET, gameId, userId, entry.rating, signal, onRetry);
+    await upsertReview(REVIEW_TARGET, gameId, userId, { overall: entry.rating }, signal, onRetry);
   }
 }
 

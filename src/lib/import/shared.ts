@@ -68,11 +68,7 @@ export function delay(ms: number, signal: AbortSignal) {
   });
 }
 
-/**
- * Statuses for a request that can never succeed as sent: a media the API doesn't know (404)
- * and a row that already exists (409, Prisma P2002). Retrying either one just stalls the import.
- */
-const TERMINAL_STATUSES = [404, 409];
+const TERMINAL_STATUSES = [400, 404, 409];
 
 function isRetryable(error: unknown): boolean {
   if (error instanceof Error && error.message === MEDIA_NOT_FOUND) return false;
@@ -124,20 +120,15 @@ export async function withRetry<T>(operation: () => Promise<T>, signal: AbortSig
 
 export interface ReviewTarget {
   endpoint: string;
-  idKey: "gameId" | "animeId";
-  responseKey: "gameReviews" | "animeReviews";
+  idKey: string;
+  responseKey: string;
 }
 
-/**
- * `POST /<media>/review` only ever creates, and the table is unique on (userId, mediaId), so a
- * media the user already reviewed answers 409. Mirrors the modal: look the review up first
- * and PATCH it when it exists.
- */
 export async function upsertReview(
   target: ReviewTarget,
   mediaId: string,
   userId: string,
-  overall: number,
+  review: Record<string, unknown>,
   signal: AbortSignal,
   onRetry: OnRetry,
 ) {
@@ -150,7 +141,7 @@ export async function upsertReview(
     onRetry,
   );
 
-  const body = { [target.idKey]: mediaId, overall };
+  const body = { ...review, [target.idKey]: mediaId };
 
   await withRetry(
     () =>
@@ -175,7 +166,7 @@ export type ImportItemState = "pending" | "running" | "waiting" | "done" | "erro
 export interface ImportEntry {
   id: string;
   name: string;
-  status: ApiTypes.ProgressStatus;
+  status?: ApiTypes.ProgressStatus;
 }
 
 export interface ImportItem extends ImportEntry {

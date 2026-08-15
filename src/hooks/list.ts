@@ -15,8 +15,13 @@ export function useLists(userId: string, query?: string) {
     queryKey: [...listsQueryKey(userId), trimmedQuery],
     queryFn: ({ pageParam }) =>
       api
-        .get<ApiTypes.GetListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId), {
-          params: { page: pageParam, itemsPerPage: ITEMS_PER_PAGE, ...(trimmedQuery && { query: trimmedQuery }) },
+        .get<ApiTypes.GetGroupedListsByUserIdResponse>(apiEndpoints.getListsByUserId(userId), {
+          params: {
+            page: pageParam,
+            itemsPerPage: ITEMS_PER_PAGE,
+            grouped: true,
+            ...(trimmedQuery && { query: trimmedQuery }),
+          },
         })
         .then(({ data }) => data.lists),
     initialPageParam: 1,

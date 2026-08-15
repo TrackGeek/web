@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ListItem } from "@/components/pages/details/list";
+import { ListGroupItem } from "@/components/pages/details/list";
 import { SearchInput } from "@/components/shared/search-input";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,7 +16,7 @@ export function UserListsTab({ userId, isOwner }: { userId: string; isOwner: boo
 
   const listsQuery = useLists(userId, debouncedQuery);
 
-  const lists = listsQuery.data?.pages.flatMap((page) => page.items) ?? [];
+  const groups = listsQuery.data?.pages.flatMap((page) => page.items) ?? [];
 
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -47,7 +47,7 @@ export function UserListsTab({ userId, isOwner }: { userId: string; isOwner: boo
             <ListSkeleton key={index} />
           ))}
         </div>
-      ) : lists.length === 0 ? (
+      ) : groups.length === 0 ? (
         <Empty className="border-0">
           <EmptyHeader>
             <EmptyMedia variant="icon">
@@ -59,8 +59,8 @@ export function UserListsTab({ userId, isOwner }: { userId: string; isOwner: boo
         </Empty>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {lists.map((list) => (
-            <ListItem key={list.id} list={list} editable={isOwner} />
+          {groups.map((group) => (
+            <ListGroupItem key={group.key} group={group} editable={isOwner} />
           ))}
         </div>
       )}

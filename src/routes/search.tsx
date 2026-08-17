@@ -7,6 +7,7 @@ import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { type ContentType, type FilterParams, Filters } from "@/components/layouts/filters.tsx";
 import { Grid } from "@/components/layouts/grid";
+import { CastSearchResults } from "@/components/pages/search/cast-results";
 import { UserSearchResults } from "@/components/pages/search/user-results";
 import { CardItem } from "@/components/shared/cards/card";
 import { ErrorComponent } from "@/components/shared/error.tsx";
@@ -29,12 +30,15 @@ const CONTENT_TYPES: { value: ContentType; labelKey: string }[] = [
   { value: "book", labelKey: "common:types.book" },
 ];
 
-type SearchType = ContentType | "user";
+type SearchType = ContentType | "user" | "cast";
 
 const SEARCH_TYPES: { value: SearchType; labelKey: string }[] = [
   ...CONTENT_TYPES,
+  { value: "cast", labelKey: "common:types.cast" },
   { value: "user", labelKey: "common:profile" },
 ];
+
+const NON_CONTENT_SEARCH_TYPES: SearchType[] = ["user", "cast"];
 
 export const Route = createFileRoute("/search")({
   head: () => ({
@@ -202,7 +206,9 @@ function RouteComponent() {
   );
 
   const isUserSearch = searchType === "user";
-  const contentType: ContentType = isUserSearch ? "movie" : searchType;
+  const isCastSearch = searchType === "cast";
+  const isContentSearch = !isUserSearch && !isCastSearch;
+  const contentType: ContentType = isUserSearch || isCastSearch ? "movie" : searchType;
 
   const [searchQuery, setSearchQuery] = useQueryState("query", parseAsString.withDefault(""));
   const [filterQuery, setFilterQuery] = useQueryStates(FILTER_QUERY_PARSERS);
@@ -248,7 +254,7 @@ function RouteComponent() {
 
   const { hiddenClass, visible } = useContentTypes();
 
-  useVisibleContentType(isUserSearch ? visible[0] : contentType, handleSearchTypeChange);
+  useVisibleContentType(isContentSearch ? contentType : visible[0], handleSearchTypeChange);
 
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["search", contentType, debouncedQuery, filters],
@@ -266,7 +272,7 @@ function RouteComponent() {
 
       return undefined;
     },
-    enabled: !isUserSearch,
+    enabled: isContentSearch,
   });
 
   const sentinelRef = useInfiniteScroll(fetchNextPage, hasNextPage && !isFetchingNextPage);
@@ -311,7 +317,9 @@ function RouteComponent() {
                     <SelectItem
                       key={type.value}
                       value={type.value}
-                      className={type.value === "user" ? "" : hiddenClass(type.value)}
+                      className={
+                        NON_CONTENT_SEARCH_TYPES.includes(type.value) ? "" : hiddenClass(type.value as ContentType)
+                      }
                     >
                       {t(type.labelKey)}
                     </SelectItem>
@@ -340,6 +348,8 @@ function RouteComponent() {
 
         {isUserSearch ? (
           <UserSearchResults query={debouncedQuery} />
+        ) : isCastSearch ? (
+          <CastSearchResults query={debouncedQuery} />
         ) : (
           <div className="flex max-md:flex-col gap-5">
             <Filters

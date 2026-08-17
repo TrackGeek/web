@@ -21,6 +21,7 @@
   "notifications": "Notifications",
   "profile": "Profile",
   "credits": "Credits",
+  "favorite": "Favorite",
   "roadmap": "Roadmap",
   "feedback": "Feedback",
   "providers": {
@@ -81,7 +82,9 @@
     "book": "Book",
     "book_other": "Books",
     "anime": "Anime",
-    "anime_other": "Animes"
+    "anime_other": "Animes",
+    "cast": "Cast",
+    "cast_other": "Cast"
   },
   "roles": {
     "reviewer": "Reviewer",

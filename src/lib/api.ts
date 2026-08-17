@@ -346,6 +346,28 @@ export namespace ApiTypes {
     users: PaginatedResponse<SearchUser>;
   }
 
+  export interface SearchPerson {
+    tmdbId: number;
+    name: string;
+    slug: string;
+    imageUrl: string | null;
+    knownForDepartment: string | null;
+    popularity: number | null;
+    isAdult: boolean;
+    knownFor: string[];
+  }
+
+  export interface SearchPeopleResponse {
+    people: {
+      total: number | null;
+      pages: number | null;
+      inPage: number;
+      itemsInPage: number;
+      itemsPerPage: number | null;
+      items: SearchPerson[];
+    };
+  }
+
   export interface GetFollowersResponse {
     followers: PaginatedResponse<Following>;
   }
@@ -532,7 +554,7 @@ export namespace ApiTypes {
 
   export type ContentType = "Anime" | "Manga" | "TVShow" | "Movie" | "Game" | "Book";
 
-  export type FavoriteType = ContentType;
+  export type FavoriteType = ContentType | "Person";
 
   export interface Favorite {
     id: string;
@@ -550,6 +572,7 @@ export namespace ApiTypes {
     movie: { id: string; tmdbId: number; title: string; posterUrl: string | null } | null;
     game: { id: string; igdbId: number; name: string; coverUrl: string | null } | null;
     book: { id: string; hardcoverId: number; title: string; imageUrl: string | null } | null;
+    person: { id: string; slug: string; name: string; imageUrl: string | null } | null;
   }
 
   export interface GetFavoritesByUserIdResponse {
@@ -632,9 +655,10 @@ export namespace ApiTypes {
     movieId?: string;
     gameId?: string;
     bookId?: string;
+    personId?: string;
   }
 
-  export type ListType = FavoriteType;
+  export type ListType = ContentType;
 
   export interface AddItemToListRequest {
     type: ListType;
@@ -851,6 +875,7 @@ export namespace ApiTypes {
     tmdbId?: number | string | null;
     igdbId?: number | string | null;
     hardcoverId?: number | string | null;
+    slug?: string | null;
     name?: string | null;
     title?: string | null;
     coverUrl?: string | null;
@@ -865,6 +890,7 @@ export namespace ApiTypes {
     movie?: ActivityMediaSummary | null;
     game?: ActivityMediaSummary | null;
     book?: ActivityMediaSummary | null;
+    person?: ActivityMediaSummary | null;
   }
 
   export interface ActivityUser {
@@ -1113,6 +1139,7 @@ export const apiEndpoints = {
   deleteList: (listId: string) => `/list/${listId}`,
   getUserByUsername: (username: string) => `/user/username/${username}`,
   searchUsers: "/user/search",
+  searchPeople: "/person/search",
   followUser: (followId: string) => `/user/follow/${followId}`,
   unfollowUser: (unfollowId: string) => `/user/unfollow/${unfollowId}`,
   getFollowers: "/user/follower",

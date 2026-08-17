@@ -6,7 +6,8 @@ export type FeedMediaRoute =
   | "/tv/$slug"
   | "/movie/$slug"
   | "/game/$slug"
-  | "/book/$slug";
+  | "/book/$slug"
+  | "/cast/$slug";
 
 export interface FeedMediaLink {
   to: FeedMediaRoute;
@@ -124,6 +125,13 @@ function resolveMedia(refs: ApiTypes.ActivityMediaRefs | null | undefined): Reso
       title: refs.book.title ?? "",
       cover: refs.book.imageUrl ?? "",
       media: { to: "/book/$slug", slug: String(refs.book.hardcoverId ?? refs.book.id) },
+    };
+  }
+  if (refs.person) {
+    return {
+      title: refs.person.name ?? "",
+      cover: refs.person.imageUrl ?? "",
+      media: { to: "/cast/$slug", slug: String(refs.person.slug ?? refs.person.id) },
     };
   }
   return null;

@@ -13,13 +13,14 @@ import { useSession } from "@/lib/auth/client";
 import { CONTENT_TYPE_API, type ContentTypeSlug, toContentTypeSlug } from "@/lib/content-types";
 import { useDebounce } from "@/lib/utils/useDebounce";
 
-const CONTENT_TYPES: { type: ApiTypes.FavoriteType; slug: ContentTypeSlug; labelKey: string }[] = [
+const CONTENT_TYPES: { type: ApiTypes.FavoriteType; slug: ContentTypeSlug | null; labelKey: string }[] = [
   { type: "Anime", slug: "anime", labelKey: "common:types.anime_other" },
   { type: "Manga", slug: "manga", labelKey: "common:types.manga_other" },
   { type: "TVShow", slug: "tv", labelKey: "common:types.tv_other" },
   { type: "Movie", slug: "movie", labelKey: "common:types.movie_other" },
   { type: "Game", slug: "game", labelKey: "common:types.game_other" },
   { type: "Book", slug: "book", labelKey: "common:types.book_other" },
+  { type: "Person", slug: null, labelKey: "common:types.cast_other" },
 ];
 
 export function UserFavoritesTab({
@@ -41,6 +42,8 @@ export function UserFavoritesTab({
   const { visible, hiddenClass } = useContentTypes();
 
   useEffect(() => {
+    if (contentType === "Person") return;
+
     const slug = toContentTypeSlug(contentType);
 
     if (slug && visible.includes(slug)) return;
@@ -100,7 +103,7 @@ export function UserFavoritesTab({
             <SelectContent>
               <SelectGroup>
                 {CONTENT_TYPES.map(({ type, slug, labelKey }) => (
-                  <SelectItem key={type} value={type} className={hiddenClass(slug)}>
+                  <SelectItem key={type} value={type} className={slug ? hiddenClass(slug) : undefined}>
                     {t(labelKey)}
                   </SelectItem>
                 ))}

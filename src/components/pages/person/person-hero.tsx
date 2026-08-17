@@ -3,6 +3,9 @@ import { Image } from "@unpic/react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { ShareButton } from "@/components/shared/share-button";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import { formatLongDate } from "@/lib/utils/date";
 import { stripMarkdown } from "@/lib/utils/seo";
 import type { Person } from "./types";
@@ -108,7 +111,23 @@ function MetaItem({ icon, children }: { icon: string; children: ReactNode }) {
   );
 }
 
-export function PersonHero({ person, backdropUrl }: { person: Person; backdropUrl: string | null }) {
+interface PersonHeroProps {
+  person: Person;
+  backdropUrl: string | null;
+  canFavorite?: boolean;
+  isFavorited?: boolean;
+  favoriteDisabled?: boolean;
+  onToggleFavorite?: () => void;
+}
+
+export function PersonHero({
+  person,
+  backdropUrl,
+  canFavorite,
+  isFavorited,
+  favoriteDisabled,
+  onToggleFavorite,
+}: PersonHeroProps) {
   const { t, i18n } = useTranslation();
   const age = ageFrom(person.birthday, person.deathday);
   const links = externalLinks(person);
@@ -129,7 +148,28 @@ export function PersonHero({ person, backdropUrl }: { person: Person; backdropUr
         <div className="absolute inset-0 bg-linear-to-t from-background via-background/85 to-background/50" />
       </div>
 
-      <ShareButton title={person.name} text={shareText} className="absolute top-4 right-4 z-10" />
+      <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+        {canFavorite && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="secondary"
+                size="icon-sm"
+                aria-label={t("common:favorite")}
+                aria-pressed={isFavorited}
+                disabled={favoriteDisabled}
+                onClick={onToggleFavorite}
+                className="backdrop-blur-sm"
+              >
+                <Icon icon="lucide:heart" className={cn(isFavorited && "fill-red-500 text-red-500")} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{t("common:favorite")}</TooltipContent>
+          </Tooltip>
+        )}
+
+        <ShareButton title={person.name} text={shareText} />
+      </div>
 
       <div className="relative flex flex-col items-center gap-6 p-6 sm:flex-row sm:items-end md:gap-8 md:p-8">
         <div className="w-36 shrink-0 overflow-hidden rounded-xl border border-border shadow-2xl sm:w-44 md:w-52">

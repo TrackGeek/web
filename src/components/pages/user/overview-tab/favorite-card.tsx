@@ -1,11 +1,11 @@
 import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
-import type { ContentType } from "@/components/layouts/filters.tsx";
+import type { FavoriteTarget } from "@/hooks/favorite";
 import type { ApiTypes } from "@/lib/api";
 
 const ROUTE_BY_CONTENT: Record<
-  ContentType,
-  "/anime/$slug" | "/manga/$slug" | "/tv/$slug" | "/movie/$slug" | "/game/$slug" | "/book/$slug"
+  FavoriteTarget,
+  "/anime/$slug" | "/manga/$slug" | "/tv/$slug" | "/movie/$slug" | "/game/$slug" | "/book/$slug" | "/cast/$slug"
 > = {
   anime: "/anime/$slug",
   manga: "/manga/$slug",
@@ -13,6 +13,7 @@ const ROUTE_BY_CONTENT: Record<
   movie: "/movie/$slug",
   game: "/game/$slug",
   book: "/book/$slug",
+  person: "/cast/$slug",
 };
 
 export interface FavoriteItem {
@@ -20,7 +21,7 @@ export interface FavoriteItem {
   title: string;
   image: string;
   score?: number | null;
-  contentType: ContentType;
+  contentType: FavoriteTarget;
   slug: string;
   mediaId: string;
 }
@@ -86,6 +87,16 @@ export function favoriteToItem(favorite: ApiTypes.Favorite): FavoriteItem | null
         contentType: "book",
         slug: String(favorite.book.hardcoverId),
         mediaId: favorite.book.id,
+      };
+    case "Person":
+      if (!favorite.person) return null;
+      return {
+        id: favorite.id,
+        title: favorite.person.name,
+        image: favorite.person.imageUrl ?? "",
+        contentType: "person",
+        slug: favorite.person.slug,
+        mediaId: favorite.person.id,
       };
     default:
       return null;

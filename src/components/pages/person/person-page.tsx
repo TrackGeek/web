@@ -1,8 +1,11 @@
 import { Icon } from "@iconify/react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Markdown } from "@/components/shared/comments/markdown";
 import { Button } from "@/components/ui/button";
+import { useFavoriteStatus, useToggleFavorite } from "@/hooks/favorite";
+import { useSession } from "@/lib/auth/client";
 import { cn } from "@/lib/utils";
 import { CreditsSection } from "./credits-section";
 import { PersonHero } from "./person-hero";
@@ -48,14 +51,35 @@ function Biography({ biography, name, markdown }: { biography: string; name: str
 
 export function PersonPage({ person, creditsHeading }: { person: Person; creditsHeading?: string }) {
   const { t } = useTranslation();
+  const session = useSession();
+  const isAuthenticated = !!session?.data?.session;
   const backdropUrl = useMemo(
     () => person.credits.find((credit) => credit.backdropUrl)?.backdropUrl ?? null,
     [person.credits],
   );
 
+  const favoriteStatusQuery = useFavoriteStatus("person", person.id, isAuthenticated);
+  const isFavorited = !!favoriteStatusQuery.data;
+  const toggleFavoriteMutation = useToggleFavorite("person", person.id);
+
+  const handleToggleFavorite = () => {
+    toggleFavoriteMutation.mutate(isFavorited, {
+      onError: () => {
+        toast.error(t("api:INTERNAL_SERVER_ERROR"));
+      },
+    });
+  };
+
   return (
     <div className="mx-auto w-full space-y-8">
-      <PersonHero person={person} backdropUrl={backdropUrl} />
+      <PersonHero
+        person={person}
+        backdropUrl={backdropUrl}
+        canFavorite={isAuthenticated}
+        isFavorited={isFavorited}
+        favoriteDisabled={favoriteStatusQuery.isLoading || toggleFavoriteMutation.isPending}
+        onToggleFavorite={handleToggleFavorite}
+      />
 
       {person.biography && (
         <Biography biography={person.biography} name={person.name} markdown={person.source === "anilist"} />

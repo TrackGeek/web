@@ -32,27 +32,45 @@ export function SetupCard({ user, isOwner }: SetupCardProps) {
   const visibleItems = items.slice(0, VISIBLE_ITEMS);
   const hiddenItems = items.slice(VISIBLE_ITEMS);
 
-  const renderItem = (item: ApiTypes.SetupItem) => (
-    <li key={item.id} className="flex items-center justify-between gap-3 py-2">
-      <div className="min-w-0">
-        <p className="truncate font-medium">{item.name}</p>
+  const renderItem = (item: ApiTypes.SetupItem) => {
+    if (item.type === "DIVIDER") {
+      return (
+        <li key={item.id} className="py-2">
+          <div className="h-px bg-border" />
+        </li>
+      );
+    }
 
-        {item.brand && <p className="truncate text-sm text-muted-foreground">{item.brand}</p>}
-      </div>
+    if (item.type === "TITLE") {
+      return (
+        <li key={item.id} className="pt-3 pb-1">
+          <p className="truncate font-bold">{item.name}</p>
+        </li>
+      );
+    }
 
-      {item.link && (
-        <a
-          href={item.link}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={item.name}
-          className="text-muted-foreground hover:text-primary"
-        >
-          <Icon icon="lucide:external-link" className="size-4" />
-        </a>
-      )}
-    </li>
-  );
+    return (
+      <li key={item.id} className="flex items-center justify-between gap-3 py-2">
+        <div className="min-w-0">
+          <p className="truncate text-xs font-medium text-gray-300">{item.name}</p>
+
+          {item.brand && <p className="truncate text-xs text-muted-foreground">{item.brand}</p>}
+        </div>
+
+        {item.link && (
+          <a
+            href={item.link}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={item.name ?? undefined}
+            className="text-muted-foreground hover:text-primary"
+          >
+            <Icon icon="lucide:external-link" className="size-4" />
+          </a>
+        )}
+      </li>
+    );
+  };
 
   if (isEmpty && !isOwner) return null;
 
@@ -123,23 +141,15 @@ export function SetupCard({ user, isOwner }: SetupCardProps) {
 
               {items.length > 0 && (
                 <Collapsible open={open} onOpenChange={setOpen} className="flex flex-col">
-                  <div className="flex items-center gap-2 text-sm font-medium">
-                    {t("user:setupComponents")}
-
-                    <span className="text-muted-foreground">{items.length}</span>
-                  </div>
-
-                  <ul className="flex flex-col divide-y divide-border pt-2">{visibleItems.map(renderItem)}</ul>
+                  <ul className="flex flex-col">{visibleItems.map(renderItem)}</ul>
 
                   {hiddenItems.length > 0 && (
                     <>
                       <CollapsibleContent>
-                        <ul className="flex flex-col divide-y divide-border border-t border-border">
-                          {hiddenItems.map(renderItem)}
-                        </ul>
+                        <ul className="flex flex-col">{hiddenItems.map(renderItem)}</ul>
                       </CollapsibleContent>
 
-                      <CollapsibleTrigger className="cursor-pointer flex items-center justify-center gap-1 border-t border-border pt-3 mt-1 text-sm font-medium text-muted-foreground hover:text-foreground">
+                      <CollapsibleTrigger className="cursor-pointer flex items-center justify-center gap-1 border-t border-border pt-4 mt-4 text-sm font-medium text-muted-foreground hover:text-foreground">
                         {open ? t("user:seeLess") : t("user:seeMore")}
 
                         <Icon

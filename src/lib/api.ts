@@ -129,14 +129,181 @@ export namespace ApiTypes {
     updatedAt: string;
   }
 
+  export type SetupItemType = "COMPONENT" | "TITLE" | "DIVIDER";
+
   export interface SetupItem {
     id: string;
-    name: string;
+    type: SetupItemType;
+    name: string | null;
     brand: string | null;
     link: string | null;
     position: number;
     createdAt: string;
     updatedAt: string;
+  }
+
+  export type ContentTypeName = "Anime" | "Manga" | "TVShow" | "Movie" | "Game" | "Book";
+
+  export interface LevelProgress {
+    level: number;
+    totalXp: number;
+    currentLevelXp: number;
+    nextLevelXp: number;
+    percentage: number;
+  }
+
+  export interface ContentLevelProgress extends LevelProgress {
+    contentType: ContentTypeName;
+    base: number;
+  }
+
+  export interface XpSummary extends LevelProgress {
+    currentStreak: number;
+    longestStreak: number;
+    lastActiveDate: string | null;
+    contentTypes: ContentLevelProgress[];
+  }
+
+  export type XpReason =
+    | "EpisodeWatched"
+    | "ProgressStarted"
+    | "ProgressCompleted"
+    | "ReviewAdded"
+    | "ListCreated"
+    | "ListItemAdded"
+    | "FavoriteAdded"
+    | "Followed"
+    | "CommentAdded"
+    | "ReactionAdded"
+    | "StreakBonus"
+    | "MissionCompleted";
+
+  export interface XpLedgerEntry {
+    id: string;
+    reason: XpReason;
+    contentType: ContentTypeName | null;
+    amount: number;
+    sourceKey: string;
+    metadata: Record<string, unknown> | null;
+    createdAt: string;
+  }
+
+  export interface GetXpResponse {
+    xp: XpSummary;
+  }
+
+  export interface GetXpHistoryResponse {
+    history: PaginatedResponse<XpLedgerEntry>;
+  }
+
+  export type MissionTier = "Bronze" | "Silver" | "Gold" | "Platinum";
+
+  export type MissionMetric =
+    | "EpisodesWatched"
+    | "ProgressCompleted"
+    | "ReviewsWritten"
+    | "FavoritesAdded"
+    | "ListsCreated"
+    | "ListItemsAdded"
+    | "UsersFollowed"
+    | "CommentsWritten"
+    | "LevelReached"
+    | "StreakReached"
+    | "ContentTypesReviewed";
+
+  // Missão secreta só revela metric/target/recompensa depois de concluída.
+  export interface HiddenMission {
+    id: string;
+    key: string;
+    tier: MissionTier;
+    hidden: true;
+    progress: number;
+    target: number;
+    percentage: number;
+    completedAt: string | null;
+  }
+
+  export interface VisibleMission {
+    id: string;
+    key: string;
+    metric: MissionMetric;
+    contentType: ContentTypeName | null;
+    tier: MissionTier;
+    hidden: false;
+    target: number;
+    xpReward: number;
+    coinReward: number;
+    cosmeticKey: string | null;
+    medal: { id: string; name: string; imageUrl: string } | null;
+    progress: number;
+    percentage: number;
+    completedAt: string | null;
+  }
+
+  export type Mission = HiddenMission | VisibleMission;
+
+  export interface MissionsSummary {
+    total: number;
+    completed: number;
+    items: Mission[];
+  }
+
+  export interface GetMissionsResponse {
+    missions: MissionsSummary;
+  }
+
+  export interface Wallet {
+    balance: number;
+    lifetimeEarned: number;
+    lifetimeSpent: number;
+  }
+
+  export interface GetWalletResponse {
+    wallet: Wallet;
+  }
+
+  export type CoinReason = "LevelUp" | "MissionCompleted" | "AdminGrant" | "Purchase";
+
+  export interface CoinLedgerEntry {
+    id: string;
+    reason: CoinReason;
+    amount: number;
+    sourceKey: string;
+    metadata: Record<string, unknown> | null;
+    createdAt: string;
+  }
+
+  export interface GetCoinHistoryResponse {
+    history: PaginatedResponse<CoinLedgerEntry>;
+  }
+
+  export type CosmeticUnlock =
+    | { type: "default" }
+    | { type: "level"; value: number }
+    | { type: "mission"; key: string }
+    | { type: "purchase"; price: number };
+
+  export interface Cosmetic {
+    key: string;
+    value: string;
+    unlock: CosmeticUnlock;
+    unlocked: boolean;
+    owned: boolean;
+    equipped: boolean;
+  }
+
+  export interface GetCosmeticsResponse {
+    profileColors: Cosmetic[];
+    avatarFrames: Cosmetic[];
+    profileTitles: Cosmetic[];
+    bannerEffects: Cosmetic[];
+  }
+
+  export type CosmeticType = "ProfileColor" | "AvatarFrame" | "ProfileTitle" | "BannerEffect";
+
+  export interface PurchaseCosmeticResponse {
+    wallet: Wallet;
+    cosmetic: Cosmetic;
   }
 
   export interface User {
@@ -155,6 +322,9 @@ export namespace ApiTypes {
       id: string;
       userId: string;
       color: string;
+      avatarFrame: string | null;
+      title: string | null;
+      bannerEffect: string | null;
       language: string;
       timezone: string;
       about: string;
@@ -324,6 +494,19 @@ export namespace ApiTypes {
     latestReviewType: ReviewContentType | null;
     latestProgressType: ReviewContentType | null;
     latestFavoriteType: FavoriteType | null;
+    xp: XpSummary;
+    coins: Wallet;
+    missions: {
+      total: number;
+      completed: number;
+      latest: {
+        id: string;
+        key: string;
+        tier: MissionTier;
+        hidden: boolean;
+        completedAt: string;
+      }[];
+    };
   }
 
   export interface GetUserByUsernameResponse {
@@ -431,7 +614,10 @@ export namespace ApiTypes {
       profile: {
         id: string;
         avatarUrl: string | null;
+        avatarFrame: string | null;
+        title: string | null;
       };
+      xp: { level: number } | null;
     };
     reactions: CommentReaction[];
     replies?: Comment[];
@@ -465,7 +651,9 @@ export namespace ApiTypes {
     | "NewEpisodeReleased"
     | "NewChapterReleased"
     | "NewGameReleased"
-    | "SequelAdded";
+    | "SequelAdded"
+    | "LevelUp"
+    | "MissionCompleted";
 
   export type CatchupMediaType = "Anime" | "Manga" | "TvShow" | "Game";
 
@@ -562,6 +750,8 @@ export namespace ApiTypes {
     gameRelease: boolean;
     sequelAdded: boolean;
     reopenedCompleted: boolean;
+    levelUp: boolean;
+    mission: boolean;
   }
 
   export interface GetNotificationPreferencesResponse {
@@ -1064,6 +1254,15 @@ export const apiEndpoints = {
   getPayments: "/payment",
   getPaymentDetails: (id: string) => `/payment/detail/${id}`,
   updateUser: "/user",
+  getMyXp: "/xp/me",
+  getXpHistory: "/xp/history",
+  getXpByUsername: (username: string) => `/xp/user/${username}`,
+  getMyMissions: "/missions/me",
+  getMissionsByUserId: (userId: string) => `/missions/user/${userId}`,
+  getMyWallet: "/coins/me",
+  getCoinHistory: "/coins/history",
+  getCosmetics: "/cosmetics",
+  purchaseCosmetic: "/cosmetics/purchase",
   updateProfile: "/profile",
   updateProfileAvatar: "/profile/avatar",
   deleteProfileAvatar: "/profile/avatar",

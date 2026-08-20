@@ -9,6 +9,7 @@ import { UserActivityTab } from "@/components/pages/user/activity-tab";
 import { UserFavoritesTab } from "@/components/pages/user/favorites-tab";
 import { UserFollowersTab, UserFollowingTab } from "@/components/pages/user/follows-tab";
 import { UserListsTab } from "@/components/pages/user/lists-tab";
+import { UserMissionsTab } from "@/components/pages/user/missions-tab";
 import { UserOverviewTab } from "@/components/pages/user/overview-tab";
 import { UserProgressTab } from "@/components/pages/user/progress-tab";
 import { UserReviewsTab } from "@/components/pages/user/reviews-tab";
@@ -19,8 +20,16 @@ import { ErrorComponent } from "@/components/shared/error";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth/client";
+import {
+  BANNER_EFFECT_CLASSES,
+  isGradientColor,
+  profileColorBackgroundStyle,
+  profileGradientVars,
+  resolveProfileColorHex,
+} from "@/lib/cosmetics";
 import { AVATAR_BLUR } from "@/lib/image";
 import { ogUrl } from "@/lib/og/url";
+import { cn } from "@/lib/utils";
 import { profileThemeStyle } from "@/lib/utils/profile-theme";
 import { seo } from "@/lib/utils/seo";
 
@@ -76,7 +85,13 @@ function UserDetailsRoute() {
   const totalProgress = Object.values(progressStats).reduce((sum, stats) => sum + stats.total, 0);
 
   return (
-    <div className="flex flex-col gap-5" style={profileThemeStyle(userQuery.data.profile.color)}>
+    <div
+      className={cn("flex flex-col gap-5", isGradientColor(userQuery.data.profile.color) && "profile-gradient")}
+      style={{
+        ...profileThemeStyle(resolveProfileColorHex(userQuery.data.profile.color)),
+        ...profileGradientVars(userQuery.data.profile.color),
+      }}
+    >
       <div className="relative">
         {userQuery.data.profile.bannerUrl ? (
           <Image
@@ -87,8 +102,18 @@ function UserDetailsRoute() {
             alt=""
           />
         ) : (
-          <div className="aspect-video w-full h-82.5" style={{ backgroundColor: userQuery.data.profile.color }} />
+          <div
+            className="aspect-video w-full h-82.5"
+            style={profileColorBackgroundStyle(userQuery.data.profile.color)}
+          />
         )}
+
+        <div
+          className={cn(
+            "absolute inset-0 pointer-events-none",
+            BANNER_EFFECT_CLASSES[userQuery.data.profile.bannerEffect ?? "none"],
+          )}
+        />
 
         <div className="absolute inset-0 bg-linear-to-t from-background to-transparent" />
       </div>
@@ -121,6 +146,10 @@ function UserDetailsRoute() {
 
             <TabsTrigger value="favorites">
               {t("user:favorites")} ({userQuery.data.counts.favorites})
+            </TabsTrigger>
+
+            <TabsTrigger value="missions">
+              {t("missions:title")} ({userQuery.data.missions.completed}/{userQuery.data.missions.total})
             </TabsTrigger>
 
             <TabsTrigger value="screenshots">
@@ -171,6 +200,10 @@ function UserDetailsRoute() {
 
           <TabsContent value="screenshots">
             <UserScreenshotsTab userId={userQuery.data.id} />
+          </TabsContent>
+
+          <TabsContent value="missions">
+            <UserMissionsTab userId={userQuery.data.id} />
           </TabsContent>
 
           <TabsContent value="followers">

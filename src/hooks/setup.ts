@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api, apiEndpoints } from "@/lib/api.ts";
+import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 
 export interface SetupItemRequest {
-  name: string;
+  type?: ApiTypes.SetupItemType;
+  name?: string;
   brand?: string;
   link?: string;
 }

@@ -1,3 +1,4 @@
+import { shade } from "polished";
 import type { CSSProperties } from "react";
 
 export const DEFAULT_PROFILE_COLOR = "#10b981";
@@ -35,8 +36,24 @@ function hexToOklch(hex: string) {
   return { chroma: Math.hypot(axisA, axisB), hue: (Math.atan2(axisB, axisA) * 180) / Math.PI };
 }
 
+export function normalizeProfileColor(color?: string | null): string {
+  return color && HEX_COLOR_REGEX.test(color) ? color.toLowerCase() : DEFAULT_PROFILE_COLOR;
+}
+
+export function profilePanelColors(color?: string | null): Record<string, string> {
+  const base = normalizeProfileColor(color);
+
+  return {
+    "0": shade(0.76, base),
+    "5": shade(0.48, base),
+    "10": shade(0.35, base),
+    "20": shade(0.19, base),
+    "30": base,
+  };
+}
+
 export function profileThemeStyle(color?: string | null): CSSProperties {
-  const base = color && HEX_COLOR_REGEX.test(color) ? color.toLowerCase() : DEFAULT_PROFILE_COLOR;
+  const base = normalizeProfileColor(color);
 
   if (base === DEFAULT_PROFILE_COLOR) return {};
 
@@ -44,8 +61,9 @@ export function profileThemeStyle(color?: string | null): CSSProperties {
 
   const style: Record<string, string> = {};
 
-  for (const [shade, lightness, chromaRatio] of SHADE_SCALE) {
-    style[`--color-malachite-${shade}`] = `oklch(${lightness} ${(chroma * chromaRatio).toFixed(4)} ${hue.toFixed(2)})`;
+  for (const [shadeStep, lightness, chromaRatio] of SHADE_SCALE) {
+    style[`--color-malachite-${shadeStep}`] =
+      `oklch(${lightness} ${(chroma * chromaRatio).toFixed(4)} ${hue.toFixed(2)})`;
   }
 
   return style as CSSProperties;

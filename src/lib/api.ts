@@ -121,6 +121,24 @@ export namespace ApiTypes {
     payment: Payment;
   }
 
+  export interface SetupPhoto {
+    id: string;
+    url: string;
+    position: number;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  export interface SetupItem {
+    id: string;
+    name: string;
+    brand: string | null;
+    link: string | null;
+    position: number;
+    createdAt: string;
+    updatedAt: string;
+  }
+
   export interface User {
     id: string;
     name: string;
@@ -143,6 +161,8 @@ export namespace ApiTypes {
       bannerUrl: string;
       avatarUrl: string;
       contentTypes: ContentType[];
+      setupPhotos: SetupPhoto[];
+      setupItems: SetupItem[];
       createdAt: string;
       updatedAt: string;
     };
@@ -1050,6 +1070,12 @@ export const apiEndpoints = {
   updateProfileBanner: "/profile/banner",
   deleteProfileBanner: "/profile/banner",
   uploadImage: "/upload/image",
+  addSetupPhoto: "/profile/setup/photo",
+  deleteSetupPhoto: (photoId: string) => `/profile/setup/photo/${photoId}`,
+  createSetupItem: "/profile/setup/item",
+  updateSetupItem: (itemId: string) => `/profile/setup/item/${itemId}`,
+  deleteSetupItem: (itemId: string) => `/profile/setup/item/${itemId}`,
+  reorderSetupItems: "/profile/setup/items/order",
   getGameDetails: (id: string) => `/game/detail/${id}`,
   getGameFranchise: (slug: string) => `/game/franchise/${slug}`,
   getGamePopular: "/game/top?filter=popular",

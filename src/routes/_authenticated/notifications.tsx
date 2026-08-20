@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { NotificationList } from "@/components/pages/notifications/list-notification";
-import { NotificationPreferences } from "@/components/pages/notifications/notification-preferences";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -96,7 +95,6 @@ function NotificationsRoute() {
         </CardContent>
       </Card>
 
-      <NotificationPreferences />
       <Dialog open={isDeleteAllOpen} onOpenChange={setIsDeleteAllOpen}>
         <DialogContent>
           <DialogHeader>

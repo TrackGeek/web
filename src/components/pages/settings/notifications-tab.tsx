@@ -46,7 +46,7 @@ const CATEGORIES: { key: keyof ApiTypes.NotificationPreferences; labelKey: strin
   },
 ];
 
-export function NotificationPreferences() {
+export function SettingsNotificationsTab() {
   const { t } = useTranslation();
 
   const { data: preferences, isLoading } = useNotificationPreferences();

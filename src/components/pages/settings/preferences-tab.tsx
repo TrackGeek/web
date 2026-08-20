@@ -216,10 +216,10 @@ export function SettingsPreferencesTab() {
           <CardTitle>
             <Icon icon={"lucide:settings"} className="size-5" />
 
-            {t("settings:preferrences.title")}
+            {t("settings:preferences.title")}
           </CardTitle>
 
-          <CardDescription>{t("settings:preferrences.description")}</CardDescription>
+          <CardDescription>{t("settings:preferences.description")}</CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col gap-4">
@@ -235,7 +235,7 @@ export function SettingsPreferencesTab() {
               }}
             >
               <SelectTrigger className="w-full max-w-full" disabled={updatePreferencesMutation.isPending}>
-                <SelectValue placeholder={t("settings:preferrences.language.placeholder")} />
+                <SelectValue placeholder={t("settings:preferences.language.placeholder")} />
               </SelectTrigger>
 
               <SelectContent position="popper">
@@ -251,7 +251,7 @@ export function SettingsPreferencesTab() {
           </Field>
 
           <Field className="gap-2">
-            <FieldLabel>{t("settings:preferrences.timezone.title")}</FieldLabel>
+            <FieldLabel>{t("settings:preferences.timezone.title")}</FieldLabel>
 
             <Select
               value={timezone}
@@ -262,7 +262,7 @@ export function SettingsPreferencesTab() {
               }}
             >
               <SelectTrigger className="w-full max-w-full" disabled={updatePreferencesMutation.isPending}>
-                <SelectValue placeholder={t("settings:preferrences.timezone.placeholder")} />
+                <SelectValue placeholder={t("settings:preferences.timezone.placeholder")} />
               </SelectTrigger>
 
               <SelectContent position="popper">

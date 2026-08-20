@@ -2,12 +2,13 @@ import { Icon } from "@iconify/react";
 import { useQuery } from "@tanstack/react-query";
 import HeatMap, { type SVGProps } from "@uiw/react-heat-map";
 import type { TFunction } from "i18next";
-import { useEffect, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { formatLongDate } from "@/lib/utils/date";
+import { profilePanelColors } from "@/lib/utils/profile-theme";
 
 function formatNumber(value: number, locale: string) {
   const formatter = new Intl.NumberFormat(locale);
@@ -65,9 +66,10 @@ const renderRect =
 
 interface ActivityCardProps {
   userId: string;
+  color?: string | null;
 }
 
-export function ActivityCard({ userId }: ActivityCardProps) {
+export function ActivityCard({ userId, color }: ActivityCardProps) {
   const { t, i18n } = useTranslation();
   const activityCalendarQuery = useQuery({
     queryKey: ["user-activity-calendar", userId],
@@ -82,6 +84,8 @@ export function ActivityCard({ userId }: ActivityCardProps) {
   const defaultValue = t("user:activityLastYear", { value: formatNumber(totalActivities, i18n.language) });
 
   const { weeks, ...dateProps } = getCalendarDateProps();
+
+  const panelColors = useMemo(() => profilePanelColors(color), [color]);
 
   const [hoveredTile, setHoveredTile] = useState<string | null>(defaultValue);
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
@@ -149,16 +153,13 @@ export function ActivityCard({ userId }: ActivityCardProps) {
               rectRender={renderRect(t, i18n.language, (date) => setHoveredTile(date), setTooltipPos)}
               height={height}
               width={width}
-              style={{
-                color: "oklch(0.708 0 0)",
-              }}
-              panelColors={{
-                "0": "#022c22",
-                "5": "#065f46",
-                "10": "#047857",
-                "20": "#059669",
-                "30": "#10b981",
-              }}
+              style={
+                {
+                  color: "oklch(0.708 0 0)",
+                  "--rhm-rect-active": panelColors["10"],
+                } as CSSProperties
+              }
+              panelColors={panelColors}
             />
           </div>
 

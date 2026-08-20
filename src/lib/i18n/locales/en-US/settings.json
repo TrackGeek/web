@@ -1,6 +1,7 @@
 {
   "tabs": {
     "preferences": "Preferences",
+    "notifications": "Notifications",
     "profile": "Profile",
     "security": "Security",
     "connections": "Connections",
@@ -211,9 +212,9 @@
     "success": "Settings saved successfully.",
     "error": "Failed to save settings. Please try again."
   },
-  "preferrences": {
-    "title": "Preferences",
-    "description": "Set your application preferences.",
+  "preferences": {
+    "title": "Localization",
+    "description": "Set the language and timezone for your account.",
     "language": {
       "placeholder": "Select your preferred language"
     },

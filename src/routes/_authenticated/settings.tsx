@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SettingsImportTab } from "@/components/pages/settings/import-tab";
+import { SettingsNotificationsTab } from "@/components/pages/settings/notifications-tab";
 import { SettingsPreferencesTab } from "@/components/pages/settings/preferences-tab";
 import { SettingsProfileTab } from "@/components/pages/settings/profile-tab";
 import { ConnectionsCard } from "@/components/shared/settings/connections-card";
@@ -30,6 +31,8 @@ function SettingsRoute() {
 
         <TabsTrigger value="preferences">{t("settings:tabs.preferences")}</TabsTrigger>
 
+        <TabsTrigger value="notifications">{t("settings:tabs.notifications")}</TabsTrigger>
+
         <TabsTrigger value="security">{t("settings:tabs.security")}</TabsTrigger>
 
         <TabsTrigger value="connections">{t("settings:tabs.connections")}</TabsTrigger>
@@ -43,6 +46,10 @@ function SettingsRoute() {
 
       <TabsContent value="preferences">
         <SettingsPreferencesTab />
+      </TabsContent>
+
+      <TabsContent value="notifications">
+        <SettingsNotificationsTab />
       </TabsContent>
 
       <TabsContent value="security">

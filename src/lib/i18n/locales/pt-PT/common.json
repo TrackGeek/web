@@ -2,6 +2,7 @@
   "yes": "sim",
   "no": "não",
   "billing": "Faturação",
+  "shop": "Shop",
   "home": "Início",
   "feed": "Feed",
   "donate": "Doar",
@@ -21,6 +22,7 @@
   "notifications": "Notificações",
   "profile": "Perfil",
   "credits": "Créditos",
+  "favorite": "Favorite",
   "roadmap": "Planejamento",
   "feedback": "Comentários",
   "providers": {
@@ -81,7 +83,9 @@
     "book": "Livro",
     "book_other": "Livros",
     "anime": "Anime",
-    "anime_other": "Animes"
+    "anime_other": "Animes",
+    "cast": "Cast",
+    "cast_other": "Cast"
   },
   "roles": {
     "reviewer": "Revisor do GitHub",

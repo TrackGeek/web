@@ -1,0 +1,44 @@
+{
+  "level": "Level",
+  "levelShort": "Lv. {{level}}",
+  "totalXp": "{{count}} XP total",
+  "xp": "XP",
+  "toNextLevel": "{{current}} / {{next}} XP to level {{level}}",
+  "maxProgress": "Maximum progress reached",
+  "progression": "Progression",
+  "byContentType": "Levels by media",
+  "streak": "Streak",
+  "streakDays_one": "{{count}} day",
+  "streakDays_other": "{{count}} days",
+  "longestStreak": "Best: {{count}} days",
+  "noStreak": "No active streak",
+  "coins": "Coins",
+  "balance": "Balance",
+  "lifetimeEarned": "Earned: {{count}}",
+  "lifetimeSpent": "Spent: {{count}}",
+  "history": "XP history",
+  "reasons": {
+    "EpisodeWatched": "Episode watched",
+    "ProgressStarted": "Title started",
+    "ProgressCompleted": "Title completed",
+    "ReviewAdded": "Review written",
+    "ListCreated": "List created",
+    "ListItemAdded": "Item added to a list",
+    "FavoriteAdded": "Favorite added",
+    "Followed": "User followed",
+    "CommentAdded": "Comment written",
+    "ReactionAdded": "Reaction added",
+    "StreakBonus": "Streak bonus",
+    "MissionCompleted": "Mission completed"
+  },
+  "coinReasons": {
+    "LevelUp": "Level up",
+    "MissionCompleted": "Mission completed",
+    "AdminGrant": "Granted by staff",
+    "Purchase": "Shop purchase"
+  },
+  "levelUpToast": {
+    "title": "Level {{level}} reached!",
+    "description": "Keep tracking to unlock more rewards."
+  }
+}

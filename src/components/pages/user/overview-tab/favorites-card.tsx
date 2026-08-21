@@ -64,7 +64,7 @@ export function FavoritesCard({ userId, onSeeMore }: FavoritesCardProps) {
 
       <CardContent>
         {items.length > 0 ? (
-          <div className="grid grid-cols-5 gap-3">
+          <div className="grid grid-cols-6 gap-3">
             {items.map((item) => (
               <FavoriteCard key={item.id} item={item} />
             ))}

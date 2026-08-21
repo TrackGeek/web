@@ -33,6 +33,11 @@
   "GAME_FRANCHISE_NOT_FOUND": "The requested franchise was not found.",
   "BOOK_FRANCHISE_NOT_FOUND": "The requested franchise was not found.",
   "COMPANY_NOT_FOUND": "The requested company was not found.",
+  "COSMETIC_NOT_FOUND": "The requested cosmetic was not found.",
+  "COSMETIC_LOCKED": "You have not unlocked this cosmetic yet.",
+  "COSMETIC_NOT_PURCHASABLE": "This cosmetic cannot be purchased.",
+  "COSMETIC_ALREADY_OWNED": "You already own this cosmetic.",
+  "INSUFFICIENT_BALANCE": "You do not have enough coins.",
   "betterAuth": {
     "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "A user with this email already exists. Please use a different email address.",
     "INVALID_CODE": "Invalid code. Please try again.",

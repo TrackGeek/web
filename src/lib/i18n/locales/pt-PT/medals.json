@@ -6,5 +6,21 @@
   "staff": {
     "name": "Equipa",
     "description": "Concedido aos membros da equipa pela sua dedicação e trabalho árduo."
+  },
+  "level-10": {
+    "name": "Level 10",
+    "description": "Awarded for reaching level 10."
+  },
+  "level-25": {
+    "name": "Level 25",
+    "description": "Awarded for reaching level 25."
+  },
+  "level-50": {
+    "name": "Level 50",
+    "description": "Awarded for reaching level 50."
+  },
+  "level-100": {
+    "name": "Level 100",
+    "description": "Awarded for reaching level 100."
   }
 }

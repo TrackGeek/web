@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import z from "zod";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -26,6 +27,7 @@ import {
 } from "@/hooks/comment.ts";
 import type { ApiTypes } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
+import { AVATAR_FRAME_CLASSES, hasAvatarFrame } from "@/lib/cosmetics";
 import { QUICK_REACTIONS } from "@/lib/reactions";
 import { cn } from "@/lib/utils";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
@@ -275,7 +277,13 @@ function CommentItem({
 
   return (
     <article className="group flex gap-3">
-      <Avatar className="size-9 shrink-0 border border-border/50">
+      <Avatar
+        className={cn(
+          "size-9 shrink-0",
+          !hasAvatarFrame(comment.user.profile.avatarFrame) && "border border-border/50",
+          AVATAR_FRAME_CLASSES[comment.user.profile.avatarFrame ?? "none"],
+        )}
+      >
         {comment.user.profile.avatarUrl ? (
           <Image
             className="aspect-square size-full"
@@ -299,6 +307,16 @@ function CommentItem({
             >
               {comment.user.username}
             </Link>
+            {comment.user.xp && (
+              <Badge variant="secondary" className="shrink-0 px-1.5 py-0 text-[10px]">
+                {t("xp:levelShort", { level: comment.user.xp.level })}
+              </Badge>
+            )}
+            {comment.user.profile.title && comment.user.profile.title !== "none" && (
+              <Badge variant="outline" className="shrink-0 px-1.5 py-0 text-[10px]">
+                {t(`cosmetics:titles.${comment.user.profile.title}`)}
+              </Badge>
+            )}
             <time className="shrink-0 text-xs text-muted-foreground" dateTime={comment.createdAt}>
               • {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
             </time>

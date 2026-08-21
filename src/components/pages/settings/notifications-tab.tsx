@@ -44,6 +44,16 @@ const CATEGORIES: { key: keyof ApiTypes.NotificationPreferences; labelKey: strin
     labelKey: "notifications:preferences.reopenedCompleted",
     descriptionKey: "notifications:preferences.reopenedCompletedDescription",
   },
+  {
+    key: "levelUp",
+    labelKey: "notifications:preferences.levelUp",
+    descriptionKey: "notifications:preferences.levelUpDescription",
+  },
+  {
+    key: "mission",
+    labelKey: "notifications:preferences.mission",
+    descriptionKey: "notifications:preferences.missionDescription",
+  },
 ];
 
 export function SettingsNotificationsTab() {

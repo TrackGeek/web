@@ -24,11 +24,17 @@ export function NotificationItem({ notification, isPending, onToggleRead, onDele
 
   const { actor, reaction, comment, metadata } = notification;
   const isRead = notification.readAt !== null;
-  const isSystem = notification.type === "System";
+  const isSystem =
+    notification.type === "System" || notification.type === "LevelUp" || notification.type === "MissionCompleted";
   const release = normalizeReleaseNotification(notification, t);
 
-  const systemTitle = metadata?.titleKey ? t(metadata.titleKey) : metadata?.title;
-  const systemDescription = metadata?.descriptionKey ? t(metadata.descriptionKey) : metadata?.description;
+  const systemParams = {
+    ...metadata,
+    ...(typeof metadata?.missionKey === "string" && { missionName: t(`missions:${metadata.missionKey}.name`) }),
+  };
+
+  const systemTitle = metadata?.titleKey ? t(metadata.titleKey, systemParams) : metadata?.title;
+  const systemDescription = metadata?.descriptionKey ? t(metadata.descriptionKey, systemParams) : metadata?.description;
 
   const timestamp = (
     <time className="text-xs text-muted-foreground" dateTime={notification.createdAt}>

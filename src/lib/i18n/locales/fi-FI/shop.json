@@ -1,0 +1,17 @@
+{
+  "title": "Shop",
+  "description": "Spend your coins on cosmetics for your profile.",
+  "balance": "{{balance}} coins",
+  "buy": "Buy",
+  "equipHint": "After buying, equip it in your settings.",
+  "confirmPurchase": {
+    "title": "Confirm purchase",
+    "description": "Buy “{{name}}” for {{price}} coins? This cannot be undone.",
+    "confirm": "Buy",
+    "cancel": "Cancel"
+  },
+  "purchase": {
+    "success": "You bought “{{name}}”!"
+  },
+  "goToSettings": "Equip your cosmetics in"
+}

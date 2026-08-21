@@ -26,6 +26,7 @@ import { Route as TosRouteImport } from './routes/tos'
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated/billing'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedShopRouteImport } from './routes/_authenticated/shop'
 import { Route as AnimeIndexRouteImport } from './routes/anime/index'
 import { Route as AnimeSlugRouteImport } from './routes/anime/$slug'
 import { Route as BookIndexRouteImport } from './routes/book/index'
@@ -163,6 +164,11 @@ const AuthenticatedNotificationsRoute =
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedShopRoute = AuthenticatedShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AnimeIndexRoute = AnimeIndexRouteImport.update({
@@ -456,6 +462,7 @@ export interface FileRoutesByFullPath {
   '/billing': typeof AuthenticatedBillingRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/shop': typeof AuthenticatedShopRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
   '/cast/$slug': typeof CastSlugRoute
@@ -527,6 +534,7 @@ export interface FileRoutesByTo {
   '/billing': typeof AuthenticatedBillingRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/shop': typeof AuthenticatedShopRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
   '/cast/$slug': typeof CastSlugRoute
@@ -600,6 +608,7 @@ export interface FileRoutesById {
   '/_authenticated/billing': typeof AuthenticatedBillingRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/shop': typeof AuthenticatedShopRoute
   '/anime/$slug': typeof AnimeSlugRoute
   '/book/$slug': typeof BookSlugRoute
   '/cast/$slug': typeof CastSlugRoute
@@ -673,6 +682,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/notifications'
     | '/settings'
+    | '/shop'
     | '/anime/$slug'
     | '/book/$slug'
     | '/cast/$slug'
@@ -744,6 +754,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/notifications'
     | '/settings'
+    | '/shop'
     | '/anime/$slug'
     | '/book/$slug'
     | '/cast/$slug'
@@ -816,6 +827,7 @@ export interface FileRouteTypes {
     | '/_authenticated/billing'
     | '/_authenticated/notifications'
     | '/_authenticated/settings'
+    | '/_authenticated/shop'
     | '/anime/$slug'
     | '/book/$slug'
     | '/cast/$slug'
@@ -1055,6 +1067,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/shop': {
+      id: '/_authenticated/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof AuthenticatedShopRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/anime/': {
@@ -1435,6 +1454,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedShopRoute: typeof AuthenticatedShopRoute
   AuthenticatedSettingsImportBackloggdRoute: typeof AuthenticatedSettingsImportBackloggdRoute
   AuthenticatedSettingsImportMyanimelistRoute: typeof AuthenticatedSettingsImportMyanimelistRoute
   AuthenticatedSettingsImportTrackgeekRoute: typeof AuthenticatedSettingsImportTrackgeekRoute
@@ -1446,6 +1466,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedBillingRoute: AuthenticatedBillingRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedShopRoute: AuthenticatedShopRoute,
   AuthenticatedSettingsImportBackloggdRoute:
     AuthenticatedSettingsImportBackloggdRoute,
   AuthenticatedSettingsImportMyanimelistRoute:

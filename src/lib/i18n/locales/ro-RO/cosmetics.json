@@ -1,0 +1,81 @@
+{
+  "profileColors": "Profile colors",
+  "locked": "Locked",
+  "unlocked": "Unlocked",
+  "requirements": {
+    "level": "Reach level {{level}}",
+    "mission": "Complete “{{mission}}”",
+    "purchase": "Buy for {{price}} coins"
+  },
+  "colors": {
+    "emerald": "Emerald",
+    "slate": "Slate",
+    "blue": "Blue",
+    "rose": "Rose",
+    "amber": "Amber",
+    "violet": "Violet",
+    "cyan": "Cyan",
+    "fuchsia": "Fuchsia",
+    "gold": "Gold",
+    "crimson": "Crimson",
+    "obsidian": "Obsidian",
+    "otaku": "Otaku Pink",
+    "critic": "Critic Teal",
+    "omnivore": "Omnivore Purple",
+    "devoted": "Devoted Orange",
+    "graphite": "Graphite",
+    "ruby": "Ruby",
+    "sapphire": "Sapphire",
+    "jade": "Jade",
+    "sunset": "Sunset",
+    "orchid": "Orchid"
+  },
+  "avatarFrames": "Avatar frames",
+  "profileTitles": "Profile titles",
+  "bannerEffects": "Banner effects",
+  "owned": "Owned",
+  "equipped": "Equipped",
+  "equip": {
+    "title": "Cosmetics",
+    "description": "Equip the cosmetics you have unlocked or purchased in the shop."
+  },
+  "frames": {
+    "none": "None",
+    "glow": "Emerald Glow",
+    "neon": "Neon Pulse",
+    "gold_ring": "Gold Ring",
+    "rose_petals": "Rose Petals",
+    "aurora": "Aurora",
+    "obsidian_ring": "Obsidian Ring"
+  },
+  "titles": {
+    "none": "None",
+    "collector": "Collector",
+    "night_owl": "Night Owl",
+    "binge_watcher": "Binge Watcher",
+    "page_turner": "Page Turner",
+    "trendsetter": "Trendsetter",
+    "veteran": "Veteran",
+    "curator": "Curator",
+    "legend": "Legend",
+    "founder": "Founder"
+  },
+  "bannerEffectNames": {
+    "none": "None",
+    "gradient_wave": "Gradient Wave",
+    "particles": "Particles",
+    "scanlines": "Scanlines",
+    "vignette_glow": "Vignette Glow",
+    "aurora_sky": "Aurora Sky"
+  },
+  "gradientColors": "Gradient colors",
+  "customColor": "Custom color",
+  "gradients": {
+    "dusk": "Dusk",
+    "oceanic": "Oceanic",
+    "sunrise": "Sunrise",
+    "nebula": "Nebula",
+    "aurora_flow": "Aurora Flow",
+    "prism": "Prism"
+  }
+}

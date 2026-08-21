@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import type { TFunction } from "i18next";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -15,11 +15,29 @@ import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { api, apiEndpoints } from "@/lib/api";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { cosmeticsQueryKey, useCosmetics } from "@/hooks/cosmetic";
+import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth/client";
+import {
+  AVATAR_FRAME_CLASSES,
+  BANNER_EFFECT_CLASSES,
+  isGradientColor,
+  PROFILE_GRADIENTS,
+  profileColorBackgroundStyle,
+} from "@/lib/cosmetics";
 import { AVATAR_BLUR } from "@/lib/image";
+import { cn } from "@/lib/utils";
 
 const ABOUT_MAX_LENGTH = 500;
+const DEFAULT_COLOR = "#10b981";
+
+type ProfileCosmetics = {
+  color?: string;
+  avatarFrame?: string | null;
+  title?: string | null;
+  bannerEffect?: string | null;
+};
 
 function createProfileSchema(t: TFunction) {
   return z.object({
@@ -40,6 +58,68 @@ export function SettingsProfileTab() {
   const { t } = useTranslation();
 
   const session = useSession();
+  const queryClient = useQueryClient();
+
+  const serverColor = session.data?.user?.profile?.color ?? DEFAULT_COLOR;
+
+  const cosmeticsQuery = useCosmetics(Boolean(session.data?.user));
+
+  const [color, setColor] = useState(serverColor);
+
+  const lastSavedColorRef = useRef(serverColor);
+
+  useEffect(() => {
+    lastSavedColorRef.current = serverColor;
+
+    setColor(serverColor);
+  }, [serverColor]);
+
+  const updateCosmeticsMutation = useMutation({
+    mutationFn: (data: ProfileCosmetics) => {
+      return api.patch(apiEndpoints.updateProfile, data);
+    },
+    onSuccess: async () => {
+      await Promise.all([session.refetch(), queryClient.invalidateQueries({ queryKey: cosmeticsQueryKey() })]);
+
+      toast.success(t("settings:save.success"));
+    },
+    onError: () => {
+      toast.error(t("settings:save.error"));
+    },
+  });
+
+  function saveColor(value: string) {
+    if (value === lastSavedColorRef.current) return;
+
+    lastSavedColorRef.current = value;
+
+    updateCosmeticsMutation.mutate({ color: value });
+  }
+
+  function unlockRequirement(cosmetic: ApiTypes.Cosmetic) {
+    if (cosmetic.unlock.type === "level") {
+      return t("cosmetics:requirements.level", { level: cosmetic.unlock.value });
+    }
+
+    if (cosmetic.unlock.type === "mission") {
+      return t("cosmetics:requirements.mission", { mission: t(`missions:${cosmetic.unlock.key}.name`) });
+    }
+
+    if (cosmetic.unlock.type === "purchase") {
+      return t("cosmetics:requirements.purchase", { price: cosmetic.unlock.price });
+    }
+
+    return null;
+  }
+
+  function equipCosmetic(field: "avatarFrame" | "title" | "bannerEffect", key: string) {
+    updateCosmeticsMutation.mutate({ [field]: key === "none" ? null : key });
+  }
+
+  const profileColors = cosmeticsQuery.data?.profileColors ?? [];
+  const solidColors = profileColors.filter((cosmetic) => !isGradientColor(cosmetic.value));
+  const gradientColors = profileColors.filter((cosmetic) => isGradientColor(cosmetic.value));
+  const isCustomColor = color.startsWith("#") && !solidColors.some((cosmetic) => cosmetic.value === color);
 
   const profileSchema = useMemo(() => createProfileSchema(t), [t]);
 
@@ -221,7 +301,7 @@ export function SettingsProfileTab() {
                 // biome-ignore lint/a11y/noStaticElementInteractions: false positive
                 <div
                   className="size-full rounded-lg cursor-pointer"
-                  style={{ backgroundColor: session.data?.user?.profile?.color }}
+                  style={profileColorBackgroundStyle(session.data?.user?.profile?.color)}
                   onClick={() => avatarInputRef.current?.click()}
                   onKeyDown={() => avatarInputRef.current?.click()}
                 >
@@ -307,7 +387,7 @@ export function SettingsProfileTab() {
               // biome-ignore lint/a11y/noStaticElementInteractions: false positive
               <div
                 className="absolute inset-0 rounded-lg cursor-pointer"
-                style={{ backgroundColor: session.data?.user?.profile?.color }}
+                style={profileColorBackgroundStyle(session.data?.user?.profile?.color)}
                 onClick={() => bannerInputRef.current?.click()}
                 onKeyDown={() => bannerInputRef.current?.click()}
               >
@@ -433,6 +513,234 @@ export function SettingsProfileTab() {
             </Button>
           </CardFooter>
         </form>
+      </Card>
+
+      <Card className="sm:col-span-2 lg:col-span-3">
+        <CardHeader>
+          <CardTitle>
+            <Icon icon={"lucide:palette"} className="size-5" />
+
+            {t("settings:color.title")}
+          </CardTitle>
+
+          <CardDescription>{t("settings:color.description")}</CardDescription>
+        </CardHeader>
+
+        <CardContent className="flex flex-col gap-2">
+          <FieldLabel htmlFor="colorOptions">{t("settings:color.options")}</FieldLabel>
+
+          <div className="flex flex-wrap gap-2 mt-2">
+            {solidColors.map((cosmetic) => (
+              <Tooltip key={cosmetic.key}>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    className={`relative size-10 rounded-full border-2 transition cursor-pointer hover:border-accent ${color === cosmetic.value ? "border-accent" : "border-transparent"}`}
+                    style={{ backgroundColor: cosmetic.value }}
+                    onClick={() => {
+                      setColor(cosmetic.value);
+
+                      saveColor(cosmetic.value);
+                    }}
+                  />
+                </TooltipTrigger>
+                <TooltipContent className="bg-muted">
+                  <div className="max-w-xs text-xs font-semibold">{t(`cosmetics:colors.${cosmetic.key}`)}</div>
+                </TooltipContent>
+              </Tooltip>
+            ))}
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <label
+                  className={`relative flex size-10 cursor-pointer items-center justify-center rounded-full border-2 transition hover:border-accent ${isCustomColor ? "border-accent" : "border-border"}`}
+                  style={isCustomColor ? { backgroundColor: color } : undefined}
+                >
+                  <Icon icon="lucide:pipette" className="size-4 text-white drop-shadow" />
+
+                  <input
+                    type="color"
+                    value={color.startsWith("#") ? color : DEFAULT_COLOR}
+                    className="absolute inset-0 size-full cursor-pointer opacity-0"
+                    onChange={(event) => setColor(event.target.value)}
+                    onBlur={(event) => saveColor(event.target.value)}
+                  />
+                </label>
+              </TooltipTrigger>
+              <TooltipContent className="bg-muted">
+                <div className="max-w-xs text-xs font-semibold">{t("cosmetics:customColor")}</div>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+
+          <FieldLabel className="mt-4">{t("cosmetics:gradientColors")}</FieldLabel>
+
+          <div className="flex flex-wrap gap-2 mt-1">
+            {gradientColors.map((cosmetic) => (
+              <Tooltip key={cosmetic.key}>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    disabled={!cosmetic.unlocked}
+                    className={`relative size-10 rounded-full border-2 transition ${color === cosmetic.value ? "border-accent" : "border-transparent"} ${cosmetic.unlocked ? "cursor-pointer hover:border-accent" : "opacity-40"}`}
+                    style={{ backgroundImage: PROFILE_GRADIENTS[cosmetic.key]?.css }}
+                    onClick={() => {
+                      setColor(cosmetic.value);
+
+                      saveColor(cosmetic.value);
+                    }}
+                  >
+                    {!cosmetic.unlocked && (
+                      <Icon icon="lucide:lock" className="absolute inset-0 m-auto size-4 text-white drop-shadow" />
+                    )}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="bg-muted">
+                  <div className="max-w-xs text-xs">
+                    <div className="font-semibold">{t(`cosmetics:gradients.${cosmetic.key}`)}</div>
+                    {!cosmetic.unlocked && <div className="text-muted-foreground">{unlockRequirement(cosmetic)}</div>}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {color !== DEFAULT_COLOR && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setColor(DEFAULT_COLOR);
+
+                  saveColor(DEFAULT_COLOR);
+                }}
+              >
+                <Icon icon={"lucide:rotate-ccw"} className="size-4" />
+
+                {t("settings:color.reset")}
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="sm:col-span-2 lg:col-span-3">
+        <CardHeader className="gap-2">
+          <CardTitle>
+            <Icon icon={"lucide:sparkles"} className="size-5" />
+
+            {t("cosmetics:equip.title")}
+          </CardTitle>
+
+          <CardDescription>{t("cosmetics:equip.description")}</CardDescription>
+        </CardHeader>
+
+        <CardContent className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <FieldLabel>{t("cosmetics:avatarFrames")}</FieldLabel>
+
+            <div className="flex flex-wrap gap-3 mt-1">
+              {(cosmeticsQuery.data?.avatarFrames ?? []).map((cosmetic) => (
+                <Tooltip key={cosmetic.key}>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      disabled={!cosmetic.unlocked || updateCosmeticsMutation.isPending}
+                      className={cn(
+                        "relative size-12 rounded-full border-2 bg-muted transition",
+                        cosmetic.equipped ? "border-accent" : "border-transparent",
+                        cosmetic.unlocked ? "cursor-pointer hover:border-accent" : "opacity-40",
+                        AVATAR_FRAME_CLASSES[cosmetic.key],
+                      )}
+                      onClick={() => equipCosmetic("avatarFrame", cosmetic.key)}
+                    >
+                      {!cosmetic.unlocked && (
+                        <Icon icon="lucide:lock" className="absolute inset-0 m-auto size-4 text-white drop-shadow" />
+                      )}
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-muted">
+                    <div className="max-w-xs text-xs">
+                      <div className="font-semibold">{t(`cosmetics:frames.${cosmetic.key}`)}</div>
+                      {!cosmetic.unlocked && <div className="text-muted-foreground">{unlockRequirement(cosmetic)}</div>}
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <FieldLabel>{t("cosmetics:profileTitles")}</FieldLabel>
+
+            <div className="flex flex-wrap gap-2 mt-1">
+              {(cosmeticsQuery.data?.profileTitles ?? []).map((cosmetic) => (
+                <Tooltip key={cosmetic.key}>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      disabled={!cosmetic.unlocked || updateCosmeticsMutation.isPending}
+                      className={cn(
+                        "flex items-center gap-1.5 rounded-full border-2 px-3 py-1 text-xs font-medium transition",
+                        cosmetic.equipped ? "border-accent" : "border-border",
+                        cosmetic.unlocked ? "cursor-pointer hover:border-accent" : "opacity-40",
+                      )}
+                      onClick={() => equipCosmetic("title", cosmetic.key)}
+                    >
+                      {!cosmetic.unlocked && <Icon icon="lucide:lock" className="size-3" />}
+
+                      {t(`cosmetics:titles.${cosmetic.key}`)}
+                    </button>
+                  </TooltipTrigger>
+                  {!cosmetic.unlocked && (
+                    <TooltipContent className="bg-muted">
+                      <div className="max-w-xs text-xs text-muted-foreground">{unlockRequirement(cosmetic)}</div>
+                    </TooltipContent>
+                  )}
+                </Tooltip>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <FieldLabel>{t("cosmetics:bannerEffects")}</FieldLabel>
+
+            <div className="flex flex-wrap gap-3 mt-1">
+              {(cosmeticsQuery.data?.bannerEffects ?? []).map((cosmetic) => (
+                <Tooltip key={cosmetic.key}>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      disabled={!cosmetic.unlocked || updateCosmeticsMutation.isPending}
+                      className={cn(
+                        "relative h-12 w-20 overflow-hidden rounded-md border-2 bg-muted transition",
+                        cosmetic.equipped ? "border-accent" : "border-transparent",
+                        cosmetic.unlocked ? "cursor-pointer hover:border-accent" : "opacity-40",
+                      )}
+                      onClick={() => equipCosmetic("bannerEffect", cosmetic.key)}
+                    >
+                      <span
+                        className={cn("absolute inset-0 pointer-events-none", BANNER_EFFECT_CLASSES[cosmetic.key])}
+                      />
+
+                      {!cosmetic.unlocked && (
+                        <Icon icon="lucide:lock" className="absolute inset-0 m-auto size-4 text-white drop-shadow" />
+                      )}
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-muted">
+                    <div className="max-w-xs text-xs">
+                      <div className="font-semibold">{t(`cosmetics:bannerEffectNames.${cosmetic.key}`)}</div>
+                      {!cosmetic.unlocked && <div className="text-muted-foreground">{unlockRequirement(cosmetic)}</div>}
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          </div>
+        </CardContent>
       </Card>
     </div>
   );

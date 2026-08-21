@@ -190,3 +190,20 @@
   opacity: 0.1;
   z-index: -1;
 }
+
+/* Cor de perfil em gradiente: border-color não aceita gradiente, então os
+   borders são pintados via double-background (padding-box cobre o miolo,
+   border-box mostra o gradiente). Ativado pela classe no wrapper do perfil. */
+.profile-gradient [data-slot="card"] {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--color-card), var(--color-card)) padding-box,
+    var(--profile-gradient) border-box;
+}
+
+.profile-gradient [data-slot="avatar"] {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--color-muted), var(--color-muted)) padding-box,
+    var(--profile-gradient) border-box;
+}

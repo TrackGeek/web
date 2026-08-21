@@ -184,7 +184,7 @@
     }
   },
   "profile": {
-    "title": "Profile Settings",
+    "title": "Personal Information",
     "description": "Manage your personal information and preferences.",
     "name": "Name",
     "username": "Username",

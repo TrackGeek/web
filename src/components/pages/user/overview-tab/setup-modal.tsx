@@ -39,7 +39,14 @@ function createSetupItemSchema(t: TFunction) {
   });
 }
 
+function createSetupTitleSchema(t: TFunction) {
+  return z.object({
+    name: z.string().trim().min(1, t("user:setupTitleRequired")).max(NAME_MAX_LENGTH, t("user:setupNameMax")),
+  });
+}
+
 type SetupItemFormData = z.infer<ReturnType<typeof createSetupItemSchema>>;
+type SetupTitleFormData = z.infer<ReturnType<typeof createSetupTitleSchema>>;
 
 function errorMessage(error: unknown, t: TFunction) {
   const code = (error as { response?: { data?: { code?: { code?: string } } } })?.response?.data?.code?.code;
@@ -135,6 +142,62 @@ function SetupItemForm({ defaultValues, submitLabel, pending, onSubmit, onCancel
   );
 }
 
+interface SetupTitleFormProps {
+  defaultValue?: string;
+  submitLabel: string;
+  pending: boolean;
+  onSubmit: (name: string) => Promise<unknown>;
+  onCancel?: () => void;
+}
+
+function SetupTitleForm({ defaultValue, submitLabel, pending, onSubmit, onCancel }: SetupTitleFormProps) {
+  const { t } = useTranslation();
+
+  const schema = useMemo(() => createSetupTitleSchema(t), [t]);
+
+  const form = useForm<SetupTitleFormData>({
+    resolver: zodResolver(schema),
+    defaultValues: { name: defaultValue ?? "" },
+  });
+
+  const handleSubmit = form.handleSubmit(async (data) => {
+    await onSubmit(data.name);
+
+    if (defaultValue === undefined) form.reset({ name: "" });
+  });
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3 rounded-lg border border-border p-3">
+      <Field>
+        <FieldLabel htmlFor="setup-title-name">{t("user:setupTitle")}</FieldLabel>
+
+        <Input
+          id="setup-title-name"
+          placeholder={t("user:setupTitlePlaceholder")}
+          aria-invalid={!!form.formState.errors.name}
+          {...form.register("name")}
+        />
+
+        {form.formState.errors.name?.message && <FieldError>{form.formState.errors.name.message}</FieldError>}
+      </Field>
+
+      <div className="flex justify-end gap-2">
+        {onCancel && (
+          <Button type="button" variant="ghost" size="sm" onClick={onCancel}>
+            {t("common:cancel")}
+          </Button>
+        )}
+
+        <Button type="submit" size="sm" disabled={pending}>
+          {pending && <Icon icon="eos-icons:loading" className="size-4" />}
+
+          {submitLabel}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
 interface SetupModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -146,6 +209,7 @@ export function SetupModal({ open, onOpenChange, user }: SetupModalProps) {
 
   const [uploadingPhotos, setUploadingPhotos] = useState<UploadingPhoto[]>([]);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [addingTitle, setAddingTitle] = useState(false);
 
   const uploadImage = useUploadImage();
   const addPhoto = useAddSetupPhoto(user.username);
@@ -211,9 +275,37 @@ export function SetupModal({ open, onOpenChange, user }: SetupModalProps) {
     }
   };
 
+  const handleCreateTitle = async (name: string) => {
+    try {
+      await createItem.mutateAsync({ type: "TITLE", name });
+
+      setAddingTitle(false);
+    } catch (error) {
+      toast.error(errorMessage(error, t));
+    }
+  };
+
+  const handleCreateDivider = async () => {
+    try {
+      await createItem.mutateAsync({ type: "DIVIDER" });
+    } catch (error) {
+      toast.error(errorMessage(error, t));
+    }
+  };
+
   const handleUpdateItem = async (itemId: string, data: SetupItemRequest) => {
     try {
       await updateItem.mutateAsync({ itemId, ...data });
+
+      setEditingItemId(null);
+    } catch (error) {
+      toast.error(errorMessage(error, t));
+    }
+  };
+
+  const handleUpdateTitle = async (itemId: string, name: string) => {
+    try {
+      await updateItem.mutateAsync({ itemId, name });
 
       setEditingItemId(null);
     } catch (error) {
@@ -310,7 +402,32 @@ export function SetupModal({ open, onOpenChange, user }: SetupModalProps) {
           </section>
 
           <section className="flex flex-col gap-3">
-            <h3 className="font-medium">{t("user:setupComponents")}</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium">{t("user:setupComponents")}</h3>
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setAddingTitle(true)}
+                  className="cursor-pointer inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                >
+                  <Icon icon="lucide:heading" className="size-4" />
+
+                  {t("user:setupAddTitle")}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleCreateDivider}
+                  disabled={createItem.isPending}
+                  className="cursor-pointer inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline disabled:opacity-50"
+                >
+                  <Icon icon="lucide:minus" className="size-4" />
+
+                  {t("user:setupAddDivider")}
+                </button>
+              </div>
+            </div>
 
             {items.length === 0 ? (
               <p className="text-sm text-muted-foreground">{t("user:setupNoComponents")}</p>
@@ -319,35 +436,51 @@ export function SetupModal({ open, onOpenChange, user }: SetupModalProps) {
                 {items.map((item, index) =>
                   editingItemId === item.id ? (
                     <li key={item.id}>
-                      <SetupItemForm
-                        defaultValues={{ name: item.name, brand: item.brand ?? "", link: item.link ?? "" }}
-                        submitLabel={t("common:save")}
-                        pending={updateItem.isPending}
-                        onSubmit={(data) => handleUpdateItem(item.id, data)}
-                        onCancel={() => setEditingItemId(null)}
-                      />
+                      {item.type === "TITLE" ? (
+                        <SetupTitleForm
+                          defaultValue={item.name ?? ""}
+                          submitLabel={t("common:save")}
+                          pending={updateItem.isPending}
+                          onSubmit={(name) => handleUpdateTitle(item.id, name)}
+                          onCancel={() => setEditingItemId(null)}
+                        />
+                      ) : (
+                        <SetupItemForm
+                          defaultValues={{ name: item.name ?? "", brand: item.brand ?? "", link: item.link ?? "" }}
+                          submitLabel={t("common:save")}
+                          pending={updateItem.isPending}
+                          onSubmit={(data) => handleUpdateItem(item.id, data)}
+                          onCancel={() => setEditingItemId(null)}
+                        />
+                      )}
                     </li>
                   ) : (
                     <li
                       key={item.id}
                       className="flex items-center justify-between gap-3 rounded-lg border border-border p-3"
                     >
-                      <div className="min-w-0">
-                        <p className="truncate font-medium">{item.name}</p>
+                      {item.type === "DIVIDER" ? (
+                        <div className="h-px flex-1 bg-border" />
+                      ) : item.type === "TITLE" ? (
+                        <p className="truncate text-sm font-semibold uppercase text-muted-foreground">{item.name}</p>
+                      ) : (
+                        <div className="min-w-0">
+                          <p className="truncate font-medium">{item.name}</p>
 
-                        {item.brand && <p className="truncate text-sm text-muted-foreground">{item.brand}</p>}
+                          {item.brand && <p className="truncate text-sm text-muted-foreground">{item.brand}</p>}
 
-                        {item.link && (
-                          <a
-                            href={item.link}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="truncate text-sm text-primary hover:underline"
-                          >
-                            {item.link}
-                          </a>
-                        )}
-                      </div>
+                          {item.link && (
+                            <a
+                              href={item.link}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="truncate text-sm text-primary hover:underline"
+                            >
+                              {item.link}
+                            </a>
+                          )}
+                        </div>
+                      )}
 
                       <div className="flex items-center gap-1">
                         <Button
@@ -372,15 +505,17 @@ export function SetupModal({ open, onOpenChange, user }: SetupModalProps) {
                           <Icon icon="lucide:chevron-down" className="size-4" />
                         </Button>
 
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          aria-label={t("user:setupEditItem")}
-                          onClick={() => setEditingItemId(item.id)}
-                        >
-                          <Icon icon="lucide:pencil" className="size-4" />
-                        </Button>
+                        {item.type !== "DIVIDER" && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            aria-label={item.type === "TITLE" ? t("user:setupEditTitle") : t("user:setupEditItem")}
+                            onClick={() => setEditingItemId(item.id)}
+                          >
+                            <Icon icon="lucide:pencil" className="size-4" />
+                          </Button>
+                        )}
 
                         <Button
                           type="button"
@@ -396,6 +531,15 @@ export function SetupModal({ open, onOpenChange, user }: SetupModalProps) {
                   ),
                 )}
               </ul>
+            )}
+
+            {addingTitle && (
+              <SetupTitleForm
+                submitLabel={t("user:setupAddTitle")}
+                pending={createItem.isPending}
+                onSubmit={handleCreateTitle}
+                onCancel={() => setAddingTitle(false)}
+              />
             )}
 
             <SetupItemForm

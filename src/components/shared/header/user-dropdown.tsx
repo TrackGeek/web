@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUnreadNotificationsCount } from "@/hooks/notification";
+import { useProgressionToasts } from "@/hooks/progression-toasts";
 import { signOut, useSession } from "@/lib/auth/client";
 import { AVATAR_BLUR } from "@/lib/image";
 import { getInitialsFromName } from "@/lib/utils";
@@ -26,6 +27,8 @@ export function UserDropdown() {
   const session = useSession();
 
   const { data: unreadCount } = useUnreadNotificationsCount();
+
+  useProgressionToasts(Boolean(session.data?.user));
 
   const unread = unreadCount ?? 0;
   const hasUnread = unread > 0;
@@ -88,6 +91,13 @@ export function UserDropdown() {
                 {unread > 99 ? "99+" : unread}
               </Badge>
             )}
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link to="/shop" className="cursor-pointer">
+            <Icon icon={"lucide:shopping-bag"} className="text-white size-4.5" />
+            {t("common:shop")}
           </Link>
         </DropdownMenuItem>
 

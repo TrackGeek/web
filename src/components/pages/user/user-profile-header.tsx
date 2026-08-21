@@ -4,11 +4,13 @@ import { Image } from "@unpic/react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth/client";
+import { AVATAR_FRAME_CLASSES, hasAvatarFrame, isGradientColor } from "@/lib/cosmetics";
 import { AVATAR_BLUR } from "@/lib/image";
-import { getInitialsFromName } from "@/lib/utils";
+import { cn, getInitialsFromName } from "@/lib/utils";
 
 export interface UserProfileHeaderProps {
   user: ApiTypes.User;
@@ -60,7 +62,14 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
 
   return (
     <div className="relative -mt-30 flex items-center gap-6 w-full flex-col lg:flex-row">
-      <Avatar className="border border-border size-40 cursor-pointer">
+      <Avatar
+        className={cn(
+          "size-40 cursor-pointer",
+          !hasAvatarFrame(user.profile.avatarFrame) &&
+            cn("border border-border", isGradientColor(user.profile.color) && "border-2"),
+          AVATAR_FRAME_CLASSES[user.profile.avatarFrame ?? "none"],
+        )}
+      >
         {user.profile.avatarUrl ? (
           <Image
             className="aspect-square size-full"
@@ -77,7 +86,17 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
 
       <div className="flex justify-between gap-4 w-full flex-col items-start lg:flex-row lg:items-center">
         <div className="flex flex-col items-start gap-1">
-          <span className="text-3xl font-bold text-card-foreground">{user.name}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-3xl font-bold text-card-foreground">{user.name}</span>
+
+            <Badge variant="secondary" className="gap-1">
+              {t("xp:levelShort", { level: user.xp.level })}
+            </Badge>
+
+            {user.profile.title && user.profile.title !== "none" && (
+              <Badge variant="outline">{t(`cosmetics:titles.${user.profile.title}`)}</Badge>
+            )}
+          </div>
 
           <div className="flex items-center gap-2">
             <button

@@ -32,7 +32,11 @@
     "sequelAdded": "Anime sequels",
     "sequelAddedDescription": "When a sequel of an anime you completed is announced.",
     "reopenedCompleted": "Reopened titles",
-    "reopenedCompletedDescription": "When a title you completed goes back to watching because new content arrived."
+    "reopenedCompletedDescription": "When a title you completed goes back to watching because new content arrived.",
+    "levelUp": "Level ups",
+    "levelUpDescription": "When you reach a new level.",
+    "mission": "Missions",
+    "missionDescription": "When you complete a mission."
   },
   "release": {
     "episode": "Episode {{number}} of {{title}} has released",
@@ -59,5 +63,13 @@
     "ReactionOnMovieReview": "reacted to your movie review",
     "ReactionOnGameReview": "reacted to your game review",
     "ReactionOnBookReview": "reacted to your book review"
+  },
+  "levelUp": {
+    "title": "Level up!",
+    "description": "You reached level {{level}}."
+  },
+  "missionCompleted": {
+    "title": "Mission completed!",
+    "description": "You completed “{{missionName}}” and the reward has been delivered."
   }
 }

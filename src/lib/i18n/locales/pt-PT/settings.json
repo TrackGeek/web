@@ -1,7 +1,7 @@
 {
   "tabs": {
     "preferences": "Preferências",
-    "notifications": "Notifications",
+    "notifications": "Notificações",
     "profile": "Perfil",
     "security": "Segurança",
     "connections": "Conexões",
@@ -184,7 +184,7 @@
     }
   },
   "profile": {
-    "title": "Personal Information",
+    "title": "Informações pessoais",
     "description": "Gerencie as suas informações pessoais e preferências.",
     "name": "Nome",
     "username": "Nome de utilizador",
@@ -213,14 +213,14 @@
     "error": "Falha ao salvar as configurações. Por favor, tente novamente."
   },
   "preferences": {
-    "title": "Localization",
-    "description": "Set the language and timezone for your account.",
+    "title": "Localização",
+    "description": "Defina o idioma e o fuso horário para sua conta.",
     "language": {
-      "placeholder": "Select your preferred language"
+      "placeholder": "Selecione o seu idioma preferido"
     },
     "timezone": {
-      "title": "Timezone",
-      "placeholder": "Select your timezone"
+      "title": "Fuso horário",
+      "placeholder": "Selecione o seu fuso horário"
     }
   },
   "contentTypes": {

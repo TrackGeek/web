@@ -1,162 +1,162 @@
 {
-  "title": "Missions",
-  "description": "Permanent achievements. They never expire and the reward lands automatically.",
-  "completed": "{{completed}} of {{total}} completed",
+  "title": "Missões",
+  "description": "Conquistas permanentes. Eles nunca expiram e as recompensas são ganhas automaticamente.",
+  "completed": "{{completed}} de {{total}} concluídos",
   "progress": "{{progress}} / {{target}}",
-  "completedAt": "Completed on {{date}}",
-  "reward": "Reward",
+  "completedAt": "Concluída em {{date}}",
+  "reward": "Recompensa",
   "rewardXp": "{{count}} XP",
-  "rewardCoins": "{{count}} coins",
-  "rewardMedal": "Medal",
-  "rewardCosmetic": "Profile color",
+  "rewardCoins": "{{count}} moedas",
+  "rewardMedal": "Medalha",
+  "rewardCosmetic": "Cor do perfil",
   "hidden": {
-    "name": "Secret mission",
-    "description": "Complete it to find out what it was."
+    "name": "Missão secreta",
+    "description": "Complete para descobrir o que era."
   },
   "empty": {
-    "title": "No missions yet",
-    "description": "Track something and the missions start moving on their own."
+    "title": "Ainda não há missões",
+    "description": "Acompanhe algo e as missões começam a se mover por conta própria."
   },
   "tiers": {
     "Bronze": "Bronze",
-    "Silver": "Silver",
-    "Gold": "Gold",
-    "Platinum": "Platinum"
+    "Silver": "Prata",
+    "Gold": "Ouro",
+    "Platinum": "Platina"
   },
   "toast": {
-    "title": "Mission completed!",
+    "title": "Missão concluída!",
     "description": "{{name}}"
   },
   "watch_10_episodes": {
-    "name": "First Steps",
-    "description": "Watch 10 episodes."
+    "name": "Primeiros Passos",
+    "description": "Veja 10 episódios."
   },
   "watch_100_episodes": {
-    "name": "Marathoner",
-    "description": "Watch 100 episodes."
+    "name": "Maratonista",
+    "description": "Veja 100 episódios."
   },
   "watch_500_episodes": {
-    "name": "Binge Master",
-    "description": "Watch 500 episodes."
+    "name": "Maratonista Mestre",
+    "description": "Veja 500 episódios."
   },
   "watch_1000_episodes": {
     "name": "Otaku",
-    "description": "Watch 1000 episodes."
+    "description": "Veja 1000 episódios."
   },
   "complete_1_title": {
-    "name": "The Beginning",
-    "description": "Complete your first title."
+    "name": "O Começo",
+    "description": "Complete o seu primeiro título."
   },
   "complete_25_titles": {
-    "name": "Collector",
-    "description": "Complete 25 titles."
+    "name": "Colecionador",
+    "description": "Complete 25 títulos."
   },
   "complete_100_titles": {
-    "name": "Curator",
-    "description": "Complete 100 titles."
+    "name": "Curador",
+    "description": "Complete 100 títulos."
   },
   "complete_500_titles": {
-    "name": "Archivist",
-    "description": "Complete 500 titles."
+    "name": "Arquivista",
+    "description": "Complete 500 títulos."
   },
   "complete_50_animes": {
-    "name": "Anime Veteran",
+    "name": "Veterano de Anime",
     "description": "Complete 50 animes."
   },
   "complete_50_games": {
-    "name": "Completionist",
-    "description": "Complete 50 games."
+    "name": "Complecionista",
+    "description": "Complete 50 jogos."
   },
   "write_1_review": {
-    "name": "First Opinion",
-    "description": "Write your first review."
+    "name": "Primeira opinião",
+    "description": "Escreva sua primeira avaliação."
   },
   "write_10_reviews": {
-    "name": "Reviewer",
-    "description": "Write 10 reviews."
+    "name": "Analisador",
+    "description": "Escreva 10 avaliações."
   },
   "write_50_reviews": {
-    "name": "Columnist",
-    "description": "Write 50 reviews."
+    "name": "Colunista",
+    "description": "Escreva 50 avaliações."
   },
   "write_100_reviews": {
-    "name": "Critic",
-    "description": "Write 100 reviews."
+    "name": "Crítico",
+    "description": "Escreva 100 avaliações."
   },
   "review_every_content_type": {
-    "name": "Omnivore",
-    "description": "Write a review for all six media types."
+    "name": "Onívoro",
+    "description": "Escreva uma avaliação para todos os seis tipos de mídia."
   },
   "favorite_5_titles": {
-    "name": "Good Taste",
-    "description": "Favorite 5 titles."
+    "name": "Bom Gosto",
+    "description": "Favoritar 5 títulos."
   },
   "favorite_25_titles": {
-    "name": "Devotee",
-    "description": "Favorite 25 titles."
+    "name": "Devoto",
+    "description": "Favoritar 25 títulos."
   },
   "create_1_list": {
-    "name": "Organizer",
-    "description": "Create your first list."
+    "name": "Organizador",
+    "description": "Cria a tua primeira lista."
   },
   "create_10_lists": {
-    "name": "Librarian",
-    "description": "Create 10 lists."
+    "name": "Bibliotecário",
+    "description": "Crie 10 listas."
   },
   "add_50_list_items": {
-    "name": "Stacking Up",
-    "description": "Add 50 items to your lists."
+    "name": "Construindo",
+    "description": "Adicionar 50 itens para suas listas."
   },
   "add_500_list_items": {
-    "name": "Catalog",
-    "description": "Add 500 items to your lists."
+    "name": "Catálogo",
+    "description": "Adicionar 500 itens para suas listas."
   },
   "follow_1_user": {
-    "name": "Not Alone",
-    "description": "Follow another user."
+    "name": "Não Sozinho",
+    "description": "Seguir outro usuário."
   },
   "follow_10_users": {
     "name": "Social",
-    "description": "Follow 10 users."
+    "description": "Siga 10 usuários."
   },
   "write_1_comment": {
-    "name": "Say Something",
-    "description": "Write your first comment."
+    "name": "Diga algo",
+    "description": "Escreva seu primeiro comentário."
   },
   "write_50_comments": {
-    "name": "Chatterbox",
-    "description": "Write 50 comments."
+    "name": "Bate-papo",
+    "description": "Escrever 50 comentários."
   },
   "reach_level_10": {
-    "name": "Rising",
-    "description": "Reach level 10."
+    "name": "Em ascensão",
+    "description": "Chegue ao nível 10."
   },
   "reach_level_25": {
-    "name": "Established",
-    "description": "Reach level 25."
+    "name": "Estabelecida",
+    "description": "Chegue ao nível 25."
   },
   "reach_level_50": {
-    "name": "Veteran",
-    "description": "Reach level 50."
+    "name": "Veterano",
+    "description": "Chegue ao nível 50."
   },
   "reach_level_100": {
-    "name": "Legend",
-    "description": "Reach level 100."
+    "name": "Lenda",
+    "description": "Chegue ao nível 100."
   },
   "streak_7_days": {
-    "name": "One Week",
-    "description": "Keep a 7 day streak."
+    "name": "Uma Semana",
+    "description": "Sequência de 7 dias."
   },
   "streak_30_days": {
-    "name": "Devoted",
-    "description": "Keep a 30 day streak."
+    "name": "Devotado",
+    "description": "Sequência de 30 dias."
   },
   "streak_100_days": {
-    "name": "Relentless",
-    "description": "Keep a 100 day streak."
+    "name": "Implacável",
+    "description": "Sequência de 100 dias."
   },
   "streak_365_days": {
-    "name": "A Whole Year",
-    "description": "Keep a 365 day streak."
+    "name": "Um Ano Inteiro",
+    "description": "Sequência de 365 dias."
   }
 }

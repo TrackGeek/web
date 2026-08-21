@@ -142,6 +142,15 @@ export namespace ApiTypes {
     updatedAt: string;
   }
 
+  export interface ProfileLink {
+    id: string;
+    label: string;
+    url: string;
+    position: number;
+    createdAt: string;
+    updatedAt: string;
+  }
+
   export type ContentTypeName = "Anime" | "Manga" | "TVShow" | "Movie" | "Game" | "Book";
 
   export interface LevelProgress {
@@ -333,6 +342,7 @@ export namespace ApiTypes {
       contentTypes: ContentType[];
       setupPhotos: SetupPhoto[];
       setupItems: SetupItem[];
+      links: ProfileLink[];
       createdAt: string;
       updatedAt: string;
     };
@@ -1214,6 +1224,45 @@ export namespace ApiTypes {
     };
   }
 
+  export type DiscordPresenceStatus = "online" | "idle" | "dnd" | "offline";
+
+  export interface DiscordSpotifyPresence {
+    trackId: string | null;
+    name: string;
+    artists: string;
+    album: string | null;
+    albumArtUrl: string | null;
+    url: string | null;
+    startedAt: string | null;
+    endsAt: string | null;
+  }
+
+  export interface DiscordActivityPresence {
+    name: string;
+    type: number;
+    applicationId: string | null;
+    details: string | null;
+    state: string | null;
+    largeImageUrl: string | null;
+    smallImageUrl: string | null;
+    largeText: string | null;
+    smallText: string | null;
+    startedAt: string | null;
+  }
+
+  export interface DiscordPresence {
+    linked: boolean;
+    inGuild: boolean;
+    status: DiscordPresenceStatus | null;
+    customStatus: string | null;
+    spotify: DiscordSpotifyPresence | null;
+    activities: DiscordActivityPresence[];
+  }
+
+  export interface GetDiscordPresenceResponse {
+    presence: DiscordPresence;
+  }
+
   export type WatchProviderOffer = "flatrate" | "free" | "ads" | "rent" | "buy";
 
   export interface WatchProvider {
@@ -1275,6 +1324,10 @@ export const apiEndpoints = {
   updateSetupItem: (itemId: string) => `/profile/setup/item/${itemId}`,
   deleteSetupItem: (itemId: string) => `/profile/setup/item/${itemId}`,
   reorderSetupItems: "/profile/setup/items/order",
+  createProfileLink: "/profile/link",
+  updateProfileLink: (linkId: string) => `/profile/link/${linkId}`,
+  deleteProfileLink: (linkId: string) => `/profile/link/${linkId}`,
+  reorderProfileLinks: "/profile/links/order",
   getGameDetails: (id: string) => `/game/detail/${id}`,
   getGameFranchise: (slug: string) => `/game/franchise/${slug}`,
   getGamePopular: "/game/top?filter=popular",
@@ -1384,6 +1437,7 @@ export const apiEndpoints = {
   getActivitiesTrending: "/activities/trending",
   getActivitiesByUserId: (userId: string) => `/activities/user/${userId}`,
   getCalendarActivitiesByUserId: (userId: string) => `/activities/user/${userId}/calendar`,
+  getDiscordPresenceByUserId: (userId: string) => `/discord/presence/${userId}`,
   getNotifications: "/notifications",
   getUnreadNotificationsCount: "/notifications/unread/count",
   getNotificationPreferences: "/notifications/preferences",

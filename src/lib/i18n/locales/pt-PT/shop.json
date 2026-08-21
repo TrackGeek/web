@@ -1,17 +1,17 @@
 {
-  "title": "Shop",
-  "description": "Spend your coins on cosmetics for your profile.",
-  "balance": "{{balance}} coins",
-  "buy": "Buy",
-  "equipHint": "After buying, equip it in your settings.",
+  "title": "Loja",
+  "description": "Gaste as suas moedas em cosméticos para o seu perfil.",
+  "balance": "{{balance}} moedas",
+  "buy": "Comprar",
+  "equipHint": "Após comprar, equipe-o em suas configurações.",
   "confirmPurchase": {
-    "title": "Confirm purchase",
-    "description": "Buy “{{name}}” for {{price}} coins? This cannot be undone.",
-    "confirm": "Buy",
-    "cancel": "Cancel"
+    "title": "Confirmar compra",
+    "description": "Comprar “{{name}}” por {{price}} moedas? Essa ação não pode ser desfeita.",
+    "confirm": "Comprar",
+    "cancel": "Cancelar"
   },
   "purchase": {
-    "success": "You bought “{{name}}”!"
+    "success": "Você comprou “{{name}}”!"
   },
-  "goToSettings": "Equip your cosmetics in"
+  "goToSettings": "Equipar seus cosméticos em"
 }

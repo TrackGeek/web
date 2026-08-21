@@ -2,7 +2,7 @@
   "yes": "sim",
   "no": "não",
   "billing": "Faturação",
-  "shop": "Shop",
+  "shop": "Loja",
   "home": "Início",
   "feed": "Feed",
   "donate": "Doar",
@@ -22,7 +22,7 @@
   "notifications": "Notificações",
   "profile": "Perfil",
   "credits": "Créditos",
-  "favorite": "Favorite",
+  "favorite": "Adicionar aos Favoritos",
   "roadmap": "Planejamento",
   "feedback": "Comentários",
   "providers": {
@@ -84,8 +84,8 @@
     "book_other": "Livros",
     "anime": "Anime",
     "anime_other": "Animes",
-    "cast": "Cast",
-    "cast_other": "Cast"
+    "cast": "Elenco",
+    "cast_other": "Elenco"
   },
   "roles": {
     "reviewer": "Revisor do GitHub",

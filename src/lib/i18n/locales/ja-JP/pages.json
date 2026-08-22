@@ -60,8 +60,6 @@
     "reminder": "Remember that TrackGeek relies on the accuracy and completeness of other databases, so any changes you make will also benefit the entire community."
   },
   "privacyPolicy": {
-    "title": "Privacy Policy",
-    "lastUpdated": "Last updated: {{date}}",
     "intro": "TrackGeek (\"we\", \"our\", \"us\") respects your privacy. This Privacy Policy explains how we collect, use, store, and protect your personal data when you use trackgeek.net.",
     "dataWeCollect.title": "Data We Collect",
     "dataWeCollect.account": "When you create an account, we collect your email address, username, and avatar.",
@@ -91,12 +89,9 @@
     "children.text": "TrackGeek is available to all audiences. We do not knowingly collect personal data from children without parental consent where required by law.",
     "changes.title": "Changes to This Policy",
     "changes.text": "We may update this Privacy Policy from time to time. Changes will be published on this page with an updated date.",
-    "contact.title": "Contact",
     "contact.text": "If you have questions about this Privacy Policy or your data, contact us at <email>privacy@trackgeek.net</email>."
   },
   "terms": {
-    "title": "Terms of Service",
-    "lastUpdated": "Last Updated: {{date}}",
     "intro": {
       "title": "1. Introduction",
       "text": "Welcome to TrackGeek. TrackGeek is a community-driven, non-commercial project developed and maintained by independent contributors. By accessing or using the TrackGeek platform, you agree to these Terms of Service. If you do not agree to these terms, you must not use TrackGeek."
@@ -144,7 +139,6 @@
       "text": "These Terms of Service are governed by the laws of Portugal and applicable regulations of the European Union."
     },
     "contact": {
-      "title": "Contact",
       "text": "If you have any questions about these Terms of Service, please contact us at <email>support@trackgeek.net</email>."
     }
   },
@@ -181,7 +175,6 @@
       "get": "Get this perk",
       "items": {
         "Tracker": {
-          "name": "Tracker",
           "description": "Become a supporter and get recognition across the platform with exclusive cosmetics and priority access.",
           "benefits": [
             "Exclusive supporter badge on your profile",
@@ -191,7 +184,6 @@
           ]
         },
         "Archivist": {
-          "name": "Archivist",
           "description": "Everything a Tracker gets, plus deeper insight into your stats and early access to what's coming next.",
           "benefits": [
             "Everything from Tracker",
@@ -201,7 +193,6 @@
           ]
         },
         "ArchiveMaster": {
-          "name": "Archive Master",
           "description": "The ultimate supporter tier. Everything an Archivist gets, plus the highest level of recognition on the platform.",
           "benefits": [
             "Everything from Archivist",
@@ -221,8 +212,6 @@
     "modal": {
       "description": "Choose your donation options below",
       "type": "Donation Type",
-      "one-time": "One-time",
-      "monthly": "Monthly",
       "select": "Select Amount",
       "fixed": "Fixed Amount",
       "custom": "Custom Amount",
@@ -232,7 +221,6 @@
       "footer": "Minimum donation is $1. Your support helps us keep TrackGeek running!"
     },
     "transparencyReports": "Transparency Reports",
-    "viewAll": "View All",
     "success": {
       "title": "Thank you for your support!",
       "description": "Your donation has been processed successfully. We really appreciate your contribution to keeping TrackGeek alive."
@@ -243,12 +231,16 @@
     }
   },
   "billing": {
-    "title": "Billing",
+    "fields": {
+      "name": "Description",
+      "date": "Date",
+      "amount": "Amount",
+      "type": "Type"
+    },
     "subscription": {
       "title": "Subscription",
       "description": "Manage your current subscription plan.",
       "plan": "Plan",
-      "status": "Status",
       "price": "Price",
       "renewsAt": "Renews at",
       "cancel": "Cancel Subscription",
@@ -273,33 +265,18 @@
       "description": "View all your past payments and transactions.",
       "empty": "No payments yet",
       "emptyDescription": "You haven't made any payments yet.",
-      "columns": {
-        "name": "Description",
-        "date": "Date",
-        "amount": "Amount",
-        "status": "Status",
-        "frequency": "Type"
-      },
       "statuses": {
         "Pending": "Pending",
         "Succeeded": "Succeeded",
         "Failed": "Failed"
-      },
-      "frequencies": {
-        "OneTime": "One-time",
-        "Monthly": "Monthly"
       }
     },
     "detail": {
       "title": "Payment Details",
-      "name": "Description",
-      "status": "Status",
-      "frequency": "Type",
       "subtotal": "Subtotal",
       "discount": "Discount",
       "total": "Total",
       "currency": "Currency",
-      "date": "Date",
       "expiredAt": "Expired At",
       "invoice": "Invoice",
       "viewInvoice": "View Invoice",

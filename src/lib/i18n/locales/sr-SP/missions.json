@@ -6,7 +6,6 @@
   "completedAt": "Completed on {{date}}",
   "reward": "Reward",
   "rewardXp": "{{count}} XP",
-  "rewardCoins": "{{count}} coins",
   "rewardMedal": "Medal",
   "rewardCosmetic": "Profile color",
   "hidden": {
@@ -27,136 +26,67 @@
     "title": "Mission completed!",
     "description": "{{name}}"
   },
-  "watch_10_episodes": {
-    "name": "First Steps",
-    "description": "Watch 10 episodes."
+  "descriptions": {
+    "EpisodesWatched_one": "Watch {{count}} episode.",
+    "EpisodesWatched_other": "Watch {{count}} episodes.",
+    "ProgressCompleted_one": "Complete your first title.",
+    "ProgressCompleted_other": "Complete {{count}} titles.",
+    "ProgressCompleted_Anime_one": "Complete your first anime.",
+    "ProgressCompleted_Anime_other": "Complete {{count}} animes.",
+    "ProgressCompleted_Game_one": "Complete your first game.",
+    "ProgressCompleted_Game_other": "Complete {{count}} games.",
+    "ReviewsWritten_one": "Write your first review.",
+    "ReviewsWritten_other": "Write {{count}} reviews.",
+    "ContentTypesReviewed_one": "Write a review for {{count}} media type.",
+    "ContentTypesReviewed_other": "Write a review for all {{count}} media types.",
+    "FavoritesAdded_one": "Favorite your first title.",
+    "FavoritesAdded_other": "Favorite {{count}} titles.",
+    "ListsCreated_one": "Create your first list.",
+    "ListsCreated_other": "Create {{count}} lists.",
+    "ListItemsAdded_one": "Add {{count}} item to your lists.",
+    "ListItemsAdded_other": "Add {{count}} items to your lists.",
+    "UsersFollowed_one": "Follow another user.",
+    "UsersFollowed_other": "Follow {{count}} users.",
+    "CommentsWritten_one": "Write your first comment.",
+    "CommentsWritten_other": "Write {{count}} comments.",
+    "LevelReached_one": "Reach level {{count}}.",
+    "LevelReached_other": "Reach level {{count}}.",
+    "StreakReached_one": "Keep a {{count}} day streak.",
+    "StreakReached_other": "Keep a {{count}} day streak."
   },
-  "watch_100_episodes": {
-    "name": "Marathoner",
-    "description": "Watch 100 episodes."
-  },
-  "watch_500_episodes": {
-    "name": "Binge Master",
-    "description": "Watch 500 episodes."
-  },
-  "watch_1000_episodes": {
-    "name": "Otaku",
-    "description": "Watch 1000 episodes."
-  },
-  "complete_1_title": {
-    "name": "The Beginning",
-    "description": "Complete your first title."
-  },
-  "complete_25_titles": {
-    "name": "Collector",
-    "description": "Complete 25 titles."
-  },
-  "complete_100_titles": {
-    "name": "Curator",
-    "description": "Complete 100 titles."
-  },
-  "complete_500_titles": {
-    "name": "Archivist",
-    "description": "Complete 500 titles."
-  },
-  "complete_50_animes": {
-    "name": "Anime Veteran",
-    "description": "Complete 50 animes."
-  },
-  "complete_50_games": {
-    "name": "Completionist",
-    "description": "Complete 50 games."
-  },
-  "write_1_review": {
-    "name": "First Opinion",
-    "description": "Write your first review."
-  },
-  "write_10_reviews": {
-    "name": "Reviewer",
-    "description": "Write 10 reviews."
-  },
-  "write_50_reviews": {
-    "name": "Columnist",
-    "description": "Write 50 reviews."
-  },
-  "write_100_reviews": {
-    "name": "Critic",
-    "description": "Write 100 reviews."
-  },
-  "review_every_content_type": {
-    "name": "Omnivore",
-    "description": "Write a review for all six media types."
-  },
-  "favorite_5_titles": {
-    "name": "Good Taste",
-    "description": "Favorite 5 titles."
-  },
-  "favorite_25_titles": {
-    "name": "Devotee",
-    "description": "Favorite 25 titles."
-  },
-  "create_1_list": {
-    "name": "Organizer",
-    "description": "Create your first list."
-  },
-  "create_10_lists": {
-    "name": "Librarian",
-    "description": "Create 10 lists."
-  },
-  "add_50_list_items": {
-    "name": "Stacking Up",
-    "description": "Add 50 items to your lists."
-  },
-  "add_500_list_items": {
-    "name": "Catalog",
-    "description": "Add 500 items to your lists."
-  },
-  "follow_1_user": {
-    "name": "Not Alone",
-    "description": "Follow another user."
-  },
-  "follow_10_users": {
-    "name": "Social",
-    "description": "Follow 10 users."
-  },
-  "write_1_comment": {
-    "name": "Say Something",
-    "description": "Write your first comment."
-  },
-  "write_50_comments": {
-    "name": "Chatterbox",
-    "description": "Write 50 comments."
-  },
-  "reach_level_10": {
-    "name": "Rising",
-    "description": "Reach level 10."
-  },
-  "reach_level_25": {
-    "name": "Established",
-    "description": "Reach level 25."
-  },
-  "reach_level_50": {
-    "name": "Veteran",
-    "description": "Reach level 50."
-  },
-  "reach_level_100": {
-    "name": "Legend",
-    "description": "Reach level 100."
-  },
-  "streak_7_days": {
-    "name": "One Week",
-    "description": "Keep a 7 day streak."
-  },
-  "streak_30_days": {
-    "name": "Devoted",
-    "description": "Keep a 30 day streak."
-  },
-  "streak_100_days": {
-    "name": "Relentless",
-    "description": "Keep a 100 day streak."
-  },
-  "streak_365_days": {
-    "name": "A Whole Year",
-    "description": "Keep a 365 day streak."
+  "names": {
+    "watch_10_episodes": "First Steps",
+    "watch_100_episodes": "Marathoner",
+    "watch_500_episodes": "Binge Master",
+    "watch_1000_episodes": "Otaku",
+    "complete_1_title": "The Beginning",
+    "complete_25_titles": "Collector",
+    "complete_100_titles": "Curator",
+    "complete_500_titles": "Archivist",
+    "complete_50_animes": "Anime Veteran",
+    "complete_50_games": "Completionist",
+    "write_1_review": "First Opinion",
+    "write_10_reviews": "Reviewer",
+    "write_50_reviews": "Columnist",
+    "write_100_reviews": "Critic",
+    "review_every_content_type": "Omnivore",
+    "favorite_5_titles": "Good Taste",
+    "favorite_25_titles": "Devotee",
+    "create_1_list": "Organizer",
+    "create_10_lists": "Librarian",
+    "add_50_list_items": "Stacking Up",
+    "add_500_list_items": "Catalog",
+    "follow_1_user": "Not Alone",
+    "follow_10_users": "Social",
+    "write_1_comment": "Say Something",
+    "write_50_comments": "Chatterbox",
+    "reach_level_10": "Rising",
+    "reach_level_25": "Established",
+    "reach_level_50": "Veteran",
+    "reach_level_100": "Legend",
+    "streak_7_days": "One Week",
+    "streak_30_days": "Devoted",
+    "streak_100_days": "Relentless",
+    "streak_365_days": "A Whole Year"
   }
 }

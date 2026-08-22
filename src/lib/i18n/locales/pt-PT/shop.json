@@ -1,14 +1,11 @@
 {
-  "title": "Loja",
   "description": "Gaste as suas moedas em cosméticos para o seu perfil.",
-  "balance": "{{balance}} moedas",
   "buy": "Comprar",
   "equipHint": "Após comprar, equipe-o em suas configurações.",
   "confirmPurchase": {
     "title": "Confirmar compra",
     "description": "Comprar “{{name}}” por {{price}} moedas? Essa ação não pode ser desfeita.",
-    "confirm": "Comprar",
-    "cancel": "Cancelar"
+    "confirm": "Comprar"
   },
   "purchase": {
     "success": "Você comprou “{{name}}”!"

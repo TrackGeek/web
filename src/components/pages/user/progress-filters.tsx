@@ -156,7 +156,7 @@ export function ProgressFiltersPanel({ contentType, options, isLoading, value, o
       </FilterGroup>
 
       {releaseStates.length > 1 && (
-        <FilterGroup label={t("library:status")}>
+        <FilterGroup label={t("common:status")}>
           <FilterChips>
             {releaseStates.map((state) => {
               const labelKey = RELEASE_STATE_LABELS[contentType][state];

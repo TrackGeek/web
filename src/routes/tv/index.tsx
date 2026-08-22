@@ -118,7 +118,7 @@ function SerieRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("feed:trending")}</p>
           <Link to={"/tv/trending"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -143,7 +143,7 @@ function SerieRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:mostPopular")}</p>
           <Link to={"/tv/popular"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -168,7 +168,7 @@ function SerieRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("library:statusAir.currentlyAiring")}</p>
           <Link to={"/tv/airing"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -193,7 +193,7 @@ function SerieRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
           <Link to={"/tv/upcoming"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>

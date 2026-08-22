@@ -374,11 +374,11 @@ function MovieDetailsRoute() {
 
       <Grid minColSize={"128px"} className="gap-4">
         <div className="bg-muted/50 p-4 rounded-lg border border-border">
-          <p className="text-sm text-muted-foreground">{t("library:status")}</p>
+          <p className="text-sm text-muted-foreground">{t("common:status")}</p>
           <p className="font-semibold text-card-foreground">{getStatusLabel(t, movie.status)}</p>
         </div>
         <div className="bg-muted/50 p-4 rounded-lg border border-border">
-          <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
+          <p className="text-sm text-muted-foreground">{t("common:releaseDate")}</p>
           <p className="font-semibold text-card-foreground">{formatLongDate(movie.releaseDate, i18n.language)}</p>
         </div>
       </Grid>
@@ -468,9 +468,7 @@ function MovieDetailsRoute() {
           <div className="flex items-center mb-3 space-x-1">
             <StarRating value={rating} className="mr-1" />
             <span className="font-semibold text-card-foreground">{rating}</span>
-            <span className="text-muted-foreground">
-              ({reviews?.total ?? 0} {t("library:reviews")})
-            </span>
+            <span className="text-muted-foreground">({t("common:reviewCount", { count: reviews?.total ?? 0 })})</span>
           </div>
         </div>
 
@@ -478,9 +476,9 @@ function MovieDetailsRoute() {
           <div className="mb-2 min-w-0 overflow-x-auto">
             <TabsList className="w-max min-w-full items-center justify-start">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-              <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
+              <TabsTrigger value="cast">{t("common:types.cast")}</TabsTrigger>
               <TabsTrigger value="lists">
-                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+                {t("common:lists")} ({listsQuery.data?.total ?? 0})
               </TabsTrigger>
               <TabsTrigger value="comments">{t("comments:title")}</TabsTrigger>
             </TabsList>
@@ -592,28 +590,28 @@ function MovieDetailsRoute() {
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
                     value: `${movie.progressStats?.planToWatch?.percentage ?? 0}%`,
-                    sub: `${movie.progressStats?.planToWatch?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: movie.progressStats?.planToWatch?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.completed"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
                     value: `${movie.progressStats?.completed?.percentage ?? 0}%`,
-                    sub: `${movie.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: movie.progressStats?.completed?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.paused"),
                     icon: "lucide:pause",
                     iconClass: "text-chart-5",
                     value: `${movie.progressStats?.paused?.percentage ?? 0}%`,
-                    sub: `${movie.progressStats?.paused?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: movie.progressStats?.paused?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
                     value: `${movie.progressStats?.dropped?.percentage ?? 0}%`,
-                    sub: `${movie.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: movie.progressStats?.dropped?.count ?? 0 }),
                   },
                 ]}
               />
@@ -758,7 +756,7 @@ function MovieDetailsRoute() {
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-3">
           <h3 className="font-semibold text-card-foreground text-lg capitalize">
-            {t("library:reviews")} ({reviews?.total ?? 0})
+            {t("common:reviews")} ({reviews?.total ?? 0})
           </h3>
           {isAuthenticated && (
             <Button

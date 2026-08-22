@@ -169,8 +169,8 @@ const SearchResults = memo(
               <EmptyMedia variant="icon">
                 <Icon icon="lucide:search-x" />
               </EmptyMedia>
-              <EmptyTitle>{t("user:noSearchResults")}</EmptyTitle>
-              <EmptyDescription>{t("user:noSearchResultsDescription")}</EmptyDescription>
+              <EmptyTitle>{t("common:noResults")}</EmptyTitle>
+              <EmptyDescription>{t("common:noResultsDescription")}</EmptyDescription>
             </EmptyHeader>
           </Empty>
         )}
@@ -330,7 +330,7 @@ function RouteComponent() {
           </div>
           <div className="flex-1 relative w-full">
             <Input
-              placeholder={`${t("user:search")}...`}
+              placeholder={`${t("common:search")}...`}
               className="bg-muted/50 flex-1 pr-12"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -338,7 +338,7 @@ function RouteComponent() {
             <button
               type="button"
               onClick={handlePaste}
-              aria-label={t("user:pasteFromClipboard")}
+              aria-label={t("common:clipboard.paste")}
               className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:text-primary transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
             >
               <Icon icon={"lucide:clipboard"} className="size-5" aria-hidden="true" />

@@ -450,7 +450,7 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
     const video = parseVideoUrl(videoUrl);
 
     if (!video) {
-      toast.error(t("feed:videoUrlInvalid"));
+      toast.error(t("api:INVALID_VIDEO_URL"));
       return;
     }
 
@@ -503,7 +503,7 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
             <div className="space-y-3">
               <Field>
                 <FieldLabel htmlFor="status" className="text-sm font-medium">
-                  {t("library:status")}
+                  {t("common:status")}
                 </FieldLabel>
                 <Controller
                   control={progressForm.control}
@@ -582,7 +582,7 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
                         </PopoverTrigger>
                         <PopoverContent align="start" className="w-(--radix-popover-trigger-width) p-0">
                           <Command>
-                            <CommandInput placeholder={t("user:search")} />
+                            <CommandInput placeholder={t("common:search")} />
                             <CommandList>
                               <CommandEmpty>{t("common:noResults")}</CommandEmpty>
                               <CommandGroup>

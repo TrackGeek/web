@@ -107,7 +107,7 @@ export function PasswordCard() {
         <CardTitle>
           <Icon icon={"lucide:key-round"} className="size-5" />
 
-          {t("settings:password.title")}
+          {t("common:password")}
         </CardTitle>
 
         <CardDescription>{t("settings:password.description")}</CardDescription>

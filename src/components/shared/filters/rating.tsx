@@ -12,7 +12,7 @@ export function Rating({ value, onChange }: RatingProps) {
   return (
     <div>
       <div className="flex items-baseline justify-between mb-2">
-        <h5 className="text-md font-semibold text-card-foreground">{t("library:tgRating")}</h5>
+        <h5 className="text-md font-semibold text-card-foreground">{t("common:rating")}</h5>
         <span className="text-sm text-muted-foreground tabular-nums">
           {value != null ? `≥ ${value.toFixed(1)}` : t("common:all")}
         </span>

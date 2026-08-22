@@ -150,7 +150,7 @@ export function SetupCard({ user, isOwner }: SetupCardProps) {
                       </CollapsibleContent>
 
                       <CollapsibleTrigger className="cursor-pointer flex items-center justify-center gap-1 border-t border-border pt-4 mt-4 text-sm font-medium text-muted-foreground hover:text-foreground">
-                        {open ? t("user:seeLess") : t("user:seeMore")}
+                        {open ? t("common:showLess") : t("common:showMore")}
 
                         <Icon
                           icon="lucide:chevron-down"

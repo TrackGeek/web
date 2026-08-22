@@ -179,7 +179,7 @@ export function WorksSection({ mediaType, works }: { mediaType: CompanyMediaType
               <Icon icon="lucide:building" />
             </EmptyMedia>
             <EmptyTitle>{t("library:noTitlesFound")}</EmptyTitle>
-            <EmptyDescription>{t("library:noTitlesFoundDescription")}</EmptyDescription>
+            <EmptyDescription>{t("common:noResultsDescription")}</EmptyDescription>
           </EmptyHeader>
         </Empty>
       ) : (

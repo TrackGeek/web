@@ -309,7 +309,7 @@ export function AuthModal() {
                   <Tabs defaultValue="password">
                     <div className="flex items-center justify-between gap-3 mb-2">
                       <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
-                        <TabsTrigger value="password">{t("auth:password")}</TabsTrigger>
+                        <TabsTrigger value="password">{t("common:password")}</TabsTrigger>
                         <TabsTrigger value="magicLink">{t("auth:magicLink")}</TabsTrigger>
                       </TabsList>
                     </div>
@@ -337,14 +337,14 @@ export function AuthModal() {
 
                         <Field>
                           <FieldLabel htmlFor="password" className="flex items-center justify-between">
-                            {t("auth:password")}
+                            {t("common:password")}
 
                             <button
                               type="button"
                               className="text-xs text-muted-foreground cursor-pointer text-right"
                               onClick={() => setIsRequestForgotPassword(true)}
                             >
-                              {t("auth:resetPasswordField")}
+                              {t("auth:resetPassword.button")}
                             </button>
                           </FieldLabel>
 
@@ -415,7 +415,7 @@ export function AuthModal() {
                 <TabsContent value="register">
                   <form className="flex flex-col gap-2" onSubmit={registerForm.handleSubmit(handleRegister)}>
                     <Field>
-                      <FieldLabel htmlFor="name">{t("auth:name")}</FieldLabel>
+                      <FieldLabel htmlFor="name">{t("common:name")}</FieldLabel>
 
                       <Input
                         id="name"
@@ -448,7 +448,7 @@ export function AuthModal() {
 
                     <Field>
                       <FieldLabel htmlFor="password" className="flex items-center justify-between">
-                        {t("auth:password")}
+                        {t("common:password")}
                       </FieldLabel>
 
                       <Input

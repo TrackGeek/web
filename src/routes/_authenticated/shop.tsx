@@ -148,7 +148,7 @@ function ShopRoute() {
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h1 className="text-2xl font-bold">{t("shop:title")}</h1>
+          <h1 className="text-2xl font-bold">{t("common:shop")}</h1>
 
           <p className="text-sm text-muted-foreground">{t("shop:description")}</p>
         </div>
@@ -156,7 +156,7 @@ function ShopRoute() {
         <Badge variant="secondary" className="gap-1.5 px-3 py-1.5 text-sm">
           <Icon icon="lucide:coins" className="size-4 text-amber-400" />
 
-          {t("shop:balance", { balance })}
+          {t("common:coinCount", { count: balance })}
         </Badge>
       </div>
 
@@ -251,7 +251,7 @@ function ShopRoute() {
 
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="ghost">{t("shop:confirmPurchase.cancel")}</Button>
+              <Button variant="ghost">{t("common:cancel")}</Button>
             </DialogClose>
 
             <Button onClick={confirmPurchase} disabled={purchaseMutation.isPending}>

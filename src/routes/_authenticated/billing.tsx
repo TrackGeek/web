@@ -173,7 +173,7 @@ function SubscriptionCard({
           </div>
 
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">{t("pages:billing.subscription.status")}</p>
+            <p className="text-sm text-muted-foreground">{t("common:status")}</p>
             <Badge variant={subscription.status === "active" ? "success" : "warning"}>
               {t(`pages:billing.subscription.statuses.${subscription.status}`)}
             </Badge>
@@ -242,16 +242,16 @@ function PaymentDetailDialog({
   const rows = payment
     ? [
         {
-          label: t("pages:billing.detail.name"),
+          label: t("pages:billing.fields.name"),
           value: payment.name,
         },
         {
-          label: t("pages:billing.detail.status"),
+          label: t("common:status"),
           value: <PaymentStatusBadge status={payment.status} />,
         },
         {
-          label: t("pages:billing.detail.frequency"),
-          value: t(`pages:billing.payments.frequencies.${payment.frequency}`),
+          label: t("pages:billing.fields.type"),
+          value: t(`common:frequencies.${payment.frequency}`),
         },
         {
           label: t("pages:billing.detail.total"),
@@ -270,7 +270,7 @@ function PaymentDetailDialog({
             ]
           : []),
         {
-          label: t("pages:billing.detail.date"),
+          label: t("pages:billing.fields.date"),
           value: format(new Date(payment.createdAt), "dd/MM/yyyy HH:mm"),
         },
       ]
@@ -380,28 +380,28 @@ function BillingRoute() {
     () =>
       columnHelper.columns([
         columnHelper.accessor("name", {
-          header: () => t("pages:billing.payments.columns.name"),
+          header: () => t("pages:billing.fields.name"),
           cell: (info) => <span className="font-medium">{info.getValue()}</span>,
         }),
         columnHelper.accessor("createdAt", {
           header: () => (
             <span className="flex items-center gap-1">
               <Icon icon={"lucide:calendar"} className="size-3.5" />
-              {t("pages:billing.payments.columns.date")}
+              {t("pages:billing.fields.date")}
             </span>
           ),
           cell: (info) => format(new Date(info.getValue()), "dd/MM/yyyy HH:mm:ss"),
         }),
         columnHelper.accessor("value", {
-          header: () => t("pages:billing.payments.columns.amount"),
+          header: () => t("pages:billing.fields.amount"),
           cell: (info) => formatCurrency(info.getValue(), info.row.original.currency),
         }),
         columnHelper.accessor("frequency", {
-          header: () => t("pages:billing.payments.columns.frequency"),
-          cell: (info) => t(`pages:billing.payments.frequencies.${info.getValue()}`),
+          header: () => t("pages:billing.fields.type"),
+          cell: (info) => t(`common:frequencies.${info.getValue()}`),
         }),
         columnHelper.accessor("status", {
-          header: () => t("pages:billing.payments.columns.status"),
+          header: () => t("common:status"),
           cell: (info) => <PaymentStatusBadge status={info.getValue()} />,
         }),
       ]),

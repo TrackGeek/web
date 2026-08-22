@@ -645,14 +645,14 @@ function TVShowDetailsPage() {
       <Grid minColSize={"128px"} className="gap-4">
         {item.status && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
-            <p className="text-sm text-muted-foreground">{t("library:status")}</p>
+            <p className="text-sm text-muted-foreground">{t("common:status")}</p>
             <p className="font-semibold text-card-foreground">{getStatusLabel(t, item.status)}</p>
           </div>
         )}
 
         {item.firstAirDate && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
-            <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
+            <p className="text-sm text-muted-foreground">{t("common:releaseDate")}</p>
             <p className="font-semibold text-card-foreground">
               {formatDateRange(item.firstAirDate, item.lastAirDate, i18n.language, t)}
             </p>
@@ -730,9 +730,7 @@ function TVShowDetailsPage() {
           <div className="flex items-center mb-3 space-x-1">
             <StarRating value={rating} className="mr-1" />
             <span className="font-semibold text-card-foreground">{rating}</span>
-            <span className="text-muted-foreground">
-              ({reviews?.total ?? 0} {t("library:reviews")})
-            </span>
+            <span className="text-muted-foreground">({t("common:reviewCount", { count: reviews?.total ?? 0 })})</span>
           </div>
         </div>
 
@@ -743,10 +741,10 @@ function TVShowDetailsPage() {
 
               <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
 
-              <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
+              <TabsTrigger value="cast">{t("common:types.cast")}</TabsTrigger>
 
               <TabsTrigger value="lists">
-                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+                {t("common:lists")} ({listsQuery.data?.total ?? 0})
               </TabsTrigger>
 
               <TabsTrigger value="comments">{t("comments:title")}</TabsTrigger>
@@ -892,28 +890,28 @@ function TVShowDetailsPage() {
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
                     value: `${item.progressStats?.planToWatch?.percentage ?? 0}%`,
-                    sub: `${item.progressStats?.planToWatch?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: item.progressStats?.planToWatch?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.watching"),
                     icon: "lucide:tv-minimal-play",
                     iconClass: "text-chart-1",
                     value: `${item.progressStats?.watching?.percentage ?? 0}%`,
-                    sub: `${item.progressStats?.watching?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: item.progressStats?.watching?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.completed"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
                     value: `${item.progressStats?.completed?.percentage ?? 0}%`,
-                    sub: `${item.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: item.progressStats?.completed?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
                     value: `${item.progressStats?.dropped?.percentage ?? 0}%`,
-                    sub: `${item.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: item.progressStats?.dropped?.count ?? 0 }),
                   },
                 ]}
               />
@@ -1091,7 +1089,7 @@ function TVShowDetailsPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-3">
           <h3 className="font-semibold text-card-foreground text-lg capitalize">
-            {t("library:reviews")} ({reviews?.total ?? 0})
+            {t("common:reviews")} ({reviews?.total ?? 0})
           </h3>
           {isAuthenticated && (
             <Button

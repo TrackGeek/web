@@ -39,10 +39,10 @@ function Biography({ biography, name, markdown }: { biography: string; name: str
           variant="outline"
           size="sm"
           onClick={() => setExpanded((current) => !current)}
-          aria-label={`${expanded ? t("library:showLess") : t("library:readMore")} — ${name}`}
+          aria-label={`${expanded ? t("common:showLess") : t("common:showMore")} — ${name}`}
         >
           <Icon icon={expanded ? "lucide:chevron-up" : "lucide:chevron-down"} aria-hidden="true" />
-          {expanded ? t("library:showLess") : t("library:readMore")}
+          {expanded ? t("common:showLess") : t("common:showMore")}
         </Button>
       )}
     </section>

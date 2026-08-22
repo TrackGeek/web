@@ -55,7 +55,7 @@ export function FavoritesCard({ userId, onSeeMore }: FavoritesCardProps) {
               onClick={onSeeMore}
               className="cursor-pointer flex items-center gap-1 text-sm font-medium text-primary hover:underline"
             >
-              {t("user:seeMore")}
+              {t("common:showMore")}
               <Icon icon="lucide:arrow-right" className="size-4" />
             </button>
           )}

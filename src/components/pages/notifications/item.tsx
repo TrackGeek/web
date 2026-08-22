@@ -30,7 +30,7 @@ export function NotificationItem({ notification, isPending, onToggleRead, onDele
 
   const systemParams = {
     ...metadata,
-    ...(typeof metadata?.missionKey === "string" && { missionName: t(`missions:${metadata.missionKey}.name`) }),
+    ...(typeof metadata?.missionKey === "string" && { missionName: t(`missions:names.${metadata.missionKey}`) }),
   };
 
   const systemTitle = metadata?.titleKey ? t(metadata.titleKey, systemParams) : metadata?.title;

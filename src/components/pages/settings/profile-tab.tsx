@@ -102,7 +102,7 @@ export function SettingsProfileTab() {
     }
 
     if (cosmetic.unlock.type === "mission") {
-      return t("cosmetics:requirements.mission", { mission: t(`missions:${cosmetic.unlock.key}.name`) });
+      return t("cosmetics:requirements.mission", { mission: t(`missions:names.${cosmetic.unlock.key}`) });
     }
 
     if (cosmetic.unlock.type === "purchase") {
@@ -433,14 +433,14 @@ export function SettingsProfileTab() {
         >
           <CardContent className="flex flex-col gap-4">
             <Field className="gap-2">
-              <FieldLabel htmlFor="name">{t("settings:profile.name")}</FieldLabel>
+              <FieldLabel htmlFor="name">{t("common:name")}</FieldLabel>
 
               <Input
                 id="name"
                 type="text"
                 placeholder="Jhon Doe"
                 aria-invalid={Boolean(profileForm.formState.errors.name)}
-                aria-label={t("settings:profile.name")}
+                aria-label={t("common:name")}
                 {...profileForm.register("name")}
               />
 

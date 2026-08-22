@@ -210,7 +210,7 @@ function DonateRoute() {
                       : "bg-muted text-muted-foreground hover:bg-muted/80"
                   }`}
                 >
-                  {t("pages:donate.modal.one-time")}
+                  {t("common:frequencies.OneTime")}
                 </Button>
 
                 <Button
@@ -221,7 +221,7 @@ function DonateRoute() {
                       : "bg-muted text-muted-foreground hover:bg-muted/80"
                   }`}
                 >
-                  {t("pages:donate.modal.monthly")}
+                  {t("common:frequencies.Monthly")}
                 </Button>
               </div>
 
@@ -345,9 +345,7 @@ function DonateRoute() {
                 className="flex flex-col justify-between p-6 gap-4 rounded-xl border border-border bg-linear-to-br from-muted/50 to-muted hover:border-primary/50 translate-y-3 hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="flex flex-col gap-4">
-                  <h3 className="text-2xl font-semibold text-white text-center">
-                    {t(`pages:donate.perks.items.${perk.name}.name`)}
-                  </h3>
+                  <h3 className="text-2xl font-semibold text-white text-center">{t(`common:tiers.${perk.name}`)}</h3>
 
                   <p className="text-lg font-medium text-primary text-center">{perk.value.converted.formatted}</p>
 

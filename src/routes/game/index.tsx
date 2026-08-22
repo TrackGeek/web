@@ -128,7 +128,7 @@ function GameRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:mostPopular")}</p>
           <Link to={"/game/popular"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -154,7 +154,7 @@ function GameRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:recentlyReleased")}</p>
           <Link to={"/game/recent"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -180,7 +180,7 @@ function GameRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
           <Link to={"/game/upcoming"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -206,7 +206,7 @@ function GameRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:mostAnticipated")}</p>
           <Link to={"/game/anticipated"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>

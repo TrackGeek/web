@@ -74,7 +74,7 @@ export function useProgressionToasts(enabled: boolean) {
         const missionKey = notification.metadata?.missionKey;
 
         toast.success(t("missions:toast.title"), {
-          description: missionKey ? t(`missions:${missionKey}.name`) : undefined,
+          description: missionKey ? t(`missions:names.${missionKey}`) : undefined,
         });
       }
     }

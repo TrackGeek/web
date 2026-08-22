@@ -122,7 +122,7 @@ function AnimeRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:topAiring")}</p>
           <Link to={"/anime/airing"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -148,7 +148,7 @@ function AnimeRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:recommendations")}</p>{" "}
           <Link to={"/anime/recommendations"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -174,7 +174,7 @@ function AnimeRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
           <Link to={"/anime/upcoming"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -200,7 +200,7 @@ function AnimeRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:topAnime")}</p>
           <Link to={"/anime/top"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>

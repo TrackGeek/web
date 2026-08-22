@@ -15,12 +15,10 @@ function PrivacyPolicyRoute() {
   return (
     <div className="flex flex-col gap-8">
       <div className="bg-card rounded-2xl shadow-lg p-8 text-muted-foreground">
-        <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 text-center">
-          {t("pages:privacyPolicy.title")}
-        </h1>
+        <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground mb-2 text-center">{t("common:privacy")}</h1>
 
         <p className="text-sm text-center mb-6">
-          {t("pages:privacyPolicy.lastUpdated", {
+          {t("common:lastUpdated", {
             date: new Date("02/08/2026").toLocaleDateString(),
           })}
         </p>
@@ -90,7 +88,7 @@ function PrivacyPolicyRoute() {
           </section>
 
           <section>
-            <h2 className="font-semibold text-lg mb-2 text-primary">{t("pages:privacyPolicy.contact.title")}</h2>
+            <h2 className="font-semibold text-lg mb-2 text-primary">{t("common:contact")}</h2>
             <Trans
               parent="p"
               i18nKey="pages:privacyPolicy.contact.text"

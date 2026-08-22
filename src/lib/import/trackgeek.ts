@@ -296,6 +296,6 @@ async function importEntry(
 export function trackgeekRunner(userId: string): ImportRunner<BackupEntry> {
   return {
     importEntry: (entry, signal, onRetry, onResume) => importEntry(entry, userId, signal, onRetry, onResume),
-    notFoundKey: "settings:import.errors.mediaNotFound",
+    notFoundKey: "settings:import.errors.notFound",
   };
 }

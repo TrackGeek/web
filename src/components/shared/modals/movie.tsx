@@ -305,7 +305,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
 
           <Field>
             <FieldLabel htmlFor="status" className="text-sm font-medium">
-              {t("library:status")}
+              {t("common:status")}
             </FieldLabel>
             <Select value={selectedStatus || undefined} onValueChange={setSelectedStatus}>
               <SelectTrigger className="w-full bg-background">

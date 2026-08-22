@@ -380,13 +380,13 @@ function MangaDetailsRoute() {
       <Grid minColSize={"128px"} className="gap-4">
         {manga.status && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
-            <p className="text-sm text-muted-foreground">{t("library:status")}</p>
+            <p className="text-sm text-muted-foreground">{t("common:status")}</p>
             <p className="font-semibold text-card-foreground">{manga.status}</p>
           </div>
         )}
         {publishedRange && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
-            <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
+            <p className="text-sm text-muted-foreground">{t("common:releaseDate")}</p>
             <p className="font-semibold text-card-foreground">{publishedRange}</p>
           </div>
         )}
@@ -565,9 +565,7 @@ function MangaDetailsRoute() {
           <div className="flex items-center gap-2">
             <StarRating value={rating} className="mr-1" />
             <span className="font-semibold text-card-foreground">{rating}</span>
-            <span className="text-muted-foreground">
-              ({reviews?.total ?? 0} {t("library:reviews")})
-            </span>
+            <span className="text-muted-foreground">({t("common:reviewCount", { count: reviews?.total ?? 0 })})</span>
           </div>
         </div>
 
@@ -578,7 +576,7 @@ function MangaDetailsRoute() {
               <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
               {cast.length >= 1 && <TabsTrigger value="staff">{t("library:staff")}</TabsTrigger>}
               <TabsTrigger value="lists">
-                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+                {t("common:lists")} ({listsQuery.data?.total ?? 0})
               </TabsTrigger>
             </TabsList>
           </div>
@@ -653,28 +651,28 @@ function MangaDetailsRoute() {
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
                     value: `${manga.progressStats?.planning?.percentage ?? 0}%`,
-                    sub: `${manga.progressStats?.planning?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: manga.progressStats?.planning?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.reading"),
                     icon: "lucide:book-open-text",
                     iconClass: "text-chart-1",
                     value: `${manga.progressStats?.reading?.percentage ?? 0}%`,
-                    sub: `${manga.progressStats?.reading?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: manga.progressStats?.reading?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.read"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
                     value: `${manga.progressStats?.completed?.percentage ?? 0}%`,
-                    sub: `${manga.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: manga.progressStats?.completed?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
                     value: `${manga.progressStats?.dropped?.percentage ?? 0}%`,
-                    sub: `${manga.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: manga.progressStats?.dropped?.count ?? 0 }),
                   },
                 ]}
               />
@@ -780,7 +778,7 @@ function MangaDetailsRoute() {
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-3">
           <h3 className="font-semibold text-card-foreground text-lg capitalize">
-            {t("library:reviews")} ({reviews?.total ?? 0})
+            {t("common:reviews")} ({reviews?.total ?? 0})
           </h3>
           {isAuthenticated && (
             <Button

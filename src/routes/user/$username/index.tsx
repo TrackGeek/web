@@ -137,11 +137,11 @@ function UserDetailsRoute() {
             </TabsTrigger>
 
             <TabsTrigger value="reviews">
-              {t("user:reviews")} ({userQuery.data.counts.reviews})
+              {t("common:reviews")} ({userQuery.data.counts.reviews})
             </TabsTrigger>
 
             <TabsTrigger value="lists">
-              {t("user:lists")} ({userQuery.data.counts.lists})
+              {t("common:lists")} ({userQuery.data.counts.lists})
             </TabsTrigger>
 
             <TabsTrigger value="favorites">

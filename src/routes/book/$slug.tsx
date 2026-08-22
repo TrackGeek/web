@@ -431,7 +431,7 @@ function BookDetailsRoute() {
         )}
         {releaseDate && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
-            <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
+            <p className="text-sm text-muted-foreground">{t("common:releaseDate")}</p>
             <p className="font-semibold text-card-foreground">{releaseDate}</p>
           </div>
         )}
@@ -476,16 +476,14 @@ function BookDetailsRoute() {
           <div className="flex items-center gap-2">
             <StarRating value={rating} />
             <span className="font-semibold text-card-foreground">{rating}</span>
-            <span className="text-muted-foreground">
-              ({reviews?.total ?? 0} {t("library:reviews")})
-            </span>
+            <span className="text-muted-foreground">({t("common:reviewCount", { count: reviews?.total ?? 0 })})</span>
           </div>
 
           {book.numberOfPages && (
             <div className="flex items-center gap-2 text-muted-foreground">
               <Icon icon={"lucide:bar-chart-3"} className="size-5" />
               <span>
-                {t("library:medium")}: {Math.round(book.numberOfPages / 29)} {t("library:days")}
+                {t("library:medium")}: {t("common:dayCount", { count: Math.round(book.numberOfPages / 29) })}
               </span>
             </div>
           )}
@@ -501,7 +499,7 @@ function BookDetailsRoute() {
                 </TabsTrigger>
               )}
               <TabsTrigger value="lists">
-                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+                {t("common:lists")} ({listsQuery.data?.total ?? 0})
               </TabsTrigger>
               <TabsTrigger value="comments">{t("comments:title")}</TabsTrigger>
             </TabsList>
@@ -560,28 +558,28 @@ function BookDetailsRoute() {
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
                     value: `${book.progressStats?.planToRead?.percentage ?? 0}%`,
-                    sub: `${book.progressStats?.planToRead?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: book.progressStats?.planToRead?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.reading"),
                     icon: "lucide:book-open-text",
                     iconClass: "text-chart-1",
                     value: `${book.progressStats?.reading?.percentage ?? 0}%`,
-                    sub: `${book.progressStats?.reading?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: book.progressStats?.reading?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.read"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
                     value: `${book.progressStats?.completed?.percentage ?? 0}%`,
-                    sub: `${book.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: book.progressStats?.completed?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
                     value: `${book.progressStats?.dropped?.percentage ?? 0}%`,
-                    sub: `${book.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: book.progressStats?.dropped?.count ?? 0 }),
                   },
                 ]}
               />
@@ -688,7 +686,7 @@ function BookDetailsRoute() {
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-3">
           <h3 className="font-semibold text-card-foreground text-lg capitalize">
-            {t("library:reviews")} ({reviews?.total ?? 0})
+            {t("common:reviews")} ({reviews?.total ?? 0})
           </h3>
           {isAuthenticated && (
             <Button

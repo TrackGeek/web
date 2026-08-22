@@ -52,7 +52,7 @@ export function FranchisePage({ name, description, bannerUrl, items }: Franchise
       </div>
 
       <div className="py-6 space-y-4">
-        <p className="text-2xl font-bold">{t("common:franchiseEntries", { count: items.length })}</p>
+        <p className="text-2xl font-bold">{t("common:titleCount", { count: items.length })}</p>
 
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
           {items.map((item) => (

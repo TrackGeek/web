@@ -84,7 +84,7 @@ export function CompanyHero({ company }: { company: Company }) {
             {foundedYear && <MetaItem icon="lucide:calendar">{`${t("library:founded")} ${foundedYear}`}</MetaItem>}
             {company.headquarters && <MetaItem icon="lucide:map-pin">{company.headquarters}</MetaItem>}
             {company.originCountry && <MetaItem icon="lucide:globe">{company.originCountry}</MetaItem>}
-            <MetaItem icon="lucide:layers">{t("library:titleCount", { count: company.stats.total })}</MetaItem>
+            <MetaItem icon="lucide:layers">{t("common:titleCount", { count: company.stats.total })}</MetaItem>
           </div>
 
           {links.length > 0 && (

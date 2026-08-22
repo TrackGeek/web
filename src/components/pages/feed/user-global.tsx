@@ -11,7 +11,7 @@ export function FeedListGlobal() {
     <ActivityFeed
       query={query}
       toggleReaction={toggleReaction}
-      emptyTitle={t("feed:emptyGlobalTitle")}
+      emptyTitle={t("feed:emptyTitle")}
       emptyDescription={t("feed:emptyGlobalDescription")}
     />
   );

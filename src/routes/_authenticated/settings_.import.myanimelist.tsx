@@ -52,7 +52,7 @@ function MyAnimeListImportRoute() {
       const { entries: mapped, ignored: skipped } = parseExport(await readExportFile(file));
 
       if (mapped.length === 0) {
-        toast.error(t("settings:import.myanimelist.emptyFile"));
+        toast.error(t("settings:import.file.emptyFile"));
         return;
       }
 
@@ -61,7 +61,7 @@ function MyAnimeListImportRoute() {
       setIgnored(skipped);
       setProgress(null);
     } catch {
-      toast.error(t("settings:import.myanimelist.invalidFile"));
+      toast.error(t("settings:import.file.invalidFile", { provider: "MyAnimeList" }));
     }
   };
 
@@ -83,7 +83,7 @@ function MyAnimeListImportRoute() {
       const result = await runImport(entries, myanimelistRunner(userId), controller.signal, setProgress);
 
       if (!controller.signal.aborted) {
-        toast.success(t("settings:import.myanimelist.finished", { count: result.done }));
+        toast.success(t("settings:import.file.finished", { count: result.done }));
       }
     } finally {
       setIsRunning(false);
@@ -181,7 +181,7 @@ function MyAnimeListImportRoute() {
           <CardTitle>
             <Icon icon={"lucide:file-code"} className="size-5" />
 
-            {t("settings:import.myanimelist.upload.title")}
+            {t("settings:import.file.uploadTitle")}
           </CardTitle>
 
           <CardDescription>{t("settings:import.myanimelist.upload.description")}</CardDescription>
@@ -233,7 +233,7 @@ function MyAnimeListImportRoute() {
                 </Badge>
 
                 <span className="text-muted-foreground">
-                  {t("settings:import.myanimelist.summary", { count: entries.length })}
+                  {t("settings:import.file.summary", { count: entries.length })}
                 </span>
 
                 {ignored > 0 && (
@@ -281,9 +281,9 @@ function MyAnimeListImportRoute() {
               <Icon icon={"lucide:inbox"} className="size-6" />
             </EmptyMedia>
 
-            <EmptyTitle>{t("settings:import.myanimelist.empty.title")}</EmptyTitle>
+            <EmptyTitle>{t("settings:import.file.emptyTitle")}</EmptyTitle>
 
-            <EmptyDescription>{t("settings:import.myanimelist.empty.description")}</EmptyDescription>
+            <EmptyDescription>{t("settings:import.file.emptyDescription")}</EmptyDescription>
           </EmptyHeader>
         </Empty>
       )}

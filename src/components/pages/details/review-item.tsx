@@ -225,7 +225,7 @@ export function ReviewItem({
                 >
                   <Icon icon={expanded ? "lucide:chevron-up" : "lucide:chevron-down"} className="size-3.5" />
 
-                  {t(expanded ? "feed:showLess" : "feed:showMore")}
+                  {t(expanded ? "common:showLess" : "common:showMore")}
                 </button>
               </>
             )}

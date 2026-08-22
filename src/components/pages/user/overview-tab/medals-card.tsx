@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { ApiTypes } from "@/lib/api";
+import { getMedalKeys } from "@/lib/utils/medal";
 
 interface MedalsCardProps {
   userMedals: ApiTypes.User["userMedals"];
@@ -11,6 +12,8 @@ interface MedalsCardProps {
 
 function MedalIcon({ name, imageUrl }: { name: string; imageUrl: string }) {
   const { t } = useTranslation();
+
+  const { nameKey, descriptionKey, options } = getMedalKeys(name);
 
   return (
     <Tooltip>
@@ -21,8 +24,8 @@ function MedalIcon({ name, imageUrl }: { name: string; imageUrl: string }) {
       </TooltipTrigger>
       <TooltipContent className="bg-muted">
         <div className="max-w-xs">
-          <div className="font-semibold">{t(`medals:${name}.name`)}</div>
-          <div className="text-xs text-muted-foreground">{t(`medals:${name}.description`)}</div>
+          <div className="font-semibold">{t(nameKey, options)}</div>
+          <div className="text-xs text-muted-foreground">{t(descriptionKey, options)}</div>
         </div>
       </TooltipContent>
     </Tooltip>

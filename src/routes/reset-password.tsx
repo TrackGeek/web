@@ -81,7 +81,7 @@ function RouteComponent() {
 
           <form className="flex flex-col gap-2" onSubmit={resetPasswordForm.handleSubmit(handleResetPassword)}>
             <Field>
-              <FieldLabel htmlFor="password">{t("auth:password")}</FieldLabel>
+              <FieldLabel htmlFor="password">{t("common:password")}</FieldLabel>
 
               <Input
                 id="password"

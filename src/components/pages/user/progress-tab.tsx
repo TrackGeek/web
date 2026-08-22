@@ -263,9 +263,9 @@ export function UserProgressTab({
               <EmptyMedia variant="icon">
                 <Icon icon={hasQuery ? "lucide:search-x" : "lucide:chart-line"} />
               </EmptyMedia>
-              <EmptyTitle>{hasQuery ? t("user:noSearchResults") : t("user:noProgress")}</EmptyTitle>
+              <EmptyTitle>{hasQuery ? t("common:noResults") : t("user:noProgress")}</EmptyTitle>
               <EmptyDescription>
-                {hasQuery ? t("user:noSearchResultsDescription") : t("user:noProgressDescription")}
+                {hasQuery ? t("common:noResultsDescription") : t("user:noProgressDescription")}
               </EmptyDescription>
             </EmptyHeader>
           </Empty>

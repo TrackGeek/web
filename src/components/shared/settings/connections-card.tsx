@@ -69,7 +69,7 @@ export function ConnectionsCard() {
         <CardTitle>
           <Icon icon={"lucide:link"} className="size-5" />
 
-          {t("settings:connections.title")}
+          {t("settings:tabs.connections")}
         </CardTitle>
 
         <CardDescription>{t("settings:connections.description")}</CardDescription>

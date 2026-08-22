@@ -39,7 +39,7 @@ export function SettingsImportTab() {
           <CardTitle>
             <Icon icon={"lucide:download"} className="size-5" />
 
-            {t("settings:import.title")}
+            {t("settings:tabs.import")}
           </CardTitle>
 
           <CardDescription>{t("settings:import.description")}</CardDescription>

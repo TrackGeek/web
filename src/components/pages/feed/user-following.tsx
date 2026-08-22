@@ -15,7 +15,7 @@ export function FeedListFollowing({ enabled = true }: FeedListFollowingProps) {
     <ActivityFeed
       query={query}
       toggleReaction={toggleReaction}
-      emptyTitle={t("feed:emptyFollowingTitle")}
+      emptyTitle={t("feed:emptyTitle")}
       emptyDescription={t("feed:emptyFollowingDescription")}
     />
   );

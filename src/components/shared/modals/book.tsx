@@ -356,7 +356,7 @@ export function BookModal({ bookId, totalPages, onClose }: BookModalProps) {
           <div className="space-y-3">
             <Field>
               <FieldLabel htmlFor="status" className="text-sm font-medium">
-                {t("library:status")}
+                {t("common:status")}
               </FieldLabel>
               <Controller
                 control={progressForm.control}

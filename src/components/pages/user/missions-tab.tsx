@@ -10,6 +10,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useMissionsByUserId } from "@/hooks/mission";
 import type { ApiTypes } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { getMedalKeys } from "@/lib/utils/medal";
+import { getMissionDescriptionKeys } from "@/lib/utils/mission";
 
 interface UserMissionsTabProps {
   userId: string;
@@ -30,8 +32,13 @@ function MissionCard({ mission }: { mission: ApiTypes.Mission }) {
   const isCompleted = mission.completedAt !== null;
   const masked = mission.hidden && !isCompleted;
 
-  const name = masked ? t("missions:hidden.name") : t(`missions:${mission.key}.name`);
-  const description = masked ? t("missions:hidden.description") : t(`missions:${mission.key}.description`);
+  const name = masked ? t("missions:hidden.name") : t(`missions:names.${mission.key}`);
+  const description = mission.hidden
+    ? t("missions:hidden.description")
+    : t(getMissionDescriptionKeys(mission), { count: mission.target });
+
+  const medal = mission.hidden ? null : mission.medal;
+  const medalKeys = medal ? getMedalKeys(medal.name) : null;
 
   return (
     <Card className={cn("py-0", isCompleted && "border-primary/40 bg-primary/5")}>
@@ -45,21 +52,15 @@ function MissionCard({ mission }: { mission: ApiTypes.Mission }) {
             <span className="font-semibold truncate">{name}</span>
           </div>
 
-          {!mission.hidden && mission.medal && (
+          {medal && medalKeys && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted/70">
-                  <Image
-                    src={mission.medal.imageUrl}
-                    width={24}
-                    height={24}
-                    alt={mission.medal.name}
-                    className="size-6"
-                  />
+                  <Image src={medal.imageUrl} width={24} height={24} alt={medal.name} className="size-6" />
                 </div>
               </TooltipTrigger>
               <TooltipContent className="bg-muted">
-                <div className="text-xs">{t(`medals:${mission.medal.name}.name`)}</div>
+                <div className="text-xs">{t(medalKeys.nameKey, medalKeys.options)}</div>
               </TooltipContent>
             </Tooltip>
           )}
@@ -89,7 +90,7 @@ function MissionCard({ mission }: { mission: ApiTypes.Mission }) {
                 {mission.coinReward > 0 && (
                   <Badge variant="secondary" className="gap-1">
                     <Icon icon="lucide:coins" className="size-3 text-yellow-400" />
-                    {t("missions:rewardCoins", { count: mission.coinReward })}
+                    {t("common:coinCount", { count: mission.coinReward })}
                   </Badge>
                 )}
 

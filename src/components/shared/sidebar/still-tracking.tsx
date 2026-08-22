@@ -54,7 +54,7 @@ function TrackingPanel({ title, icon, types, userId, username }: TrackingPanelPr
           search={{ tab: "progress" }}
           className="text-xs text-muted-foreground hover:text-primary transition-colors"
         >
-          {t("pages:donate.viewAll")}
+          {t("common:viewAll")}
         </Link>
       </div>
 

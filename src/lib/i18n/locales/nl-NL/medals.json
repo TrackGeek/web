@@ -7,20 +7,8 @@
     "name": "Staff",
     "description": "Awarded to staff members for their dedication and hard work."
   },
-  "level-10": {
-    "name": "Level 10",
-    "description": "Awarded for reaching level 10."
-  },
-  "level-25": {
-    "name": "Level 25",
-    "description": "Awarded for reaching level 25."
-  },
-  "level-50": {
-    "name": "Level 50",
-    "description": "Awarded for reaching level 50."
-  },
-  "level-100": {
-    "name": "Level 100",
-    "description": "Awarded for reaching level 100."
+  "level": {
+    "name": "Level {{level}}",
+    "description": "Awarded for reaching level {{level}}."
   }
 }

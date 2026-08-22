@@ -117,7 +117,7 @@ export function ReviewItem({
           <div className={cn("flex rounded-l-xl items-center justify-center", coverURL ? "p-0" : "p-4")}>
             {coverURL ? (
               <div
-                className="h-full rounded-l-xl p-0 flex flex-row items-center bg-cover bg-center px-6 relative"
+                className="h-full rounded-l-xl p-0 flex flex-row items-center bg-cover bg-center relative"
                 style={{
                   backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url("${coverURL}")`,
                 }}
@@ -130,7 +130,7 @@ export function ReviewItem({
                     layout="fullWidth"
                     aspectRatio={3 / 4}
                     alt={reviewName || "Cover"}
-                    className="w-40 h-50 object-cover relative z-10"
+                    className="w-40 h-50 object-cover relative z-10 rounded-l-xl"
                   />
                 </div>
               </div>

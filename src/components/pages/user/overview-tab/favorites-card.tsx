@@ -40,6 +40,8 @@ export function FavoritesCard({ userId, onSeeMore }: FavoritesCardProps) {
     return pickRandom(available, VISIBLE_ITEMS);
   }, [firstPage]);
 
+  if (!favoritesQuery.isPending && items.length === 0) return null;
+
   return (
     <Card>
       <CardHeader>

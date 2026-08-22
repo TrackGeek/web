@@ -2,15 +2,24 @@ import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-const REASONS = [
-  "user:presenceInfoNotLinked",
-  "user:presenceInfoNotInGuild",
-  "user:presenceInfoOffline",
-  "user:presenceInfoNotPublic",
-] as const;
+const REASONS_BY_PROVIDER = {
+  discord: [
+    "user:presenceInfoNotLinked",
+    "user:presenceInfoNotInGuild",
+    "user:presenceInfoOffline",
+    "user:presenceInfoNotPublic",
+  ],
+  spotify: ["user:presenceInfoNotLinked", "user:presenceInfoOffline"],
+} as const;
 
-export function PresenceInfoTooltip() {
+interface PresenceInfoTooltipProps {
+  provider: keyof typeof REASONS_BY_PROVIDER;
+}
+
+export function PresenceInfoTooltip({ provider }: PresenceInfoTooltipProps) {
   const { t } = useTranslation();
+
+  const providerName = t(`auth:providers.${provider}`);
 
   return (
     <Tooltip>
@@ -29,8 +38,8 @@ export function PresenceInfoTooltip() {
           <p className="font-semibold">{t("user:presenceInfoTitle")}</p>
 
           <ul className="mt-1 flex list-disc flex-col gap-0.5 pl-4 text-xs text-muted-foreground">
-            {REASONS.map((reason) => (
-              <li key={reason}>{t(reason)}</li>
+            {REASONS_BY_PROVIDER[provider].map((reason) => (
+              <li key={reason}>{t(reason, { provider: providerName })}</li>
             ))}
           </ul>
         </div>

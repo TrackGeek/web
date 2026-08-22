@@ -47,7 +47,7 @@ export function DiscordActivityCard({ userId }: DiscordActivityCardProps) {
             {t("user:discordActivity")}
           </div>
 
-          <PresenceInfoTooltip />
+          <PresenceInfoTooltip provider="discord" />
         </CardTitle>
       </CardHeader>
 

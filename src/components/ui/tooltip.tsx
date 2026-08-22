@@ -1,18 +1,63 @@
 import { Tooltip as TooltipPrimitive } from "radix-ui";
-import type * as React from "react";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
+
+const TooltipToggleContext = React.createContext<{ open: boolean; setOpen: (open: boolean) => void } | null>(null);
 
 function TooltipProvider({ delayDuration = 0, ...props }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
   return <TooltipPrimitive.Provider data-slot="tooltip-provider" delayDuration={delayDuration} {...props} />;
 }
 
-function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
-  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
+function Tooltip({ open, defaultOpen, onOpenChange, ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen ?? false);
+
+  const isOpen = open ?? uncontrolledOpen;
+
+  const setOpen = React.useCallback(
+    (next: boolean) => {
+      if (open === undefined) setUncontrolledOpen(next);
+
+      onOpenChange?.(next);
+    },
+    [open, onOpenChange],
+  );
+
+  const toggleContext = React.useMemo(() => ({ open: isOpen, setOpen }), [isOpen, setOpen]);
+
+  return (
+    <TooltipToggleContext.Provider value={toggleContext}>
+      <TooltipPrimitive.Root data-slot="tooltip" open={isOpen} onOpenChange={setOpen} {...props} />
+    </TooltipToggleContext.Provider>
+  );
 }
 
-function TooltipTrigger({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
+function TooltipTrigger({ onPointerDown, onClick, ...props }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
+  const toggle = React.useContext(TooltipToggleContext);
+  const isTouchRef = React.useRef(false);
+
+  return (
+    <TooltipPrimitive.Trigger
+      data-slot="tooltip-trigger"
+      onPointerDown={(event) => {
+        onPointerDown?.(event);
+
+        isTouchRef.current = event.pointerType !== "mouse";
+
+        if (isTouchRef.current) event.preventDefault();
+      }}
+      onClick={(event) => {
+        onClick?.(event);
+
+        if (!isTouchRef.current || !toggle) return;
+
+        event.preventDefault();
+
+        toggle.setOpen(!toggle.open);
+      }}
+      {...props}
+    />
+  );
 }
 
 function TooltipContent({

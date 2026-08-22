@@ -10,6 +10,8 @@ interface AboutCardProps {
 export function AboutCard({ about }: AboutCardProps) {
   const { t } = useTranslation();
 
+  if (!about?.trim()) return null;
+
   return (
     <Card>
       <CardHeader>

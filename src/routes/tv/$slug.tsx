@@ -41,6 +41,7 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
+import { apiErrorMessage } from "@/lib/utils/api-error";
 import { formatDateRange } from "@/lib/utils/date";
 import {
   type EpisodeRef,
@@ -50,6 +51,7 @@ import {
 } from "@/lib/utils/episode-backfill";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
+import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
 
@@ -470,10 +472,12 @@ function TVShowDetailsPage() {
       queryClient.invalidateQueries({ queryKey: ["tvEpisodeWatch", item?.id, userId] });
       queryClient.invalidateQueries({ queryKey: ["tv", slug] });
     },
-    onError: () => {
-      return toast.error(t("api:INTERNAL_SERVER_ERROR"));
+    onError: (error) => {
+      return toast.error(apiErrorMessage(t, error));
     },
   });
+
+  const isUnreleased = isMediaUnreleased("tv", { status: item?.status });
 
   const progressButtons = [
     {
@@ -509,7 +513,7 @@ function TVShowDetailsPage() {
       ringBorder: "border-chart-3/30",
       iconColor: "text-chart-3",
     },
-  ];
+  ].filter((button) => !isUnreleased || button.status === "Planning");
 
   if (tvQuery.isLoading || seasonsQuery.isLoading || reviewsQuery.isLoading) {
     return <LoadingDetails />;
@@ -533,7 +537,7 @@ function TVShowDetailsPage() {
 
       {isAuthenticated && (
         <>
-          <div className="grid grid-cols-3 w-full gap-4">
+          <div className={cn("grid w-full gap-4", isUnreleased ? "grid-cols-1" : "grid-cols-3")}>
             {progressButtons.map((button) => {
               const isActive = currentStatus === button.status;
 
@@ -632,6 +636,7 @@ function TVShowDetailsPage() {
                   slug={slug}
                   totalEpisodes={item.numberOfEpisodes}
                   watchedEpisodes={totalWatchedEpisodes}
+                  unreleased={isUnreleased}
                   onClose={() => setMoreOpen(false)}
                 />
               </div>
@@ -850,7 +855,7 @@ function TVShowDetailsPage() {
               </Grid>
             </div>
 
-            {isAuthenticated && (
+            {isAuthenticated && !isUnreleased && (
               <>
                 <EpisodeProgress
                   seasons={mySeasons}
@@ -1091,7 +1096,7 @@ function TVShowDetailsPage() {
           <h3 className="font-semibold text-card-foreground text-lg capitalize">
             {t("common:reviews")} ({reviews?.total ?? 0})
           </h3>
-          {isAuthenticated && (
+          {isAuthenticated && !isUnreleased && (
             <Button
               variant="outline"
               size="sm"

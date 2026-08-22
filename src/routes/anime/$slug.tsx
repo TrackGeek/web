@@ -38,6 +38,7 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
+import { apiErrorMessage } from "@/lib/utils/api-error";
 import { formatSeason } from "@/lib/utils/date";
 import {
   getBackfillPreference,
@@ -46,6 +47,7 @@ import {
 } from "@/lib/utils/episode-backfill";
 import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
+import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
 
 interface AnimeEpisode {
@@ -399,7 +401,7 @@ function AnimeDetailsRoute() {
       queryClient.invalidateQueries({ queryKey: ["animeEpisodeWatch", anime?.id, userId] });
       queryClient.invalidateQueries({ queryKey: ["anime", slug] });
     },
-    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+    onError: (error) => toast.error(apiErrorMessage(t, error)),
   });
 
   const episodeWatchQuery = useQuery<AnimeEpisodeWatch[]>({
@@ -564,6 +566,8 @@ function AnimeDetailsRoute() {
     },
   });
 
+  const isUnreleased = isMediaUnreleased("anime", { status: anime?.status });
+
   const progressButtons = [
     {
       status: "Planning" as const,
@@ -598,7 +602,7 @@ function AnimeDetailsRoute() {
       iconColor: "text-chart-3",
       activeClass: "border-chart-3 bg-chart-3/20",
     },
-  ] as const;
+  ].filter((button) => !isUnreleased || button.status === "Planning");
 
   if (isLoading) return <LoadingDetails />;
   if (isError || !anime) return <ErrorComponent />;
@@ -614,21 +618,19 @@ function AnimeDetailsRoute() {
       {isAuthenticated && (
         <>
           <QuickStatusButtons
-            buttons={
-              progressButtons.map((button) => ({
-                label: button.label,
-                icon: button.icon,
-                hoverBorder: button.hoverBorder,
-                hoverBg: button.hoverBg,
-                iconBg: button.iconBg,
-                iconBorder: button.iconBorder,
-                iconColor: button.iconColor,
-                activeClass: button.activeClass,
-                isActive: currentStatus === button.status,
-                disabled: setProgressMutation.isPending,
-                onClick: () => setProgressMutation.mutate(button.status),
-              })) as Parameters<typeof QuickStatusButtons>[0]["buttons"]
-            }
+            buttons={progressButtons.map((button) => ({
+              label: button.label,
+              icon: button.icon,
+              hoverBorder: button.hoverBorder,
+              hoverBg: button.hoverBg,
+              iconBg: button.iconBg,
+              iconBorder: button.iconBorder,
+              iconColor: button.iconColor,
+              activeClass: button.activeClass,
+              isActive: currentStatus === button.status,
+              disabled: setProgressMutation.isPending,
+              onClick: () => setProgressMutation.mutate(button.status),
+            }))}
           />
           <MoreOptionsDialog
             title={anime.title}
@@ -649,6 +651,7 @@ function AnimeDetailsRoute() {
               slug={slug}
               totalEpisodes={anime.numberOfEpisodes ?? 0}
               watchedEpisodes={totalWatchedEpisodes}
+              unreleased={isUnreleased}
               onClose={() => setMoreOpen(false)}
             />
           </MoreOptionsDialog>
@@ -974,7 +977,7 @@ function AnimeDetailsRoute() {
               );
             })()}
 
-            {isAuthenticated && (
+            {isAuthenticated && !isUnreleased && (
               <>
                 <AnimeEpisodeProgress season={mySeason} onToggle={handleToggle} />
                 <BackfillEpisodesDialog
@@ -1163,7 +1166,7 @@ function AnimeDetailsRoute() {
           <h3 className="font-semibold text-card-foreground text-lg capitalize">
             {t("common:reviews")} ({reviews?.total ?? 0})
           </h3>
-          {isAuthenticated && (
+          {isAuthenticated && !isUnreleased && (
             <Button
               variant="outline"
               size="sm"

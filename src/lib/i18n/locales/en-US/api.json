@@ -38,6 +38,7 @@
   "COSMETIC_NOT_PURCHASABLE": "This cosmetic cannot be purchased.",
   "COSMETIC_ALREADY_OWNED": "You already own this cosmetic.",
   "INSUFFICIENT_BALANCE": "You do not have enough coins.",
+  "MEDIA_NOT_RELEASED": "This title has not been released yet, so you can only add it to your plan to consume list.",
   "betterAuth": {
     "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "A user with this email already exists. Please use a different email address.",
     "INVALID_CODE": "Invalid code. Please try again.",

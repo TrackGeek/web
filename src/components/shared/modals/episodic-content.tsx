@@ -27,6 +27,8 @@ type ProgressStatus = "Planning" | "Watching" | "Rewatching" | "Completed" | "Pa
 
 const STATUS_OPTIONS = ["planning", "watching", "completed", "rewatching", "dropped", "paused"] as const;
 
+const PLANNING_ONLY_STATUS_OPTIONS = ["planning"] as const;
+
 const STATUS_TO_ENUM: Record<string, ProgressStatus> = {
   planning: "Planning",
   watching: "Watching",
@@ -235,6 +237,7 @@ interface EpisodicContentModalProps {
   slug?: string;
   totalEpisodes?: number;
   watchedEpisodes?: number;
+  unreleased?: boolean;
   onClose?: () => void;
 }
 
@@ -261,6 +264,7 @@ export function EpisodicContentModal({
   slug,
   totalEpisodes = 0,
   watchedEpisodes = 0,
+  unreleased = false,
   onClose,
 }: EpisodicContentModalProps) {
   const { t } = useTranslation();
@@ -271,6 +275,7 @@ export function EpisodicContentModal({
   const cfg = MEDIA_CONFIG[mediaType];
   const mediaId = mediaType === "anime" ? animeId : tvShowId;
   const enabled = !!userId && !!mediaId;
+  const statusOptions = unreleased ? PLANNING_ONLY_STATUS_OPTIONS : STATUS_OPTIONS;
 
   const episodeKey = useCallback(
     (season: number | undefined, episode: number) => (cfg.hasSeasons ? `${season}-${episode}` : `${episode}`),
@@ -660,7 +665,7 @@ export function EpisodicContentModal({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {STATUS_OPTIONS.map((status) => (
+                          {statusOptions.map((status) => (
                             <SelectItem key={status} value={status}>
                               {t(`feed:lists.${status}`)}
                             </SelectItem>
@@ -672,47 +677,51 @@ export function EpisodicContentModal({
                 />
               </Field>
 
-              <Field>
-                <FieldLabel htmlFor="episodes" className="text-sm font-medium">
-                  {t("library:episode_other")}
-                </FieldLabel>
-                <InputGroup className="bg-background">
-                  <InputGroupInput
-                    id="episodes"
-                    type="number"
-                    min={0}
-                    max={orderedEpisodes.length || totalEpisodes}
-                    step={1}
-                    value={episodeInput}
-                    disabled={orderedEpisodes.length === 0 || setEpisodesMutation.isPending}
-                    onChange={(e) => setEpisodeInput(toIntegerValue(e.target.value))}
-                    onBlur={commitEpisodeCount}
-                    onKeyDown={(e) => {
-                      blockNonIntegerKeys(e);
-                      if (e.key === "Enter") e.currentTarget.blur();
-                    }}
-                  />
-                  <InputGroupAddon align="inline-end">
-                    <InputGroupText>/{totalEpisodes}</InputGroupText>
-                  </InputGroupAddon>
-                </InputGroup>
-              </Field>
+              {!unreleased && (
+                <>
+                  <Field>
+                    <FieldLabel htmlFor="episodes" className="text-sm font-medium">
+                      {t("library:episode_other")}
+                    </FieldLabel>
+                    <InputGroup className="bg-background">
+                      <InputGroupInput
+                        id="episodes"
+                        type="number"
+                        min={0}
+                        max={orderedEpisodes.length || totalEpisodes}
+                        step={1}
+                        value={episodeInput}
+                        disabled={orderedEpisodes.length === 0 || setEpisodesMutation.isPending}
+                        onChange={(e) => setEpisodeInput(toIntegerValue(e.target.value))}
+                        onBlur={commitEpisodeCount}
+                        onKeyDown={(e) => {
+                          blockNonIntegerKeys(e);
+                          if (e.key === "Enter") e.currentTarget.blur();
+                        }}
+                      />
+                      <InputGroupAddon align="inline-end">
+                        <InputGroupText>/{totalEpisodes}</InputGroupText>
+                      </InputGroupAddon>
+                    </InputGroup>
+                  </Field>
 
-              <Field>
-                <FieldLabel htmlFor="rewatches" className="text-sm font-medium">
-                  {t("feed:totalRewatches")}
-                </FieldLabel>
-                <Input
-                  id="rewatches"
-                  type="number"
-                  min={0}
-                  max={999}
-                  placeholder="0"
-                  className="bg-background"
-                  {...registerInteger(progressForm.register("watchCount"))}
-                  aria-label={t("feed:totalRewatches")}
-                />
-              </Field>
+                  <Field>
+                    <FieldLabel htmlFor="rewatches" className="text-sm font-medium">
+                      {t("feed:totalRewatches")}
+                    </FieldLabel>
+                    <Input
+                      id="rewatches"
+                      type="number"
+                      min={0}
+                      max={999}
+                      placeholder="0"
+                      className="bg-background"
+                      {...registerInteger(progressForm.register("watchCount"))}
+                      aria-label={t("feed:totalRewatches")}
+                    />
+                  </Field>
+                </>
+              )}
             </div>
           </div>
 
@@ -862,7 +871,7 @@ export function EpisodicContentModal({
         </div>
       </div>
 
-      {REVIEW_STATUSES.includes(progressStatus) && (
+      {!unreleased && REVIEW_STATUSES.includes(progressStatus) && (
         <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
             <Icon icon={"lucide:pen-line"} className="size-4" />

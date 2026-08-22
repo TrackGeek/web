@@ -27,6 +27,8 @@ type ProgressStatus = "Planning" | "Reading" | "Rereading" | "Completed" | "Paus
 
 const STATUS_OPTIONS = ["planning", "reading", "completed", "rereading", "dropped", "paused"] as const;
 
+const PLANNING_ONLY_STATUS_OPTIONS = ["planning"] as const;
+
 const STATUS_TO_ENUM: Record<string, ProgressStatus> = {
   planning: "Planning",
   reading: "Reading",
@@ -88,15 +90,17 @@ interface MangaProgressData {
 interface MangaModalProps {
   mangaId?: string;
   totalChapters?: number | null;
+  unreleased?: boolean;
   onClose?: () => void;
 }
 
-export function MangaModal({ mangaId, totalChapters, onClose }: MangaModalProps) {
+export function MangaModal({ mangaId, totalChapters, unreleased = false, onClose }: MangaModalProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const session = useSession();
   const userId = session?.data?.user?.id;
   const enabled = !!userId && !!mangaId;
+  const statusOptions = unreleased ? PLANNING_ONLY_STATUS_OPTIONS : STATUS_OPTIONS;
 
   const [newListInput, setNewListInput] = useState<string | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
@@ -364,7 +368,7 @@ export function MangaModal({ mangaId, totalChapters, onClose }: MangaModalProps)
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {STATUS_OPTIONS.map((status) => (
+                        {statusOptions.map((status) => (
                           <SelectItem key={status} value={status}>
                             {t(`feed:lists.${status}`)}
                           </SelectItem>
@@ -526,7 +530,7 @@ export function MangaModal({ mangaId, totalChapters, onClose }: MangaModalProps)
         </div>
       </div>
 
-      {REVIEW_STATUSES.includes(progressStatus) && (
+      {!unreleased && REVIEW_STATUSES.includes(progressStatus) && (
         <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
             <Icon icon={"lucide:pen-line"} className="size-4" />

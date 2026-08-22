@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { Grid } from "@/components/layouts/grid.tsx";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFavorites } from "@/hooks/favorite";
 import { FavoriteCard, type FavoriteItem, favoriteToItem } from "./favorite-card";
@@ -64,11 +65,11 @@ export function FavoritesCard({ userId, onSeeMore }: FavoritesCardProps) {
 
       <CardContent>
         {items.length > 0 ? (
-          <div className="grid grid-cols-6 gap-3">
+          <Grid minColSize={"120px"} className="grid grid-cols-6 gap-3">
             {items.map((item) => (
               <FavoriteCard key={item.id} item={item} />
             ))}
-          </div>
+          </Grid>
         ) : (
           <p className="text-muted-foreground leading-relaxed">{t("user:noFavorites")}</p>
         )}

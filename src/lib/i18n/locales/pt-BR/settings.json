@@ -198,6 +198,22 @@
     "title": "Tipos de conteúdo",
     "description": "Escolha quais tipos de conteúdo aparecem no TrackGeek. Pelo menos um deve permanecer ativado."
   },
+  "watchLinks": {
+    "title": "Custom watch links",
+    "description": "Jump from a title straight into your player or favorite site. Variables are replaced with the details of whatever you are viewing.",
+    "empty": "No watch links yet.",
+    "labelPlaceholder": "Stremio",
+    "preview": "Preview",
+    "toggle": "Enable this link",
+    "variablesTitle": "Available variables",
+    "urlInvalid": "Enter an absolute URL, such as stremio://detail/movie/%ID_IMDB%",
+    "urlTooLong_one": "The URL must be at most {{count}} character.",
+    "urlTooLong_other": "The URL must be at most {{count}} characters.",
+    "urlUnknownVariable": "The URL uses a variable that doesn't exist.",
+    "contentTypesRequired": "Select at least one content type.",
+    "limitReached_one": "You can have at most {{count}} watch link.",
+    "limitReached_other": "You can have at most {{count}} watch links."
+  },
   "password": {
     "description": "Defina uma senha para a sua conta ou altere a senha que você já usa para entrar.",
     "noPassword": "Você se cadastrou com um provedor social e ainda não tem uma senha. Nós lhe enviaremos um link para definir uma.",

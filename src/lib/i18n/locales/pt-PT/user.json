@@ -14,8 +14,8 @@
   "movieList": "Lista de Filmes",
   "bookList": "Lista de Livros",
   "overview": "Visão geral",
-  "follower_one": "Follower",
-  "follower_other": "Followers",
+  "follower_one": "Seguidor",
+  "follower_other": "Seguidores",
   "follow": "Seguir",
   "unfollow": "Deixar de seguir",
   "followsYou": "Segue-te",
@@ -110,8 +110,8 @@
   "discordStatusDnd": "Não incomodar",
   "discordStatusOffline": "Offline",
   "presenceInfoTitle": "Nada aparecendo?",
-  "presenceInfoNotLinked": "A conta do Discord não está vinculada ao TrackGeek.",
+  "presenceInfoNotLinked": "The {{provider}} account is not linked to TrackGeek.",
   "presenceInfoNotInGuild": "A pessoa não é um membro do servidor do Discord do TrackGeek.",
-  "presenceInfoOffline": "A pessoa está offline no Discord.",
-  "presenceInfoNotPublic": "A pessoa não está compartilhando suas atividades no Discord publicamente."
+  "presenceInfoOffline": "The person is offline on {{provider}}.",
+  "presenceInfoNotPublic": "The person is not sharing their {{provider}} activity publicly."
 }

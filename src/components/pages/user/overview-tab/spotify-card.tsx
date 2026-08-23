@@ -40,7 +40,7 @@ export function SpotifyCard({ userId }: SpotifyCardProps) {
             {t("user:spotify")}
           </div>
 
-          <PresenceInfoTooltip />
+          <PresenceInfoTooltip provider="spotify" />
         </CardTitle>
       </CardHeader>
 

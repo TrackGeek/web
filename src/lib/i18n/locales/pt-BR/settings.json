@@ -1,8 +1,6 @@
 {
   "tabs": {
     "preferences": "Preferências",
-    "notifications": "Notifications",
-    "profile": "Perfil",
     "security": "Segurança",
     "connections": "Conexões",
     "import": "Importar"
@@ -21,7 +19,6 @@
     "failed": "Não foi possível exportar seus dados."
   },
   "import": {
-    "title": "Importar",
     "description": "Traga sua biblioteca de outro rastreador. Arquivos são lidos no seu dispositivo e nunca enviados para nós.",
     "action": "Importar",
     "states": {
@@ -32,10 +29,19 @@
       "error": "Falhou"
     },
     "errors": {
-      "notFound": "Jogo não encontrado",
-      "animeNotFound": "Anime não encontrado",
-      "mediaNotFound": "Obra não encontrada",
+      "notFound": "Media not found",
       "failed": "Não foi possível importar"
+    },
+    "file": {
+      "uploadTitle": "Upload your file",
+      "emptyTitle": "No file selected",
+      "emptyDescription": "Once you upload your file, the entries found in it will be listed here.",
+      "summary_one": "{{count}} entry ready to import",
+      "summary_other": "{{count}} entries ready to import",
+      "finished_one": "{{count}} entry imported.",
+      "finished_other": "{{count}} entries imported.",
+      "invalidFile": "This file isn't a valid {{provider}} export.",
+      "emptyFile": "No trackable entries were found in this file."
     },
     "importing": "Importando...",
     "downloadFailures": "Baixar falhados",
@@ -71,20 +77,9 @@
         }
       },
       "upload": {
-        "title": "Carregue a sua exportação",
         "description": "Selecione o arquivo JSON gerado pelo Backloggd Plus.",
         "dropzone": "<span>Clique para selecionar</span> ou solte o seu Backloggd JSON aqui"
-      },
-      "empty": {
-        "title": "Nenhum arquivo selecionado",
-        "description": "Uma vez que você enviar sua exportação, os jogos encontrados nele serão listados aqui."
-      },
-      "summary_one": "{{count}} jogo pronto para importar",
-      "summary_other": "{{count}} jogos prontos para importar",
-      "finished_one": "{{count}} jogo importado.",
-      "finished_other": "{{count}} jogos importados.",
-      "invalidFile": "Este arquivo não é uma exportação válida do Backloggd Plus.",
-      "emptyFile": "Nenhum jogo rastreável foi encontrado neste arquivo."
+      }
     },
     "myanimelist": {
       "instructions": {
@@ -99,20 +94,9 @@
         }
       },
       "upload": {
-        "title": "Carregue a sua exportação",
         "description": "Selecione o arquivo XML exportado pelo MyAnimeList, gzipped ou extraído.",
         "dropzone": "<span>Clique para selecionar</span> ou largue a exportação do MyAnimeList aqui"
-      },
-      "empty": {
-        "title": "Nenhum arquivo selecionado",
-        "description": "Uma vez que você enviar sua exportação, os jogos encontrados nele serão listados aqui."
-      },
-      "summary_one": "{{count}} anime pronto para importar",
-      "summary_other": "{{count}} animes prontos para importar",
-      "finished_one": "{{count}} anime importado.",
-      "finished_other": "{{count}} animes importados.",
-      "invalidFile": "Este arquivo não é uma exportação válida do MyAnimeList.",
-      "emptyFile": "Nenhum anime rastreável foi encontrado neste arquivo."
+      }
     },
     "trackgeek": {
       "instructions": {
@@ -126,24 +110,12 @@
         }
       },
       "upload": {
-        "title": "Carregue seu backup",
         "description": "Selecione o arquivo ZIP gerado pela exportação.",
         "dropzone": "<span>Clique para selecionar</span> ou solte o backup do TrackGeek aqui"
-      },
-      "empty": {
-        "title": "Nenhum arquivo selecionado",
-        "description": "Uma vez que você enviar sua exportação, as entradas encontradas nele serão listados aqui."
-      },
-      "summary_one": "{{count}} entrada pronta para importar",
-      "summary_other": "{{count}} entradas prontas para importar",
-      "finished_one": "{{count}} entrada importada.",
-      "finished_other": "{{count}} entradas importadas.",
-      "invalidFile": "Este arquivo não é um backup do TrackGeek válido.",
-      "emptyFile": "Nenhuma entrada rastreável foi encontrada neste backup."
+      }
     }
   },
   "connections": {
-    "title": "Conexões",
     "description": "Associe as redes sociais a qualquer uma delas.",
     "connected": "Conectado",
     "connect": "Conectar",
@@ -186,7 +158,6 @@
   "profile": {
     "title": "Personal Information",
     "description": "Gerenciar suas informações pessoais e preferências",
-    "name": "Nome",
     "username": "Nome de usuário",
     "about": "Sobre Mim",
     "errors": {
@@ -227,8 +198,23 @@
     "title": "Tipos de conteúdo",
     "description": "Escolha quais tipos de conteúdo aparecem no TrackGeek. Pelo menos um deve permanecer ativado."
   },
+  "watchLinks": {
+    "title": "Custom watch links",
+    "description": "Jump from a title straight into your player or favorite site. Variables are replaced with the details of whatever you are viewing.",
+    "empty": "No watch links yet.",
+    "labelPlaceholder": "Stremio",
+    "preview": "Preview",
+    "toggle": "Enable this link",
+    "variablesTitle": "Available variables",
+    "urlInvalid": "Enter an absolute URL, such as stremio://detail/movie/%ID_IMDB%",
+    "urlTooLong_one": "The URL must be at most {{count}} character.",
+    "urlTooLong_other": "The URL must be at most {{count}} characters.",
+    "urlUnknownVariable": "The URL uses a variable that doesn't exist.",
+    "contentTypesRequired": "Select at least one content type.",
+    "limitReached_one": "You can have at most {{count}} watch link.",
+    "limitReached_other": "You can have at most {{count}} watch links."
+  },
   "password": {
-    "title": "Senha",
     "description": "Defina uma senha para a sua conta ou altere a senha que você já usa para entrar.",
     "noPassword": "Você se cadastrou com um provedor social e ainda não tem uma senha. Nós lhe enviaremos um link para definir uma.",
     "current": "Senha atual",
@@ -286,7 +272,6 @@
     "title": "Excluir conta",
     "description": "Apague permanentemente sua conta e tudo o que for rastreado nela.",
     "warning": "Sua biblioteca, listas, análises, capturas de tela, comentários e atividade são definitivamente apagados. Uma assinatura de doação ativa é cancelada. Isto não pode ser desfeito.",
-    "button": "Excluir conta",
     "dialog": {
       "title": "Excluir sua conta?",
       "description": "Vamos enviar um e-mail para <strong>{{email}}</strong> um link de confirmação. Sua conta só será excluída depois que você abrir aquele link, e ele expira em 3 horas.",

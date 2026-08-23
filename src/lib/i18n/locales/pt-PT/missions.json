@@ -6,7 +6,6 @@
   "completedAt": "Concluída em {{date}}",
   "reward": "Recompensa",
   "rewardXp": "{{count}} XP",
-  "rewardCoins": "{{count}} moedas",
   "rewardMedal": "Medalha",
   "rewardCosmetic": "Cor do perfil",
   "hidden": {
@@ -27,136 +26,67 @@
     "title": "Missão concluída!",
     "description": "{{name}}"
   },
-  "watch_10_episodes": {
-    "name": "Primeiros Passos",
-    "description": "Veja 10 episódios."
+  "descriptions": {
+    "EpisodesWatched_one": "Assista {{count}} episódio.",
+    "EpisodesWatched_other": "Assista {{count}} episódios.",
+    "ProgressCompleted_one": "Complete o seu primeiro título.",
+    "ProgressCompleted_other": "Complete {{count}} títulos.",
+    "ProgressCompleted_Anime_one": "Complete seu primeiro anime.",
+    "ProgressCompleted_Anime_other": "Complete {{count}} animes.",
+    "ProgressCompleted_Game_one": "Complete seu primeiro jogo.",
+    "ProgressCompleted_Game_other": "Complete {{count}} jogos.",
+    "ReviewsWritten_one": "Escreva sua primeira avaliação.",
+    "ReviewsWritten_other": "Escreva {{count}} avaliações.",
+    "ContentTypesReviewed_one": "Escreva uma avaliação para o tipo de mídia {{count}}.",
+    "ContentTypesReviewed_other": "Escreva uma avaliação para todos os {{count}} tipos de mídia.",
+    "FavoritesAdded_one": "Favorite seu primeiro título.",
+    "FavoritesAdded_other": "Favorite {{count}} títulos.",
+    "ListsCreated_one": "Cria a tua primeira lista.",
+    "ListsCreated_other": "Crie {{count}} listas.",
+    "ListItemsAdded_one": "Adiciona {{count}} item às suas listas.",
+    "ListItemsAdded_other": "Adiciona {{count}} itens às suas listas.",
+    "UsersFollowed_one": "Siga outro usuário.",
+    "UsersFollowed_other": "Siga {{count}} usuários.",
+    "CommentsWritten_one": "Escreva seu primeiro comentário.",
+    "CommentsWritten_other": "Escreva {{count}} comentários.",
+    "LevelReached_one": "Alcance o nível {{count}}.",
+    "LevelReached_other": "Alcance o nível {{count}}.",
+    "StreakReached_one": "Mantenha uma sequência de {{count}} dia.",
+    "StreakReached_other": "Mantenha uma sequência de {{count}} dias."
   },
-  "watch_100_episodes": {
-    "name": "Maratonista",
-    "description": "Veja 100 episódios."
-  },
-  "watch_500_episodes": {
-    "name": "Maratonista Mestre",
-    "description": "Veja 500 episódios."
-  },
-  "watch_1000_episodes": {
-    "name": "Otaku",
-    "description": "Veja 1000 episódios."
-  },
-  "complete_1_title": {
-    "name": "O Começo",
-    "description": "Complete o seu primeiro título."
-  },
-  "complete_25_titles": {
-    "name": "Colecionador",
-    "description": "Complete 25 títulos."
-  },
-  "complete_100_titles": {
-    "name": "Curador",
-    "description": "Complete 100 títulos."
-  },
-  "complete_500_titles": {
-    "name": "Arquivista",
-    "description": "Complete 500 títulos."
-  },
-  "complete_50_animes": {
-    "name": "Veterano de Anime",
-    "description": "Complete 50 animes."
-  },
-  "complete_50_games": {
-    "name": "Complecionista",
-    "description": "Complete 50 jogos."
-  },
-  "write_1_review": {
-    "name": "Primeira opinião",
-    "description": "Escreva sua primeira avaliação."
-  },
-  "write_10_reviews": {
-    "name": "Analisador",
-    "description": "Escreva 10 avaliações."
-  },
-  "write_50_reviews": {
-    "name": "Colunista",
-    "description": "Escreva 50 avaliações."
-  },
-  "write_100_reviews": {
-    "name": "Crítico",
-    "description": "Escreva 100 avaliações."
-  },
-  "review_every_content_type": {
-    "name": "Onívoro",
-    "description": "Escreva uma avaliação para todos os seis tipos de mídia."
-  },
-  "favorite_5_titles": {
-    "name": "Bom Gosto",
-    "description": "Favoritar 5 títulos."
-  },
-  "favorite_25_titles": {
-    "name": "Devoto",
-    "description": "Favoritar 25 títulos."
-  },
-  "create_1_list": {
-    "name": "Organizador",
-    "description": "Cria a tua primeira lista."
-  },
-  "create_10_lists": {
-    "name": "Bibliotecário",
-    "description": "Crie 10 listas."
-  },
-  "add_50_list_items": {
-    "name": "Construindo",
-    "description": "Adicionar 50 itens para suas listas."
-  },
-  "add_500_list_items": {
-    "name": "Catálogo",
-    "description": "Adicionar 500 itens para suas listas."
-  },
-  "follow_1_user": {
-    "name": "Não Sozinho",
-    "description": "Seguir outro usuário."
-  },
-  "follow_10_users": {
-    "name": "Social",
-    "description": "Siga 10 usuários."
-  },
-  "write_1_comment": {
-    "name": "Diga algo",
-    "description": "Escreva seu primeiro comentário."
-  },
-  "write_50_comments": {
-    "name": "Bate-papo",
-    "description": "Escrever 50 comentários."
-  },
-  "reach_level_10": {
-    "name": "Em ascensão",
-    "description": "Chegue ao nível 10."
-  },
-  "reach_level_25": {
-    "name": "Estabelecida",
-    "description": "Chegue ao nível 25."
-  },
-  "reach_level_50": {
-    "name": "Veterano",
-    "description": "Chegue ao nível 50."
-  },
-  "reach_level_100": {
-    "name": "Lenda",
-    "description": "Chegue ao nível 100."
-  },
-  "streak_7_days": {
-    "name": "Uma Semana",
-    "description": "Sequência de 7 dias."
-  },
-  "streak_30_days": {
-    "name": "Devotado",
-    "description": "Sequência de 30 dias."
-  },
-  "streak_100_days": {
-    "name": "Implacável",
-    "description": "Sequência de 100 dias."
-  },
-  "streak_365_days": {
-    "name": "Um Ano Inteiro",
-    "description": "Sequência de 365 dias."
+  "names": {
+    "watch_10_episodes": "Primeiros Passos",
+    "watch_100_episodes": "Maratonista",
+    "watch_500_episodes": "Maratonista Mestre",
+    "watch_1000_episodes": "Otaku",
+    "complete_1_title": "O Começo",
+    "complete_25_titles": "Colecionador",
+    "complete_100_titles": "Curador",
+    "complete_500_titles": "Arquivista",
+    "complete_50_animes": "Veterano de Anime",
+    "complete_50_games": "Complecionista",
+    "write_1_review": "Primeira opinião",
+    "write_10_reviews": "Analisador",
+    "write_50_reviews": "Colunista",
+    "write_100_reviews": "Crítico",
+    "review_every_content_type": "Onívoro",
+    "favorite_5_titles": "Bom Gosto",
+    "favorite_25_titles": "Devoto",
+    "create_1_list": "Organizador",
+    "create_10_lists": "Bibliotecário",
+    "add_50_list_items": "Construindo",
+    "add_500_list_items": "Catálogo",
+    "follow_1_user": "Não Sozinho",
+    "follow_10_users": "Social",
+    "write_1_comment": "Diga algo",
+    "write_50_comments": "Bate-papo",
+    "reach_level_10": "Em ascensão",
+    "reach_level_25": "Estabelecido",
+    "reach_level_50": "Veterano",
+    "reach_level_100": "Lenda",
+    "streak_7_days": "Uma Semana",
+    "streak_30_days": "Devotado",
+    "streak_100_days": "Implacável",
+    "streak_365_days": "Um Ano Inteiro"
   }
 }

@@ -137,7 +137,7 @@ export function TwoFactorCard() {
     onError: (error) => {
       setCode("");
 
-      showError(error, "auth:twoFactor.invalidCode");
+      showError(error, "api:betterAuth.INVALID_CODE");
     },
   });
 
@@ -208,7 +208,7 @@ export function TwoFactorCard() {
             {prompt !== "none" && !totpUri && (
               <div className="flex flex-col gap-3">
                 <Field>
-                  <FieldLabel htmlFor="twoFactorPassword">{t("auth:password")}</FieldLabel>
+                  <FieldLabel htmlFor="twoFactorPassword">{t("common:password")}</FieldLabel>
 
                   <Input
                     id="twoFactorPassword"

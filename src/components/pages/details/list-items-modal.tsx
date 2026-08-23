@@ -113,7 +113,7 @@ export function ListItemsModal({ group, open, onOpenChange, editable = false }: 
   }
 
   const itemsGrid = itemsQuery.isLoading ? (
-    <p className="text-muted-foreground">{t("user:loading")}</p>
+    <p className="text-muted-foreground">{t("common:loading")}</p>
   ) : items.length === 0 ? (
     <p className="text-muted-foreground">{t("library:noItems")}</p>
   ) : (

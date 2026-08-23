@@ -75,7 +75,7 @@ export function DeleteAccountCard() {
         <Button type="button" variant="destructive" className="w-fit" onClick={() => setOpen(true)}>
           <Icon icon={"lucide:trash-2"} className="size-4" />
 
-          {t("settings:deleteAccount.button")}
+          {t("settings:deleteAccount.title")}
         </Button>
       </CardContent>
 

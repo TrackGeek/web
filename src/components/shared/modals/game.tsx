@@ -39,6 +39,8 @@ type ProgressStatus = "Planning" | "Playing" | "Replaying" | "Completed" | "Paus
 
 const STATUS_OPTIONS = ["planning", "playing", "played", "replaying", "dropped", "paused"] as const;
 
+const PLANNING_ONLY_STATUS_OPTIONS = ["planning"] as const;
+
 const STATUS_TO_ENUM: Record<string, ProgressStatus> = {
   planning: "Planning",
   playing: "Playing",
@@ -132,15 +134,17 @@ interface GamePlatform {
 interface GameModalProps {
   gameId?: string;
   platforms?: GamePlatform[];
+  unreleased?: boolean;
   onClose?: () => void;
 }
 
-export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
+export function GameModal({ gameId, platforms, unreleased = false, onClose }: GameModalProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const session = useSession();
   const userId = session?.data?.user?.id;
   const enabled = !!userId && !!gameId;
+  const statusOptions = unreleased ? PLANNING_ONLY_STATUS_OPTIONS : STATUS_OPTIONS;
 
   const platformOptions = useMemo(
     () =>
@@ -450,7 +454,7 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
     const video = parseVideoUrl(videoUrl);
 
     if (!video) {
-      toast.error(t("feed:videoUrlInvalid"));
+      toast.error(t("api:INVALID_VIDEO_URL"));
       return;
     }
 
@@ -503,7 +507,7 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
             <div className="space-y-3">
               <Field>
                 <FieldLabel htmlFor="status" className="text-sm font-medium">
-                  {t("library:status")}
+                  {t("common:status")}
                 </FieldLabel>
                 <Controller
                   control={progressForm.control}
@@ -515,7 +519,7 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {STATUS_OPTIONS.map((status) => (
+                          {statusOptions.map((status) => (
                             <SelectItem key={status} value={status}>
                               {t(`feed:lists.${status}`)}
                             </SelectItem>
@@ -582,7 +586,7 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
                         </PopoverTrigger>
                         <PopoverContent align="start" className="w-(--radix-popover-trigger-width) p-0">
                           <Command>
-                            <CommandInput placeholder={t("user:search")} />
+                            <CommandInput placeholder={t("common:search")} />
                             <CommandList>
                               <CommandEmpty>{t("common:noResults")}</CommandEmpty>
                               <CommandGroup>
@@ -902,164 +906,165 @@ export function GameModal({ gameId, platforms, onClose }: GameModalProps) {
         </div>
       </div>
 
-      {(progressStatus === "played" || progressStatus === "dropped" || progressStatus === "replaying") && (
-        <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
-          <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-            <Icon icon={"lucide:pen-line"} className="size-4" />
-            {t("feed:review")}
-          </h3>
+      {!unreleased &&
+        (progressStatus === "played" || progressStatus === "dropped" || progressStatus === "replaying") && (
+          <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
+            <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+              <Icon icon={"lucide:pen-line"} className="size-4" />
+              {t("feed:review")}
+            </h3>
 
-          <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{t("feed:overall")}</span>
-                <Controller
-                  control={reviewForm.control}
-                  name="overall"
-                  render={({ field }) => (
-                    <RatingGroupAdvanced
-                      max={5}
-                      allowHalf
-                      value={field.value}
-                      onValueChange={handleOverallChange(field.onChange)}
-                      allowClear
-                    />
-                  )}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{t("feed:criteries.graphics")}</span>
-                <Controller
-                  control={reviewForm.control}
-                  name="graphics"
-                  render={({ field }) => (
-                    <RatingGroupAdvanced
-                      max={5}
-                      allowHalf
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      allowClear
-                    />
-                  )}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{t("feed:criteries.soundtrack")}</span>
-                <Controller
-                  control={reviewForm.control}
-                  name="sound"
-                  render={({ field }) => (
-                    <RatingGroupAdvanced
-                      max={5}
-                      allowHalf
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      allowClear
-                    />
-                  )}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{t("feed:criteries.story")}</span>
-                <Controller
-                  control={reviewForm.control}
-                  name="story"
-                  render={({ field }) => (
-                    <RatingGroupAdvanced
-                      max={5}
-                      allowHalf
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      allowClear
-                    />
-                  )}
-                />
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{t("feed:criteries.gameplay")}</span>
-                <Controller
-                  control={reviewForm.control}
-                  name="gameplay"
-                  render={({ field }) => (
-                    <RatingGroupAdvanced
-                      max={5}
-                      allowHalf
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      allowClear
-                    />
-                  )}
-                />
-              </div>
-            </div>
-            <Field>
-              <FieldLabel htmlFor="summary" className="text-sm font-medium">
-                {t("feed:summary")}
-              </FieldLabel>
-              <Textarea
-                id="summary"
-                placeholder={t("feed:summaryPlaceholder")}
-                className="bg-background resize-none min-h-25"
-                maxLength={SUMMARY_MAX_LENGTH}
-                aria-invalid={Boolean(reviewForm.formState.errors.summary)}
-                aria-label={t("feed:summary")}
-                {...reviewForm.register("summary")}
-              />
-              <div className="flex items-center justify-between gap-2">
-                {reviewForm.formState.errors.summary?.message ? (
-                  <FieldError>{reviewForm.formState.errors.summary.message}</FieldError>
-                ) : (
-                  <span />
-                )}
-                <span className="text-xs text-muted-foreground">
-                  {summary.length}/{SUMMARY_MAX_LENGTH}
-                </span>
-              </div>
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="reviewNotes" className="text-sm font-medium">
-                {t("feed:notes")}
-              </FieldLabel>
-              <Textarea
-                id="reviewNotes"
-                placeholder={t("feed:notesPlaceholder")}
-                className="bg-background resize-none min-h-25"
-                maxLength={REVIEW_NOTES_MAX_LENGTH}
-                aria-invalid={Boolean(reviewForm.formState.errors.notes)}
-                aria-label={t("feed:notes")}
-                {...reviewForm.register("notes")}
-              />
-              <div className="flex items-center justify-between gap-2">
-                {reviewForm.formState.errors.notes?.message ? (
-                  <FieldError>{reviewForm.formState.errors.notes.message}</FieldError>
-                ) : (
-                  <span />
-                )}
-                <span className="text-xs text-muted-foreground">
-                  {reviewNotes.length}/{REVIEW_NOTES_MAX_LENGTH}
-                </span>
-              </div>
-            </Field>
-            <Field orientation="horizontal">
-              <Controller
-                control={reviewForm.control}
-                name="recommended"
-                render={({ field }) => (
-                  <Checkbox
-                    id="recommended"
-                    checked={field.value}
-                    aria-label={t("feed:recommended")}
-                    onCheckedChange={(checked) => field.onChange(checked === true)}
+            <div className="flex flex-col gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{t("feed:overall")}</span>
+                  <Controller
+                    control={reviewForm.control}
+                    name="overall"
+                    render={({ field }) => (
+                      <RatingGroupAdvanced
+                        max={5}
+                        allowHalf
+                        value={field.value}
+                        onValueChange={handleOverallChange(field.onChange)}
+                        allowClear
+                      />
+                    )}
                   />
-                )}
-              />
-              <FieldLabel htmlFor="recommended" className="cursor-pointer text-sm">
-                {t("feed:recommended")}
-              </FieldLabel>
-            </Field>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{t("feed:criteries.graphics")}</span>
+                  <Controller
+                    control={reviewForm.control}
+                    name="graphics"
+                    render={({ field }) => (
+                      <RatingGroupAdvanced
+                        max={5}
+                        allowHalf
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        allowClear
+                      />
+                    )}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{t("feed:criteries.soundtrack")}</span>
+                  <Controller
+                    control={reviewForm.control}
+                    name="sound"
+                    render={({ field }) => (
+                      <RatingGroupAdvanced
+                        max={5}
+                        allowHalf
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        allowClear
+                      />
+                    )}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{t("feed:criteries.story")}</span>
+                  <Controller
+                    control={reviewForm.control}
+                    name="story"
+                    render={({ field }) => (
+                      <RatingGroupAdvanced
+                        max={5}
+                        allowHalf
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        allowClear
+                      />
+                    )}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{t("feed:criteries.gameplay")}</span>
+                  <Controller
+                    control={reviewForm.control}
+                    name="gameplay"
+                    render={({ field }) => (
+                      <RatingGroupAdvanced
+                        max={5}
+                        allowHalf
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        allowClear
+                      />
+                    )}
+                  />
+                </div>
+              </div>
+              <Field>
+                <FieldLabel htmlFor="summary" className="text-sm font-medium">
+                  {t("feed:summary")}
+                </FieldLabel>
+                <Textarea
+                  id="summary"
+                  placeholder={t("feed:summaryPlaceholder")}
+                  className="bg-background resize-none min-h-25"
+                  maxLength={SUMMARY_MAX_LENGTH}
+                  aria-invalid={Boolean(reviewForm.formState.errors.summary)}
+                  aria-label={t("feed:summary")}
+                  {...reviewForm.register("summary")}
+                />
+                <div className="flex items-center justify-between gap-2">
+                  {reviewForm.formState.errors.summary?.message ? (
+                    <FieldError>{reviewForm.formState.errors.summary.message}</FieldError>
+                  ) : (
+                    <span />
+                  )}
+                  <span className="text-xs text-muted-foreground">
+                    {summary.length}/{SUMMARY_MAX_LENGTH}
+                  </span>
+                </div>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="reviewNotes" className="text-sm font-medium">
+                  {t("feed:notes")}
+                </FieldLabel>
+                <Textarea
+                  id="reviewNotes"
+                  placeholder={t("feed:notesPlaceholder")}
+                  className="bg-background resize-none min-h-25"
+                  maxLength={REVIEW_NOTES_MAX_LENGTH}
+                  aria-invalid={Boolean(reviewForm.formState.errors.notes)}
+                  aria-label={t("feed:notes")}
+                  {...reviewForm.register("notes")}
+                />
+                <div className="flex items-center justify-between gap-2">
+                  {reviewForm.formState.errors.notes?.message ? (
+                    <FieldError>{reviewForm.formState.errors.notes.message}</FieldError>
+                  ) : (
+                    <span />
+                  )}
+                  <span className="text-xs text-muted-foreground">
+                    {reviewNotes.length}/{REVIEW_NOTES_MAX_LENGTH}
+                  </span>
+                </div>
+              </Field>
+              <Field orientation="horizontal">
+                <Controller
+                  control={reviewForm.control}
+                  name="recommended"
+                  render={({ field }) => (
+                    <Checkbox
+                      id="recommended"
+                      checked={field.value}
+                      aria-label={t("feed:recommended")}
+                      onCheckedChange={(checked) => field.onChange(checked === true)}
+                    />
+                  )}
+                />
+                <FieldLabel htmlFor="recommended" className="cursor-pointer text-sm">
+                  {t("feed:recommended")}
+                </FieldLabel>
+              </Field>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       <div className="flex justify-between items-center pt-4 pb-4 border-t border-border/50">
         <Button

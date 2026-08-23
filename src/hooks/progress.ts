@@ -186,7 +186,7 @@ const SORT_LABEL_KEYS: Record<ApiTypes.ProgressSortBy, string> = {
   name: "user:sort.title",
   addedAt: "user:sort.lastAdded",
   updatedAt: "user:sort.lastUpdated",
-  releaseDate: "user:sort.releaseDate",
+  releaseDate: "common:releaseDate",
 };
 
 /** Manga only stores its release date inside a JSON column, which the API cannot sort by. */

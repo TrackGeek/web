@@ -29,8 +29,8 @@ export function CastSearchResults({ query }: { query: string }) {
             <EmptyMedia variant="icon">
               <Icon icon="lucide:search-x" />
             </EmptyMedia>
-            <EmptyTitle>{t("user:noSearchResults")}</EmptyTitle>
-            <EmptyDescription>{t("user:noSearchResultsDescription")}</EmptyDescription>
+            <EmptyTitle>{t("common:noResults")}</EmptyTitle>
+            <EmptyDescription>{t("common:noResultsDescription")}</EmptyDescription>
           </EmptyHeader>
         </Empty>
       )}

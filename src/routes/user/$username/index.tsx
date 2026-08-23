@@ -132,29 +132,41 @@ function UserDetailsRoute() {
 
             <TabsTrigger value="activity">{t("user:activity")}</TabsTrigger>
 
-            <TabsTrigger value="progress">
-              {t("common:progress")} ({totalProgress})
-            </TabsTrigger>
+            {totalProgress > 0 && (
+              <TabsTrigger value="progress">
+                {t("common:progress")} ({totalProgress})
+              </TabsTrigger>
+            )}
 
-            <TabsTrigger value="reviews">
-              {t("user:reviews")} ({userQuery.data.counts.reviews})
-            </TabsTrigger>
+            {userQuery.data.counts.reviews > 0 && (
+              <TabsTrigger value="reviews">
+                {t("common:reviews")} ({userQuery.data.counts.reviews})
+              </TabsTrigger>
+            )}
 
-            <TabsTrigger value="lists">
-              {t("user:lists")} ({userQuery.data.counts.lists})
-            </TabsTrigger>
+            {userQuery.data.counts.lists > 0 && (
+              <TabsTrigger value="lists">
+                {t("common:lists")} ({userQuery.data.counts.lists})
+              </TabsTrigger>
+            )}
 
-            <TabsTrigger value="favorites">
-              {t("user:favorites")} ({userQuery.data.counts.favorites})
-            </TabsTrigger>
+            {userQuery.data.counts.favorites > 0 && (
+              <TabsTrigger value="favorites">
+                {t("user:favorites")} ({userQuery.data.counts.favorites})
+              </TabsTrigger>
+            )}
 
-            <TabsTrigger value="missions">
-              {t("missions:title")} ({userQuery.data.missions.completed}/{userQuery.data.missions.total})
-            </TabsTrigger>
+            {userQuery.data.missions.total > 0 && (
+              <TabsTrigger value="missions">
+                {t("missions:title")} ({userQuery.data.missions.completed}/{userQuery.data.missions.total})
+              </TabsTrigger>
+            )}
 
-            <TabsTrigger value="screenshots">
-              {t("common:screenshots")} ({userQuery.data.counts.screenshots})
-            </TabsTrigger>
+            {userQuery.data.counts.screenshots > 0 && (
+              <TabsTrigger value="screenshots">
+                {t("common:screenshots")} ({userQuery.data.counts.screenshots})
+              </TabsTrigger>
+            )}
           </TabsList>
 
           <TabsContent value="overview">

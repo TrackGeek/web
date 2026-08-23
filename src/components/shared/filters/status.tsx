@@ -54,10 +54,10 @@ export function Status({ type, value, onChange }: StatusProps) {
 
   return (
     <div>
-      <h5 className="text-md font-semibold text-card-foreground mb-2">{t("library:status")}</h5>
+      <h5 className="text-md font-semibold text-card-foreground mb-2">{t("common:status")}</h5>
       <Select value={value ?? CLEAR_VALUE} onValueChange={(v) => onChange?.(v === CLEAR_VALUE ? undefined : v)}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder={t("library:status")} />
+          <SelectValue placeholder={t("common:status")} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

@@ -10,6 +10,7 @@ import { BackfillEpisodesDialog } from "@/components/pages/details/backfill-epis
 import { CastItem } from "@/components/pages/details/cast";
 import { CharacterItem } from "@/components/pages/details/character";
 import { CommunityStats } from "@/components/pages/details/community-stats";
+import { CustomWatchLinks } from "@/components/pages/details/custom-watch-links";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { EpisodeItem } from "@/components/pages/details/episode";
 import { GenrePills } from "@/components/pages/details/genre-pills";
@@ -38,6 +39,7 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
+import { apiErrorMessage } from "@/lib/utils/api-error";
 import { formatSeason } from "@/lib/utils/date";
 import {
   getBackfillPreference,
@@ -46,7 +48,9 @@ import {
 } from "@/lib/utils/episode-backfill";
 import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
+import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
+import { nextEpisode } from "@/lib/watch-links";
 
 interface AnimeEpisode {
   malId: number;
@@ -270,6 +274,8 @@ function AnimeDetailsRoute() {
     });
   }, [anime?.titles, anime?.title]);
 
+  const englishTitle = ((anime?.titles ?? []) as AnimeTitle[]).find((entry) => entry.type === "English")?.title ?? null;
+
   const [episodesSentinel, setEpisodesSentinel] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -399,7 +405,7 @@ function AnimeDetailsRoute() {
       queryClient.invalidateQueries({ queryKey: ["animeEpisodeWatch", anime?.id, userId] });
       queryClient.invalidateQueries({ queryKey: ["anime", slug] });
     },
-    onError: () => toast.error(t("api:INTERNAL_SERVER_ERROR")),
+    onError: (error) => toast.error(apiErrorMessage(t, error)),
   });
 
   const episodeWatchQuery = useQuery<AnimeEpisodeWatch[]>({
@@ -564,6 +570,8 @@ function AnimeDetailsRoute() {
     },
   });
 
+  const isUnreleased = isMediaUnreleased("anime", { status: anime?.status });
+
   const progressButtons = [
     {
       status: "Planning" as const,
@@ -598,7 +606,7 @@ function AnimeDetailsRoute() {
       iconColor: "text-chart-3",
       activeClass: "border-chart-3 bg-chart-3/20",
     },
-  ] as const;
+  ].filter((button) => !isUnreleased || button.status === "Planning");
 
   if (isLoading) return <LoadingDetails />;
   if (isError || !anime) return <ErrorComponent />;
@@ -614,21 +622,19 @@ function AnimeDetailsRoute() {
       {isAuthenticated && (
         <>
           <QuickStatusButtons
-            buttons={
-              progressButtons.map((button) => ({
-                label: button.label,
-                icon: button.icon,
-                hoverBorder: button.hoverBorder,
-                hoverBg: button.hoverBg,
-                iconBg: button.iconBg,
-                iconBorder: button.iconBorder,
-                iconColor: button.iconColor,
-                activeClass: button.activeClass,
-                isActive: currentStatus === button.status,
-                disabled: setProgressMutation.isPending,
-                onClick: () => setProgressMutation.mutate(button.status),
-              })) as Parameters<typeof QuickStatusButtons>[0]["buttons"]
-            }
+            buttons={progressButtons.map((button) => ({
+              label: button.label,
+              icon: button.icon,
+              hoverBorder: button.hoverBorder,
+              hoverBg: button.hoverBg,
+              iconBg: button.iconBg,
+              iconBorder: button.iconBorder,
+              iconColor: button.iconColor,
+              activeClass: button.activeClass,
+              isActive: currentStatus === button.status,
+              disabled: setProgressMutation.isPending,
+              onClick: () => setProgressMutation.mutate(button.status),
+            }))}
           />
           <MoreOptionsDialog
             title={anime.title}
@@ -649,6 +655,7 @@ function AnimeDetailsRoute() {
               slug={slug}
               totalEpisodes={anime.numberOfEpisodes ?? 0}
               watchedEpisodes={totalWatchedEpisodes}
+              unreleased={isUnreleased}
               onClose={() => setMoreOpen(false)}
             />
           </MoreOptionsDialog>
@@ -660,13 +667,13 @@ function AnimeDetailsRoute() {
       <Grid minColSize={"128px"} className="gap-4">
         {anime.status && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
-            <p className="text-sm text-muted-foreground">{t("library:status")}</p>
+            <p className="text-sm text-muted-foreground">{t("common:status")}</p>
             <p className="font-semibold text-card-foreground">{anime.status}</p>
           </div>
         )}
         {anime.season && anime.year && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
-            <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
+            <p className="text-sm text-muted-foreground">{t("common:releaseDate")}</p>
             <p className="font-semibold text-card-foreground capitalize">{formatSeason(anime.season, anime.year, t)}</p>
           </div>
         )}
@@ -819,9 +826,7 @@ function AnimeDetailsRoute() {
             <div className="flex items-center gap-2">
               <StarRating value={rating} className="mr-1" />
               <span className="font-semibold text-card-foreground">{rating}</span>
-              <span className="text-muted-foreground">
-                ({reviews?.total ?? 0} {t("library:reviews")})
-              </span>
+              <span className="text-muted-foreground">({t("common:reviewCount", { count: reviews?.total ?? 0 })})</span>
             </div>
           )}
         </div>
@@ -833,10 +838,10 @@ function AnimeDetailsRoute() {
               {!episodesQuery.isLoading && !episodesQuery.isError && episodes.length > 0 && (
                 <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
               )}
-              <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
+              <TabsTrigger value="cast">{t("common:types.cast")}</TabsTrigger>
               <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
               <TabsTrigger value="lists">
-                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+                {t("common:lists")} ({listsQuery.data?.total ?? 0})
               </TabsTrigger>
             </TabsList>
           </div>
@@ -976,7 +981,17 @@ function AnimeDetailsRoute() {
               );
             })()}
 
-            {isAuthenticated && (
+            <CustomWatchLinks
+              context={{
+                mediaType: "anime",
+                malId: anime.malId,
+                title: englishTitle ?? anime.title,
+                titleRomaji: anime.title,
+                episode: nextEpisode(mySeason.totalEpisodes, mySeason.watchedEpisodes),
+              }}
+            />
+
+            {isAuthenticated && !isUnreleased && (
               <>
                 <AnimeEpisodeProgress season={mySeason} onToggle={handleToggle} />
                 <BackfillEpisodesDialog
@@ -999,28 +1014,28 @@ function AnimeDetailsRoute() {
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
                     value: `${anime.progressStats?.planToWatch?.percentage ?? 0}%`,
-                    sub: `${anime.progressStats?.planToWatch?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: anime.progressStats?.planToWatch?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.watching"),
                     icon: "lucide:tv-minimal-play",
                     iconClass: "text-chart-1",
                     value: `${anime.progressStats?.watching?.percentage ?? 0}%`,
-                    sub: `${anime.progressStats?.watching?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: anime.progressStats?.watching?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.completed"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
                     value: `${anime.progressStats?.completed?.percentage ?? 0}%`,
-                    sub: `${anime.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: anime.progressStats?.completed?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
                     value: `${anime.progressStats?.dropped?.percentage ?? 0}%`,
-                    sub: `${anime.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: anime.progressStats?.dropped?.count ?? 0 }),
                   },
                 ]}
               />
@@ -1163,9 +1178,9 @@ function AnimeDetailsRoute() {
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-3">
           <h3 className="font-semibold text-card-foreground text-lg capitalize">
-            {t("library:reviews")} ({reviews?.total ?? 0})
+            {t("common:reviews")} ({reviews?.total ?? 0})
           </h3>
-          {isAuthenticated && (
+          {isAuthenticated && !isUnreleased && (
             <Button
               variant="outline"
               size="sm"

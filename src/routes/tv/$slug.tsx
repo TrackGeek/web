@@ -9,6 +9,7 @@ import { Grid } from "@/components/layouts/grid.tsx";
 import { BackfillEpisodesDialog } from "@/components/pages/details/backfill-episodes-dialog";
 import { CastItem, PersonLink } from "@/components/pages/details/cast";
 import { CommunityStats } from "@/components/pages/details/community-stats.tsx";
+import { CustomWatchLinks } from "@/components/pages/details/custom-watch-links";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { EpisodeItem } from "@/components/pages/details/episode";
 import { GenrePills } from "@/components/pages/details/genre-pills";
@@ -41,6 +42,7 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
 import { cn } from "@/lib/utils";
+import { apiErrorMessage } from "@/lib/utils/api-error";
 import { formatDateRange } from "@/lib/utils/date";
 import {
   type EpisodeRef,
@@ -50,8 +52,10 @@ import {
 } from "@/lib/utils/episode-backfill";
 import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
+import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
+import { nextEpisodeFromSeasons } from "@/lib/watch-links";
 
 export const Route = createFileRoute("/tv/$slug")({
   loader: async ({ params }) => {
@@ -237,6 +241,8 @@ function TVShowDetailsPage() {
     }));
 
   const totalWatchedEpisodes = mySeasons.reduce((acc, season) => acc + season.watchedEpisodes.length, 0);
+
+  const nextWatch = nextEpisodeFromSeasons(mySeasons);
 
   const favoriteQuery = useQuery<boolean>({
     queryKey: ["tvFavorite", item?.id, userId],
@@ -470,10 +476,12 @@ function TVShowDetailsPage() {
       queryClient.invalidateQueries({ queryKey: ["tvEpisodeWatch", item?.id, userId] });
       queryClient.invalidateQueries({ queryKey: ["tv", slug] });
     },
-    onError: () => {
-      return toast.error(t("api:INTERNAL_SERVER_ERROR"));
+    onError: (error) => {
+      return toast.error(apiErrorMessage(t, error));
     },
   });
+
+  const isUnreleased = isMediaUnreleased("tv", { status: item?.status });
 
   const progressButtons = [
     {
@@ -509,7 +517,7 @@ function TVShowDetailsPage() {
       ringBorder: "border-chart-3/30",
       iconColor: "text-chart-3",
     },
-  ];
+  ].filter((button) => !isUnreleased || button.status === "Planning");
 
   if (tvQuery.isLoading || seasonsQuery.isLoading || reviewsQuery.isLoading) {
     return <LoadingDetails />;
@@ -533,7 +541,7 @@ function TVShowDetailsPage() {
 
       {isAuthenticated && (
         <>
-          <div className="grid grid-cols-3 w-full gap-4">
+          <div className={cn("grid w-full gap-4", isUnreleased ? "grid-cols-1" : "grid-cols-3")}>
             {progressButtons.map((button) => {
               const isActive = currentStatus === button.status;
 
@@ -632,6 +640,7 @@ function TVShowDetailsPage() {
                   slug={slug}
                   totalEpisodes={item.numberOfEpisodes}
                   watchedEpisodes={totalWatchedEpisodes}
+                  unreleased={isUnreleased}
                   onClose={() => setMoreOpen(false)}
                 />
               </div>
@@ -645,14 +654,14 @@ function TVShowDetailsPage() {
       <Grid minColSize={"128px"} className="gap-4">
         {item.status && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
-            <p className="text-sm text-muted-foreground">{t("library:status")}</p>
+            <p className="text-sm text-muted-foreground">{t("common:status")}</p>
             <p className="font-semibold text-card-foreground">{getStatusLabel(t, item.status)}</p>
           </div>
         )}
 
         {item.firstAirDate && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
-            <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
+            <p className="text-sm text-muted-foreground">{t("common:releaseDate")}</p>
             <p className="font-semibold text-card-foreground">
               {formatDateRange(item.firstAirDate, item.lastAirDate, i18n.language, t)}
             </p>
@@ -730,9 +739,7 @@ function TVShowDetailsPage() {
           <div className="flex items-center mb-3 space-x-1">
             <StarRating value={rating} className="mr-1" />
             <span className="font-semibold text-card-foreground">{rating}</span>
-            <span className="text-muted-foreground">
-              ({reviews?.total ?? 0} {t("library:reviews")})
-            </span>
+            <span className="text-muted-foreground">({t("common:reviewCount", { count: reviews?.total ?? 0 })})</span>
           </div>
         </div>
 
@@ -743,10 +750,10 @@ function TVShowDetailsPage() {
 
               <TabsTrigger value="episodes">{t("library:episode_other")}</TabsTrigger>
 
-              <TabsTrigger value="cast">{t("library:cast")}</TabsTrigger>
+              <TabsTrigger value="cast">{t("common:types.cast")}</TabsTrigger>
 
               <TabsTrigger value="lists">
-                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+                {t("common:lists")} ({listsQuery.data?.total ?? 0})
               </TabsTrigger>
 
               <TabsTrigger value="comments">{t("comments:title")}</TabsTrigger>
@@ -852,7 +859,7 @@ function TVShowDetailsPage() {
               </Grid>
             </div>
 
-            {isAuthenticated && (
+            {isAuthenticated && !isUnreleased && (
               <>
                 <EpisodeProgress
                   seasons={mySeasons}
@@ -882,6 +889,16 @@ function TVShowDetailsPage() {
             )}
 
             <WatchProviders mediaType="tv" slug={slug} />
+            <CustomWatchLinks
+              context={{
+                mediaType: "tv",
+                imdbId: item?.external?.imdb_id,
+                tmdbId: item.tmdbId,
+                title: item.name,
+                season: nextWatch.season,
+                episode: nextWatch.episode,
+              }}
+            />
 
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>
@@ -892,28 +909,28 @@ function TVShowDetailsPage() {
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
                     value: `${item.progressStats?.planToWatch?.percentage ?? 0}%`,
-                    sub: `${item.progressStats?.planToWatch?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: item.progressStats?.planToWatch?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.watching"),
                     icon: "lucide:tv-minimal-play",
                     iconClass: "text-chart-1",
                     value: `${item.progressStats?.watching?.percentage ?? 0}%`,
-                    sub: `${item.progressStats?.watching?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: item.progressStats?.watching?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.completed"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
                     value: `${item.progressStats?.completed?.percentage ?? 0}%`,
-                    sub: `${item.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: item.progressStats?.completed?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
                     value: `${item.progressStats?.dropped?.percentage ?? 0}%`,
-                    sub: `${item.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: item.progressStats?.dropped?.count ?? 0 }),
                   },
                 ]}
               />
@@ -1091,9 +1108,9 @@ function TVShowDetailsPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-3">
           <h3 className="font-semibold text-card-foreground text-lg capitalize">
-            {t("library:reviews")} ({reviews?.total ?? 0})
+            {t("common:reviews")} ({reviews?.total ?? 0})
           </h3>
-          {isAuthenticated && (
+          {isAuthenticated && !isUnreleased && (
             <Button
               variant="outline"
               size="sm"

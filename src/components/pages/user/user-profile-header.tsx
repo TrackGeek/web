@@ -166,7 +166,9 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
                 className="bg-muted px-3 py-1 rounded-full text-sm cursor-pointer"
               >
                 <strong className="font-semibold text-card-foreground">{user._count.followers || 0}</strong>
-                <span className="text-muted-foreground ml-2">{t("user:follower_plural")}</span>
+                <span className="text-muted-foreground ml-2">
+                  {t("user:follower", { count: user._count.followers || 0 })}
+                </span>
               </button>
 
               <button

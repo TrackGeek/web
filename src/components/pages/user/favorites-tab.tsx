@@ -126,9 +126,9 @@ export function UserFavoritesTab({
             <EmptyMedia variant="icon">
               <Icon icon={debouncedQuery.trim() ? "lucide:search-x" : "lucide:heart"} />
             </EmptyMedia>
-            <EmptyTitle>{debouncedQuery.trim() ? t("user:noSearchResults") : t("user:noFavorites")}</EmptyTitle>
+            <EmptyTitle>{debouncedQuery.trim() ? t("common:noResults") : t("user:noFavorites")}</EmptyTitle>
             <EmptyDescription>
-              {debouncedQuery.trim() ? t("user:noSearchResultsDescription") : t("user:noFavoritesDescription")}
+              {debouncedQuery.trim() ? t("common:noResultsDescription") : t("user:noFavoritesDescription")}
             </EmptyDescription>
           </EmptyHeader>
         </Empty>

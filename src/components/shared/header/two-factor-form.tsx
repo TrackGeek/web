@@ -41,8 +41,8 @@ export function TwoFactorForm({ onBack, onSuccess }: TwoFactorFormProps) {
     if (data.error) {
       toast.error(
         data.error.code
-          ? t(`api:betterAuth.${data.error.code}`, { defaultValue: t("auth:twoFactor.invalidCode") })
-          : t("auth:twoFactor.invalidCode"),
+          ? t(`api:betterAuth.${data.error.code}`, { defaultValue: t("api:betterAuth.INVALID_CODE") })
+          : t("api:betterAuth.INVALID_CODE"),
       );
 
       setCode("");

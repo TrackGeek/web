@@ -10,9 +10,6 @@ import { xpQueryKey } from "./xp";
 const POLL_INTERVAL = 60_000;
 const LAST_SEEN_KEY = "trackgeek-progression-last-seen";
 
-// Sem realtime no app: sondagem leve da primeira página de notificações. Toasts
-// só para LevelUp/MissionCompleted criados depois da última notificação vista,
-// invalidando as queries de progressão para a UI acompanhar.
 export function useProgressionToasts(enabled: boolean) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -38,7 +35,6 @@ export function useProgressionToasts(enabled: boolean) {
     const lastSeen = window.localStorage.getItem(LAST_SEEN_KEY);
     const newest = notifications[0]?.createdAt;
 
-    // Primeira carga sem marco salvo: só registra, senão notificação antiga vira toast.
     if (!initialized.current && !lastSeen) {
       initialized.current = true;
 
@@ -74,7 +70,7 @@ export function useProgressionToasts(enabled: boolean) {
         const missionKey = notification.metadata?.missionKey;
 
         toast.success(t("missions:toast.title"), {
-          description: missionKey ? t(`missions:${missionKey}.name`) : undefined,
+          description: missionKey ? t(`missions:names.${missionKey}`) : undefined,
         });
       }
     }

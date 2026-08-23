@@ -33,9 +33,11 @@ import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { ogUrl } from "@/lib/og/url";
 import { franchiseSlug } from "@/lib/utils";
+import { apiErrorMessage } from "@/lib/utils/api-error";
 import { formatLongDate } from "@/lib/utils/date";
 import { getGenreLabel, isKnownGenre } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
+import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
 
 interface BookEdition {
@@ -302,8 +304,8 @@ function BookDetailsRoute() {
       queryClient.invalidateQueries({ queryKey: ["bookProgress", book?.id, userId] });
       queryClient.invalidateQueries({ queryKey: ["book", slug] });
     },
-    onError: () => {
-      return toast.error(t("api:INTERNAL_SERVER_ERROR"));
+    onError: (error) => {
+      return toast.error(apiErrorMessage(t, error));
     },
   });
 
@@ -351,6 +353,44 @@ function BookDetailsRoute() {
   const series: BookSeriesEntry[] = book.bookSeries ?? [];
   const releaseDate = formatLongDate(book.releaseDate, i18n.language);
 
+  const isUnreleased = isMediaUnreleased("book", { releaseDate: book.releaseDate, releaseYear: book.releaseYear });
+
+  const progressButtons = [
+    {
+      status: "Planning" as const,
+      label: t("feed:lists.planning"),
+      icon: "lucide:bookmark",
+      hoverBorder: "hover:border-purple-400",
+      hoverBg: "hover:bg-purple-400/20",
+      iconBg: "bg-linear-to-r from-purple-500/20 to-violet-500/20",
+      iconBorder: "border-purple-500/30",
+      iconColor: "text-purple-400",
+      activeClass: "border-purple-400 bg-purple-400/20",
+    },
+    {
+      status: "Reading" as const,
+      label: t("feed:lists.reading"),
+      icon: "lucide:book-open-text",
+      hoverBorder: "hover:border-primary",
+      hoverBg: "hover:bg-primary/20",
+      iconBg: "bg-linear-to-r from-primary/20 to-secondary/20",
+      iconBorder: "border-primary/30",
+      iconColor: "text-primary",
+      activeClass: "border-primary bg-primary/20",
+    },
+    {
+      status: "Completed" as const,
+      label: t("feed:lists.read"),
+      icon: "lucide:check-square",
+      hoverBorder: "hover:border-chart-3",
+      hoverBg: "hover:bg-chart-3/20",
+      iconBg: "bg-linear-to-r from-chart-3/20 to-amber-500/20",
+      iconBorder: "border-chart-3/30",
+      iconColor: "text-chart-3",
+      activeClass: "border-chart-3 bg-chart-3/20",
+    },
+  ].filter((button) => !isUnreleased || button.status === "Planning");
+
   const sidebar = (
     <>
       <div className="w-full mx-auto shadow-xl rounded-lg overflow-hidden">
@@ -360,47 +400,19 @@ function BookDetailsRoute() {
       {isAuthenticated && (
         <>
           <QuickStatusButtons
-            buttons={[
-              {
-                label: t("feed:lists.planning"),
-                icon: "lucide:bookmark",
-                hoverBorder: "hover:border-purple-400",
-                hoverBg: "hover:bg-purple-400/20",
-                iconBg: "bg-linear-to-r from-purple-500/20 to-violet-500/20",
-                iconBorder: "border-purple-500/30",
-                iconColor: "text-purple-400",
-                activeClass: "border-purple-400 bg-purple-400/20",
-                isActive: currentStatus === "Planning",
-                disabled: setProgressMutation.isPending,
-                onClick: () => setProgressMutation.mutate("Planning"),
-              },
-              {
-                label: t("feed:lists.reading"),
-                icon: "lucide:book-open-text",
-                hoverBorder: "hover:border-primary",
-                hoverBg: "hover:bg-primary/20",
-                iconBg: "bg-linear-to-r from-primary/20 to-secondary/20",
-                iconBorder: "border-primary/30",
-                iconColor: "text-primary",
-                activeClass: "border-primary bg-primary/20",
-                isActive: currentStatus === "Reading",
-                disabled: setProgressMutation.isPending,
-                onClick: () => setProgressMutation.mutate("Reading"),
-              },
-              {
-                label: t("feed:lists.read"),
-                icon: "lucide:check-square",
-                hoverBorder: "hover:border-chart-3",
-                hoverBg: "hover:bg-chart-3/20",
-                iconBg: "bg-linear-to-r from-chart-3/20 to-amber-500/20",
-                iconBorder: "border-chart-3/30",
-                iconColor: "text-chart-3",
-                activeClass: "border-chart-3 bg-chart-3/20",
-                isActive: currentStatus === "Completed",
-                disabled: setProgressMutation.isPending,
-                onClick: () => setProgressMutation.mutate("Completed"),
-              },
-            ]}
+            buttons={progressButtons.map((button) => ({
+              label: button.label,
+              icon: button.icon,
+              hoverBorder: button.hoverBorder,
+              hoverBg: button.hoverBg,
+              iconBg: button.iconBg,
+              iconBorder: button.iconBorder,
+              iconColor: button.iconColor,
+              activeClass: button.activeClass,
+              isActive: currentStatus === button.status,
+              disabled: setProgressMutation.isPending,
+              onClick: () => setProgressMutation.mutate(button.status),
+            }))}
           />
           <MoreOptionsDialog
             title={book.title}
@@ -415,7 +427,12 @@ function BookDetailsRoute() {
             onToggleFavorite={() => toggleFavoriteMutation.mutate()}
             favoriteDisabled={toggleFavoriteMutation.isPending || favoriteQuery.isFetching}
           >
-            <BookModal bookId={book.id} totalPages={book.numberOfPages} onClose={() => setMoreOpen(false)} />
+            <BookModal
+              bookId={book.id}
+              totalPages={book.numberOfPages}
+              unreleased={isUnreleased}
+              onClose={() => setMoreOpen(false)}
+            />
           </MoreOptionsDialog>
         </>
       )}
@@ -431,7 +448,7 @@ function BookDetailsRoute() {
         )}
         {releaseDate && (
           <div className="bg-muted/50 p-4 rounded-lg border border-border">
-            <p className="text-sm text-muted-foreground">{t("library:releaseDate")}</p>
+            <p className="text-sm text-muted-foreground">{t("common:releaseDate")}</p>
             <p className="font-semibold text-card-foreground">{releaseDate}</p>
           </div>
         )}
@@ -476,16 +493,14 @@ function BookDetailsRoute() {
           <div className="flex items-center gap-2">
             <StarRating value={rating} />
             <span className="font-semibold text-card-foreground">{rating}</span>
-            <span className="text-muted-foreground">
-              ({reviews?.total ?? 0} {t("library:reviews")})
-            </span>
+            <span className="text-muted-foreground">({t("common:reviewCount", { count: reviews?.total ?? 0 })})</span>
           </div>
 
           {book.numberOfPages && (
             <div className="flex items-center gap-2 text-muted-foreground">
               <Icon icon={"lucide:bar-chart-3"} className="size-5" />
               <span>
-                {t("library:medium")}: {Math.round(book.numberOfPages / 29)} {t("library:days")}
+                {t("library:medium")}: {t("common:dayCount", { count: Math.round(book.numberOfPages / 29) })}
               </span>
             </div>
           )}
@@ -501,7 +516,7 @@ function BookDetailsRoute() {
                 </TabsTrigger>
               )}
               <TabsTrigger value="lists">
-                {t("library:lists")} ({listsQuery.data?.total ?? 0})
+                {t("common:lists")} ({listsQuery.data?.total ?? 0})
               </TabsTrigger>
               <TabsTrigger value="comments">{t("comments:title")}</TabsTrigger>
             </TabsList>
@@ -560,28 +575,28 @@ function BookDetailsRoute() {
                     icon: "lucide:bookmark",
                     iconClass: "text-purple-400",
                     value: `${book.progressStats?.planToRead?.percentage ?? 0}%`,
-                    sub: `${book.progressStats?.planToRead?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: book.progressStats?.planToRead?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.reading"),
                     icon: "lucide:book-open-text",
                     iconClass: "text-chart-1",
                     value: `${book.progressStats?.reading?.percentage ?? 0}%`,
-                    sub: `${book.progressStats?.reading?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: book.progressStats?.reading?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.read"),
                     icon: "lucide:check-circle",
                     iconClass: "text-secondary",
                     value: `${book.progressStats?.completed?.percentage ?? 0}%`,
-                    sub: `${book.progressStats?.completed?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: book.progressStats?.completed?.count ?? 0 }),
                   },
                   {
                     label: t("feed:lists.dropped"),
                     icon: "lucide:x-circle",
                     iconClass: "text-destructive",
                     value: `${book.progressStats?.dropped?.percentage ?? 0}%`,
-                    sub: `${book.progressStats?.dropped?.count ?? 0} ${t("library:users")}`,
+                    sub: t("common:userCount", { count: book.progressStats?.dropped?.count ?? 0 }),
                   },
                 ]}
               />
@@ -688,9 +703,9 @@ function BookDetailsRoute() {
       <div className="space-y-4">
         <div className="flex items-center justify-between gap-3">
           <h3 className="font-semibold text-card-foreground text-lg capitalize">
-            {t("library:reviews")} ({reviews?.total ?? 0})
+            {t("common:reviews")} ({reviews?.total ?? 0})
           </h3>
-          {isAuthenticated && (
+          {isAuthenticated && !isUnreleased && (
             <Button
               variant="outline"
               size="sm"

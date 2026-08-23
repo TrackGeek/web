@@ -50,7 +50,7 @@ function TrackGeekImportRoute() {
       const { entries: parsed, ignored: skipped } = parseBackup(new Uint8Array(await file.arrayBuffer()));
 
       if (parsed.length === 0) {
-        toast.error(t("settings:import.trackgeek.emptyFile"));
+        toast.error(t("settings:import.file.emptyFile"));
         return;
       }
 
@@ -59,7 +59,7 @@ function TrackGeekImportRoute() {
       setIgnored(skipped);
       setProgress(null);
     } catch {
-      toast.error(t("settings:import.trackgeek.invalidFile"));
+      toast.error(t("settings:import.file.invalidFile", { provider: "TrackGeek" }));
     }
   };
 
@@ -81,7 +81,7 @@ function TrackGeekImportRoute() {
       const result = await runImport(entries, trackgeekRunner(userId), controller.signal, setProgress);
 
       if (!controller.signal.aborted) {
-        toast.success(t("settings:import.trackgeek.finished", { count: result.done }));
+        toast.success(t("settings:import.file.finished", { count: result.done }));
       }
     } finally {
       setIsRunning(false);
@@ -164,7 +164,7 @@ function TrackGeekImportRoute() {
           <CardTitle>
             <Icon icon={"lucide:file-up"} className="size-5" />
 
-            {t("settings:import.trackgeek.upload.title")}
+            {t("settings:import.file.uploadTitle")}
           </CardTitle>
 
           <CardDescription>{t("settings:import.trackgeek.upload.description")}</CardDescription>
@@ -216,7 +216,7 @@ function TrackGeekImportRoute() {
                 </Badge>
 
                 <span className="text-muted-foreground">
-                  {t("settings:import.trackgeek.summary", { count: entries.length })}
+                  {t("settings:import.file.summary", { count: entries.length })}
                 </span>
 
                 {ignored > 0 && (
@@ -264,9 +264,9 @@ function TrackGeekImportRoute() {
               <Icon icon={"lucide:inbox"} className="size-6" />
             </EmptyMedia>
 
-            <EmptyTitle>{t("settings:import.trackgeek.empty.title")}</EmptyTitle>
+            <EmptyTitle>{t("settings:import.file.emptyTitle")}</EmptyTitle>
 
-            <EmptyDescription>{t("settings:import.trackgeek.empty.description")}</EmptyDescription>
+            <EmptyDescription>{t("settings:import.file.emptyDescription")}</EmptyDescription>
           </EmptyHeader>
         </Empty>
       )}

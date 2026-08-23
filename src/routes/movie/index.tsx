@@ -116,7 +116,7 @@ function MovieRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("feed:trending")}</p>
           <Link to={"/movie/trending"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -136,7 +136,7 @@ function MovieRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:mostPopular")}</p>
           <Link to={"/movie/popular"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -156,7 +156,7 @@ function MovieRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("library:statusAir.currentlyAiring")}</p>
           <Link to={"/movie/airing"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -176,7 +176,7 @@ function MovieRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
           <Link to={"/movie/upcoming"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>

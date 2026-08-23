@@ -1,5 +1,4 @@
 {
-  "title": "Notificações",
   "description": "Tudo o que as pessoas fizeram com os seus comentários, análises e atividade.",
   "markAllAsRead": "Marcar tudo como lido",
   "markAllAsUnread": "Marcar tudo como não lido",
@@ -65,7 +64,7 @@
     "ReactionOnBookReview": "reagiu à sua análise de livro"
   },
   "levelUp": {
-    "title": "Subir de nível!",
+    "title": "Subiu de nível!",
     "description": "Você atingiu o nível {{level}}."
   },
   "missionCompleted": {

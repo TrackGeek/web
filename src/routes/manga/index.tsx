@@ -115,7 +115,7 @@ function MangaRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("library:statusAir.publishing")}</p>
           <Link to={"/manga/publishing"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -136,7 +136,7 @@ function MangaRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:recommendations")}</p>
           <Link to={"/manga/recommendations"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -157,7 +157,7 @@ function MangaRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:comingSoon")}</p>
           <Link to={"/manga/upcoming"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>
@@ -178,7 +178,7 @@ function MangaRoute() {
         <div className="flex items-center justify-between mb-4">
           <p className="text-2xl font-bold">{t("common:topManga")}</p>
           <Link to={"/manga/top"}>
-            <Button>{t("pages:donate.viewAll")}</Button>
+            <Button>{t("common:viewAll")}</Button>
           </Link>
         </div>
         <Grid minColSize={"128px"} className={"grid-cols-5"}>

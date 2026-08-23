@@ -8,8 +8,6 @@
   "progression": "Progression",
   "byContentType": "Levels by media",
   "streak": "Streak",
-  "streakDays_one": "{{count}} day",
-  "streakDays_other": "{{count}} days",
   "longestStreak": "Best: {{count}} days",
   "noStreak": "No active streak",
   "coins": "Coins",

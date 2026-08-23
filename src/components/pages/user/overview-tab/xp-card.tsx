@@ -90,7 +90,7 @@ export function XpCard({ xp, coins }: XpCardProps) {
               <div className="flex items-center gap-1.5 text-sm">
                 <Icon icon="lucide:flame" className="size-4 text-orange-400" />
                 <span className="font-medium">
-                  {xp.currentStreak > 0 ? t("xp:streakDays", { count: xp.currentStreak }) : t("xp:noStreak")}
+                  {xp.currentStreak > 0 ? t("common:dayCount", { count: xp.currentStreak }) : t("xp:noStreak")}
                 </span>
               </div>
             </TooltipTrigger>

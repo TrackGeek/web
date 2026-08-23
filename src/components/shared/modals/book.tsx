@@ -27,6 +27,8 @@ type ProgressStatus = "Planning" | "Reading" | "Rereading" | "Completed" | "Paus
 
 const STATUS_OPTIONS = ["planning", "reading", "completed", "rereading", "dropped", "paused"] as const;
 
+const PLANNING_ONLY_STATUS_OPTIONS = ["planning"] as const;
+
 const STATUS_TO_ENUM: Record<string, ProgressStatus> = {
   planning: "Planning",
   reading: "Reading",
@@ -89,15 +91,17 @@ interface BookProgressData {
 interface BookModalProps {
   bookId?: string;
   totalPages?: number | null;
+  unreleased?: boolean;
   onClose?: () => void;
 }
 
-export function BookModal({ bookId, totalPages, onClose }: BookModalProps) {
+export function BookModal({ bookId, totalPages, unreleased = false, onClose }: BookModalProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const session = useSession();
   const userId = session?.data?.user?.id;
   const enabled = !!userId && !!bookId;
+  const statusOptions = unreleased ? PLANNING_ONLY_STATUS_OPTIONS : STATUS_OPTIONS;
 
   const [newListInput, setNewListInput] = useState<string | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
@@ -356,7 +360,7 @@ export function BookModal({ bookId, totalPages, onClose }: BookModalProps) {
           <div className="space-y-3">
             <Field>
               <FieldLabel htmlFor="status" className="text-sm font-medium">
-                {t("library:status")}
+                {t("common:status")}
               </FieldLabel>
               <Controller
                 control={progressForm.control}
@@ -368,7 +372,7 @@ export function BookModal({ bookId, totalPages, onClose }: BookModalProps) {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {STATUS_OPTIONS.map((status) => (
+                        {statusOptions.map((status) => (
                           <SelectItem key={status} value={status}>
                             {t(`feed:lists.${status}`)}
                           </SelectItem>
@@ -530,7 +534,7 @@ export function BookModal({ bookId, totalPages, onClose }: BookModalProps) {
         </div>
       </div>
 
-      {REVIEW_STATUSES.includes(progressStatus) && (
+      {!unreleased && REVIEW_STATUSES.includes(progressStatus) && (
         <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
             <Icon icon={"lucide:pen-line"} className="size-4" />

@@ -60,8 +60,6 @@
     "reminder": "Lembre-se que o TrackGeek depende da precisão e completude de outras bases de dados, então quaisquer mudanças que você fizer também beneficiarão toda comunidade."
   },
   "privacyPolicy": {
-    "title": "Política de Privacidade",
-    "lastUpdated": "Última atualização: {{date}}",
     "intro": "TrackGeek (\"nós\") respeita a sua privacidade. Esta Política de Privacidade explica como coletamos, usamos, armazenamos e protegemos seus dados pessoais quando você usa trackgeek.net.",
     "dataWeCollect.title": "Dados que Coletamos",
     "dataWeCollect.account": "Quando você cria uma conta, coletamos seu endereço de e-mail, nome de usuário e avatar.",
@@ -91,12 +89,9 @@
     "children.text": "TrackGeek está disponível para todas as audiências. Nós não coletamos dados pessoais de crianças sem o consentimento dos pais quando exigido por lei.",
     "changes.title": "Alterações nesta Política",
     "changes.text": "Podemos atualizar esta Política de Privacidade de vez em quando. As alterações serão publicadas nesta página com uma data atualizada.",
-    "contact.title": "Contato",
     "contact.text": "Se você tiver dúvidas sobre esta Política de Privacidade ou seus dados, entre em contato conosco pelo <email>privacy@trackgeek.net</email>."
   },
   "terms": {
-    "title": "Termos de Serviço",
-    "lastUpdated": "Última atualização: {{date}}",
     "intro": {
       "title": "1. Introdução",
       "text": "Bem-vindo ao TrackGeek. TrackGeek é um projeto orientado pela comunidade, desenvolvido e mantido por colaboradores independentes. Ao acessar ou usar a plataforma TrackGeek, você concorda com estes Termos de Serviço. Se você não concordar com estes termos, não deve usar o TrackGeek."
@@ -144,7 +139,6 @@
       "text": "Estes Termos de Serviço são regidos pelas leis de Portugal e pelos regulamentos aplicáveis da União Europeia."
     },
     "contact": {
-      "title": "Contato",
       "text": "Se você tiver questões sobre estes Termos de Serviço, por favor contacte-nos através de <email>support@trackgeek.net</email>"
     }
   },
@@ -181,7 +175,6 @@
       "get": "Obter esta regalia",
       "items": {
         "Tracker": {
-          "name": "Rastreador",
           "description": "Torne-se um apoiador e obtenha reconhecimento através da plataforma com cosméticos exclusivos e acesso prioritário.",
           "benefits": [
             "Emblema exclusivo de apoiador em seu perfil",
@@ -191,7 +184,6 @@
           ]
         },
         "Archivist": {
-          "name": "Arquivista",
           "description": "Tudo o que um Rastreador obtém, além de uma visão mais profunda das suas estatísticas e acesso antecipado ao que está por vir.",
           "benefits": [
             "Tudo do Rastreador",
@@ -201,7 +193,6 @@
           ]
         },
         "ArchiveMaster": {
-          "name": "Mestre do Arquivo",
           "description": "O nível definitivo do apoiador. Tudo que um Arquivista ganha, mais o nível mais alto de reconhecimento na plataforma.",
           "benefits": [
             "Tudo do Arquivista",
@@ -221,8 +212,6 @@
     "modal": {
       "description": "Escolha as suas opções de doação abaixo",
       "type": "Tipo de Doação",
-      "one-time": "Doação única",
-      "monthly": "Mensalmente",
       "select": "Selecionar Quantia",
       "fixed": "Montante fixo",
       "custom": "Valor personalizado",
@@ -232,7 +221,6 @@
       "footer": "Doação mínima é de $1. Seu suporte nos ajuda a manter o TrackGeek funcionando!"
     },
     "transparencyReports": "Relatórios de Transparência",
-    "viewAll": "Ver tudo",
     "success": {
       "title": "Muito obrigado pelo seu apoio!",
       "description": "Sua doação foi processada com sucesso. Nós realmente apreciamos sua contribuição para manter o TrackGeek vivo."
@@ -243,12 +231,16 @@
     }
   },
   "billing": {
-    "title": "Faturamento",
+    "fields": {
+      "name": "Description",
+      "date": "Date",
+      "amount": "Amount",
+      "type": "Type"
+    },
     "subscription": {
       "title": "Assinatura",
       "description": "Gerencie seu plano de assinatura atual.",
       "plan": "Plano",
-      "status": "Estado",
       "price": "Preço",
       "renewsAt": "Renovar em",
       "cancel": "Cancelar Assinatura",
@@ -273,33 +265,18 @@
       "description": "Veja todos os seus pagamentos e transações anteriores.",
       "empty": "Não há pagamentos ainda!",
       "emptyDescription": "Você ainda não fez nenhum pagamento.",
-      "columns": {
-        "name": "Descrição",
-        "date": "Data",
-        "amount": "Quantidade",
-        "status": "Estado",
-        "frequency": "Tipo"
-      },
       "statuses": {
         "Pending": "Pendente",
         "Succeeded": "Sucesso",
         "Failed": "Falha"
-      },
-      "frequencies": {
-        "OneTime": "Doação única",
-        "Monthly": "Mensalmente"
       }
     },
     "detail": {
       "title": "Detalhes de Pagamento",
-      "name": "Descrição",
-      "status": "Estado",
-      "frequency": "Tipo",
       "subtotal": "Subtotal",
       "discount": "Desconto",
       "total": "Total",
       "currency": "Moeda",
-      "date": "Data",
       "expiredAt": "Valido até",
       "invoice": "Nota Fiscal",
       "viewInvoice": "Ver Nota Fiscal",

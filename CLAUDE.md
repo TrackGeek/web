@@ -40,5 +40,10 @@ Use `bun`, never `npm`. No test runner configured — do not add curl/fetch/bash
 Setup: i18next, namespaced JSON per language in `src/lib/i18n/locales/<lang>/<namespace>.json`. Namespaces + supported langs derive automatically from files present. `en-US` is the source of truth; Crowdin manages all others (`crowdin.yml`).
 
 1. **Only ever edit `en-US`.** Never touch, add, or modify files under any other language folder (`de-DE`, `es-ES`, etc.) — translations come from Crowdin only. Editing them corrupts the pipeline.
-2. **Before adding any key, search existing en-US JSON for it.** Reuse existing keys instead of creating duplicates or near-duplicate strings. Check `common.json` first — shared/generic strings belong there.
-3. Add new keys to the matching namespace (`common`, `pages`, `settings`, `feed`, `user`, `auth`, `api`, `comments`, `library`, `medals`, `notifications`). Keep keys minimal — no throwaway or one-off strings when an existing key fits.
+2. **Before adding any key, grep the whole `en-US` folder for the English string, not just for the key.** If the same sentence already exists in any namespace, reuse that key. Two keys with identical values are a bug.
+3. Add new keys to the matching namespace (`common`, `pages`, `settings`, `feed`, `user`, `auth`, `api`, `comments`, `library`, `medals`, `missions`, `cosmetics`, `shop`, `xp`, `notifications`). Generic/shared strings live in `common.json` — check it first.
+4. **Never hardcode a number in a string.** `"Watch 10 episodes."` is wrong; use `"Watch {{count}} episodes."` with `_one`/`_other` and pass `count`. Same for levels, days, prices and any other quantity.
+5. **Never concatenate a count with a label in JSX.** `{n} {t("library:users")}` is wrong; use one key like `t("common:userCount", { count: n })`. Word order and plural rules differ per language.
+6. **Never build a family of keys that differ only by a noun or a number.** Derive the key from typed data instead (metric, content type, error code) and keep a single templated string — see `missions:descriptions.*` driven by `mission.metric`, `medals:level.*` driven by `getMedalKeys`, and `settings:import.file.*` shared by every import provider.
+7. Plural suffixes are i18next v4: `_one` / `_other`. `_plural` does not work.
+8. Keys mirroring a backend contract (`api.json` error codes, `notifications:*` keys sent in notification metadata, enum maps like `feed:lists.*`, `library:genresList.*`, `cosmetics:*`) may hold repeated values — do not merge those.

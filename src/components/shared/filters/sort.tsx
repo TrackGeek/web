@@ -5,39 +5,39 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 /** Values must match each provider's `orderBy` enum on the API, which validates them strictly. */
 const SORT_OPTIONS: Record<ContentType, { value: string; labelKey: string }[]> = {
   anime: [
-    { value: "score", labelKey: "user:sort.rating" },
+    { value: "score", labelKey: "common:rating" },
     { value: "title", labelKey: "user:sort.title" },
-    { value: "start_date", labelKey: "user:sort.releaseDate" },
+    { value: "start_date", labelKey: "common:releaseDate" },
     { value: "end_date", labelKey: "user:sort.endDate" },
     { value: "type", labelKey: "library:type" },
   ],
   manga: [
-    { value: "score", labelKey: "user:sort.rating" },
+    { value: "score", labelKey: "common:rating" },
     { value: "title", labelKey: "user:sort.title" },
-    { value: "start_date", labelKey: "user:sort.releaseDate" },
+    { value: "start_date", labelKey: "common:releaseDate" },
     { value: "end_date", labelKey: "user:sort.endDate" },
     { value: "popularity", labelKey: "user:sort.popularity" },
   ],
   game: [
     { value: "popularity", labelKey: "user:sort.popularity" },
-    { value: "total_rating", labelKey: "user:sort.rating" },
+    { value: "total_rating", labelKey: "common:rating" },
     { value: "name", labelKey: "user:sort.title" },
-    { value: "first_release_date", labelKey: "user:sort.releaseDate" },
+    { value: "first_release_date", labelKey: "common:releaseDate" },
   ],
   movie: [
-    { value: "score", labelKey: "user:sort.rating" },
+    { value: "score", labelKey: "common:rating" },
     { value: "title", labelKey: "user:sort.title" },
-    { value: "release_date", labelKey: "user:sort.releaseDate" },
+    { value: "release_date", labelKey: "common:releaseDate" },
   ],
   tv: [
-    { value: "score", labelKey: "user:sort.rating" },
+    { value: "score", labelKey: "common:rating" },
     { value: "name", labelKey: "user:sort.title" },
-    { value: "first_air_date", labelKey: "user:sort.releaseDate" },
+    { value: "first_air_date", labelKey: "common:releaseDate" },
   ],
   book: [
-    { value: "rating", labelKey: "user:sort.rating" },
+    { value: "rating", labelKey: "common:rating" },
     { value: "title", labelKey: "user:sort.title" },
-    { value: "release_date", labelKey: "user:sort.releaseDate" },
+    { value: "release_date", labelKey: "common:releaseDate" },
   ],
 };
 

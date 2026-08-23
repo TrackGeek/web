@@ -17,12 +17,18 @@ export interface StatusButtonConfig {
 }
 
 interface QuickStatusButtonsProps {
-  buttons: [StatusButtonConfig, StatusButtonConfig, StatusButtonConfig];
+  buttons: StatusButtonConfig[];
 }
+
+const GRID_COLUMNS: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-3",
+};
 
 export function QuickStatusButtons({ buttons }: QuickStatusButtonsProps) {
   return (
-    <div className="grid grid-cols-3 w-full gap-4">
+    <div className={cn("grid w-full gap-4", GRID_COLUMNS[buttons.length] ?? "grid-cols-3")}>
       {buttons.map((btn) => (
         <Button
           key={btn.label}

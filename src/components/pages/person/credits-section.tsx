@@ -152,7 +152,7 @@ export function CreditsSection({ credits: allCredits, heading }: { credits: Pers
 
   const roleFilters: { value: RoleFilter; label: string; count: number }[] = [
     { value: "all", label: t("common:all"), count: counts.all },
-    { value: "cast", label: t("library:cast"), count: counts.cast },
+    { value: "cast", label: t("common:types.cast"), count: counts.cast },
     { value: "crew", label: t("library:crew"), count: counts.crew },
   ];
 
@@ -241,7 +241,7 @@ export function CreditsSection({ credits: allCredits, heading }: { credits: Pers
               <Icon icon="lucide:film" />
             </EmptyMedia>
             <EmptyTitle>{t("library:noCreditsFound")}</EmptyTitle>
-            <EmptyDescription>{t("library:noCreditsFoundDescription")}</EmptyDescription>
+            <EmptyDescription>{t("common:noResultsDescription")}</EmptyDescription>
           </EmptyHeader>
         </Empty>
       ) : (

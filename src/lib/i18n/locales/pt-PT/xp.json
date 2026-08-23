@@ -8,8 +8,6 @@
   "progression": "Progressão",
   "byContentType": "Níveis por mídia",
   "streak": "Sequência",
-  "streakDays_one": "{{count}} dia",
-  "streakDays_other": "{{count}} dias",
   "longestStreak": "Melhor: {{count}} dias",
   "noStreak": "Sem sequência ativa",
   "coins": "Moedas",
@@ -32,7 +30,7 @@
     "MissionCompleted": "Missão concluída"
   },
   "coinReasons": {
-    "LevelUp": "Subir de nível",
+    "LevelUp": "Subiu de nível",
     "MissionCompleted": "Missão concluída",
     "AdminGrant": "Concedido pela equipe",
     "Purchase": "Compra de loja"

@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { WatchLinksCard } from "@/components/pages/settings/watch-links-card";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
@@ -208,6 +209,8 @@ export function SettingsPreferencesTab() {
           })}
         </CardContent>
       </Card>
+
+      <WatchLinksCard />
     </div>
   );
 }

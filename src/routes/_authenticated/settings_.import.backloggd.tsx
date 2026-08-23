@@ -53,7 +53,7 @@ function BackloggdImportRoute() {
       const { entries: mapped, ignored: skipped } = parseExport(JSON.parse(await file.text()));
 
       if (mapped.length === 0) {
-        toast.error(t("settings:import.backloggd.emptyFile"));
+        toast.error(t("settings:import.file.emptyFile"));
         return;
       }
 
@@ -62,7 +62,7 @@ function BackloggdImportRoute() {
       setIgnored(skipped);
       setProgress(null);
     } catch {
-      toast.error(t("settings:import.backloggd.invalidFile"));
+      toast.error(t("settings:import.file.invalidFile", { provider: "Backloggd Plus" }));
     }
   };
 
@@ -84,7 +84,7 @@ function BackloggdImportRoute() {
       const result = await runImport(entries, backloggdRunner(userId), controller.signal, setProgress);
 
       if (!controller.signal.aborted) {
-        toast.success(t("settings:import.backloggd.finished", { count: result.done }));
+        toast.success(t("settings:import.file.finished", { count: result.done }));
       }
     } finally {
       setIsRunning(false);
@@ -211,7 +211,7 @@ function BackloggdImportRoute() {
           <CardTitle>
             <Icon icon={"lucide:file-json"} className="size-5" />
 
-            {t("settings:import.backloggd.upload.title")}
+            {t("settings:import.file.uploadTitle")}
           </CardTitle>
 
           <CardDescription>{t("settings:import.backloggd.upload.description")}</CardDescription>
@@ -263,7 +263,7 @@ function BackloggdImportRoute() {
                 </Badge>
 
                 <span className="text-muted-foreground">
-                  {t("settings:import.backloggd.summary", { count: entries.length })}
+                  {t("settings:import.file.summary", { count: entries.length })}
                 </span>
 
                 {ignored > 0 && (
@@ -311,9 +311,9 @@ function BackloggdImportRoute() {
               <Icon icon={"lucide:inbox"} className="size-6" />
             </EmptyMedia>
 
-            <EmptyTitle>{t("settings:import.backloggd.empty.title")}</EmptyTitle>
+            <EmptyTitle>{t("settings:import.file.emptyTitle")}</EmptyTitle>
 
-            <EmptyDescription>{t("settings:import.backloggd.empty.description")}</EmptyDescription>
+            <EmptyDescription>{t("settings:import.file.emptyDescription")}</EmptyDescription>
           </EmptyHeader>
         </Empty>
       )}

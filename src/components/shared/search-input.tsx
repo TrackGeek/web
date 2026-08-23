@@ -26,7 +26,7 @@ export function SearchInput({ value, onChange, placeholder, className }: SearchI
   return (
     <div className={cn("flex-1 relative w-full", className)}>
       <Input
-        placeholder={placeholder ?? `${t("user:search")}...`}
+        placeholder={placeholder ?? `${t("common:search")}...`}
         className="bg-muted/50 flex-1 pr-12"
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -34,7 +34,7 @@ export function SearchInput({ value, onChange, placeholder, className }: SearchI
       <button
         type="button"
         onClick={handlePaste}
-        aria-label={t("user:pasteFromClipboard")}
+        aria-label={t("common:clipboard.paste")}
         className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer hover:text-primary transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
       >
         <Icon icon="lucide:clipboard" className="size-5" aria-hidden="true" />

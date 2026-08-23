@@ -58,7 +58,7 @@ function NotificationsRoute() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Icon icon={"lucide:bell"} className="size-5" />
-            {t("notifications:title")}
+            {t("common:notifications")}
           </CardTitle>
           <CardDescription>{t("notifications:description")}</CardDescription>
           <CardAction>

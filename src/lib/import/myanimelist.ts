@@ -167,6 +167,6 @@ async function importEntry(
 export function myanimelistRunner(userId: string): ImportRunner<MalEntry> {
   return {
     importEntry: (entry, signal, onRetry, onResume) => importEntry(entry, userId, signal, onRetry, onResume),
-    notFoundKey: "settings:import.errors.animeNotFound",
+    notFoundKey: "settings:import.errors.notFound",
   };
 }

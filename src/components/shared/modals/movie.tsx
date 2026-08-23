@@ -23,6 +23,8 @@ type ProgressStatus = "Planning" | "Completed" | "Paused" | "Dropped";
 
 const STATUS_OPTIONS = ["planning", "completed", "dropped", "paused"] as const;
 
+const PLANNING_ONLY_STATUS_OPTIONS = ["planning"] as const;
+
 const STATUS_TO_ENUM: Record<string, ProgressStatus> = {
   planning: "Planning",
   completed: "Completed",
@@ -65,10 +67,11 @@ interface MovieProgressData {
 
 interface MovieModalProps {
   movieId?: string;
+  unreleased?: boolean;
   onClose?: () => void;
 }
 
-export function MovieModal({ movieId, onClose }: MovieModalProps) {
+export function MovieModal({ movieId, unreleased = false, onClose }: MovieModalProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const session = useSession();
@@ -81,6 +84,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   const reviewSchema = useMemo(() => createReviewSchema(t), [t]);
+  const statusOptions = unreleased ? PLANNING_ONLY_STATUS_OPTIONS : STATUS_OPTIONS;
 
   const reviewForm = useForm<ReviewFormData>({
     resolver: zodResolver(reviewSchema),
@@ -305,7 +309,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
 
           <Field>
             <FieldLabel htmlFor="status" className="text-sm font-medium">
-              {t("library:status")}
+              {t("common:status")}
             </FieldLabel>
             <Select value={selectedStatus || undefined} onValueChange={setSelectedStatus}>
               <SelectTrigger className="w-full bg-background">
@@ -313,7 +317,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  {STATUS_OPTIONS.map((status) => (
+                  {statusOptions.map((status) => (
                     <SelectItem key={status} value={status}>
                       {t(`feed:lists.${status}`)}
                     </SelectItem>
@@ -323,24 +327,26 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
             </Select>
           </Field>
 
-          <Field className="mt-3">
-            <FieldLabel htmlFor="rewatches" className="text-sm font-medium">
-              {t("feed:totalRewatches")}
-            </FieldLabel>
-            <Input
-              id="rewatches"
-              type="number"
-              min={0}
-              max={999}
-              step={1}
-              placeholder="0"
-              className="bg-background"
-              value={rewatchCount}
-              onChange={(e) => setRewatchCount(toIntegerValue(e.target.value))}
-              onKeyDown={blockNonIntegerKeys}
-              aria-label={t("feed:totalRewatches")}
-            />
-          </Field>
+          {!unreleased && (
+            <Field className="mt-3">
+              <FieldLabel htmlFor="rewatches" className="text-sm font-medium">
+                {t("feed:totalRewatches")}
+              </FieldLabel>
+              <Input
+                id="rewatches"
+                type="number"
+                min={0}
+                max={999}
+                step={1}
+                placeholder="0"
+                className="bg-background"
+                value={rewatchCount}
+                onChange={(e) => setRewatchCount(toIntegerValue(e.target.value))}
+                onKeyDown={blockNonIntegerKeys}
+                aria-label={t("feed:totalRewatches")}
+              />
+            </Field>
+          )}
         </div>
 
         <div className="bg-muted/30 rounded-lg p-4 border border-border/50 flex flex-col">
@@ -386,7 +392,7 @@ export function MovieModal({ movieId, onClose }: MovieModalProps) {
         </div>
       </div>
 
-      {(selectedStatus === "completed" || selectedStatus === "dropped") && (
+      {!unreleased && (selectedStatus === "completed" || selectedStatus === "dropped") && (
         <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
             <Icon icon={"lucide:pen-line"} className="size-4" />

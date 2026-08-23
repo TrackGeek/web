@@ -232,10 +232,10 @@
   },
   "billing": {
     "fields": {
-      "name": "Description",
-      "date": "Date",
-      "amount": "Amount",
-      "type": "Type"
+      "name": "Descrição",
+      "date": "Data",
+      "amount": "Quantia",
+      "type": "Tipo"
     },
     "subscription": {
       "title": "Assinatura",

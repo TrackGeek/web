@@ -8,7 +8,7 @@
     "description": "Concedido aos membros da equipa pela sua dedicação e trabalho árduo."
   },
   "level": {
-    "name": "Level {{level}}",
-    "description": "Awarded for reaching level {{level}}."
+    "name": "Nível {{level}}",
+    "description": "Premiado por alcançar o nível {{level}}."
   }
 }

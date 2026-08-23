@@ -29,19 +29,19 @@
       "error": "Falhou"
     },
     "errors": {
-      "notFound": "Media not found",
+      "notFound": "Mídia não encontrada",
       "failed": "Não foi possível importar"
     },
     "file": {
-      "uploadTitle": "Upload your file",
-      "emptyTitle": "No file selected",
-      "emptyDescription": "Once you upload your file, the entries found in it will be listed here.",
-      "summary_one": "{{count}} entry ready to import",
-      "summary_other": "{{count}} entries ready to import",
-      "finished_one": "{{count}} entry imported.",
-      "finished_other": "{{count}} entries imported.",
-      "invalidFile": "This file isn't a valid {{provider}} export.",
-      "emptyFile": "No trackable entries were found in this file."
+      "uploadTitle": "Envie seu arquivo",
+      "emptyTitle": "Nenhum ficheiro selecionado",
+      "emptyDescription": "Uma vez que enviar o seu arquivo, as entradas encontradas nele serão listadas aqui.",
+      "summary_one": "{{count}} entrada preparada para importar",
+      "summary_other": "{{count}} entradas preparadas para importar",
+      "finished_one": "{{count}} entrada importada.",
+      "finished_other": "{{count}} entradas importadas.",
+      "invalidFile": "Este arquivo não é uma exportação válida do {{provider}}.",
+      "emptyFile": "Nenhuma entrada rastreável foi encontrada neste arquivo."
     },
     "importing": "A importar...",
     "downloadFailures": "Descarregar falhados",
@@ -197,6 +197,22 @@
   "contentTypes": {
     "title": "Tipos de conteúdo",
     "description": "Escolha quais tipos de conteúdo aparecem no TrackGeek. Pelo menos um deve permanecer ativado."
+  },
+  "watchLinks": {
+    "title": "Custom watch links",
+    "description": "Jump from a title straight into your player or favorite site. Variables are replaced with the details of whatever you are viewing.",
+    "empty": "No watch links yet.",
+    "labelPlaceholder": "Stremio",
+    "preview": "Preview",
+    "toggle": "Enable this link",
+    "variablesTitle": "Available variables",
+    "urlInvalid": "Enter an absolute URL, such as stremio://detail/movie/%ID_IMDB%",
+    "urlTooLong_one": "The URL must be at most {{count}} character.",
+    "urlTooLong_other": "The URL must be at most {{count}} characters.",
+    "urlUnknownVariable": "The URL uses a variable that doesn't exist.",
+    "contentTypesRequired": "Select at least one content type.",
+    "limitReached_one": "You can have at most {{count}} watch link.",
+    "limitReached_other": "You can have at most {{count}} watch links."
   },
   "password": {
     "description": "Define uma senha para a tua conta ou altera a senha que já usas para entrar.",

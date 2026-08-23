@@ -278,6 +278,10 @@
   "noTitlesFound": "No titles found",
   "episodeCount_one": "{{count}} ep",
   "episodeCount_other": "{{count}} eps",
+  "watchLinks": {
+    "title": "Watch links",
+    "manage": "Manage"
+  },
   "watchProviders": {
     "title": "Where to Watch",
     "searchCountry": "Search country",

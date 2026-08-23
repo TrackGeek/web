@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
 import { CastItem, PersonLink } from "@/components/pages/details/cast";
 import { CommunityStats } from "@/components/pages/details/community-stats";
+import { CustomWatchLinks } from "@/components/pages/details/custom-watch-links";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { GenrePills } from "@/components/pages/details/genre-pills";
 import { ListItem } from "@/components/pages/details/list";
@@ -592,6 +593,14 @@ function MovieDetailsRoute() {
             </div>
 
             <WatchProviders mediaType="movie" slug={slug} />
+            <CustomWatchLinks
+              context={{
+                mediaType: "movie",
+                imdbId: movie.imdbId,
+                tmdbId: movie.tmdbId,
+                title: movie.title,
+              }}
+            />
 
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>

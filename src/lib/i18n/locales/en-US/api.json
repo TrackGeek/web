@@ -27,6 +27,8 @@
   "UNAUTHORIZED": "You are not authorized to perform this action.",
   "UNPROCESSABLE_ENTITY": "The request could not be processed due to semantic errors.",
   "PROFILE_NOT_FOUND": "The requested profile was not found.",
+  "WATCH_LINK_NOT_FOUND": "The requested watch link was not found.",
+  "WATCH_LINK_LIMIT_REACHED": "You reached the watch links limit.",
   "COMMENT_NOT_FOUND": "The requested comment was not found.",
   "REACTION_NOT_FOUND": "The requested reaction was not found.",
   "MOVIE_FRANCHISE_NOT_FOUND": "The requested franchise was not found.",

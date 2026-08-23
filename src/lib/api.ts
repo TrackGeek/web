@@ -151,6 +151,36 @@ export namespace ApiTypes {
     updatedAt: string;
   }
 
+  export type WatchLinkContentType = "Anime" | "TVShow" | "Movie";
+
+  export interface WatchLink {
+    id: string;
+    label: string;
+    url: string;
+    contentTypes: WatchLinkContentType[];
+    enabled: boolean;
+    position: number;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  export interface GetWatchLinksResponse {
+    watchLinks: WatchLink[];
+  }
+
+  export interface WatchLinkResponse {
+    watchLink: WatchLink;
+  }
+
+  export interface CreateWatchLinkRequest {
+    label: string;
+    url: string;
+    contentTypes: WatchLinkContentType[];
+    enabled?: boolean;
+  }
+
+  export type UpdateWatchLinkRequest = Partial<CreateWatchLinkRequest>;
+
   export type ContentTypeName = "Anime" | "Manga" | "TVShow" | "Movie" | "Game" | "Book";
 
   export interface LevelProgress {
@@ -220,7 +250,6 @@ export namespace ApiTypes {
     | "StreakReached"
     | "ContentTypesReviewed";
 
-  // Missão secreta só revela metric/target/recompensa depois de concluída.
   export interface HiddenMission {
     id: string;
     key: string;
@@ -669,8 +698,6 @@ export namespace ApiTypes {
 
   export type ReleaseEventType = "NewEpisodeReleased" | "NewChapterReleased" | "NewGameReleased" | "SequelAdded";
 
-  // Release that triggered a catch-up notification, with the media relation it was matched to so the
-  // notification can show a cover and link to the title page.
   export interface NotificationReleaseEvent {
     id: string;
     type: ReleaseEventType;
@@ -692,8 +719,6 @@ export namespace ApiTypes {
     game: { id: string; igdbId: number; slug: string | null; name: string; coverUrl: string | null } | null;
   }
 
-  // titleKey/descriptionKey are i18n keys resolved at render time; title/description are literals
-  // used when the content has no translation.
   export interface SystemNotificationMetadata {
     title?: string;
     titleKey?: string;
@@ -803,7 +828,6 @@ export namespace ApiTypes {
     favorited: boolean;
   }
 
-  /** User progress statuses (mirrors the backend `ProgressStatus` enum). */
   export type ProgressStatus =
     | "NotWatched"
     | "NotRead"
@@ -851,11 +875,9 @@ export namespace ApiTypes {
     movieProgresses?: PaginatedResponse<Progress>;
     gameProgresses?: PaginatedResponse<Progress>;
     bookProgresses?: PaginatedResponse<Progress>;
-    /** Totals per progress status under the same filters, regardless of the requested status. */
     statusCounts: ProgressStatusCounts;
   }
 
-  /** Filter values present in the user's library — options that cannot match are never offered. */
   export interface ProgressFilterOptions {
     genres: string[];
     years: number[];
@@ -1328,6 +1350,11 @@ export const apiEndpoints = {
   updateProfileLink: (linkId: string) => `/profile/link/${linkId}`,
   deleteProfileLink: (linkId: string) => `/profile/link/${linkId}`,
   reorderProfileLinks: "/profile/links/order",
+  getWatchLinks: "/profile/watch-links",
+  createWatchLink: "/profile/watch-link",
+  updateWatchLink: (linkId: string) => `/profile/watch-link/${linkId}`,
+  deleteWatchLink: (linkId: string) => `/profile/watch-link/${linkId}`,
+  reorderWatchLinks: "/profile/watch-links/order",
   getGameDetails: (id: string) => `/game/detail/${id}`,
   getGameFranchise: (slug: string) => `/game/franchise/${slug}`,
   getGamePopular: "/game/top?filter=popular",

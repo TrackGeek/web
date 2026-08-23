@@ -14,17 +14,9 @@
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -191,9 +183,6 @@
   z-index: -1;
 }
 
-/* Cor de perfil em gradiente: border-color não aceita gradiente, então os
-   borders são pintados via double-background (padding-box cobre o miolo,
-   border-box mostra o gradiente). Ativado pela classe no wrapper do perfil. */
 .profile-gradient [data-slot="card"] {
   border-color: transparent;
   background:

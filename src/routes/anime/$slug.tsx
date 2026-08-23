@@ -10,6 +10,7 @@ import { BackfillEpisodesDialog } from "@/components/pages/details/backfill-epis
 import { CastItem } from "@/components/pages/details/cast";
 import { CharacterItem } from "@/components/pages/details/character";
 import { CommunityStats } from "@/components/pages/details/community-stats";
+import { CustomWatchLinks } from "@/components/pages/details/custom-watch-links";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { EpisodeItem } from "@/components/pages/details/episode";
 import { GenrePills } from "@/components/pages/details/genre-pills";
@@ -49,6 +50,7 @@ import { getGenreLabel } from "@/lib/utils/genre-utils";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
+import { nextEpisode } from "@/lib/watch-links";
 
 interface AnimeEpisode {
   malId: number;
@@ -271,6 +273,8 @@ function AnimeDetailsRoute() {
       return true;
     });
   }, [anime?.titles, anime?.title]);
+
+  const englishTitle = ((anime?.titles ?? []) as AnimeTitle[]).find((entry) => entry.type === "English")?.title ?? null;
 
   const [episodesSentinel, setEpisodesSentinel] = useState<HTMLDivElement | null>(null);
 
@@ -976,6 +980,16 @@ function AnimeDetailsRoute() {
                 </div>
               );
             })()}
+
+            <CustomWatchLinks
+              context={{
+                mediaType: "anime",
+                malId: anime.malId,
+                title: englishTitle ?? anime.title,
+                titleRomaji: anime.title,
+                episode: nextEpisode(mySeason.totalEpisodes, mySeason.watchedEpisodes),
+              }}
+            />
 
             {isAuthenticated && !isUnreleased && (
               <>

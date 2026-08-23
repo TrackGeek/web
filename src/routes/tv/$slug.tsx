@@ -9,6 +9,7 @@ import { Grid } from "@/components/layouts/grid.tsx";
 import { BackfillEpisodesDialog } from "@/components/pages/details/backfill-episodes-dialog";
 import { CastItem, PersonLink } from "@/components/pages/details/cast";
 import { CommunityStats } from "@/components/pages/details/community-stats.tsx";
+import { CustomWatchLinks } from "@/components/pages/details/custom-watch-links";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { EpisodeItem } from "@/components/pages/details/episode";
 import { GenrePills } from "@/components/pages/details/genre-pills";
@@ -54,6 +55,7 @@ import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
+import { nextEpisodeFromSeasons } from "@/lib/watch-links";
 
 export const Route = createFileRoute("/tv/$slug")({
   loader: async ({ params }) => {
@@ -239,6 +241,8 @@ function TVShowDetailsPage() {
     }));
 
   const totalWatchedEpisodes = mySeasons.reduce((acc, season) => acc + season.watchedEpisodes.length, 0);
+
+  const nextWatch = nextEpisodeFromSeasons(mySeasons);
 
   const favoriteQuery = useQuery<boolean>({
     queryKey: ["tvFavorite", item?.id, userId],
@@ -885,6 +889,16 @@ function TVShowDetailsPage() {
             )}
 
             <WatchProviders mediaType="tv" slug={slug} />
+            <CustomWatchLinks
+              context={{
+                mediaType: "tv",
+                imdbId: item?.external?.imdb_id,
+                tmdbId: item.tmdbId,
+                title: item.name,
+                season: nextWatch.season,
+                episode: nextWatch.episode,
+              }}
+            />
 
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>

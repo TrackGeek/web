@@ -236,6 +236,26 @@
       "same": "A nova senha deve ser diferente da atual."
     }
   },
+  "passkeys": {
+    "title": "Passkeys",
+    "description": "Sign in with your fingerprint, face or device PIN instead of a password.",
+    "unsupported": "This browser doesn't support passkeys.",
+    "empty": "You haven't added any passkeys yet.",
+    "unnamed": "Unnamed passkey",
+    "nameLabel": "Passkey name",
+    "namePlaceholder": "My laptop",
+    "addedAt": "Added on {{date}}",
+    "add": {
+      "button": "Add passkey",
+      "success": "Passkey added successfully.",
+      "error": "Failed to add passkey. Please try again."
+    },
+    "delete": {
+      "button": "Remove",
+      "success": "Passkey removed successfully.",
+      "error": "Failed to remove passkey. Please try again."
+    }
+  },
   "twoFactor": {
     "title": "Autenticação em dois fatores",
     "description": "Exigir código do seu aplicativo autenticador ao entrar com seu e-mail e senha.",

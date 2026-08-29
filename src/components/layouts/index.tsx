@@ -17,7 +17,9 @@ export function Layout({ variant, children }: LayoutProps) {
     <div className="antialiased bg-background flex flex-col min-h-screen">
       <Header />
 
-      <div className={contentClassName[variant]}>{children}</div>
+      <main id="main-content" className={contentClassName[variant]}>
+        {children}
+      </main>
 
       <Footer />
 

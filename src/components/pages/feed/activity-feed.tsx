@@ -41,7 +41,7 @@ export function ActivityFeed({ query, toggleReaction, emptyTitle, emptyDescripti
     return (
       <div className="flex flex-col w-full gap-y-3">
         {[...Array(4)].map((_, index) => (
-          <Skeleton key={`activity-skeleton-${index}`} className="h-30 w-full rounded-2xl" />
+          <FeedItemSkeleton key={`activity-skeleton-${index}`} />
         ))}
       </div>
     );
@@ -82,32 +82,52 @@ export function ActivityFeed({ query, toggleReaction, emptyTitle, emptyDescripti
 
   return (
     <div className="flex flex-col w-full gap-y-3">
-      {entries.map(({ key, entry }) => {
+      {entries.map(({ key, entry }, index) => {
         const onReact = (emoji: string, currentReaction?: ApiTypes.ActivityReaction) =>
           entry.item.activityId && toggleReaction.mutate({ activityId: entry.item.activityId, currentReaction, emoji });
 
         const isReacting = toggleReaction.isPending && toggleReaction.variables?.activityId === entry.item.activityId;
 
-        if (entry.kind === "screenshot") {
-          return (
-            <ScreenshotActivityItem
-              key={key}
-              profile={entry.profile}
-              item={entry.item}
-              onReact={onReact}
-              isReacting={isReacting}
-            />
-          );
-        }
-
         return (
-          <ActivityItem key={key} profile={entry.profile} item={entry.item} onReact={onReact} isReacting={isReacting} />
+          <div
+            key={key}
+            className="motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 fill-mode-both duration-300"
+            style={{ animationDelay: `${Math.min(index, 6) * 50}ms` }}
+          >
+            {entry.kind === "screenshot" ? (
+              <ScreenshotActivityItem
+                profile={entry.profile}
+                item={entry.item}
+                onReact={onReact}
+                isReacting={isReacting}
+              />
+            ) : (
+              <ActivityItem profile={entry.profile} item={entry.item} onReact={onReact} isReacting={isReacting} />
+            )}
+          </div>
         );
       })}
 
       <div ref={sentinelRef} className="h-px" />
 
-      {isFetchingNextPage && <Skeleton className="h-30 w-full rounded-2xl" />}
+      {isFetchingNextPage && <FeedItemSkeleton />}
+    </div>
+  );
+}
+
+function FeedItemSkeleton() {
+  return (
+    <div className="flex w-full overflow-hidden rounded-xl border border-border bg-card">
+      <Skeleton className="h-35 w-24 shrink-0 rounded-none sm:w-30" />
+
+      <div className="flex flex-1 flex-col justify-between gap-4 p-4 sm:px-6 sm:py-6">
+        <Skeleton className="h-4 w-2/3 max-w-64" />
+
+        <div className="flex items-center gap-2">
+          <Skeleton className="size-8 rounded-full" />
+          <Skeleton className="h-3 w-24" />
+        </div>
+      </div>
     </div>
   );
 }

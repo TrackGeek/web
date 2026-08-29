@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid";
 import { type ScreenshotImage, ScreenshotItem } from "@/components/shared/cards/screenshot";
@@ -7,6 +7,7 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGameScreenshots } from "@/hooks/game";
 import type { ApiTypes } from "@/lib/api";
+import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll";
 
 interface GameScreenshotGroup {
   game: ApiTypes.GameScreenshotGame;
@@ -18,24 +19,10 @@ export function UserScreenshotsTab({ userId }: { userId: string }) {
 
   const screenshotsQuery = useGameScreenshots({ userId });
 
-  const sentinelRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = sentinelRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && screenshotsQuery.hasNextPage && !screenshotsQuery.isFetchingNextPage) {
-          screenshotsQuery.fetchNextPage();
-        }
-      },
-      { rootMargin: "200px" },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [screenshotsQuery.hasNextPage, screenshotsQuery.isFetchingNextPage, screenshotsQuery.fetchNextPage]);
+  const sentinelRef = useInfiniteScroll(
+    screenshotsQuery.fetchNextPage,
+    screenshotsQuery.hasNextPage && !screenshotsQuery.isFetchingNextPage,
+  );
 
   const groups = useMemo(() => {
     const screenshots = screenshotsQuery.data?.pages.flatMap((page) => page.items) ?? [];
@@ -89,7 +76,7 @@ export function UserScreenshotsTab({ userId }: { userId: string }) {
         ))}
       </Grid>
 
-      <div ref={sentinelRef} />
+      <div ref={sentinelRef} className="h-px" />
 
       {screenshotsQuery.isFetchingNextPage && <ScreenshotsSkeleton length={4} />}
     </div>

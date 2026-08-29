@@ -20,6 +20,7 @@ import {
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { cn, registerInteger } from "@/lib/utils";
+import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll";
 import { parseVideoUrl, videoProviderIcon, videoThumbnailUrl } from "@/lib/utils/video";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
@@ -209,6 +210,11 @@ export function GameModal({ gameId, platforms, unreleased = false, onClose }: Ga
   const screenshots = useMemo(
     () => screenshotsQuery.data?.pages.flatMap((page) => page.items) ?? [],
     [screenshotsQuery.data],
+  );
+
+  const screenshotsSentinelRef = useInfiniteScroll(
+    screenshotsQuery.fetchNextPage,
+    screenshotsQuery.hasNextPage && !screenshotsQuery.isFetchingNextPage,
   );
 
   const progressQuery = useQuery<GameProgressData | null>({
@@ -834,6 +840,15 @@ export function GameModal({ gameId, platforms, unreleased = false, onClose }: Ga
                     }
                   />
                 ))}
+
+                <div ref={screenshotsSentinelRef} className="h-px" />
+
+                {screenshotsQuery.isFetchingNextPage && (
+                  <div className="flex items-center justify-center gap-2 py-2 text-xs text-muted-foreground">
+                    <Icon icon={"lucide:loader-circle"} className="size-3.5 animate-spin" />
+                    {t("common:loading")}
+                  </div>
+                )}
               </div>
             )}
           </div>

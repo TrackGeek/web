@@ -53,6 +53,14 @@
     "TWO_FACTOR_NOT_ENABLED": "A autenticação de dois fatores não está habilitada para esta conta.",
     "BACKUP_CODES_NOT_ENABLED": "Códigos de backup não estão disponíveis para esta conta.",
     "TOO_MANY_ATTEMPTS_REQUEST_NEW_CODE": "Demasiadas tentativas. Por favor, aguarde e tente novamente.",
-    "INVALID_TWO_FACTOR_COOKIE": "A sua sessão de verificação expirou. Por favor, faça o login novamente."
+    "INVALID_TWO_FACTOR_COOKIE": "A sua sessão de verificação expirou. Por favor, faça o login novamente.",
+    "CHALLENGE_NOT_FOUND": "Your passkey challenge expired. Please try again.",
+    "YOU_ARE_NOT_ALLOWED_TO_REGISTER_THIS_PASSKEY": "You are not allowed to register this passkey.",
+    "FAILED_TO_VERIFY_REGISTRATION": "Failed to verify this passkey. Please try again.",
+    "PASSKEY_NOT_FOUND": "Passkey not found.",
+    "AUTHENTICATION_FAILED": "Passkey authentication failed. Please try again.",
+    "UNABLE_TO_CREATE_SESSION": "Unable to start a session. Please try again.",
+    "FAILED_TO_UPDATE_PASSKEY": "Failed to update this passkey. Please try again.",
+    "PREVIOUSLY_REGISTERED": "This passkey is already registered on your account."
   }
 }

@@ -1,8 +1,7 @@
 import { Icon } from "@iconify/react";
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -16,11 +15,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { useDeleteList, useRemoveItemFromList, useUpdateList } from "@/hooks/list";
-import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
+import { useDeleteList, useListItems, useRemoveItemFromList, useUpdateList } from "@/hooks/list";
+import type { ApiTypes } from "@/lib/api.ts";
 import { LIST_TYPE_LABEL_KEY, listItemToLink } from "@/lib/utils/list-item";
+import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll";
 
 interface ListItemsModalProps {
   group: ApiTypes.ListGroup;
@@ -52,18 +53,14 @@ export function ListItemsModal({ group, open, onOpenChange, editable = false }: 
     }
   }, [open]);
 
-  const itemsQuery = useQuery<ApiTypes.ListItem[]>({
-    queryKey: ["listItems", activeList.id],
-    queryFn: () =>
-      api
-        .get<ApiTypes.GetItemsByListIdResponse>(apiEndpoints.getItemsByListId(activeList.id), {
-          params: { itemsPerPage: 50 },
-        })
-        .then(({ data }) => data.listItems.items),
-    enabled: open,
-  });
+  const itemsQuery = useListItems(activeList.id, open);
 
-  const items = itemsQuery.data ?? [];
+  const items = useMemo(() => itemsQuery.data?.pages.flatMap((page) => page.items) ?? [], [itemsQuery.data]);
+
+  const sentinelRef = useInfiniteScroll(
+    itemsQuery.fetchNextPage,
+    itemsQuery.hasNextPage && !itemsQuery.isFetchingNextPage,
+  );
 
   function selectList(listId: string) {
     setActiveListId(listId);
@@ -113,7 +110,9 @@ export function ListItemsModal({ group, open, onOpenChange, editable = false }: 
   }
 
   const itemsGrid = itemsQuery.isLoading ? (
-    <p className="text-muted-foreground">{t("common:loading")}</p>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <CardSkeletons />
+    </div>
   ) : items.length === 0 ? (
     <p className="text-muted-foreground">{t("library:noItems")}</p>
   ) : (
@@ -148,6 +147,10 @@ export function ListItemsModal({ group, open, onOpenChange, editable = false }: 
           </div>
         );
       })}
+
+      {itemsQuery.isFetchingNextPage && <CardSkeletons length={4} />}
+
+      <div ref={sentinelRef} className="col-span-full h-px" />
     </div>
   );
 
@@ -266,6 +269,19 @@ export function ListItemsModal({ group, open, onOpenChange, editable = false }: 
           </DialogFooter>
         </DialogContent>
       </Dialog>
+    </>
+  );
+}
+
+function CardSkeletons({ length = 8 }: { length?: number }) {
+  return (
+    <>
+      {Array.from({ length }).map((_, index) => (
+        <div key={index} className="space-y-2">
+          <Skeleton className="aspect-3/4 w-full rounded-lg" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+      ))}
     </>
   );
 }

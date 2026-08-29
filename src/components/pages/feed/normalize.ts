@@ -1,3 +1,4 @@
+import type { ScreenshotImage } from "@/components/shared/cards/screenshot";
 import type { ApiTypes } from "@/lib/api";
 
 export type FeedMediaRoute =
@@ -61,14 +62,20 @@ const ACTIVITY_ICONS: Record<ApiTypes.ActivityType, string> = {
   Followed: "lucide:user-plus",
   MedalEarned: "lucide:medal",
   AccountCreated: "lucide:party-popper",
+  ScreenshotAdded: "lucide:image",
 };
 
 export interface FeedReviewData extends FeedItemData {
   criteries: { all: number; breakdown: FeedCriteria[] };
 }
 
+export interface FeedScreenshotData extends FeedItemData {
+  screenshots: ScreenshotImage[];
+}
+
 export type FeedRenderItem =
   | { kind: "review"; profile: FeedProfile; item: FeedReviewData }
+  | { kind: "screenshot"; profile: FeedProfile; item: FeedScreenshotData }
   | { kind: "item"; profile: FeedProfile; item: FeedItemData };
 
 interface ResolvedMedia {
@@ -298,6 +305,35 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
             titleLink: mediaHighlight(media.media),
             time,
             likes,
+          },
+        };
+      }
+
+      case "ScreenshotAdded": {
+        const screenshots = group.items.flatMap((item) => (item.gameScreenshot ? [item.gameScreenshot] : []));
+        const first = screenshots[0];
+        const media = resolveMedia({ game: first?.game });
+        if (!first || !media) return null;
+
+        return {
+          kind: "screenshot",
+          profile,
+          item: {
+            coverURL: media.cover,
+            media: media.media,
+            mediaTitle: media.title,
+            titleKey: "feed:addScreenshots",
+            titleValues: { content: media.title, count: screenshots.length },
+            titleLink: mediaHighlight(media.media),
+            time,
+            likes,
+            screenshots: screenshots.map((screenshot) => ({
+              id: screenshot.id,
+              url: screenshot.url,
+              type: screenshot.type,
+              description: screenshot.description,
+              isSpoiler: screenshot.isSpoiler,
+            })),
           },
         };
       }

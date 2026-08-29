@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Image } from "@unpic/react";
-import { useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Carousel,
@@ -29,6 +29,46 @@ interface ScreenshotProps {
 }
 
 export function ScreenshotItem({ title, imageURL, images }: ScreenshotProps) {
+  return (
+    <ScreenshotGallery title={title} images={images}>
+      <div className={"cursor-pointer"}>
+        <div className="relative rounded-xl border border-border overflow-hidden aspect-3/4 group">
+          <div
+            className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:opacity-100 opacity-80"
+            style={{
+              backgroundImage: `url("${imageURL}")`,
+            }}
+          />
+          <div className="absolute inset-0 bg-black/40 transition-all duration-300 group-hover:opacity-0 opacity-100 flex items-center justify-center">
+            <div className="flex items-center gap-2 text-white">
+              <Icon icon={"lucide:images"} className={"size-12"} />
+              <span className="font-semibold text-2xl">{images.length}</span>
+            </div>
+          </div>
+        </div>
+        <p className="font-bold text-card-foreground mt-2 hover:text-primary transition-colors line-clamp-2">{title}</p>
+      </div>
+    </ScreenshotGallery>
+  );
+}
+
+interface ScreenshotGalleryProps {
+  title: string;
+  images: ScreenshotImage[];
+  children?: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  startIndex?: number;
+}
+
+export function ScreenshotGallery({
+  title,
+  images,
+  children,
+  open,
+  onOpenChange,
+  startIndex = 0,
+}: ScreenshotGalleryProps) {
   const { t } = useTranslation();
 
   const [revealed, setRevealed] = useState<string[]>([]);
@@ -54,34 +94,19 @@ export function ScreenshotItem({ title, imageURL, images }: ScreenshotProps) {
 
   const isRevealed = (image: ScreenshotImage) => !image.isSpoiler || revealed.includes(image.id);
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen) setRevealed([]);
+    onOpenChange?.(nextOpen);
+  };
+
   return (
-    <Dialog onOpenChange={(open) => !open && setRevealed([])}>
-      <DialogTrigger asChild>
-        <div className={"cursor-pointer"}>
-          <div className="relative rounded-xl border border-border overflow-hidden aspect-3/4 group">
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-all duration-300 group-hover:opacity-100 opacity-80"
-              style={{
-                backgroundImage: `url("${imageURL}")`,
-              }}
-            />
-            <div className="absolute inset-0 bg-black/40 transition-all duration-300 group-hover:opacity-0 opacity-100 flex items-center justify-center">
-              <div className="flex items-center gap-2 text-white">
-                <Icon icon={"lucide:images"} className={"size-12"} />
-                <span className="font-semibold text-2xl">{images.length}</span>
-              </div>
-            </div>
-          </div>
-          <p className="font-bold text-card-foreground mt-2 hover:text-primary transition-colors line-clamp-2">
-            {title}
-          </p>
-        </div>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent
         className="max-w-[calc(100%-1rem)] sm:max-w-[min(1600px,95vw)] gap-0 overflow-hidden border-0 bg-black p-0 rounded-xl [&>button]:z-20 [&>button]:top-3 [&>button]:right-3 [&>button]:rounded-full [&>button]:bg-black/60 [&>button]:p-2 [&>button]:text-white [&>button]:opacity-100 [&>button]:hover:bg-black/80 [&>button_svg]:size-5"
         aria-label={"Gallery"}
       >
-        <Carousel className="w-full" setApi={setApi} opts={{ loop: hasMultiple, align: "center" }}>
+        <Carousel className="w-full" setApi={setApi} opts={{ loop: hasMultiple, align: "center", startIndex }}>
           <CarouselContent className="ml-0">
             {images.map((image, index) => (
               <CarouselItem key={image.id} className="pl-0">

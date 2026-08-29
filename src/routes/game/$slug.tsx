@@ -1,9 +1,9 @@
 import { Icon } from "@iconify/react";
-import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { t } from "i18next";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
@@ -31,8 +31,9 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/
 import { ImageZoom } from "@/components/ui/image-zoom";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { gameScreenshotsQueryKey } from "@/hooks/game";
+import { useGameScreenshots } from "@/hooks/game";
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
@@ -43,6 +44,7 @@ import { getGenreLabel } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
+import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll";
 import { parseVideoUrl, videoEmbedUrl, videoProviderIcon, videoThumbnailUrl } from "@/lib/utils/video";
 
 const websiteIconMap: Record<string, { icon: string; hex?: string }> = {
@@ -256,25 +258,25 @@ function GameDetailsRoute() {
 
   const rating = game?.tgReviewScore ?? 0;
 
-  const [reviewsQuery, screenshotsQuery] = useQueries({
-    queries: [
-      {
-        queryKey: ["gameReviews", game?.id],
-        queryFn: () => api.get(`${apiEndpoints.gameReview}/?gameId=${game?.id}`).then(({ data }) => data.gameReviews),
-        enabled: !!game?.id,
-      },
-      {
-        queryKey: gameScreenshotsQueryKey({ gameId: game?.id }),
-        queryFn: () =>
-          api
-            .get<ApiTypes.GetGameScreenshotsResponse>(`${apiEndpoints.gameScreenshot}/`, {
-              params: { gameId: game?.id },
-            })
-            .then(({ data }) => data.screenshots),
-        enabled: !!game?.id,
-      },
-    ],
+  const reviewsQuery = useQuery({
+    queryKey: ["gameReviews", game?.id],
+    queryFn: () => api.get(`${apiEndpoints.gameReview}/?gameId=${game?.id}`).then(({ data }) => data.gameReviews),
+    enabled: !!game?.id,
   });
+
+  const screenshotsQuery = useGameScreenshots({ gameId: game?.id });
+
+  const screenshots = useMemo(
+    () => screenshotsQuery.data?.pages.flatMap((page) => page.items) ?? [],
+    [screenshotsQuery.data],
+  );
+
+  const screenshotsTotal = screenshotsQuery.data?.pages[0]?.total ?? 0;
+
+  const screenshotsSentinelRef = useInfiniteScroll(
+    screenshotsQuery.fetchNextPage,
+    screenshotsQuery.hasNextPage && !screenshotsQuery.isFetchingNextPage,
+  );
 
   const queryClient = useQueryClient();
 
@@ -291,7 +293,6 @@ function GameDetailsRoute() {
   });
 
   const reviews = reviewsQuery.data;
-  const screenshots = screenshotsQuery.data;
 
   const session = useSession();
   const isAuthenticated = !!session?.data?.session;
@@ -461,7 +462,7 @@ function GameDetailsRoute() {
   const themes: string[] = game.themes;
   const gameModes = game.gameModes.map((m: { name: string }) => m.name);
   const playerPerspectives = game.playerPerspectives.map((p: { name: string }) => p.name);
-  const hasScreenshots = (screenshots?.total ?? 0) > 0;
+  const hasScreenshots = screenshotsTotal > 0;
 
   const isUnreleased = isMediaUnreleased("game", { status: game.gameStatus });
 
@@ -618,7 +619,7 @@ function GameDetailsRoute() {
               </TabsTrigger>
               {hasScreenshots && (
                 <TabsTrigger value="screenshots">
-                  {t("common:screenshots")} ({screenshots?.total ?? 0})
+                  {t("common:screenshots")} ({screenshotsTotal})
                 </TabsTrigger>
               )}
             </TabsList>
@@ -851,12 +852,19 @@ function GameDetailsRoute() {
             )}
           </TabsContent>
           {hasScreenshots && (
-            <TabsContent value="screenshots">
+            <TabsContent value="screenshots" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {screenshots?.items.map((screenshot) => (
+                {screenshots.map((screenshot) => (
                   <UserScreenshot key={screenshot.id} screenshot={screenshot} />
                 ))}
+
+                {screenshotsQuery.isFetchingNextPage &&
+                  Array.from({ length: 3 }).map((_, index) => (
+                    <Skeleton key={index} className="aspect-video w-full rounded-lg" />
+                  ))}
               </div>
+
+              <div ref={screenshotsSentinelRef} className="h-px" />
             </TabsContent>
           )}
         </Tabs>

@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { useToggleActivityReaction, useUserActivities } from "@/hooks/activity";
+import type { ApiTypes } from "@/lib/api";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll";
 import { ActivityItem } from "./activity-item";
 import { normalizeActivityGroup } from "./normalize";
+import { ScreenshotActivityItem } from "./screenshot-item";
 
 interface ActivityFeedProps {
   query: ReturnType<typeof useUserActivities>;
@@ -80,18 +82,28 @@ export function ActivityFeed({ query, toggleReaction, emptyTitle, emptyDescripti
 
   return (
     <div className="flex flex-col w-full gap-y-3">
-      {entries.map(({ key, entry }) => (
-        <ActivityItem
-          key={key}
-          profile={entry.profile}
-          item={entry.item}
-          onReact={(emoji, currentReaction) =>
-            entry.item.activityId &&
-            toggleReaction.mutate({ activityId: entry.item.activityId, currentReaction, emoji })
-          }
-          isReacting={toggleReaction.isPending && toggleReaction.variables?.activityId === entry.item.activityId}
-        />
-      ))}
+      {entries.map(({ key, entry }) => {
+        const onReact = (emoji: string, currentReaction?: ApiTypes.ActivityReaction) =>
+          entry.item.activityId && toggleReaction.mutate({ activityId: entry.item.activityId, currentReaction, emoji });
+
+        const isReacting = toggleReaction.isPending && toggleReaction.variables?.activityId === entry.item.activityId;
+
+        if (entry.kind === "screenshot") {
+          return (
+            <ScreenshotActivityItem
+              key={key}
+              profile={entry.profile}
+              item={entry.item}
+              onReact={onReact}
+              isReacting={isReacting}
+            />
+          );
+        }
+
+        return (
+          <ActivityItem key={key} profile={entry.profile} item={entry.item} onReact={onReact} isReacting={isReacting} />
+        );
+      })}
 
       <div ref={sentinelRef} className="h-px" />
 

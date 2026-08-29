@@ -29,6 +29,21 @@ export function useLists(userId: string, query?: string) {
   });
 }
 
+export function useListItems(listId: string, enabled = true) {
+  return useInfiniteQuery({
+    queryKey: ["listItems", listId],
+    queryFn: ({ pageParam }) =>
+      api
+        .get<ApiTypes.GetItemsByListIdResponse>(apiEndpoints.getItemsByListId(listId), {
+          params: { page: pageParam, itemsPerPage: ITEMS_PER_PAGE },
+        })
+        .then(({ data }) => data.listItems),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => (lastPage.inPage < lastPage.pages ? lastPage.inPage + 1 : undefined),
+    enabled,
+  });
+}
+
 export function useUpdateList(listId: string) {
   const queryClient = useQueryClient();
 

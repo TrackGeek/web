@@ -1108,7 +1108,8 @@ export namespace ApiTypes {
     | "ProgressDropped"
     | "Watched"
     | "Followed"
-    | "MedalEarned";
+    | "MedalEarned"
+    | "ScreenshotAdded";
 
   export interface ActivityMediaSummary {
     id?: string;
@@ -1190,6 +1191,16 @@ export namespace ApiTypes {
     id: string;
   }
 
+  export interface ActivityGameScreenshot {
+    id: string;
+    url: string;
+    type: GameMediaType;
+    provider: GameVideoProvider | null;
+    description: string | null;
+    isSpoiler: boolean;
+    game: ActivityMediaSummary;
+  }
+
   export interface Activity {
     id: string;
     type: ActivityType;
@@ -1220,6 +1231,7 @@ export namespace ApiTypes {
     tvShow?: ActivityMediaSummary | null;
     following?: { id: string; following: ActivityUser } | null;
     userMedal?: { id: string; medal: { id: string; name: string; imageUrl: string } } | null;
+    gameScreenshot?: ActivityGameScreenshot | null;
   }
 
   export interface ActivityGroup {

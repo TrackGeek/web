@@ -7,6 +7,7 @@ import { SettingsPreferencesTab } from "@/components/pages/settings/preferences-
 import { SettingsProfileTab } from "@/components/pages/settings/profile-tab";
 import { ConnectionsCard } from "@/components/shared/settings/connections-card";
 import { DeleteAccountCard } from "@/components/shared/settings/delete-account-card";
+import { PasskeysCard } from "@/components/shared/settings/passkeys-card";
 import { PasswordCard } from "@/components/shared/settings/password-card";
 import { TwoFactorCard } from "@/components/shared/settings/two-factor-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -55,6 +56,8 @@ function SettingsRoute() {
       <TabsContent value="security">
         <div className="flex flex-col gap-4">
           <PasswordCard />
+
+          <PasskeysCard />
 
           <TwoFactorCard />
 

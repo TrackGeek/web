@@ -65,6 +65,7 @@ export function AuthModal() {
   const [lastMethod, setLastMethod] = useState<string | null>(null);
   const [authTab, setAuthTab] = useState<AuthModalTab>("login");
   const [isRequestForgotPassword, setIsRequestForgotPassword] = useState(false);
+  const [isPasskeyPending, setIsPasskeyPending] = useState(false);
 
   const magicLinkForm = useForm<MagicLinkFormData>({
     resolver: zodResolver(magicLinkSchema),
@@ -168,6 +169,28 @@ export function AuthModal() {
     setAuthModalOpen(false);
   }
 
+  async function handleLoginWithPasskey() {
+    setIsPasskeyPending(true);
+
+    const data = await signIn.passkey();
+
+    setIsPasskeyPending(false);
+
+    if (!data || data.error) {
+      const isCancelled = data?.error && "code" in data.error && data.error.code === "AUTH_CANCELLED";
+
+      if (!isCancelled) {
+        toast.error(t("auth:failedToLogin"));
+      }
+
+      return;
+    }
+
+    toast.success(t("auth:loginSuccessful"));
+
+    setAuthModalOpen(false);
+  }
+
   async function handleLoginWithProvider(provider: string) {
     const data = await signIn.social({
       provider,
@@ -212,6 +235,25 @@ export function AuthModal() {
   useEffect(() => {
     if (authModalOpen) setAuthTab(tab);
   }, [authModalOpen, tab]);
+
+  useEffect(() => {
+    if (!authModalOpen || step !== "form" || authTab !== "login" || isRequestForgotPassword) return;
+    if (typeof window === "undefined" || !window.PublicKeyCredential) return;
+
+    let cancelled = false;
+
+    signIn.passkey({ autoFill: true }).then((data) => {
+      if (cancelled || !data || data.error) return;
+
+      toast.success(t("auth:loginSuccessful"));
+
+      setAuthModalOpen(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authModalOpen, step, authTab, isRequestForgotPassword, t]);
 
   return (
     <Dialog
@@ -311,6 +353,9 @@ export function AuthModal() {
                       <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
                         <TabsTrigger value="password">{t("common:password")}</TabsTrigger>
                         <TabsTrigger value="magicLink">{t("auth:magicLink")}</TabsTrigger>
+                        <TabsTrigger value="passkey" className={cn(lastMethod === "passkey" && "text-primary")}>
+                          {t("auth:passkey")}
+                        </TabsTrigger>
                       </TabsList>
                     </div>
 
@@ -325,6 +370,7 @@ export function AuthModal() {
                           <Input
                             id="email"
                             type="email"
+                            autoComplete="username webauthn"
                             placeholder="johndoe@example.com"
                             disabled={passwordForm.formState.isSubmitting}
                             {...passwordForm.register("email")}
@@ -386,6 +432,7 @@ export function AuthModal() {
                           <Input
                             id="email"
                             type="email"
+                            autoComplete="username webauthn"
                             placeholder="johndoe@example.com"
                             disabled={magicLinkForm.formState.isSubmitting}
                             {...magicLinkForm.register("email")}
@@ -408,6 +455,29 @@ export function AuthModal() {
                           )}
                         </Button>
                       </form>
+                    </TabsContent>
+
+                    <TabsContent value="passkey">
+                      <div className="flex flex-col gap-2">
+                        <p className="text-sm text-muted-foreground">{t("auth:passkeyDescription")}</p>
+
+                        <Button
+                          type="button"
+                          className="w-full mt-2"
+                          disabled={isPasskeyPending}
+                          onClick={handleLoginWithPasskey}
+                        >
+                          {isPasskeyPending ? (
+                            <Icon className="size-5" icon="eos-icons:loading" />
+                          ) : (
+                            <>
+                              <Icon icon={"lucide:fingerprint"} className="size-5" />
+
+                              {t("auth:loginWithPasskey")}
+                            </>
+                          )}
+                        </Button>
+                      </div>
                     </TabsContent>
                   </Tabs>
                 </TabsContent>

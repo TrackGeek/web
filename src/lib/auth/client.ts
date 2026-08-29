@@ -1,3 +1,4 @@
+import { passkeyClient } from "@better-auth/passkey/client";
 import {
   customSessionClient,
   inferAdditionalFields,
@@ -17,6 +18,7 @@ export const authClient = createAuthClient({
     customSessionClient(),
     lastLoginMethodClient(),
     magicLinkClient(),
+    passkeyClient(),
     twoFactorClient({
       // Every login method funnels into the same modal step instead of a dedicated page.
       onTwoFactorRedirect() {
@@ -61,6 +63,7 @@ export const {
   getLastUsedLoginMethod,
   resetPassword,
   twoFactor,
+  passkey,
   listAccounts,
   linkSocial,
   unlinkAccount,

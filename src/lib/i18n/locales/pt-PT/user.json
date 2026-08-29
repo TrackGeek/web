@@ -110,8 +110,8 @@
   "discordStatusDnd": "Não incomodar",
   "discordStatusOffline": "Offline",
   "presenceInfoTitle": "Nada aparecendo?",
-  "presenceInfoNotLinked": "The {{provider}} account is not linked to TrackGeek.",
+  "presenceInfoNotLinked": "A conta {{provider}} não está vinculada ao TrackGeek.",
   "presenceInfoNotInGuild": "A pessoa não é um membro do servidor do Discord do TrackGeek.",
-  "presenceInfoOffline": "The person is offline on {{provider}}.",
-  "presenceInfoNotPublic": "The person is not sharing their {{provider}} activity publicly."
+  "presenceInfoOffline": "A pessoa está offline no {{provider}}.",
+  "presenceInfoNotPublic": "A pessoa não compartilha suas atividades no {{provider}} publicamente."
 }

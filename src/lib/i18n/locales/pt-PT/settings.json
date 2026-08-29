@@ -199,20 +199,20 @@
     "description": "Escolha quais tipos de conteúdo aparecem no TrackGeek. Pelo menos um deve permanecer ativado."
   },
   "watchLinks": {
-    "title": "Custom watch links",
-    "description": "Jump from a title straight into your player or favorite site. Variables are replaced with the details of whatever you are viewing.",
-    "empty": "No watch links yet.",
+    "title": "Links úteis personalizados",
+    "description": "Salte de um título diretamente para o seu site ou streaming favorito. Variáveis são substituídas pelos detalhes do título.",
+    "empty": "Nenhum link para assistir ainda.",
     "labelPlaceholder": "Stremio",
-    "preview": "Preview",
-    "toggle": "Enable this link",
-    "variablesTitle": "Available variables",
-    "urlInvalid": "Enter an absolute URL, such as stremio://detail/movie/%ID_IMDB%",
-    "urlTooLong_one": "The URL must be at most {{count}} character.",
-    "urlTooLong_other": "The URL must be at most {{count}} characters.",
-    "urlUnknownVariable": "The URL uses a variable that doesn't exist.",
-    "contentTypesRequired": "Select at least one content type.",
-    "limitReached_one": "You can have at most {{count}} watch link.",
-    "limitReached_other": "You can have at most {{count}} watch links."
+    "preview": "Pré-visualizar",
+    "toggle": "Ativar este link",
+    "variablesTitle": "Variáveis disponíveis",
+    "urlInvalid": "Digite uma URL absoluta, como stremio://detail/movie/%ID_IMDB%",
+    "urlTooLong_one": "A URL deve ter no máximo {{count}} caracter.",
+    "urlTooLong_other": "A URL deve ter no máximo {{count}} caracteres.",
+    "urlUnknownVariable": "A URL usa uma variável que não existe.",
+    "contentTypesRequired": "Selecione pelo menos um tipo de conteúdo.",
+    "limitReached_one": "Podes ter no máximo {{count}} link.",
+    "limitReached_other": "Podes ter no máximo {{count}} links."
   },
   "password": {
     "description": "Define uma senha para a tua conta ou altera a senha que já usas para entrar.",
@@ -237,23 +237,23 @@
     }
   },
   "passkeys": {
-    "title": "Passkeys",
-    "description": "Sign in with your fingerprint, face or device PIN instead of a password.",
-    "unsupported": "This browser doesn't support passkeys.",
-    "empty": "You haven't added any passkeys yet.",
-    "unnamed": "Unnamed passkey",
-    "nameLabel": "Passkey name",
-    "namePlaceholder": "My laptop",
-    "addedAt": "Added on {{date}}",
+    "title": "Chaves de acesso",
+    "description": "Faça o login com a sua impressão digital, rosto ou PIN de dispositivo ao invés de uma senha.",
+    "unsupported": "Este navegador não suporta chaves de acesso.",
+    "empty": "Ainda não adicionou nenhuma chave de acesso.",
+    "unnamed": "Chave de acesso sem nome",
+    "nameLabel": "Nome da chave",
+    "namePlaceholder": "Meu computador portátil",
+    "addedAt": "Adicionado em {{date}}",
     "add": {
-      "button": "Add passkey",
-      "success": "Passkey added successfully.",
-      "error": "Failed to add passkey. Please try again."
+      "button": "Adicionar chave de acesso",
+      "success": "Chave de acesso adicionada com sucesso.",
+      "error": "Falha ao adicionar a chave de acesso. Tente novamente."
     },
     "delete": {
-      "button": "Remove",
-      "success": "Passkey removed successfully.",
-      "error": "Failed to remove passkey. Please try again."
+      "button": "Remover",
+      "success": "Chave de acesso removida com sucesso.",
+      "error": "Falha ao remover a chave de acesso. Por favor, tente novamente."
     }
   },
   "twoFactor": {

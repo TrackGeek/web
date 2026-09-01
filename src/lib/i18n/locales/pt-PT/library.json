@@ -279,8 +279,8 @@
   "episodeCount_one": "{{count}} ep",
   "episodeCount_other": "{{count}} eps",
   "watchLinks": {
-    "title": "Watch links",
-    "manage": "Manage"
+    "title": "Links Úteis",
+    "manage": "Gerir"
   },
   "watchProviders": {
     "title": "Onde ver",

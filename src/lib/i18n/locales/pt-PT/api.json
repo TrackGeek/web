@@ -27,8 +27,8 @@
   "UNAUTHORIZED": "Não tens autorização para realizar esta ação.",
   "UNPROCESSABLE_ENTITY": "O pedido não pôde ser processado devido a erros semânticos.",
   "PROFILE_NOT_FOUND": "O perfil solicitado não foi encontrado.",
-  "WATCH_LINK_NOT_FOUND": "The requested watch link was not found.",
-  "WATCH_LINK_LIMIT_REACHED": "You reached the watch links limit.",
+  "WATCH_LINK_NOT_FOUND": "O link solicitado não foi encontrado.",
+  "WATCH_LINK_LIMIT_REACHED": "Atingiu o limite de ligações.",
   "COMMENT_NOT_FOUND": "O comentário solicitado não foi encontrado.",
   "REACTION_NOT_FOUND": "A reação requisitada não foi encontrada.",
   "MOVIE_FRANCHISE_NOT_FOUND": "A franquia solicitada não foi encontrada.",
@@ -40,7 +40,7 @@
   "COSMETIC_NOT_PURCHASABLE": "Este cosmético não pode ser comprado.",
   "COSMETIC_ALREADY_OWNED": "Já possui esse cosmético.",
   "INSUFFICIENT_BALANCE": "Não tem moedas suficientes.",
-  "MEDIA_NOT_RELEASED": "This title has not been released yet, so you can only add it to your plan to consume list.",
+  "MEDIA_NOT_RELEASED": "Este título ainda não foi lançado, então só pode adicioná-lo á sua lista de desejos.",
   "betterAuth": {
     "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "Já existe um usuário com este e-mail. Por favor, use um endereço de e-mail diferente.",
     "INVALID_CODE": "Código inválido. Por favor, tente novamente.",
@@ -54,13 +54,13 @@
     "BACKUP_CODES_NOT_ENABLED": "Códigos de backup não estão disponíveis para esta conta.",
     "TOO_MANY_ATTEMPTS_REQUEST_NEW_CODE": "Demasiadas tentativas. Por favor, aguarde e tente novamente.",
     "INVALID_TWO_FACTOR_COOKIE": "A sua sessão de verificação expirou. Por favor, faça o login novamente.",
-    "CHALLENGE_NOT_FOUND": "Your passkey challenge expired. Please try again.",
-    "YOU_ARE_NOT_ALLOWED_TO_REGISTER_THIS_PASSKEY": "You are not allowed to register this passkey.",
-    "FAILED_TO_VERIFY_REGISTRATION": "Failed to verify this passkey. Please try again.",
-    "PASSKEY_NOT_FOUND": "Passkey not found.",
-    "AUTHENTICATION_FAILED": "Passkey authentication failed. Please try again.",
-    "UNABLE_TO_CREATE_SESSION": "Unable to start a session. Please try again.",
-    "FAILED_TO_UPDATE_PASSKEY": "Failed to update this passkey. Please try again.",
-    "PREVIOUSLY_REGISTERED": "This passkey is already registered on your account."
+    "CHALLENGE_NOT_FOUND": "O desafio da sua chave de acesso expirou. Por favor, tente novamente.",
+    "YOU_ARE_NOT_ALLOWED_TO_REGISTER_THIS_PASSKEY": "Não tens permissão para registrar uma chave de acesso.",
+    "FAILED_TO_VERIFY_REGISTRATION": "Falha ao verificar a chave de acesso. Por favor, tente novamente.",
+    "PASSKEY_NOT_FOUND": "Chave de acesso não encontrada.",
+    "AUTHENTICATION_FAILED": "Falha na autenticação da chave de acesso. Tente novamente.",
+    "UNABLE_TO_CREATE_SESSION": "Não foi possível iniciar a sessão. Por favor, tente novamente.",
+    "FAILED_TO_UPDATE_PASSKEY": "Falha ao atualizar a chave de acesso. Por favor, tente novamente.",
+    "PREVIOUSLY_REGISTERED": "Esta chave de acesso já está registrada na sua conta."
   }
 }

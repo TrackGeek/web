@@ -640,6 +640,7 @@ function TVShowDetailsPage() {
                   slug={slug}
                   totalEpisodes={item.numberOfEpisodes}
                   watchedEpisodes={totalWatchedEpisodes}
+                  releaseDate={item.firstAirDate}
                   unreleased={isUnreleased}
                   onClose={() => setMoreOpen(false)}
                 />

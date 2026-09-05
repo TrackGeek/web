@@ -655,6 +655,7 @@ function AnimeDetailsRoute() {
               slug={slug}
               totalEpisodes={anime.numberOfEpisodes ?? 0}
               watchedEpisodes={totalWatchedEpisodes}
+              releaseDate={anime.airedFrom}
               unreleased={isUnreleased}
               onClose={() => setMoreOpen(false)}
             />

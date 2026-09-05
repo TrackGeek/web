@@ -430,6 +430,7 @@ function BookDetailsRoute() {
             <BookModal
               bookId={book.id}
               totalPages={book.numberOfPages}
+              releaseDate={book.releaseDate}
               unreleased={isUnreleased}
               onClose={() => setMoreOpen(false)}
             />

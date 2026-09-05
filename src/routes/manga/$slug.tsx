@@ -385,6 +385,7 @@ function MangaDetailsRoute() {
             <MangaModal
               mangaId={manga.id}
               totalChapters={manga.numberOfChapters}
+              releaseDate={manga.published?.from}
               unreleased={isUnreleased}
               onClose={() => setMoreOpen(false)}
             />

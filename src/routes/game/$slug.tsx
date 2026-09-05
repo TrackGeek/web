@@ -540,6 +540,7 @@ function GameDetailsRoute() {
             <GameModal
               gameId={game.id}
               platforms={game.platforms}
+              releaseDate={game.firstReleaseDate}
               unreleased={isUnreleased}
               onClose={() => setMoreOpen(false)}
             />

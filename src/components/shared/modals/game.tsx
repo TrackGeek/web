@@ -20,6 +20,7 @@ import {
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { cn, registerInteger } from "@/lib/utils";
+import { latestDate, toCalendarDate, todayCalendarDate } from "@/lib/utils/date";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll";
 import { parseVideoUrl, videoProviderIcon, videoThumbnailUrl } from "@/lib/utils/video";
 import { Badge } from "../../ui/badge";
@@ -135,11 +136,12 @@ interface GamePlatform {
 interface GameModalProps {
   gameId?: string;
   platforms?: GamePlatform[];
+  releaseDate?: string | Date | null;
   unreleased?: boolean;
   onClose?: () => void;
 }
 
-export function GameModal({ gameId, platforms, unreleased = false, onClose }: GameModalProps) {
+export function GameModal({ gameId, platforms, releaseDate, unreleased = false, onClose }: GameModalProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const session = useSession();
@@ -154,6 +156,9 @@ export function GameModal({ gameId, platforms, unreleased = false, onClose }: Ga
       ),
     [platforms],
   );
+
+  const minStartDate = useMemo(() => toCalendarDate(releaseDate), [releaseDate]);
+  const maxFinishDate = useMemo(() => todayCalendarDate(), []);
 
   const progressSchema = useMemo(() => createProgressSchema(t), [t]);
 
@@ -173,6 +178,12 @@ export function GameModal({ gameId, platforms, unreleased = false, onClose }: Ga
 
   const progressStatus = progressForm.watch("status");
   const progressNotes = progressForm.watch("notes") ?? "";
+  const startDate = progressForm.watch("startDate");
+
+  const minFinishDate = latestDate(minStartDate, startDate);
+  const finishDateLimits = minFinishDate
+    ? [{ before: minFinishDate }, { after: maxFinishDate }]
+    : { after: maxFinishDate };
 
   const reviewSchema = useMemo(() => createReviewSchema(t), [t]);
 
@@ -696,7 +707,13 @@ export function GameModal({ gameId, platforms, unreleased = false, onClose }: Ga
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
-                        <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={minStartDate && { before: minStartDate }}
+                          defaultMonth={field.value}
+                        />
                       </PopoverContent>
                     </Popover>
                   )}
@@ -727,7 +744,14 @@ export function GameModal({ gameId, platforms, unreleased = false, onClose }: Ga
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
-                        <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={finishDateLimits}
+                          endMonth={maxFinishDate}
+                          defaultMonth={field.value}
+                        />
                       </PopoverContent>
                     </Popover>
                   )}

@@ -30,6 +30,7 @@ import { Checkbox } from "../../ui/checkbox";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../../ui/command";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../ui/dialog";
 import { Field, FieldError, FieldLabel } from "../../ui/field";
+import { ImageZoom } from "../../ui/image-zoom";
 import { Input } from "../../ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "../../ui/input-group";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
@@ -1182,7 +1183,17 @@ function ScreenshotRow({ screenshot, onDescriptionChange, onSpoilerChange, onRem
   return (
     <div className="flex items-start gap-3 bg-background/50 rounded-lg p-3 border border-border/50">
       <div className="relative size-14 shrink-0">
-        {thumbnail ? (
+        {!thumbnail && (
+          <div className="flex size-14 items-center justify-center rounded-md bg-muted">
+            <Icon
+              icon={video ? videoProviderIcon(video.provider) : "lucide:video"}
+              className="size-6 text-muted-foreground"
+              aria-hidden={true}
+            />
+          </div>
+        )}
+
+        {thumbnail && video && (
           <>
             <Image
               src={thumbnail}
@@ -1191,20 +1202,32 @@ function ScreenshotRow({ screenshot, onDescriptionChange, onSpoilerChange, onRem
               alt={screenshot.description ?? ""}
               className={cn("size-14 object-cover rounded-md", screenshot.isSpoiler && "blur-sm")}
             />
-            {video && (
-              <span className="absolute inset-0 flex items-center justify-center rounded-md bg-black/40">
-                <Icon icon={"lucide:play"} className="size-5 text-white" />
-              </span>
-            )}
+            <span className="absolute inset-0 flex items-center justify-center rounded-md bg-black/40">
+              <Icon icon={"lucide:play"} className="size-5 text-white" />
+            </span>
           </>
-        ) : (
-          <div className="flex size-14 items-center justify-center rounded-md bg-muted">
-            <Icon
-              icon={video ? videoProviderIcon(video.provider) : "lucide:video"}
-              className="size-6 text-muted-foreground"
-              aria-hidden={true}
+        )}
+
+        {thumbnail && !video && (
+          <ImageZoom
+            zoomImg={{ src: screenshot.url, alt: screenshot.description ?? "" }}
+            backdropClassName="pointer-events-auto"
+            className={cn(
+              "size-14 rounded-md overflow-hidden group",
+              screenshot.isSpoiler && "blur-sm hover:blur-none transition-[filter]",
+            )}
+          >
+            <Image
+              src={thumbnail}
+              width={56}
+              height={56}
+              alt={screenshot.description ?? ""}
+              className="size-14 object-cover rounded-md"
             />
-          </div>
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-md bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+              <Icon icon={"lucide:maximize-2"} className="size-4 text-white" />
+            </span>
+          </ImageZoom>
         )}
       </div>
       <div className="flex-1 space-y-1.5 min-w-0">

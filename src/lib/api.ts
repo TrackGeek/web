@@ -843,9 +843,13 @@ export namespace ApiTypes {
     | "Dropped"
     | "Planning";
 
+  export type GameCompletion = "mainStory" | "mainStoryPlusExtras" | "100%" | "endless";
+
   export interface Progress {
     id: string;
     status: ProgressStatus;
+    completion?: GameCompletion | null;
+    hoursPlayed?: number | null;
     anime: { id: string; malId: number; title: string; imageUrl: string | null } | null;
     manga: {
       id: string;

@@ -2,7 +2,6 @@ import { Icon } from "@iconify/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@/components/layouts/grid.tsx";
-import type { FavoriteItem } from "@/components/pages/user/overview-tab/favorite-card";
 import { ProgressFiltersPanel } from "@/components/pages/user/progress-filters";
 import { CardItem } from "@/components/shared/cards/card";
 import { CollapsibleFilters } from "@/components/shared/filters/collapsible";
@@ -18,6 +17,7 @@ import {
   fetchRandomProgress,
   PROGRESS_CONTENT,
   type ProgressFilters,
+  type ProgressItem,
   type ProgressSort,
   progressSortOptions,
   progressStatusSections,
@@ -107,7 +107,7 @@ export function UserProgressTab({
       (progressQuery.data?.pages ?? [])
         .flatMap(({ page }) => page.items)
         .map((row) => progressToItem(contentType, row))
-        .filter((item): item is FavoriteItem => item !== null),
+        .filter((item): item is ProgressItem => item !== null),
     [progressQuery.data, contentType],
   );
 
@@ -282,6 +282,8 @@ export function UserProgressTab({
                   url={`/${item.contentType}/${item.slug}`}
                   imageURL={item.image || "/placeholder/cover.webp"}
                   rating={item.score ?? undefined}
+                  completion={item.completion}
+                  hoursPlayed={item.hoursPlayed}
                 />
               ))}
             </Grid>

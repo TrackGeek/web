@@ -531,6 +531,7 @@ function GameDetailsRoute() {
             subtitle={releaseDate}
             description={game.summary}
             triggerLabel={t("library:moreOptions")}
+            status={currentStatus}
             open={moreOpen}
             onOpenChange={setMoreOpen}
             isFavorited={isFavorited}

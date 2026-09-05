@@ -376,6 +376,7 @@ function MangaDetailsRoute() {
             subtitle={publishedRange}
             description={manga.synopsis}
             triggerLabel={t("library:moreOptions")}
+            status={currentStatus}
             open={moreOpen}
             onOpenChange={setMoreOpen}
             isFavorited={isFavorited}

@@ -372,6 +372,7 @@ function MovieDetailsRoute() {
             subtitle={String(new Date(movie.releaseDate as string).getFullYear())}
             description={movie.overview}
             triggerLabel={t("library:moreOptions")}
+            status={currentStatus === "Dropped" ? undefined : currentStatus}
             open={moreOpen}
             onOpenChange={setMoreOpen}
             isFavorited={isFavorited}

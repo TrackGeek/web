@@ -421,6 +421,7 @@ function BookDetailsRoute() {
             subtitle={releaseDate ?? String(book.releaseYear ?? "")}
             description={book.description}
             triggerLabel={t("library:moreOptions")}
+            status={currentStatus}
             open={moreOpen}
             onOpenChange={setMoreOpen}
             isFavorited={isFavorited}

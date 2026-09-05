@@ -643,6 +643,7 @@ function AnimeDetailsRoute() {
             subtitle={anime.season && anime.year ? `${anime.season} ${anime.year}` : undefined}
             description={anime.synopsis}
             triggerLabel={t("library:moreOptions")}
+            status={currentStatus}
             open={moreOpen}
             onOpenChange={setMoreOpen}
             isFavorited={isFavorited}

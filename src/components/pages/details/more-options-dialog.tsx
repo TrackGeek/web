@@ -1,8 +1,84 @@
 import { Icon } from "@iconify/react";
-import type { ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+
+interface StatusIndicator {
+  labelKey: string;
+  trigger: string;
+  badge: string;
+  dot: string;
+}
+
+const STATUS_INDICATORS: Record<string, StatusIndicator> = {
+  Paused: {
+    labelKey: "feed:lists.paused",
+    trigger: "text-yellow-400 hover:text-yellow-400 bg-yellow-400/10 hover:bg-yellow-400/20",
+    badge: "border-yellow-400/40 bg-yellow-400/10 text-yellow-400",
+    dot: "bg-yellow-400",
+  },
+  Dropped: {
+    labelKey: "feed:lists.dropped",
+    trigger: "text-red-400 hover:text-red-400 bg-red-400/10 hover:bg-red-400/20",
+    badge: "border-red-400/40 bg-red-400/10 text-red-400",
+    dot: "bg-red-400",
+  },
+  Replaying: {
+    labelKey: "feed:lists.replaying",
+    trigger: "text-blue-400 hover:text-blue-400 bg-blue-400/10 hover:bg-blue-400/20",
+    badge: "border-blue-400/40 bg-blue-400/10 text-blue-400",
+    dot: "bg-blue-400",
+  },
+  Rewatching: {
+    labelKey: "feed:lists.rewatching",
+    trigger: "text-blue-400 hover:text-blue-400 bg-blue-400/10 hover:bg-blue-400/20",
+    badge: "border-blue-400/40 bg-blue-400/10 text-blue-400",
+    dot: "bg-blue-400",
+  },
+  Rereading: {
+    labelKey: "feed:lists.rereading",
+    trigger: "text-blue-400 hover:text-blue-400 bg-blue-400/10 hover:bg-blue-400/20",
+    badge: "border-blue-400/40 bg-blue-400/10 text-blue-400",
+    dot: "bg-blue-400",
+  },
+};
+
+interface MoreOptionsTriggerProps extends ComponentProps<typeof Button> {
+  label: string;
+  status?: string;
+}
+
+export function MoreOptionsTrigger({ label, status, className, ...props }: MoreOptionsTriggerProps) {
+  const { t } = useTranslation();
+  const indicator = status ? STATUS_INDICATORS[status] : undefined;
+
+  return (
+    <Button
+      {...props}
+      className={cn(
+        "flex bg-transparent items-center justify-center gap-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300",
+        indicator?.trigger,
+        className,
+      )}
+    >
+      <Icon icon="lucide:more-horizontal" className="size-5" />
+      <span className="text-sm font-medium">{label}</span>
+      {indicator && (
+        <span
+          className={cn(
+            "flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-medium",
+            indicator.badge,
+          )}
+        >
+          <span className={cn("size-1.5 rounded-full", indicator.dot)} />
+          {t(indicator.labelKey)}
+        </span>
+      )}
+    </Button>
+  );
+}
 
 interface MoreOptionsDialogProps {
   title: string;
@@ -11,6 +87,7 @@ interface MoreOptionsDialogProps {
   subtitle: ReactNode;
   description?: string;
   triggerLabel: string;
+  status?: string;
   children: ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -26,6 +103,7 @@ export function MoreOptionsDialog({
   subtitle,
   description,
   triggerLabel,
+  status,
   children,
   open,
   onOpenChange,
@@ -36,10 +114,7 @@ export function MoreOptionsDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button className="flex bg-transparent items-center justify-center gap-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-          <Icon icon="lucide:more-horizontal" className="size-5" />
-          <span className="text-sm font-medium">{triggerLabel}</span>
-        </Button>
+        <MoreOptionsTrigger label={triggerLabel} status={status} />
       </DialogTrigger>
       <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
         <DialogHeader

@@ -56,6 +56,7 @@ const ACTIVITY_ICONS: Record<ApiTypes.ActivityType, string> = {
   ProgressCompleted: "lucide:circle-check",
   ProgressPaused: "lucide:pause",
   ProgressDropped: "lucide:circle-x",
+  ProgressPlanned: "lucide:clock",
   FavoriteAdded: "lucide:heart",
   ListItemAdded: "lucide:list-plus",
   ListCreated: "lucide:list",
@@ -280,7 +281,8 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
       case "ProgressStarted":
       case "ProgressCompleted":
       case "ProgressPaused":
-      case "ProgressDropped": {
+      case "ProgressDropped":
+      case "ProgressPlanned": {
         const progress = firstProgress(activity);
         const media = resolveMedia(progress);
         if (!progress || !media) return null;
@@ -289,6 +291,7 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
           ProgressCompleted: "feed:completedTracking",
           ProgressPaused: "feed:pausedTracking",
           ProgressDropped: "feed:droppedTracking",
+          ProgressPlanned: "feed:plannedTracking",
         };
 
         const key = TRACKING_KEYS[group.type] ?? "feed:startedTracking";

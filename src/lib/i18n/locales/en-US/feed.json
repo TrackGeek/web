@@ -22,6 +22,7 @@
   "completedTracking": "completed <strong>{{content}}</strong>",
   "pausedTracking": "paused <strong>{{content}}</strong>",
   "droppedTracking": "dropped <strong>{{content}}</strong>",
+  "plannedTracking": "planned <strong>{{content}}</strong>",
   "favorited": "favorited <strong>{{content}}</strong>",
   "addedToList": "added <strong>{{content}}</strong> to a list",
   "createdList": "created the list <strong>{{content}}</strong>",

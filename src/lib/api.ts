@@ -1106,6 +1106,7 @@ export namespace ApiTypes {
     | "ProgressCompleted"
     | "ProgressPaused"
     | "ProgressDropped"
+    | "ProgressPlanned"
     | "Watched"
     | "Followed"
     | "MedalEarned"

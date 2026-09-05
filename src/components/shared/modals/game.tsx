@@ -548,31 +548,33 @@ export function GameModal({ gameId, platforms, releaseDate, unreleased = false, 
                 />
               </Field>
 
-              <Field>
-                <FieldLabel htmlFor="completionStatus" className="text-sm font-medium">
-                  {t("feed:completionStatus.label")}
-                </FieldLabel>
-                <Controller
-                  control={progressForm.control}
-                  name="completion"
-                  render={({ field }) => (
-                    <Select value={field.value || undefined} onValueChange={field.onChange}>
-                      <SelectTrigger className="w-full bg-background">
-                        <SelectValue placeholder={t("feed:completionStatus.select")} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {COMPLETION_OPTIONS.map((option) => (
-                            <SelectItem key={option} value={option}>
-                              {option === "100%" ? "100%" : t(`feed:completionStatus.${option}`)}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              </Field>
+              {(progressStatus === "played" || progressStatus === "replaying") && (
+                <Field>
+                  <FieldLabel htmlFor="completionStatus" className="text-sm font-medium">
+                    {t("feed:completionStatus.label")}
+                  </FieldLabel>
+                  <Controller
+                    control={progressForm.control}
+                    name="completion"
+                    render={({ field }) => (
+                      <Select value={field.value || undefined} onValueChange={field.onChange}>
+                        <SelectTrigger className="w-full bg-background">
+                          <SelectValue placeholder={t("feed:completionStatus.select")} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {COMPLETION_OPTIONS.map((option) => (
+                              <SelectItem key={option} value={option}>
+                                {option === "100%" ? "100%" : t(`feed:completionStatus.${option}`)}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </Field>
+              )}
 
               {platformOptions.length > 0 && (
                 <Field>

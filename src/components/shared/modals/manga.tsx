@@ -11,6 +11,7 @@ import z from "zod";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { registerInteger } from "@/lib/utils";
+import { latestDate, toCalendarDate, todayCalendarDate } from "@/lib/utils/date";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";
@@ -90,11 +91,12 @@ interface MangaProgressData {
 interface MangaModalProps {
   mangaId?: string;
   totalChapters?: number | null;
+  releaseDate?: string | Date | null;
   unreleased?: boolean;
   onClose?: () => void;
 }
 
-export function MangaModal({ mangaId, totalChapters, unreleased = false, onClose }: MangaModalProps) {
+export function MangaModal({ mangaId, totalChapters, releaseDate, unreleased = false, onClose }: MangaModalProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const session = useSession();
@@ -104,6 +106,9 @@ export function MangaModal({ mangaId, totalChapters, unreleased = false, onClose
 
   const [newListInput, setNewListInput] = useState<string | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+
+  const minStartDate = useMemo(() => toCalendarDate(releaseDate), [releaseDate]);
+  const maxFinishDate = useMemo(() => todayCalendarDate(), []);
 
   const progressSchema = useMemo(() => createProgressSchema(), []);
 
@@ -119,6 +124,12 @@ export function MangaModal({ mangaId, totalChapters, unreleased = false, onClose
   });
 
   const progressStatus = progressForm.watch("status");
+  const startDate = progressForm.watch("startDate");
+
+  const minFinishDate = latestDate(minStartDate, startDate);
+  const finishDateLimits = minFinishDate
+    ? [{ before: minFinishDate }, { after: maxFinishDate }]
+    : { after: maxFinishDate };
 
   const reviewSchema = useMemo(() => createReviewSchema(t), [t]);
 
@@ -447,7 +458,13 @@ export function MangaModal({ mangaId, totalChapters, unreleased = false, onClose
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
-                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={minStartDate && { before: minStartDate }}
+                        defaultMonth={field.value}
+                      />
                     </PopoverContent>
                   </Popover>
                 )}
@@ -478,7 +495,14 @@ export function MangaModal({ mangaId, totalChapters, unreleased = false, onClose
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
-                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={finishDateLimits}
+                        endMonth={maxFinishDate}
+                        defaultMonth={field.value}
+                      />
                     </PopoverContent>
                   </Popover>
                 )}

@@ -421,6 +421,7 @@ function BookDetailsRoute() {
             subtitle={releaseDate ?? String(book.releaseYear ?? "")}
             description={book.description}
             triggerLabel={t("library:moreOptions")}
+            status={currentStatus}
             open={moreOpen}
             onOpenChange={setMoreOpen}
             isFavorited={isFavorited}
@@ -430,6 +431,7 @@ function BookDetailsRoute() {
             <BookModal
               bookId={book.id}
               totalPages={book.numberOfPages}
+              releaseDate={book.releaseDate}
               unreleased={isUnreleased}
               onClose={() => setMoreOpen(false)}
             />
@@ -733,7 +735,7 @@ function BookDetailsRoute() {
             </EmptyHeader>
           </Empty>
         ) : (
-          <div className="flex flex-col divide-y divide-border/30">
+          <div className="flex flex-col divide-y divide-border/30 space-y-4">
             {reviews?.items.map((review) => (
               <ReviewItem
                 key={review.id}

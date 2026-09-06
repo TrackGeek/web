@@ -11,6 +11,7 @@ import z from "zod";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { blockNonIntegerKeys, cn, registerInteger, toIntegerValue } from "@/lib/utils";
+import { latestDate, toCalendarDate, todayCalendarDate } from "@/lib/utils/date";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";
@@ -237,6 +238,7 @@ interface EpisodicContentModalProps {
   slug?: string;
   totalEpisodes?: number;
   watchedEpisodes?: number;
+  releaseDate?: string | Date | null;
   unreleased?: boolean;
   onClose?: () => void;
 }
@@ -264,6 +266,7 @@ export function EpisodicContentModal({
   slug,
   totalEpisodes = 0,
   watchedEpisodes = 0,
+  releaseDate,
   unreleased = false,
   onClose,
 }: EpisodicContentModalProps) {
@@ -282,6 +285,9 @@ export function EpisodicContentModal({
     [cfg.hasSeasons],
   );
 
+  const minStartDate = useMemo(() => toCalendarDate(releaseDate), [releaseDate]);
+  const maxFinishDate = useMemo(() => todayCalendarDate(), []);
+
   const progressSchema = useMemo(() => createProgressSchema(t), [t]);
 
   const progressForm = useForm<ProgressFormData>({
@@ -297,6 +303,12 @@ export function EpisodicContentModal({
 
   const progressStatus = progressForm.watch("status");
   const progressNotes = progressForm.watch("notes") ?? "";
+  const startDate = progressForm.watch("startDate");
+
+  const minFinishDate = latestDate(minStartDate, startDate);
+  const finishDateLimits = minFinishDate
+    ? [{ before: minFinishDate }, { after: maxFinishDate }]
+    : { after: maxFinishDate };
 
   const reviewSchema = useMemo(() => createReviewSchema(t), [t]);
 
@@ -756,7 +768,13 @@ export function EpisodicContentModal({
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
-                        <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={minStartDate && { before: minStartDate }}
+                          defaultMonth={field.value}
+                        />
                       </PopoverContent>
                     </Popover>
                   )}
@@ -787,7 +805,14 @@ export function EpisodicContentModal({
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
-                        <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={finishDateLimits}
+                          endMonth={maxFinishDate}
+                          defaultMonth={field.value}
+                        />
                       </PopoverContent>
                     </Popover>
                   )}

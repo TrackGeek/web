@@ -14,6 +14,7 @@ import { DetailsPageLayout } from "@/components/pages/details/details-page-layou
 import { EpisodeItem } from "@/components/pages/details/episode";
 import { GenrePills } from "@/components/pages/details/genre-pills";
 import { ListItem } from "@/components/pages/details/list";
+import { MoreOptionsTrigger } from "@/components/pages/details/more-options-dialog";
 import { EpisodeProgress, type SeasonData } from "@/components/pages/details/progress";
 import { ReviewItem } from "@/components/pages/details/review-item";
 import { WatchProviders } from "@/components/pages/details/watch-providers";
@@ -576,10 +577,7 @@ function TVShowDetailsPage() {
 
           <Dialog open={moreOpen} onOpenChange={setMoreOpen}>
             <DialogTrigger asChild>
-              <Button className="flex bg-transparent items-center justify-center space-x-2 w-full py-3 text-muted-foreground hover:text-card-foreground hover:bg-muted rounded-lg transition-all duration-300">
-                <Icon icon={"lucide:more-horizontal"} className="w-5 h-5" />
-                <span className="text-sm font-medium">{t("library:moreOptions")}</span>
-              </Button>
+              <MoreOptionsTrigger label={t("library:moreOptions")} status={currentStatus} />
             </DialogTrigger>
             <DialogContent className="sm:max-w-5xl max-h-[90vh] overflow-hidden p-0">
               <DialogHeader
@@ -640,6 +638,7 @@ function TVShowDetailsPage() {
                   slug={slug}
                   totalEpisodes={item.numberOfEpisodes}
                   watchedEpisodes={totalWatchedEpisodes}
+                  releaseDate={item.firstAirDate}
                   unreleased={isUnreleased}
                   onClose={() => setMoreOpen(false)}
                 />
@@ -1138,7 +1137,7 @@ function TVShowDetailsPage() {
             </EmptyHeader>
           </Empty>
         ) : (
-          <div className="flex flex-col divide-y divide-border/30">
+          <div className="flex flex-col divide-y divide-border/30 space-y-4">
             {reviews?.items.map((review: ApiTypes.TVShowReview) => (
               <ReviewItem
                 key={review.id}

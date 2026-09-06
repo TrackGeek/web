@@ -35,7 +35,6 @@ export interface FeedItemData {
   icon?: string;
   titleKey: string;
   titleValues?: Record<string, string | number>;
-  /** Target of the `<strong>` chunk inside the title, when it points somewhere. */
   titleLink?: FeedHighlightLink;
   mediaTitle?: string;
   content?: string;
@@ -43,12 +42,10 @@ export interface FeedItemData {
   likes?: number;
   comments?: number;
   media?: FeedMediaLink;
-  /** When provided, the item renders the emoji reaction bar instead of the like count. */
   activityId?: string;
   reactions?: ApiTypes.ActivityReaction[];
 }
 
-// Leading icon per activity type, shown when there is no cover image.
 const ACTIVITY_ICONS: Record<ApiTypes.ActivityType, string> = {
   ReviewAdded: "lucide:star",
   Watched: "lucide:monitor-play",
@@ -56,6 +53,7 @@ const ACTIVITY_ICONS: Record<ApiTypes.ActivityType, string> = {
   ProgressCompleted: "lucide:circle-check",
   ProgressPaused: "lucide:pause",
   ProgressDropped: "lucide:circle-x",
+  ProgressPlanned: "lucide:clock",
   FavoriteAdded: "lucide:heart",
   ListItemAdded: "lucide:list-plus",
   ListCreated: "lucide:list",
@@ -63,6 +61,7 @@ const ACTIVITY_ICONS: Record<ApiTypes.ActivityType, string> = {
   MedalEarned: "lucide:medal",
   AccountCreated: "lucide:party-popper",
   ScreenshotAdded: "lucide:image",
+  PostCreated: "lucide:message-square-text",
 };
 
 export interface FeedReviewData extends FeedItemData {
@@ -73,9 +72,17 @@ export interface FeedScreenshotData extends FeedItemData {
   screenshots: ScreenshotImage[];
 }
 
+export interface FeedPostData extends FeedItemData {
+  postId: string;
+  authorId: string;
+  content: string;
+  isSpoiler: boolean;
+}
+
 export type FeedRenderItem =
   | { kind: "review"; profile: FeedProfile; item: FeedReviewData }
   | { kind: "screenshot"; profile: FeedProfile; item: FeedScreenshotData }
+  | { kind: "post"; profile: FeedProfile; item: FeedPostData }
   | { kind: "item"; profile: FeedProfile; item: FeedItemData };
 
 interface ResolvedMedia {
@@ -88,8 +95,6 @@ function toNumber(value: number | string | null | undefined): number {
   return typeof value === "string" ? Number(value) : (value ?? 0);
 }
 
-// Pull the single non-null media relation out of any polymorphic holder
-// (review / progress / episode watch / favorite / list item).
 function resolveMedia(refs: ApiTypes.ActivityMediaRefs | null | undefined): ResolvedMedia | null {
   if (!refs) return null;
   if (refs.anime) {
@@ -204,11 +209,6 @@ function buildProfile(user: ApiTypes.ActivityUser): FeedProfile {
   };
 }
 
-/**
- * Convert a grouped activity into a feed view-model, or null if it cannot be
- * rendered. Uses the first item of the group as the representative row and the
- * group `count` for pluralised titles.
- */
 export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRenderItem | null {
   const activity = group.items[0];
   if (!activity?.user) return null;
@@ -254,7 +254,6 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
         const media = resolveMedia({ anime: activity.anime, tvShow: activity.tvShow });
         if (!media) return null;
 
-        // A Watched activity holds an episode range { from, to } in its metadata.
         const meta = (activity.metadata ?? {}) as { from?: number; to?: number };
         const from = meta.from;
         const to = meta.to;
@@ -280,7 +279,8 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
       case "ProgressStarted":
       case "ProgressCompleted":
       case "ProgressPaused":
-      case "ProgressDropped": {
+      case "ProgressDropped":
+      case "ProgressPlanned": {
         const progress = firstProgress(activity);
         const media = resolveMedia(progress);
         if (!progress || !media) return null;
@@ -289,6 +289,7 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
           ProgressCompleted: "feed:completedTracking",
           ProgressPaused: "feed:pausedTracking",
           ProgressDropped: "feed:droppedTracking",
+          ProgressPlanned: "feed:plannedTracking",
         };
 
         const key = TRACKING_KEYS[group.type] ?? "feed:startedTracking";
@@ -334,6 +335,32 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
               description: screenshot.description,
               isSpoiler: screenshot.isSpoiler,
             })),
+          },
+        };
+      }
+
+      case "PostCreated": {
+        const post = activity.post;
+        if (!post) return null;
+
+        const media = resolveMedia(post);
+
+        return {
+          kind: "post",
+          profile,
+          item: {
+            coverURL: media?.cover ?? "",
+            media: media?.media,
+            mediaTitle: media?.title,
+            titleKey: media ? "feed:postedAbout" : "feed:posted",
+            titleValues: media ? { content: media.title } : undefined,
+            titleLink: media ? mediaHighlight(media.media) : undefined,
+            postId: post.id,
+            authorId: activity.userId,
+            content: post.content,
+            isSpoiler: post.isSpoiler,
+            time,
+            likes,
           },
         };
       }

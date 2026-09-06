@@ -843,9 +843,13 @@ export namespace ApiTypes {
     | "Dropped"
     | "Planning";
 
+  export type GameCompletion = "mainStory" | "mainStoryPlusExtras" | "100%" | "endless";
+
   export interface Progress {
     id: string;
     status: ProgressStatus;
+    completion?: GameCompletion | null;
+    hoursPlayed?: number | null;
     anime: { id: string; malId: number; title: string; imageUrl: string | null } | null;
     manga: {
       id: string;
@@ -1106,10 +1110,12 @@ export namespace ApiTypes {
     | "ProgressCompleted"
     | "ProgressPaused"
     | "ProgressDropped"
+    | "ProgressPlanned"
     | "Watched"
     | "Followed"
     | "MedalEarned"
-    | "ScreenshotAdded";
+    | "ScreenshotAdded"
+    | "PostCreated";
 
   export interface ActivityMediaSummary {
     id?: string;
@@ -1201,6 +1207,31 @@ export namespace ApiTypes {
     game: ActivityMediaSummary;
   }
 
+  export interface Post extends ActivityMediaRefs {
+    id: string;
+    userId?: string;
+    content: string;
+    isSpoiler: boolean;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  export interface CreatePostRequest {
+    content: string;
+    isSpoiler?: boolean;
+    mediaType?: ContentType;
+    mediaExternalId?: number;
+  }
+
+  export interface UpdatePostRequest {
+    content?: string;
+    isSpoiler?: boolean;
+  }
+
+  export interface PostResponse {
+    post: Post;
+  }
+
   export interface Activity {
     id: string;
     type: ActivityType;
@@ -1232,6 +1263,7 @@ export namespace ApiTypes {
     following?: { id: string; following: ActivityUser } | null;
     userMedal?: { id: string; medal: { id: string; name: string; imageUrl: string } } | null;
     gameScreenshot?: ActivityGameScreenshot | null;
+    post?: Post | null;
   }
 
   export interface ActivityGroup {
@@ -1465,6 +1497,10 @@ export const apiEndpoints = {
   getComments: "/comment",
   addComment: "/comment",
   deleteComment: (commentId: string) => `/comment/${commentId}`,
+  createPost: "/post",
+  getPost: (postId: string) => `/post/${postId}`,
+  updatePost: (postId: string) => `/post/${postId}`,
+  deletePost: (postId: string) => `/post/${postId}`,
   getFavoritesByUserId: (userId: string) => `/favorite/user/${userId}`,
   getFavoriteStatus: "/favorite/status",
   addFavorite: "/favorite",

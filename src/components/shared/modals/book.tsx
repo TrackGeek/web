@@ -11,6 +11,7 @@ import z from "zod";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
 import { registerInteger } from "@/lib/utils";
+import { latestDate, toCalendarDate, todayCalendarDate } from "@/lib/utils/date";
 import { Button } from "../../ui/button";
 import { Calendar } from "../../ui/calendar";
 import { Checkbox } from "../../ui/checkbox";
@@ -91,11 +92,12 @@ interface BookProgressData {
 interface BookModalProps {
   bookId?: string;
   totalPages?: number | null;
+  releaseDate?: string | Date | null;
   unreleased?: boolean;
   onClose?: () => void;
 }
 
-export function BookModal({ bookId, totalPages, unreleased = false, onClose }: BookModalProps) {
+export function BookModal({ bookId, totalPages, releaseDate, unreleased = false, onClose }: BookModalProps) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const session = useSession();
@@ -105,6 +107,9 @@ export function BookModal({ bookId, totalPages, unreleased = false, onClose }: B
 
   const [newListInput, setNewListInput] = useState<string | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+
+  const minStartDate = useMemo(() => toCalendarDate(releaseDate), [releaseDate]);
+  const maxFinishDate = useMemo(() => todayCalendarDate(), []);
 
   const progressSchema = useMemo(() => createProgressSchema(), []);
 
@@ -120,6 +125,12 @@ export function BookModal({ bookId, totalPages, unreleased = false, onClose }: B
   });
 
   const progressStatus = progressForm.watch("status");
+  const startDate = progressForm.watch("startDate");
+
+  const minFinishDate = latestDate(minStartDate, startDate);
+  const finishDateLimits = minFinishDate
+    ? [{ before: minFinishDate }, { after: maxFinishDate }]
+    : { after: maxFinishDate };
 
   const reviewSchema = useMemo(() => createReviewSchema(t), [t]);
 
@@ -451,7 +462,13 @@ export function BookModal({ bookId, totalPages, unreleased = false, onClose }: B
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
-                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={minStartDate && { before: minStartDate }}
+                        defaultMonth={field.value}
+                      />
                     </PopoverContent>
                   </Popover>
                 )}
@@ -482,7 +499,14 @@ export function BookModal({ bookId, totalPages, unreleased = false, onClose }: B
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
-                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} />
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={finishDateLimits}
+                        endMonth={maxFinishDate}
+                        defaultMonth={field.value}
+                      />
                     </PopoverContent>
                   </Popover>
                 )}

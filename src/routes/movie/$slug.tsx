@@ -372,6 +372,7 @@ function MovieDetailsRoute() {
             subtitle={String(new Date(movie.releaseDate as string).getFullYear())}
             description={movie.overview}
             triggerLabel={t("library:moreOptions")}
+            status={currentStatus === "Dropped" ? undefined : currentStatus}
             open={moreOpen}
             onOpenChange={setMoreOpen}
             isFavorited={isFavorited}
@@ -807,7 +808,7 @@ function MovieDetailsRoute() {
             </EmptyHeader>
           </Empty>
         ) : (
-          <div className="flex flex-col divide-y divide-border/30">
+          <div className="flex flex-col divide-y divide-border/30 space-y-4">
             {reviews.items.map((review: ApiTypes.Review) => (
               <ReviewItem
                 key={review.id}

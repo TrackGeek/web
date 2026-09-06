@@ -531,6 +531,7 @@ function GameDetailsRoute() {
             subtitle={releaseDate}
             description={game.summary}
             triggerLabel={t("library:moreOptions")}
+            status={currentStatus}
             open={moreOpen}
             onOpenChange={setMoreOpen}
             isFavorited={isFavorited}
@@ -540,6 +541,7 @@ function GameDetailsRoute() {
             <GameModal
               gameId={game.id}
               platforms={game.platforms}
+              releaseDate={game.firstReleaseDate}
               unreleased={isUnreleased}
               onClose={() => setMoreOpen(false)}
             />
@@ -903,7 +905,7 @@ function GameDetailsRoute() {
             </EmptyHeader>
           </Empty>
         ) : (
-          <div className="flex flex-col divide-y divide-border/30">
+          <div className="flex flex-col divide-y divide-border/30 space-y-4">
             {reviews.items.map((review: ApiTypes.Review) => (
               <ReviewItem
                 key={review.id}

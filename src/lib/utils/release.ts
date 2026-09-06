@@ -7,7 +7,7 @@ const UNRELEASED_STATUSES: Record<MediaKind, string[]> = {
   manga: ["Not yet published"],
   tv: ["Planned", "In Production", "Pilot"],
   movie: ["Planned", "In Production", "Post Production", "Rumored"],
-  game: ["Not Released", "Rumored", "Offline"],
+  game: ["Not Released", "Rumored"],
   book: [],
 };
 

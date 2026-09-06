@@ -7,13 +7,9 @@ const ITEMS_PER_PAGE = 50;
 interface ProgressContentConfig {
   endpoint: string;
   responseKey: keyof Omit<ApiTypes.GetProgressResponse, "statusCounts">;
-  /** Active-progress status for this content type. */
   activeStatus: ApiTypes.ProgressStatus;
-  /** `feed:lists.*` i18n key for the active status. */
   activeLabelKey: "watching" | "playing" | "reading" | "planning";
-  /** Repeat-consumption status, when the content type has one. */
   repeatStatus?: ApiTypes.ProgressStatus;
-  /** `feed:lists.*` i18n key for the repeat status. */
   repeatLabelKey?: "rewatching" | "replaying" | "rereading";
 }
 
@@ -68,11 +64,9 @@ export const PROGRESS_CONTENT: Record<ApiTypes.ReviewContentType, ProgressConten
 
 export interface ProgressStatusSection {
   status: ApiTypes.ProgressStatus;
-  /** `feed:lists.*` i18n key for the section heading. */
   labelKey: string;
 }
 
-/** Ordered status sections for a content type: active and repeat first, then planning/completed/paused/dropped. */
 export function progressStatusSections(contentType: ApiTypes.ReviewContentType): ProgressStatusSection[] {
   const { activeStatus, activeLabelKey, repeatStatus, repeatLabelKey } = PROGRESS_CONTENT[contentType];
 
@@ -86,8 +80,12 @@ export function progressStatusSections(contentType: ApiTypes.ReviewContentType):
   ];
 }
 
-/** Maps a progress row to a `FavoriteItem` so it can render with `FavoriteCard`. */
-export function progressToItem(contentType: ApiTypes.ReviewContentType, row: ApiTypes.Progress): FavoriteItem | null {
+export interface ProgressItem extends FavoriteItem {
+  completion?: ApiTypes.GameCompletion | null;
+  hoursPlayed?: number | null;
+}
+
+export function progressToItem(contentType: ApiTypes.ReviewContentType, row: ApiTypes.Progress): ProgressItem | null {
   switch (contentType) {
     case "anime":
       if (!row.anime) return null;
@@ -138,6 +136,8 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "game",
         slug: String(row.game.igdbId),
         mediaId: row.game.id,
+        completion: row.completion ?? null,
+        hoursPlayed: row.hoursPlayed ?? null,
       };
     case "book":
       if (!row.book) return null;
@@ -156,12 +156,9 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
 
 const FULL_YEAR = /^\d{4}$/;
 
-/** Media-level filters applied server-side, so pagination and counts stay consistent. */
 export interface ProgressFilters {
   genres: string[];
-  /** Raw input value — only sent once the user typed a full year. */
   year: string;
-  /** `null` keeps everything, `true`/`false` narrows to released/unreleased media. */
   released: boolean | null;
   releaseStates: ApiTypes.MediaReleaseState[];
   search: string;
@@ -189,7 +186,6 @@ const SORT_LABEL_KEYS: Record<ApiTypes.ProgressSortBy, string> = {
   releaseDate: "common:releaseDate",
 };
 
-/** Manga only stores its release date inside a JSON column, which the API cannot sort by. */
 export function progressSortOptions(contentType: ApiTypes.ReviewContentType) {
   const fields = Object.keys(SORT_LABEL_KEYS) as ApiTypes.ProgressSortBy[];
 
@@ -270,12 +266,10 @@ export function useUserProgress(
       }),
     initialPageParam: 1,
     getNextPageParam: ({ page }) => (page.inPage < page.pages ? page.inPage + 1 : undefined),
-    // Keeps the grid and the sidebar counts on screen while a new filter combination loads.
     placeholderData: keepPreviousData,
   });
 }
 
-/** Small, unfiltered slice of the user's active list — sized for sidebar previews. */
 export function useActiveProgress(contentType: ApiTypes.ReviewContentType, userId: string, limit: number) {
   const { activeStatus } = PROGRESS_CONTENT[contentType];
 
@@ -307,16 +301,12 @@ export function useProgressFilterOptions(contentType: ApiTypes.ReviewContentType
   });
 }
 
-/**
- * Picks a random entry by asking the API for a single item at a random offset,
- * which avoids pulling the whole list into memory.
- */
 export async function fetchRandomProgress(
   contentType: ApiTypes.ReviewContentType,
   userId: string,
   status: ApiTypes.ProgressStatus,
   filters: ProgressFilters,
-): Promise<FavoriteItem | null> {
+): Promise<ProgressItem | null> {
   const params = { userId, status, ...toQueryParams(filters), itemsPerPage: 1 };
   const { page } = await fetchProgressPage(contentType, { ...params, page: 1 });
 

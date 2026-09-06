@@ -32,10 +32,10 @@
     "sequelAddedDescription": "Quando uma sequência de um anime que você concluiu é anunciada.",
     "reopenedCompleted": "Títulos reabertos",
     "reopenedCompletedDescription": "Quando um título que você completou volta para assistir porque um novo conteúdo chegou.",
-    "levelUp": "Level ups",
-    "levelUpDescription": "When you reach a new level.",
-    "mission": "Missions",
-    "missionDescription": "When you complete a mission."
+    "levelUp": "Níveis alcançados",
+    "levelUpDescription": "Quando você atinge um novo nível.",
+    "mission": "Missões",
+    "missionDescription": "Quando você completar uma missão."
   },
   "release": {
     "episode": "Episódio {{number}} do {{title}} foi lançado",
@@ -64,11 +64,11 @@
     "ReactionOnBookReview": "reagiu à sua avaliação de livro"
   },
   "levelUp": {
-    "title": "Level up!",
-    "description": "You reached level {{level}}."
+    "title": "Subiste de nível!",
+    "description": "Você atingiu o nível {{level}}."
   },
   "missionCompleted": {
-    "title": "Mission completed!",
-    "description": "You completed “{{missionName}}” and the reward has been delivered."
+    "title": "Missão concluída!",
+    "description": "Você completou “{{missionName}}” e a recompensa foi entregue."
   }
 }

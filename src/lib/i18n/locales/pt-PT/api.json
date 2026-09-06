@@ -30,6 +30,7 @@
   "WATCH_LINK_NOT_FOUND": "O link solicitado não foi encontrado.",
   "WATCH_LINK_LIMIT_REACHED": "Atingiu o limite de ligações.",
   "COMMENT_NOT_FOUND": "O comentário solicitado não foi encontrado.",
+  "POST_NOT_FOUND": "The requested post was not found.",
   "REACTION_NOT_FOUND": "A reação requisitada não foi encontrada.",
   "MOVIE_FRANCHISE_NOT_FOUND": "A franquia solicitada não foi encontrada.",
   "GAME_FRANCHISE_NOT_FOUND": "A franquia solicitada não foi encontrada.",

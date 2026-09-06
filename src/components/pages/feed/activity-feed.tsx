@@ -9,6 +9,7 @@ import type { ApiTypes } from "@/lib/api";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll";
 import { ActivityItem } from "./activity-item";
 import { normalizeActivityGroup } from "./normalize";
+import { PostItem } from "./post-item";
 import { ScreenshotActivityItem } from "./screenshot-item";
 
 interface ActivityFeedProps {
@@ -101,6 +102,8 @@ export function ActivityFeed({ query, toggleReaction, emptyTitle, emptyDescripti
                 onReact={onReact}
                 isReacting={isReacting}
               />
+            ) : entry.kind === "post" ? (
+              <PostItem profile={entry.profile} item={entry.item} onReact={onReact} isReacting={isReacting} />
             ) : (
               <ActivityItem profile={entry.profile} item={entry.item} onReact={onReact} isReacting={isReacting} />
             )}

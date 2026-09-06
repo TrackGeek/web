@@ -22,6 +22,26 @@ export function formatLongDate(value: DateInput, locale: string): string | null 
   });
 }
 
+export function toCalendarDate(value: DateInput): Date | undefined {
+  const date = toDate(value);
+  if (!date) return undefined;
+
+  return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+}
+
+export function todayCalendarDate(): Date {
+  const now = new Date();
+
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
+export function latestDate(...dates: (Date | undefined)[]): Date | undefined {
+  return dates.reduce<Date | undefined>(
+    (latest, date) => (date && (!latest || date > latest) ? date : latest),
+    undefined,
+  );
+}
+
 const RELATIVE_UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
   ["year", 60 * 60 * 24 * 365],
   ["month", 60 * 60 * 24 * 30],

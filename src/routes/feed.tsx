@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQueryState } from "nuqs";
 import { useTranslation } from "react-i18next";
+import { FeedComposer } from "@/components/pages/feed/composer";
 import { FeedListFollowing } from "@/components/pages/feed/user-following";
 import { FeedListGlobal } from "@/components/pages/feed/user-global";
 import { FeedListTrending } from "@/components/pages/feed/user-trending";
@@ -53,6 +54,8 @@ function FeedRoute() {
                 ))}
               </TabsList>
             </div>
+
+            {isAuthenticated && <FeedComposer />}
 
             {isAuthenticated && (
               <TabsContent value="following" className={contentAnimation}>

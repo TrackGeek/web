@@ -202,7 +202,7 @@ function WatchLinkForm({ formId, defaultValues, submitLabel, pending, onSubmit, 
 
       {preview && (
         <p className="break-all rounded-md bg-muted/40 p-2 font-mono text-muted-foreground text-xs">
-          {t("settings:watchLinks.preview")}: {preview}
+          {t("common:preview")}: {preview}
         </p>
       )}
 

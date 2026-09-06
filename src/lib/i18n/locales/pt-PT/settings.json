@@ -203,7 +203,6 @@
     "description": "Salte de um título diretamente para o seu site ou streaming favorito. Variáveis são substituídas pelos detalhes do título.",
     "empty": "Nenhum link para assistir ainda.",
     "labelPlaceholder": "Stremio",
-    "preview": "Pré-visualizar",
     "toggle": "Ativar este link",
     "variablesTitle": "Variáveis disponíveis",
     "urlInvalid": "Digite uma URL absoluta, como stremio://detail/movie/%ID_IMDB%",

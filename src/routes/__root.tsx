@@ -105,7 +105,11 @@ function RootLayout() {
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang={i18n.language} className={typeof document === "undefined" ? undefined : "js"}>
+    <html
+      lang={i18n.language}
+      className={typeof document === "undefined" ? "notranslate" : "notranslate js"}
+      translate="no"
+    >
       <head>
         <HeadContent />
 

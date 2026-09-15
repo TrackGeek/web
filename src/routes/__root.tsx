@@ -116,7 +116,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <script
           defer
           src="https://dataxamas.izakdvlpr.com/dataxamas.js"
-          data-website-id="79d10439-c84b-4ad9-9975-2d37a4be946e"
+          data-api-key="dx_live_kjccPldizXeGJ8_inhVzjgRYUiNc3fKm3nfniIUE54Y"
           data-allow-localhost="false"
         />
       </head>

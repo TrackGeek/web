@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
+import type { Target } from "animejs";
 import { createTimeline, stagger } from "animejs";
 import type { ReactNode } from "react";
 import { useEffect } from "react";
@@ -74,7 +75,7 @@ export function Hero() {
         {
           opacity: [0, 1],
           scale: [0.86, 1],
-          rotate: (target: HTMLElement) => Number(target.dataset.rotate ?? 0),
+          rotate: (target?: Target) => Number((target as HTMLElement | undefined)?.dataset.rotate ?? 0),
           delay: stagger(170),
           duration: 1200,
           ease: "outBack(1.2)",
@@ -82,7 +83,9 @@ export function Hero() {
         "-=1000",
       );
 
-    return () => timeline.revert();
+    return () => {
+      timeline.revert();
+    };
   }, []);
 
   const cards = [

@@ -1,19 +1,30 @@
+import { Link } from "@tanstack/react-router";
 import { memo } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { cn } from "@/lib/utils";
+import { internalAnilistPath } from "@/lib/utils/anilist-links";
+
+const linkClassName = "text-primary font-medium underline underline-offset-2 hover:text-primary/80";
 
 const components: Components = {
-  a: ({ children, href }) => (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer nofollow"
-      className="text-primary font-medium underline underline-offset-2 hover:text-primary/80"
-    >
-      {children}
-    </a>
-  ),
+  a: ({ children, href }) => {
+    const internalPath = internalAnilistPath(href);
+
+    if (internalPath) {
+      return (
+        <Link to={internalPath} className={linkClassName}>
+          {children}
+        </Link>
+      );
+    }
+
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer nofollow" className={linkClassName}>
+        {children}
+      </a>
+    );
+  },
   p: ({ children }) => <p className="wrap-break-word whitespace-pre-wrap">{children}</p>,
   strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
   em: ({ children }) => <em className="italic">{children}</em>,

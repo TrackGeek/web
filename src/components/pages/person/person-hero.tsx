@@ -8,6 +8,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { cn } from "@/lib/utils";
 import { formatLongDate } from "@/lib/utils/date";
 import { stripMarkdown } from "@/lib/utils/seo";
+import { resolveLink } from "@/lib/utils/social";
 import type { Person } from "./types";
 
 function ageFrom(birthday: string | null, deathday: string | null): number | null {
@@ -25,67 +26,164 @@ function ageFrom(birthday: string | null, deathday: string | null): number | nul
   return hasHadBirthday ? age : age - 1;
 }
 
+interface ExternalLink {
+  key: string;
+  href: string;
+  icon: string;
+  label: string;
+  hover: string;
+}
+
+interface ExternalSpec {
+  key: string;
+  fields: string[];
+  icon: string;
+  label: string;
+  hover: string;
+  href: (value: string) => string;
+}
+
+function withBase(base: string) {
+  return (value: string) => (value.startsWith("http") ? value : `${base}${value}`);
+}
+
+function youtubeHref(value: string) {
+  if (value.startsWith("http")) {
+    return value;
+  }
+
+  if (value.includes("/")) {
+    return `https://www.youtube.com/${value}`;
+  }
+
+  if (value.startsWith("UC")) {
+    return `https://www.youtube.com/channel/${value}`;
+  }
+
+  return `https://www.youtube.com/@${value.replace(/^@/, "")}`;
+}
+
+const EXTERNAL_SPECS: ExternalSpec[] = [
+  {
+    key: "imdb",
+    fields: ["imdb_id", "imdb"],
+    icon: "simple-icons:imdb",
+    label: "IMDb",
+    hover: "hover:text-[#F5C518]",
+    href: withBase("https://www.imdb.com/name/"),
+  },
+  {
+    key: "instagram",
+    fields: ["instagram_id", "instagram"],
+    icon: "simple-icons:instagram",
+    label: "Instagram",
+    hover: "hover:text-[#FF0069]",
+    href: withBase("https://instagram.com/"),
+  },
+  {
+    key: "x",
+    fields: ["twitter_id", "twitter", "x"],
+    icon: "simple-icons:x",
+    label: "X",
+    hover: "hover:text-white",
+    href: withBase("https://twitter.com/"),
+  },
+  {
+    key: "facebook",
+    fields: ["facebook_id", "facebook"],
+    icon: "simple-icons:facebook",
+    label: "Facebook",
+    hover: "hover:text-[#0866FF]",
+    href: withBase("https://www.facebook.com/"),
+  },
+  {
+    key: "youtube",
+    fields: ["youtube_id", "youtube"],
+    icon: "simple-icons:youtube",
+    label: "YouTube",
+    hover: "hover:text-[#FF0000]",
+    href: youtubeHref,
+  },
+  {
+    key: "tiktok",
+    fields: ["tiktok_id", "tiktok"],
+    icon: "simple-icons:tiktok",
+    label: "TikTok",
+    hover: "hover:text-white",
+    href: withBase("https://www.tiktok.com/@"),
+  },
+  {
+    key: "wikipedia",
+    fields: ["wikipedia", "wikipedia_url"],
+    icon: "simple-icons:wikipedia",
+    label: "Wikipedia",
+    hover: "hover:text-foreground",
+    href: withBase("https://en.wikipedia.org/wiki/"),
+  },
+  {
+    key: "wikidata",
+    fields: ["wikidata_id", "wikidata"],
+    icon: "simple-icons:wikidata",
+    label: "Wikidata",
+    hover: "hover:text-[#006699]",
+    href: withBase("https://www.wikidata.org/wiki/"),
+  },
+  {
+    key: "mal",
+    fields: ["mal"],
+    icon: "simple-icons:myanimelist",
+    label: "MyAnimeList",
+    hover: "hover:text-[#2E51A2]",
+    href: withBase("https://myanimelist.net/people/"),
+  },
+  {
+    key: "anilist",
+    fields: ["anilist"],
+    icon: "simple-icons:anilist",
+    label: "AniList",
+    hover: "hover:text-[#02A9FF]",
+    href: withBase("https://anilist.co/staff/"),
+  },
+];
+
 function externalLinks(person: Person) {
   const external = person.external ?? {};
-  const links: { key: string; href: string; icon: string; label: string; hover: string }[] = [];
+  const links: ExternalLink[] = [];
+  const consumed = new Set<string>();
 
-  if (external.imdb_id) {
+  for (const spec of EXTERNAL_SPECS) {
+    const field = spec.fields.find((name) => external[name]);
+
+    for (const name of spec.fields) {
+      consumed.add(name);
+    }
+
+    if (!field) {
+      continue;
+    }
+
     links.push({
-      key: "imdb",
-      href: `https://www.imdb.com/name/${external.imdb_id}`,
-      icon: "simple-icons:imdb",
-      label: "IMDb",
-      hover: "hover:text-[#F5C518]",
+      key: spec.key,
+      href: spec.href(external[field] as string),
+      icon: spec.icon,
+      label: spec.label,
+      hover: spec.hover,
     });
   }
 
-  if (external.instagram_id) {
-    links.push({
-      key: "instagram",
-      href: `https://instagram.com/${external.instagram_id}`,
-      icon: "simple-icons:instagram",
-      label: "Instagram",
-      hover: "hover:text-[#FF0069]",
-    });
-  }
+  for (const [name, value] of Object.entries(external)) {
+    if (consumed.has(name) || !value?.startsWith("http")) {
+      continue;
+    }
 
-  if (external.twitter_id) {
-    links.push({
-      key: "x",
-      href: `https://x.com/${external.twitter_id}`,
-      icon: "simple-icons:x",
-      label: "X",
-      hover: "hover:text-white",
-    });
-  }
+    const resolved = resolveLink(value);
 
-  if (external.facebook_id) {
     links.push({
-      key: "facebook",
-      href: `https://www.facebook.com/${external.facebook_id}`,
-      icon: "simple-icons:facebook",
-      label: "Facebook",
-      hover: "hover:text-[#0866FF]",
-    });
-  }
-
-  if (external.mal) {
-    links.push({
-      key: "mal",
-      href: external.mal,
-      icon: "simple-icons:myanimelist",
-      label: "MyAnimeList",
-      hover: "hover:text-[#2E51A2]",
-    });
-  }
-
-  if (external.anilist) {
-    links.push({
-      key: "anilist",
-      href: external.anilist,
-      icon: "simple-icons:anilist",
-      label: "AniList",
-      hover: "hover:text-[#02A9FF]",
+      key: name,
+      href: value,
+      icon: resolved.icon,
+      label: resolved.platform ?? resolved.hostname,
+      hover: "hover:text-primary",
     });
   }
 

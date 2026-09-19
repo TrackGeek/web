@@ -3,8 +3,10 @@ import { useEffect } from "react";
 import { Counter } from "@/components/pages/home/counter";
 import { CTA } from "@/components/pages/home/cta";
 import { Demo } from "@/components/pages/home/demo";
+import { FAQ } from "@/components/pages/home/faq";
 import { Features } from "@/components/pages/home/features";
 import { Hero } from "@/components/pages/home/hero";
+import { Trust } from "@/components/pages/home/trust";
 import { authClient, useSession } from "@/lib/auth/client";
 import { seo } from "@/lib/utils/seo";
 
@@ -14,8 +16,6 @@ export const Route = createFileRoute("/")({
     landing: search.landing as string | undefined,
   }),
   beforeLoad: async ({ search }) => {
-    // The session cookie lives on the API origin, so the server can never read it.
-    // Resolve the redirect on the client and let the server render the landing page.
     if (typeof window === "undefined") {
       return;
     }
@@ -37,8 +37,6 @@ function HomeRoute() {
   const session = useSession();
   const isAuthenticated = !!session.data?.session;
 
-  // beforeLoad only covers client-side navigations: on a direct hit the match is
-  // hydrated from the server render, where the session is unreadable.
   useEffect(() => {
     if (isAuthenticated && !landing) {
       navigate({ to: "/feed", replace: true });
@@ -54,6 +52,10 @@ function HomeRoute() {
       <Demo />
 
       <Features />
+
+      <Trust />
+
+      <FAQ />
 
       <CTA />
     </main>

@@ -254,10 +254,20 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
         const media = resolveMedia({ anime: activity.anime, tvShow: activity.tvShow });
         if (!media) return null;
 
-        const meta = (activity.metadata ?? {}) as { from?: number; to?: number };
+        const meta = (activity.metadata ?? {}) as { from?: number; to?: number; season?: number };
         const from = meta.from;
         const to = meta.to;
+        const season = meta.season;
         if (from == null || to == null) return null;
+
+        const single = from === to;
+        const titleKey = single
+          ? season == null
+            ? "feed:watchedEpisodes"
+            : "feed:watchedEpisodesSeason"
+          : season == null
+            ? "feed:watchedEpisodesRange"
+            : "feed:watchedEpisodesRangeSeason";
 
         return {
           kind: "item",
@@ -266,9 +276,12 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
             coverURL: media.cover,
             media: media.media,
             mediaTitle: media.title,
-            titleKey: from === to ? "feed:watchedEpisodes" : "feed:watchedEpisodesRange",
-            titleValues:
-              from === to ? { episodeNumber: from, content: media.title } : { from, to, content: media.title },
+            titleKey,
+            titleValues: {
+              content: media.title,
+              ...(single ? { episodeNumber: from } : { from, to }),
+              ...(season != null && { season }),
+            },
             titleLink: mediaHighlight(media.media),
             time,
             likes,

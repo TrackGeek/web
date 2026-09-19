@@ -60,10 +60,6 @@ function parseTwitch(parsed: URL): ParsedVideo | null {
   return null;
 }
 
-/**
- * Mirrors the API parser so a bad link is rejected before the request leaves
- * the browser. Returns null when the link isn't a YouTube/Twitch video or clip.
- */
 export function parseVideoUrl(url: string): ParsedVideo | null {
   let parsed: URL;
 
@@ -92,7 +88,7 @@ export function videoThumbnailUrl(video: ParsedVideo): string | null {
 
 export function videoEmbedUrl(video: ParsedVideo): string {
   if (video.provider === "YouTube") {
-    return `https://www.youtube-nocookie.com/embed/${video.id}`;
+    return `https://www.youtube.com/embed/${video.id}`;
   }
 
   const parent = typeof window === "undefined" ? "" : window.location.hostname;

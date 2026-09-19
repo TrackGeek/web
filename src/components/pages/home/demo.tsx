@@ -1,193 +1,185 @@
 import { Icon } from "@iconify/react";
-import { animate } from "animejs";
-import { useEffect, useRef, useState } from "react";
+import { animate, createSpring } from "animejs";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { prefersReducedMotion, useReveal } from "@/hooks/reveal";
+
+const TOTAL_EPISODES = 6;
 
 export function Demo() {
-  const btnRef = useRef<HTMLButtonElement>(null);
+  const { t } = useTranslation();
+  const textRef = useReveal<HTMLDivElement>({ x: -32, y: 0, step: 70, duration: 900 });
+  const uiRef = useReveal<HTMLDivElement>({ x: 32, y: 0, duration: 950 });
+
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
+  const initialWidth = useRef(`${(4 / TOTAL_EPISODES) * 100}%`).current;
 
   const [watched, setWatched] = useState(4);
-  const total = 6;
   const [isAnimating, setIsAnimating] = useState(false);
-  const { t } = useTranslation();
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+  const isComplete = watched >= TOTAL_EPISODES;
+  const nextEpisode = Math.min(watched + 1, TOTAL_EPISODES);
 
-          const el = entry.target as HTMLElement;
+  const benefits = [
+    { icon: "lucide:refresh-cw", label: t("pages:landing.crossDevice") },
+    { icon: "lucide:bell", label: t("pages:landing.notifications") },
+    { icon: "lucide:trending-up", label: t("pages:landing.progress") },
+    { icon: "lucide:list", label: t("pages:landing.lists") },
+    { icon: "lucide:heart", label: t("pages:landing.favorites") },
+    { icon: "lucide:rss", label: t("pages:landing.feed") },
+    { icon: "lucide:image-up", label: t("pages:landing.upload") },
+    { icon: "lucide:git-fork", label: t("pages:landing.related") },
+    { icon: "lucide:eye-off", label: t("pages:landing.hideContent") },
+    { icon: "lucide:layout-grid", label: t("pages:landing.cleanLayout") },
+    { icon: "lucide:sliders-horizontal", label: t("pages:landing.settings") },
+  ];
 
-          const simple = (props: Parameters<typeof animate>[1]) => {
-            animate(el, { ...props });
-            observer.unobserve(el);
-          };
+  const moveBar = (value: number) => {
+    const bar = barRef.current;
 
-          if (el.classList.contains("demo-text")) simple({ opacity: [0, 1], translateX: [-30, 0], duration: 1000 });
+    if (!bar) return;
 
-          if (el.classList.contains("demo-ui"))
-            simple({
-              opacity: [0, 1],
-              translateX: [30, 0],
-              duration: 1000,
-              delay: 200,
-            });
-        });
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
-    );
+    const width = `${(value / TOTAL_EPISODES) * 100}%`;
 
-    document.querySelectorAll(".demo-text, .demo-ui").forEach((el) => {
-      observer.observe(el);
-    });
+    if (prefersReducedMotion()) {
+      bar.style.width = width;
 
-    return () => observer.disconnect();
-  }, []);
-
-  const handleTrack = () => {
-    if (watched >= total || isAnimating) return;
-    setIsAnimating(true);
-
-    animate(btnRef.current as HTMLButtonElement, {
-      scale: [1, 0.95, 1],
-      duration: 200,
-      easing: "easeInOutQuad",
-    });
-
-    const next = watched + 1;
-    const percent = (next / total) * 100;
-
-    animate(barRef.current as HTMLDivElement, {
-      width: `${percent}%`,
-      easing: "spring(1, 80, 10, 0)",
-      duration: 800,
-    });
-
-    showToast(t("pages:landing.toastMark", { number: next }));
-
-    setWatched(next);
-
-    if (next === total) {
-      showToast(t("pages:landing.toastCongrats"));
+      return;
     }
 
-    setTimeout(() => setIsAnimating(false), 1000);
+    animate(bar, { width, ease: createSpring({ stiffness: 110, damping: 16 }) });
   };
 
-  function showToast(message: string) {
-    const container = document.getElementById("toast-container");
-    if (!container) return;
+  const handleTrack = () => {
+    if (isComplete || isAnimating) return;
 
-    const toast = document.createElement("div");
-    toast.className = "bg-primary/20 border-border p-3 rounded-lg text-white flex items-center gap-2 mt-2";
-    toast.innerHTML = `<span>${message}</span>`;
-    container.appendChild(toast);
+    setIsAnimating(true);
 
-    animate(toast, {
-      translateY: [20, 0],
-      opacity: [0, 1],
-      duration: 400,
-    });
+    const next = watched + 1;
 
-    setTimeout(() => {
-      animate(toast, {
-        opacity: 0,
-        translateX: 20,
-        duration: 400,
-      });
-    }, 3000);
-  }
+    if (buttonRef.current && !prefersReducedMotion()) {
+      animate(buttonRef.current, { scale: [1, 0.96, 1], duration: 260, ease: "outQuad" });
+    }
+
+    setWatched(next);
+    moveBar(next);
+
+    if (next === TOTAL_EPISODES) {
+      toast.success(t("pages:landing.toastCongrats"));
+    } else {
+      toast.success(t("pages:landing.toastMark", { number: next }));
+    }
+
+    setTimeout(() => setIsAnimating(false), 450);
+  };
+
+  const handleReset = () => {
+    setWatched(0);
+    moveBar(0);
+  };
 
   return (
-    <>
-      <section className="py-24 relative overflow-hidden">
-        <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-16">
-          <div className="lg:w-1/2 space-y-6 demo-text anim-hidden">
-            <div className="size-12 rounded-lg bg-primary/20 text-primary flex items-center justify-center text-xl mb-4">
-              <Icon icon={"lucide:wand"} />
-            </div>
-            <h2 className="text-3xl font-bold tracking-tight">{t("pages:landing.demoTitle")}</h2>
-            <p className="text-muted-foreground text-lg">{t("pages:landing.demoDescription")}</p>
-            <ul className="space-y-3 text-muted-foreground">
-              {[
-                t("pages:landing.crossDevice"),
-                t("pages:landing.notifications"),
-                t("pages:landing.progress"),
-                t("pages:landing.lists"),
-                t("pages:landing.favorites"),
-                t("pages:landing.feed"),
-                t("pages:landing.upload"),
-                t("pages:landing.related"),
-                t("pages:landing.hideContent"),
-                t("pages:landing.cleanLayout"),
-                t("pages:landing.settings"),
-              ].map((benefit) => (
-                <li className="flex items-center gap-3" key={benefit}>
-                  <Icon icon={"lucide:check"} className="text-green-500" /> {benefit}
-                </li>
-              ))}
-            </ul>
+    <section className="relative overflow-hidden py-24">
+      <div className="container mx-auto flex flex-col items-center gap-16 px-4 lg:flex-row">
+        <div ref={textRef} className="space-y-6 lg:w-1/2">
+          <div
+            data-reveal
+            className="anim-hidden flex size-12 items-center justify-center rounded-lg bg-primary/15 text-xl text-primary"
+          >
+            <Icon icon="lucide:wand" />
           </div>
 
-          <div className="lg:w-1/2 w-full demo-ui anim-hidden sm:translate-x-7.5">
-            <div className="max-w-md mx-auto bg-card border border-border rounded-xl overflow-hidden shadow-2xl relative">
-              <div className="h-40 bg-linear-to-r from-muted/50 to-muted relative p-6 flex flex-col justify-end">
-                <div className="absolute inset-0 bg-[url('https://image.tmdb.org/t/p/original/pjBUCUZ6dZgapy2SRoPw0WFEzrf.jpg')] bg-cover opacity-70 mix-blend-overlay"></div>
-                <span className="relative z-10 bg-primary text-black text-xs px-2 py-1 rounded w-fit mb-2">
-                  {t("pages:landing.watchingNow")}
+          <h2 data-reveal className="anim-hidden text-3xl font-bold tracking-tight text-balance md:text-4xl">
+            {t("pages:landing.demoTitle")}
+          </h2>
+
+          <p data-reveal className="anim-hidden text-lg text-muted-foreground">
+            {t("pages:landing.demoDescription")}
+          </p>
+
+          <ul className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+            {benefits.map((benefit) => (
+              <li key={benefit.label} data-reveal className="anim-hidden flex items-start gap-3 text-muted-foreground">
+                <Icon icon={benefit.icon} className="mt-1 size-4 shrink-0 text-primary" />
+                <span className="text-sm leading-relaxed">{benefit.label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div ref={uiRef} className="w-full lg:w-1/2">
+          <div
+            data-reveal
+            className="anim-hidden relative mx-auto max-w-md overflow-hidden rounded-xl border border-border/60 bg-card shadow-2xl"
+          >
+            <div className="relative flex h-40 flex-col justify-end bg-gradient-to-r from-muted/50 to-muted p-6">
+              <div
+                className="absolute inset-0 bg-[url('https://image.tmdb.org/t/p/original/pjBUCUZ6dZgapy2SRoPw0WFEzrf.jpg')] bg-cover opacity-70 mix-blend-overlay"
+                aria-hidden
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" aria-hidden />
+
+              <span className="relative z-10 mb-2 w-fit rounded bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
+                {isComplete ? t("library:statusAir.finished") : t("pages:landing.watchingNow")}
+              </span>
+              <h3 className="relative z-10 text-2xl font-bold text-white">Game of Thrones</h3>
+              <p className="relative z-10 text-sm text-muted-foreground">
+                {t("library:season")} 8 • {t("library:episode")} {nextEpisode}
+              </p>
+            </div>
+
+            <div className="space-y-6 p-6">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">{t("pages:landing.seasonProgress")}</span>
+                <span className="font-mono text-sm font-bold tabular-nums">
+                  {watched}/{TOTAL_EPISODES} {t("library:episode_other")}
                 </span>
-                <h3 className="relative z-10 text-2xl font-bold text-white">Game of Thrones</h3>
-                <p className="relative z-10 text-muted-foreground text-sm">
-                  {t("library:season")} 8 • {t("library:episode")} {watched === 4 ? 5 : 6}
-                </p>
               </div>
 
-              <div className="p-6 space-y-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">{t("pages:landing.seasonProgress")}</span>
-                  <span className="text-sm font-mono font-bold" id="progress-text">
-                    {watched}/{total} {t("library:episode_other")}
-                  </span>
-                </div>
-
+              <div
+                role="progressbar"
+                aria-valuenow={watched}
+                aria-valuemin={0}
+                aria-valuemax={TOTAL_EPISODES}
+                aria-label={t("pages:landing.seasonProgress")}
+                className="relative h-4 w-full overflow-hidden rounded-full bg-muted"
+              >
                 <div
-                  role="progressbar"
-                  aria-valuenow={watched}
-                  aria-valuemin={0}
-                  aria-valuemax={total}
-                  aria-label="Season progress"
-                  className="h-4 w-full bg-muted rounded-full overflow-hidden relative"
-                >
-                  <div
-                    className="h-full bg-secondary rounded-full transition-all duration-500 ease-out"
-                    style={{ width: `${watched * (100 / total)}%` }}
-                  ></div>
-                </div>
+                  ref={barRef}
+                  className="h-full rounded-full bg-gradient-to-r from-malachite-600 to-primary"
+                  style={{ width: initialWidth }}
+                />
+              </div>
 
-                <div className="pt-4 border-t border-border">
-                  <Button
-                    onClick={() => {
-                      handleTrack();
-                    }}
-                    disabled={watched === total}
-                    className="w-full py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 group"
-                  >
-                    <Icon icon={"lucide:plus"} className="transition-transform group-hover:rotate-90" />
-                    {watched === 6
-                      ? t("library:statusAir.finished")
-                      : t("pages:landing.markEpisode", { number: watched + 1 })}
+              <div className="space-y-3 border-t border-border/60 pt-4">
+                <Button
+                  ref={buttonRef}
+                  onClick={handleTrack}
+                  disabled={isComplete}
+                  className="group flex w-full items-center justify-center gap-2 rounded-lg py-3 font-medium"
+                >
+                  <Icon icon="lucide:plus" className="transition-transform duration-200 group-hover:rotate-90" />
+                  {isComplete
+                    ? t("library:statusAir.finished")
+                    : t("pages:landing.markEpisode", { number: watched + 1 })}
+                </Button>
+
+                {isComplete ? (
+                  <Button variant="ghost" onClick={handleReset} className="w-full gap-2 text-muted-foreground">
+                    <Icon icon="lucide:rotate-ccw" />
+                    {t("pages:landing.demoReplay")}
                   </Button>
-                </div>
+                ) : (
+                  <p className="text-center text-xs text-muted-foreground">{t("pages:landing.demoHint")}</p>
+                )}
               </div>
             </div>
           </div>
         </div>
-      </section>
-
-      <div id="toast-container"></div>
-    </>
+      </div>
+    </section>
   );
 }

@@ -3,6 +3,7 @@ import { Image } from "@unpic/react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { ShareButton } from "@/components/shared/share-button";
+import { resolveLink } from "@/lib/utils/social";
 import type { Company } from "./types";
 
 const MEDIA_LABELS: Record<Company["mediaType"], string> = {
@@ -28,12 +29,16 @@ export function CompanyHero({ company }: { company: Company }) {
     ...(company.homepage
       ? [{ key: "homepage", href: company.homepage, icon: "lucide:external-link", label: company.homepage }]
       : []),
-    ...company.external.map((link) => ({
-      key: link.url,
-      href: link.url,
-      icon: link.name === "MyAnimeList" ? "simple-icons:myanimelist" : "lucide:link",
-      label: link.name,
-    })),
+    ...company.external.map((link) => {
+      const resolved = resolveLink(link.url);
+
+      return {
+        key: link.url,
+        href: link.url,
+        icon: resolved.icon,
+        label: link.name || resolved.platform || resolved.hostname,
+      };
+    }),
   ];
 
   return (

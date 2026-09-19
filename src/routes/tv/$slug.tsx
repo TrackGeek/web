@@ -761,7 +761,7 @@ function TVShowDetailsPage() {
 
           <TabsContent value="info" className={"space-y-5"}>
             <div className={"space-y-3"}>
-              <p className="text-muted-foreground leading-relaxed">{item.tagline ?? item.overview}</p>
+              <p className="text-muted-foreground leading-relaxed">{item.tagline?.trim() || item.overview}</p>
               <h3 className="font-semibold text-card-foreground text-lg">{t("library:genres")}</h3>
               <GenrePills genres={item.genres ?? []} type="tv" getLabel={(g) => getGenreLabel(t, g)} />
             </div>

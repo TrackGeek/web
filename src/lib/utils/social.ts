@@ -39,7 +39,25 @@ const KNOWN_HOSTS: Record<string, { icon: string; platform: string }> = {
   "dev.to": { icon: "simple-icons:devdotto", platform: "DEV" },
   "ko-fi.com": { icon: "simple-icons:kofi", platform: "Ko-fi" },
   "patreon.com": { icon: "simple-icons:patreon", platform: "Patreon" },
+  "wikipedia.org": { icon: "simple-icons:wikipedia", platform: "Wikipedia" },
+  "wikidata.org": { icon: "simple-icons:wikidata", platform: "Wikidata" },
+  "crunchbase.com": { icon: "simple-icons:crunchbase", platform: "Crunchbase" },
+  "facebook.com": { icon: "simple-icons:facebook", platform: "Facebook" },
 };
+
+function matchHost(hostname: string) {
+  const labels = hostname.split(".");
+
+  for (let i = 0; i < labels.length - 1; i++) {
+    const known = KNOWN_HOSTS[labels.slice(i).join(".")];
+
+    if (known) {
+      return known;
+    }
+  }
+
+  return null;
+}
 
 export function resolveLink(url: string): ResolvedLink {
   let hostname: string;
@@ -50,7 +68,7 @@ export function resolveLink(url: string): ResolvedLink {
     return { icon: GENERIC_ICON, platform: null, hostname: url };
   }
 
-  const known = KNOWN_HOSTS[hostname];
+  const known = matchHost(hostname);
 
   if (known) {
     return { ...known, hostname };

@@ -1,8 +1,8 @@
+import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
-import { animate } from "animejs";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { useReveal } from "@/hooks/reveal";
 import { useSession } from "@/lib/auth/client";
 import { openAuthModal } from "@/lib/auth/modal";
 
@@ -10,59 +10,44 @@ export function CTA() {
   const { t } = useTranslation();
   const session = useSession();
   const username = session.data?.user?.username;
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+  const revealRef = useReveal<HTMLElement>({ y: 30, scale: 0.96, step: 90, duration: 950 });
 
-          const el = entry.target as HTMLElement;
-
-          const simple = (props: Parameters<typeof animate>[1]) => {
-            animate(el, { ...props });
-            observer.unobserve(el);
-          };
-
-          if (el.classList.contains("cta-final"))
-            simple({
-              opacity: [0, 1],
-              scale: [0.9, 1],
-              duration: 1200,
-              easing: "easeOutElastic(1, .8)",
-            });
-        });
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
-    );
-
-    document.querySelectorAll(".cta-final").forEach((el) => {
-      observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const buttonClass =
+    "tg-sheen h-12 w-full gap-2 rounded-lg px-8 text-base font-semibold shadow-xl shadow-primary/25 transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 sm:w-auto sm:text-lg";
 
   return (
-    <section className="py-24 text-center px-4">
-      <div className="max-w-2xl mx-auto space-y-6 cta-final anim-hidden scale-90">
-        <h2 className="text-3xl md:text-5xl font-bold">{t("pages:landing.CTATitle")}</h2>
-        <p className="text-muted-foreground text-lg">{t("pages:landing.CTADescription")}</p>
-        <div className="flex justify-center gap-4 pt-4">
+    <section ref={revealRef} className="relative overflow-hidden px-4 py-28 text-center">
+      <div className="tg-aurora pointer-events-none absolute inset-x-0 -bottom-64 h-[640px] rotate-180" aria-hidden />
+      <div className="tg-grid pointer-events-none absolute inset-0 opacity-30" aria-hidden />
+
+      <div className="relative mx-auto max-w-2xl space-y-6">
+        <h2 data-reveal className="anim-hidden text-3xl font-bold tracking-tight text-balance md:text-5xl">
+          {t("pages:landing.CTATitle")}
+        </h2>
+
+        <p data-reveal className="anim-hidden text-lg text-muted-foreground text-balance">
+          {t("pages:landing.CTADescription")}
+        </p>
+
+        <div data-reveal className="anim-hidden flex justify-center pt-4">
           {username ? (
-            <Link to="/user/$username" params={{ username }} search={{ tab: "overview" }}>
-              <Button className="bg-primary text-primary-foreground h-12 px-8 rounded-lg font-medium text-lg hover:scale-105 transition-transform shadow-xl shadow-primary/20">
+            <Link to="/user/$username" params={{ username }} search={{ tab: "overview" }} className="w-full sm:w-auto">
+              <Button className={buttonClass}>
                 {t("pages:landing.CTAButton")}
+                <Icon icon="lucide:arrow-right" />
               </Button>
             </Link>
           ) : (
-            <Button
-              onClick={() => openAuthModal("register")}
-              className="bg-primary text-primary-foreground h-12 px-8 rounded-lg font-medium text-lg hover:scale-105 transition-transform shadow-xl shadow-primary/20"
-            >
+            <Button onClick={() => openAuthModal("register")} className={buttonClass}>
               {t("pages:landing.CTAButton")}
+              <Icon icon="lucide:arrow-right" />
             </Button>
           )}
         </div>
+
+        <p data-reveal className="anim-hidden text-sm text-muted-foreground text-balance">
+          {t("pages:landing.CTAReassurance")}
+        </p>
       </div>
     </section>
   );

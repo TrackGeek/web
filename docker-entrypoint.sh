@@ -12,5 +12,6 @@ replace_placeholder() {
 
 replace_placeholder "__RUNTIME_VITE_API_URL__" "${VITE_API_URL:-}"
 replace_placeholder "__RUNTIME_VITE_SITE_URL__" "${VITE_SITE_URL:-}"
+replace_placeholder "__RUNTIME_VITE_DATAXAMAS_API_KEY__" "${VITE_DATAXAMAS_API_KEY:-}"
 
 exec "$@"

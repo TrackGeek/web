@@ -1,8 +1,9 @@
 import axios from "axios";
 import i18n, { DEFAULT_LANGUAGE } from "./i18n/config";
+import { env } from './env';
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: env.VITE_API_URL,
   withCredentials: true,
   headers: {
     "X-TrackGeek-Version": "1.0.0",

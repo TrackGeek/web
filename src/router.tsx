@@ -19,6 +19,7 @@ export function getRouter() {
     stringifySearch: stringifySearchWith(JSON.stringify, parseSearchValue),
     defaultPreload: "intent",
     scrollRestoration: true,
+    scrollRestorationBehavior: "smooth",
     context: {
       auth: authClient,
     },

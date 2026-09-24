@@ -1,4 +1,5 @@
 import { OG_IMAGE_SIZE, ogUrl } from "@/lib/og/url";
+import { env } from '../env';
 
 interface SeoOptions {
   title: string;
@@ -21,7 +22,7 @@ export const seo = ({
   keywords = "media tracker, open-source, self-hostable, progress tracker, anime list, game backlog, movie watchlist, TV show stats, manga tracker, book tracker, privacy-focused, entertainment dashboard",
   image,
 }: SeoOptions) => {
-  const origin = typeof window !== "undefined" ? window.location.origin : (import.meta.env.VITE_SITE_URL ?? "");
+  const origin = typeof window !== "undefined" ? window.location.origin : (env.VITE_SITE_URL ?? "");
   const url = typeof document !== "undefined" ? document.URL : "";
   const card = image ?? ogUrl.page(title, description);
   const resolvedImage = card.startsWith("http") ? card : `${origin}${card}`;

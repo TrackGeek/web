@@ -8,6 +8,7 @@ import type { authClient } from "@/lib/auth/client";
 import i18n, { DEFAULT_LANGUAGE, getClientLanguage, isSupportedLanguage, LANGUAGE_TOKEN } from "@/lib/i18n/config";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/utils/json-ld";
 import { RootProvider } from "@/providers";
+import { env } from '@/lib/env';
 
 interface RouterContext {
   auth: typeof authClient;
@@ -115,8 +116,8 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 
         <script
           defer
-          src="https://dataxamas.izakdvlpr.com/dataxamas.js"
-          data-api-key="dx_live_kjccPldizXeGJ8_inhVzjgRYUiNc3fKm3nfniIUE54Y"
+          src="https://dataxamas.com/dataxamas.js"
+          data-api-key={env.VITE_DATAXAMAS_API_KEY}
           data-allow-localhost="false"
         />
       </head>

@@ -1,4 +1,5 @@
 import { CONTENT_TYPE_SLUGS, type ContentTypeSlug } from "@/lib/content-types";
+import { env } from '../env';
 
 export interface SitemapEntry {
   path: string;
@@ -84,7 +85,7 @@ export function isSitemapSection(value: string): value is SitemapSection {
 }
 
 export function resolveSiteUrl(request: Request): string {
-  const configured = import.meta.env.VITE_SITE_URL ?? "";
+  const configured = env.VITE_SITE_URL ?? "";
 
   return (configured || new URL(request.url).origin).replace(/\/+$/, "");
 }
@@ -145,7 +146,7 @@ async function fetchPage(baseUrl: string, path: string, collection: string, page
 }
 
 async function fetchAllItems(path: string, collection: string, query?: string): Promise<Record<string, unknown>[]> {
-  const baseUrl = import.meta.env.VITE_API_URL ?? "";
+  const baseUrl = env.VITE_API_URL ?? "";
 
   if (!baseUrl) return [];
 

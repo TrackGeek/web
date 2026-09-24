@@ -14,6 +14,8 @@
   "replayed": "rejogou <strong>{{content}}</strong>",
   "watchedEpisodes": "assistiu episódio {{episodeNumber}} de <strong>{{content}}</strong>",
   "watchedEpisodesRange": "assistido episódios {{from}}-{{to}} de <strong>{{content}}</strong>",
+  "watchedEpisodesSeason": "watched S{{season}}E{{episodeNumber}} of <strong>{{content}}</strong>",
+  "watchedEpisodesRangeSeason": "watched S{{season}} eps {{from}}-{{to}} of <strong>{{content}}</strong>",
   "readChapters": "leu capítulo {{chapterNumberInitial}} - {{chapterNumberEnd}} de <strong>{{content}}</strong>",
   "moved": "moveu um {{type}} de {{fromList}} para {{toList}}",
   "plansToRead": "planeia ler <strong>{{content}}</strong>",

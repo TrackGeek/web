@@ -14,6 +14,8 @@
   "replayed": "replayed <strong>{{content}}</strong>",
   "watchedEpisodes": "watched episode {{episodeNumber}} of <strong>{{content}}</strong>",
   "watchedEpisodesRange": "watched eps {{from}}-{{to}} of <strong>{{content}}</strong>",
+  "watchedEpisodesSeason": "watched S{{season}}E{{episodeNumber}} of <strong>{{content}}</strong>",
+  "watchedEpisodesRangeSeason": "watched S{{season}} eps {{from}}-{{to}} of <strong>{{content}}</strong>",
   "readChapters": "read chapter {{chapterNumberInitial}} - {{chapterNumberEnd}} of <strong>{{content}}</strong>",
   "moved": "moved a {{type}} from {{fromList}} to {{toList}}",
   "plansToRead": "plans to read <strong>{{content}}</strong>",

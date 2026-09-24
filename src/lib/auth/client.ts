@@ -9,9 +9,10 @@ import {
 } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 import { openAuthModalTwoFactor } from "@/lib/auth/modal";
+import { env } from '../env';
 
 export const authClient = createAuthClient({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: env.VITE_API_URL,
   basePath: "/auth",
   plugins: [
     usernameClient(),

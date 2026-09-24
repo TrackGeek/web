@@ -1,6 +1,7 @@
 import type { FontLoader, ImagesInput } from "takumi-js";
 import { googleFonts } from "takumi-js/helpers";
 import logoSvg from "../../../public/logo.svg?raw";
+import { env } from '../env';
 
 type OgImageSource = { src: string; data: Uint8Array | (() => Uint8Array | Promise<Uint8Array>) };
 
@@ -33,13 +34,13 @@ export function ogFonts() {
 }
 
 function allowedHosts() {
-  const extra = (import.meta.env.VITE_OG_IMAGE_HOSTS ?? "")
+  const extra = (env.VITE_OG_IMAGE_HOSTS ?? "")
     .split(",")
     .map((host: string) => host.trim().toLowerCase())
     .filter(Boolean);
 
-  const apiHost = safeHost(import.meta.env.VITE_API_URL);
-  const siteHost = safeHost(import.meta.env.VITE_SITE_URL);
+  const apiHost = safeHost(env.VITE_API_URL);
+  const siteHost = safeHost(env.VITE_SITE_URL);
 
   return new Set([...DEFAULT_IMAGE_HOSTS, ...extra, ...(apiHost ? [apiHost] : []), ...(siteHost ? [siteHost] : [])]);
 }

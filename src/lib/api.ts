@@ -46,6 +46,15 @@ export namespace ApiTypes {
     perks: Perk[];
   }
 
+  export interface GetDonorsResponse {
+    donors: {
+      id: string;
+      name: string;
+      username: string | null;
+      profile: { avatarUrl: string | null } | null;
+    }[];
+  }
+
   export interface CreatePaymentRequest {
     frequency: PaymentFrequency;
     value: number;
@@ -1365,6 +1374,7 @@ export const apiEndpoints = {
   getCurrency: "/stripe/currency",
   getPrices: "/stripe/price",
   getPerks: "/perk",
+  getDonors: "/payment/donors",
   getCurrentSubscription: "/stripe/subscription",
   cancelCurrentSubscription: "/stripe/subscription",
   createPayment: "/payment",

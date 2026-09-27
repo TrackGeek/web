@@ -2,8 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
 import { useMutation, useQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import axios from "axios";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -30,13 +29,6 @@ export const Route = createFileRoute("/donate")({
   }),
   component: DonateRoute,
 });
-
-interface GitHubContributor {
-  login: string;
-  avatar_url: string;
-  html_url: string;
-  contributions: number;
-}
 
 const createDonatePaymentSchema = z.object({
   value: z.number().positive().min(1).max(10000),
@@ -83,7 +75,7 @@ function DonateRoute() {
     setIsDonateModalOpen(isOpen);
   };
 
-  const [currencyQuery, contributorsQuery, perksQuery] = useQueries({
+  const [currencyQuery, donorsQuery, perksQuery] = useQueries({
     queries: [
       {
         queryKey: ["currency"],
@@ -93,11 +85,9 @@ function DonateRoute() {
         staleTime: 1000 * 60 * 60,
       },
       {
-        queryKey: ["contributors", "web"],
+        queryKey: ["donors"],
         queryFn: async () => {
-          return axios
-            .get<GitHubContributor[]>("https://api.github.com/repos/TrackGeek/web/contributors?anon=1")
-            .then((response) => response.data);
+          return api.get<ApiTypes.GetDonorsResponse>(apiEndpoints.getDonors).then((response) => response.data);
         },
         staleTime: 1000 * 60 * 60,
       },
@@ -125,21 +115,7 @@ function DonateRoute() {
     },
   });
 
-  const contributors = useMemo(() => {
-    const uniqueContributors = new Map<string, GitHubContributor>();
-
-    for (const contributor of contributorsQuery.data ?? []) {
-      const normalizedLogin = contributor.login?.toLowerCase().trim();
-
-      if (!normalizedLogin || normalizedLogin.includes("bot")) continue;
-
-      if (!uniqueContributors.has(normalizedLogin)) {
-        uniqueContributors.set(normalizedLogin, contributor);
-      }
-    }
-
-    return Array.from(uniqueContributors.values()).sort((a, b) => b.contributions - a.contributions);
-  }, [contributorsQuery.data]);
+  const donors = donorsQuery.data?.donors ?? [];
 
   async function handleDonate() {
     if (!session?.data?.session) {
@@ -390,33 +366,25 @@ function DonateRoute() {
             <Icon icon="lucide:external-link" aria-hidden="true" className="size-4 shrink-0" />
           </a>
         </Button>
-        <details className="group">
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-md text-sm font-medium text-card-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
-            {t("pages:donate.contributors")}
-            <Icon icon="lucide:chevron-down" aria-hidden="true" className="size-4 shrink-0 group-open:rotate-180" />
-          </summary>
-          <div className="mt-5 flex flex-wrap gap-4">
-            {contributorsQuery.isPending ? (
-              <Skeleton className="size-24 rounded-full" />
-            ) : contributorsQuery.isError ? (
-              <Button variant="outline" onClick={() => contributorsQuery.refetch()}>
-                {t("common:tryAgain")}
-              </Button>
-            ) : contributors.length ? (
-              contributors.map((contributor) => (
+        {donors.length > 0 && (
+          <details className="group">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-md text-sm font-medium text-card-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
+              {t("pages:donate.contributors")}
+              <Icon icon="lucide:chevron-down" aria-hidden="true" className="size-4 shrink-0 group-open:rotate-180" />
+            </summary>
+            <div className="mt-5 flex flex-wrap gap-4">
+              {donors.map((donor) => (
                 <ContributorsItem
-                  key={contributor.login}
-                  name={contributor.login}
-                  url={contributor.html_url}
-                  avatarURL={contributor.avatar_url}
+                  key={donor.id}
+                  name={donor.name}
+                  url={`/user/${encodeURIComponent(donor.username ?? "")}`}
+                  avatarURL={donor.profile?.avatarUrl}
                   roleType="supporter"
                 />
-              ))
-            ) : (
-              <p className="text-sm">{t("common:noResults")}</p>
-            )}
-          </div>
-        </details>
+              ))}
+            </div>
+          </details>
+        )}
       </footer>
     </div>
   );

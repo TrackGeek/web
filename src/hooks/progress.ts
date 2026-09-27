@@ -81,6 +81,8 @@ export function progressStatusSections(contentType: ApiTypes.ReviewContentType):
 }
 
 export interface ProgressItem extends FavoriteItem {
+  status?: ApiTypes.ProgressStatus;
+  episodeProgress?: ApiTypes.EpisodeProgress;
   completion?: ApiTypes.GameCompletion | null;
   hoursPlayed?: number | null;
 }
@@ -96,6 +98,8 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "anime",
         slug: String(row.anime.malId),
         mediaId: row.anime.id,
+        status: row.status,
+        episodeProgress: row.episodeProgress,
       };
     case "manga":
       if (!row.manga) return null;
@@ -116,6 +120,8 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "tv",
         slug: String(row.tvShow.tmdbId),
         mediaId: row.tvShow.id,
+        status: row.status,
+        episodeProgress: row.episodeProgress,
       };
     case "movie":
       if (!row.movie) return null;
@@ -271,21 +277,31 @@ export function useUserProgress(
 }
 
 export function useActiveProgress(contentType: ApiTypes.ReviewContentType, userId: string, limit: number) {
-  const { activeStatus } = PROGRESS_CONTENT[contentType];
+  const { activeStatus, repeatStatus } = PROGRESS_CONTENT[contentType];
+  const statuses = repeatStatus === "Rewatching" ? [activeStatus, repeatStatus] : [activeStatus];
 
   return useQuery({
-    queryKey: ["active-progress", contentType, userId, activeStatus, limit],
-    queryFn: () =>
-      fetchProgressPage(contentType, {
-        userId,
-        status: activeStatus,
-        sortBy: "updatedAt",
-        sortOrder: "desc",
-        page: 1,
-        itemsPerPage: limit,
-      }),
+    queryKey: ["active-progress", contentType, userId, statuses, limit],
+    queryFn: async () => {
+      const pages = await Promise.all(
+        statuses.map((status) =>
+          fetchProgressPage(contentType, {
+            userId,
+            status,
+            sortBy: "updatedAt",
+            sortOrder: "desc",
+            page: 1,
+            itemsPerPage: limit,
+          }),
+        ),
+      );
+      return pages
+        .flatMap(({ page }) => page.items)
+        .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
+        .slice(0, limit);
+    },
     enabled: Boolean(userId),
-    select: ({ page }: ProgressPage) => page.items.flatMap((row) => progressToItem(contentType, row) ?? []),
+    select: (rows) => rows.flatMap((row) => progressToItem(contentType, row) ?? []),
   });
 }
 

@@ -855,7 +855,15 @@ export namespace ApiTypes {
 
   export type GameCompletion = "mainStory" | "mainStoryPlusExtras" | "100%" | "endless";
 
+  export interface EpisodeProgress {
+    current: number;
+    total: number | null;
+    next: { episode: number; season?: number } | null;
+  }
+
   export interface Progress {
+    updatedAt: string;
+    episodeProgress?: EpisodeProgress;
     id: string;
     status: ProgressStatus;
     completion?: GameCompletion | null;

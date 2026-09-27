@@ -42,6 +42,8 @@
   "season": "Season",
   "season_other": "Seasons",
   "episode": "Episode",
+  "episodeProgress": "Episodes watched: {{current}} / {{total}}",
+  "markNextEpisodeWatched": "Mark next episode as watched",
   "episode_other": "Episodes",
   "noEpisodes": "No episodes available for this season.",
   "totalEpisodes": "Total Episodes",

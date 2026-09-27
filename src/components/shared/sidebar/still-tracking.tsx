@@ -67,6 +67,11 @@ function TrackingPanel({ title, icon, types, userId, username }: TrackingPanelPr
               <CardItem
                 key={item.id}
                 title={item.title}
+                episodeProgress={item.episodeProgress}
+                progressStatus={item.status}
+                progressUserId={userId}
+                mediaId={item.mediaId}
+                mediaType={item.contentType}
                 url={`/${item.contentType}/${item.slug}`}
                 imageURL={item.image || null}
               />

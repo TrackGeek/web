@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import type { ApiTypes } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { Button } from "../../ui/button";
+import { CardEpisodeProgress } from "./episode-progress";
 
 const COMPLETION_ICONS: Record<ApiTypes.GameCompletion, string> = {
   mainStory: "boxicons:circle-quarter-alt-filled",
@@ -21,6 +22,10 @@ interface CardProps {
   year?: number;
   synopsis?: string;
   mediaType?: string;
+  episodeProgress?: ApiTypes.EpisodeProgress;
+  progressStatus?: ApiTypes.ProgressStatus;
+  progressUserId?: string;
+  mediaId?: string;
   completion?: ApiTypes.GameCompletion | null;
   hoursPlayed?: number | null;
 }
@@ -40,7 +45,7 @@ export function CardItem(item: CardProps) {
   const hasHours = typeof item.hoursPlayed === "number" && item.hoursPlayed > 0;
 
   return (
-    <Link to={item.url} className="space-y-2">
+    <div className="space-y-2">
       <div className="relative rounded-lg border border-border overflow-hidden aspect-3/4 group">
         <div
           className={cn(
@@ -49,6 +54,21 @@ export function CardItem(item: CardProps) {
           )}
           style={{ backgroundImage: `url("${imageURL}")` }}
         />
+
+        <Link to={item.url} aria-label={item.title} className="absolute inset-0" />
+
+        {item.episodeProgress &&
+          item.progressUserId &&
+          item.mediaId &&
+          (item.mediaType === "anime" || item.mediaType === "tv") && (
+            <CardEpisodeProgress
+              progress={item.episodeProgress}
+              status={item.progressStatus}
+              userId={item.progressUserId}
+              mediaId={item.mediaId}
+              mediaType={item.mediaType}
+            />
+          )}
 
         {item.isAdult && (
           <Button variant="destructive" size="xs" className="absolute top-1 left-1 group-hover:opacity-0">
@@ -81,7 +101,9 @@ export function CardItem(item: CardProps) {
         )}
       </div>
 
-      <p className="font-bold text-card-foreground hover:text-primary transition-colors line-clamp-2">{item.title}</p>
-    </Link>
+      <Link to={item.url} className="font-bold text-card-foreground hover:text-primary transition-colors line-clamp-2">
+        {item.title}
+      </Link>
+    </div>
   );
 }

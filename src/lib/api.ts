@@ -1,6 +1,6 @@
 import axios from "axios";
+import { env } from "./env";
 import i18n, { DEFAULT_LANGUAGE } from "./i18n/config";
-import { env } from './env';
 
 export const api = axios.create({
   baseURL: env.VITE_API_URL,
@@ -1113,6 +1113,7 @@ export namespace ApiTypes {
     | "ProgressDropped"
     | "ProgressPlanned"
     | "Watched"
+    | "ChaptersRead"
     | "Followed"
     | "MedalEarned"
     | "ScreenshotAdded"

@@ -44,13 +44,21 @@ const RELEASE_STATE_LABELS: Record<ApiTypes.ReviewContentType, Partial<Record<Ap
 
 interface ProgressFiltersPanelProps {
   contentType: ApiTypes.ReviewContentType;
+  status: ApiTypes.ProgressStatus;
   options?: ApiTypes.ProgressFilterOptions;
   isLoading: boolean;
   value: ProgressFilters;
   onChange: (patch: Partial<ProgressFilters>) => void;
 }
 
-export function ProgressFiltersPanel({ contentType, options, isLoading, value, onChange }: ProgressFiltersPanelProps) {
+export function ProgressFiltersPanel({
+  contentType,
+  status,
+  options,
+  isLoading,
+  value,
+  onChange,
+}: ProgressFiltersPanelProps) {
   const { t } = useTranslation();
   const [genreSearch, setGenreSearch] = useState("");
   const [genresOpen, setGenresOpen] = useState(false);
@@ -75,6 +83,7 @@ export function ProgressFiltersPanel({ contentType, options, isLoading, value, o
     [value.genres, t],
   );
 
+  const showGameCompletion = contentType === "game" && (status === "Completed" || status === "Dropped");
   const years = options?.years ?? [];
   const releaseStates = options?.releaseStates ?? [];
 
@@ -90,6 +99,43 @@ export function ProgressFiltersPanel({ contentType, options, isLoading, value, o
 
   return (
     <div className="flex flex-col gap-2">
+      {showGameCompletion && (
+        <FilterGroup label={t("feed:completionStatus.label")}>
+          <FilterChips>
+            {(["mainStory", "mainStoryPlusExtras", "100%", "endless"] as const).map((completion) => (
+              <FilterChip
+                key={completion}
+                selected={value.completion.includes(completion)}
+                onClick={() =>
+                  onChange({
+                    completion: value.completion.includes(completion)
+                      ? value.completion.filter((item) => item !== completion)
+                      : [...value.completion, completion],
+                  })
+                }
+              >
+                {completion === "100%" ? completion : t(`feed:completionStatus.${completion}`)}
+              </FilterChip>
+            ))}
+          </FilterChips>
+        </FilterGroup>
+      )}
+      {contentType === "game" &&
+        (["availablePlatforms", "selectedPlatforms"] as const).map((field) => {
+          if (field === "selectedPlatforms" && !showGameCompletion) return null;
+          const platforms = options?.[field] ?? [];
+          if (platforms.length === 0) return null;
+          return (
+            <PlatformFilter
+              key={field}
+              label={t(`library:${field}`)}
+              options={platforms}
+              value={value[field]}
+              onChange={(platforms) => onChange({ [field]: platforms })}
+            />
+          );
+        })}
+
       {genreOptions.length > 0 && (
         <FilterGroup label={""}>
           <Combobox
@@ -221,5 +267,62 @@ function FilterChip({
     >
       {children}
     </button>
+  );
+}
+
+function PlatformFilter({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: { slug: string; name: string }[];
+  value: string[];
+  onChange: (value: string[]) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const selectedLabel = options
+    .filter((option) => value.includes(option.slug))
+    .map((option) => option.name)
+    .join(", ");
+  const visibleOptions = options.filter((option) => option.name.toLowerCase().includes(search.trim().toLowerCase()));
+  return (
+    <FilterGroup label={label}>
+      <Combobox
+        filter={null}
+        multiple
+        items={visibleOptions.map((option) => option.slug)}
+        value={value}
+        onValueChange={onChange}
+        open={open}
+        onOpenChange={(open) => {
+          setOpen(open);
+          if (!open) setSearch("");
+        }}
+      >
+        <ComboboxInput
+          aria-label={label}
+          placeholder={label}
+          className="bg-muted/50"
+          showClear={value.length > 0}
+          title={selectedLabel}
+          value={open ? search : selectedLabel}
+          onChange={(event) => {
+            if (open) setSearch(event.target.value);
+          }}
+        />
+        <ComboboxContent>
+          <ComboboxList>
+            {visibleOptions.map((option) => (
+              <ComboboxItem key={option.slug} value={option.slug}>
+                {option.name}
+              </ComboboxItem>
+            ))}
+          </ComboboxList>
+        </ComboboxContent>
+      </Combobox>
+    </FilterGroup>
   );
 }

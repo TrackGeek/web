@@ -5,6 +5,7 @@ import type { ApiTypes } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { Button } from "../../ui/button";
 import { CardEpisodeProgress } from "./episode-progress";
+import { CardReadingProgress } from "./reading-progress";
 
 const COMPLETION_ICONS: Record<ApiTypes.GameCompletion, string> = {
   mainStory: "boxicons:circle-quarter-alt-filled",
@@ -22,6 +23,7 @@ interface CardProps {
   year?: number;
   synopsis?: string;
   mediaType?: string;
+  readingProgress?: { current: number; total: number | null };
   episodeProgress?: ApiTypes.EpisodeProgress;
   progressStatus?: ApiTypes.ProgressStatus;
   progressUserId?: string;
@@ -56,6 +58,26 @@ export function CardItem(item: CardProps) {
         />
 
         <Link to={item.url} aria-label={item.title} className="absolute inset-0" />
+
+        {Number.isFinite(item.year) &&
+          (item.mediaType === "movie" || item.mediaType === "anime" || item.mediaType === "tv") && (
+            <span className="pointer-events-none absolute top-1 right-1 rounded-md bg-black/75 px-1.5 py-0.5 text-xs font-medium tabular-nums text-white backdrop-blur-xs">
+              {item.year}
+            </span>
+          )}
+
+        {item.readingProgress &&
+          item.progressUserId &&
+          item.mediaId &&
+          (item.mediaType === "book" || item.mediaType === "manga") && (
+            <CardReadingProgress
+              progress={item.readingProgress}
+              status={item.progressStatus}
+              userId={item.progressUserId}
+              mediaId={item.mediaId}
+              mediaType={item.mediaType}
+            />
+          )}
 
         {item.episodeProgress &&
           item.progressUserId &&

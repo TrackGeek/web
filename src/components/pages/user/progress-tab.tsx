@@ -177,7 +177,12 @@ export function UserProgressTab({
             <button
               key={section.status}
               type="button"
-              onClick={() => setSelectedStatus(section.status)}
+              onClick={() => {
+                setSelectedStatus(section.status);
+                if (section.status !== "Completed" && section.status !== "Dropped") {
+                  setFilters((current) => ({ ...current, completion: [], selectedPlatforms: [] }));
+                }
+              }}
               className={cn(
                 "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer",
                 selectedStatus === section.status
@@ -240,6 +245,7 @@ export function UserProgressTab({
               </button>
             </div>
             <ProgressFiltersPanel
+              status={selectedStatus}
               contentType={contentType}
               options={optionsQuery.data}
               isLoading={optionsQuery.isLoading}
@@ -279,6 +285,8 @@ export function UserProgressTab({
                 <CardItem
                   key={item.id}
                   title={item.title}
+                  year={item.year}
+                  readingProgress={item.readingProgress}
                   episodeProgress={item.episodeProgress}
                   progressStatus={item.status}
                   progressUserId={userId}

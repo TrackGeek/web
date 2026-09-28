@@ -862,24 +862,32 @@ export namespace ApiTypes {
   }
 
   export interface Progress {
+    chaptersRead?: number | null;
     updatedAt: string;
     episodeProgress?: EpisodeProgress;
     id: string;
     status: ProgressStatus;
     completion?: GameCompletion | null;
     hoursPlayed?: number | null;
-    anime: { id: string; malId: number; title: string; imageUrl: string | null } | null;
+    anime: { id: string; malId: number; year?: number | null; title: string; imageUrl: string | null } | null;
     manga: {
       id: string;
+      numberOfChapters?: number | null;
       anilistId: number | null;
       malId: number | null;
       title: string;
       imageUrl: string | null;
     } | null;
-    tvShow: { id: string; tmdbId: number; name: string; posterUrl: string | null } | null;
-    movie: { id: string; tmdbId: number; title: string; posterUrl: string | null } | null;
+    tvShow: { id: string; tmdbId: number; firstAirDate?: string | null; name: string; posterUrl: string | null } | null;
+    movie: { id: string; tmdbId: number; releaseDate?: string | null; title: string; posterUrl: string | null } | null;
     game: { id: string; igdbId: number; name: string; coverUrl: string | null } | null;
-    book: { id: string; hardcoverId: number; title: string; imageUrl: string | null } | null;
+    book: {
+      id: string;
+      hardcoverId: number;
+      numberOfPages?: number | null;
+      title: string;
+      imageUrl: string | null;
+    } | null;
   }
 
   export type MediaReleaseState = "Unreleased" | "Ongoing" | "Hiatus" | "Finished" | "Cancelled";
@@ -901,6 +909,8 @@ export namespace ApiTypes {
   }
 
   export interface ProgressFilterOptions {
+    selectedPlatforms?: { slug: string; name: string }[];
+    availablePlatforms?: { slug: string; name: string }[];
     genres: string[];
     years: number[];
     releaseStates: MediaReleaseState[];

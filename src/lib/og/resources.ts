@@ -1,7 +1,7 @@
 import type { FontLoader, ImagesInput } from "takumi-js";
 import { googleFonts } from "takumi-js/helpers";
 import logoSvg from "../../../public/logo.svg?raw";
-import { env } from '../env';
+import { env } from "../env";
 
 type OgImageSource = { src: string; data: Uint8Array | (() => Uint8Array | Promise<Uint8Array>) };
 

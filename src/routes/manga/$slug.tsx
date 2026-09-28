@@ -454,6 +454,33 @@ function MangaDetailsRoute() {
                 });
                 return;
               }
+              if (name.includes("manga up!")) {
+                links.push({
+                  href: url,
+                  key: `mangaup-${i}`,
+                  className: cn(`hover:text-white`),
+                  icon: <Icon icon={"arcticons:manga-up"} />,
+                });
+                return;
+              }
+              if (name.includes("comico")) {
+                links.push({
+                  href: url,
+                  key: `comico-${i}`,
+                  className: cn(`hover:text-white`),
+                  icon: <Icon icon={"arcticons:comico-justoon"} />,
+                });
+                return;
+              }
+              if (name.includes("pixiv comic")) {
+                links.push({
+                  href: url,
+                  key: `pixiv-${i}`,
+                  className: cn(`hover:text-[#0096fa]`),
+                  icon: <Icon icon={"simple-icons:pixiv"} />,
+                });
+                return;
+              }
               if (name.includes("bilibili")) {
                 links.push({
                   href: url,

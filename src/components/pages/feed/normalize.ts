@@ -49,6 +49,7 @@ export interface FeedItemData {
 const ACTIVITY_ICONS: Record<ApiTypes.ActivityType, string> = {
   ReviewAdded: "lucide:star",
   Watched: "lucide:monitor-play",
+  ChaptersRead: "lucide:book-open",
   ProgressStarted: "lucide:play",
   ProgressCompleted: "lucide:circle-check",
   ProgressPaused: "lucide:pause",
@@ -281,6 +282,32 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
               content: media.title,
               ...(single ? { episodeNumber: from } : { from, to }),
               ...(season != null && { season }),
+            },
+            titleLink: mediaHighlight(media.media),
+            time,
+            likes,
+          },
+        };
+      }
+
+      case "ChaptersRead": {
+        const media = resolveMedia(activity.mangaProgress);
+        const meta = (activity.metadata ?? {}) as { from?: number; to?: number };
+        if (!media || meta.from == null || meta.to == null) return null;
+
+        return {
+          kind: "item",
+          profile,
+          item: {
+            coverURL: media.cover,
+            media: media.media,
+            mediaTitle: media.title,
+            titleKey: meta.from === meta.to ? "feed:readChapter" : "feed:readChapters",
+            titleValues: {
+              content: media.title,
+              chapterNumber: meta.from,
+              chapterNumberInitial: meta.from,
+              chapterNumberEnd: meta.to,
             },
             titleLink: mediaHighlight(media.media),
             time,

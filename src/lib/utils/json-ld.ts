@@ -1,9 +1,8 @@
-import { env } from '../env';
+import { env } from "../env";
 
 type JsonLdObject = Record<string, unknown>;
 
-const getOrigin = () =>
-  typeof window !== "undefined" ? window.location.origin : (env.VITE_SITE_URL ?? "");
+const getOrigin = () => (typeof window !== "undefined" ? window.location.origin : (env.VITE_SITE_URL ?? ""));
 
 const getUrl = () => (typeof document !== "undefined" ? document.URL : "");
 

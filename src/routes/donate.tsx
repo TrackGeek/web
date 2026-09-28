@@ -2,8 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
 import { useMutation, useQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import axios from "axios";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -30,13 +29,6 @@ export const Route = createFileRoute("/donate")({
   }),
   component: DonateRoute,
 });
-
-interface GitHubContributor {
-  login: string;
-  avatar_url: string;
-  html_url: string;
-  contributions: number;
-}
 
 const createDonatePaymentSchema = z.object({
   value: z.number().positive().min(1).max(10000),
@@ -83,7 +75,7 @@ function DonateRoute() {
     setIsDonateModalOpen(isOpen);
   };
 
-  const [currencyQuery, contributorsQuery, perksQuery] = useQueries({
+  const [currencyQuery, donorsQuery, perksQuery] = useQueries({
     queries: [
       {
         queryKey: ["currency"],
@@ -93,11 +85,9 @@ function DonateRoute() {
         staleTime: 1000 * 60 * 60,
       },
       {
-        queryKey: ["contributors", "web"],
+        queryKey: ["donors"],
         queryFn: async () => {
-          return axios
-            .get<GitHubContributor[]>("https://api.github.com/repos/TrackGeek/web/contributors?anon=1")
-            .then((response) => response.data);
+          return api.get<ApiTypes.GetDonorsResponse>(apiEndpoints.getDonors).then((response) => response.data);
         },
         staleTime: 1000 * 60 * 60,
       },
@@ -125,21 +115,7 @@ function DonateRoute() {
     },
   });
 
-  const contributors = useMemo(() => {
-    const uniqueContributors = new Map<string, GitHubContributor>();
-
-    for (const contributor of contributorsQuery.data ?? []) {
-      const normalizedLogin = contributor.login?.toLowerCase().trim();
-
-      if (!normalizedLogin || normalizedLogin.includes("bot")) continue;
-
-      if (!uniqueContributors.has(normalizedLogin)) {
-        uniqueContributors.set(normalizedLogin, contributor);
-      }
-    }
-
-    return Array.from(uniqueContributors.values()).sort((a, b) => b.contributions - a.contributions);
-  }, [contributorsQuery.data]);
+  const donors = donorsQuery.data?.donors ?? [];
 
   async function handleDonate() {
     if (!session?.data?.session) {
@@ -171,22 +147,18 @@ function DonateRoute() {
   }
 
   return (
-    <div className="flex flex-col gap-12 bg-card rounded-2xl shadow-lg p-8 text-muted-foreground">
-      <div className="flex flex-col gap-2">
-        <h2 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
-          {t("common:donate")}
-        </h2>
-
-        <p className="text-center">{t("pages:donate.description")}</p>
-
-        <div className="p-10 mt-4 sm:px-56 bg-linear-to-br from-muted/50 to-muted rounded-lg text-white flex flex-col items-center gap-y-3 text-center">
-          <h3 className="text-4xl sm:text-5xl font-extrabold">{t("pages:donate.wantsToDonate.title")}</h3>
-
-          <p className="text-muted-foreground">{t("pages:donate.wantsToDonate.description")}</p>
-
+    <div className="min-w-0 rounded-2xl bg-card p-5 text-muted-foreground shadow-lg sm:p-8 lg:p-10">
+      <header className="flex flex-col items-start gap-6 border-b border-border/40 pb-8 lg:flex-row lg:items-center lg:justify-between">
+        <div className="min-w-0 max-w-2xl space-y-3">
+          <h1 className="text-3xl font-bold text-card-foreground [overflow-wrap:anywhere] sm:text-4xl">
+            {t("pages:donate.supportTitle")}
+          </h1>
+          <p className="text-base leading-relaxed">{t("pages:donate.description")}</p>
+        </div>
+        <div className="flex w-full shrink-0 flex-col items-start gap-2 lg:w-auto lg:items-end">
           <Dialog open={isDonateModalOpen} onOpenChange={handleDonateModalOpenChange}>
             <DialogTrigger asChild>
-              <Button className="flex flex-wrap h-12 w-full mt-5 sm:w-1/4">
+              <Button className="h-12 w-full sm:w-auto sm:min-w-40">
                 <Icon icon={"lucide:coffee"} />
                 {t("common:donate")}
               </Button>
@@ -201,10 +173,11 @@ function DonateRoute() {
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="flex gap-3">
+              <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-3">
                 <Button
+                  aria-pressed={donationType === "OneTime"}
                   onClick={() => setDonationType("OneTime")}
-                  className={`flex-1 h-12 rounded-lg font-medium transition-all ${
+                  className={`flex-1 h-12 rounded-lg font-medium transition-colors ${
                     donationType === "OneTime"
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -214,8 +187,9 @@ function DonateRoute() {
                 </Button>
 
                 <Button
+                  aria-pressed={donationType === "Monthly"}
                   onClick={() => setDonationType("Monthly")}
-                  className={`flex-1 h-12 rounded-lg font-medium transition-all ${
+                  className={`flex-1 h-12 rounded-lg font-medium transition-colors ${
                     donationType === "Monthly"
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -225,13 +199,14 @@ function DonateRoute() {
                 </Button>
               </div>
 
-              <div className="flex gap-3">
+              <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-3">
                 <Button
+                  aria-pressed={amountType === "fixed"}
                   onClick={() => {
                     setAmountType("fixed");
                     createDonatePaymentForm.clearErrors("value");
                   }}
-                  className={`flex-1 h-12 py-3 px-4 rounded-lg font-medium transition-all ${
+                  className={`flex-1 h-12 py-3 px-4 rounded-lg font-medium transition-colors ${
                     amountType === "fixed"
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -241,8 +216,9 @@ function DonateRoute() {
                 </Button>
 
                 <Button
+                  aria-pressed={amountType === "custom"}
                   onClick={() => setAmountType("custom")}
-                  className={`flex-1 h-12 py-3 px-4 rounded-lg font-medium transition-all ${
+                  className={`flex-1 h-12 py-3 px-4 rounded-lg font-medium transition-colors ${
                     amountType === "custom"
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -257,8 +233,9 @@ function DonateRoute() {
                   {fixedAmounts.map((amount) => (
                     <Button
                       key={amount}
+                      aria-pressed={selectedAmount === amount}
                       onClick={() => setSelectedAmount(amount)}
-                      className={`h-12 py-3 px-4 rounded-lg font-semibold transition-all ${
+                      className={`h-12 py-3 px-4 rounded-lg font-semibold transition-colors ${
                         selectedAmount === amount
                           ? "bg-primary text-primary-foreground border-2 border-primary"
                           : "bg-muted text-muted-foreground hover:bg-muted/80 border-2 border-transparent"
@@ -273,6 +250,11 @@ function DonateRoute() {
                   <Icon icon={"lucide:coins"} className="size-5 shrink-0 text-primary" />
 
                   <Input
+                    aria-label={t("pages:donate.modal.enter")}
+                    aria-invalid={!!createDonatePaymentForm.formState.errors.value}
+                    aria-describedby={
+                      createDonatePaymentForm.formState.errors.value ? "donation-amount-error" : undefined
+                    }
                     type="number"
                     min="1"
                     step="0.01"
@@ -286,7 +268,7 @@ function DonateRoute() {
               )}
 
               {amountType === "custom" && createDonatePaymentForm.formState.errors.value ? (
-                <p className="mt-2 text-sm text-destructive">
+                <p id="donation-amount-error" role="alert" className="mt-2 text-sm text-destructive">
                   {createDonatePaymentForm.formState.errors.value.message}
                 </p>
               ) : null}
@@ -305,7 +287,10 @@ function DonateRoute() {
                 className="w-full py-3 text-md font-semibold"
               >
                 {createPaymentMutation.isPending ? (
-                  <Icon icon={"lucide:loader-2"} className="animate-spin" />
+                  <>
+                    <Icon icon={"lucide:loader-2"} className="animate-spin motion-reduce:animate-none" />
+                    {t("common:loading")}
+                  </>
                 ) : (
                   <>
                     {t("common:donate")} {currencySymbol} {(isValidAmount ? finalAmount : 0)?.toLocaleString()}
@@ -316,107 +301,91 @@ function DonateRoute() {
               <p className="text-xs text-muted-foreground text-center">{t("pages:donate.modal.footer")}</p>
             </DialogContent>
           </Dialog>
+          <p className="text-sm">{t("pages:donate.supportOptions")}</p>
         </div>
-      </div>
+      </header>
 
-      <hr />
+      <section aria-labelledby="donation-perks" className="py-8 sm:py-10">
+        <div className="mb-6 max-w-2xl space-y-2">
+          <h2 id="donation-perks" className="text-2xl font-semibold text-card-foreground">
+            {t("pages:donate.perks.title")}
+          </h2>
+          <p className="text-sm leading-relaxed">{t("pages:donate.perks.description")}</p>
+        </div>
 
-      <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
-          {t("pages:donate.perks.title")}
-        </h2>
-
-        <p className="text-center">{t("pages:donate.perks.description")}</p>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {perksQuery.isLoading && (
-            <>
-              <Skeleton className="w-full h-100 rounded-lg" />
-              <Skeleton className="w-full h-100 rounded-lg" />
-              <Skeleton className="w-full h-100 rounded-lg" />
-            </>
-          )}
-
-          {perksQuery.data?.perks &&
-            perksQuery.data?.perks?.length > 0 &&
-            perksQuery.data?.perks?.map((perk) => (
-              <div
+        {perksQuery.isPending ? (
+          <div className="grid gap-4 lg:grid-cols-3" role="status" aria-label={t("common:loading")}>
+            {["tracker", "archivist", "master"].map((tier) => (
+              <Skeleton key={tier} className="h-72 rounded-xl" />
+            ))}
+          </div>
+        ) : perksQuery.isError ? (
+          <div role="alert" className="flex flex-wrap items-center gap-4 rounded-xl bg-muted/50 p-5">
+            <p>{t("common:somethingWentWrong")}</p>
+            <Button variant="outline" onClick={() => perksQuery.refetch()}>
+              {t("common:tryAgain")}
+            </Button>
+          </div>
+        ) : perksQuery.data?.perks.length ? (
+          <div className="grid gap-4 lg:grid-cols-3">
+            {perksQuery.data.perks.map((perk) => (
+              <article
                 key={perk.id}
-                className="flex flex-col justify-between p-6 gap-4 rounded-xl border border-border bg-linear-to-br from-muted/50 to-muted hover:border-primary/50 translate-y-3 hover:-translate-y-1 transition-all duration-300"
+                className="min-w-0 rounded-xl border border-border/40 bg-linear-to-br from-muted/50 to-muted p-5 sm:p-6"
               >
-                <div className="flex flex-col gap-4">
-                  <h3 className="text-2xl font-semibold text-white text-center">{t(`common:tiers.${perk.name}`)}</h3>
-
-                  <p className="text-lg font-medium text-primary text-center">{perk.value.converted.formatted}</p>
-
-                  <p className="text-muted-foreground text-sm">
-                    {t(`pages:donate.perks.items.${perk.name}.description`)}
-                  </p>
-
-                  <div className="flex flex-col text-muted-foreground text-sm space-y-2">
-                    {(t(`pages:donate.perks.items.${perk.name}.benefits`, { returnObjects: true }) as string[]).map(
-                      (benefit, i) => (
-                        <div key={i} className="flex items-center gap-2">
-                          <Icon icon={"lucide:check"} className="size-5 shrink-0 text-primary" />
-                          <span>{benefit}</span>
-                        </div>
-                      ),
-                    )}
-                  </div>
+                <div className="mb-5 flex flex-wrap items-baseline justify-between gap-2">
+                  <h3 className="text-xl font-semibold text-card-foreground [overflow-wrap:anywhere]">
+                    {t(`common:tiers.${perk.name}`)}
+                  </h3>
+                  <span className="text-lg font-semibold text-primary tabular-nums">
+                    {perk.value.converted.formatted}
+                  </span>
                 </div>
-              </div>
+                <ul className="space-y-3 text-sm leading-relaxed">
+                  {(t(`pages:donate.perks.items.${perk.name}.benefits`, { returnObjects: true }) as string[]).map(
+                    (benefit) => (
+                      <li key={benefit} className="flex items-start gap-2">
+                        <Icon icon="lucide:check" aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-primary" />
+                        <span>{benefit}</span>
+                      </li>
+                    ),
+                  )}
+                </ul>
+              </article>
             ))}
-        </div>
-      </div>
+          </div>
+        ) : (
+          <p className="rounded-xl bg-muted/50 p-5 text-sm">{t("common:noResults")}</p>
+        )}
+      </section>
 
-      <hr />
-
-      <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
-          {t("pages:donate.geeks")}
-        </h2>
-
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          {contributorsQuery.isPending && (
-            <>
-              <Skeleton className="size-24 rounded-full" />
-
-              <Skeleton className="size-24 rounded-full" />
-            </>
-          )}
-
-          {contributors.length > 0 &&
-            contributors.map((contributor) => (
-              <ContributorsItem
-                key={contributor.login}
-                name={contributor.login}
-                url={contributor.html_url}
-                avatarURL={contributor.avatar_url}
-                roleType="supporter"
-              />
-            ))}
-        </div>
-      </div>
-
-      <hr />
-
-      <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text text-center">
-          {t("pages:donate.transparencyReports")}
-        </h2>
-
-        <a
-          href={"https://drive.proton.me/urls/E1WHSDDQ0M#0zZ3zOelpK8q"}
-          target={"_blank"}
-          rel={"noreferrer"}
-          className="mx-auto w-fit flex items-center justify-center"
-        >
-          <Button className={"flex flex-wrap"}>
-            View All
-            <Icon icon={"lucide:external-link"} />
-          </Button>
-        </a>
-      </div>
+      <footer className="flex flex-col gap-6 border-t border-border/40 pt-6">
+        <Button asChild variant="link" className="h-auto w-fit max-w-full justify-start p-0 text-sm">
+          <a href="https://drive.proton.me/urls/E1WHSDDQ0M#0zZ3zOelpK8q" target="_blank" rel="noreferrer">
+            {t("pages:donate.transparencyReports")}
+            <Icon icon="lucide:external-link" aria-hidden="true" className="size-4 shrink-0" />
+          </a>
+        </Button>
+        {donors.length > 0 && (
+          <details className="group">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-md text-sm font-medium text-card-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
+              {t("pages:donate.contributors")}
+              <Icon icon="lucide:chevron-down" aria-hidden="true" className="size-4 shrink-0 group-open:rotate-180" />
+            </summary>
+            <div className="mt-5 flex flex-wrap gap-4">
+              {donors.map((donor) => (
+                <ContributorsItem
+                  key={donor.id}
+                  name={donor.name}
+                  url={`/user/${encodeURIComponent(donor.username ?? "")}`}
+                  avatarURL={donor.profile?.avatarUrl}
+                  roleType="supporter"
+                />
+              ))}
+            </div>
+          </details>
+        )}
+      </footer>
     </div>
   );
 }

@@ -81,6 +81,10 @@ export function progressStatusSections(contentType: ApiTypes.ReviewContentType):
 }
 
 export interface ProgressItem extends FavoriteItem {
+  year?: number;
+  readingProgress?: { current: number; total: number | null };
+  status?: ApiTypes.ProgressStatus;
+  episodeProgress?: ApiTypes.EpisodeProgress;
   completion?: ApiTypes.GameCompletion | null;
   hoursPlayed?: number | null;
 }
@@ -96,6 +100,9 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "anime",
         slug: String(row.anime.malId),
         mediaId: row.anime.id,
+        year: row.anime.year ?? undefined,
+        status: row.status,
+        episodeProgress: row.episodeProgress,
       };
     case "manga":
       if (!row.manga) return null;
@@ -106,6 +113,8 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "manga",
         slug: String(row.manga.anilistId ?? row.manga.malId),
         mediaId: row.manga.id,
+        status: row.status,
+        readingProgress: { current: row.chaptersRead ?? 0, total: row.manga.numberOfChapters || null },
       };
     case "tv":
       if (!row.tvShow) return null;
@@ -116,6 +125,9 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "tv",
         slug: String(row.tvShow.tmdbId),
         mediaId: row.tvShow.id,
+        year: row.tvShow.firstAirDate ? new Date(row.tvShow.firstAirDate).getUTCFullYear() : undefined,
+        status: row.status,
+        episodeProgress: row.episodeProgress,
       };
     case "movie":
       if (!row.movie) return null;
@@ -126,6 +138,7 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "movie",
         slug: String(row.movie.tmdbId),
         mediaId: row.movie.id,
+        year: row.movie.releaseDate ? new Date(row.movie.releaseDate).getUTCFullYear() : undefined,
       };
     case "game":
       if (!row.game) return null;
@@ -148,6 +161,8 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "book",
         slug: String(row.book.hardcoverId),
         mediaId: row.book.id,
+        status: row.status,
+        readingProgress: { current: row.chaptersRead ?? 0, total: row.book.numberOfPages || null },
       };
     default:
       return null;
@@ -157,6 +172,9 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
 const FULL_YEAR = /^\d{4}$/;
 
 export interface ProgressFilters {
+  completion: ApiTypes.GameCompletion[];
+  selectedPlatforms: string[];
+  availablePlatforms: string[];
   genres: string[];
   year: string;
   released: boolean | null;
@@ -165,6 +183,9 @@ export interface ProgressFilters {
 }
 
 export const EMPTY_PROGRESS_FILTERS: ProgressFilters = {
+  completion: [],
+  selectedPlatforms: [],
+  availablePlatforms: [],
   genres: [],
   year: "",
   released: null,
@@ -200,6 +221,9 @@ export function isYearApplied(year: string) {
 
 export function countActiveFilters(filters: ProgressFilters) {
   return (
+    (filters.completion.length > 0 ? 1 : 0) +
+    (filters.selectedPlatforms.length > 0 ? 1 : 0) +
+    (filters.availablePlatforms.length > 0 ? 1 : 0) +
     (filters.genres.length > 0 ? 1 : 0) +
     (isYearApplied(filters.year) ? 1 : 0) +
     (filters.released !== null ? 1 : 0) +
@@ -211,6 +235,9 @@ function toQueryParams(filters: ProgressFilters, sort?: ProgressSort) {
   const search = filters.search.trim();
 
   return {
+    ...(filters.completion.length > 0 && { completion: filters.completion.join(",") }),
+    ...(filters.selectedPlatforms.length > 0 && { selectedPlatforms: filters.selectedPlatforms.join(",") }),
+    ...(filters.availablePlatforms.length > 0 && { availablePlatforms: filters.availablePlatforms.join(",") }),
     ...(filters.genres.length > 0 && { genres: filters.genres.join(",") }),
     ...(isYearApplied(filters.year) && { year: Number(filters.year.trim()) }),
     ...(filters.released !== null && { released: filters.released }),
@@ -271,21 +298,32 @@ export function useUserProgress(
 }
 
 export function useActiveProgress(contentType: ApiTypes.ReviewContentType, userId: string, limit: number) {
-  const { activeStatus } = PROGRESS_CONTENT[contentType];
+  const { activeStatus, repeatStatus } = PROGRESS_CONTENT[contentType];
+  const statuses =
+    repeatStatus === "Rewatching" || repeatStatus === "Rereading" ? [activeStatus, repeatStatus] : [activeStatus];
 
   return useQuery({
-    queryKey: ["active-progress", contentType, userId, activeStatus, limit],
-    queryFn: () =>
-      fetchProgressPage(contentType, {
-        userId,
-        status: activeStatus,
-        sortBy: "updatedAt",
-        sortOrder: "desc",
-        page: 1,
-        itemsPerPage: limit,
-      }),
+    queryKey: ["active-progress", contentType, userId, statuses, limit],
+    queryFn: async () => {
+      const pages = await Promise.all(
+        statuses.map((status) =>
+          fetchProgressPage(contentType, {
+            userId,
+            status,
+            sortBy: "updatedAt",
+            sortOrder: "desc",
+            page: 1,
+            itemsPerPage: limit,
+          }),
+        ),
+      );
+      return pages
+        .flatMap(({ page }) => page.items)
+        .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
+        .slice(0, limit);
+    },
     enabled: Boolean(userId),
-    select: ({ page }: ProgressPage) => page.items.flatMap((row) => progressToItem(contentType, row) ?? []),
+    select: (rows) => rows.flatMap((row) => progressToItem(contentType, row) ?? []),
   });
 }
 

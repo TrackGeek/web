@@ -8,7 +8,7 @@ import type { authClient } from "@/lib/auth/client";
 import i18n, { DEFAULT_LANGUAGE, getClientLanguage, isSupportedLanguage, LANGUAGE_TOKEN } from "@/lib/i18n/config";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/utils/json-ld";
 import { RootProvider } from "@/providers";
-import { env } from '@/lib/env';
+import { env } from "@/lib/env";
 
 interface RouterContext {
   auth: typeof authClient;

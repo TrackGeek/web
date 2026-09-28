@@ -1,6 +1,6 @@
 import axios from "axios";
+import { env } from "./env";
 import i18n, { DEFAULT_LANGUAGE } from "./i18n/config";
-import { env } from './env';
 
 export const api = axios.create({
   baseURL: env.VITE_API_URL,
@@ -44,6 +44,15 @@ export namespace ApiTypes {
 
   export interface GetPerksResponse {
     perks: Perk[];
+  }
+
+  export interface GetDonorsResponse {
+    donors: {
+      id: string;
+      name: string;
+      username: string | null;
+      profile: { avatarUrl: string | null } | null;
+    }[];
   }
 
   export interface CreatePaymentRequest {
@@ -846,23 +855,39 @@ export namespace ApiTypes {
 
   export type GameCompletion = "mainStory" | "mainStoryPlusExtras" | "100%" | "endless";
 
+  export interface EpisodeProgress {
+    current: number;
+    total: number | null;
+    next: { episode: number; season?: number } | null;
+  }
+
   export interface Progress {
+    chaptersRead?: number | null;
+    updatedAt: string;
+    episodeProgress?: EpisodeProgress;
     id: string;
     status: ProgressStatus;
     completion?: GameCompletion | null;
     hoursPlayed?: number | null;
-    anime: { id: string; malId: number; title: string; imageUrl: string | null } | null;
+    anime: { id: string; malId: number; year?: number | null; title: string; imageUrl: string | null } | null;
     manga: {
       id: string;
+      numberOfChapters?: number | null;
       anilistId: number | null;
       malId: number | null;
       title: string;
       imageUrl: string | null;
     } | null;
-    tvShow: { id: string; tmdbId: number; name: string; posterUrl: string | null } | null;
-    movie: { id: string; tmdbId: number; title: string; posterUrl: string | null } | null;
+    tvShow: { id: string; tmdbId: number; firstAirDate?: string | null; name: string; posterUrl: string | null } | null;
+    movie: { id: string; tmdbId: number; releaseDate?: string | null; title: string; posterUrl: string | null } | null;
     game: { id: string; igdbId: number; name: string; coverUrl: string | null } | null;
-    book: { id: string; hardcoverId: number; title: string; imageUrl: string | null } | null;
+    book: {
+      id: string;
+      hardcoverId: number;
+      numberOfPages?: number | null;
+      title: string;
+      imageUrl: string | null;
+    } | null;
   }
 
   export type MediaReleaseState = "Unreleased" | "Ongoing" | "Hiatus" | "Finished" | "Cancelled";
@@ -884,6 +909,8 @@ export namespace ApiTypes {
   }
 
   export interface ProgressFilterOptions {
+    selectedPlatforms?: { slug: string; name: string }[];
+    availablePlatforms?: { slug: string; name: string }[];
     genres: string[];
     years: number[];
     releaseStates: MediaReleaseState[];
@@ -1113,6 +1140,7 @@ export namespace ApiTypes {
     | "ProgressDropped"
     | "ProgressPlanned"
     | "Watched"
+    | "ChaptersRead"
     | "Followed"
     | "MedalEarned"
     | "ScreenshotAdded"
@@ -1364,6 +1392,7 @@ export const apiEndpoints = {
   getCurrency: "/stripe/currency",
   getPrices: "/stripe/price",
   getPerks: "/perk",
+  getDonors: "/payment/donors",
   getCurrentSubscription: "/stripe/subscription",
   cancelCurrentSubscription: "/stripe/subscription",
   createPayment: "/payment",

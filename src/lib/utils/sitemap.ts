@@ -1,5 +1,5 @@
 import { CONTENT_TYPE_SLUGS, type ContentTypeSlug } from "@/lib/content-types";
-import { env } from '../env';
+import { env } from "../env";
 
 export interface SitemapEntry {
   path: string;

@@ -44,9 +44,7 @@ export function CardEpisodeProgress({ progress, status, userId, mediaId, mediaTy
 
   return (
     <div className="absolute bottom-1 inset-x-0 mx-auto flex items-center w-fit justify-center gap-1 rounded-b-md bg-black/75 pl-1.5 text-white backdrop-blur-xs">
-      <span
-        className="absolute -top-0.5 left-0 right-0 h-0.5 rounded-t-md bg-white/20 overflow-hidden pointer-events-none"
-      >
+      <span className="absolute -top-0.5 left-0 right-0 h-0.5 rounded-t-md bg-white/20 overflow-hidden pointer-events-none">
         <span
           className="block h-full rounded-full bg-primary transition-all duration-300 rounded-t-md"
           style={{ width: `${progressPct}%` }}

@@ -1,5 +1,5 @@
 import { OG_IMAGE_SIZE, ogUrl } from "@/lib/og/url";
-import { env } from '../env';
+import { env } from "../env";
 
 interface SeoOptions {
   title: string;

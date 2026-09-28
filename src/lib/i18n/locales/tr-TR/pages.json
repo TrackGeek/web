@@ -201,11 +201,14 @@
     }
   },
   "donate": {
-    "description": "Support the site to cover our server payments, development costs, and keep the sites running long into the future and unlock exclusive perks.",
+    "supportTitle": "Support TrackGeek",
+    "supportOptions": "One-time or monthly. You choose.",
+    "contributors": "Contributors",
+    "description": "Your donation helps cover servers and development, keeping TrackGeek running for the community.",
     "geeks": "The GeekKeepers that make TrackGeek alive",
     "perks": {
-      "title": "Perks",
-      "description": "These are the perks you can get while supporting the site.",
+      "title": "A thank-you for your support",
+      "description": "Unlock benefits as your total donations grow. Each level includes the benefits of the previous one.",
       "get": "Get this perk",
       "items": {
         "Tracker": {

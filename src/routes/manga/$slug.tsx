@@ -619,7 +619,9 @@ function MangaDetailsRoute() {
           <div className="flex items-center justify-between gap-3 mb-2">
             <TabsList className="w-full max-sm:overflow-x-auto items-center justify-start">
               <TabsTrigger value="info">{t("library:info")}</TabsTrigger>
-              <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
+              {(manga.characters?.length ?? 0) > 0 && (
+                <TabsTrigger value="characters">{t("library:characters")}</TabsTrigger>
+              )}
               {cast.length >= 1 && <TabsTrigger value="staff">{t("library:staff")}</TabsTrigger>}
               <TabsTrigger value="lists">
                 {t("common:lists")} ({listsQuery.data?.total ?? 0})

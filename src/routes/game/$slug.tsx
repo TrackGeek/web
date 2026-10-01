@@ -745,6 +745,7 @@ function GameDetailsRoute() {
                     <div className="relative w-full overflow-hidden pt-[56.25%]">
                       <iframe
                         src={video.videoId}
+                        referrerPolicy="strict-origin-when-cross-origin"
                         allowFullScreen
                         className="w-full inset-0 absolute h-full"
                         sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
@@ -974,6 +975,7 @@ function UserScreenshot({ screenshot }: { screenshot: ApiTypes.GameScreenshot })
         playing ? (
           <iframe
             src={videoEmbedUrl(video)}
+            referrerPolicy="strict-origin-when-cross-origin"
             title={screenshot.description ?? video.url}
             className="aspect-video w-full rounded-lg"
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media"

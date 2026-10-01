@@ -942,7 +942,8 @@ function TVShowDetailsPage() {
                     <CarouselItem>
                       <div className="relative w-full overflow-hidden pt-[56.25%]">
                         <iframe
-                          src={`https://youtube.com/embed/${item.trailerId}`}
+                          src={`https://www.youtube.com/embed/${item.trailerId}`}
+                          referrerPolicy="strict-origin-when-cross-origin"
                           allowFullScreen
                           className="absolute inset-0 w-full h-full"
                           sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"

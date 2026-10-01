@@ -1046,6 +1046,7 @@ function AnimeDetailsRoute() {
             {anime.trailer.embedUrl && (
               <iframe
                 src={anime.trailer.embedUrl.replace("&autoplay=1", "")}
+                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
                 className="w-full aspect-video"
                 sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"

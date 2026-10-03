@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth/client";
+import { cn } from "@/lib/utils";
 
 interface CardEpisodeProgressProps {
   progress: ApiTypes.EpisodeProgress;
@@ -43,13 +44,20 @@ export function CardEpisodeProgress({ progress, status, userId, mediaId, mediaTy
   const progressPct = progress.total ? Math.min(100, Math.round((progress.current / progress.total) * 100)) : 0;
 
   return (
-    <div className="absolute bottom-1 inset-x-0 mx-auto flex items-center w-fit justify-center gap-1 rounded-b-md bg-black/75 pl-1.5 text-white backdrop-blur-xs">
-      <span className="absolute -top-0.5 left-0 right-0 h-0.5 rounded-t-md bg-white/20 overflow-hidden pointer-events-none">
-        <span
-          className="block h-full rounded-full bg-primary transition-all duration-300 rounded-t-md"
-          style={{ width: `${progressPct}%` }}
-        />
-      </span>
+    <div
+      className={cn(
+        "absolute bottom-1 inset-x-0 mx-auto flex items-center w-fit justify-center bg-black/75 text-white backdrop-blur-xs",
+        canIncrement ? "gap-1 rounded-b-md pl-1.5" : "rounded-md px-1.5",
+      )}
+    >
+      {canIncrement && (
+        <span className="absolute -top-0.5 left-0 right-0 h-0.5 rounded-t-md bg-white/20 overflow-hidden pointer-events-none">
+          <span
+            className="block h-full rounded-full bg-primary transition-all duration-300 rounded-t-md"
+            style={{ width: `${progressPct}%` }}
+          />
+        </span>
+      )}
       <span
         className="py-1 text-xs font-medium tabular-nums"
         title={t("library:episodeProgress", { current: progress.current, total: progress.total ?? "?" })}

@@ -152,19 +152,21 @@ function externalLinks(person: Person) {
   const consumed = new Set<string>();
 
   for (const spec of EXTERNAL_SPECS) {
-    const field = spec.fields.find((name) => external[name]);
+    const value = spec.fields
+      .map((name) => external[name])
+      .find((value) => (typeof value === "string" && value.length > 0) || typeof value === "number");
 
     for (const name of spec.fields) {
       consumed.add(name);
     }
 
-    if (!field) {
+    if (value === undefined) {
       continue;
     }
 
     links.push({
       key: spec.key,
-      href: spec.href(external[field] as string),
+      href: spec.href(String(value)),
       icon: spec.icon,
       label: spec.label,
       hover: spec.hover,
@@ -172,7 +174,7 @@ function externalLinks(person: Person) {
   }
 
   for (const [name, value] of Object.entries(external)) {
-    if (consumed.has(name) || !value?.startsWith("http")) {
+    if (consumed.has(name) || typeof value !== "string" || !value.startsWith("http")) {
       continue;
     }
 

@@ -3,7 +3,10 @@
     "preferences": "Preferências",
     "security": "Segurança",
     "connections": "Conexões",
-    "import": "Importar"
+    "import": "Importar",
+    "appearance": "Appearance",
+    "account": "Account",
+    "data": "Library data"
   },
   "export": {
     "title": "Exportar seus dados",
@@ -172,7 +175,7 @@
   "color": {
     "title": "Cor do Tema",
     "options": "Opções de Cor",
-    "description": "Escolha sua cor de tema preferida para a interface do aplicativo.",
+    "description": "Choose a color for your profile.",
     "custom": "Cor customizada",
     "reset": "Restaurar padrão",
     "errors": {
@@ -299,5 +302,22 @@
     },
     "success": "Verifique sua caixa de entrada — abra o link enviado para concluir a exclusão da sua conta.",
     "error": "Falha ao iniciar a exclusão da conta. Por favor, tente novamente."
+  },
+  "navigation": {
+    "description": "Manage your profile, preferences and account.",
+    "section": "Choose a settings section",
+    "groups": {
+      "personal": "Your profile",
+      "application": "Application",
+      "account": "Your account"
+    },
+    "descriptions": {
+      "profile": "Update your name, username and bio.",
+      "appearance": "Customize your avatar, banner and profile style.",
+      "preferences": "Choose your language, timezone and content types.",
+      "watchLinks": "Manage shortcuts to your players and favorite sites.",
+      "security": "Manage your password, passkeys and two-factor authentication.",
+      "data": "Import or export your tracked library."
+    }
   }
 }

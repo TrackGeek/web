@@ -3,7 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { WatchLinksCard } from "@/components/pages/settings/watch-links-card";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
@@ -100,7 +99,7 @@ export function SettingsPreferencesTab() {
   ]);
 
   return (
-    <div className="flex flex-col gap-4 lg:gap-8">
+    <div className="flex flex-col gap-4">
       <Card>
         <CardHeader className="gap-2">
           <CardTitle>
@@ -112,7 +111,7 @@ export function SettingsPreferencesTab() {
           <CardDescription>{t("settings:preferences.description")}</CardDescription>
         </CardHeader>
 
-        <CardContent className="flex flex-col gap-4">
+        <CardContent className="grid gap-4 sm:grid-cols-2">
           <Field className="w-full gap-2">
             <FieldLabel>{t("common:language")}</FieldLabel>
 
@@ -209,8 +208,6 @@ export function SettingsPreferencesTab() {
           })}
         </CardContent>
       </Card>
-
-      <WatchLinksCard />
     </div>
   );
 }

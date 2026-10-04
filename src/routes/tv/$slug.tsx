@@ -861,8 +861,9 @@ function TVShowDetailsPage() {
             {isAuthenticated && !isUnreleased && (
               <>
                 <EpisodeProgress
+                  key={`${item.id}:${userId}`}
                   seasons={mySeasons}
-                  defaultSeason={1}
+                  defaultSeason={nextWatch.season}
                   seasonCustomNames={{
                     0: t("library:specials"),
                   }}

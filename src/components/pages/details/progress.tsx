@@ -35,18 +35,15 @@ export function EpisodeProgress({
   isLoading = false,
 }: EpisodeProgressProps) {
   const initialSeason =
-    defaultSeason && seasons.find((s) => s.seasonNumber === defaultSeason) ? defaultSeason : seasons[0]?.seasonNumber;
+    defaultSeason !== undefined && seasons.some((s) => s.seasonNumber === defaultSeason)
+      ? defaultSeason
+      : seasons[0]?.seasonNumber;
 
-  const [activeSeason, setActiveSeason] = useState<number | null>(initialSeason || null);
+  const [activeSeason, setActiveSeason] = useState<number | null>(initialSeason ?? null);
 
   useEffect(() => {
-    if (activeSeason !== null) return;
-    if (!seasons || seasons.length === 0) return;
-
-    if (defaultSeason && seasons.find((s) => s.seasonNumber === defaultSeason)) {
-      setActiveSeason(defaultSeason);
-    }
-  }, [activeSeason, defaultSeason, seasons]);
+    setActiveSeason(initialSeason ?? null);
+  }, [initialSeason]);
 
   if (!seasons || seasons.length === 0) return null;
 

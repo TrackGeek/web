@@ -38,7 +38,10 @@ export const Route = createFileRoute("/manga/cast/$slug")({
           deathDate: person?.deathday ? person.deathday.slice(0, 10) : undefined,
           birthPlace: person?.placeOfBirth ?? undefined,
           jobTitle: person?.knownForDepartment ?? undefined,
-          sameAs: person?.external?.anilist ? [person.external.anilist] : undefined,
+          sameAs:
+            typeof person?.external?.anilist === "string" && person.external.anilist
+              ? [person.external.anilist]
+              : undefined,
         }),
       ],
     };

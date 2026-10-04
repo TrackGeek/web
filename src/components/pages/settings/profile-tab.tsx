@@ -54,7 +54,7 @@ function createProfileSchema(t: TFunction) {
 
 type ProfileFormData = z.infer<ReturnType<typeof createProfileSchema>>;
 
-export function SettingsProfileTab() {
+export function SettingsProfileTab({ section = "profile" }: { section?: "profile" | "appearance" }) {
   const { t } = useTranslation();
 
   const session = useSession();
@@ -62,7 +62,7 @@ export function SettingsProfileTab() {
 
   const serverColor = session.data?.user?.profile?.color ?? DEFAULT_COLOR;
 
-  const cosmeticsQuery = useCosmetics(Boolean(session.data?.user));
+  const cosmeticsQuery = useCosmetics(section === "appearance" && Boolean(session.data?.user));
 
   const [color, setColor] = useState(serverColor);
 
@@ -246,502 +246,537 @@ export function SettingsProfileTab() {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
-      <Card className="sm:col-span-1 lg:col-span-1">
-        <CardHeader>
-          <CardTitle>
-            <Icon icon={"lucide:image"} className="size-5" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-ring [&_button]:focus-visible:outline-offset-2">
+      {section === "profile" && (
+        <Card className="sm:col-span-2 lg:col-span-3">
+          <CardHeader className="gap-2">
+            <CardTitle>
+              <Icon icon={"lucide:user"} className="size-5" />
 
-            {t("settings:avatar.title")}
-          </CardTitle>
+              {t("settings:profile.title")}
+            </CardTitle>
 
-          <CardDescription>{t("settings:avatar.description")}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex justify-center py-2">
-            <div className="w-full max-w-55 aspect-square relative">
-              {session.data?.user?.profile?.avatarUrl ? (
-                <>
-                  <Image
-                    className="size-full rounded-lg border-accent border object-cover"
-                    src={session.data?.user?.profile.avatarUrl}
-                    width={220}
-                    height={220}
-                    background={AVATAR_BLUR}
-                    alt=""
-                  />
+            <CardDescription>{t("settings:profile.description")}</CardDescription>
+          </CardHeader>
 
-                  {(deleteAvatarMutation.isPending || uploadAvatarMutation.isPending) && (
-                    <div className="absolute inset-0 bg-black/50 rounded-lg flex flex-col justify-center items-center gap-2">
-                      <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
-                    </div>
-                  )}
+          <form
+            className="flex flex-col gap-6"
+            onSubmit={profileForm.handleSubmit((data) => updateProfileMutation.mutate(data))}
+          >
+            <CardContent className="flex flex-col gap-4">
+              <Field className="gap-2">
+                <FieldLabel htmlFor="name">{t("common:name")}</FieldLabel>
 
-                  {(!deleteAvatarMutation.isPending || !uploadAvatarMutation.isPending) && (
-                    <>
-                      <button
-                        type="button"
-                        className="absolute top-2 right-10 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
-                        onClick={() => avatarInputRef.current?.click()}
-                      >
-                        <Icon icon={"lucide:upload"} className="size-4 text-white" />
-                      </button>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Jhon Doe"
+                  aria-invalid={Boolean(profileForm.formState.errors.name)}
+                  aria-label={t("common:name")}
+                  {...profileForm.register("name")}
+                />
 
-                      <button
-                        type="button"
-                        className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
-                        onClick={() => deleteAvatarMutation.mutate()}
-                      >
-                        <Icon icon={"lucide:circle-x"} className="size-4 text-white" />
-                      </button>
-                    </>
-                  )}
-                </>
-              ) : (
-                // biome-ignore lint/a11y/noStaticElementInteractions: false positive
-                <div
-                  className="size-full rounded-lg cursor-pointer"
-                  style={profileColorBackgroundStyle(session.data?.user?.profile?.color)}
-                  onClick={() => avatarInputRef.current?.click()}
-                  onKeyDown={() => avatarInputRef.current?.click()}
-                >
-                  {uploadAvatarMutation.isPending ? (
-                    <div className="size-full flex flex-col justify-center items-center gap-2">
-                      <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
-                    </div>
-                  ) : (
-                    <div className="size-full flex flex-col justify-center items-center gap-2">
-                      <Icon icon={"lucide:upload"} className="size-8 text-white/70" />
-
-                      <span className="text-white/70">{t("settings:avatar.upload.title")}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <input
-            type="file"
-            ref={avatarInputRef}
-            className="hidden"
-            accept=".jpg,.jpeg,.png,.gif"
-            onChange={(e) => handleImageUpload(e, "avatar")}
-          />
-        </CardContent>
-      </Card>
-
-      <Card className="sm:col-span-1 lg:col-span-2">
-        <CardHeader>
-          <CardTitle>
-            <Icon icon={"lucide:image"} className="size-5" />
-
-            {t("settings:banner.title")}
-          </CardTitle>
-
-          <CardDescription>{t("settings:banner.description")}</CardDescription>
-        </CardHeader>
-
-        <CardContent>
-          <div className="relative w-full aspect-2/1 sm:aspect-3/1">
-            {session.data?.user?.profile?.bannerUrl ? (
-              <>
-                <div className="absolute inset-0">
-                  <Image
-                    className="size-full rounded-lg border-accent border object-cover"
-                    src={session.data?.user?.profile.bannerUrl}
-                    width={300}
-                    height={220}
-                    background={AVATAR_BLUR}
-                    alt=""
-                  />
-                </div>
-
-                {(deleteBannerMutation.isPending || uploadBannerMutation.isPending) && (
-                  <div className="absolute inset-0 bg-black/50 rounded-lg flex flex-col justify-center items-center gap-2">
-                    <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
-                  </div>
+                {profileForm.formState.errors.name?.message && (
+                  <FieldError>{profileForm.formState.errors.name.message}</FieldError>
                 )}
+              </Field>
 
-                {(!deleteBannerMutation.isPending || !uploadBannerMutation.isPending) && (
-                  <>
-                    <button
-                      type="button"
-                      className="absolute top-2 right-10 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
-                      onClick={() => bannerInputRef.current?.click()}
-                    >
-                      <Icon icon={"lucide:upload"} className="size-4 text-white" />
-                    </button>
+              <Field className="gap-2">
+                <FieldLabel htmlFor="username">{t("settings:profile.username")}</FieldLabel>
 
-                    <button
-                      type="button"
-                      className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
-                      onClick={() => deleteBannerMutation.mutate()}
-                    >
-                      <Icon icon={"lucide:circle-x"} className="size-4 text-white" />
-                    </button>
-                  </>
-                )}
-              </>
-            ) : (
-              // biome-ignore lint/a11y/noStaticElementInteractions: false positive
-              <div
-                className="absolute inset-0 rounded-lg cursor-pointer"
-                style={profileColorBackgroundStyle(session.data?.user?.profile?.color)}
-                onClick={() => bannerInputRef.current?.click()}
-                onKeyDown={() => bannerInputRef.current?.click()}
-              >
-                {uploadBannerMutation.isPending ? (
-                  <div className="size-full flex flex-col justify-center items-center gap-2">
-                    <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
-                  </div>
-                ) : (
-                  <div className="size-full flex flex-col justify-center items-center gap-2">
-                    <Icon icon={"lucide:upload"} className="size-8 text-white/70" />
-
-                    <span className="text-white/70">{t("settings:banner.upload.title")}</span>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          <input
-            type="file"
-            ref={bannerInputRef}
-            className="hidden"
-            accept=".jpg,.jpeg,.png,.gif"
-            onChange={(e) => handleImageUpload(e, "banner")}
-          />
-        </CardContent>
-      </Card>
-
-      <Card className="sm:col-span-2 lg:col-span-3">
-        <CardHeader className="gap-2">
-          <CardTitle>
-            <Icon icon={"lucide:user"} className="size-5" />
-
-            {t("settings:profile.title")}
-          </CardTitle>
-
-          <CardDescription>{t("settings:profile.description")}</CardDescription>
-        </CardHeader>
-
-        <form
-          className="flex flex-col gap-6"
-          onSubmit={profileForm.handleSubmit((data) => updateProfileMutation.mutate(data))}
-        >
-          <CardContent className="flex flex-col gap-4">
-            <Field className="gap-2">
-              <FieldLabel htmlFor="name">{t("common:name")}</FieldLabel>
-
-              <Input
-                id="name"
-                type="text"
-                placeholder="Jhon Doe"
-                aria-invalid={Boolean(profileForm.formState.errors.name)}
-                aria-label={t("common:name")}
-                {...profileForm.register("name")}
-              />
-
-              {profileForm.formState.errors.name?.message && (
-                <FieldError>{profileForm.formState.errors.name.message}</FieldError>
-              )}
-            </Field>
-
-            <Field className="gap-2">
-              <FieldLabel htmlFor="username">{t("settings:profile.username")}</FieldLabel>
-
-              <div className="flex w-full items-stretch">
-                <Label
-                  htmlFor="username"
-                  className="bg-muted text-muted-foreground flex shrink-0 items-center rounded-l-md border border-r-0 px-4 text-sm font-medium shadow-xs"
-                >
-                  @
-                </Label>
-
-                <InputGroup className="flex-1 rounded-l-none border-l-0">
-                  <InputGroupInput
-                    id="username"
-                    type="text"
-                    placeholder="jhondoe"
-                    aria-invalid={Boolean(profileForm.formState.errors.username)}
-                    aria-label={t("settings:profile.username")}
-                    {...profileForm.register("username")}
-                  />
-                </InputGroup>
-              </div>
-
-              {profileForm.formState.errors.username?.message && (
-                <FieldError>{profileForm.formState.errors.username.message}</FieldError>
-              )}
-            </Field>
-
-            <Field className="gap-2">
-              <FieldLabel htmlFor="about">{t("settings:profile.about")}</FieldLabel>
-
-              <Textarea
-                id="about"
-                placeholder="Tell us about yourself..."
-                rows={10}
-                className="min-h-40 resize-none"
-                maxLength={ABOUT_MAX_LENGTH}
-                aria-invalid={Boolean(profileForm.formState.errors.about)}
-                aria-label={t("settings:profile.about")}
-                {...profileForm.register("about")}
-              />
-
-              <div className="flex items-center justify-between gap-2">
-                {profileForm.formState.errors.about?.message ? (
-                  <FieldError>{profileForm.formState.errors.about.message}</FieldError>
-                ) : (
-                  <span />
-                )}
-
-                <span className="text-xs text-muted-foreground">
-                  {about.length}/{ABOUT_MAX_LENGTH}
-                </span>
-              </div>
-            </Field>
-          </CardContent>
-
-          <CardFooter className="justify-end">
-            <Button type="submit" disabled={updateProfileMutation.isPending}>
-              {updateProfileMutation.isPending && <Icon icon="eos-icons:loading" className="size-4 animate-spin" />}
-
-              {t("common:saveChanges")}
-            </Button>
-          </CardFooter>
-        </form>
-      </Card>
-
-      <Card className="sm:col-span-2 lg:col-span-3">
-        <CardHeader>
-          <CardTitle>
-            <Icon icon={"lucide:palette"} className="size-5" />
-
-            {t("settings:color.title")}
-          </CardTitle>
-
-          <CardDescription>{t("settings:color.description")}</CardDescription>
-        </CardHeader>
-
-        <CardContent className="flex flex-col gap-2">
-          <FieldLabel htmlFor="colorOptions">{t("settings:color.options")}</FieldLabel>
-
-          <div className="flex flex-wrap gap-2 mt-2">
-            {solidColors.map((cosmetic) => (
-              <Tooltip key={cosmetic.key}>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    className={`relative size-10 rounded-full border-2 transition cursor-pointer hover:border-accent ${color === cosmetic.value ? "border-accent" : "border-transparent"}`}
-                    style={{ backgroundColor: cosmetic.value }}
-                    onClick={() => {
-                      setColor(cosmetic.value);
-
-                      saveColor(cosmetic.value);
-                    }}
-                  />
-                </TooltipTrigger>
-                <TooltipContent className="bg-muted">
-                  <div className="max-w-xs text-xs font-semibold">{t(`cosmetics:colors.${cosmetic.key}`)}</div>
-                </TooltipContent>
-              </Tooltip>
-            ))}
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <label
-                  className={`relative flex size-10 cursor-pointer items-center justify-center rounded-full border-2 transition hover:border-accent ${isCustomColor ? "border-accent" : "border-border"}`}
-                  style={isCustomColor ? { backgroundColor: color } : undefined}
-                >
-                  <Icon icon="lucide:pipette" className="size-4 text-white drop-shadow" />
-
-                  <input
-                    type="color"
-                    value={color.startsWith("#") ? color : DEFAULT_COLOR}
-                    className="absolute inset-0 size-full cursor-pointer opacity-0"
-                    onChange={(event) => setColor(event.target.value)}
-                    onBlur={(event) => saveColor(event.target.value)}
-                  />
-                </label>
-              </TooltipTrigger>
-              <TooltipContent className="bg-muted">
-                <div className="max-w-xs text-xs font-semibold">{t("cosmetics:customColor")}</div>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-
-          <FieldLabel className="mt-4">{t("cosmetics:gradientColors")}</FieldLabel>
-
-          <div className="flex flex-wrap gap-2 mt-1">
-            {gradientColors.map((cosmetic) => (
-              <Tooltip key={cosmetic.key}>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    disabled={!cosmetic.unlocked}
-                    className={`relative size-10 rounded-full border-2 transition ${color === cosmetic.value ? "border-accent" : "border-transparent"} ${cosmetic.unlocked ? "cursor-pointer hover:border-accent" : "opacity-40"}`}
-                    style={{ backgroundImage: PROFILE_GRADIENTS[cosmetic.key]?.css }}
-                    onClick={() => {
-                      setColor(cosmetic.value);
-
-                      saveColor(cosmetic.value);
-                    }}
+                <div className="flex w-full items-stretch">
+                  <Label
+                    htmlFor="username"
+                    className="bg-muted text-muted-foreground flex shrink-0 items-center rounded-l-md border border-r-0 px-4 text-sm font-medium shadow-xs"
                   >
-                    {!cosmetic.unlocked && (
-                      <Icon icon="lucide:lock" className="absolute inset-0 m-auto size-4 text-white drop-shadow" />
-                    )}
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-muted">
-                  <div className="max-w-xs text-xs">
-                    <div className="font-semibold">{t(`cosmetics:gradients.${cosmetic.key}`)}</div>
-                    {!cosmetic.unlocked && <div className="text-muted-foreground">{unlockRequirement(cosmetic)}</div>}
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            ))}
-          </div>
+                    @
+                  </Label>
 
-          <div className="flex items-center gap-2">
-            {color !== DEFAULT_COLOR && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setColor(DEFAULT_COLOR);
+                  <InputGroup className="flex-1 rounded-l-none border-l-0">
+                    <InputGroupInput
+                      id="username"
+                      type="text"
+                      placeholder="jhondoe"
+                      aria-invalid={Boolean(profileForm.formState.errors.username)}
+                      aria-label={t("settings:profile.username")}
+                      {...profileForm.register("username")}
+                    />
+                  </InputGroup>
+                </div>
 
-                  saveColor(DEFAULT_COLOR);
-                }}
-              >
-                <Icon icon={"lucide:rotate-ccw"} className="size-4" />
+                {profileForm.formState.errors.username?.message && (
+                  <FieldError>{profileForm.formState.errors.username.message}</FieldError>
+                )}
+              </Field>
 
-                {t("settings:color.reset")}
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+              <Field className="gap-2">
+                <FieldLabel htmlFor="about">{t("settings:profile.about")}</FieldLabel>
 
-      <Card className="sm:col-span-2 lg:col-span-3">
-        <CardHeader className="gap-2">
-          <CardTitle>
-            <Icon icon={"lucide:sparkles"} className="size-5" />
+                <Textarea
+                  id="about"
+                  placeholder="Tell us about yourself..."
+                  rows={4}
+                  className="min-h-28 resize-y"
+                  maxLength={ABOUT_MAX_LENGTH}
+                  aria-invalid={Boolean(profileForm.formState.errors.about)}
+                  aria-label={t("settings:profile.about")}
+                  {...profileForm.register("about")}
+                />
 
-            {t("cosmetics:equip.title")}
-          </CardTitle>
-
-          <CardDescription>{t("cosmetics:equip.description")}</CardDescription>
-        </CardHeader>
-
-        <CardContent className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <FieldLabel>{t("cosmetics:avatarFrames")}</FieldLabel>
-
-            <div className="flex flex-wrap gap-3 mt-1">
-              {(cosmeticsQuery.data?.avatarFrames ?? []).map((cosmetic) => (
-                <Tooltip key={cosmetic.key}>
-                  <TooltipTrigger asChild>
-                    <button
-                      type="button"
-                      disabled={!cosmetic.unlocked || updateCosmeticsMutation.isPending}
-                      className={cn(
-                        "relative size-12 rounded-full border-2 bg-muted transition",
-                        cosmetic.equipped ? "border-accent" : "border-transparent",
-                        cosmetic.unlocked ? "cursor-pointer hover:border-accent" : "opacity-40",
-                        AVATAR_FRAME_CLASSES[cosmetic.key],
-                      )}
-                      onClick={() => equipCosmetic("avatarFrame", cosmetic.key)}
-                    >
-                      {!cosmetic.unlocked && (
-                        <Icon icon="lucide:lock" className="absolute inset-0 m-auto size-4 text-white drop-shadow" />
-                      )}
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent className="bg-muted">
-                    <div className="max-w-xs text-xs">
-                      <div className="font-semibold">{t(`cosmetics:frames.${cosmetic.key}`)}</div>
-                      {!cosmetic.unlocked && <div className="text-muted-foreground">{unlockRequirement(cosmetic)}</div>}
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <FieldLabel>{t("cosmetics:profileTitles")}</FieldLabel>
-
-            <div className="flex flex-wrap gap-2 mt-1">
-              {(cosmeticsQuery.data?.profileTitles ?? []).map((cosmetic) => (
-                <Tooltip key={cosmetic.key}>
-                  <TooltipTrigger asChild>
-                    <button
-                      type="button"
-                      disabled={!cosmetic.unlocked || updateCosmeticsMutation.isPending}
-                      className={cn(
-                        "flex items-center gap-1.5 rounded-full border-2 px-3 py-1 text-xs font-medium transition",
-                        cosmetic.equipped ? "border-accent" : "border-border",
-                        cosmetic.unlocked ? "cursor-pointer hover:border-accent" : "opacity-40",
-                      )}
-                      onClick={() => equipCosmetic("title", cosmetic.key)}
-                    >
-                      {!cosmetic.unlocked && <Icon icon="lucide:lock" className="size-3" />}
-
-                      {t(`cosmetics:titles.${cosmetic.key}`)}
-                    </button>
-                  </TooltipTrigger>
-                  {!cosmetic.unlocked && (
-                    <TooltipContent className="bg-muted">
-                      <div className="max-w-xs text-xs text-muted-foreground">{unlockRequirement(cosmetic)}</div>
-                    </TooltipContent>
+                <div className="flex items-center justify-between gap-2">
+                  {profileForm.formState.errors.about?.message ? (
+                    <FieldError>{profileForm.formState.errors.about.message}</FieldError>
+                  ) : (
+                    <span />
                   )}
-                </Tooltip>
-              ))}
-            </div>
-          </div>
 
-          <div className="flex flex-col gap-2">
-            <FieldLabel>{t("cosmetics:bannerEffects")}</FieldLabel>
+                  <span className="text-xs text-muted-foreground">
+                    {about.length}/{ABOUT_MAX_LENGTH}
+                  </span>
+                </div>
+              </Field>
+            </CardContent>
 
-            <div className="flex flex-wrap gap-3 mt-1">
-              {(cosmeticsQuery.data?.bannerEffects ?? []).map((cosmetic) => (
-                <Tooltip key={cosmetic.key}>
-                  <TooltipTrigger asChild>
-                    <button
-                      type="button"
-                      disabled={!cosmetic.unlocked || updateCosmeticsMutation.isPending}
-                      className={cn(
-                        "relative h-12 w-20 overflow-hidden rounded-md border-2 bg-muted transition",
-                        cosmetic.equipped ? "border-accent" : "border-transparent",
-                        cosmetic.unlocked ? "cursor-pointer hover:border-accent" : "opacity-40",
-                      )}
-                      onClick={() => equipCosmetic("bannerEffect", cosmetic.key)}
-                    >
-                      <span
-                        className={cn("absolute inset-0 pointer-events-none", BANNER_EFFECT_CLASSES[cosmetic.key])}
+            <CardFooter className="justify-end">
+              <Button type="submit" disabled={updateProfileMutation.isPending}>
+                {updateProfileMutation.isPending && <Icon icon="eos-icons:loading" className="size-4 animate-spin" />}
+
+                {t("common:saveChanges")}
+              </Button>
+            </CardFooter>
+          </form>
+        </Card>
+      )}
+
+      {section === "appearance" && (
+        <>
+          <Card className="sm:col-span-1">
+            <CardHeader>
+              <CardTitle>
+                <Icon icon={"lucide:image"} className="size-5" />
+
+                {t("settings:avatar.title")}
+              </CardTitle>
+
+              <CardDescription>{t("settings:avatar.description")}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-center py-2">
+                <div className="w-full max-w-55 aspect-square relative">
+                  {session.data?.user?.profile?.avatarUrl ? (
+                    <>
+                      <Image
+                        className="size-full rounded-lg border-accent border object-cover"
+                        src={session.data?.user?.profile.avatarUrl}
+                        width={220}
+                        height={220}
+                        background={AVATAR_BLUR}
+                        alt=""
                       />
 
-                      {!cosmetic.unlocked && (
-                        <Icon icon="lucide:lock" className="absolute inset-0 m-auto size-4 text-white drop-shadow" />
+                      {(deleteAvatarMutation.isPending || uploadAvatarMutation.isPending) && (
+                        <div className="absolute inset-0 bg-black/50 rounded-lg flex flex-col justify-center items-center gap-2">
+                          <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
+                        </div>
+                      )}
+
+                      {!deleteAvatarMutation.isPending && !uploadAvatarMutation.isPending && (
+                        <>
+                          <button
+                            type="button"
+                            className="absolute top-2 right-10 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
+                            aria-label={t("settings:avatar.upload.title")}
+                            onClick={() => avatarInputRef.current?.click()}
+                          >
+                            <Icon icon={"lucide:upload"} className="size-4 text-white" />
+                          </button>
+
+                          <button
+                            type="button"
+                            className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
+                            aria-label={t("common:delete")}
+                            onClick={() => deleteAvatarMutation.mutate()}
+                          >
+                            <Icon icon={"lucide:circle-x"} className="size-4 text-white" />
+                          </button>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      className="size-full rounded-lg cursor-pointer"
+                      style={profileColorBackgroundStyle(session.data?.user?.profile?.color)}
+                      onClick={() => avatarInputRef.current?.click()}
+                      disabled={uploadAvatarMutation.isPending}
+                    >
+                      {uploadAvatarMutation.isPending ? (
+                        <div className="size-full flex flex-col justify-center items-center gap-2">
+                          <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
+                        </div>
+                      ) : (
+                        <div className="size-full flex flex-col justify-center items-center gap-2">
+                          <Icon icon={"lucide:upload"} className="size-8 text-white/70" />
+
+                          <span className="text-white/70">{t("settings:avatar.upload.title")}</span>
+                        </div>
                       )}
                     </button>
+                  )}
+                </div>
+              </div>
+
+              <input
+                type="file"
+                ref={avatarInputRef}
+                className="hidden"
+                accept=".jpg,.jpeg,.png,.gif"
+                onChange={(e) => handleImageUpload(e, "avatar")}
+              />
+            </CardContent>
+          </Card>
+
+          <Card className="sm:col-span-1 lg:col-span-2">
+            <CardHeader>
+              <CardTitle>
+                <Icon icon={"lucide:image"} className="size-5" />
+
+                {t("settings:banner.title")}
+              </CardTitle>
+
+              <CardDescription>{t("settings:banner.description")}</CardDescription>
+            </CardHeader>
+
+            <CardContent>
+              <div className="relative w-full aspect-2/1 sm:aspect-3/1">
+                {session.data?.user?.profile?.bannerUrl ? (
+                  <>
+                    <div className="absolute inset-0">
+                      <Image
+                        className="size-full rounded-lg border-accent border object-cover"
+                        src={session.data?.user?.profile.bannerUrl}
+                        width={300}
+                        height={220}
+                        background={AVATAR_BLUR}
+                        alt=""
+                      />
+                    </div>
+
+                    {(deleteBannerMutation.isPending || uploadBannerMutation.isPending) && (
+                      <div className="absolute inset-0 bg-black/50 rounded-lg flex flex-col justify-center items-center gap-2">
+                        <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
+                      </div>
+                    )}
+
+                    {!deleteBannerMutation.isPending && !uploadBannerMutation.isPending && (
+                      <>
+                        <button
+                          type="button"
+                          className="absolute top-2 right-10 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
+                          aria-label={t("settings:banner.upload.title")}
+                          onClick={() => bannerInputRef.current?.click()}
+                        >
+                          <Icon icon={"lucide:upload"} className="size-4 text-white" />
+                        </button>
+
+                        <button
+                          type="button"
+                          className="absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/70 transition cursor-pointer"
+                          aria-label={t("common:delete")}
+                          onClick={() => deleteBannerMutation.mutate()}
+                        >
+                          <Icon icon={"lucide:circle-x"} className="size-4 text-white" />
+                        </button>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    className="absolute inset-0 rounded-lg cursor-pointer"
+                    style={profileColorBackgroundStyle(session.data?.user?.profile?.color)}
+                    onClick={() => bannerInputRef.current?.click()}
+                    disabled={uploadBannerMutation.isPending}
+                  >
+                    {uploadBannerMutation.isPending ? (
+                      <div className="size-full flex flex-col justify-center items-center gap-2">
+                        <Icon icon="eos-icons:loading" className="size-8 text-white animate-spin" />
+                      </div>
+                    ) : (
+                      <div className="size-full flex flex-col justify-center items-center gap-2">
+                        <Icon icon={"lucide:upload"} className="size-8 text-white/70" />
+
+                        <span className="text-white/70">{t("settings:banner.upload.title")}</span>
+                      </div>
+                    )}
+                  </button>
+                )}
+              </div>
+
+              <input
+                type="file"
+                ref={bannerInputRef}
+                className="hidden"
+                accept=".jpg,.jpeg,.png,.gif"
+                onChange={(e) => handleImageUpload(e, "banner")}
+              />
+            </CardContent>
+          </Card>
+
+          <Card className="sm:col-span-2 lg:col-span-3">
+            <CardHeader>
+              <CardTitle>
+                <Icon icon={"lucide:palette"} className="size-5" />
+
+                {t("settings:color.title")}
+              </CardTitle>
+
+              <CardDescription>{t("settings:color.description")}</CardDescription>
+            </CardHeader>
+
+            <CardContent className="flex flex-col gap-2">
+              <FieldLabel htmlFor="colorOptions">{t("settings:color.options")}</FieldLabel>
+
+              <div className="flex flex-wrap gap-2 mt-2">
+                {solidColors.map((cosmetic) => (
+                  <Tooltip key={cosmetic.key}>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        className={`relative size-10 rounded-full border-2 transition cursor-pointer hover:border-accent ${color === cosmetic.value ? "border-accent" : "border-transparent"}`}
+                        aria-label={t(`cosmetics:colors.${cosmetic.key}`)}
+                        aria-pressed={color === cosmetic.value}
+                        disabled={updateCosmeticsMutation.isPending}
+                        style={{ backgroundColor: cosmetic.value }}
+                        onClick={() => {
+                          setColor(cosmetic.value);
+
+                          saveColor(cosmetic.value);
+                        }}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-muted">
+                      <div className="max-w-xs text-xs font-semibold">{t(`cosmetics:colors.${cosmetic.key}`)}</div>
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <label
+                      className={`relative flex size-10 cursor-pointer items-center justify-center rounded-full border-2 transition hover:border-accent ${isCustomColor ? "border-accent" : "border-border"}`}
+                      style={isCustomColor ? { backgroundColor: color } : undefined}
+                    >
+                      <Icon icon="lucide:pipette" className="size-4 text-white drop-shadow" />
+
+                      <input
+                        type="color"
+                        aria-label={t("cosmetics:customColor")}
+                        disabled={updateCosmeticsMutation.isPending}
+                        value={color.startsWith("#") ? color : DEFAULT_COLOR}
+                        className="absolute inset-0 size-full cursor-pointer opacity-0"
+                        onChange={(event) => setColor(event.target.value)}
+                        onBlur={(event) => saveColor(event.target.value)}
+                      />
+                    </label>
                   </TooltipTrigger>
                   <TooltipContent className="bg-muted">
-                    <div className="max-w-xs text-xs">
-                      <div className="font-semibold">{t(`cosmetics:bannerEffectNames.${cosmetic.key}`)}</div>
-                      {!cosmetic.unlocked && <div className="text-muted-foreground">{unlockRequirement(cosmetic)}</div>}
-                    </div>
+                    <div className="max-w-xs text-xs font-semibold">{t("cosmetics:customColor")}</div>
                   </TooltipContent>
                 </Tooltip>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+              </div>
+
+              <FieldLabel className="mt-4">{t("cosmetics:gradientColors")}</FieldLabel>
+
+              <div className="flex flex-wrap gap-2 mt-1">
+                {gradientColors.map((cosmetic) => (
+                  <Tooltip key={cosmetic.key}>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        disabled={!cosmetic.unlocked || updateCosmeticsMutation.isPending}
+                        aria-label={t(`cosmetics:gradients.${cosmetic.key}`)}
+                        aria-pressed={color === cosmetic.value}
+                        className={`relative size-10 rounded-full border-2 transition ${color === cosmetic.value ? "border-accent" : "border-transparent"} ${cosmetic.unlocked ? "cursor-pointer hover:border-accent" : "opacity-40"}`}
+                        style={{ backgroundImage: PROFILE_GRADIENTS[cosmetic.key]?.css }}
+                        onClick={() => {
+                          setColor(cosmetic.value);
+
+                          saveColor(cosmetic.value);
+                        }}
+                      >
+                        {!cosmetic.unlocked && (
+                          <Icon icon="lucide:lock" className="absolute inset-0 m-auto size-4 text-white drop-shadow" />
+                        )}
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-muted">
+                      <div className="max-w-xs text-xs">
+                        <div className="font-semibold">{t(`cosmetics:gradients.${cosmetic.key}`)}</div>
+                        {!cosmetic.unlocked && (
+                          <div className="text-muted-foreground">{unlockRequirement(cosmetic)}</div>
+                        )}
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-2">
+                {color !== DEFAULT_COLOR && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setColor(DEFAULT_COLOR);
+
+                      saveColor(DEFAULT_COLOR);
+                    }}
+                  >
+                    <Icon icon={"lucide:rotate-ccw"} className="size-4" />
+
+                    {t("settings:color.reset")}
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="sm:col-span-2 lg:col-span-3">
+            <CardHeader className="gap-2">
+              <CardTitle>
+                <Icon icon={"lucide:sparkles"} className="size-5" />
+
+                {t("cosmetics:equip.title")}
+              </CardTitle>
+
+              <CardDescription>{t("cosmetics:equip.description")}</CardDescription>
+            </CardHeader>
+
+            <CardContent className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
+                <FieldLabel>{t("cosmetics:avatarFrames")}</FieldLabel>
+
+                <div className="flex flex-wrap gap-3 mt-1">
+                  {(cosmeticsQuery.data?.avatarFrames ?? []).map((cosmetic) => (
+                    <Tooltip key={cosmetic.key}>
+                      <TooltipTrigger asChild>
+                        <button
+                          type="button"
+                          disabled={!cosmetic.unlocked || updateCosmeticsMutation.isPending}
+                          className={cn(
+                            "relative size-12 rounded-full border-2 bg-muted transition",
+                            cosmetic.equipped ? "border-accent" : "border-transparent",
+                            cosmetic.unlocked ? "cursor-pointer hover:border-accent" : "opacity-40",
+                            AVATAR_FRAME_CLASSES[cosmetic.key],
+                          )}
+                          aria-label={t(`cosmetics:frames.${cosmetic.key}`)}
+                          aria-pressed={cosmetic.equipped}
+                          onClick={() => equipCosmetic("avatarFrame", cosmetic.key)}
+                        >
+                          {!cosmetic.unlocked && (
+                            <Icon
+                              icon="lucide:lock"
+                              className="absolute inset-0 m-auto size-4 text-white drop-shadow"
+                            />
+                          )}
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-muted">
+                        <div className="max-w-xs text-xs">
+                          <div className="font-semibold">{t(`cosmetics:frames.${cosmetic.key}`)}</div>
+                          {!cosmetic.unlocked && (
+                            <div className="text-muted-foreground">{unlockRequirement(cosmetic)}</div>
+                          )}
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <FieldLabel>{t("cosmetics:profileTitles")}</FieldLabel>
+
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {(cosmeticsQuery.data?.profileTitles ?? []).map((cosmetic) => (
+                    <Tooltip key={cosmetic.key}>
+                      <TooltipTrigger asChild>
+                        <button
+                          type="button"
+                          disabled={!cosmetic.unlocked || updateCosmeticsMutation.isPending}
+                          className={cn(
+                            "flex items-center gap-1.5 rounded-full border-2 px-3 py-1 text-xs font-medium transition",
+                            cosmetic.equipped ? "border-accent" : "border-border",
+                            cosmetic.unlocked ? "cursor-pointer hover:border-accent" : "opacity-40",
+                          )}
+                          aria-label={t(`cosmetics:titles.${cosmetic.key}`)}
+                          aria-pressed={cosmetic.equipped}
+                          onClick={() => equipCosmetic("title", cosmetic.key)}
+                        >
+                          {!cosmetic.unlocked && <Icon icon="lucide:lock" className="size-3" />}
+
+                          {t(`cosmetics:titles.${cosmetic.key}`)}
+                        </button>
+                      </TooltipTrigger>
+                      {!cosmetic.unlocked && (
+                        <TooltipContent className="bg-muted">
+                          <div className="max-w-xs text-xs text-muted-foreground">{unlockRequirement(cosmetic)}</div>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <FieldLabel>{t("cosmetics:bannerEffects")}</FieldLabel>
+
+                <div className="flex flex-wrap gap-3 mt-1">
+                  {(cosmeticsQuery.data?.bannerEffects ?? []).map((cosmetic) => (
+                    <Tooltip key={cosmetic.key}>
+                      <TooltipTrigger asChild>
+                        <button
+                          type="button"
+                          disabled={!cosmetic.unlocked || updateCosmeticsMutation.isPending}
+                          className={cn(
+                            "relative h-12 w-20 overflow-hidden rounded-md border-2 bg-muted transition",
+                            cosmetic.equipped ? "border-accent" : "border-transparent",
+                            cosmetic.unlocked ? "cursor-pointer hover:border-accent" : "opacity-40",
+                          )}
+                          aria-label={t(`cosmetics:bannerEffectNames.${cosmetic.key}`)}
+                          aria-pressed={cosmetic.equipped}
+                          onClick={() => equipCosmetic("bannerEffect", cosmetic.key)}
+                        >
+                          <span
+                            className={cn("absolute inset-0 pointer-events-none", BANNER_EFFECT_CLASSES[cosmetic.key])}
+                          />
+
+                          {!cosmetic.unlocked && (
+                            <Icon
+                              icon="lucide:lock"
+                              className="absolute inset-0 m-auto size-4 text-white drop-shadow"
+                            />
+                          )}
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-muted">
+                        <div className="max-w-xs text-xs">
+                          <div className="font-semibold">{t(`cosmetics:bannerEffectNames.${cosmetic.key}`)}</div>
+                          {!cosmetic.unlocked && (
+                            <div className="text-muted-foreground">{unlockRequirement(cosmetic)}</div>
+                          )}
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </>
+      )}
     </div>
   );
 }

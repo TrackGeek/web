@@ -46,7 +46,7 @@ export interface Person {
   homepage: string | null;
   popularity: number | null;
   images: string[];
-  external: Record<string, string | null> | null;
+  external: Record<string, unknown> | null;
   source: "tmdb" | "mal" | "anilist";
   credits: PersonCredit[];
   stats: PersonStats;

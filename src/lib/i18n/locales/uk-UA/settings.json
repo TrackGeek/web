@@ -3,7 +3,10 @@
     "preferences": "Preferences",
     "security": "Security",
     "connections": "Connections",
-    "import": "Import"
+    "import": "Import",
+    "appearance": "Appearance",
+    "account": "Account",
+    "data": "Library data"
   },
   "export": {
     "title": "Export your data",
@@ -172,7 +175,7 @@
   "color": {
     "title": "Color Theme",
     "options": "Color Options",
-    "description": "Choose your preferred color theme for the application interface.",
+    "description": "Choose a color for your profile.",
     "custom": "Custom Color",
     "reset": "Reset to default",
     "errors": {
@@ -299,5 +302,22 @@
     },
     "success": "Check your inbox — open the link we sent to finish deleting your account.",
     "error": "Failed to start the account deletion. Please try again."
+  },
+  "navigation": {
+    "description": "Manage your profile, preferences and account.",
+    "section": "Choose a settings section",
+    "groups": {
+      "personal": "Your profile",
+      "application": "Application",
+      "account": "Your account"
+    },
+    "descriptions": {
+      "profile": "Update your name, username and bio.",
+      "appearance": "Customize your avatar, banner and profile style.",
+      "preferences": "Choose your language, timezone and content types.",
+      "watchLinks": "Manage shortcuts to your players and favorite sites.",
+      "security": "Manage your password, passkeys and two-factor authentication.",
+      "data": "Import or export your tracked library."
+    }
   }
 }

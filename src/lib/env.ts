@@ -8,7 +8,7 @@ export const env = createEnv({
     VITE_API_URL: z.string(),
     VITE_SITE_URL: z.string().optional(),
     VITE_OG_IMAGE_HOSTS: z.string().optional(),
-    VITE_DATAXAMAS_API_KEY: z.string(),
+    VITE_DATAXAMAS_API_KEY: z.string().trim().optional(),
   },
   runtimeEnv: {
     VITE_API_URL: import.meta.env.VITE_API_URL,

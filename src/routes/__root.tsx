@@ -5,10 +5,10 @@ import { type ReactNode, useEffect } from "react";
 import { Layout } from "@/components/layouts";
 import appCss from "@/global.css?url";
 import type { authClient } from "@/lib/auth/client";
+import { env } from "@/lib/env";
 import i18n, { DEFAULT_LANGUAGE, getClientLanguage, isSupportedLanguage, LANGUAGE_TOKEN } from "@/lib/i18n/config";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/utils/json-ld";
 import { RootProvider } from "@/providers";
-import { env } from "@/lib/env";
 
 interface RouterContext {
   auth: typeof authClient;
@@ -114,12 +114,14 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
 
-        <script
-          defer
-          src="https://dataxamas.com/dataxamas.js"
-          data-api-key={env.VITE_DATAXAMAS_API_KEY}
-          data-allow-localhost="false"
-        />
+        {env.VITE_DATAXAMAS_API_KEY && (
+          <script
+            defer
+            src="https://dataxamas.com/dataxamas.js"
+            data-api-key={env.VITE_DATAXAMAS_API_KEY}
+            data-allow-localhost="false"
+          />
+        )}
       </head>
 
       <body>

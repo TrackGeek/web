@@ -7,11 +7,11 @@ export default createServerEntry({
     try {
       const response = await handler.fetch(request);
 
-      dataxamas.crawlers.trackRequest(request, { statusCode: response.status });
+      dataxamas?.crawlers.trackRequest(request, { statusCode: response.status });
 
       return response;
     } catch (error) {
-      void dataxamas.exceptions.captureException(error, { url: request.url, method: request.method });
+      void dataxamas?.exceptions.captureException(error, { url: request.url, method: request.method });
 
       throw error;
     }

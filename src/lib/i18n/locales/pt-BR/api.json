@@ -41,6 +41,7 @@
   "COSMETIC_NOT_PURCHASABLE": "Este cosmético não pode ser comprado.",
   "COSMETIC_ALREADY_OWNED": "Você já possui esse cosmético.",
   "INSUFFICIENT_BALANCE": "Você não tem moedas suficientes.",
+  "STRIPE_NOT_CONFIGURED": "Payments are not configured on this instance.",
   "MEDIA_NOT_RELEASED": "Este título ainda não foi lançado, então você só pode adicioná-lo á sua lista de planejamento.",
   "betterAuth": {
     "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL": "Usuário com este e-mail já existe. Por favor, use um endereço de e-mail diferente.",

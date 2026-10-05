@@ -161,7 +161,7 @@ export function errorKeyFor(error: unknown, notFoundKey: string): string {
   return "settings:import.errors.failed";
 }
 
-export type ImportItemState = "pending" | "running" | "waiting" | "done" | "error";
+export type ImportItemState = "pending" | "running" | "waiting" | "done" | "error" | "skipped" | "unmatched";
 
 export interface ImportEntry {
   id: string;
@@ -173,6 +173,8 @@ export interface ImportItem extends ImportEntry {
   state: ImportItemState;
   attempt?: number;
   errorKey?: string;
+  message?: string;
+  warnings?: string[];
 }
 
 export interface ImportProgress {
@@ -180,6 +182,8 @@ export interface ImportProgress {
   done: number;
   failed: number;
   total: number;
+  skipped?: number;
+  unmatched?: number;
 }
 
 const CONCURRENCY = DETAIL_REQUESTS_PER_SECOND;

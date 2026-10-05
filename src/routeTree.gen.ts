@@ -75,6 +75,7 @@ import { Route as TvUpcomingIndexRouteImport } from './routes/tv/upcoming/index'
 import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
 import { Route as AuthenticatedDonateErrorIndexRouteImport } from './routes/_authenticated/donate/error/index'
 import { Route as AuthenticatedDonateSuccessIndexRouteImport } from './routes/_authenticated/donate/success/index'
+import { Route as AuthenticatedSettingsImportAnilistRouteImport } from './routes/_authenticated/settings_.import.anilist'
 import { Route as AuthenticatedSettingsImportBackloggdRouteImport } from './routes/_authenticated/settings_.import.backloggd'
 import { Route as AuthenticatedSettingsImportMyanimelistRouteImport } from './routes/_authenticated/settings_.import.myanimelist'
 import { Route as AuthenticatedSettingsImportTrackgeekRouteImport } from './routes/_authenticated/settings_.import.trackgeek'
@@ -416,6 +417,12 @@ const AuthenticatedDonateSuccessIndexRoute =
     path: '/donate/success/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedSettingsImportAnilistRoute =
+  AuthenticatedSettingsImportAnilistRouteImport.update({
+    id: '/settings_/import/anilist',
+    path: '/settings/import/anilist',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedSettingsImportBackloggdRoute =
   AuthenticatedSettingsImportBackloggdRouteImport.update({
     id: '/settings_/import/backloggd',
@@ -509,6 +516,7 @@ export interface FileRoutesByFullPath {
   '/tv/trending/': typeof TvTrendingIndexRoute
   '/tv/upcoming/': typeof TvUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
+  '/settings/import/anilist': typeof AuthenticatedSettingsImportAnilistRoute
   '/settings/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
   '/settings/import/myanimelist': typeof AuthenticatedSettingsImportMyanimelistRoute
   '/settings/import/trackgeek': typeof AuthenticatedSettingsImportTrackgeekRoute
@@ -581,6 +589,7 @@ export interface FileRoutesByTo {
   '/tv/trending': typeof TvTrendingIndexRoute
   '/tv/upcoming': typeof TvUpcomingIndexRoute
   '/user/$username': typeof UserUsernameIndexRoute
+  '/settings/import/anilist': typeof AuthenticatedSettingsImportAnilistRoute
   '/settings/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
   '/settings/import/myanimelist': typeof AuthenticatedSettingsImportMyanimelistRoute
   '/settings/import/trackgeek': typeof AuthenticatedSettingsImportTrackgeekRoute
@@ -655,6 +664,7 @@ export interface FileRoutesById {
   '/tv/trending/': typeof TvTrendingIndexRoute
   '/tv/upcoming/': typeof TvUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
+  '/_authenticated/settings_/import/anilist': typeof AuthenticatedSettingsImportAnilistRoute
   '/_authenticated/settings_/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
   '/_authenticated/settings_/import/myanimelist': typeof AuthenticatedSettingsImportMyanimelistRoute
   '/_authenticated/settings_/import/trackgeek': typeof AuthenticatedSettingsImportTrackgeekRoute
@@ -729,6 +739,7 @@ export interface FileRouteTypes {
     | '/tv/trending/'
     | '/tv/upcoming/'
     | '/user/$username/'
+    | '/settings/import/anilist'
     | '/settings/import/backloggd'
     | '/settings/import/myanimelist'
     | '/settings/import/trackgeek'
@@ -801,6 +812,7 @@ export interface FileRouteTypes {
     | '/tv/trending'
     | '/tv/upcoming'
     | '/user/$username'
+    | '/settings/import/anilist'
     | '/settings/import/backloggd'
     | '/settings/import/myanimelist'
     | '/settings/import/trackgeek'
@@ -874,6 +886,7 @@ export interface FileRouteTypes {
     | '/tv/trending/'
     | '/tv/upcoming/'
     | '/user/$username/'
+    | '/_authenticated/settings_/import/anilist'
     | '/_authenticated/settings_/import/backloggd'
     | '/_authenticated/settings_/import/myanimelist'
     | '/_authenticated/settings_/import/trackgeek'
@@ -1412,6 +1425,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDonateSuccessIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/settings_/import/anilist': {
+      id: '/_authenticated/settings_/import/anilist'
+      path: '/settings/import/anilist'
+      fullPath: '/settings/import/anilist'
+      preLoaderRoute: typeof AuthenticatedSettingsImportAnilistRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/settings_/import/backloggd': {
       id: '/_authenticated/settings_/import/backloggd'
       path: '/settings/import/backloggd'
@@ -1455,6 +1475,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedShopRoute: typeof AuthenticatedShopRoute
+  AuthenticatedSettingsImportAnilistRoute: typeof AuthenticatedSettingsImportAnilistRoute
   AuthenticatedSettingsImportBackloggdRoute: typeof AuthenticatedSettingsImportBackloggdRoute
   AuthenticatedSettingsImportMyanimelistRoute: typeof AuthenticatedSettingsImportMyanimelistRoute
   AuthenticatedSettingsImportTrackgeekRoute: typeof AuthenticatedSettingsImportTrackgeekRoute
@@ -1467,6 +1488,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedShopRoute: AuthenticatedShopRoute,
+  AuthenticatedSettingsImportAnilistRoute:
+    AuthenticatedSettingsImportAnilistRoute,
   AuthenticatedSettingsImportBackloggdRoute:
     AuthenticatedSettingsImportBackloggdRoute,
   AuthenticatedSettingsImportMyanimelistRoute:

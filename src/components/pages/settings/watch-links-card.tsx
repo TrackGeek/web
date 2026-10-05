@@ -177,7 +177,7 @@ function WatchLinkForm({ formId, defaultValues, submitLabel, pending, onSubmit, 
       </div>
 
       <Field>
-        <FieldLabel>{t("settings:watchLinks.contentTypes")}</FieldLabel>
+        <FieldLabel>{t("settings:contentTypes.title")}</FieldLabel>
 
         <div className="flex flex-wrap gap-4">
           {WATCH_LINK_MEDIA_TYPES.map((mediaType) => (

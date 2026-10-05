@@ -6,6 +6,7 @@ import { Demo } from "@/components/pages/home/demo";
 import { FAQ } from "@/components/pages/home/faq";
 import { Features } from "@/components/pages/home/features";
 import { Hero } from "@/components/pages/home/hero";
+import { Import } from "@/components/pages/home/import";
 import { Trust } from "@/components/pages/home/trust";
 import { authClient, useSession } from "@/lib/auth/client";
 import { seo } from "@/lib/utils/seo";
@@ -52,6 +53,8 @@ function HomeRoute() {
       <Demo />
 
       <Features />
+
+      <Import />
 
       <Trust />
 

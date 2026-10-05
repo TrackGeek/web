@@ -22,9 +22,11 @@
     "failed": "Não foi possível exportar seus dados."
   },
   "import": {
-    "description": "Traga sua biblioteca de outro rastreador. Arquivos são lidos no seu dispositivo e nunca enviados para nós.",
+    "description": "Bring your library over from another tracker.",
     "action": "Importar",
     "states": {
+      "skipped": "Skipped",
+      "unmatched": "Unmatched",
       "pending": "Aguardando",
       "running": "Importando",
       "waiting": "Tentativa {{attempt}}",
@@ -54,6 +56,10 @@
     "ignored_other": "· {{count}} entradas ignoradas",
     "fileTooLarge": "Este arquivo é muito grande.",
     "providers": {
+      "anilist": {
+        "name": "AniList",
+        "description": "Import your public anime and manga library with scores, episodes watched and dates from a Anilist profile."
+      },
       "backloggd": {
         "name": "Backloggd",
         "description": "Importe seus jogos, avaliações, horas e datas de uma exportação do Backloggd Plus."
@@ -61,6 +67,41 @@
       "myanimelist_anime": {
         "name": "MyAnimeList (Anime)",
         "description": "Importe seus animes, avaliações, episódios assistidos e datas de uma exportação do MyAnimeList."
+      }
+    },
+    "anilist": {
+      "title": "Review your AniList data",
+      "description": "TrackGeek reads your public AniList anime and manga lists. Private entries require AniList authorization and are not included.",
+      "collect": "Get data",
+      "collecting": "Collecting public library...",
+      "noImport": "No data has been imported into TrackGeek. Review the report before deciding to import it.",
+      "review": "How should these data be mapped and imported into TrackGeek?",
+      "updateNotice": "Importing this snapshot updates matching entries in your library.",
+      "reportTitle": "Import report",
+      "downloadReport": "Download import report",
+      "background": "Your import continues in the background. You can return to this page to check its report.",
+      "jobError": "Snapshot expired or import unavailable. Collect a new snapshot and try again.",
+      "reportSummary": "{{imported}} imported, {{skipped}} skipped, {{unmatched}} unmatched, {{failed}} failed of {{total}}.",
+      "reasons": {
+        "missingMalId": "Missing MyAnimeList ID",
+        "unsupportedStatus": "Unsupported AniList status",
+        "invalidEntry": "Invalid AniList entry"
+      },
+      "warnings": {
+        "partialStartedAt": "Partial start date filled with the first known day or month.",
+        "partialCompletedAt": "Partial completion date filled with the first known day or month.",
+        "listRenamed": "Custom list renamed to {{name}} to keep content types separate.",
+        "invalidAdvancedScore": "Advanced score {{name}} could not be converted."
+      },
+      "summary_one": "{{count}} item collected from {{username}}.",
+      "summary_other": "{{count}} items collected from {{username}}.",
+      "typeCount_one": "{{count}} {{type}} entry",
+      "typeCount_other": "{{count}} {{type}} entries",
+      "errors": {
+        "notFound": "This AniList user was not found.",
+        "private": "This AniList library is private. Public snapshots cannot access private data.",
+        "rateLimit": "AniList rate limit reached. Wait before trying again.",
+        "failed": "AniList could not be reached. Try again later."
       }
     },
     "backloggd": {

@@ -199,8 +199,8 @@ function BookDetailsRoute() {
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: ["book", slug] });
     },
-    onError: () => {
-      return toast.error(t("api:BOOK_ALREADY_REFRESHED"));
+    onError: (error) => {
+      return toast.error(apiErrorMessage(t, error));
     },
   });
 
@@ -457,6 +457,7 @@ function BookDetailsRoute() {
       </Grid>
       {isAuthenticated && (
         <RefreshData
+          isPending={mutation.isPending}
           lastRefreshedAt={book.lastRefreshedAt}
           sourceURL={`https://hardcover.app/books/${book.slug}`}
           onSubmit={() => mutation.mutate()}

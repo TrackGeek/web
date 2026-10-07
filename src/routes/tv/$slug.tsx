@@ -147,10 +147,14 @@ function TVShowDetailsPage() {
       return api.post(apiEndpoints.refreshTvShowData, { tmdbId: Number(slug) });
     },
     onSuccess: () => {
-      return queryClient.invalidateQueries({ queryKey: ["tv", slug] });
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["tv", slug] }),
+        queryClient.invalidateQueries({ queryKey: ["tvSeason", slug] }),
+        queryClient.invalidateQueries({ queryKey: ["tvSeasonEpisodes", slug] }),
+      ]);
     },
-    onError: () => {
-      return toast.error(t("api:TV_SHOW_ALREADY_REFRESHED"));
+    onError: (error) => {
+      return toast.error(apiErrorMessage(t, error));
     },
   });
   const session = useSession();
@@ -670,6 +674,7 @@ function TVShowDetailsPage() {
 
       {isAuthenticated && (
         <RefreshData
+          isPending={mutation.isPending}
           sourceURL={`https://www.themoviedb.org/tv/${item.tmdbId}`}
           lastRefreshedAt={item.lastRefreshedAt}
           onSubmit={() => {

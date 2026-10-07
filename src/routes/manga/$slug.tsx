@@ -133,8 +133,8 @@ function MangaDetailsRoute() {
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: ["manga", slug] });
     },
-    onError: () => {
-      return toast.error(t("api:MANGA_ALREADY_REFRESHED"));
+    onError: (error) => {
+      return toast.error(apiErrorMessage(t, error));
     },
   });
 
@@ -433,7 +433,12 @@ function MangaDetailsRoute() {
       )}
 
       {isAuthenticated && (
-        <RefreshData lastRefreshedAt={manga.lastRefreshedAt} sourceURL={manga.url} onSubmit={() => mutation.mutate()} />
+        <RefreshData
+          isPending={mutation.isPending}
+          lastRefreshedAt={manga.lastRefreshedAt}
+          sourceURL={manga.url}
+          onSubmit={() => mutation.mutate()}
+        />
       )}
       {(manga.external?.length >= 1 || manga.anilistId) && (
         <div className="flex flex-wrap gap-3 items-center justify-center">

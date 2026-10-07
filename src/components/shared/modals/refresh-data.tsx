@@ -9,17 +9,19 @@ interface RefreshDataProps {
   sourceURL: string;
   onSubmit?: () => void;
   lastRefreshedAt: Date;
+  isPending?: boolean;
 }
 
-export function RefreshData({ sourceURL, onSubmit, lastRefreshedAt }: RefreshDataProps) {
+export function RefreshData({ sourceURL, onSubmit, lastRefreshedAt, isPending = false }: RefreshDataProps) {
   const { t, i18n } = useTranslation();
   const [open, setOpen] = useState(false);
   const relativeTime = formatRelativeTime(lastRefreshedAt, i18n.language);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full group">
-          {t("library:refreshData")}
+        <Button variant="outline" className="w-full group" disabled={isPending} aria-busy={isPending}>
+          {isPending && <Icon icon="lucide:loader-circle" className="size-4 animate-spin" />}
+          {isPending ? t("common:loading") : t("library:refreshData")}
           {relativeTime && <span className="text-muted-foreground -ml-1 group-hover:text-muted">• {relativeTime}</span>}
         </Button>
       </DialogTrigger>
@@ -50,6 +52,7 @@ export function RefreshData({ sourceURL, onSubmit, lastRefreshedAt }: RefreshDat
               <Button
                 size="sm"
                 className="gap-2"
+                disabled={isPending}
                 onClick={() => {
                   setOpen(false);
                   onSubmit?.();

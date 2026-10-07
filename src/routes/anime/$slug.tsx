@@ -251,10 +251,14 @@ function AnimeDetailsRoute() {
       return api.post(apiEndpoints.refreshAnimeData, { malId: Number(slug) });
     },
     onSuccess: () => {
-      return queryClient.invalidateQueries({ queryKey: ["anime", slug] });
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["anime", slug] }),
+        queryClient.invalidateQueries({ queryKey: ["animeEpisodes", slug] }),
+        queryClient.invalidateQueries({ queryKey: ["animeRelations", slug] }),
+      ]);
     },
-    onError: () => {
-      return toast.error(t("api:ANIME_ALREADY_REFRESHED"));
+    onError: (error) => {
+      return toast.error(apiErrorMessage(t, error));
     },
   });
 
@@ -704,6 +708,7 @@ function AnimeDetailsRoute() {
 
       {isAuthenticated && (
         <RefreshData
+          isPending={mutation.isPending}
           lastRefreshedAt={anime.lastRefreshedAt}
           sourceURL={`https://myanimelist.net/anime/${anime.malId}`}
           onSubmit={() => mutation.mutate()}

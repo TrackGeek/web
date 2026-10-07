@@ -139,8 +139,8 @@ function MovieDetailsRoute() {
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: ["movie", slug] });
     },
-    onError: () => {
-      return toast.error(t("api:MOVIE_ALREADY_REFRESHED"));
+    onError: (error) => {
+      return toast.error(apiErrorMessage(t, error));
     },
   });
 
@@ -398,6 +398,7 @@ function MovieDetailsRoute() {
       </Grid>
       {isAuthenticated && (
         <RefreshData
+          isPending={mutation.isPending}
           lastRefreshedAt={movie.lastRefreshedAt}
           sourceURL={`https://www.themoviedb.org/movie/${movie.tmdbId}`}
           onSubmit={() => mutation.mutate()}

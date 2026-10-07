@@ -287,8 +287,8 @@ function GameDetailsRoute() {
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: ["game", slug] });
     },
-    onError: () => {
-      return toast.error(t("api:GAME_ALREADY_REFRESHED"));
+    onError: (error) => {
+      return toast.error(apiErrorMessage(t, error));
     },
   });
 
@@ -567,6 +567,7 @@ function GameDetailsRoute() {
       </Grid>
       {isAuthenticated && (
         <RefreshData
+          isPending={mutation.isPending}
           lastRefreshedAt={game.lastRefreshedAt}
           sourceURL={`https://www.igdb.com/games/${game.slug}`}
           onSubmit={() => mutation.mutate()}

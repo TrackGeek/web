@@ -16,6 +16,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   useDeleteAllNotifications,
   useMarkAllNotificationsAsRead,
   useMarkAllNotificationsAsUnread,
@@ -55,38 +62,48 @@ function NotificationsRoute() {
   return (
     <div className="flex flex-col gap-6">
       <Card>
-        <CardHeader>
+        <CardHeader className="max-md:flex max-md:flex-col">
           <CardTitle className="flex items-center gap-2">
             <Icon icon={"lucide:bell"} className="size-5" />
             {t("common:notifications")}
           </CardTitle>
           <CardDescription>{t("notifications:description")}</CardDescription>
-          <CardAction>
-            <div className="flex flex-wrap items-center gap-2">
-              <Button
-                variant="outline"
-                disabled={isPending || unread === 0}
-                onClick={() => markAllAsRead.mutate(undefined, { onError })}
-              >
-                {t("notifications:markAllAsRead")}
-              </Button>
+          <CardAction className="flex md:flex-wrap items-center gap-2 max-md:w-full">
+            <Button
+              variant="outline"
+              className="flex-1"
+              disabled={isPending || unread === 0}
+              onClick={() => markAllAsRead.mutate(undefined, { onError })}
+            >
+              <Icon icon="lucide:mail-open" className="size-4" />
+              {t("notifications:markAllAsRead")}
+            </Button>
 
-              <Button
-                variant="outline"
-                disabled={isPending || total === 0 || unread === total}
-                onClick={() => markAllAsUnread.mutate(undefined, { onError })}
-              >
-                {t("notifications:markAllAsUnread")}
-              </Button>
-
-              <Button
-                variant="destructive"
-                disabled={isPending || total === 0}
-                onClick={() => setIsDeleteAllOpen(true)}
-              >
-                {t("notifications:deleteAll")}
-              </Button>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon" aria-label={t("common:showMore")}>
+                  <Icon icon="lucide:ellipsis" className="size-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  disabled={isPending || total === 0 || unread === total}
+                  onSelect={() => markAllAsUnread.mutate(undefined, { onError })}
+                >
+                  <Icon icon="lucide:mail" className="size-4 text-white" />
+                  {t("notifications:markAllAsUnread")}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  variant="destructive"
+                  disabled={isPending || total === 0}
+                  onSelect={() => setIsDeleteAllOpen(true)}
+                >
+                  <Icon icon="lucide:trash" className="size-4" />
+                  {t("notifications:deleteAll")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </CardAction>
         </CardHeader>
 

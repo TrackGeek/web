@@ -90,10 +90,6 @@ function buildHeadline(releaseEvent: ApiTypes.NotificationReleaseEvent, title: s
   }
 }
 
-/**
- * Turns a catch-up notification into the view-model the item card renders. Returns null when the
- * notification carries no release event (comment/reaction/system notifications).
- */
 export function normalizeReleaseNotification(
   notification: ApiTypes.Notification,
   t: TFunction,

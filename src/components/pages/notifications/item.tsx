@@ -164,8 +164,9 @@ export function NotificationItem({ notification, isPending, onToggleRead, onDele
             onClick={onDelete}
             aria-label={t("common:delete")}
             title={t("common:delete")}
+            className="text-destructive hover:bg-destructive/90"
           >
-            <Icon icon="lucide:trash-2" className="size-4.5" />
+            <Icon icon="lucide:trash" className="size-4.5" />
           </Button>
         </div>
       </CardContent>

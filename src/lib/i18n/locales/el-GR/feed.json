@@ -18,6 +18,7 @@
   "watchedEpisodesRangeSeason": "watched S{{season}} eps {{from}}-{{to}} of <strong>{{content}}</strong>",
   "readChapter": "read chapter {{chapterNumber}} of <strong>{{content}}</strong>",
   "readChapters": "read chapters {{chapterNumberInitial}}-{{chapterNumberEnd}} of <strong>{{content}}</strong>",
+  "readProgress": "read $t(library:{{unit}}, {\"count\": {{count}}}) {{range}} of <strong>{{content}}</strong>",
   "moved": "moved a {{type}} from {{fromList}} to {{toList}}",
   "plansToRead": "plans to read <strong>{{content}}</strong>",
   "plansToWatch": "plans to watch <strong>{{content}}</strong>",

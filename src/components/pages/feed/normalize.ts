@@ -291,9 +291,10 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
       }
 
       case "ChaptersRead": {
-        const media = resolveMedia(activity.mangaProgress);
+        const media = resolveMedia(activity.mangaProgress ?? activity.bookProgress);
         const meta = (activity.metadata ?? {}) as { from?: number; to?: number };
         if (!media || meta.from == null || meta.to == null) return null;
+        const isBook = media.media.to === "/book/$slug";
 
         return {
           kind: "item",
@@ -302,13 +303,20 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
             coverURL: media.cover,
             media: media.media,
             mediaTitle: media.title,
-            titleKey: meta.from === meta.to ? "feed:readChapter" : "feed:readChapters",
-            titleValues: {
-              content: media.title,
-              chapterNumber: meta.from,
-              chapterNumberInitial: meta.from,
-              chapterNumberEnd: meta.to,
-            },
+            titleKey: isBook ? "feed:readProgress" : meta.from === meta.to ? "feed:readChapter" : "feed:readChapters",
+            titleValues: isBook
+              ? {
+                  content: media.title,
+                  unit: "page",
+                  range: meta.from === meta.to ? String(meta.from) : `${meta.from}-${meta.to}`,
+                  count: meta.to - meta.from + 1,
+                }
+              : {
+                  content: media.title,
+                  chapterNumber: meta.from,
+                  chapterNumberInitial: meta.from,
+                  chapterNumberEnd: meta.to,
+                },
             titleLink: mediaHighlight(media.media),
             time,
             likes,

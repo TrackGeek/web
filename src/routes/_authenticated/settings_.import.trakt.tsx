@@ -15,7 +15,15 @@ import { parseTraktExport, type TraktEntry, type TraktExport } from "@/lib/impor
 import { mergeTraktProgress, traktFailureCsv } from "@/lib/import/trakt-report";
 import { seo } from "@/lib/utils/seo";
 
+const EXPORT_URL = "https://app.trakt.tv/settings/data?mode=media";
+
 const MAX_FILE_SIZE = 1024 * 1024 * 50;
+
+const EXPORT_STEPS = [
+  "settings:import.trakt.instructions.steps.openPanel",
+  "settings:import.trakt.instructions.steps.download",
+  "settings:import.myanimelist.instructions.steps.upload",
+] as const;
 
 export const Route = createFileRoute("/_authenticated/settings_/import/trakt")({
   head: () => ({
@@ -140,6 +148,28 @@ function TraktImportRoute() {
           </CardTitle>
           <CardDescription>{t("settings:import.trakt.description")}</CardDescription>
         </CardHeader>
+        <CardContent className="flex flex-col gap-4 text-sm">
+          <Button asChild size="sm" variant="outline" className="w-fit gap-2">
+            <a href={EXPORT_URL} target="_blank" rel="noreferrer">
+              <Icon icon="lucide:external-link" className="size-4" />
+              {t("settings:import.myanimelist.instructions.action")}
+            </a>
+          </Button>
+
+          <ol className="flex list-inside list-decimal flex-col gap-1.5 text-muted-foreground">
+            {EXPORT_STEPS.map((step) => (
+              <li key={step}>
+                <Trans
+                  i18nKey={step}
+                  components={{
+                    code: <code className="rounded bg-muted px-1 py-0.5 text-xs text-foreground" />,
+                    strong: <strong />,
+                  }}
+                />
+              </li>
+            ))}
+          </ol>
+        </CardContent>
       </Card>
 
       <Card>

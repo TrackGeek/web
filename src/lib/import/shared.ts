@@ -68,7 +68,7 @@ export function delay(ms: number, signal: AbortSignal) {
   });
 }
 
-const TERMINAL_STATUSES = [400, 404, 409];
+const TERMINAL_STATUSES = [400, 401, 403, 404, 409, 422];
 
 function isRetryable(error: unknown): boolean {
   if (error instanceof Error && error.message === MEDIA_NOT_FOUND) return false;
@@ -191,6 +191,8 @@ const CONCURRENCY = DETAIL_REQUESTS_PER_SECOND;
 export interface ImportRunner<TEntry extends ImportEntry> {
   importEntry: (entry: TEntry, signal: AbortSignal, onRetry: OnRetry, onResume: () => void) => Promise<void>;
   notFoundKey: string;
+  errorMessage?: (error: unknown) => string;
+  warnings?: (entry: TEntry) => string[];
 }
 
 export async function runImport<TEntry extends ImportEntry>(
@@ -249,10 +251,12 @@ export async function runImport<TEntry extends ImportEntry>(
           state: "error",
           attempt: undefined,
           errorKey: errorKeyFor(error, runner.notFoundKey),
+          message: runner.errorMessage?.(error),
         };
         progress.failed++;
       }
 
+      if (runner.warnings) items[index] = { ...items[index], warnings: runner.warnings(entries[index]) };
       emit();
     }
   };

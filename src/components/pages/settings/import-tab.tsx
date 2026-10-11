@@ -18,6 +18,7 @@ interface ImportProvider {
 const PROVIDERS: ImportProvider[] = [
   { id: "anilist", icon: "simple-icons:anilist", to: "/settings/import/anilist", contentType: "anime" },
   { id: "backloggd", icon: "lucide:gamepad-2", to: "/settings/import/backloggd", contentType: "game" },
+  { id: "trakt", icon: "simple-icons:trakt", to: "/settings/import/trakt", contentType: "movie" },
   {
     id: "myanimelist_anime",
     icon: "thesvg-color:myanimelist",
@@ -54,7 +55,9 @@ export function SettingsImportTab() {
                 "flex flex-col gap-3 rounded-lg border border-border/50 bg-muted/30 p-4 sm:flex-row sm:items-center sm:justify-between",
                 provider.id === "anilist"
                   ? !isVisible("anime") && !isVisible("manga") && "hidden"
-                  : hiddenClass(provider.contentType),
+                  : provider.id === "trakt"
+                    ? !isVisible("movie") && !isVisible("tv") && "hidden"
+                    : hiddenClass(provider.contentType),
               )}
             >
               <div className="flex items-center gap-3">

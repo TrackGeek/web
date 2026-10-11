@@ -162,7 +162,7 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         slug: String(row.book.hardcoverId),
         mediaId: row.book.id,
         status: row.status,
-        readingProgress: { current: row.chaptersRead ?? 0, total: row.book.numberOfPages || null },
+        readingProgress: { current: row.chaptersRead ?? 0, total: row.totalPages ?? (row.book.numberOfPages || null) },
       };
     default:
       return null;

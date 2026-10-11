@@ -18,7 +18,7 @@ import { Checkbox } from "../../ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../../ui/dialog";
 import { Field, FieldError, FieldLabel } from "../../ui/field";
 import { Input } from "../../ui/input";
-import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "../../ui/input-group";
+import { InputGroup, InputGroupInput } from "../../ui/input-group";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { RatingGroupAdvanced } from "../../ui/rating-group-advanced";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
@@ -54,14 +54,30 @@ const SUMMARY_MAX_LENGTH = 500;
 const REVIEW_NOTES_MAX_LENGTH = 10000;
 const RECOMMENDED_THRESHOLD = 2.5;
 
-function createProgressSchema() {
-  return z.object({
-    status: z.string(),
-    pagesRead: z.string(),
-    readCount: z.string(),
-    startDate: z.date().optional(),
-    finishDate: z.date().optional(),
-  });
+function createProgressSchema(t: TFunction, hasTotalPages: boolean) {
+  const pageCount = (min: number, required = false) =>
+    z
+      .string()
+      .trim()
+      .refine(
+        (value) =>
+          value === "" ? !required : /^\d+$/.test(value) && Number(value) >= min && Number(value) <= 2147483647,
+        t("feed:invalidPageCount", { min, max: 2147483647 }),
+      );
+
+  return z
+    .object({
+      status: z.string(),
+      pagesRead: pageCount(0),
+      totalPages: pageCount(1, hasTotalPages),
+      readCount: z.string(),
+      startDate: z.date().optional(),
+      finishDate: z.date().optional(),
+    })
+    .refine((data) => !data.totalPages || Number(data.pagesRead) <= Number(data.totalPages), {
+      path: ["pagesRead"],
+      message: t("feed:pagesReadExceedTotal"),
+    });
 }
 
 type ProgressFormData = z.infer<ReturnType<typeof createProgressSchema>>;
@@ -84,6 +100,7 @@ interface BookProgressData {
   id: string;
   status: ProgressStatus;
   chaptersRead: number | null;
+  totalPages: number | null;
   readCount: number | null;
   startedAt: string | null;
   completedAt: string | null;
@@ -111,13 +128,25 @@ export function BookModal({ bookId, totalPages, releaseDate, unreleased = false,
   const minStartDate = useMemo(() => toCalendarDate(releaseDate), [releaseDate]);
   const maxFinishDate = useMemo(() => todayCalendarDate(), []);
 
-  const progressSchema = useMemo(() => createProgressSchema(), []);
+  const progressQuery = useQuery<BookProgressData | null>({
+    queryKey: ["bookProgress", bookId, userId],
+    queryFn: () =>
+      api
+        .get(apiEndpoints.getBookProgress(userId as string, bookId as string))
+        .then(({ data }) => data.bookProgresses.items[0] ?? null),
+    enabled,
+  });
+
+  const defaultTotalPages = totalPages && totalPages > 0 ? totalPages : undefined;
+  const hasTotalPages = (progressQuery.data?.totalPages ?? defaultTotalPages) != null;
+  const progressSchema = useMemo(() => createProgressSchema(t, hasTotalPages), [t, hasTotalPages]);
 
   const progressForm = useForm<ProgressFormData>({
     resolver: zodResolver(progressSchema),
     defaultValues: {
       status: "",
       pagesRead: "",
+      totalPages: defaultTotalPages != null ? String(defaultTotalPages) : "",
       readCount: "",
       startDate: undefined,
       finishDate: undefined,
@@ -125,6 +154,8 @@ export function BookModal({ bookId, totalPages, releaseDate, unreleased = false,
   });
 
   const progressStatus = progressForm.watch("status");
+  const editionTotalPagesValue = progressForm.watch("totalPages");
+  const editionTotalPages = Number(editionTotalPagesValue) > 0 ? Number(editionTotalPagesValue) : undefined;
   const startDate = progressForm.watch("startDate");
 
   const minFinishDate = latestDate(minStartDate, startDate);
@@ -149,15 +180,6 @@ export function BookModal({ bookId, totalPages, releaseDate, unreleased = false,
 
   const summary = reviewForm.watch("summary") ?? "";
   const reviewNotes = reviewForm.watch("notes") ?? "";
-
-  const progressQuery = useQuery<BookProgressData | null>({
-    queryKey: ["bookProgress", bookId, userId],
-    queryFn: () =>
-      api
-        .get(apiEndpoints.getBookProgress(userId as string, bookId as string))
-        .then(({ data }) => data.bookProgresses.items[0] ?? null),
-    enabled,
-  });
 
   const reviewQuery = useQuery<ApiTypes.Review | null>({
     queryKey: ["bookReview", bookId, userId],
@@ -197,17 +219,19 @@ export function BookModal({ bookId, totalPages, releaseDate, unreleased = false,
   const isInList = (listId: string) => listIds.includes(listId);
 
   useEffect(() => {
+    if (enabled && progressQuery.isPending) return;
     const progress = progressQuery.data;
-    if (!progress) return;
+    const savedTotalPages = progress?.totalPages ?? defaultTotalPages;
 
     progressForm.reset({
-      status: ENUM_TO_STATUS[progress.status] ?? "",
-      pagesRead: progress.chaptersRead != null ? String(progress.chaptersRead) : "",
-      readCount: progress.readCount != null ? String(progress.readCount) : "",
-      startDate: progress.startedAt ? new Date(progress.startedAt) : undefined,
-      finishDate: progress.completedAt ? new Date(progress.completedAt) : undefined,
+      status: progress ? (ENUM_TO_STATUS[progress.status] ?? "") : "",
+      pagesRead: progress?.chaptersRead != null ? String(progress.chaptersRead) : "",
+      totalPages: savedTotalPages != null ? String(savedTotalPages) : "",
+      readCount: progress?.readCount != null ? String(progress.readCount) : "",
+      startDate: progress?.startedAt ? new Date(progress.startedAt) : undefined,
+      finishDate: progress?.completedAt ? new Date(progress.completedAt) : undefined,
     });
-  }, [progressQuery.data, progressForm.reset]);
+  }, [progressQuery.data, progressQuery.isPending, progressForm.reset, defaultTotalPages, enabled]);
 
   useEffect(() => {
     const review = reviewQuery.data;
@@ -232,6 +256,7 @@ export function BookModal({ bookId, totalPages, releaseDate, unreleased = false,
         bookId,
         status,
         chaptersRead: data.pagesRead.trim() === "" ? undefined : Number(data.pagesRead),
+        totalPages: data.totalPages.trim() === "" ? undefined : Number(data.totalPages),
         readCount: data.readCount.trim() === "" ? undefined : Number(data.readCount),
         startedAt: data.startDate ?? undefined,
         completedAt: status === "Completed" ? (data.finishDate ?? new Date()) : data.finishDate,
@@ -240,6 +265,8 @@ export function BookModal({ bookId, totalPages, releaseDate, unreleased = false,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["bookProgress", bookId, userId] });
       queryClient.invalidateQueries({ queryKey: ["book"] });
+      queryClient.invalidateQueries({ queryKey: ["user-progress", "book", userId] });
+      queryClient.invalidateQueries({ queryKey: ["active-progress", "book", userId] });
     },
   });
 
@@ -313,8 +340,9 @@ export function BookModal({ bookId, totalPages, releaseDate, unreleased = false,
   const handleStatusChange = (onChange: (value: string) => void) => (value: string) => {
     onChange(value);
 
-    if (value === "completed" && totalPages) {
-      progressForm.setValue("pagesRead", String(totalPages));
+    const currentTotalPages = progressForm.getValues("totalPages");
+    if (value === "completed" && Number(currentTotalPages) > 0) {
+      progressForm.setValue("pagesRead", currentTotalPages, { shouldValidate: true });
     }
   };
 
@@ -395,25 +423,55 @@ export function BookModal({ bookId, totalPages, releaseDate, unreleased = false,
               />
             </Field>
 
-            <Field>
+            <Field
+              data-invalid={!!progressForm.formState.errors.pagesRead || !!progressForm.formState.errors.totalPages}
+            >
               <FieldLabel htmlFor="pages" className="text-sm font-medium">
                 {t("library:page_other")}
               </FieldLabel>
-              <InputGroup className="bg-background">
+              <InputGroup className="bg-background [&>div:first-child]:min-w-0 [&>div:first-child]:flex-1">
                 <InputGroupInput
                   id="pages"
                   type="number"
                   min={0}
-                  max={totalPages ?? undefined}
+                  max={editionTotalPages}
                   placeholder="0"
+                  aria-label={t("feed:pagesRead")}
+                  aria-describedby="book-pages-read-error"
+                  aria-invalid={!!progressForm.formState.errors.pagesRead}
                   {...registerInteger(progressForm.register("pagesRead"))}
                 />
-                {!!totalPages && (
-                  <InputGroupAddon align="inline-end">
-                    <InputGroupText>/{totalPages}</InputGroupText>
-                  </InputGroupAddon>
-                )}
+                <span className="shrink-0 px-1 text-sm text-muted-foreground" aria-hidden="true">
+                  /
+                </span>
+                <div className="w-24 shrink-0 p-1">
+                  <InputGroupInput
+                    id="book-total-pages"
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    max={2147483647}
+                    placeholder="?"
+                    className="h-7 rounded-sm bg-zinc-900 dark:bg-zinc-900 hover:bg-zinc-800/80 dark:hover:bg-zinc-800/80 focus-visible:bg-zinc-800 dark:focus-visible:bg-zinc-800 tabular-nums"
+                    disabled={enabled && progressQuery.isPending}
+                    aria-label={t("feed:totalPages")}
+                    title={t("feed:totalPages")}
+                    aria-describedby="book-total-pages-error"
+                    aria-invalid={!!progressForm.formState.errors.totalPages}
+                    {...registerInteger(
+                      progressForm.register("totalPages", {
+                        onChange: (event) => {
+                          if (progressStatus === "completed" && Number(event.target.value) > 0) {
+                            progressForm.setValue("pagesRead", event.target.value, { shouldValidate: true });
+                          }
+                        },
+                      }),
+                    )}
+                  />
+                </div>
               </InputGroup>
+              <FieldError id="book-pages-read-error" errors={[progressForm.formState.errors.pagesRead]} />
+              <FieldError id="book-total-pages-error" errors={[progressForm.formState.errors.totalPages]} />
             </Field>
 
             <Field>
@@ -737,7 +795,12 @@ export function BookModal({ bookId, totalPages, releaseDate, unreleased = false,
           <Button variant="outline" size="sm" onClick={() => onClose?.()}>
             {t("common:cancel")}
           </Button>
-          <Button size="sm" className="gap-2" onClick={handleSave} disabled={isSaving}>
+          <Button
+            size="sm"
+            className="gap-2"
+            onClick={handleSave}
+            disabled={isSaving || (enabled && progressQuery.isPending)}
+          >
             <Icon icon={"lucide:save"} className="size-4" />
             {isSaving ? t("feed:saving") : t("common:saveChanges")}
           </Button>

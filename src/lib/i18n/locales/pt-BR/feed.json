@@ -18,7 +18,7 @@
   "watchedEpisodesRangeSeason": "assistiu os episódios T{{season}} E{{from}}-{{to}} de <strong>{{content}}</strong>",
   "readChapter": "leu capítulo {{chapterNumber}} de <strong>{{content}}</strong>",
   "readChapters": "leu capítulos {{chapterNumberInitial}}-{{chapterNumberEnd}} de <strong>{{content}}</strong>",
-  "readProgress": "read $t(library:{{unit}}, {\"count\": {{count}}}) {{range}} of <strong>{{content}}</strong>",
+  "readProgress": "leu $t(library:{{unit}}, {\"count\": {{count}}}) {{range}} de <strong>{{content}}</strong>",
   "moved": "moveu um {{type}} de {{fromList}} para {{toList}}",
   "plansToRead": "planeia ler <strong>{{content}}</strong>",
   "plansToWatch": "planeia assistir <strong>{{content}}</strong>",
@@ -106,6 +106,10 @@
     "streaming": "Streaming"
   },
   "totalRereads": "Total Relido",
+  "pagesRead": "Pages read",
+  "totalPages": "Total pages",
+  "invalidPageCount": "Enter a whole number between {{min}} and {{max}}.",
+  "pagesReadExceedTotal": "Pages read cannot exceed the total. Adjust the total or pages read.",
   "totalReplays": "Total Rejogado",
   "hoursPlayed": "Horas jogadas",
   "completionStatus": {

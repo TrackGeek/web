@@ -20,6 +20,7 @@
   "MOVIE_ALREADY_REFRESHED": "O filme já foi atualizado recentemente. Por favor, aguarde antes de atualizar novamente.",
   "ANIME_ALREADY_REFRESHED": "O anime já foi atualizado recentemente. Por favor, aguarde antes de atualizar novamente.",
   "BOOK_ALREADY_REFRESHED": "O livro já foi atualizado recentemente. Por favor, aguarde antes de atualizar novamente.",
+  "INVALID_PAGES_READ": "Pages read cannot exceed the total pages in your edition.",
   "MANGA_ALREADY_REFRESHED": "O mangá já foi atualizado recentemente. Por favor, aguarde antes de atualizar novamente.",
   "INTERNAL_SERVER_ERROR": "Ocorreu um erro interno do servidor. Tente novamente mais tarde.",
   "NOT_FOUND": "O recurso solicitado não foi encontrado.",

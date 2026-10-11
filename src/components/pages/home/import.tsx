@@ -6,6 +6,13 @@ import { openAuthModal } from "@/lib/auth/modal";
 
 const providers = [
   {
+    name: "Trakt",
+    icon: "simple-icons:trakt",
+    to: "/settings/import/trakt",
+    type: "pages:landing.moviesTVShows",
+    method: "pages:landing.import.exportFile",
+  },
+  {
     name: "MyAnimeList",
     icon: "simple-icons:myanimelist",
     to: "/settings/import/myanimelist",

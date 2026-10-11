@@ -106,6 +106,10 @@
     "streaming": "Streaming"
   },
   "totalRereads": "Total Rereads",
+  "pagesRead": "Pages read",
+  "totalPages": "Total pages",
+  "invalidPageCount": "Enter a whole number between {{min}} and {{max}}.",
+  "pagesReadExceedTotal": "Pages read cannot exceed the total. Adjust the total or pages read.",
   "totalReplays": "Total Replays",
   "hoursPlayed": "Hours Played",
   "completionStatus": {

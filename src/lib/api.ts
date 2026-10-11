@@ -863,6 +863,7 @@ export namespace ApiTypes {
 
   export interface Progress {
     chaptersRead?: number | null;
+    totalPages?: number | null;
     updatedAt: string;
     episodeProgress?: EpisodeProgress;
     id: string;

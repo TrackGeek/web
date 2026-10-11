@@ -144,7 +144,12 @@ export const PROGRESS_FIELDS: Record<ContentTypeSlug, BackupField[]> = {
     { name: "platforms", kind: "list" },
     { name: "notes", kind: "string" },
   ],
-  book: [...PROGRESS_COMMON, { name: "chaptersRead", kind: "integer" }, { name: "readCount", kind: "integer" }],
+  book: [
+    ...PROGRESS_COMMON,
+    { name: "chaptersRead", kind: "integer" },
+    { name: "totalPages", kind: "integer" },
+    { name: "readCount", kind: "integer" },
+  ],
 };
 
 export const REVIEW_FIELDS: Record<ContentTypeSlug, BackupField[]> = {

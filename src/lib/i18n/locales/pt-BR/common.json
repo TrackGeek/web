@@ -157,6 +157,12 @@
   "reportError": "Relatar problemas",
   "all": "Todos",
   "clear": "Limpar",
+  "calendar": {
+    "dateFormat": "DD/MM/YYYY",
+    "applyDate": "Apply date",
+    "invalidDate": "Enter a valid date in {{format}} format.",
+    "unavailableDate": "This date is unavailable. Choose another date."
+  },
   "ascending": "Ascendente",
   "descending": "Descendente",
   "joinedAt": "Entrou em",

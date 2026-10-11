@@ -157,6 +157,12 @@
   "reportError": "Report error",
   "all": "All",
   "clear": "Clear",
+  "calendar": {
+    "dateFormat": "DD/MM/YYYY",
+    "applyDate": "Apply date",
+    "invalidDate": "Enter a valid date in {{format}} format.",
+    "unavailableDate": "This date is unavailable. Choose another date."
+  },
   "ascending": "Ascending",
   "descending": "Descending",
   "joinedAt": "Joined at",

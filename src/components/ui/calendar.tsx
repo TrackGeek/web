@@ -1,14 +1,26 @@
-import { type DayButton, DayPicker, getDefaultClassNames } from "@daypicker/react";
+import {
+  type DayButton,
+  DayPicker,
+  dateMatchModifiers,
+  getDefaultClassNames,
+  type Modifiers,
+  type RootProps,
+  useDayPicker,
+} from "@daypicker/react";
 import { Icon } from "@iconify/react";
+import { endOfMonth, format, isAfter, isBefore, isSameDay, isValid, parse, startOfMonth } from "date-fns";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
-  captionLayout = "label",
+  captionLayout = "dropdown",
   buttonVariant = "ghost",
   formatters,
   components,
@@ -17,6 +29,8 @@ function Calendar({
   buttonVariant?: React.ComponentProps<typeof Button>["variant"];
 }) {
   const defaultClassNames = getDefaultClassNames();
+  const hasYearDropdown = captionLayout === "dropdown" || captionLayout === "dropdown-years";
+  const currentYear = (props.today ?? new Date()).getFullYear();
 
   return (
     <DayPicker
@@ -96,9 +110,7 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        Root: ({ className, rootRef, ...props }) => {
-          return <div data-slot="calendar" ref={rootRef} className={cn(className)} {...props} />;
-        },
+        Root: CalendarRoot,
         Chevron: ({ className, orientation, ...props }) => {
           if (orientation === "left") {
             return <Icon icon={"lucide:chevron-left"} className={cn("size-4", className)} {...props} />;
@@ -121,7 +133,126 @@ function Calendar({
         ...components,
       }}
       {...props}
+      startMonth={props.startMonth ?? (hasYearDropdown ? new Date(currentYear - 100, 0) : undefined)}
+      endMonth={props.endMonth ?? (hasYearDropdown ? new Date(currentYear + 100, 11) : undefined)}
     />
+  );
+}
+
+function CalendarRoot({ className, rootRef, children, ...props }: RootProps) {
+  const { dayPickerProps } = useDayPicker();
+
+  return (
+    <div data-slot="calendar" ref={rootRef} className={cn(className)} {...props}>
+      {dayPickerProps.mode === "single" && <CalendarDateInput />}
+      {children}
+    </div>
+  );
+}
+
+function CalendarDateInput() {
+  const { t } = useTranslation();
+  const { selected, select, goToMonth, dayPickerProps } = useDayPicker<{ mode: "single" }>();
+  const id = React.useId();
+  const selectedValue = selected ? format(selected, "dd/MM/yyyy") : "";
+  const [value, setValue] = React.useState(selectedValue);
+  const [error, setError] = React.useState<"invalidDate" | "unavailableDate" | null>(null);
+  const dateFormat = t("common:calendar.dateFormat");
+
+  React.useEffect(() => {
+    setValue(selectedValue);
+    setError(null);
+  }, [selectedValue]);
+
+  function getDateModifiers(date: Date): Modifiers {
+    const modifiers: Modifiers = {
+      selected: !!selected && isSameDay(selected, date),
+      today: isSameDay(dayPickerProps.today ?? new Date(), date),
+      disabled: dateMatchModifiers(date, dayPickerProps.disabled ?? false),
+      hidden: dateMatchModifiers(date, dayPickerProps.hidden ?? false),
+      outside: false,
+      focused: false,
+    };
+
+    for (const [name, matcher] of Object.entries(dayPickerProps.modifiers ?? {})) {
+      modifiers[name] = dateMatchModifiers(date, matcher ?? false);
+    }
+
+    return modifiers;
+  }
+
+  function applyDate(event: React.MouseEvent | React.KeyboardEvent) {
+    const input = value.trim();
+
+    if (!input && !dayPickerProps.required) {
+      if (selected) select?.(selected, getDateModifiers(selected), event);
+      setError(null);
+      return;
+    }
+
+    const date = parse(input, "d/M/yyyy", new Date());
+
+    if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(input) || !isValid(date)) {
+      setError("invalidDate");
+      return;
+    }
+
+    const modifiers = getDateModifiers(date);
+    const beforeStart = dayPickerProps.startMonth && isBefore(date, startOfMonth(dayPickerProps.startMonth));
+    const afterEnd = dayPickerProps.endMonth && isAfter(date, endOfMonth(dayPickerProps.endMonth));
+
+    if (modifiers.disabled || modifiers.hidden || beforeStart || afterEnd) {
+      setError("unavailableDate");
+      return;
+    }
+
+    setValue(format(date, "dd/MM/yyyy"));
+    setError(null);
+    goToMonth(date);
+    if (!selected || !isSameDay(selected, date)) select?.(date, modifiers, event);
+  }
+
+  return (
+    <div className="mb-4 space-y-2">
+      <Label htmlFor={id}>{t("feed:pickADate")}</Label>
+      <div className="flex items-center gap-2">
+        <Input
+          id={id}
+          type="text"
+          autoComplete="off"
+          placeholder={dateFormat}
+          maxLength={10}
+          value={value}
+          aria-invalid={!!error}
+          aria-describedby={`${id}-hint${error ? ` ${id}-error` : ""}`}
+          onChange={(event) => {
+            setValue(event.target.value);
+            setError(null);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              event.stopPropagation();
+              applyDate(event);
+            }
+          }}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          aria-label={t("common:calendar.applyDate")}
+          onClick={applyDate}
+        >
+          <Icon icon="lucide:check" className="size-4" />
+        </Button>
+      </div>
+      {error && (
+        <p id={`${id}-error`} role="alert" className="max-w-56 text-xs text-destructive">
+          {t(`common:calendar.${error}`, { format: dateFormat })}
+        </p>
+      )}
+    </div>
   );
 }
 

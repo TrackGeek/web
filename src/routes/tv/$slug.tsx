@@ -17,6 +17,7 @@ import { ListItem } from "@/components/pages/details/list";
 import { MoreOptionsTrigger } from "@/components/pages/details/more-options-dialog";
 import { EpisodeProgress, type SeasonData } from "@/components/pages/details/progress";
 import { ReviewItem } from "@/components/pages/details/review-item";
+import { TimeLeft } from "@/components/pages/details/time-left";
 import { WatchProviders } from "@/components/pages/details/watch-providers";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
@@ -57,6 +58,7 @@ import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
 import { nextEpisodeFromSeasons } from "@/lib/watch-links";
+import { getEpisodeRuntime, getRemainingWatchHours } from "@/utils/watch-time";
 
 export const Route = createFileRoute("/tv/$slug")({
   loader: async ({ params }) => {
@@ -246,6 +248,8 @@ function TVShowDetailsPage() {
     }));
 
   const totalWatchedEpisodes = mySeasons.reduce((acc, season) => acc + season.watchedEpisodes.length, 0);
+
+  const remainingHours = getRemainingWatchHours(mySeasons, getEpisodeRuntime(item?.episodeRuntime));
 
   const nextWatch = nextEpisodeFromSeasons(mySeasons);
 
@@ -739,12 +743,15 @@ function TVShowDetailsPage() {
           {item.name}
         </h1>
 
-        <div className="flex flex-wrap items-center gap-6 border-b border-border">
-          <div className="flex items-center mb-3 space-x-1">
+        <div className="flex flex-wrap items-center gap-6 border-b border-border pb-3">
+          <div className="flex items-center space-x-1">
             <StarRating value={rating} className="mr-1" />
             <span className="font-semibold text-card-foreground">{rating}</span>
             <span className="text-muted-foreground">({t("common:reviewCount", { count: reviews?.total ?? 0 })})</span>
           </div>
+          {isAuthenticated && currentStatus === "Watching" && episodeWatchQuery.isSuccess && seasonsQuery.isSuccess && (
+            <TimeLeft hours={remainingHours} />
+          )}
         </div>
 
         <Tabs defaultValue="info">

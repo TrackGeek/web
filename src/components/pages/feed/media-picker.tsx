@@ -120,10 +120,10 @@ export function MediaPicker({ value, onChange, disabled = false }: MediaPickerPr
             width={30}
             height={40}
             alt={value.title}
-            className="h-10 w-7.5 shrink-0 rounded object-cover"
+            className="h-9 w-7.5 shrink-0 rounded object-cover"
           />
         ) : (
-          <span className="flex h-10 w-7.5 shrink-0 items-center justify-center rounded bg-muted">
+          <span className="flex h-9 w-7.5 shrink-0 items-center justify-center rounded bg-muted">
             <Icon icon={CONTENT_TYPE_ICONS[value.type]} className="size-3.5 text-muted-foreground" aria-hidden />
           </span>
         )}
@@ -142,7 +142,7 @@ export function MediaPicker({ value, onChange, disabled = false }: MediaPickerPr
           onClick={() => onChange(null)}
           disabled={disabled}
           aria-label={t("feed:postAttachRemove")}
-          className="size-11 text-muted-foreground transition-none hover:bg-muted hover:text-destructive focus-visible:ring-ring active:bg-muted/70"
+          className="size-9 text-muted-foreground transition-none hover:bg-muted hover:text-destructive focus-visible:ring-ring active:bg-muted/70"
         >
           <Icon icon="lucide:x" className="size-4" aria-hidden />
         </Button>
@@ -158,7 +158,7 @@ export function MediaPicker({ value, onChange, disabled = false }: MediaPickerPr
           variant="ghost"
           disabled={disabled}
           aria-label={t("feed:postAttach")}
-          className="h-11 min-w-11 max-w-full gap-2 px-3 text-muted-foreground transition-none hover:bg-muted hover:text-card-foreground focus-visible:ring-ring active:bg-muted/70"
+          className="h-9 min-w-11 max-w-full gap-2 px-3 text-muted-foreground transition-none hover:bg-muted hover:text-card-foreground focus-visible:ring-ring active:bg-muted/70"
         >
           <Icon icon="lucide:paperclip" className="size-4" aria-hidden />
           <span className="hidden min-w-0 truncate @sm:inline">{t("feed:postAttach")}</span>
@@ -177,13 +177,13 @@ export function MediaPicker({ value, onChange, disabled = false }: MediaPickerPr
         <Select value={type} onValueChange={(next) => setType(next as ContentTypeSlug)}>
           <SelectTrigger
             aria-label={t("feed:postAttach")}
-            className="h-11! w-full border-muted-foreground/60 transition-none focus-visible:ring-ring"
+            className="h-9! w-full border-muted-foreground/60 transition-none focus-visible:ring-ring"
           >
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="motion-reduce:animate-none!">
             {visible.map((slug) => (
-              <SelectItem key={slug} value={slug} className="min-h-11 active:bg-muted">
+              <SelectItem key={slug} value={slug} className="min-h-9 active:bg-muted">
                 <Icon icon={CONTENT_TYPE_ICONS[slug]} className="size-4" aria-hidden />
                 {t(CONTENT_TYPE_LABELS[slug])}
               </SelectItem>
@@ -198,7 +198,7 @@ export function MediaPicker({ value, onChange, disabled = false }: MediaPickerPr
           placeholder={t("feed:postAttachSearch")}
           aria-label={t("feed:postAttachSearch")}
           autoComplete="off"
-          className="h-11 border-muted-foreground/60 text-base transition-none focus-visible:ring-ring md:text-base"
+          className="h-9 border-muted-foreground/60 text-base transition-none focus-visible:ring-ring md:text-base"
         />
 
         <div className="flex min-h-0 max-h-64 flex-col gap-1 overflow-y-auto" aria-busy={isFetching}>
@@ -246,7 +246,7 @@ export function MediaPicker({ value, onChange, disabled = false }: MediaPickerPr
                 type="button"
                 variant="outline"
                 onClick={() => refetch()}
-                className="h-11 transition-none focus-visible:ring-ring"
+                className="h-9 transition-none focus-visible:ring-ring"
               >
                 {t("common:tryAgain")}
               </Button>

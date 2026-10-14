@@ -54,7 +54,7 @@ export function ComposerToolbar({
           <label
             htmlFor={`${id}-spoiler`}
             className={cn(
-              "flex min-h-11 cursor-pointer items-center gap-2 whitespace-nowrap rounded-md px-3 text-sm text-muted-foreground hover:bg-muted hover:text-card-foreground active:bg-muted/70 has-focus-visible:ring-2 has-focus-visible:ring-ring",
+              "flex min-h-9 cursor-pointer items-center gap-2 whitespace-nowrap rounded-md px-3 text-sm text-muted-foreground hover:bg-muted hover:text-card-foreground active:bg-muted/70 has-focus-visible:ring-2 has-focus-visible:ring-ring",
               isSpoiler && "bg-muted text-card-foreground",
               isPending && "pointer-events-none cursor-not-allowed opacity-50",
             )}
@@ -76,7 +76,7 @@ export function ComposerToolbar({
             disabled={!canPreview || isPending}
             aria-label={isPreviewing ? t("feed:edit") : t("common:preview")}
             aria-pressed={isPreviewing}
-            className="h-11 min-w-11 gap-2 px-3 text-muted-foreground transition-none hover:bg-muted hover:text-card-foreground focus-visible:ring-ring active:bg-muted/70 aria-pressed:bg-muted aria-pressed:text-card-foreground"
+            className="h-9 min-w-11 gap-2 px-3 text-muted-foreground transition-none hover:bg-muted hover:text-card-foreground focus-visible:ring-ring active:bg-muted/70 aria-pressed:bg-muted aria-pressed:text-card-foreground"
           >
             <Icon icon={isPreviewing ? "lucide:pencil" : "lucide:eye"} className="size-4" aria-hidden />
             <span className="hidden @2xl:inline">{isPreviewing ? t("feed:edit") : t("common:preview")}</span>
@@ -99,7 +99,7 @@ export function ComposerToolbar({
           <Button
             type="submit"
             disabled={!canSubmit}
-            className="h-11 min-w-28 gap-2 px-4 transition-none focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card active:bg-primary/80"
+            className="h-9 min-w-28 gap-2 px-4 transition-none focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card active:bg-primary/80"
           >
             <span aria-live="polite">
               {isPending ? t("common:loading") : isError ? t("common:tryAgain") : t("feed:postSubmit")}

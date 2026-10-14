@@ -105,6 +105,8 @@
   "userCount_other": "{{count}} users",
   "dayCount_one": "{{count}} day",
   "dayCount_other": "{{count}} days",
+  "hourCount_one": "{{formattedCount}} hour",
+  "hourCount_other": "{{formattedCount}} hours",
   "coinCount_one": "{{count}} coin",
   "coinCount_other": "{{count}} coins",
   "reviewCount_one": "{{count}} review",

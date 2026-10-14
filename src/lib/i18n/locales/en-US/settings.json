@@ -11,7 +11,7 @@
   "export": {
     "title": "Export your data",
     "description": "Download everything you tracked as a ZIP of CSV files, ready to be imported into another TrackGeek instance.",
-    "contents": "Includes your progress, reviews, watched episodes and screenshots for every content type. Internal ids and timestamps are left out.",
+    "contents": "Includes your progress, reviews, watched episodes and screenshots for every content type.",
     "action": "Export",
     "exporting": "Preparing...",
     "slowNotice": "Episode histories are read one title at a time, so large libraries take a while. Keep this tab open.",

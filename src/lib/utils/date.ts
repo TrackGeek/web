@@ -71,6 +71,8 @@ export function formatDateRange(from: DateInput, to: DateInput, locale: string, 
   if (!start) return null;
 
   const end = formatLongDate(to, locale);
+  if (start === end) return start;
+
   return `${start} – ${end ?? t("library:present")}`;
 }
 

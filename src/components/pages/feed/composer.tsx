@@ -1,148 +1,104 @@
 import { Icon } from "@iconify/react";
-import { Image } from "@unpic/react";
-import { useId, useState } from "react";
+import { useId } from "react";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 import { Markdown } from "@/components/shared/comments/markdown";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreatePost } from "@/hooks/post";
-import { useSession } from "@/lib/auth/client";
-import { CONTENT_TYPE_API } from "@/lib/content-types";
-import { cn, getInitialsFromName } from "@/lib/utils";
-import { type AttachedMedia, MediaPicker } from "./media-picker";
+import { useFeedComposer } from "@/hooks/use-feed-composer";
+import { cn } from "@/lib/utils";
+import { ComposerToolbar } from "./composer-toolbar";
 
 export const POST_MAX_LENGTH = 20000;
 
-const NEAR_LIMIT_RATIO = 0.9;
-
 export function FeedComposer() {
   const { t } = useTranslation();
-  const session = useSession();
-  const spoilerId = useId();
-
-  const [content, setContent] = useState("");
-  const [isSpoiler, setIsSpoiler] = useState(false);
-  const [media, setMedia] = useState<AttachedMedia | null>(null);
-  const [isPreviewing, setIsPreviewing] = useState(false);
-
-  const user = session.data?.user;
-  const createPost = useCreatePost(user?.id);
+  const id = useId();
+  const composer = useFeedComposer(POST_MAX_LENGTH);
+  const { user } = composer;
 
   if (!user) return null;
 
-  const trimmed = content.trim();
-  const canSubmit = trimmed.length > 0 && content.length <= POST_MAX_LENGTH && !createPost.isPending;
-
-  function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-
-    if (!canSubmit) return;
-
-    createPost.mutate(
-      {
-        content: trimmed,
-        isSpoiler,
-        ...(media && { mediaType: CONTENT_TYPE_API[media.type], mediaExternalId: media.externalId }),
-      },
-      {
-        onSuccess: () => {
-          setContent("");
-          setIsSpoiler(false);
-          setMedia(null);
-          setIsPreviewing(false);
-          toast.success(t("feed:postSuccess"));
-        },
-        onError: () => toast.error(t("feed:postError")),
-      },
-    );
-  }
-
   return (
-    <Card className="mb-3 p-0">
-      <CardContent className="p-4">
-        <form onSubmit={handleSubmit} className="flex gap-3">
-          <Avatar className="size-9 shrink-0 border border-border">
-            {user.profile?.avatarUrl ? (
-              <Image
-                className="aspect-square size-full"
-                src={user.profile.avatarUrl}
-                width={36}
-                height={36}
-                alt={user.name ?? ""}
-              />
-            ) : (
-              <AvatarFallback>{getInitialsFromName(user.name ?? "")}</AvatarFallback>
-            )}
-          </Avatar>
-
-          <div className="flex min-w-0 flex-1 flex-col gap-3">
-            {isPreviewing ? (
-              <div className="min-h-24 rounded-md border border-border bg-muted/30 p-3">
-                <Markdown>{trimmed}</Markdown>
-              </div>
+    <Card className="@container mb-3 min-w-0 gap-0 border-border/60 p-0 shadow-none">
+      <CardContent className="p-0">
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            composer.submit();
+          }}
+          onKeyDown={(event) => {
+            if (
+              event.target === composer.editorRef.current &&
+              event.key === "Enter" &&
+              (event.metaKey || event.ctrlKey) &&
+              !event.nativeEvent.isComposing
+            ) {
+              event.preventDefault();
+              composer.submit();
+            }
+          }}
+          aria-busy={composer.isPending}
+          className="min-w-0"
+        >
+          <div className="min-w-0 px-3 py-2 @sm:px-4">
+            {composer.isPreviewing ? (
+              <section
+                aria-label={t("common:preview")}
+                className="max-h-[50dvh] min-h-16 min-w-0 overflow-auto rounded-md px-1 py-2 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <Markdown className="text-base text-card-foreground [overflow-wrap:anywhere] [&_pre]:max-w-full [&_table]:block [&_table]:overflow-x-auto">
+                  {composer.trimmed}
+                </Markdown>
+              </section>
             ) : (
               <Textarea
-                value={content}
-                onChange={(event) => setContent(event.target.value)}
+                ref={composer.editorRef}
+                value={composer.content}
+                onChange={(event) => composer.updateContent(event.target.value)}
                 placeholder={t("feed:postPlaceholder")}
+                aria-label={t("feed:postPlaceholder")}
+                aria-describedby={`${id}-hint ${id}-count${composer.status ? ` ${id}-status` : ""}`}
                 maxLength={POST_MAX_LENGTH}
-                disabled={createPost.isPending}
-                className="max-h-[60vh] min-h-24 resize-none overflow-y-auto"
+                disabled={composer.isPending}
+                rows={2}
+                className="max-h-[50dvh] min-h-16 resize-none overflow-y-auto border-transparent bg-transparent px-1 py-2 text-base leading-relaxed shadow-none transition-none focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-ring md:text-base"
               />
             )}
-
-            <div className="flex flex-wrap items-center gap-2">
-              <MediaPicker value={media} onChange={setMedia} disabled={createPost.isPending} />
-
-              <label
-                htmlFor={spoilerId}
-                className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground"
-              >
-                <Checkbox
-                  id={spoilerId}
-                  checked={isSpoiler}
-                  onCheckedChange={(checked) => setIsSpoiler(checked === true)}
-                  disabled={createPost.isPending}
-                />
-                {t("feed:spoiler")}
-              </label>
-
-              {trimmed.length > 0 && (
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setIsPreviewing((value) => !value)}
-                  className="gap-2"
-                >
-                  <Icon icon={isPreviewing ? "lucide:pencil" : "lucide:eye"} className="size-3.5" />
-                  {isPreviewing ? t("feed:edit") : t("common:preview")}
-                </Button>
-              )}
-
-              <div className="ml-auto flex items-center gap-3">
-                <span
-                  className={cn(
-                    "text-xs text-muted-foreground tabular-nums",
-                    content.length >= POST_MAX_LENGTH * NEAR_LIMIT_RATIO && "text-destructive",
-                  )}
-                >
-                  {content.length}/{POST_MAX_LENGTH}
-                </span>
-
-                <Button type="submit" size="sm" disabled={!canSubmit} className="gap-2">
-                  {t("feed:postSubmit")}
-                  <Icon icon="lucide:send" className="size-3" />
-                </Button>
-              </div>
-            </div>
-
-            <p className="text-xs text-muted-foreground">{t("feed:postMarkdownHint")}</p>
           </div>
+
+          {composer.status && (
+            <p
+              id={`${id}-status`}
+              role={composer.isError ? "alert" : "status"}
+              className={cn(
+                "flex items-start gap-2 px-4 pb-3 text-sm",
+                composer.isError ? "text-destructive" : "text-muted-foreground",
+              )}
+            >
+              <Icon
+                icon={composer.isError ? "lucide:circle-alert" : "lucide:check"}
+                className="mt-0.5 size-4 shrink-0"
+                aria-hidden
+              />
+              {composer.status}
+            </p>
+          )}
+
+          <ComposerToolbar
+            id={id}
+            media={composer.media}
+            onMediaChange={composer.setMedia}
+            isSpoiler={composer.isSpoiler}
+            onSpoilerChange={composer.setIsSpoiler}
+            contentLength={composer.content.length}
+            maxLength={POST_MAX_LENGTH}
+            canSubmit={composer.canSubmit}
+            isPending={composer.isPending}
+            isError={composer.isError}
+            isPreviewing={composer.isPreviewing}
+            onPreviewChange={() => composer.setIsPreviewing((value) => !value)}
+            canPreview={composer.trimmed.length > 0}
+          />
         </form>
       </CardContent>
     </Card>

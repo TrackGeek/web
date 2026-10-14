@@ -105,6 +105,8 @@
   "userCount_other": "{{count}} usuários",
   "dayCount_one": "{{count}} dia",
   "dayCount_other": "{{count}} dias",
+  "hourCount_one": "{{formattedCount}} hour",
+  "hourCount_other": "{{formattedCount}} hours",
   "coinCount_one": "{{count}} moeda",
   "coinCount_other": "{{count}} moedas",
   "reviewCount_one": "{{count}} avaliação",
@@ -158,10 +160,10 @@
   "all": "Todos",
   "clear": "Limpar",
   "calendar": {
-    "dateFormat": "DD/MM/YYYY",
-    "applyDate": "Apply date",
-    "invalidDate": "Enter a valid date in {{format}} format.",
-    "unavailableDate": "This date is unavailable. Choose another date."
+    "dateFormat": "DD/MM/AAAA",
+    "applyDate": "Aplicar data",
+    "invalidDate": "Insira uma data válida no formato {{format}}.",
+    "unavailableDate": "Esta data está indisponível. Escolha outra data."
   },
   "ascending": "Ascendente",
   "descending": "Descendente",

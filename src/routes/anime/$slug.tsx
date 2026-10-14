@@ -19,6 +19,7 @@ import { MoreOptionsDialog } from "@/components/pages/details/more-options-dialo
 import { QuickStatusButtons } from "@/components/pages/details/quick-status-buttons";
 import { Relations } from "@/components/pages/details/relations";
 import { ReviewItem } from "@/components/pages/details/review-item";
+import { TimeLeft } from "@/components/pages/details/time-left";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { CompanyLink } from "@/components/shared/company-link";
 import { ErrorComponent } from "@/components/shared/error.tsx";
@@ -51,6 +52,7 @@ import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
 import { nextEpisode } from "@/lib/watch-links";
+import { getEpisodeRuntime, getRemainingWatchHours } from "@/utils/watch-time";
 
 interface AnimeEpisode {
   malId: number;
@@ -431,6 +433,8 @@ function AnimeDetailsRoute() {
     totalEpisodes: anime?.numberOfEpisodes ?? 0,
     watchedEpisodes: watchedEpisodeNumbers,
   };
+
+  const remainingHours = getRemainingWatchHours([mySeason], getEpisodeRuntime(anime?.duration));
 
   const backfillKey = `anime:${anime?.id}`;
 
@@ -835,6 +839,9 @@ function AnimeDetailsRoute() {
               <span className="font-semibold text-card-foreground">{rating}</span>
               <span className="text-muted-foreground">({t("common:reviewCount", { count: reviews?.total ?? 0 })})</span>
             </div>
+          )}
+          {isAuthenticated && currentStatus === "Watching" && episodeWatchQuery.isSuccess && (
+            <TimeLeft hours={remainingHours} />
           )}
         </div>
 

@@ -39,6 +39,8 @@
     },
     "file": {
       "uploadTitle": "Upload your file",
+      "xmlDescription": "Upload an XML export from {{provider}} (.xml or .xml.gz).",
+      "xmlDropzone": "<span>Select a file</span> or drop your {{provider}} XML export here",
       "emptyTitle": "No file selected",
       "emptyDescription": "Once you upload your file, the entries found in it will be listed here.",
       "summary_one": "{{count}} entry ready to import",
@@ -65,8 +67,12 @@
         "description": "Import your games, ratings, hours and dates from a Backloggd Plus export."
       },
       "myanimelist_anime": {
-        "name": "MyAnimeList (Anime)",
-        "description": "Import your anime, scores, episodes watched and dates from a MyAnimeList export."
+        "name": "MyAnimeList",
+        "description": "Import your anime, manga, scores, episodes watched, chapters read and dates from a MyAnimeList export."
+      },
+      "kitsu": {
+        "name": "Kitsu",
+        "description": "Import your anime, manga, scores, episodes watched, chapters read and dates from a Kitsu export."
       },
       "trakt": {
         "name": "Trakt",
@@ -146,12 +152,24 @@
         "dropzone": "<span>Click to select</span> or drop your MyAnimeList export here"
       }
     },
+    "kitsu": {
+      "instructions": {
+        "description": "Export your Kitsu libraries, then import the files below.",
+        "action": "Open Kitsu",
+        "steps": {
+          "openSite": "Go to <code>kitsu.app</code>.",
+          "openSettings": "Go to <strong>Settings > Export</strong>.",
+          "download": "Download your manga library and anime library files.",
+          "upload": "Import below."
+        }
+      }
+    },
     "trackgeek": {
       "instructions": {
         "title": "Restore a TrackGeek backup",
         "description": "Bring the progress, reviews, watched episodes and screenshots of a TrackGeek export into this instance.",
         "steps": {
-          "export": "Open <code>Settings &gt; Import</code> on the other instance and export your data.",
+          "export": "Open <code>Settings > Import</code> on the other instance and export your data.",
           "keep": "Keep the ZIP as it is — the CSV files inside it are read by their names.",
           "upload": "Drop the <code>trackgeek-backup-*.zip</code> file below.",
           "merge": "Entries already tracked here are updated, and screenshots you already have are skipped."

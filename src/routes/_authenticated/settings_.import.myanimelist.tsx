@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ImportProgressCard } from "@/components/pages/settings/import-progress";
+import { MyAnimeListImportInstructions } from "@/components/pages/settings/myanimelist-import-instructions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,13 +14,12 @@ import { type MalEntry, myanimelistRunner, parseExport, readExportFile } from "@
 import { DETAIL_REQUESTS_PER_SECOND, type ImportProgress, runImport } from "@/lib/import/shared";
 import { seo } from "@/lib/utils/seo";
 
-const EXPORT_URL = "https://myanimelist.net/panel.php?go=export";
-
 const MAX_FILE_SIZE = 1024 * 1024 * 20;
 
-const EXPORT_STEPS = ["openPanel", "pickAnime", "download", "upload"] as const;
-
 export const Route = createFileRoute("/_authenticated/settings_/import/myanimelist")({
+  validateSearch: (search): { instructions?: "kitsu" } => ({
+    instructions: search.instructions === "kitsu" ? "kitsu" : undefined,
+  }),
   head: () => ({
     meta: [...seo({ title: "Import from MyAnimeList" })],
   }),
@@ -28,6 +28,9 @@ export const Route = createFileRoute("/_authenticated/settings_/import/myanimeli
 
 function MyAnimeListImportRoute() {
   const { t } = useTranslation();
+  const { instructions } = Route.useSearch();
+  const provider = instructions === "kitsu" ? "kitsu" : "myanimelist";
+  const providerName = provider === "kitsu" ? "Kitsu" : "MyAnimeList";
 
   const userId = useSession()?.data?.user?.id;
 
@@ -61,7 +64,7 @@ function MyAnimeListImportRoute() {
       setIgnored(skipped);
       setProgress(null);
     } catch {
-      toast.error(t("settings:import.file.invalidFile", { provider: "MyAnimeList" }));
+      toast.error(t("settings:import.file.invalidFile", { provider: providerName }));
     }
   };
 
@@ -144,37 +147,7 @@ function MyAnimeListImportRoute() {
         </Link>
       </Button>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <Icon icon={"lucide:book-open-text"} className="size-5" />
-
-            {t("settings:import.myanimelist.instructions.title")}
-          </CardTitle>
-
-          <CardDescription>{t("settings:import.myanimelist.instructions.description")}</CardDescription>
-        </CardHeader>
-
-        <CardContent className="flex flex-col gap-4 text-sm">
-          <Button asChild size="sm" variant="outline" className="w-fit gap-2">
-            <a href={EXPORT_URL} target="_blank" rel="noreferrer">
-              <Icon icon={"lucide:external-link"} className="size-4" />
-              {t("settings:import.myanimelist.instructions.action")}
-            </a>
-          </Button>
-
-          <ol className="flex list-inside list-decimal flex-col gap-1.5 text-muted-foreground">
-            {EXPORT_STEPS.map((step) => (
-              <li key={step}>
-                <Trans
-                  i18nKey={`settings:import.myanimelist.instructions.steps.${step}`}
-                  components={{ code: <code className="rounded bg-muted px-1 py-0.5 text-xs text-foreground" /> }}
-                />
-              </li>
-            ))}
-          </ol>
-        </CardContent>
-      </Card>
+      <MyAnimeListImportInstructions provider={provider} />
 
       <Card>
         <CardHeader>
@@ -184,7 +157,14 @@ function MyAnimeListImportRoute() {
             {t("settings:import.file.uploadTitle")}
           </CardTitle>
 
-          <CardDescription>{t("settings:import.myanimelist.upload.description")}</CardDescription>
+          <CardDescription>
+            {t(
+              provider === "kitsu"
+                ? "settings:import.file.xmlDescription"
+                : "settings:import.myanimelist.upload.description",
+              { provider: providerName },
+            )}
+          </CardDescription>
         </CardHeader>
 
         <CardContent className="flex flex-col gap-4">
@@ -210,7 +190,12 @@ function MyAnimeListImportRoute() {
 
             <p className="relative mt-2 text-center text-sm font-medium">
               <Trans
-                i18nKey={"settings:import.myanimelist.upload.dropzone"}
+                i18nKey={
+                  provider === "kitsu"
+                    ? "settings:import.file.xmlDropzone"
+                    : "settings:import.myanimelist.upload.dropzone"
+                }
+                values={{ provider: providerName }}
                 components={{ span: <span className="text-primary hover:underline" /> }}
               />
             </p>

@@ -13,17 +13,25 @@ interface ImportProvider {
   icon: string;
   to: string;
   contentType: ContentTypeSlug;
+  search?: { instructions: "kitsu" };
 }
 
 const PROVIDERS: ImportProvider[] = [
-  { id: "anilist", icon: "simple-icons:anilist", to: "/settings/import/anilist", contentType: "anime" },
+  { id: "trakt", icon: "thesvg-color:trakt", to: "/settings/import/trakt", contentType: "movie" },
+  { id: "anilist", icon: "thesvg-color:anilist", to: "/settings/import/anilist", contentType: "anime" },
   { id: "backloggd", icon: "lucide:gamepad-2", to: "/settings/import/backloggd", contentType: "game" },
-  { id: "trakt", icon: "simple-icons:trakt", to: "/settings/import/trakt", contentType: "movie" },
   {
     id: "myanimelist_anime",
     icon: "thesvg-color:myanimelist",
     to: "/settings/import/myanimelist",
     contentType: "anime",
+  },
+  {
+    id: "kitsu",
+    icon: "thesvg-color:kitsu",
+    to: "/settings/import/myanimelist",
+    contentType: "anime",
+    search: { instructions: "kitsu" },
   },
 ];
 
@@ -73,7 +81,7 @@ export function SettingsImportTab() {
               </div>
 
               <Button asChild size="sm" className="gap-2 shrink-0">
-                <Link to={provider.to}>
+                <Link to={provider.to} search={provider.search ?? {}}>
                   <Icon icon={"lucide:upload"} className="size-4" />
 
                   {t("settings:import.action")}

@@ -1501,6 +1501,7 @@ export const apiEndpoints = {
   getTvShowProgress: (userId: string, tvShowId: string) => `/tv/progress?userId=${userId}&tvShowId=${tvShowId}`,
   resetTvShowTracking: (tvShowId: string) => `/tv/tracking/${tvShowId}`,
   getMangaDetails: (id: string) => `/manga/detail/${id}`,
+  getMangaDetailsByMalId: (id: string) => `/manga/detail/mal/${id}`,
   getMangaPublishing: "/manga/top?filter=publishing",
   getMangaUpcoming: "/manga/top?filter=upcoming",
   getMangaFavorite: "/manga/top?filter=favorite",

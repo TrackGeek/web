@@ -1,20 +1,13 @@
 import { Icon } from "@iconify/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
-import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
+import { ImportFileEmpty } from "@/components/pages/settings/import-file-empty";
 import { ImportProgressCard } from "@/components/pages/settings/import-progress";
 import { MyAnimeListImportInstructions } from "@/components/pages/settings/myanimelist-import-instructions";
-import { Badge } from "@/components/ui/badge";
+import { MyAnimeListImportUpload } from "@/components/pages/settings/myanimelist-import-upload";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
-import { useSession } from "@/lib/auth/client";
-import { type MalEntry, myanimelistRunner, parseExport, readExportFile } from "@/lib/import/myanimelist";
-import { DETAIL_REQUESTS_PER_SECOND, type ImportProgress, runImport } from "@/lib/import/shared";
+import { useMyAnimeListImport } from "@/hooks/use-myanimelist-import";
 import { seo } from "@/lib/utils/seo";
-
-const MAX_FILE_SIZE = 1024 * 1024 * 20;
 
 export const Route = createFileRoute("/_authenticated/settings_/import/myanimelist")({
   validateSearch: (search): { instructions?: "kitsu" } => ({
@@ -31,247 +24,22 @@ function MyAnimeListImportRoute() {
   const { instructions } = Route.useSearch();
   const provider = instructions === "kitsu" ? "kitsu" : "myanimelist";
   const providerName = provider === "kitsu" ? "Kitsu" : "MyAnimeList";
-
-  const userId = useSession()?.data?.user?.id;
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const abortRef = useRef<AbortController | null>(null);
-
-  const [fileName, setFileName] = useState<string | null>(null);
-  const [entries, setEntries] = useState<MalEntry[] | null>(null);
-  const [ignored, setIgnored] = useState(0);
-  const [progress, setProgress] = useState<ImportProgress | null>(null);
-  const [isRunning, setIsRunning] = useState(false);
-
-  useEffect(() => () => abortRef.current?.abort(), []);
-
-  const readFile = async (file: File) => {
-    if (file.size > MAX_FILE_SIZE) {
-      toast.error(t("settings:import.fileTooLarge"));
-      return;
-    }
-
-    try {
-      const { entries: mapped, ignored: skipped } = parseExport(await readExportFile(file));
-
-      if (mapped.length === 0) {
-        toast.error(t("settings:import.file.emptyFile"));
-        return;
-      }
-
-      setFileName(file.name);
-      setEntries(mapped);
-      setIgnored(skipped);
-      setProgress(null);
-    } catch {
-      toast.error(t("settings:import.file.invalidFile", { provider: providerName }));
-    }
-  };
-
-  const handleFileSelect = (files: FileList | null) => {
-    const file = files?.[0];
-
-    if (file) void readFile(file);
-  };
-
-  const start = async () => {
-    if (!entries || !userId) return;
-
-    const controller = new AbortController();
-    abortRef.current = controller;
-
-    setIsRunning(true);
-
-    try {
-      const result = await runImport(entries, myanimelistRunner(userId), controller.signal, setProgress);
-
-      if (!controller.signal.aborted) {
-        toast.success(t("settings:import.file.finished", { count: result.done }));
-      }
-    } finally {
-      setIsRunning(false);
-      abortRef.current = null;
-    }
-  };
-
-  const cancel = () => {
-    abortRef.current?.abort();
-    setIsRunning(false);
-  };
-
-  const reset = () => {
-    setFileName(null);
-    setEntries(null);
-    setIgnored(0);
-    setProgress(null);
-
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
-
-  const failed = progress?.items.filter((item) => item.state === "error") ?? [];
-
-  /** Plain text so the user can re-check or re-add the leftovers by hand. */
-  const downloadFailures = () => {
-    const lines = [
-      `TrackGeek — MyAnimeList import failures (${new Date().toISOString()})`,
-      `${failed.length} of ${progress?.total ?? 0} entries failed`,
-      "",
-      ...failed.map((item) =>
-        [
-          item.name,
-          `mal:${item.id}`,
-          `status:${item.status}`,
-          t(item.errorKey ?? "settings:import.errors.failed"),
-          `${window.location.origin}/anime/${item.id}`,
-        ].join(" | "),
-      ),
-    ];
-
-    const url = URL.createObjectURL(new Blob([lines.join("\n")], { type: "text/plain" }));
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.download = "trackgeek-myanimelist-import-failures.txt";
-    link.click();
-
-    URL.revokeObjectURL(url);
-  };
+  const importState = useMyAnimeListImport(providerName);
+  const { entries, progress, downloadFailures } = importState;
 
   return (
     <div className="flex flex-col gap-4 lg:gap-8">
       <Button asChild variant="ghost" size="sm" className="w-fit gap-2 -ml-2">
         <Link to="/settings">
           <Icon icon={"lucide:arrow-left"} className="size-4" />
-
           {t("common:settings")}
         </Link>
       </Button>
 
       <MyAnimeListImportInstructions provider={provider} />
-
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <Icon icon={"lucide:file-code"} className="size-5" />
-
-            {t("settings:import.file.uploadTitle")}
-          </CardTitle>
-
-          <CardDescription>
-            {t(
-              provider === "kitsu"
-                ? "settings:import.file.xmlDescription"
-                : "settings:import.myanimelist.upload.description",
-              { provider: providerName },
-            )}
-          </CardDescription>
-        </CardHeader>
-
-        <CardContent className="flex flex-col gap-4">
-          {/** biome-ignore lint/a11y/useSemanticElements: styled drop zone */}
-          <div
-            role={"button"}
-            tabIndex={0}
-            className="flex flex-col justify-center rounded-md border border-dashed border-input px-6 py-8 text-muted-foreground cursor-pointer"
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              e.preventDefault();
-              handleFileSelect(e.dataTransfer.files);
-            }}
-            onClick={() => fileInputRef.current?.click()}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                fileInputRef.current?.click();
-              }
-            }}
-          >
-            <Icon icon={"lucide:file-up"} className="mx-auto size-12" aria-hidden={true} />
-
-            <p className="relative mt-2 text-center text-sm font-medium">
-              <Trans
-                i18nKey={
-                  provider === "kitsu"
-                    ? "settings:import.file.xmlDropzone"
-                    : "settings:import.myanimelist.upload.dropzone"
-                }
-                values={{ provider: providerName }}
-                components={{ span: <span className="text-primary hover:underline" /> }}
-              />
-            </p>
-
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".xml,.gz,application/xml,text/xml,application/gzip"
-              className="sr-only"
-              onChange={(e) => handleFileSelect(e.target.files)}
-            />
-          </div>
-
-          {entries && (
-            <div className="flex flex-col gap-3">
-              <div className="flex flex-wrap items-center gap-2 text-sm">
-                <Badge variant="secondary" className="gap-1.5">
-                  <Icon icon={"lucide:file-code"} className="size-3.5" />
-                  {fileName}
-                </Badge>
-
-                <span className="text-muted-foreground">
-                  {t("settings:import.file.summary", { count: entries.length })}
-                </span>
-
-                {ignored > 0 && (
-                  <span className="text-muted-foreground">{t("settings:import.ignored", { count: ignored })}</span>
-                )}
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                <Button size="sm" className="gap-2" disabled={isRunning || !userId} onClick={start}>
-                  <Icon
-                    icon={isRunning ? "lucide:loader-circle" : "lucide:play"}
-                    className={`size-4 ${isRunning ? "animate-spin" : ""}`}
-                  />
-                  {isRunning ? t("settings:import.importing") : t("settings:import.action")}
-                </Button>
-
-                {isRunning ? (
-                  <Button size="sm" variant="outline" className="gap-2" onClick={cancel}>
-                    <Icon icon={"lucide:x"} className="size-4" />
-                    {t("common:cancel")}
-                  </Button>
-                ) : (
-                  <Button size="sm" variant="outline" className="gap-2" onClick={reset}>
-                    <Icon icon={"lucide:rotate-ccw"} className="size-4" />
-                    {t("common:clear")}
-                  </Button>
-                )}
-              </div>
-
-              <p className="text-xs text-muted-foreground">
-                <Icon icon={"lucide:info"} className="mr-1.5 inline size-3.5 align-text-bottom" />
-                {t("settings:import.rateNotice", { rate: DETAIL_REQUESTS_PER_SECOND })}
-              </p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
+      <MyAnimeListImportUpload provider={provider} providerName={providerName} importState={importState} />
       {progress && <ImportProgressCard progress={progress} onDownloadFailures={downloadFailures} />}
-
-      {!entries && !progress && (
-        <Empty>
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <Icon icon={"lucide:inbox"} className="size-6" />
-            </EmptyMedia>
-
-            <EmptyTitle>{t("settings:import.file.emptyTitle")}</EmptyTitle>
-
-            <EmptyDescription>{t("settings:import.file.emptyDescription")}</EmptyDescription>
-          </EmptyHeader>
-        </Empty>
-      )}
+      {!entries && !progress && <ImportFileEmpty />}
     </div>
   );
 }

@@ -142,8 +142,8 @@
         "action": "Open the export panel",
         "steps": {
           "openPanel": "Open <code>myanimelist.net/panel.php?go=export</code> while logged in.",
-          "pickAnime": "Choose <strong>Anime List</strong> as the export type and confirm.",
-          "download": "Download the <code>animelist_*.xml.gz</code> file MyAnimeList offers you.",
+          "pickAnime": "Choose <strong>Anime List</strong> or <strong>Manga List</strong> as the export type and confirm.",
+          "download": "Download the <code>animelist_*.xml.gz</code> or <code>mangalist_*.xml.gz</code> file MyAnimeList offers you.",
           "upload": "Drop it below — the archive works as is, no need to extract it."
         }
       },

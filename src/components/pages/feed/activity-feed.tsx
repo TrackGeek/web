@@ -105,7 +105,15 @@ export function ActivityFeed({ query, toggleReaction, emptyTitle, emptyDescripti
             ) : entry.kind === "post" ? (
               <PostItem profile={entry.profile} item={entry.item} onReact={onReact} isReacting={isReacting} />
             ) : (
-              <ActivityItem profile={entry.profile} item={entry.item} onReact={onReact} isReacting={isReacting} />
+              <ActivityItem
+                profile={entry.profile}
+                item={entry.item}
+                onReact={onReact}
+                isReacting={isReacting}
+                isReactionError={
+                  toggleReaction.isError && toggleReaction.variables?.activityId === entry.item.activityId
+                }
+              />
             )}
           </div>
         );

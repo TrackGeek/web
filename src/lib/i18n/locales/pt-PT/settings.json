@@ -11,7 +11,7 @@
   "export": {
     "title": "Exportar seus dados",
     "description": "Descarregue tudo o que rastreou como um ZIP dos arquivos CSV, pronto para ser importado em outra instância do TrackGeek.",
-    "contents": "Includes your progress, reviews, watched episodes and screenshots for every content type.",
+    "contents": "Inclui o seu progresso, análises, episódios assistidos e capturas de tela para todos os tipos de conteúdo.",
     "action": "Exportar",
     "exporting": "A preparar...",
     "slowNotice": "Históricos de episódios são lidos um título de cada vez, então grandes bibliotecas demoram um tempo. Mantenha esta aba aberta.",
@@ -39,8 +39,8 @@
     },
     "file": {
       "uploadTitle": "Envie seu arquivo",
-      "xmlDescription": "Upload an XML export from {{provider}} (.xml or .xml.gz).",
-      "xmlDropzone": "<span>Select a file</span> or drop your {{provider}} XML export here",
+      "xmlDescription": "Carregar uma exportação XML do {{provider}} (.xml ou .xml.gz).",
+      "xmlDropzone": "<span>Selecione um arquivo</span> ou solte a sua exportação {{provider}} XML aqui",
       "emptyTitle": "Nenhum ficheiro selecionado",
       "emptyDescription": "Uma vez que enviar o seu arquivo, as entradas encontradas nele serão listadas aqui.",
       "summary_one": "{{count}} entrada preparada para importar",
@@ -68,11 +68,11 @@
       },
       "myanimelist_anime": {
         "name": "MyAnimeList",
-        "description": "Import your anime, manga, scores, episodes watched, chapters read and dates from a MyAnimeList export."
+        "description": "Importe os seus animes, mangás, análises, episódios assistidos, capítulos lidos e datas de uma exportação do MyAnimeList."
       },
       "kitsu": {
         "name": "Kitsu",
-        "description": "Import your anime, manga, scores, episodes watched, chapters read and dates from a Kitsu export."
+        "description": "Importe os seus animes, mangás, análises, episódios assistidos, capítulos lidos e datas de uma exportação do Kitsu."
       },
       "trakt": {
         "name": "Trakt",
@@ -142,8 +142,8 @@
         "action": "Abrir o painel de exportação",
         "steps": {
           "openPanel": "Abrir <code>myanimelist.net/panel.php?go=export</code> enquanto estiver conectado.",
-          "pickAnime": "Choose <strong>Anime List</strong> or <strong>Manga List</strong> as the export type and confirm.",
-          "download": "Download the <code>animelist_*.xml.gz</code> or <code>mangalist_*.xml.gz</code> file MyAnimeList offers you.",
+          "pickAnime": "Escolha <strong>Anime List</strong> ou <strong>Manga List</strong> como o tipo de exportação e confirme.",
+          "download": "Baixe o arquivo <code>animelist_*.xml.gz</code> ou <code>mangalist_*.xml.gz</code> que o MyAnimeList oferece.",
           "upload": "Solte-o abaixo — o arquivo funciona como está, não há necessidade de extraí-lo."
         }
       },
@@ -154,13 +154,13 @@
     },
     "kitsu": {
       "instructions": {
-        "description": "Export your Kitsu libraries, then import the files below.",
-        "action": "Open Kitsu",
+        "description": "Exporte as suas bibliotecas Kitsu e importe os arquivos abaixo.",
+        "action": "Abra o Kitsu",
         "steps": {
-          "openSite": "Go to <code>kitsu.app</code>.",
-          "openSettings": "Go to <strong>Settings > Export</strong>.",
-          "download": "Download your manga library and anime library files.",
-          "upload": "Import below."
+          "openSite": "Acesse <code>kitsu.app</code>.",
+          "openSettings": "Vá para <strong>Configurações > Exportar</strong>.",
+          "download": "Baixe os arquivos da sua biblioteca de mangá e biblioteca de anime.",
+          "upload": "Importar abaixo."
         }
       }
     },
@@ -169,7 +169,7 @@
         "title": "Restaurar backup do TrackGeek",
         "description": "Traga o progresso, análises, episódios assistidos e capturas de tela de uma exportação do TrackGeek para esta instância.",
         "steps": {
-          "export": "Open <code>Settings > Import</code> on the other instance and export your data.",
+          "export": "Abra <code>Configurações > Importar</code> na outra instância e exporte os seus dados.",
           "keep": "Mantenha o ZIP como está — os arquivos CSV dentro dele são lidos pelos seus nomes.",
           "upload": "Arraste abaixo o arquivo <code>trackgeek-backup-*.zip</code>.",
           "merge": "As entradas já registradas aqui são atualizadas, e as capturas de tela que já tem são ignoradas."

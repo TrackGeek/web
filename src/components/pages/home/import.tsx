@@ -16,7 +16,14 @@ const providers = [
     name: "MyAnimeList",
     icon: "simple-icons:myanimelist",
     to: "/settings/import/myanimelist",
-    type: "common:types.anime",
+    type: "pages:landing.animeManga",
+    method: "pages:landing.import.exportFile",
+  },
+  {
+    name: "Kitsu",
+    icon: "simple-icons:kitsu",
+    to: "/settings/import/myanimelist?instructions=kitsu",
+    type: "pages:landing.animeManga",
     method: "pages:landing.import.exportFile",
   },
   {

@@ -415,5 +415,27 @@
       "security": "Manage your password, passkeys and two-factor authentication.",
       "data": "Import or export your tracked library."
     }
+  },
+  "oauth": {
+    "title": "Authorized applications",
+    "description": "Manage access granted to other applications.",
+    "empty": "No applications have access to your account.",
+    "failed": "Could not manage application access. Please try again.",
+    "developer": {
+      "title": "Developer applications",
+      "description": "Register an interface, bot or integration. Browser and native apps must use a public client. Server apps can keep a client secret. All clients use PKCE.",
+      "name": "Application name",
+      "redirects": "Redirect URIs",
+      "redirectHint": "Enter one HTTPS callback URL per line. HTTP is allowed for localhost development.",
+      "confidential": "This application has a server that can keep a client secret",
+      "permissions": "Maximum permissions this application can request",
+      "create": "Register application",
+      "credentialsHint": "Save these credentials securely. The client secret is shown only once. Never put it in browser or mobile code.",
+      "clientId": "Client ID",
+      "clientSecret": "Client secret",
+      "dismissCredentials": "I have saved the credentials",
+      "deleteTitle": "Delete {{name}}?",
+      "deleteDescription": "This permanently deletes the application and disconnects every user who authorized it."
+    }
   }
 }

@@ -73,6 +73,9 @@ export function Footer() {
             <a href="https://translate.trackgeek.net" target="_blank" rel="noopener noreferrer">
               {t("common:translate")}
             </a>
+            <a href="https://docs.trackgeek.net" target="_blank" rel="noopener noreferrer">
+              {t("common:docs")}
+            </a>
             <a href="https://github.com/orgs/TrackGeek/projects/1" target="_blank" rel="noopener noreferrer">
               {t("common:roadmap")}
             </a>

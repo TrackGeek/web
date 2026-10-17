@@ -1,10 +1,12 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "trackverse",
       "dependencies": {
         "@base-ui/react": "^1.7.0",
+        "@better-auth/oauth-provider": "1.6.30",
         "@better-auth/passkey": "~1.6.30",
         "@dataxamas/tracker-js": "^2.1.0",
         "@daypicker/react": "^10.0.1",
@@ -146,6 +148,8 @@
     "@better-auth/memory-adapter": ["@better-auth/memory-adapter@1.6.30", "", { "peerDependencies": { "@better-auth/core": "^1.6.30", "@better-auth/utils": "0.4.2" } }, "sha512-lHmx6Geyn6YY2YmnTNm1WqUdMRNb875l35S1dBRh5/iAwcA8NAa+1nDU9C1yS4R7bXPPi6JbvFG4ragcbJhFNw=="],
 
     "@better-auth/mongo-adapter": ["@better-auth/mongo-adapter@1.6.30", "", { "peerDependencies": { "@better-auth/core": "^1.6.30", "@better-auth/utils": "0.4.2", "mongodb": "^6.0.0 || ^7.0.0" }, "optionalPeers": ["mongodb"] }, "sha512-4vhNyz2WkrYd96oqRumEYTBukx2070XH6tq2mhDHZAeIT4WjIScZWlckZfwoEYY0QLn/N0Cn4cb+IDT39R3l3Q=="],
+
+    "@better-auth/oauth-provider": ["@better-auth/oauth-provider@1.6.30", "", { "dependencies": { "jose": "^6.1.3", "zod": "^4.3.6" }, "peerDependencies": { "@better-auth/core": "^1.6.30", "@better-auth/utils": "0.4.2", "@better-fetch/fetch": "1.3.1", "better-auth": "^1.6.30", "better-call": "1.4.0" } }, "sha512-hdEjmITIjicmGsdTl/aCaGlLlu/AiEls+1QLaS3CtXSpxKSZiod4dw91hs6BiSmtIwqWgNdpAxfrHGNT0MpJYw=="],
 
     "@better-auth/passkey": ["@better-auth/passkey@1.6.30", "", { "dependencies": { "@simplewebauthn/browser": "^13.2.2", "@simplewebauthn/server": "^13.2.3", "zod": "^4.3.6" }, "peerDependencies": { "@better-auth/core": "^1.6.30", "@better-auth/utils": "0.4.2", "@better-fetch/fetch": "1.3.1", "better-auth": "^1.6.30", "better-call": "1.4.0", "nanostores": "^1.0.1" } }, "sha512-V4GNLNNpDs2bAAy+wxFi0WfLH+e/8Ex40reH/2kTMnwURDfwg0RfdtrmtPvANAR6J7PP8b9Rz5dCF9Ft8pvArw=="],
 
@@ -1512,6 +1516,8 @@
     "zustand": ["zustand@4.5.7", "", { "dependencies": { "use-sync-external-store": "^1.2.2" }, "peerDependencies": { "@types/react": ">=16.8", "immer": ">=9.0.6", "react": ">=16.8" }, "optionalPeers": ["@types/react", "immer", "react"] }, "sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw=="],
 
     "zwitch": ["zwitch@2.0.4", "", {}, "sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A=="],
+
+    "@better-auth/oauth-provider/zod": ["zod@4.6.7", "", {}, "sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg=="],
 
     "@kobalte/core/@solid-primitives/resize-observer": ["@solid-primitives/resize-observer@2.2.0", "", { "dependencies": { "@solid-primitives/event-listener": "^2.4.6", "@solid-primitives/rootless": "^1.5.4", "@solid-primitives/static-store": "^0.1.4", "@solid-primitives/utils": "^6.4.1" }, "peerDependencies": { "solid-js": "^1.6.12" } }, "sha512-9Fuu/EWBeGj+atGHRJp70HKhdfalmpjwxY8a32NZixdLNmfCJ45AfhLQNr6uOzETbbiMx4iCKlTrJ8KZCHC2Ww=="],
 

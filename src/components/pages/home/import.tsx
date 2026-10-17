@@ -16,7 +16,14 @@ const providers = [
     name: "MyAnimeList",
     icon: "simple-icons:myanimelist",
     to: "/settings/import/myanimelist",
-    type: "common:types.anime",
+    type: "pages:landing.animeManga",
+    method: "pages:landing.import.exportFile",
+  },
+  {
+    name: "Kitsu",
+    icon: "simple-icons:kitsu",
+    to: "/settings/import/myanimelist",
+    type: "pages:landing.animeManga",
     method: "pages:landing.import.exportFile",
   },
   {
@@ -50,7 +57,7 @@ export function Import() {
           <div className="min-w-0">
             <h2
               id="import-title"
-              className="min-w-0 text-3xl font-bold tracking-tight text-balance [overflow-wrap:anywhere] sm:text-4xl lg:text-5xl"
+              className="min-w-0 text-3xl font-bold tracking-tight text-balance wrap-anywhere sm:text-4xl lg:text-5xl"
             >
               {t("pages:landing.import.title")}
               <span className="mt-2 block text-malachite-300">{t("pages:landing.import.titleAccent")}</span>

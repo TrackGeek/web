@@ -6,8 +6,10 @@ import { SettingsNotificationsTab } from "@/components/pages/settings/notificati
 import { SettingsPreferencesTab } from "@/components/pages/settings/preferences-tab";
 import { SettingsProfileTab } from "@/components/pages/settings/profile-tab";
 import { WatchLinksCard } from "@/components/pages/settings/watch-links-card";
+import { AuthorizedAppsCard } from "@/components/shared/settings/authorized-apps-card";
 import { ConnectionsCard } from "@/components/shared/settings/connections-card";
 import { DeleteAccountCard } from "@/components/shared/settings/delete-account-card";
+import { DeveloperAppsCard } from "@/components/shared/settings/developer-apps-card";
 import { PasskeysCard } from "@/components/shared/settings/passkeys-card";
 import { PasswordCard } from "@/components/shared/settings/password-card";
 import { TwoFactorCard } from "@/components/shared/settings/two-factor-card";
@@ -192,7 +194,13 @@ function SettingsRoute() {
                   <TwoFactorCard />
                 </div>
               )}
-              {tab === "connections" && <ConnectionsCard />}
+              {tab === "connections" && (
+                <div className="space-y-4">
+                  <ConnectionsCard />
+                  <AuthorizedAppsCard />
+                  <DeveloperAppsCard />
+                </div>
+              )}
               {tab === "import" && <SettingsImportTab />}
               {tab === "account" && <DeleteAccountCard />}
             </div>

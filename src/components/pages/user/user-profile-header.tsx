@@ -41,10 +41,10 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
     onSuccess: async () => {
       await Promise.all([onUserRefresh(), followStatusQuery.refetch()]);
 
-      toast.success(t("settings:save.success"));
+      toast.success(t("user:followed"));
     },
     onError: () => {
-      toast.error(t("settings:save.error"));
+      toast.error(t("user:followedError"));
     },
   });
 
@@ -53,10 +53,10 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
     onSuccess: async () => {
       await Promise.all([onUserRefresh(), followStatusQuery.refetch()]);
 
-      toast.success(t("settings:save.success"));
+      toast.success(t("user:unfollowed"));
     },
     onError: () => {
-      toast.error(t("settings:save.error"));
+      toast.error(t("user:unfollowedError"));
     },
   });
 

@@ -113,5 +113,9 @@
   "presenceInfoNotLinked": "A conta {{provider}} não está vinculada ao TrackGeek.",
   "presenceInfoNotInGuild": "A pessoa não é um membro do servidor do Discord do TrackGeek.",
   "presenceInfoOffline": "A pessoa está offline no {{provider}}.",
-  "presenceInfoNotPublic": "A pessoa não compartilha suas atividades no {{provider}} publicamente."
+  "presenceInfoNotPublic": "A pessoa não compartilha suas atividades no {{provider}} publicamente.",
+  "followed": "Followed with success",
+  "unfollowed": "Unfollowed with success",
+  "followedError": "An error occurred while trying to follow this user.",
+  "unfollowedError": "An error occurred while trying to unfollow this user."
 }

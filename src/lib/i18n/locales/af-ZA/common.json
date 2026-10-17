@@ -23,6 +23,7 @@
   "favorite": "Favorite",
   "roadmap": "Roadmap",
   "feedback": "Feedback",
+  "docs": "Docs",
   "providers": {
     "IGDBMetadata": "Game metadata provided by",
     "TMDBMetadata": "Movies and TV Shows metadata provided by",

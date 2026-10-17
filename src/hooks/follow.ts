@@ -74,10 +74,10 @@ function useFollowMutation(endpoint: (id: string) => string) {
         queryClient.invalidateQueries({ queryKey: ["user"] }),
       ]);
 
-      toast.success(t("settings:save.success"));
+      toast.success(t("user:followed"));
     },
     onError: () => {
-      toast.error(t("settings:save.error"));
+      toast.error(t("user:followedError"));
     },
   });
 }

@@ -1,3 +1,4 @@
+import { oauthProviderClient } from "@better-auth/oauth-provider/client";
 import { passkeyClient } from "@better-auth/passkey/client";
 import {
   customSessionClient,
@@ -15,6 +16,7 @@ export const authClient = createAuthClient({
   baseURL: env.VITE_API_URL,
   basePath: "/auth",
   plugins: [
+    oauthProviderClient(),
     usernameClient(),
     customSessionClient(),
     lastLoginMethodClient(),

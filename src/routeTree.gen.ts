@@ -38,6 +38,7 @@ import { Route as MangaIndexRouteImport } from './routes/manga/index'
 import { Route as MangaSlugRouteImport } from './routes/manga/$slug'
 import { Route as MovieIndexRouteImport } from './routes/movie/index'
 import { Route as MovieSlugRouteImport } from './routes/movie/$slug'
+import { Route as OauthAuthorizeRouteImport } from './routes/oauth/authorize'
 import { Route as SitemapChar123sectionChar125DotxmlRouteImport } from './routes/sitemap/{$section}[.]xml'
 import { Route as TvIndexRouteImport } from './routes/tv/index'
 import { Route as TvSlugRouteImport } from './routes/tv/$slug'
@@ -226,6 +227,11 @@ const MovieIndexRoute = MovieIndexRouteImport.update({
 const MovieSlugRoute = MovieSlugRouteImport.update({
   id: '/movie/$slug',
   path: '/movie/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OauthAuthorizeRoute = OauthAuthorizeRouteImport.update({
+  id: '/oauth/authorize',
+  path: '/oauth/authorize',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapChar123sectionChar125DotxmlRoute =
@@ -483,6 +489,7 @@ export interface FileRoutesByFullPath {
   '/game/$slug': typeof GameSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
+  '/oauth/authorize': typeof OauthAuthorizeRoute
   '/sitemap/{$section}.xml': typeof SitemapChar123sectionChar125DotxmlRoute
   '/tv/$slug': typeof TvSlugRoute
   '/anime/': typeof AnimeIndexRoute
@@ -557,6 +564,7 @@ export interface FileRoutesByTo {
   '/game/$slug': typeof GameSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
+  '/oauth/authorize': typeof OauthAuthorizeRoute
   '/sitemap/{$section}.xml': typeof SitemapChar123sectionChar125DotxmlRoute
   '/tv/$slug': typeof TvSlugRoute
   '/anime': typeof AnimeIndexRoute
@@ -633,6 +641,7 @@ export interface FileRoutesById {
   '/game/$slug': typeof GameSlugRoute
   '/manga/$slug': typeof MangaSlugRoute
   '/movie/$slug': typeof MovieSlugRoute
+  '/oauth/authorize': typeof OauthAuthorizeRoute
   '/sitemap/{$section}.xml': typeof SitemapChar123sectionChar125DotxmlRoute
   '/tv/$slug': typeof TvSlugRoute
   '/anime/': typeof AnimeIndexRoute
@@ -709,6 +718,7 @@ export interface FileRouteTypes {
     | '/game/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
+    | '/oauth/authorize'
     | '/sitemap/{$section}.xml'
     | '/tv/$slug'
     | '/anime/'
@@ -783,6 +793,7 @@ export interface FileRouteTypes {
     | '/game/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
+    | '/oauth/authorize'
     | '/sitemap/{$section}.xml'
     | '/tv/$slug'
     | '/anime'
@@ -858,6 +869,7 @@ export interface FileRouteTypes {
     | '/game/$slug'
     | '/manga/$slug'
     | '/movie/$slug'
+    | '/oauth/authorize'
     | '/sitemap/{$section}.xml'
     | '/tv/$slug'
     | '/anime/'
@@ -930,6 +942,7 @@ export interface RootRouteChildren {
   GameSlugRoute: typeof GameSlugRoute
   MangaSlugRoute: typeof MangaSlugRoute
   MovieSlugRoute: typeof MovieSlugRoute
+  OauthAuthorizeRoute: typeof OauthAuthorizeRoute
   SitemapChar123sectionChar125DotxmlRoute: typeof SitemapChar123sectionChar125DotxmlRoute
   TvSlugRoute: typeof TvSlugRoute
   AnimeIndexRoute: typeof AnimeIndexRoute
@@ -1177,6 +1190,13 @@ declare module '@tanstack/react-router' {
       path: '/movie/$slug'
       fullPath: '/movie/$slug'
       preLoaderRoute: typeof MovieSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oauth/authorize': {
+      id: '/oauth/authorize'
+      path: '/oauth/authorize'
+      fullPath: '/oauth/authorize'
+      preLoaderRoute: typeof OauthAuthorizeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap/{$section}.xml': {
@@ -1547,6 +1567,7 @@ const rootRouteChildren: RootRouteChildren = {
   GameSlugRoute: GameSlugRoute,
   MangaSlugRoute: MangaSlugRoute,
   MovieSlugRoute: MovieSlugRoute,
+  OauthAuthorizeRoute: OauthAuthorizeRoute,
   SitemapChar123sectionChar125DotxmlRoute:
     SitemapChar123sectionChar125DotxmlRoute,
   TvSlugRoute: TvSlugRoute,

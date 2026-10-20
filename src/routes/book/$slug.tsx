@@ -1,15 +1,16 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Image } from "@unpic/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Grid } from "@/components/layouts/grid.tsx";
+import { BookEditions } from "@/components/pages/book/book-editions";
 import { CommunityStats } from "@/components/pages/details/community-stats";
 import { DetailsPageLayout } from "@/components/pages/details/details-page-layout";
 import { GenrePills } from "@/components/pages/details/genre-pills";
 import { ListItem } from "@/components/pages/details/list";
+import { ListWithMore } from "@/components/pages/details/list-with-more";
 import { MoreOptionsDialog } from "@/components/pages/details/more-options-dialog";
 import { QuickStatusButtons } from "@/components/pages/details/quick-status-buttons";
 import { ReviewItem } from "@/components/pages/details/review-item";
@@ -27,7 +28,6 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
@@ -39,20 +39,7 @@ import { getGenreLabel, isKnownGenre } from "@/lib/utils/genre-utils.ts";
 import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
-
-interface BookEdition {
-  id: number;
-  title: string | null;
-  imageUrl: string | null;
-  language: string | null;
-  publisher: string | null;
-  numberOfPages: number | null;
-  isbn10: string | null;
-  isbn13: string | null;
-  releaseYear: number | null;
-  releaseDate: string | null;
-  editionFormat: string | null;
-}
+import type { BookEdition } from "@/types/book";
 
 interface BookContribution {
   contribution: string | null;
@@ -133,31 +120,6 @@ export const Route = createFileRoute("/book/$slug")({
   errorComponent: ErrorComponent,
   notFoundComponent: NotFoundComponent,
 });
-
-function ListWithMore({ items }: { items: string[] }) {
-  if (items.length === 0) return null;
-  return (
-    <span className="flex min-w-0 items-center gap-1.5">
-      <span className="truncate">{items[0]}</span>
-      {items.length > 1 && (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="shrink-0 cursor-default rounded-md bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
-              +{items.length - 1}
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>
-            <ul className="flex flex-col gap-0.5">
-              {items.slice(1).map((i) => (
-                <li key={i}>{i}</li>
-              ))}
-            </ul>
-          </TooltipContent>
-        </Tooltip>
-      )}
-    </span>
-  );
-}
 
 function BookDetailsRoute() {
   const { slug } = Route.useParams();
@@ -608,11 +570,13 @@ function BookDetailsRoute() {
 
           {editions.length >= 1 && (
             <TabsContent value="editions">
-              <Grid minColSize={"240px"} className="gap-4 items-start">
-                {editions.map((item) => (
-                  <EditionCard key={item.id} edition={item} fallbackTitle={book.title} />
-                ))}
-              </Grid>
+              <BookEditions
+                hardcoverId={book.hardcoverId}
+                editions={editions}
+                title={book.title}
+                coverEditionId={book.coverEditionId}
+                customCoverEditionId={book.customCoverEditionId}
+              />
             </TabsContent>
           )}
 
@@ -653,9 +617,11 @@ function BookDetailsRoute() {
                       return (
                         <label
                           key={list.id}
+                          htmlFor={`book-list-${list.id}`}
                           className="flex items-center gap-2 px-2 py-1.5 rounded-sm hover:bg-muted cursor-pointer text-sm select-none"
                         >
                           <Checkbox
+                            id={`book-list-${list.id}`}
                             checked={isMember}
                             disabled={toggleListMutation.isPending}
                             onCheckedChange={() => toggleListMutation.mutate({ listId: list.id, isMember })}
@@ -765,38 +731,5 @@ function BookDetailsRoute() {
         )}
       </div>
     </>
-  );
-}
-
-function EditionCard({ edition, fallbackTitle }: { edition: BookEdition; fallbackTitle: string }) {
-  const { t } = useTranslation();
-
-  const cover = coverOf(edition.imageUrl);
-  const meta = [edition.editionFormat, edition.language, edition.releaseYear ? String(edition.releaseYear) : null]
-    .filter(Boolean)
-    .join(" · ");
-
-  return (
-    <div className="flex gap-3 p-3 bg-muted/50 rounded-lg border border-border">
-      <Image
-        src={cover ?? "/placeholder/cover.webp"}
-        width={72}
-        height={108}
-        alt={edition.title ?? fallbackTitle}
-        className="w-18 h-27 shrink-0 object-cover rounded-md"
-      />
-      <div className="flex-1 min-w-0 space-y-1">
-        <p className="font-medium text-card-foreground line-clamp-2">{edition.title ?? fallbackTitle}</p>
-        {edition.publisher && <p className="text-sm text-muted-foreground line-clamp-1">{edition.publisher}</p>}
-        {meta && <p className="text-xs text-muted-foreground">{meta}</p>}
-        {!!edition.numberOfPages && (
-          <p className="text-xs text-muted-foreground">
-            {edition.numberOfPages} {t("library:page_other")}
-          </p>
-        )}
-        {edition.isbn13 && <p className="text-xs text-muted-foreground">ISBN 13: {edition.isbn13}</p>}
-        {edition.isbn10 && <p className="text-xs text-muted-foreground">ISBN 10: {edition.isbn10}</p>}
-      </div>
-    </div>
   );
 }

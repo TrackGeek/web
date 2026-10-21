@@ -65,5 +65,6 @@
     "UNABLE_TO_CREATE_SESSION": "Unable to start a session. Please try again.",
     "FAILED_TO_UPDATE_PASSKEY": "Failed to update this passkey. Please try again.",
     "PREVIOUSLY_REGISTERED": "This passkey is already registered on your account."
-  }
+  },
+  "INVALID_BOOK_COVER": "This edition has no available cover or does not belong to this book."
 }

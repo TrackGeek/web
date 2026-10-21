@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getApiRequestContext } from "@/utils/api-request-context";
 import { env } from "./env";
 import i18n, { DEFAULT_LANGUAGE } from "./i18n/config";
 
@@ -11,7 +12,9 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  config.headers.set("X-TrackGeek-Language", i18n.language || DEFAULT_LANGUAGE);
+  const context = getApiRequestContext();
+  config.headers.set("X-TrackGeek-Language", context.language || i18n.language || DEFAULT_LANGUAGE);
+  if (context.cookie) config.headers.set("Cookie", context.cookie);
 
   return config;
 });
@@ -1390,6 +1393,7 @@ export namespace ApiTypes {
 }
 
 export const apiEndpoints = {
+  bookCover: (hardcoverId: number) => `/book/cover/${hardcoverId}`,
   getCurrency: "/stripe/currency",
   getPrices: "/stripe/price",
   getPerks: "/perk",

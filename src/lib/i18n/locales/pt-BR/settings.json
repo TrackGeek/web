@@ -417,25 +417,25 @@
     }
   },
   "oauth": {
-    "title": "Authorized applications",
-    "description": "Manage access granted to other applications.",
-    "empty": "No applications have access to your account.",
-    "failed": "Could not manage application access. Please try again.",
+    "title": "Aplicativos autorizados",
+    "description": "Gerenciar acesso concedido a outras aplicações.",
+    "empty": "Nenhum aplicativo tem acesso à sua conta.",
+    "failed": "Não foi possível gerenciar o acesso ao aplicativo. Por favor, tente novamente.",
     "developer": {
-      "title": "Developer applications",
-      "description": "Register an interface, bot or integration. Browser and native apps must use a public client. Server apps can keep a client secret. All clients use PKCE.",
-      "name": "Application name",
-      "redirects": "Redirect URIs",
-      "redirectHint": "Enter one HTTPS callback URL per line. HTTP is allowed for localhost development.",
-      "confidential": "This application has a server that can keep a client secret",
-      "permissions": "Maximum permissions this application can request",
-      "create": "Register application",
-      "credentialsHint": "Save these credentials securely. The client secret is shown only once. Never put it in browser or mobile code.",
-      "clientId": "Client ID",
-      "clientSecret": "Client secret",
-      "dismissCredentials": "I have saved the credentials",
-      "deleteTitle": "Delete {{name}}?",
-      "deleteDescription": "This permanently deletes the application and disconnects every user who authorized it."
+      "title": "Aplicações de desenvolvedor",
+      "description": "Registrar uma interface, bot ou integração. Navegador e aplicativos nativos devem usar um cliente público. Os aplicativos de servidores podem manter um cliente em segredo. Todos os clientes usam PKCE.",
+      "name": "Nome do aplicativo",
+      "redirects": "URIs para redirecionamento",
+      "redirectHint": "Digite uma URL de callback HTTPS por linha. HTTP é permitido para desenvolvimento local.",
+      "confidential": "Esta aplicação tem um servidor que pode manter um segredo de cliente",
+      "permissions": "Máximo de permissões que esta aplicação pode solicitar",
+      "create": "Registrar aplicação",
+      "credentialsHint": "Salve essas credenciais com segurança. O segredo do cliente é exibido apenas uma vez. Nunca o exponha no seu código.",
+      "clientId": "ID do cliente",
+      "clientSecret": "Segredo do cliente",
+      "dismissCredentials": "Eu salvei as credenciais",
+      "deleteTitle": "Excluir {{name}}?",
+      "deleteDescription": "Isso exclui permanentemente o aplicativo e desconecta todos os usuários que o autorizaram."
     }
   }
 }

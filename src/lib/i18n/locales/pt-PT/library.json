@@ -300,5 +300,12 @@
     "notAvailable": "Não disponível em {{country}}",
     "notAvailableDescription": "No momento não há nada listado para este país. Experimente outro.",
     "attribution": "Disponibilidade de streaming fornecida pelo JustWatch"
-  }
+  },
+  "useThisCover": "Use this cover",
+  "useDefaultCover": "Use default cover",
+  "coverUpdated": "Cover updated",
+  "usingThisCover": "Using this cover",
+  "editionCoverOptions": "Cover options for {{title}}",
+  "editionPageCount_one": "{{count}} page",
+  "editionPageCount_other": "{{count}} pages"
 }

@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function useInfiniteScroll(onIntersect: () => void, enabled: boolean) {
-  const ref = useRef<HTMLDivElement>(null);
+  const [element, setElement] = useState<HTMLDivElement | null>(null);
   const callbackRef = useRef(onIntersect);
 
   useEffect(() => {
@@ -9,19 +9,23 @@ export function useInfiniteScroll(onIntersect: () => void, enabled: boolean) {
   }, [onIntersect]);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el || !enabled) return;
+    if (!element || !enabled) return;
+
+    let active = true;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) callbackRef.current();
+      (entries) => {
+        if (active && entries.some((entry) => entry.isIntersecting)) callbackRef.current();
       },
       { rootMargin: "400px 0px", threshold: 0 },
     );
 
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [enabled]);
+    observer.observe(element);
+    return () => {
+      active = false;
+      observer.disconnect();
+    };
+  }, [element, enabled]);
 
-  return ref;
+  return setElement;
 }

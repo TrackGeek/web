@@ -58,7 +58,9 @@ export function renderMediaOg(type: OgMediaType, slug: string) {
 export function renderUserOg(username: string) {
   return withFallback(
     async () => {
-      const { data } = await api.get<ApiTypes.GetUserByUsernameResponse>(apiEndpoints.getUserByUsername(username));
+      const { data } = await api.get<ApiTypes.GetUserByUsernameResponse>(apiEndpoints.getUserByUsername(username), {
+        headers: { Cookie: false, "X-TrackGeek-Language": false },
+      });
       const user = data.user;
       const tracked = Object.values(user.progressStats).reduce((total, stats) => total + stats.total, 0);
 

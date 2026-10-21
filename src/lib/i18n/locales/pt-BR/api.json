@@ -65,5 +65,6 @@
     "UNABLE_TO_CREATE_SESSION": "Não foi possível iniciar a sessão. Por favor, tente novamente.",
     "FAILED_TO_UPDATE_PASSKEY": "Falha ao atualizar esta chave de acesso. Por favor, tente novamente.",
     "PREVIOUSLY_REGISTERED": "Esta chave de acesso já está registrada na sua conta."
-  }
+  },
+  "INVALID_BOOK_COVER": "This edition has no available cover or does not belong to this book."
 }

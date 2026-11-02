@@ -10,6 +10,7 @@ import { DiscordActivityCard } from "./discord-activity-card";
 import { FavoritesCard } from "./favorites-card";
 import { LinksCard } from "./links-card";
 import { MedalsCard } from "./medals-card";
+import { PsnTrophiesCard } from "./psn-trophies-card";
 import { SetupCard } from "./setup-card";
 import { SpotifyCard } from "./spotify-card";
 import { StatisticsCard } from "./statistics-card";
@@ -47,6 +48,8 @@ export function UserOverviewTab({ user, onSeeFavorites, onSeeProgress }: UserOve
               {showDiscordActivity && <DiscordActivityCard userId={user.id} />}
             </div>
           )}
+
+          <PsnTrophiesCard userId={user.id} isOwner={session.data?.user?.id === user.id} />
 
           <FavoritesCard userId={user.id} onSeeMore={onSeeFavorites} />
 

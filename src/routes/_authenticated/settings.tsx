@@ -12,6 +12,7 @@ import { DeleteAccountCard } from "@/components/shared/settings/delete-account-c
 import { DeveloperAppsCard } from "@/components/shared/settings/developer-apps-card";
 import { PasskeysCard } from "@/components/shared/settings/passkeys-card";
 import { PasswordCard } from "@/components/shared/settings/password-card";
+import { PsnConnectionCard } from "@/components/shared/settings/psn-connection-card";
 import { TwoFactorCard } from "@/components/shared/settings/two-factor-card";
 import {
   Select,
@@ -197,6 +198,7 @@ function SettingsRoute() {
               {tab === "connections" && (
                 <div className="space-y-4">
                   <ConnectionsCard />
+                  <PsnConnectionCard />
                   <AuthorizedAppsCard />
                   <DeveloperAppsCard />
                 </div>

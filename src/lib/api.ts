@@ -1362,6 +1362,69 @@ export namespace ApiTypes {
     presence: DiscordPresence;
   }
 
+  export interface PsnTrophyCounts {
+    platinum: number;
+    gold: number;
+    silver: number;
+    bronze: number;
+  }
+
+  export interface PsnProfile {
+    onlineId: string;
+    avatarUrl: string | null;
+  }
+
+  export interface PsnTrophySummary {
+    level: number;
+    progress: number;
+    tier: number;
+    earnedTrophies: PsnTrophyCounts;
+  }
+
+  export interface PsnTrophyTitle {
+    npCommunicationId: string;
+    name: string;
+    iconUrl: string;
+    platform: string;
+    progress: number;
+    earnedTrophies: PsnTrophyCounts;
+    definedTrophies: PsnTrophyCounts;
+    lastUpdatedAt: string;
+  }
+
+  export interface PsnTrophies {
+    linked: boolean;
+    expired: boolean;
+    profile: PsnProfile | null;
+    summary: PsnTrophySummary | null;
+    recentTitles: PsnTrophyTitle[];
+    updatedAt: string | null;
+  }
+
+  export interface GetPsnTrophiesResponse {
+    trophies: PsnTrophies;
+  }
+
+  export type RefreshPsnTrophiesResponse = GetPsnTrophiesResponse;
+
+  export interface PsnAccount {
+    onlineId: string;
+    avatarUrl: string | null;
+    expired: boolean;
+  }
+
+  export interface GetPsnAccountResponse {
+    account: PsnAccount | null;
+  }
+
+  export interface LinkPsnAccountRequest {
+    npsso: string;
+  }
+
+  export interface LinkPsnAccountResponse {
+    account: PsnAccount;
+  }
+
   export type WatchProviderOffer = "flatrate" | "free" | "ads" | "rent" | "buy";
 
   export interface WatchProvider {
@@ -1549,6 +1612,9 @@ export const apiEndpoints = {
   getActivitiesByUserId: (userId: string) => `/activities/user/${userId}`,
   getCalendarActivitiesByUserId: (userId: string) => `/activities/user/${userId}/calendar`,
   getDiscordPresenceByUserId: (userId: string) => `/discord/presence/${userId}`,
+  getPsnTrophiesByUserId: (userId: string) => `/psn/trophies/${userId}`,
+  refreshPsnTrophies: "/psn/trophies/refresh",
+  psnAccount: "/psn/account",
   getNotifications: "/notifications",
   getUnreadNotificationsCount: "/notifications/unread/count",
   getNotificationPreferences: "/notifications/preferences",

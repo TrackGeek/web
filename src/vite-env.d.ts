@@ -12,6 +12,7 @@ interface ImportMetaEnv {
   readonly VITE_API_URL: string;
   readonly VITE_SITE_URL?: string;
   readonly VITE_OG_IMAGE_HOSTS?: string;
+  readonly VITE_DATAXAMAS_API_KEY?: string;
 }
 
 interface ImportMeta {

@@ -1,5 +1,6 @@
 import { createRouter, parseSearchWith, stringifySearchWith } from "@tanstack/react-router";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
+import { exceptions } from "@/dataxamas";
 import { authClient } from "@/lib/auth/client";
 import { routeTree } from "./routeTree.gen";
 
@@ -25,6 +26,9 @@ export function getRouter() {
     },
     defaultNotFoundComponent: () => {
       return <NotFoundComponent />;
+    },
+    defaultOnCatch: (error) => {
+      void exceptions?.captureException(error);
     },
   });
 }

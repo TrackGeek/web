@@ -1,8 +1,12 @@
 import { StartClient } from "@tanstack/react-start/client";
 import { StrictMode, startTransition } from "react";
 import { hydrateRoot } from "react-dom/client";
+import { exceptions, tracking } from "@/dataxamas";
 import i18n, { getClientLanguage } from "@/lib/i18n/config";
 import { registerServiceWorker } from "@/lib/pwa";
+
+exceptions?.install();
+tracking?.start();
 
 const language = getClientLanguage();
 

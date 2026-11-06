@@ -11,6 +11,8 @@ export default createServerEntry({
 
       return response;
     } catch (error) {
+      dataxamas?.crawlers.trackRequest(request, { statusCode: 500 });
+
       void dataxamas?.exceptions.captureException(error, { url: request.url, method: request.method });
 
       throw error;

@@ -594,15 +594,19 @@ function MovieDetailsRoute() {
               </Grid>
             </div>
 
-            <WatchProviders mediaType="movie" slug={slug} />
-            <CustomWatchLinks
-              context={{
-                mediaType: "movie",
-                imdbId: movie.imdbId,
-                tmdbId: movie.tmdbId,
-                title: movie.title,
-              }}
-            />
+            {!isUnreleased && (
+              <>
+                <WatchProviders mediaType="movie" slug={slug} />
+                <CustomWatchLinks
+                  context={{
+                    mediaType: "movie",
+                    imdbId: movie.imdbId,
+                    tmdbId: movie.tmdbId,
+                    title: movie.title,
+                  }}
+                />
+              </>
+            )}
 
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>

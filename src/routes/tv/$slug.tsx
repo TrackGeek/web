@@ -900,17 +900,21 @@ function TVShowDetailsPage() {
               </>
             )}
 
-            <WatchProviders mediaType="tv" slug={slug} />
-            <CustomWatchLinks
-              context={{
-                mediaType: "tv",
-                imdbId: item?.external?.imdb_id,
-                tmdbId: item.tmdbId,
-                title: item.name,
-                season: nextWatch.season,
-                episode: nextWatch.episode,
-              }}
-            />
+            {!isUnreleased && (
+              <>
+                <WatchProviders mediaType="tv" slug={slug} />
+                <CustomWatchLinks
+                  context={{
+                    mediaType: "tv",
+                    imdbId: item?.external?.imdb_id,
+                    tmdbId: item.tmdbId,
+                    title: item.name,
+                    season: nextWatch.season,
+                    episode: nextWatch.episode,
+                  }}
+                />
+              </>
+            )}
 
             <div>
               <h3 className="font-semibold text-card-foreground text-lg mb-4">{t("library:communityStatistics")}</h3>

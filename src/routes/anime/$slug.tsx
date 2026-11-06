@@ -995,15 +995,17 @@ function AnimeDetailsRoute() {
               );
             })()}
 
-            <CustomWatchLinks
-              context={{
-                mediaType: "anime",
-                malId: anime.malId,
-                title: englishTitle ?? anime.title,
-                titleRomaji: anime.title,
-                episode: nextEpisode(mySeason.totalEpisodes, mySeason.watchedEpisodes),
-              }}
-            />
+            {!isUnreleased && (
+              <CustomWatchLinks
+                context={{
+                  mediaType: "anime",
+                  malId: anime.malId,
+                  title: englishTitle ?? anime.title,
+                  titleRomaji: anime.title,
+                  episode: nextEpisode(mySeason.totalEpisodes, mySeason.watchedEpisodes),
+                }}
+              />
+            )}
 
             {isAuthenticated && !isUnreleased && (
               <>

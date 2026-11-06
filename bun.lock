@@ -1,6 +1,5 @@
 {
   "lockfileVersion": 1,
-  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "trackverse",
@@ -8,7 +7,7 @@
         "@base-ui/react": "^1.7.0",
         "@better-auth/oauth-provider": "1.6.30",
         "@better-auth/passkey": "~1.6.30",
-        "@dataxamas/tracker-js": "^2.1.0",
+        "@dataxamas/tracker-js": "^2.8.0",
         "@daypicker/react": "^10.0.1",
         "@hookform/resolvers": "^5.7.1",
         "@iconify/react": "^6.0.2",
@@ -183,7 +182,7 @@
 
     "@crowdin/cli": ["@crowdin/cli@4.15.0", "", { "dependencies": { "command-exists-promise": "^2.0.2", "node-fetch": "2.7.0", "shelljs": "^0.10.0", "tar": "^7.5.2", "yauzl": "^3.2.0" }, "bin": { "crowdin": "jdeploy-bundle/jdeploy.js" } }, "sha512-4hOWF2lUENe+TDYZIpBwCQO5aOe7O1Q7CmQ4Py1uwWtBlN855P3tWwnKpLxoAQ+wUx2jv9bJcZ3xgmeoD2qzkQ=="],
 
-    "@dataxamas/tracker-js": ["@dataxamas/tracker-js@2.1.0", "", { "dependencies": { "pino": "^10.3.1" } }, "sha512-qOr2X7RsOuHN3A3mZwFCx0VT8TUlZVPuFxVGpYFWs4NpFeAv1lH60h6lBqRh596LP8hnl3kkPTjAviXwbzoTtA=="],
+    "@dataxamas/tracker-js": ["@dataxamas/tracker-js@2.8.0", "", { "dependencies": { "pino": "^10.3.1" } }, "sha512-T8q4OStQxJ+3Kns588T4rWOZUB2y0n+WjUnR8h8FQHycotLzUq/oGy8z4TyFqi3FzDWPm9FhCk6E8XvdFmRrNQ=="],
 
     "@date-fns/tz": ["@date-fns/tz@1.4.1", "", {}, "sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA=="],
 

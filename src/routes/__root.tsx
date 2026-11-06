@@ -4,8 +4,8 @@ import { getCookie } from "@tanstack/react-start/server";
 import { type ReactNode, useEffect } from "react";
 import { Layout } from "@/components/layouts";
 import appCss from "@/global.css?url";
+import { useDataxamasIdentify } from "@/hooks/dataxamas";
 import type { authClient } from "@/lib/auth/client";
-import { env } from "@/lib/env";
 import i18n, { DEFAULT_LANGUAGE, getClientLanguage, isSupportedLanguage, LANGUAGE_TOKEN } from "@/lib/i18n/config";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/utils/json-ld";
 import { RootProvider } from "@/providers";
@@ -82,6 +82,8 @@ function RootLayout() {
     select: (s) => s.matches.at(-1)?.staticData.layout ?? "main",
   });
 
+  useDataxamasIdentify();
+
   useEffect(() => {
     const observer = new MutationObserver(() => {
       document.querySelectorAll(".asw-menu").forEach((el) => {
@@ -113,15 +115,6 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
     >
       <head>
         <HeadContent />
-
-        {env.VITE_DATAXAMAS_API_KEY && (
-          <script
-            defer
-            src="https://dataxamas.com/dataxamas.js"
-            data-api-key={env.VITE_DATAXAMAS_API_KEY}
-            data-allow-localhost="false"
-          />
-        )}
       </head>
 
       <body>

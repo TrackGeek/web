@@ -181,6 +181,78 @@
     "Archivist": "Arquivista",
     "ArchiveMaster": "Mestre do Arquivo"
   },
+  "tour": {
+    "menu": "Product tour",
+    "start": "Start tour",
+    "continue": "Continue",
+    "finish": "Finish",
+    "welcome": {
+      "welcome": {
+        "title": "Welcome to TrackGeek!",
+        "description": "Let's take a quick tour of the main places: the feed, your progress, search and how to add things to it. You can leave at any time."
+      }
+    },
+    "feed": {
+      "tabs": {
+        "title": "The feed",
+        "description": "This is where activity shows up. Following has what the people you follow are doing, Global shows everyone, and Trending shows what is getting attention."
+      },
+      "composer": {
+        "title": "Share something",
+        "description": "Write a post, attach a title or a screenshot, and share it with the community. Others can react and comment."
+      },
+      "sidebar": {
+        "title": "Keep going",
+        "description": "Titles you are in the middle of watching or reading show up here, so you can pick up right where you stopped."
+      },
+      "userMenu": {
+        "title": "Your account menu",
+        "description": "Your profile, notifications, settings and this tour live here. Let's open your profile next."
+      }
+    },
+    "profile": {
+      "tabs": {
+        "title": "Your profile",
+        "description": "Each tab shows a different side of your account. Once you track something, a Progress tab appears with everything you are watching, reading or playing."
+      },
+      "stats": {
+        "title": "Your progress at a glance",
+        "description": "Counters for each type of media. Click one to jump to the full list for that type."
+      },
+      "sections": {
+        "title": "Organized by status",
+        "description": "Your progress is split by status, like in progress, planned, completed, paused and dropped. Pick one to see its titles."
+      },
+      "filters": {
+        "title": "Find things fast",
+        "description": "Search inside your progress, sort it and filter by genre, year and more."
+      },
+      "xp": {
+        "title": "Levels and coins",
+        "description": "Tracking things earns XP and coins. Level up, unlock medals and spend coins in the shop."
+      }
+    },
+    "search": {
+      "type": {
+        "title": "Choose what to look for",
+        "description": "Search movies, TV shows, anime, manga, games and books, as well as cast and other users."
+      },
+      "input": {
+        "title": "Search",
+        "description": "Type a name to see results and use the filters to narrow them down. Open any title to continue the tour and see how to add it to your progress."
+      }
+    },
+    "details": {
+      "status": {
+        "title": "Add it to your progress",
+        "description": "Pick a status to add this title to your progress. After that you can update episodes, chapters or hours, rate it and write a review."
+      },
+      "userMenu": {
+        "title": "All done",
+        "description": "Everything you add shows up in your profile and in the feed. You can replay this tour from the account menu at any time."
+      }
+    }
+  },
   "pwa": {
     "installTitle": "Instalar TrackGeek",
     "installDescription": "Adicione TrackGeek à sua tela inicial para uma experiência mais rápida como a de um aplicativo.",

@@ -114,6 +114,26 @@
   "presenceInfoNotInGuild": "A pessoa não é um membro do servidor do Discord do TrackGeek.",
   "presenceInfoOffline": "A pessoa está offline no {{provider}}.",
   "presenceInfoNotPublic": "A pessoa não compartilha suas atividades no {{provider}} publicamente.",
+  "psnTrophies": "PlayStation trophies",
+  "psn": {
+    "recentGames": "Recent games",
+    "nextLevel": "{{progress}} to level {{level}}",
+    "updatedAt": "Updated {{time}}",
+    "refresh": "Refresh trophies",
+    "refreshed": "PlayStation trophies updated.",
+    "notLinked": {
+      "title": "No PlayStation account",
+      "description": "Connect your PSN account to show your trophies here."
+    },
+    "expired": {
+      "title": "PlayStation connection expired",
+      "description": "Reconnect your PSN account to keep your trophies up to date."
+    },
+    "unavailable": {
+      "title": "Trophies unavailable",
+      "description": "PlayStation Network didn't respond. Try again later."
+    }
+  },
   "followed": "Seguido com sucesso",
   "unfollowed": "Parado de seguir com sucesso",
   "followedError": "Ocorreu um erro ao tentar seguir este utilizador.",

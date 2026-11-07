@@ -108,7 +108,6 @@ function BackloggdImportRoute() {
 
   const failed = progress?.items.filter((item) => item.state === "error") ?? [];
 
-  /** Plain text so the user can re-check or re-add the leftovers by hand. */
   const downloadFailures = () => {
     const lines = [
       `TrackGeek — Backloggd import failures (${new Date().toISOString()})`,

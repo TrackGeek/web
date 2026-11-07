@@ -19,7 +19,7 @@ interface ImportProvider {
 const PROVIDERS: ImportProvider[] = [
   { id: "trakt", icon: "thesvg-color:trakt", to: "/settings/import/trakt", contentType: "movie" },
   { id: "anilist", icon: "thesvg-color:anilist", to: "/settings/import/anilist", contentType: "anime" },
-  { id: "backloggd", icon: "lucide:gamepad-2", to: "/settings/import/backloggd", contentType: "game" },
+  { id: "backloggd", icon: "thesvg-color:backloggd", to: "/settings/import/backloggd", contentType: "game" },
   {
     id: "myanimelist_anime",
     icon: "thesvg-color:myanimelist",

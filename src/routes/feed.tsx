@@ -45,7 +45,7 @@ function FeedRoute() {
         <div className={cn("flex min-w-0 flex-1 flex-col", !hasSidebar && "md:mx-auto md:max-w-3xl")}>
           <Tabs value={activeTab} onValueChange={setTab}>
             <div className="sticky top-0 z-20 -mt-2 bg-background/85 py-2 backdrop-blur-md">
-              <TabsList className="h-11 w-full gap-1 sm:h-10">
+              <TabsList data-tour="feed-tabs" className="h-11 w-full gap-1 sm:h-10">
                 {tabs.map(({ value, label, icon }) => (
                   <TabsTrigger key={value} value={value} className="gap-2">
                     <Icon icon={icon} aria-hidden />
@@ -74,7 +74,7 @@ function FeedRoute() {
         </div>
 
         {hasSidebar && sessionUser?.username && (
-          <aside className="flex flex-col gap-5 md:sticky md:top-4 md:w-1/3 md:shrink-0">
+          <aside data-tour="feed-sidebar" className="flex flex-col gap-5 md:sticky md:top-4 md:w-1/3 md:shrink-0">
             <StillWatching userId={sessionUser.id} username={sessionUser.username} />
             <StillReading userId={sessionUser.id} username={sessionUser.username} />
           </aside>

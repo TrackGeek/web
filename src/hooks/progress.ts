@@ -100,6 +100,7 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "anime",
         slug: String(row.anime.malId),
         mediaId: row.anime.id,
+        score: row.rating,
         year: row.anime.year ?? undefined,
         status: row.status,
         episodeProgress: row.episodeProgress,
@@ -113,6 +114,7 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "manga",
         slug: String(row.manga.anilistId ?? row.manga.malId),
         mediaId: row.manga.id,
+        score: row.rating,
         status: row.status,
         readingProgress: { current: row.chaptersRead ?? 0, total: row.manga.numberOfChapters || null },
       };
@@ -125,6 +127,7 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "tv",
         slug: String(row.tvShow.tmdbId),
         mediaId: row.tvShow.id,
+        score: row.rating,
         year: row.tvShow.firstAirDate ? new Date(row.tvShow.firstAirDate).getUTCFullYear() : undefined,
         status: row.status,
         episodeProgress: row.episodeProgress,
@@ -138,6 +141,7 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "movie",
         slug: String(row.movie.tmdbId),
         mediaId: row.movie.id,
+        score: row.rating,
         year: row.movie.releaseDate ? new Date(row.movie.releaseDate).getUTCFullYear() : undefined,
       };
     case "game":
@@ -149,6 +153,7 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "game",
         slug: String(row.game.igdbId),
         mediaId: row.game.id,
+        score: row.rating,
         completion: row.completion ?? null,
         hoursPlayed: row.hoursPlayed ?? null,
       };
@@ -161,6 +166,7 @@ export function progressToItem(contentType: ApiTypes.ReviewContentType, row: Api
         contentType: "book",
         slug: String(row.book.hardcoverId),
         mediaId: row.book.id,
+        score: row.rating,
         status: row.status,
         readingProgress: { current: row.chaptersRead ?? 0, total: row.totalPages ?? (row.book.numberOfPages || null) },
       };

@@ -35,7 +35,7 @@ const providers = [
   },
   {
     name: "Backloggd",
-    icon: "lucide:gamepad-2",
+    icon: "thesvg-color:backloggd",
     to: "/settings/import/backloggd",
     type: "common:types.game_other",
     method: "pages:landing.import.backloggdExport",

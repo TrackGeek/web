@@ -14,6 +14,12 @@ export const OG_COLORS = {
   foreground: "#fafafa",
   muted: "#a1a1aa",
   mutedStrong: "#71717a",
+  star: "#facc15",
+  starEmpty: "#3f3f46",
+  transparent: "transparent",
+  primaryTint: "rgba(16,185,129,0.10)",
+  ambient: "rgba(16,185,129,0.12)",
+  shadow: "rgba(0,0,0,0.40)",
 } as const;
 
 export const OG_CACHE_CONTROL = "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800";

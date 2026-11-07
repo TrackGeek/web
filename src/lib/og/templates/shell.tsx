@@ -7,7 +7,7 @@ interface OgFrameProps {
   padding?: number;
 }
 
-export function OgFrame({ children, padding = 64 }: OgFrameProps) {
+export function OgFrame({ children, padding = 54 }: OgFrameProps) {
   return (
     <div
       style={{
@@ -16,44 +16,12 @@ export function OgFrame({ children, padding = 64 }: OgFrameProps) {
         width: OG_WIDTH,
         height: OG_HEIGHT,
         backgroundColor: OG_COLORS.background,
+        backgroundImage: `radial-gradient(ellipse at 100% 0%, ${OG_COLORS.ambient}, ${OG_COLORS.transparent} 65%)`,
         fontFamily: OG_FONT_FAMILY,
         color: OG_COLORS.foreground,
         overflow: "hidden",
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: -300,
-          left: -200,
-          width: 820,
-          height: 820,
-          borderRadius: 820,
-          backgroundImage: "radial-gradient(circle, rgba(16,185,129,0.20) 0%, rgba(16,185,129,0) 70%)",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: -340,
-          right: -240,
-          width: 780,
-          height: 780,
-          borderRadius: 780,
-          backgroundImage: "radial-gradient(circle, rgba(4,120,87,0.26) 0%, rgba(4,120,87,0) 70%)",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: OG_WIDTH,
-          height: 6,
-          backgroundImage: `linear-gradient(90deg, ${OG_COLORS.primaryDeep} 0%, ${OG_COLORS.primarySoft} 50%, ${OG_COLORS.primaryDeep} 100%)`,
-        }}
-      />
-
       <div
         style={{
           position: "relative",
@@ -80,15 +48,13 @@ export function OgBadge({ label }: { label: string }) {
       style={{
         display: "flex",
         alignItems: "center",
-        padding: "8px 18px",
-        borderRadius: 999,
-        backgroundColor: "rgba(16,185,129,0.14)",
+        padding: "8px 16px",
+        borderRadius: 10,
+        backgroundColor: OG_COLORS.primaryTint,
         border: `1px solid ${OG_COLORS.primaryDeep}`,
         color: OG_COLORS.primarySoft,
-        fontSize: 22,
-        fontWeight: 600,
-        letterSpacing: 1.6,
-        textTransform: "uppercase",
+        fontSize: 20,
+        fontWeight: 500,
       }}
     >
       {label}

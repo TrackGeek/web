@@ -1,6 +1,7 @@
 import { Footer } from "../shared/footer";
 import { Header } from "../shared/header";
 import { InstallPrompt } from "../shared/install-prompt";
+import { ProductTour } from "../shared/tour/product-tour";
 
 interface LayoutProps {
   variant: "full" | "main";
@@ -24,6 +25,8 @@ export function Layout({ variant, children }: LayoutProps) {
       <Footer />
 
       <InstallPrompt />
+
+      <ProductTour />
     </div>
   );
 }

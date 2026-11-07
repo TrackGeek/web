@@ -1,5 +1,6 @@
-import { OG_LOGO_SRC } from "@/lib/og/resources";
-import { OG_COLORS, OG_FONT_FAMILY, OG_HEIGHT, OG_WIDTH, truncate } from "@/lib/og/theme";
+import { OgUserStat } from "@/components/og/user-stat";
+import { OgFrame, OgLogo } from "@/lib/og/templates/shell";
+import { OG_COLORS, OG_WIDTH, truncate } from "@/lib/og/theme";
 
 export interface UserCardStat {
   label: string;
@@ -16,182 +17,134 @@ export interface UserCardProps {
   stats: UserCardStat[];
 }
 
-const CARD_WIDTH = 1120;
-const CARD_HEIGHT = 550;
-const BANNER_HEIGHT = 168;
-const AVATAR_SIZE = 148;
+const BANNER_HEIGHT = 250;
+const AVATAR_SIZE = 140;
 
 export function UserCard({ displayName, username, about, avatarUrl, bannerUrl, stats }: UserCardProps) {
-  const name = truncate(displayName || username, 28);
-  const bio = truncate(about, 150);
+  const name = truncate(displayName || username, 45);
+  const bio = truncate(about, 160);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        width: OG_WIDTH,
-        height: OG_HEIGHT,
-        padding: 40,
-        backgroundColor: OG_COLORS.background,
-        backgroundImage: `radial-gradient(circle at 20% 0%, rgba(16,185,129,0.18) 0%, rgba(9,9,11,0) 60%)`,
-        fontFamily: OG_FONT_FAMILY,
-        color: OG_COLORS.foreground,
-      }}
-    >
+    <OgFrame padding={0}>
+      {bannerUrl ? (
+        <img
+          src={bannerUrl}
+          width={OG_WIDTH}
+          height={BANNER_HEIGHT}
+          alt=""
+          style={{ objectFit: "cover", flexShrink: 0 }}
+        />
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            width: OG_WIDTH,
+            height: BANNER_HEIGHT,
+            flexShrink: 0,
+            backgroundColor: OG_COLORS.primaryDeep,
+          }}
+        />
+      )}
       <div
         style={{
-          position: "relative",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: OG_WIDTH,
+          height: BANNER_HEIGHT,
+          backgroundImage: `linear-gradient(180deg, ${OG_COLORS.shadow}, ${OG_COLORS.transparent} 35%, ${OG_COLORS.background})`,
+        }}
+      />
+      <div style={{ position: "absolute", top: 40, left: 56, display: "flex" }}>
+        <OgLogo height={36} />
+      </div>
+      <div
+        style={{
           display: "flex",
           flexDirection: "column",
-          width: CARD_WIDTH,
-          height: CARD_HEIGHT,
-          borderRadius: 32,
-          backgroundColor: OG_COLORS.surface,
-          border: `1px solid ${OG_COLORS.surfaceElevated}`,
-          overflow: "hidden",
+          padding: "0 56px 44px",
+          marginTop: -56,
+          flex: 1,
+          minHeight: 0,
         }}
       >
-        {bannerUrl ? (
-          <img
-            src={bannerUrl}
-            width={CARD_WIDTH}
-            height={BANNER_HEIGHT}
-            alt=""
-            style={{ objectFit: "cover", width: CARD_WIDTH, height: BANNER_HEIGHT, flexShrink: 0 }}
-          />
-        ) : (
+        <div style={{ display: "flex", alignItems: "flex-end", gap: 28, flexShrink: 0 }}>
           <div
             style={{
               display: "flex",
-              width: CARD_WIDTH,
-              height: BANNER_HEIGHT,
+              alignItems: "center",
+              justifyContent: "center",
+              width: AVATAR_SIZE,
+              height: AVATAR_SIZE,
+              borderRadius: AVATAR_SIZE,
+              border: `6px solid ${OG_COLORS.background}`,
+              backgroundColor: OG_COLORS.surfaceElevated,
+              overflow: "hidden",
               flexShrink: 0,
-              backgroundImage: `linear-gradient(120deg, ${OG_COLORS.primaryDeep} 0%, ${OG_COLORS.primary} 55%, #065f46 100%)`,
-            }}
-          />
-        )}
-
-        <img
-          src={OG_LOGO_SRC}
-          width={Math.round((32 * 1386) / 443)}
-          height={32}
-          alt="TrackGeek"
-          style={{ position: "absolute", top: 26, right: 32 }}
-        />
-
-        <div
-          style={{
-            position: "absolute",
-            top: BANNER_HEIGHT - AVATAR_SIZE / 2,
-            left: 44,
-            display: "flex",
-            width: AVATAR_SIZE,
-            height: AVATAR_SIZE,
-            borderRadius: AVATAR_SIZE,
-            backgroundColor: OG_COLORS.surface,
-            border: `8px solid ${OG_COLORS.surface}`,
-            overflow: "hidden",
-          }}
-        >
-          {avatarUrl ? (
-            <img
-              src={avatarUrl}
-              width={AVATAR_SIZE - 16}
-              height={AVATAR_SIZE - 16}
-              alt=""
-              style={{ objectFit: "cover", borderRadius: AVATAR_SIZE }}
-            />
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: AVATAR_SIZE - 16,
-                height: AVATAR_SIZE - 16,
-                borderRadius: AVATAR_SIZE,
-                backgroundColor: OG_COLORS.primaryDeep,
-                fontSize: 56,
-                fontWeight: 800,
-              }}
-            >
-              {(username[0] ?? "?").toUpperCase()}
-            </div>
-          )}
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            flexGrow: 1,
-            padding: "20px 44px 28px 44px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              flexShrink: 0,
-              marginLeft: AVATAR_SIZE + 32,
-              minHeight: 90,
+              fontSize: 56,
+              fontWeight: 700,
+              color: OG_COLORS.primarySoft,
             }}
           >
-            <span style={{ fontSize: 46, fontWeight: 800, letterSpacing: -1.2, lineClamp: 1 }}>{name}</span>
-            <span style={{ fontSize: 26, fontWeight: 500, color: OG_COLORS.muted, marginTop: 4 }}>@{username}</span>
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                width={AVATAR_SIZE - 12}
+                height={AVATAR_SIZE - 12}
+                alt=""
+                style={{ objectFit: "cover" }}
+              />
+            ) : (
+              (username[0] ?? "?").toUpperCase()
+            )}
           </div>
-
-          <div style={{ display: "flex", flexDirection: "column", flexShrink: 0, marginTop: 16 }}>
-            <span style={{ fontSize: 19, fontWeight: 700, color: OG_COLORS.mutedStrong, letterSpacing: 2 }}>
-              ABOUT ME
-            </span>
+          <div style={{ display: "flex", flexDirection: "column", flex: 1, minWidth: 0, gap: 6, paddingBottom: 8 }}>
             <span
               style={{
-                fontSize: 24,
-                lineHeight: 1.3,
-                color: bio ? OG_COLORS.foreground : OG_COLORS.mutedStrong,
-                marginTop: 10,
-                lineClamp: 2,
+                fontSize: name.length > 28 ? 42 : 52,
+                fontWeight: 800,
+                letterSpacing: -1.5,
+                minWidth: 0,
+                overflowWrap: "break-word",
+                lineClamp: 1,
                 textOverflow: "ellipsis",
               }}
             >
-              {bio || "No bio yet."}
+              {name}
+            </span>
+            <span style={{ fontSize: 25, color: OG_COLORS.muted, lineClamp: 1, textOverflow: "ellipsis" }}>
+              @{truncate(username, 50)}
             </span>
           </div>
-
-          <div style={{ display: "flex", flexGrow: 1 }} />
-
-          <div style={{ display: "flex", flexDirection: "row", flexShrink: 0, gap: 16 }}>
-            {stats.map((stat) => (
-              <StatChip key={stat.label} {...stat} />
-            ))}
-          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 25,
+            lineHeight: 1.4,
+            color: OG_COLORS.muted,
+            marginTop: 26,
+            lineClamp: 2,
+            textOverflow: "ellipsis",
+          }}
+        >
+          {bio || "No bio yet."}
+        </div>
+        <div style={{ display: "flex", flexGrow: 1, minHeight: 24 }} />
+        <div
+          style={{
+            display: "flex",
+            gap: 32,
+            paddingTop: 24,
+            borderTop: `1px solid ${OG_COLORS.surfaceElevated}`,
+            flexShrink: 0,
+          }}
+        >
+          {stats.map((stat) => (
+            <OgUserStat key={stat.label} {...stat} />
+          ))}
         </div>
       </div>
-    </div>
-  );
-}
-
-function StatChip({ label, value, highlight }: UserCardStat) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        flexGrow: 1,
-        flexBasis: 0,
-        padding: "14px 20px",
-        borderRadius: 18,
-        backgroundColor: highlight ? "rgba(16,185,129,0.12)" : OG_COLORS.surfaceElevated,
-        border: `1px solid ${highlight ? OG_COLORS.primaryDeep : OG_COLORS.outline}`,
-      }}
-    >
-      <span style={{ fontSize: 38, fontWeight: 800, color: highlight ? OG_COLORS.primary : OG_COLORS.foreground }}>
-        {value}
-      </span>
-      <span style={{ fontSize: 19, fontWeight: 600, color: OG_COLORS.muted, letterSpacing: 1.1, marginTop: 2 }}>
-        {label}
-      </span>
-    </div>
+    </OgFrame>
   );
 }

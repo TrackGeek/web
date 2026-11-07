@@ -19,7 +19,7 @@ export function FeedComposer() {
   if (!user) return null;
 
   return (
-    <Card className="@container mb-3 min-w-0 gap-0 border-border/60 p-0 shadow-none">
+    <Card data-tour="feed-composer" className="@container mb-3 min-w-0 gap-0 border-border/60 p-0 shadow-none">
       <CardContent className="p-0">
         <form
           onSubmit={(event) => {

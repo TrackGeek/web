@@ -20,6 +20,7 @@ interface CardProps {
   imageURL?: string | null;
   isAdult?: boolean;
   rating?: number;
+  userScore?: number | null;
   year?: number;
   synopsis?: string;
   mediaType?: string;
@@ -44,6 +45,7 @@ export function CardItem(item: CardProps) {
   const completionIcon = item.completion ? COMPLETION_ICONS[item.completion] : null;
   const completionLabel =
     item.completion && (item.completion === "100%" ? "100%" : t(`feed:completionStatus.${item.completion}`));
+  const hasScore = typeof item.userScore === "number" && Number.isFinite(item.userScore);
   const hasHours = typeof item.hoursPlayed === "number" && item.hoursPlayed > 0;
 
   return (
@@ -66,7 +68,8 @@ export function CardItem(item: CardProps) {
             </span>
           )}
 
-        {item.readingProgress &&
+        {item.progressStatus !== "Completed" &&
+          item.readingProgress &&
           item.progressUserId &&
           item.mediaId &&
           (item.mediaType === "book" || item.mediaType === "manga") && (
@@ -79,7 +82,8 @@ export function CardItem(item: CardProps) {
             />
           )}
 
-        {item.episodeProgress &&
+        {item.progressStatus !== "Completed" &&
+          item.episodeProgress &&
           item.progressUserId &&
           item.mediaId &&
           (item.mediaType === "anime" || item.mediaType === "tv") && (
@@ -92,8 +96,19 @@ export function CardItem(item: CardProps) {
             />
           )}
 
+        {hasScore && (
+          <span className="pointer-events-none absolute top-1 left-1 flex items-center gap-0.5 rounded-md bg-black/75 px-1.5 py-0.5 text-xs font-medium tabular-nums text-white backdrop-blur-xs">
+            <Icon icon="lucide:star" className="size-3 text-yellow-400" />
+            {item.userScore}
+          </span>
+        )}
+
         {item.isAdult && (
-          <Button variant="destructive" size="xs" className="absolute top-1 left-1 group-hover:opacity-0">
+          <Button
+            variant="destructive"
+            size="xs"
+            className={cn("absolute left-1 group-hover:opacity-0", hasScore ? "top-8" : "top-1")}
+          >
             NSFW
           </Button>
         )}

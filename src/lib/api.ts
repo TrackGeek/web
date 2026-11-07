@@ -873,6 +873,7 @@ export namespace ApiTypes {
     status: ProgressStatus;
     completion?: GameCompletion | null;
     hoursPlayed?: number | null;
+    rating?: number | null;
     anime: { id: string; malId: number; year?: number | null; title: string; imageUrl: string | null } | null;
     manga: {
       id: string;
@@ -1207,6 +1208,8 @@ export namespace ApiTypes {
     language?: number | string | null;
     theme?: number | string | null;
     summary?: string | null;
+    notes?: string | null;
+    recommended?: boolean | null;
   }
 
   export interface ActivityProgress extends ActivityMediaRefs {

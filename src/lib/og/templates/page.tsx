@@ -12,37 +12,37 @@ export function PageCard({ title, description, siteLabel = "trackgeek.net" }: Pa
   const summary = truncate(description, 170);
 
   return (
-    <OgFrame padding={80}>
-      <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-        <OgLogo height={46} />
-
-        <div style={{ display: "flex", flexGrow: 1 }} />
-
-        <div style={{ display: "flex", width: 96, height: 6, borderRadius: 999, backgroundColor: OG_COLORS.primary }} />
-
+    <OgFrame padding={64}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
+        <OgLogo height={44} />
+        <span style={{ fontSize: 22, color: OG_COLORS.muted }}>{siteLabel}</span>
+      </div>
+      <div
+        style={{ display: "flex", flexDirection: "column", justifyContent: "center", flex: 1, gap: 24, minHeight: 0 }}
+      >
         <div
           style={{
             display: "flex",
-            fontSize: heading.length > 60 ? 58 : 72,
+            minWidth: 0,
+            overflowWrap: "break-word",
+            fontSize: heading.length > 65 ? 60 : heading.length > 35 ? 72 : 88,
             fontWeight: 800,
-            lineHeight: 1.1,
-            letterSpacing: -2,
-            marginTop: 28,
+            lineHeight: 1.08,
+            letterSpacing: -2.5,
             lineClamp: 3,
             textOverflow: "ellipsis",
           }}
         >
           {heading}
         </div>
-
         {summary ? (
           <div
             style={{
               display: "flex",
-              fontSize: 28,
+              maxWidth: 940,
+              fontSize: 27,
               lineHeight: 1.45,
               color: OG_COLORS.muted,
-              marginTop: 24,
               lineClamp: 2,
               textOverflow: "ellipsis",
             }}
@@ -50,25 +50,19 @@ export function PageCard({ title, description, siteLabel = "trackgeek.net" }: Pa
             {summary}
           </div>
         ) : null}
-
-        <div style={{ display: "flex", flexGrow: 1 }} />
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingTop: 28,
-            borderTop: `1px solid ${OG_COLORS.surfaceElevated}`,
-            fontSize: 24,
-            fontWeight: 600,
-            color: OG_COLORS.mutedStrong,
-          }}
-        >
-          <span>{siteLabel}</span>
-          <span style={{ color: OG_COLORS.primary }}>Track everything you love</span>
-        </div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          paddingTop: 24,
+          borderTop: `1px solid ${OG_COLORS.surfaceElevated}`,
+          fontSize: 23,
+          color: OG_COLORS.primarySoft,
+          flexShrink: 0,
+        }}
+      >
+        Track everything you love
       </div>
     </OgFrame>
   );

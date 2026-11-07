@@ -228,6 +228,21 @@
       "error": "Falha ao desconectar esta conta. Por favor, tente novamente."
     }
   },
+  "psn": {
+    "title": "PlayStation Network",
+    "description": "Show your PlayStation trophies on your profile.",
+    "steps": {
+      "signIn": "Sign in to your PlayStation account at <link>playstation.com</link>.",
+      "openCookie": "In the same browser, open <link>{{url}}</link> to get your NPSSO cookie.",
+      "copy": "The page shows {\"npsso\":\"...\"}. Copy only the 64-character value and paste it below."
+    },
+    "npssoLabel": "NPSSO token",
+    "npssoInvalid": "The NPSSO token must have {{count}} characters.",
+    "securityNote": "The token is exchanged with PlayStation right away and never stored. Only an encrypted refresh token is kept.",
+    "linked": "PlayStation account connected.",
+    "expired": "Expired",
+    "reconnect": "Reconnect"
+  },
   "banner": {
     "title": "Banner",
     "description": "Formatos permitidos: JPG, JPEG, PNG, GIF. Tamanho máximo: 5mb. Dimensões ideais: 1200x330",

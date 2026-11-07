@@ -47,7 +47,7 @@ export function XpCard({ xp, coins }: XpCardProps) {
   const { t } = useTranslation();
 
   return (
-    <Card>
+    <Card data-tour="profile-xp">
       <CardHeader>
         <CardTitle>
           <Icon icon="lucide:sparkles" className="size-5" />

@@ -125,7 +125,7 @@ export function StatisticsCard({ user, onSeeProgress }: StatisticsCardProps) {
   const { hiddenClass } = useContentTypes();
 
   return (
-    <Card>
+    <Card data-tour="profile-stats">
       <CardHeader>
         <CardTitle>
           <Icon icon="lucide:trending-up" className="size-5" />

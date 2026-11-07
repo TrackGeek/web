@@ -97,7 +97,7 @@ export function Header() {
         </div>
 
         <div className="flex items-center justify-center gap-3">
-          <Link to="/search">
+          <Link to="/search" data-tour="header-search">
             <Button>
               <Icon icon={"lucide:search"} />
             </Button>

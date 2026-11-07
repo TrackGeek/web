@@ -550,7 +550,10 @@ function TVShowDetailsPage() {
 
       {isAuthenticated && (
         <>
-          <div className={cn("grid w-full gap-4", isUnreleased ? "grid-cols-1" : "grid-cols-3")}>
+          <div
+            data-tour="status-buttons"
+            className={cn("grid w-full gap-4", isUnreleased ? "grid-cols-1" : "grid-cols-3")}
+          >
             {progressButtons.map((button) => {
               const isActive = currentStatus === button.status;
 

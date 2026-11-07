@@ -172,7 +172,7 @@ export function UserProgressTab({
           ))}
         </div>
 
-        <div className="flex md:flex-col gap-1 overflow-x-auto">
+        <div data-tour="progress-sections" className="flex md:flex-col gap-1 overflow-x-auto">
           {sections.map((section) => (
             <button
               key={section.status}
@@ -197,7 +197,7 @@ export function UserProgressTab({
           ))}
         </div>
 
-        <div className="px-1 pt-1">
+        <div data-tour="progress-filters" className="px-1 pt-1">
           <CollapsibleFilters activeCount={activeFilterCount} onClear={() => setFilters(EMPTY_PROGRESS_FILTERS)}>
             <div className="pt-2 md:pt-0 flex gap-1.5">
               <SearchInput value={searchQuery} onChange={setSearchQuery} />

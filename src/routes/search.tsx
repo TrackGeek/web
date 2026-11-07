@@ -306,7 +306,7 @@ function RouteComponent() {
     <div>
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 flex flex-col sm:flex-row gap-4 sm:items-end">
-          <div className="w-full sm:w-32">
+          <div data-tour="search-type" className="w-full sm:w-32">
             <Select value={searchType} onValueChange={handleSearchTypeChange}>
               <SelectTrigger className="w-full">
                 <SelectValue />
@@ -328,7 +328,7 @@ function RouteComponent() {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex-1 relative w-full">
+          <div data-tour="search-input" className="flex-1 relative w-full">
             <Input
               placeholder={`${t("common:search")}...`}
               className="bg-muted/50 flex-1 pr-12"

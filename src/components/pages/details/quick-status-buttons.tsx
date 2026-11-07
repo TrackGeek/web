@@ -28,7 +28,7 @@ const GRID_COLUMNS: Record<number, string> = {
 
 export function QuickStatusButtons({ buttons }: QuickStatusButtonsProps) {
   return (
-    <div className={cn("grid w-full gap-4", GRID_COLUMNS[buttons.length] ?? "grid-cols-3")}>
+    <div data-tour="status-buttons" className={cn("grid w-full gap-4", GRID_COLUMNS[buttons.length] ?? "grid-cols-3")}>
       {buttons.map((btn) => (
         <Button
           key={btn.label}

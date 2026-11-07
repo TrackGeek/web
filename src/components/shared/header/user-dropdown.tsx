@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useUnreadNotificationsCount } from "@/hooks/notification";
 import { useProgressionToasts } from "@/hooks/progression-toasts";
+import { startTour } from "@/hooks/use-product-tour";
 import { signOut, useSession } from "@/lib/auth/client";
 import { AVATAR_BLUR } from "@/lib/image";
 import { getInitialsFromName } from "@/lib/utils";
@@ -36,7 +37,7 @@ export function UserDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="relative cursor-pointer">
+        <div data-tour="user-menu" className="relative cursor-pointer">
           <Avatar className="border border-border size-9">
             {session.data?.user?.profile?.avatarUrl ? (
               <Image
@@ -113,6 +114,11 @@ export function UserDropdown() {
             <Icon icon={"lucide:settings"} className="text-white size-4.5" />
             {t("common:settings")}
           </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem onClick={startTour} className="cursor-pointer">
+          <Icon icon={"lucide:circle-help"} className="text-white size-4.5" />
+          {t("common:tour.menu")}
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />

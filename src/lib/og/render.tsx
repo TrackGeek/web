@@ -65,10 +65,10 @@ export function renderUserOg(username: string) {
       const tracked = Object.values(user.progressStats).reduce((total, stats) => total + stats.total, 0);
 
       const stats: UserCardStat[] = [
-        { label: "TRACKED", value: formatCount(tracked), highlight: true },
-        { label: "FOLLOWERS", value: formatCount(user._count.followers) },
-        { label: "FOLLOWING", value: formatCount(user._count.following) },
-        { label: "MEMBER SINCE", value: String(new Date(user.createdAt).getFullYear()) },
+        { label: "Tracked", value: formatCount(tracked), highlight: true },
+        { label: "Followers", value: formatCount(user._count.followers) },
+        { label: "Following", value: formatCount(user._count.following) },
+        { label: "Member since", value: String(new Date(user.createdAt).getFullYear()) },
       ];
 
       return (

@@ -873,6 +873,7 @@ export namespace ApiTypes {
     status: ProgressStatus;
     completion?: GameCompletion | null;
     hoursPlayed?: number | null;
+    rating?: number | null;
     anime: { id: string; malId: number; year?: number | null; title: string; imageUrl: string | null } | null;
     manga: {
       id: string;

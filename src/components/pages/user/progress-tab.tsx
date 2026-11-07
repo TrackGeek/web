@@ -294,7 +294,7 @@ export function UserProgressTab({
                   mediaType={item.contentType}
                   url={`/${item.contentType}/${item.slug}`}
                   imageURL={item.image || "/placeholder/cover.webp"}
-                  rating={item.score ?? undefined}
+                  userScore={item.score}
                   completion={item.completion}
                   hoursPlayed={item.hoursPlayed}
                 />

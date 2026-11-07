@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import { useRouterState } from "@tanstack/react-router";
 import { Trans, useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,9 @@ export function InstallPrompt() {
   const { t } = useTranslation();
   const { visible, platform, install, dismiss } = useInstallPrompt();
 
-  if (!visible) return null;
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+
+  if (!visible || pathname.replace(/\/$/, "") === "/android") return null;
 
   return (
     <div className="fixed inset-x-3 bottom-3 z-50 md:left-auto md:right-4 md:bottom-4 md:w-96 pb-[env(safe-area-inset-bottom)]">

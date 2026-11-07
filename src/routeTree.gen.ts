@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AccountDeletedRouteImport } from './routes/account-deleted'
 import { Route as AddDataRouteImport } from './routes/add-data'
+import { Route as AndroidRouteImport } from './routes/android'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as DonateRouteImport } from './routes/donate'
@@ -101,6 +102,11 @@ const AccountDeletedRoute = AccountDeletedRouteImport.update({
 const AddDataRoute = AddDataRouteImport.update({
   id: '/add-data',
   path: '/add-data',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AndroidRoute = AndroidRouteImport.update({
+  id: '/android',
+  path: '/android',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompareRoute = CompareRouteImport.update({
@@ -469,6 +475,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account-deleted': typeof AccountDeletedRoute
   '/add-data': typeof AddDataRoute
+  '/android': typeof AndroidRoute
   '/compare': typeof CompareRoute
   '/credits': typeof CreditsRoute
   '/donate': typeof DonateRoute
@@ -544,6 +551,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account-deleted': typeof AccountDeletedRoute
   '/add-data': typeof AddDataRoute
+  '/android': typeof AndroidRoute
   '/compare': typeof CompareRoute
   '/credits': typeof CreditsRoute
   '/donate': typeof DonateRoute
@@ -621,6 +629,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/account-deleted': typeof AccountDeletedRoute
   '/add-data': typeof AddDataRoute
+  '/android': typeof AndroidRoute
   '/compare': typeof CompareRoute
   '/credits': typeof CreditsRoute
   '/donate': typeof DonateRoute
@@ -698,6 +707,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account-deleted'
     | '/add-data'
+    | '/android'
     | '/compare'
     | '/credits'
     | '/donate'
@@ -773,6 +783,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account-deleted'
     | '/add-data'
+    | '/android'
     | '/compare'
     | '/credits'
     | '/donate'
@@ -849,6 +860,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/account-deleted'
     | '/add-data'
+    | '/android'
     | '/compare'
     | '/credits'
     | '/donate'
@@ -926,6 +938,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AccountDeletedRoute: typeof AccountDeletedRoute
   AddDataRoute: typeof AddDataRoute
+  AndroidRoute: typeof AndroidRoute
   CompareRoute: typeof CompareRoute
   CreditsRoute: typeof CreditsRoute
   DonateRoute: typeof DonateRoute
@@ -1015,6 +1028,13 @@ declare module '@tanstack/react-router' {
       path: '/add-data'
       fullPath: '/add-data'
       preLoaderRoute: typeof AddDataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/android': {
+      id: '/android'
+      path: '/android'
+      fullPath: '/android'
+      preLoaderRoute: typeof AndroidRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compare': {
@@ -1551,6 +1571,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AccountDeletedRoute: AccountDeletedRoute,
   AddDataRoute: AddDataRoute,
+  AndroidRoute: AndroidRoute,
   CompareRoute: CompareRoute,
   CreditsRoute: CreditsRoute,
   DonateRoute: DonateRoute,

@@ -4,6 +4,14 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-android-paper: #fffefb;
+  --color-android-cream: #f4f1e7;
+  --color-android-mint: #d5f6e5;
+  --color-android-ink: #073f32;
+  --color-android-muted: #52645b;
+  --color-android-rule: #d9e2d8;
+  --color-android-screen: #131e20;
+  --color-android-shadow: #08392d26;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

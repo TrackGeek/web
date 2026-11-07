@@ -67,6 +67,9 @@ const ACTIVITY_ICONS: Record<ApiTypes.ActivityType, string> = {
 
 export interface FeedReviewData extends FeedItemData {
   criteries: { all: number; breakdown: FeedCriteria[] };
+  notes?: string;
+  story?: string;
+  recommended?: boolean;
 }
 
 export interface FeedScreenshotData extends FeedItemData {
@@ -152,6 +155,8 @@ function resolveMedia(refs: ApiTypes.ActivityMediaRefs | null | undefined): Reso
 
 const REVIEW_KEYS = ["animeReview", "mangaReview", "tvShowReview", "movieReview", "gameReview", "bookReview"] as const;
 
+const TEXT_STORY_KEYS = ["tvShowReview", "movieReview", "mangaReview"] as const;
+
 const PROGRESS_KEYS = [
   "animeProgress",
   "mangaProgress",
@@ -226,11 +231,12 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
         if (!review || !media) return null;
 
         const breakdown: FeedCriteria[] = [];
+        const storyIsText = TEXT_STORY_KEYS.some((key) => activity[key]);
         for (const [field, labelKey] of Object.entries(CRITERIA_LABELS)) {
+          if (field === "story" && storyIsText) continue;
           const raw = (review as unknown as Record<string, unknown>)[field];
-          if (raw !== null && raw !== undefined) {
-            breakdown.push({ labelKey, value: toNumber(raw as number | string) });
-          }
+          const value = raw === null || raw === undefined ? Number.NaN : toNumber(raw as number | string);
+          if (Number.isFinite(value)) breakdown.push({ labelKey, value });
         }
 
         return {
@@ -247,6 +253,9 @@ export function normalizeActivityGroup(group: ApiTypes.ActivityGroup): FeedRende
             time,
             likes,
             criteries: { all: toNumber(review.overall), breakdown },
+            notes: review.notes || undefined,
+            story: storyIsText && typeof review.story === "string" ? review.story || undefined : undefined,
+            recommended: review.recommended ?? undefined,
           },
         };
       }

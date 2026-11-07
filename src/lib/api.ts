@@ -1207,6 +1207,8 @@ export namespace ApiTypes {
     language?: number | string | null;
     theme?: number | string | null;
     summary?: string | null;
+    notes?: string | null;
+    recommended?: boolean | null;
   }
 
   export interface ActivityProgress extends ActivityMediaRefs {

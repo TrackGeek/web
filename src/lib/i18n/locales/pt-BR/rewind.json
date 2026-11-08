@@ -1,0 +1,98 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "Seu {{year}} em filmes, séries, animes, jogos, mangás e livros. Uma história TrackGeek com você no protagonismo.",
+  "back": "Voltar ao TrackGeek",
+  "untitled": "Título indisponível",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "Suas missões secundárias mereciam créditos próprios.",
+    "start": "Bora pro meu replay",
+    "signIn": "Entre para ver seu replay",
+    "community": "Conheça a comunidade",
+    "loading": "Buscando suas reviravoltas...",
+    "error": "Não foi possível carregar seu replay. Tente novamente para ver suas estatísticas reais.",
+    "empty": "Ainda sem progressos datados de {{year}}. Adicione algo à biblioteca e volte aqui.",
+    "launch": "O TrackGeek entrou no chat em {{date}}.",
+    "preview": "{{year}} ainda está no forno. Este é seu replay até agora."
+  },
+  "overview": {
+    "title": "Sua lore cresceu.",
+    "count_one": "<value>{{count, number}}</value> título na sua história.",
+    "count_many": "<value>{{count, number}}</value> títulos na sua história.",
+    "count_other": "<value>{{count, number}}</value> títulos na sua história."
+  },
+  "first": { "title": "Todo arco começa em algum lugar.", "date": "Sua primeira data salva neste ano: {{date}}." },
+  "rhythm": {
+    "title": "{{month}} foi sua era.",
+    "description": "Títulos pela primeira data salva neste ano. Cada título conta uma vez, não uma vez por episódio."
+  },
+  "category": {
+    "story": {
+      "movie": "Você ficou até os créditos.",
+      "tv": "Só mais um episódio, né?",
+      "anime": "Seu arco de anime foi absurdo.",
+      "game": "As missões secundárias dominaram.",
+      "manga": "O próximo capítulo não dava paz.",
+      "book": "Reviravoltas. Em páginas de verdade."
+    },
+    "count": "<value>{{count, number}}</value> {{type}} no seu {{year}}.",
+    "completed_one": "{{count, number}} título com data de conclusão neste ano. Tá entregue.",
+    "completed_many": "{{count, number}} títulos com data de conclusão neste ano. Tá entregue.",
+    "completed_other": "{{count, number}} títulos com data de conclusão neste ano. Tá entregue."
+  },
+  "shelf": {
+    "title": "{{type}} que marcaram.",
+    "description": "Suas reviews de {{year}}, ordenadas pela nota geral, mais {{bonus}} ponto de bônus para títulos adicionados aos favoritos nesse ano.",
+    "empty": "Ainda sem reviews de {{year}} nesta categoria. Os títulos acompanhados continuam contando."
+  },
+  "global": {
+    "title": "Construímos essa lore juntos.",
+    "loading": "Contando as reviravoltas da comunidade...",
+    "error": "Não foi possível carregar as estatísticas globais. Seu replay pessoal continua aqui.",
+    "count_one": "<value>{{count, number}}</value> título acompanhado pela comunidade.",
+    "count_many": "<value>{{count, number}}</value> títulos acompanhados pela comunidade.",
+    "count_other": "<value>{{count, number}}</value> títulos acompanhados pela comunidade.",
+    "people_one": "{{count, number}} conta criada desde {{date}}. Nem um ano inteiro. Já uma história inteira.",
+    "people_many": "{{count, number}} contas criadas desde {{date}}. Nem um ano inteiro. Já uma história inteira.",
+    "people_other": "{{count, number}} contas criadas desde {{date}}. Nem um ano inteiro. Já uma história inteira.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "O plot era você.",
+    "description": "Nos vemos no próximo capítulo? Sua lista de espera não vai fugir.",
+    "restart": "Repetir o replay"
+  },
+  "share": {
+    "action": "Compartilhar meu replay",
+    "text_one": "Meu TrackGeek Replay {{year}}: {{count, number}} título e muita lore. Qual é sua história?",
+    "text_many": "Meu TrackGeek Replay {{year}}: {{count, number}} títulos e muita lore. Qual é sua história?",
+    "text_other": "Meu TrackGeek Replay {{year}}: {{count, number}} títulos e muita lore. Qual é sua história?",
+    "error": "Não foi possível compartilhar. Tente novamente ou use o menu de compartilhamento do navegador."
+  },
+  "method": {
+    "title": "O que conta, afinal?",
+    "description": "Os progressos usam datas de início ou conclusão salvas em {{year}}, ou a data de adição se ambas faltarem. Importações com datas antigas ficam de fora. Conclusões exigem data de conclusão. Horas, episódios e páginas acumulados não são totais anuais. A comunidade conta cada registro pessoal, não títulos únicos. O ranking usa reviews criadas nesse ano, com bônus para favoritos adicionados nesse ano. Os registros podem mudar; não são um histórico imutável. A música original muda por categoria e pode ser silenciada."
+  },
+  "controls": {
+    "readMode": "Ler como página em vez de história horizontal",
+    "staticMode": "O modo de leitura fica ativo com movimento reduzido ou tela compacta.",
+    "chapters": "Capítulos do replay",
+    "position": "{{current}} / {{total}}",
+    "exit": "Sair do replay",
+    "mute": "Silenciar trilha sonora",
+    "unmute": "Reproduzir trilha sonora",
+    "soundOn": "Som ligado",
+    "soundOff": "Som desligado",
+    "volume": "Volume da trilha sonora",
+    "originalAudio": "Trilha sonora original, ligada por padrão. Se a reprodução automática for bloqueada, começa na primeira interação. Silencie quando quiser.",
+    "audioError": "Não foi possível iniciar o som. Você pode continuar em silêncio."
+  },
+  "chapters": {
+    "intro": "Seu replay",
+    "overview": "Seu ano em títulos",
+    "first": "Onde começou",
+    "rhythm": "Seu ritmo",
+    "global": "Todos nós",
+    "outro": "Créditos finais"
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "Tvůj rok {{year}} ve filmech, seriálech, anime, hrách, manze a knihách. Příběh TrackGeek s tebou v hlavní roli.",
+  "back": "Zpět na TrackGeek",
+  "untitled": "Název není k dispozici",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "Tvoje vedlejší úkoly si zasloužily vlastní titulky.",
+    "start": "Spustit můj replay",
+    "signIn": "Přihlas se pro svůj replay",
+    "community": "Poznej komunitu",
+    "loading": "Hledáme tvoje dějové zvraty...",
+    "error": "Tvůj replay se nepodařilo načíst. Zkus to znovu a uvidíš skutečné statistiky.",
+    "empty": "Zatím žádný pokrok s datem z roku {{year}}. Přidej něco do knihovny a vrať se.",
+    "launch": "TrackGeek se připojil do chatu {{date}}.",
+    "preview": "Rok {{year}} ještě běží. Tohle je tvůj dosavadní replay."
+  },
+  "overview": {
+    "title": "Tvůj příběh se rozrostl.",
+    "count_one": "<value>{{count, number}}</value> titul ve tvém příběhu.",
+    "count_few": "<value>{{count, number}}</value> tituly ve tvém příběhu.",
+    "count_many": "<value>{{count, number}}</value> titulu ve tvém příběhu.",
+    "count_other": "<value>{{count, number}}</value> titulů ve tvém příběhu."
+  },
+  "first": { "title": "Každý příběh někde začíná.", "date": "Tvoje první uložené datum letos: {{date}}." },
+  "rhythm": {
+    "title": "{{month}} byl tvoje éra.",
+    "description": "Tituly podle prvního uloženého data letos. Každý titul se počítá jednou, ne po epizodách."
+  },
+  "category": {
+    "story": {
+      "movie": "Zůstal jsi až do titulků.",
+      "tv": "Ještě jeden díl, že jo?",
+      "anime": "Tvoje anime éra jela naplno.",
+      "game": "Vedlejší úkoly převzaly velení.",
+      "manga": "Další kapitola tě pořád volala.",
+      "book": "Dějové zvraty. Na opravdových stránkách."
+    },
+    "count": "<value>{{count, number}}</value> {{type}} ve tvém roce {{year}}.",
+    "completed_one": "{{count, number}} titul má letos datum dokončení. Hotovo.",
+    "completed_few": "{{count, number}} tituly mají letos datum dokončení. Hotovo.",
+    "completed_many": "{{count, number}} titulu má letos datum dokončení. Hotovo.",
+    "completed_other": "{{count, number}} titulů má letos datum dokončení. Hotovo."
+  },
+  "shelf": {
+    "title": "{{type}}, které zanechaly stopu.",
+    "description": "Tvoje recenze z roku {{year}}, seřazené podle celkového hodnocení plus {{bonus}} bonusový bod za tituly přidané mezi oblíbené v témže roce.",
+    "empty": "V této kategorii zatím nemáš recenze z roku {{year}}. Sledované tituly se stále počítají."
+  },
+  "global": {
+    "title": "Tenhle příběh jsme vytvořili společně.",
+    "loading": "Počítáme dějové zvraty komunity...",
+    "error": "Statistiky komunity se nepodařilo načíst. Tvůj osobní replay tu zůstává.",
+    "count_one": "<value>{{count, number}}</value> titul zaznamenaný komunitou.",
+    "count_few": "<value>{{count, number}}</value> tituly zaznamenané komunitou.",
+    "count_many": "<value>{{count, number}}</value> titulu zaznamenaného komunitou.",
+    "count_other": "<value>{{count, number}}</value> titulů zaznamenaných komunitou.",
+    "people_one": "{{count, number}} účet založený od {{date}}. Ani ne celý rok. Přesto celý příběh.",
+    "people_few": "{{count, number}} účty založené od {{date}}. Ani ne celý rok. Přesto celý příběh.",
+    "people_many": "{{count, number}} účtu založeného od {{date}}. Ani ne celý rok. Přesto celý příběh.",
+    "people_other": "{{count, number}} účtů založených od {{date}}. Ani ne celý rok. Přesto celý příběh.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "Celou dobu jsi byl hlavní děj ty.",
+    "description": "Uvidíme se v další kapitole? Tvůj seznam čekajících nikam neuteče.",
+    "restart": "Přehrát znovu"
+  },
+  "share": {
+    "action": "Sdílet můj replay",
+    "text_one": "Můj TrackGeek Replay {{year}}: {{count, number}} titul a hromada příběhů. Jaký je ten tvůj?",
+    "text_few": "Můj TrackGeek Replay {{year}}: {{count, number}} tituly a hromada příběhů. Jaký je ten tvůj?",
+    "text_many": "Můj TrackGeek Replay {{year}}: {{count, number}} titulu a hromada příběhů. Jaký je ten tvůj?",
+    "text_other": "Můj TrackGeek Replay {{year}}: {{count, number}} titulů a hromada příběhů. Jaký je ten tvůj?",
+    "error": "Sdílení se nezdařilo. Zkus to znovu nebo použij nabídku sdílení prohlížeče."
+  },
+  "method": {
+    "title": "Co se vlastně počítá?",
+    "description": "Pokrok používá uložená data začátku nebo dokončení z roku {{year}}, jinak datum přidání, pokud obě chybí. Importy se staršími daty se nepočítají. Dokončení vyžaduje datum dokončení. Celoživotní hodiny, epizody a stránky nejsou roční součty. Komunita počítá osobní záznamy, ne jedinečné tituly. Žebříček používá recenze vytvořené v daném roce a bonus za oblíbené přidané téhož roku. Záznamy se mohou měnit; nejde o neměnnou historii. Původní hudba se mění podle kategorie a lze ji ztlumit."
+  },
+  "controls": {
+    "readMode": "Číst jako stránku místo vodorovného příběhu",
+    "staticMode": "Režim čtení zůstává zapnutý při omezeném pohybu nebo malé obrazovce.",
+    "chapters": "Kapitoly replaye",
+    "position": "{{current}} / {{total}}",
+    "exit": "Opustit replay",
+    "mute": "Ztlumit hudbu",
+    "unmute": "Přehrát hudbu",
+    "soundOn": "Zvuk zapnutý",
+    "soundOff": "Zvuk vypnutý",
+    "volume": "Hlasitost hudby",
+    "originalAudio": "Původní hudba je ve výchozím stavu zapnutá. Pokud je automatické přehrávání blokované, začne při první interakci. Ztlumit ji můžeš kdykoli.",
+    "audioError": "Zvuk se nepodařilo spustit. Můžeš pokračovat potichu."
+  },
+  "chapters": {
+    "intro": "Tvůj replay",
+    "overview": "Tvůj rok v titulech",
+    "first": "Kde to začalo",
+    "rhythm": "Tvůj rytmus",
+    "global": "My všichni",
+    "outro": "Závěrečné titulky"
+  }
+}

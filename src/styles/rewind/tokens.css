@@ -1,0 +1,22 @@
+@theme {
+  --color-replay-pink: #ff91cd;
+  --color-replay-yellow: #ffd52a;
+  --color-replay-blue: #343cdb;
+  --color-replay-orange: #ff824f;
+  --color-replay-mint: #bdedba;
+  --color-replay-ink: #191525;
+  --color-replay-paper: #f5f2f8;
+  --font-replay: "Archivo", sans-serif;
+}
+
+html:has([data-replay-root]),
+body:has([data-replay-root]) {
+  overflow-x: clip;
+  scroll-behavior: auto;
+  background: var(--color-replay-ink);
+  scrollbar-color: var(--color-replay-pink) var(--color-replay-ink);
+}
+
+html:has([data-replay-root]) * {
+  scroll-behavior: auto;
+}

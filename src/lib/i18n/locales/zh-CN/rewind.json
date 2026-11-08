@@ -1,0 +1,93 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "用电影、剧集、动画、游戏、漫画和书籍回顾你的{{year}}年。这段TrackGeek故事，你就是主角。",
+  "back": "返回TrackGeek",
+  "untitled": "标题暂不可用",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "你的支线任务，也值得专属片尾。",
+    "start": "开启我的Replay",
+    "signIn": "登录查看你的Replay",
+    "community": "看看大家的故事",
+    "loading": "正在寻找你的剧情反转...",
+    "error": "无法加载你的Replay。请重试，查看真实统计。",
+    "empty": "还没有日期属于{{year}}年的进度。先往资料库添加作品，再回来看看。",
+    "launch": "TrackGeek于{{date}}加入群聊。",
+    "preview": "{{year}}年还没完结。这是你目前的Replay。"
+  },
+  "overview": {
+    "title": "你的世界观，又扩展了。",
+    "count_one": "你的故事里有<value>{{count, number}}</value>部作品。",
+    "count_other": "你的故事里有<value>{{count, number}}</value>部作品。"
+  },
+  "first": { "title": "每段故事，都有起点。", "date": "今年最早保存的日期：{{date}}。" },
+  "rhythm": {
+    "title": "{{month}}是你的主场。",
+    "description": "按今年最早保存的日期统计作品。每部作品只计算一次，不按单集重复计数。"
+  },
+  "category": {
+    "story": {
+      "movie": "你看到了片尾字幕。",
+      "tv": "再看一集，就一集？",
+      "anime": "你的追番篇章，直接封神。",
+      "game": "支线任务成功上位。",
+      "manga": "下一话，总在召唤。",
+      "book": "纸页之间，也有神展开。"
+    },
+    "count": "你的{{year}}年里有<value>{{count, number}}</value>部{{type}}。",
+    "completed_one": "{{count, number}}部作品有今年的完成日期。完结撒花！",
+    "completed_other": "{{count, number}}部作品有今年的完成日期。完结撒花！"
+  },
+  "shelf": {
+    "title": "那些留下印记的{{type}}。",
+    "description": "按你在{{year}}年发表的评价综合评分排名。同年加入收藏的作品额外加{{bonus}}分。",
+    "empty": "这个分类还没有{{year}}年的评价。已记录的作品仍会计入统计。"
+  },
+  "global": {
+    "title": "这个世界观，由我们一起搭建。",
+    "loading": "正在统计社区的剧情反转...",
+    "error": "无法加载社区统计。你的个人Replay仍可查看。",
+    "count_one": "整个社区记录了<value>{{count, number}}</value>部作品。",
+    "count_other": "整个社区记录了<value>{{count, number}}</value>部作品。",
+    "people_one": "自{{date}}以来，{{count, number}}个账号加入。还不到一年，已经写下一整段故事。",
+    "people_other": "自{{date}}以来，{{count, number}}个账号加入。还不到一年，已经写下一整段故事。",
+    "category": "{{type}}：{{count, number}}"
+  },
+  "outro": {
+    "title": "原来，你一直是主角。",
+    "description": "下个篇章再见？待看清单又不会跑。",
+    "restart": "再看一遍"
+  },
+  "share": {
+    "action": "分享我的Replay",
+    "text_one": "我的TrackGeek Replay {{year}}：{{count, number}}部作品，满满的故事。你的故事是什么？",
+    "text_other": "我的TrackGeek Replay {{year}}：{{count, number}}部作品，满满的故事。你的故事是什么？",
+    "error": "分享失败。请重试，或使用浏览器的分享菜单。"
+  },
+  "method": {
+    "title": "到底怎么统计？",
+    "description": "进度使用保存的{{year}}年开始或完成日期；两者都没有时使用添加日期。带有更早日期的导入记录不计入。完成数需要明确的完成日期。累计时长、集数和页数不是年度总量。社区统计累加每个人的记录，不对作品去重。排名采用当年创建的评价，同年加入收藏的作品获得加分。记录可能被修改，这不是不可变的历史快照。原创音乐随分类切换，可随时静音。"
+  },
+  "controls": {
+    "readMode": "按页面阅读，而非横向故事",
+    "staticMode": "开启减少动态效果或使用小屏幕时，保持阅读模式。",
+    "chapters": "Replay章节",
+    "position": "{{current}} / {{total}}",
+    "exit": "退出Replay",
+    "mute": "静音背景音乐",
+    "unmute": "播放背景音乐",
+    "soundOn": "声音已开启",
+    "soundOff": "声音已关闭",
+    "volume": "背景音乐音量",
+    "originalAudio": "原创背景音乐默认开启。如果自动播放被阻止，将在你首次操作时开始。随时可以静音。",
+    "audioError": "无法播放声音。你可以继续静音观看。"
+  },
+  "chapters": {
+    "intro": "你的Replay",
+    "overview": "用作品回顾这一年",
+    "first": "故事的起点",
+    "rhythm": "你的节奏",
+    "global": "我们所有人",
+    "outro": "片尾字幕"
+  }
+}

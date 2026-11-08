@@ -1,0 +1,93 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "Jouw {{year}} in films, series, anime, games, manga en boeken. Een TrackGeek-verhaal met jou in de hoofdrol.",
+  "back": "Terug naar TrackGeek",
+  "untitled": "Titel niet beschikbaar",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "Je zijmissies verdienden hun eigen aftiteling.",
+    "start": "Start mijn replay",
+    "signIn": "Log in voor je replay",
+    "community": "Ontmoet de community",
+    "loading": "Je plotwendingen zoeken...",
+    "error": "Je replay kon niet laden. Probeer opnieuw voor je echte statistieken.",
+    "empty": "Nog geen voortgang met een datum in {{year}}. Voeg iets toe aan je bibliotheek en kom terug.",
+    "launch": "TrackGeek kwam op {{date}} de chat binnen.",
+    "preview": "{{year}} is nog bezig. Dit is je replay tot nu toe."
+  },
+  "overview": {
+    "title": "Je lore is gegroeid.",
+    "count_one": "<value>{{count, number}}</value> titel in je verhaal.",
+    "count_other": "<value>{{count, number}}</value> titels in je verhaal."
+  },
+  "first": { "title": "Elk verhaal begint ergens.", "date": "Je eerste opgeslagen datum dit jaar: {{date}}." },
+  "rhythm": {
+    "title": "{{month}} was jouw tijdperk.",
+    "description": "Titels op hun eerste opgeslagen datum dit jaar. Elke titel telt eenmaal, niet per aflevering."
+  },
+  "category": {
+    "story": {
+      "movie": "Je bleef tot de aftiteling.",
+      "tv": "Nog één aflevering, toch?",
+      "anime": "Je anime-arc ging hard.",
+      "game": "Zijmissies namen het over.",
+      "manga": "Het volgende hoofdstuk bleef roepen.",
+      "book": "Plotwendingen. Op echte pagina's."
+    },
+    "count": "<value>{{count, number}}</value> {{type}} in jouw {{year}}.",
+    "completed_one": "{{count, number}} titel met een einddatum dit jaar. Afgerond.",
+    "completed_other": "{{count, number}} titels met een einddatum dit jaar. Afgerond."
+  },
+  "shelf": {
+    "title": "{{type}} die bleven hangen.",
+    "description": "Je reviews uit {{year}}, gerangschikt op totaalscore plus {{bonus}} bonuspunt voor titels die je dat jaar als favoriet toevoegde.",
+    "empty": "Nog geen reviews uit {{year}} in deze categorie. Je bijgehouden titels tellen gewoon mee."
+  },
+  "global": {
+    "title": "Deze lore bouwden we samen.",
+    "loading": "De plotwendingen van de community tellen...",
+    "error": "Community-statistieken konden niet laden. Je persoonlijke replay blijft beschikbaar.",
+    "count_one": "<value>{{count, number}}</value> titel bijgehouden door de community.",
+    "count_other": "<value>{{count, number}}</value> titels bijgehouden door de community.",
+    "people_one": "{{count, number}} account aangemaakt sinds {{date}}. Niet eens een heel jaar. Toch een heel verhaal.",
+    "people_other": "{{count, number}} accounts aangemaakt sinds {{date}}. Niet eens een heel jaar. Toch een heel verhaal.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "Jij was de plotwending.",
+    "description": "Tot het volgende hoofdstuk? Je wachtlijst loopt niet weg.",
+    "restart": "Speel opnieuw"
+  },
+  "share": {
+    "action": "Deel mijn replay",
+    "text_one": "Mijn TrackGeek Replay {{year}}: {{count, number}} titel, een berg lore. Wat is jouw verhaal?",
+    "text_other": "Mijn TrackGeek Replay {{year}}: {{count, number}} titels, een berg lore. Wat is jouw verhaal?",
+    "error": "Delen is niet gelukt. Probeer opnieuw of gebruik het deelmenu van je browser."
+  },
+  "method": {
+    "title": "Wat telt eigenlijk mee?",
+    "description": "Voortgang gebruikt opgeslagen begin- of einddatums in {{year}}, of de datum van toevoegen als beide ontbreken. Ouder gedateerde imports tellen niet mee. Afronden vereist een einddatum. Opgetelde uren, afleveringen en pagina's zijn geen jaartotalen. Community-aantallen tellen persoonlijke items, geen unieke titels. De ranglijst gebruikt reviews uit dat jaar met een bonus voor favorieten die dat jaar zijn toegevoegd. Gegevens kunnen veranderen; dit is geen onveranderlijke geschiedenis. Originele muziek wisselt per categorie en kan worden gedempt."
+  },
+  "controls": {
+    "readMode": "Lees als pagina in plaats van horizontaal verhaal",
+    "staticMode": "Leesmodus blijft aan bij verminderde beweging of een compact scherm.",
+    "chapters": "Replay-hoofdstukken",
+    "position": "{{current}} / {{total}}",
+    "exit": "Replay verlaten",
+    "mute": "Soundtrack dempen",
+    "unmute": "Soundtrack afspelen",
+    "soundOn": "Geluid aan",
+    "soundOff": "Geluid uit",
+    "volume": "Soundtrackvolume",
+    "originalAudio": "Originele soundtrack, standaard aan. Als automatisch afspelen wordt geblokkeerd, begint het geluid bij je eerste interactie. Dempen kan altijd.",
+    "audioError": "Geluid kon niet starten. Je kunt zonder geluid verder."
+  },
+  "chapters": {
+    "intro": "Jouw replay",
+    "overview": "Je jaar in titels",
+    "first": "Waar het begon",
+    "rhythm": "Jouw ritme",
+    "global": "Wij allemaal",
+    "outro": "Aftiteling"
+  }
+}

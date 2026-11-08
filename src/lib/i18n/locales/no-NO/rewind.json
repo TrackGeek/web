@@ -1,0 +1,93 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "Ditt {{year}} i filmer, serier, anime, spill, manga og bøker. En TrackGeek-historie med deg i hovedrollen.",
+  "back": "Tilbake til TrackGeek",
+  "untitled": "Tittelen er utilgjengelig",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "Sideoppdragene dine fortjente sin egen rulletekst.",
+    "start": "Start min replay",
+    "signIn": "Logg inn for din replay",
+    "community": "Møt fellesskapet",
+    "loading": "Finner dine plottvendinger...",
+    "error": "Replayen din kunne ikke lastes. Prøv igjen for å se de ekte tallene dine.",
+    "empty": "Ingen fremgang datert {{year}} ennå. Legg noe i biblioteket og kom tilbake.",
+    "launch": "TrackGeek kom inn i chatten {{date}}.",
+    "preview": "{{year}} pågår fortsatt. Her er replayen din så langt."
+  },
+  "overview": {
+    "title": "Historien din vokste.",
+    "count_one": "<value>{{count, number}}</value> tittel i historien din.",
+    "count_other": "<value>{{count, number}}</value> titler i historien din."
+  },
+  "first": { "title": "Hver historie begynner et sted.", "date": "Din første lagrede dato i år: {{date}}." },
+  "rhythm": {
+    "title": "{{month}} var din æra.",
+    "description": "Titler etter første lagrede dato i år. Hver tittel telles én gang, ikke per episode."
+  },
+  "category": {
+    "story": {
+      "movie": "Du ble til rulleteksten.",
+      "tv": "Bare én episode til, ikke sant?",
+      "anime": "Anime-arcen din leverte.",
+      "game": "Sideoppdragene tok over.",
+      "manga": "Neste kapittel fortsatte å lokke.",
+      "book": "Plottvendinger. På ekte sider."
+    },
+    "count": "<value>{{count, number}}</value> {{type}} i ditt {{year}}.",
+    "completed_one": "{{count, number}} tittel har sluttdato i år. Ferdig.",
+    "completed_other": "{{count, number}} titler har sluttdato i år. Ferdig."
+  },
+  "shelf": {
+    "title": "{{type}} som satte spor.",
+    "description": "Anmeldelsene dine fra {{year}}, rangert etter totalvurdering pluss {{bonus}} bonuspoeng for titler lagt til som favoritter det året.",
+    "empty": "Ingen anmeldelser fra {{year}} i denne kategorien ennå. De registrerte titlene dine teller fortsatt."
+  },
+  "global": {
+    "title": "Denne historien bygde vi sammen.",
+    "loading": "Teller fellesskapets plottvendinger...",
+    "error": "Fellesskapets statistikk kunne ikke lastes. Din personlige replay er fortsatt her.",
+    "count_one": "<value>{{count, number}}</value> tittel registrert av fellesskapet.",
+    "count_other": "<value>{{count, number}}</value> titler registrert av fellesskapet.",
+    "people_one": "{{count, number}} konto opprettet siden {{date}}. Ikke engang et helt år. Likevel en hel historie.",
+    "people_other": "{{count, number}} kontoer opprettet siden {{date}}. Ikke engang et helt år. Likevel en hel historie.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "Du var historien hele tiden.",
+    "description": "Ses vi i neste kapittel? Ventelisten din går ingen steder.",
+    "restart": "Spill igjen"
+  },
+  "share": {
+    "action": "Del min replay",
+    "text_one": "Min TrackGeek Replay {{year}}: {{count, number}} tittel og masse historier. Hva er din?",
+    "text_other": "Min TrackGeek Replay {{year}}: {{count, number}} titler og masse historier. Hva er din?",
+    "error": "Deling mislyktes. Prøv igjen eller bruk nettleserens delingsmeny."
+  },
+  "method": {
+    "title": "Hva teller egentlig?",
+    "description": "Fremgang bruker lagrede start- eller sluttdatoer i {{year}}, eller datoen for tillegg hvis begge mangler. Import med eldre datoer teller ikke. Fullføringer krever sluttdato. Samlede timer, episoder og sider er ikke årstotaler. Fellesskapet teller hver persons registrering, ikke unike titler. Rangeringen bruker anmeldelser opprettet det året med bonus for favoritter lagt til samme år. Registreringer kan endres; dette er ikke en uforanderlig historikk. Originalmusikk endres per kategori og kan dempes."
+  },
+  "controls": {
+    "readMode": "Les som side i stedet for vannrett historie",
+    "staticMode": "Lesemodus forblir aktiv med redusert bevegelse eller kompakt skjerm.",
+    "chapters": "Replay-kapitler",
+    "position": "{{current}} / {{total}}",
+    "exit": "Forlat replay",
+    "mute": "Demp lydsporet",
+    "unmute": "Spill lydsporet",
+    "soundOn": "Lyd på",
+    "soundOff": "Lyd av",
+    "volume": "Lydsporvolum",
+    "originalAudio": "Originalt lydspor, på som standard. Hvis automatisk avspilling blokkeres, starter lyden ved første interaksjon. Demp når du vil.",
+    "audioError": "Lyden kunne ikke starte. Du kan fortsette uten lyd."
+  },
+  "chapters": {
+    "intro": "Din replay",
+    "overview": "Året ditt i titler",
+    "first": "Der det begynte",
+    "rhythm": "Din rytme",
+    "global": "Alle oss",
+    "outro": "Rulletekst"
+  }
+}

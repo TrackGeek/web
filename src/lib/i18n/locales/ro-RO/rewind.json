@@ -1,0 +1,98 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "Anul tău {{year}} în filme, seriale, anime, jocuri, manga și cărți. O poveste TrackGeek cu tine în rolul principal.",
+  "back": "Înapoi la TrackGeek",
+  "untitled": "Titlu indisponibil",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "Misiunile tale secundare meritau propriul generic.",
+    "start": "Pornește replay-ul meu",
+    "signIn": "Conectează-te pentru replay",
+    "community": "Cunoaște comunitatea",
+    "loading": "Căutăm răsturnările tale de situație...",
+    "error": "Replay-ul nu s-a încărcat. Încearcă din nou pentru statisticile tale reale.",
+    "empty": "Încă nu ai progres datat în {{year}}. Adaugă ceva în bibliotecă și revino.",
+    "launch": "TrackGeek a intrat pe chat pe {{date}}.",
+    "preview": "{{year}} încă se scrie. Iată replay-ul tău de până acum."
+  },
+  "overview": {
+    "title": "Povestea ta a crescut.",
+    "count_one": "<value>{{count, number}}</value> titlu în povestea ta.",
+    "count_few": "<value>{{count, number}}</value> titluri în povestea ta.",
+    "count_other": "<value>{{count, number}}</value> de titluri în povestea ta."
+  },
+  "first": { "title": "Orice poveste începe undeva.", "date": "Prima ta dată salvată anul acesta: {{date}}." },
+  "rhythm": {
+    "title": "{{month}} a fost era ta.",
+    "description": "Titluri după prima dată salvată anul acesta. Fiecare titlu contează o dată, nu o dată pe episod."
+  },
+  "category": {
+    "story": {
+      "movie": "Ai rămas până la generic.",
+      "tv": "Încă un episod, nu?",
+      "anime": "Arcul tău anime a fost la alt nivel.",
+      "game": "Misiunile secundare au preluat controlul.",
+      "manga": "Următorul capitol te tot chema.",
+      "book": "Răsturnări de situație. Pe pagini adevărate."
+    },
+    "count": "<value>{{count, number}}</value> {{type}} în anul tău {{year}}.",
+    "completed_one": "{{count, number}} titlu are dată de finalizare anul acesta. Gata.",
+    "completed_few": "{{count, number}} titluri au dată de finalizare anul acesta. Gata.",
+    "completed_other": "{{count, number}} de titluri au dată de finalizare anul acesta. Gata."
+  },
+  "shelf": {
+    "title": "{{type}} care au lăsat urme.",
+    "description": "Recenziile tale din {{year}}, ordonate după nota generală plus {{bonus}} punct bonus pentru titlurile adăugate la favorite în acel an.",
+    "empty": "Încă nu există recenzii din {{year}} în această categorie. Titlurile urmărite contează în continuare."
+  },
+  "global": {
+    "title": "Am construit povestea împreună.",
+    "loading": "Numărăm răsturnările de situație ale comunității...",
+    "error": "Statisticile comunității nu s-au încărcat. Replay-ul tău personal este încă aici.",
+    "count_one": "<value>{{count, number}}</value> titlu urmărit de comunitate.",
+    "count_few": "<value>{{count, number}}</value> titluri urmărite de comunitate.",
+    "count_other": "<value>{{count, number}}</value> de titluri urmărite de comunitate.",
+    "people_one": "{{count, number}} cont creat din {{date}}. Nici măcar un an întreg. Deja o poveste întreagă.",
+    "people_few": "{{count, number}} conturi create din {{date}}. Nici măcar un an întreg. Deja o poveste întreagă.",
+    "people_other": "{{count, number}} de conturi create din {{date}}. Nici măcar un an întreg. Deja o poveste întreagă.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "Tu erai povestea de la început.",
+    "description": "Ne vedem în capitolul următor? Lista ta de așteptare nu pleacă nicăieri.",
+    "restart": "Redă din nou"
+  },
+  "share": {
+    "action": "Distribuie replay-ul meu",
+    "text_one": "TrackGeek Replay {{year}} al meu: {{count, number}} titlu, o mulțime de povești. Care e a ta?",
+    "text_few": "TrackGeek Replay {{year}} al meu: {{count, number}} titluri, o mulțime de povești. Care e a ta?",
+    "text_other": "TrackGeek Replay {{year}} al meu: {{count, number}} de titluri, o mulțime de povești. Care e a ta?",
+    "error": "Distribuirea nu a reușit. Încearcă din nou sau folosește meniul browserului."
+  },
+  "method": {
+    "title": "Ce se numără de fapt?",
+    "description": "Progresul folosește date de început sau finalizare salvate în {{year}}, ori data adăugării dacă lipsesc ambele. Importurile cu date mai vechi sunt excluse. Finalizările necesită o dată de încheiere. Orele, episoadele și paginile acumulate nu sunt totaluri anuale. Comunitatea numără fiecare înregistrare personală, nu titluri unice. Clasamentul folosește recenzii create în acel an, cu bonus pentru favorite adăugate în același an. Înregistrările se pot schimba; nu este un istoric imuabil. Muzica originală se schimbă după categorie și poate fi oprită."
+  },
+  "controls": {
+    "readMode": "Citește ca pagină în loc de poveste orizontală",
+    "staticMode": "Modul de citire rămâne activ pentru mișcare redusă sau ecran compact.",
+    "chapters": "Capitole replay",
+    "position": "{{current}} / {{total}}",
+    "exit": "Ieși din replay",
+    "mute": "Oprește coloana sonoră",
+    "unmute": "Redă coloana sonoră",
+    "soundOn": "Sunet pornit",
+    "soundOff": "Sunet oprit",
+    "volume": "Volumul coloanei sonore",
+    "originalAudio": "Coloană sonoră originală, pornită implicit. Dacă redarea automată este blocată, sunetul începe la prima interacțiune. Îl poți opri oricând.",
+    "audioError": "Sunetul nu a pornit. Poți continua fără el."
+  },
+  "chapters": {
+    "intro": "Replay-ul tău",
+    "overview": "Anul tău în titluri",
+    "first": "Unde a început",
+    "rhythm": "Ritmul tău",
+    "global": "Noi toți",
+    "outro": "Generic de final"
+  }
+}

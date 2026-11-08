@@ -1,0 +1,103 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "Twój {{year}} w filmach, serialach, anime, grach, mandze i książkach. Historia TrackGeek z tobą w roli głównej.",
+  "back": "Wróć do TrackGeek",
+  "untitled": "Tytuł niedostępny",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "Twoje zadania poboczne zasłużyły na własne napisy końcowe.",
+    "start": "Odpal mój replay",
+    "signIn": "Zaloguj się po swój replay",
+    "community": "Poznaj społeczność",
+    "loading": "Szukamy twoich zwrotów akcji...",
+    "error": "Nie udało się wczytać replaya. Spróbuj ponownie, by zobaczyć prawdziwe statystyki.",
+    "empty": "Brak postępów z datą z roku {{year}}. Dodaj coś do biblioteki i wróć.",
+    "launch": "TrackGeek dołączył do czatu {{date}}.",
+    "preview": "{{year}} wciąż trwa. Oto twój dotychczasowy replay."
+  },
+  "overview": {
+    "title": "Twoje uniwersum urosło.",
+    "count_one": "<value>{{count, number}}</value> tytuł w twojej historii.",
+    "count_few": "<value>{{count, number}}</value> tytuły w twojej historii.",
+    "count_many": "<value>{{count, number}}</value> tytułów w twojej historii.",
+    "count_other": "<value>{{count, number}}</value> tytułu w twojej historii."
+  },
+  "first": { "title": "Każdy wątek gdzieś się zaczyna.", "date": "Twoja pierwsza zapisana data w tym roku: {{date}}." },
+  "rhythm": {
+    "title": "{{month}} to była twoja era.",
+    "description": "Tytuły według pierwszej zapisanej daty w tym roku. Każdy liczy się raz, nie raz na odcinek."
+  },
+  "category": {
+    "story": {
+      "movie": "Zostałeś do napisów końcowych.",
+      "tv": "Jeszcze jeden odcinek, co?",
+      "anime": "Twój anime arc dał ognia.",
+      "game": "Zadania poboczne przejęły stery.",
+      "manga": "Kolejny rozdział ciągle wołał.",
+      "book": "Zwroty akcji. Na prawdziwych stronach."
+    },
+    "count": "<value>{{count, number}}</value> {{type}} w twoim {{year}}.",
+    "completed_one": "{{count, number}} tytuł ma datę ukończenia w tym roku. Gotowe.",
+    "completed_few": "{{count, number}} tytuły mają datę ukończenia w tym roku. Gotowe.",
+    "completed_many": "{{count, number}} tytułów ma datę ukończenia w tym roku. Gotowe.",
+    "completed_other": "{{count, number}} tytułu ma datę ukończenia w tym roku. Gotowe."
+  },
+  "shelf": {
+    "title": "{{type}}, które zostały w pamięci.",
+    "description": "Twoje recenzje z {{year}}, według oceny ogólnej plus {{bonus}} punkt bonusowy za tytuły dodane do ulubionych w tym roku.",
+    "empty": "Brak recenzji z {{year}} w tej kategorii. Śledzone tytuły nadal się liczą."
+  },
+  "global": {
+    "title": "To uniwersum zbudowaliśmy razem.",
+    "loading": "Liczymy zwroty akcji społeczności...",
+    "error": "Nie udało się wczytać statystyk społeczności. Twój osobisty replay nadal tu jest.",
+    "count_one": "<value>{{count, number}}</value> tytuł śledzony przez społeczność.",
+    "count_few": "<value>{{count, number}}</value> tytuły śledzone przez społeczność.",
+    "count_many": "<value>{{count, number}}</value> tytułów śledzonych przez społeczność.",
+    "count_other": "<value>{{count, number}}</value> tytułu śledzonego przez społeczność.",
+    "people_one": "{{count, number}} konto założone od {{date}}. Nawet nie cały rok. A już cała historia.",
+    "people_few": "{{count, number}} konta założone od {{date}}. Nawet nie cały rok. A już cała historia.",
+    "people_many": "{{count, number}} kont założonych od {{date}}. Nawet nie cały rok. A już cała historia.",
+    "people_other": "{{count, number}} konta założonego od {{date}}. Nawet nie cały rok. A już cała historia.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "To ty byłeś fabułą.",
+    "description": "Widzimy się w kolejnym rozdziale? Twoja lista oczekujących nie ucieknie.",
+    "restart": "Odtwórz ponownie"
+  },
+  "share": {
+    "action": "Udostępnij mój replay",
+    "text_one": "Mój TrackGeek Replay {{year}}: {{count, number}} tytuł i mnóstwo historii. Jaka jest twoja?",
+    "text_few": "Mój TrackGeek Replay {{year}}: {{count, number}} tytuły i mnóstwo historii. Jaka jest twoja?",
+    "text_many": "Mój TrackGeek Replay {{year}}: {{count, number}} tytułów i mnóstwo historii. Jaka jest twoja?",
+    "text_other": "Mój TrackGeek Replay {{year}}: {{count, number}} tytułu i mnóstwo historii. Jaka jest twoja?",
+    "error": "Udostępnianie nie powiodło się. Spróbuj ponownie lub użyj menu przeglądarki."
+  },
+  "method": {
+    "title": "Co właściwie się liczy?",
+    "description": "Postępy korzystają z zapisanych dat rozpoczęcia lub ukończenia w {{year}}, a przy ich braku z daty dodania. Importy ze starszymi datami odpadają. Ukończenie wymaga daty końcowej. Łączne godziny, odcinki i strony nie są sumami rocznymi. Społeczność liczy osobiste wpisy, nie unikalne tytuły. Ranking używa recenzji utworzonych w danym roku, z bonusem za ulubione dodane w tym samym roku. Dane mogą się zmieniać; to nie jest niezmienna historia. Oryginalna muzyka zmienia się według kategorii i można ją wyciszyć."
+  },
+  "controls": {
+    "readMode": "Czytaj jako stronę zamiast poziomej historii",
+    "staticMode": "Tryb czytania pozostaje aktywny przy ograniczonym ruchu lub małym ekranie.",
+    "chapters": "Rozdziały replaya",
+    "position": "{{current}} / {{total}}",
+    "exit": "Wyjdź z replaya",
+    "mute": "Wycisz ścieżkę dźwiękową",
+    "unmute": "Odtwórz ścieżkę dźwiękową",
+    "soundOn": "Dźwięk włączony",
+    "soundOff": "Dźwięk wyłączony",
+    "volume": "Głośność ścieżki dźwiękowej",
+    "originalAudio": "Oryginalna ścieżka dźwiękowa, domyślnie włączona. Jeśli autoodtwarzanie jest blokowane, zacznie się przy pierwszej interakcji. Wycisz kiedy chcesz.",
+    "audioError": "Nie udało się uruchomić dźwięku. Możesz oglądać bez niego."
+  },
+  "chapters": {
+    "intro": "Twój replay",
+    "overview": "Twój rok w tytułach",
+    "first": "Gdzie to się zaczęło",
+    "rhythm": "Twój rytm",
+    "global": "My wszyscy",
+    "outro": "Napisy końcowe"
+  }
+}

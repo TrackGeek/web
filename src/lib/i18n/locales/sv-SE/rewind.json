@@ -1,0 +1,93 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "Ditt {{year}} i filmer, serier, anime, spel, manga och böcker. En TrackGeek-berättelse med dig i huvudrollen.",
+  "back": "Tillbaka till TrackGeek",
+  "untitled": "Titeln är inte tillgänglig",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "Dina sidouppdrag förtjänade egna eftertexter.",
+    "start": "Starta min replay",
+    "signIn": "Logga in för din replay",
+    "community": "Möt gemenskapen",
+    "loading": "Letar efter dina oväntade vändningar...",
+    "error": "Din replay kunde inte laddas. Försök igen för att se din riktiga statistik.",
+    "empty": "Inga framsteg daterade {{year}} ännu. Lägg till något i biblioteket och kom tillbaka.",
+    "launch": "TrackGeek klev in i chatten den {{date}}.",
+    "preview": "{{year}} pågår fortfarande. Här är din replay hittills."
+  },
+  "overview": {
+    "title": "Din berättelse blev större.",
+    "count_one": "<value>{{count, number}}</value> titel i din berättelse.",
+    "count_other": "<value>{{count, number}}</value> titlar i din berättelse."
+  },
+  "first": { "title": "Varje berättelse börjar någonstans.", "date": "Ditt första sparade datum i år: {{date}}." },
+  "rhythm": {
+    "title": "{{month}} var din era.",
+    "description": "Titlar efter sitt första sparade datum i år. Varje titel räknas en gång, inte per avsnitt."
+  },
+  "category": {
+    "story": {
+      "movie": "Du stannade till eftertexterna.",
+      "tv": "Bara ett avsnitt till, eller?",
+      "anime": "Din anime-arc levererade.",
+      "game": "Sidouppdragen tog över.",
+      "manga": "Nästa kapitel fortsatte ropa.",
+      "book": "Oväntade vändningar. På riktiga sidor."
+    },
+    "count": "<value>{{count, number}}</value> {{type}} i ditt {{year}}.",
+    "completed_one": "{{count, number}} titel har ett slutdatum i år. Klart.",
+    "completed_other": "{{count, number}} titlar har slutdatum i år. Klart."
+  },
+  "shelf": {
+    "title": "{{type}} som satte spår.",
+    "description": "Dina recensioner från {{year}}, sorterade efter helhetsbetyg plus {{bonus}} bonuspoäng för titlar du lade till som favoriter det året.",
+    "empty": "Inga recensioner från {{year}} i den här kategorin ännu. Dina registrerade titlar räknas ändå."
+  },
+  "global": {
+    "title": "Den här berättelsen byggde vi ihop.",
+    "loading": "Räknar gemenskapens oväntade vändningar...",
+    "error": "Gemenskapens statistik kunde inte laddas. Din personliga replay finns kvar.",
+    "count_one": "<value>{{count, number}}</value> titel registrerad i gemenskapen.",
+    "count_other": "<value>{{count, number}}</value> titlar registrerade i gemenskapen.",
+    "people_one": "{{count, number}} konto skapat sedan {{date}}. Inte ens ett helt år. Ändå en hel berättelse.",
+    "people_other": "{{count, number}} konton skapade sedan {{date}}. Inte ens ett helt år. Ändå en hel berättelse.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "Du var handlingen hela tiden.",
+    "description": "Ses vi i nästa kapitel? Din väntelista går ingenstans.",
+    "restart": "Spela igen"
+  },
+  "share": {
+    "action": "Dela min replay",
+    "text_one": "Min TrackGeek Replay {{year}}: {{count, number}} titel och massor av berättelser. Vilken är din?",
+    "text_other": "Min TrackGeek Replay {{year}}: {{count, number}} titlar och massor av berättelser. Vilken är din?",
+    "error": "Det gick inte att dela. Försök igen eller använd webbläsarens delningsmeny."
+  },
+  "method": {
+    "title": "Vad räknas egentligen?",
+    "description": "Framsteg använder sparade start- eller slutdatum från {{year}}, annars datumet då titeln lades till om båda saknas. Äldre daterade importer räknas inte. Avslut kräver slutdatum. Totala timmar, avsnitt och sidor är inte årssummor. Gemenskapen räknar varje persons post, inte unika titlar. Rankningen använder recensioner skapade det året med bonus för favoriter tillagda samma år. Poster kan ändras; detta är ingen oföränderlig historik. Originalmusiken växlar med kategori och kan stängas av."
+  },
+  "controls": {
+    "readMode": "Läs som sida i stället för horisontell berättelse",
+    "staticMode": "Läsläge förblir aktivt vid minskad rörelse eller liten skärm.",
+    "chapters": "Replay-kapitel",
+    "position": "{{current}} / {{total}}",
+    "exit": "Lämna replay",
+    "mute": "Stäng av ljudspåret",
+    "unmute": "Spela ljudspåret",
+    "soundOn": "Ljud på",
+    "soundOff": "Ljud av",
+    "volume": "Ljudspårets volym",
+    "originalAudio": "Originalljudspår, på som standard. Om automatisk uppspelning blockeras startar ljudet vid din första interaktion. Stäng av när du vill.",
+    "audioError": "Ljudet kunde inte starta. Du kan fortsätta utan ljud."
+  },
+  "chapters": {
+    "intro": "Din replay",
+    "overview": "Ditt år i titlar",
+    "first": "Där det började",
+    "rhythm": "Din rytm",
+    "global": "Vi allihop",
+    "outro": "Eftertexter"
+  }
+}

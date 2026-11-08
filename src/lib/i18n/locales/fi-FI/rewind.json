@@ -1,0 +1,93 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "Vuotesi {{year}} elokuvina, sarjoina, animena, peleinä, mangana ja kirjoina. TrackGeek-tarina, jonka pääosassa olet sinä.",
+  "back": "Takaisin TrackGeekiin",
+  "untitled": "Nimi ei saatavilla",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "Sivutehtäväsi ansaitsivat omat lopputekstinsä.",
+    "start": "Käynnistä replay",
+    "signIn": "Kirjaudu nähdäksesi replayn",
+    "community": "Tutustu yhteisöön",
+    "loading": "Etsitään juonenkäänteitäsi...",
+    "error": "Replay ei latautunut. Yritä uudelleen nähdäksesi oikeat tilastosi.",
+    "empty": "Ei vielä vuodelle {{year}} päivättyä edistymistä. Lisää jotain kirjastoosi ja palaa sitten.",
+    "launch": "TrackGeek liittyi keskusteluun {{date}}.",
+    "preview": "{{year}} on vielä kesken. Tässä replay tähän asti."
+  },
+  "overview": {
+    "title": "Tarinasi kasvoi.",
+    "count_one": "<value>{{count, number}}</value> nimike tarinassasi.",
+    "count_other": "<value>{{count, number}}</value> nimikettä tarinassasi."
+  },
+  "first": { "title": "Jokainen tarina alkaa jostain.", "date": "Vuoden ensimmäinen tallennettu päiväsi: {{date}}." },
+  "rhythm": {
+    "title": "{{month}} oli sinun aikakautesi.",
+    "description": "Nimikkeet vuoden ensimmäisen tallennetun päivämäärän mukaan. Kukin nimike lasketaan kerran, ei kerran jaksoa kohden."
+  },
+  "category": {
+    "story": {
+      "movie": "Jäit lopputeksteihin asti.",
+      "tv": "Vielä yksi jakso, eikö?",
+      "anime": "Animekaarensi oli omaa luokkaansa.",
+      "game": "Sivutehtävät veivät mennessään.",
+      "manga": "Seuraava luku kutsui aina.",
+      "book": "Juonenkäänteitä. Oikeilla sivuilla."
+    },
+    "count": "<value>{{count, number}}</value> {{type}} vuonna {{year}}.",
+    "completed_one": "{{count, number}} nimikkeellä on valmistumispäivä tältä vuodelta. Valmista.",
+    "completed_other": "{{count, number}} nimikkeellä on valmistumispäivä tältä vuodelta. Valmista."
+  },
+  "shelf": {
+    "title": "{{type}}, jotka jäivät mieleen.",
+    "description": "Vuoden {{year}} arviosi kokonaisarvosanan mukaan. Samana vuonna suosikkeihin lisätyt nimikkeet saavat {{bonus}} bonuspisteen.",
+    "empty": "Ei vielä vuoden {{year}} arvioita tässä kategoriassa. Seuraamasi nimikkeet lasketaan silti."
+  },
+  "global": {
+    "title": "Rakensimme tämän tarinan yhdessä.",
+    "loading": "Lasketaan yhteisön juonenkäänteitä...",
+    "error": "Yhteisön tilastot eivät latautuneet. Oma replaysi on yhä täällä.",
+    "count_one": "<value>{{count, number}}</value> yhteisön seuraama nimike.",
+    "count_other": "<value>{{count, number}}</value> yhteisön seuraamaa nimikettä.",
+    "people_one": "{{count, number}} tili luotu päivästä {{date}} alkaen. Ei edes kokonaista vuotta. Silti kokonainen tarina.",
+    "people_other": "{{count, number}} tiliä luotu päivästä {{date}} alkaen. Ei edes kokonaista vuotta. Silti kokonainen tarina.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "Sinä olit tarina koko ajan.",
+    "description": "Nähdäänkö seuraavassa luvussa? Odotuslistasi ei katoa mihinkään.",
+    "restart": "Toista uudelleen"
+  },
+  "share": {
+    "action": "Jaa replayni",
+    "text_one": "TrackGeek Replay {{year}}: {{count, number}} nimike ja paljon tarinoita. Mikä on sinun tarinasi?",
+    "text_other": "TrackGeek Replay {{year}}: {{count, number}} nimikettä ja paljon tarinoita. Mikä on sinun tarinasi?",
+    "error": "Jakaminen ei onnistunut. Yritä uudelleen tai käytä selaimesi jakovalikkoa."
+  },
+  "method": {
+    "title": "Mikä oikeasti lasketaan?",
+    "description": "Edistyminen käyttää vuonna {{year}} tallennettuja aloitus- tai lopetuspäiviä tai lisäyspäivää, jos molemmat puuttuvat. Vanhemmille päiville merkityt tuonnit jäävät pois. Valmistuminen vaatii lopetuspäivän. Kertyneet tunnit, jaksot ja sivut eivät ole vuosisummia. Yhteisö laskee henkilökohtaiset merkinnät, ei yksilöllisiä nimikkeitä. Ranking käyttää kyseisenä vuonna luotuja arvioita ja saman vuoden suosikeista saatavaa bonusta. Tietueet voivat muuttua; historia ei ole muuttumaton. Alkuperäismusiikki vaihtuu kategorian mukaan ja sen voi mykistää."
+  },
+  "controls": {
+    "readMode": "Lue sivuna vaakasuuntaisen tarinan sijaan",
+    "staticMode": "Lukutila pysyy päällä, kun liikettä on vähennetty tai näyttö on pieni.",
+    "chapters": "Replay-luvut",
+    "position": "{{current}} / {{total}}",
+    "exit": "Poistu replaysta",
+    "mute": "Mykistä ääniraita",
+    "unmute": "Toista ääniraita",
+    "soundOn": "Ääni päällä",
+    "soundOff": "Ääni pois",
+    "volume": "Ääniraidan voimakkuus",
+    "originalAudio": "Alkuperäinen ääniraita on oletuksena päällä. Jos automaattitoisto estetään, ääni alkaa ensimmäisestä toiminnosta. Mykistä milloin vain.",
+    "audioError": "Ääni ei käynnistynyt. Voit jatkaa ilman ääntä."
+  },
+  "chapters": {
+    "intro": "Oma replay",
+    "overview": "Vuotesi nimikkeinä",
+    "first": "Mistä kaikki alkoi",
+    "rhythm": "Oma rytmisi",
+    "global": "Me kaikki",
+    "outro": "Lopputekstit"
+  }
+}

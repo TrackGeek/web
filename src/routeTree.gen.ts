@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as RewindRouteRouteImport } from './routes/_rewind/route'
 import { Route as AccountDeletedRouteImport } from './routes/account-deleted'
 import { Route as AddDataRouteImport } from './routes/add-data'
 import { Route as AndroidRouteImport } from './routes/android'
@@ -43,6 +44,7 @@ import { Route as OauthAuthorizeRouteImport } from './routes/oauth/authorize'
 import { Route as SitemapChar123sectionChar125DotxmlRouteImport } from './routes/sitemap/{$section}[.]xml'
 import { Route as TvIndexRouteImport } from './routes/tv/index'
 import { Route as TvSlugRouteImport } from './routes/tv/$slug'
+import { Route as RewindReplay2026RouteImport } from './routes/_rewind/replay.2026'
 import { Route as AnimeAiringIndexRouteImport } from './routes/anime/airing/index'
 import { Route as AnimeCompanySlugRouteImport } from './routes/anime/company/$slug'
 import { Route as AnimeRecommendationsIndexRouteImport } from './routes/anime/recommendations/index'
@@ -92,6 +94,10 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RewindRouteRoute = RewindRouteRouteImport.update({
+  id: '/_rewind',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountDeletedRoute = AccountDeletedRouteImport.update({
@@ -255,6 +261,11 @@ const TvSlugRoute = TvSlugRouteImport.update({
   id: '/tv/$slug',
   path: '/tv/$slug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const RewindReplay2026Route = RewindReplay2026RouteImport.update({
+  id: '/replay/2026',
+  path: '/replay/2026',
+  getParentRoute: () => RewindRouteRoute,
 } as any)
 const AnimeAiringIndexRoute = AnimeAiringIndexRouteImport.update({
   id: '/anime/airing/',
@@ -505,6 +516,7 @@ export interface FileRoutesByFullPath {
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/replay/2026': typeof RewindReplay2026Route
   '/anime/company/$slug': typeof AnimeCompanySlugRoute
   '/api/og/page': typeof ApiOgPageRoute
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
@@ -581,6 +593,7 @@ export interface FileRoutesByTo {
   '/manga': typeof MangaIndexRoute
   '/movie': typeof MovieIndexRoute
   '/tv': typeof TvIndexRoute
+  '/replay/2026': typeof RewindReplay2026Route
   '/anime/company/$slug': typeof AnimeCompanySlugRoute
   '/api/og/page': typeof ApiOgPageRoute
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
@@ -626,6 +639,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_rewind': typeof RewindRouteRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/account-deleted': typeof AccountDeletedRoute
   '/add-data': typeof AddDataRoute
@@ -659,6 +673,7 @@ export interface FileRoutesById {
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/_rewind/replay/2026': typeof RewindReplay2026Route
   '/anime/company/$slug': typeof AnimeCompanySlugRoute
   '/api/og/page': typeof ApiOgPageRoute
   '/book/franchises/$slug': typeof BookFranchisesSlugRoute
@@ -737,6 +752,7 @@ export interface FileRouteTypes {
     | '/manga/'
     | '/movie/'
     | '/tv/'
+    | '/replay/2026'
     | '/anime/company/$slug'
     | '/api/og/page'
     | '/book/franchises/$slug'
@@ -813,6 +829,7 @@ export interface FileRouteTypes {
     | '/manga'
     | '/movie'
     | '/tv'
+    | '/replay/2026'
     | '/anime/company/$slug'
     | '/api/og/page'
     | '/book/franchises/$slug'
@@ -857,6 +874,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_rewind'
     | '/_authenticated'
     | '/account-deleted'
     | '/add-data'
@@ -890,6 +908,7 @@ export interface FileRouteTypes {
     | '/manga/'
     | '/movie/'
     | '/tv/'
+    | '/_rewind/replay/2026'
     | '/anime/company/$slug'
     | '/api/og/page'
     | '/book/franchises/$slug'
@@ -935,6 +954,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  RewindRouteRoute: typeof RewindRouteRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AccountDeletedRoute: typeof AccountDeletedRoute
   AddDataRoute: typeof AddDataRoute
@@ -1014,6 +1034,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_rewind': {
+      id: '/_rewind'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof RewindRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account-deleted': {
@@ -1239,6 +1266,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/tv/$slug'
       preLoaderRoute: typeof TvSlugRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_rewind/replay/2026': {
+      id: '/_rewind/replay/2026'
+      path: '/replay/2026'
+      fullPath: '/replay/2026'
+      preLoaderRoute: typeof RewindReplay2026RouteImport
+      parentRoute: typeof RewindRouteRoute
     }
     '/anime/airing/': {
       id: '/anime/airing/'
@@ -1530,6 +1564,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface RewindRouteRouteChildren {
+  RewindReplay2026Route: typeof RewindReplay2026Route
+}
+
+const RewindRouteRouteChildren: RewindRouteRouteChildren = {
+  RewindReplay2026Route: RewindReplay2026Route,
+}
+
+const RewindRouteRouteWithChildren = RewindRouteRoute._addFileChildren(
+  RewindRouteRouteChildren,
+)
+
 interface AuthenticatedRouteChildren {
   AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
@@ -1568,6 +1614,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  RewindRouteRoute: RewindRouteRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AccountDeletedRoute: AccountDeletedRoute,
   AddDataRoute: AddDataRoute,

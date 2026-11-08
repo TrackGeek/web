@@ -1,0 +1,93 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "Filmler, diziler, animeler, oyunlar, mangalar ve kitaplarla senin {{year}} yılın. Başrolünde senin olduğun bir TrackGeek hikâyesi.",
+  "back": "TrackGeek'e dön",
+  "untitled": "Başlık kullanılamıyor",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "Yan görevlerin kendi kapanış jeneriğini hak etti.",
+    "start": "Replay'imi başlat",
+    "signIn": "Replay'in için giriş yap",
+    "community": "Toplulukla tanış",
+    "loading": "Hikâyendeki sürprizleri buluyoruz...",
+    "error": "Replay'in yüklenemedi. Gerçek istatistiklerin için tekrar dene.",
+    "empty": "Henüz {{year}} tarihli ilerleme yok. Kütüphanene bir şey ekle ve geri gel.",
+    "launch": "TrackGeek sohbete {{date}} tarihinde katıldı.",
+    "preview": "{{year}} hâlâ devam ediyor. İşte şu ana kadarki replay'in."
+  },
+  "overview": {
+    "title": "Evrenin biraz daha büyüdü.",
+    "count_one": "Hikâyende <value>{{count, number}}</value> eser.",
+    "count_other": "Hikâyende <value>{{count, number}}</value> eser."
+  },
+  "first": { "title": "Her hikâye bir yerden başlar.", "date": "Bu yıl kaydettiğin ilk tarih: {{date}}." },
+  "rhythm": {
+    "title": "{{month}} senin dönemindi.",
+    "description": "Eserler bu yıl kaydedilen ilk tarihlerine göre sayılır. Her eser bir kez sayılır, bölüm başına değil."
+  },
+  "category": {
+    "story": {
+      "movie": "Jeneriğin sonuna kadar kaldın.",
+      "tv": "Bir bölüm daha, değil mi?",
+      "anime": "Anime maceran bambaşkaydı.",
+      "game": "Yan görevler kontrolü ele aldı.",
+      "manga": "Sonraki bölüm seni hep çağırdı.",
+      "book": "Sürpriz gelişmeler. Gerçek sayfalarda."
+    },
+    "count": "{{year}} yılında <value>{{count, number}}</value> {{type}}.",
+    "completed_one": "{{count, number}} eserin bu yıl bitiş tarihi var. Tamamdır.",
+    "completed_other": "{{count, number}} eserin bu yıl bitiş tarihi var. Tamamdır."
+  },
+  "shelf": {
+    "title": "İz bırakan {{type}}.",
+    "description": "{{year}} yılında yazdığın incelemeler genel puana göre sıralanır. O yıl favorilerine eklediğin eserler {{bonus}} bonus puan alır.",
+    "empty": "Bu kategoride henüz {{year}} incelemesi yok. Takip ettiğin eserler yine de sayılır."
+  },
+  "global": {
+    "title": "Bu evreni birlikte kurduk.",
+    "loading": "Topluluğun sürprizlerini sayıyoruz...",
+    "error": "Topluluk istatistikleri yüklenemedi. Kişisel replay'in hâlâ burada.",
+    "count_one": "Toplulukta takip edilen <value>{{count, number}}</value> eser.",
+    "count_other": "Toplulukta takip edilen <value>{{count, number}}</value> eser.",
+    "people_one": "{{date}} tarihinden beri {{count, number}} hesap açıldı. Tam bir yıl bile değil. Ama koca bir hikâye.",
+    "people_other": "{{date}} tarihinden beri {{count, number}} hesap açıldı. Tam bir yıl bile değil. Ama koca bir hikâye.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "Hikâyenin kendisi sendin.",
+    "description": "Sonraki bölümde görüşür müyüz? Bekleme listen bir yere gitmiyor.",
+    "restart": "Tekrar oynat"
+  },
+  "share": {
+    "action": "Replay'imi paylaş",
+    "text_one": "TrackGeek Replay {{year}}: {{count, number}} eser, bir sürü hikâye. Seninki ne?",
+    "text_other": "TrackGeek Replay {{year}}: {{count, number}} eser, bir sürü hikâye. Seninki ne?",
+    "error": "Paylaşım başarısız. Tekrar dene veya tarayıcının paylaşım menüsünü kullan."
+  },
+  "method": {
+    "title": "Neler sayılıyor?",
+    "description": "İlerleme için {{year}} yılına kaydedilmiş başlangıç veya bitiş tarihleri, ikisi de yoksa eklenme tarihi kullanılır. Eski tarihli aktarımlar sayılmaz. Tamamlanma için bitiş tarihi gerekir. Birikmiş saat, bölüm ve sayfalar yıllık toplam değildir. Topluluk her kişinin kaydını sayar, benzersiz eserleri değil. Sıralama o yıl oluşturulan incelemeleri ve aynı yıl eklenen favori bonusunu kullanır. Kayıtlar değişebilir; bu değişmez bir geçmiş değildir. Özgün müzik kategoriye göre değişir ve susturulabilir."
+  },
+  "controls": {
+    "readMode": "Yatay hikâye yerine sayfa olarak oku",
+    "staticMode": "Azaltılmış hareket veya küçük ekranda okuma modu açık kalır.",
+    "chapters": "Replay bölümleri",
+    "position": "{{current}} / {{total}}",
+    "exit": "Replay'den çık",
+    "mute": "Müziği sustur",
+    "unmute": "Müziği oynat",
+    "soundOn": "Ses açık",
+    "soundOff": "Ses kapalı",
+    "volume": "Müzik sesi",
+    "originalAudio": "Özgün müzik varsayılan olarak açık. Otomatik oynatma engellenirse ilk etkileşiminde başlar. İstediğin zaman sustur.",
+    "audioError": "Ses başlatılamadı. Sessiz devam edebilirsin."
+  },
+  "chapters": {
+    "intro": "Senin replay'in",
+    "overview": "Eserlerle yılın",
+    "first": "Başlangıç noktası",
+    "rhythm": "Senin ritmin",
+    "global": "Hepimiz",
+    "outro": "Kapanış jeneriği"
+  }
+}

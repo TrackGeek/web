@@ -1,0 +1,96 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "Dein {{year}} in Filmen, Serien, Anime, Games, Manga und Büchern. Eine TrackGeek-Story mit dir in der Hauptrolle.",
+  "back": "Zurück zu TrackGeek",
+  "untitled": "Titel nicht verfügbar",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "Deine Nebenquests verdienen einen eigenen Abspann.",
+    "start": "Mein Replay starten",
+    "signIn": "Für dein Replay anmelden",
+    "community": "Die Community kennenlernen",
+    "loading": "Deine Plot-Twists werden gesucht...",
+    "error": "Dein Replay konnte nicht geladen werden. Versuch es erneut für deine echten Statistiken.",
+    "empty": "Noch keine Fortschritte mit Datum aus {{year}}. Füge deiner Bibliothek etwas hinzu und komm zurück.",
+    "launch": "TrackGeek ist am {{date}} dem Chat beigetreten.",
+    "preview": "{{year}} läuft noch. Hier ist dein Replay bis jetzt."
+  },
+  "overview": {
+    "title": "Deine Lore ist gewachsen.",
+    "count_one": "<value>{{count, number}}</value> Titel in deiner Story.",
+    "count_other": "<value>{{count, number}}</value> Titel in deiner Story."
+  },
+  "first": {
+    "title": "Jeder Arc fängt irgendwo an.",
+    "date": "Dein erstes gespeichertes Datum dieses Jahr: {{date}}."
+  },
+  "rhythm": {
+    "title": "{{month}} war deine Ära.",
+    "description": "Titel nach ihrem ersten gespeicherten Datum dieses Jahr. Jeder Titel zählt einmal, nicht pro Folge."
+  },
+  "category": {
+    "story": {
+      "movie": "Du bist bis zum Abspann geblieben.",
+      "tv": "Nur noch eine Folge, oder?",
+      "anime": "Dein Anime-Arc hat geliefert.",
+      "game": "Nebenquests haben übernommen.",
+      "manga": "Das nächste Kapitel hat gerufen.",
+      "book": "Plot-Twists. Auf echten Seiten."
+    },
+    "count": "<value>{{count, number}}</value> {{type}} in deinem {{year}}.",
+    "completed_one": "{{count, number}} Titel mit Abschlussdatum dieses Jahr. Abgehakt.",
+    "completed_other": "{{count, number}} Titel mit Abschlussdatum dieses Jahr. Abgehakt."
+  },
+  "shelf": {
+    "title": "{{type}}, die geblieben sind.",
+    "description": "Deine Reviews aus {{year}}, sortiert nach Gesamtwertung plus {{bonus}} Bonuspunkt für Titel, die du in diesem Jahr favorisiert hast.",
+    "empty": "Noch keine Reviews aus {{year}} in dieser Kategorie. Deine erfassten Titel zählen trotzdem."
+  },
+  "global": {
+    "title": "Diese Lore haben wir zusammen gebaut.",
+    "loading": "Die Plot-Twists der Community werden gezählt...",
+    "error": "Community-Statistiken konnten nicht geladen werden. Dein persönliches Replay bleibt hier.",
+    "count_one": "<value>{{count, number}}</value> Titel in der Community erfasst.",
+    "count_other": "<value>{{count, number}}</value> Titel in der Community erfasst.",
+    "people_one": "{{count, number}} Konto seit dem {{date}} erstellt. Nicht mal ein ganzes Jahr. Trotzdem eine ganze Story.",
+    "people_other": "{{count, number}} Konten seit dem {{date}} erstellt. Nicht mal ein ganzes Jahr. Trotzdem eine ganze Story.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "Du warst der Plot.",
+    "description": "Bis zum nächsten Kapitel? Dein Backlog läuft nicht weg.",
+    "restart": "Noch mal abspielen"
+  },
+  "share": {
+    "action": "Mein Replay teilen",
+    "text_one": "Mein TrackGeek Replay {{year}}: {{count, number}} Titel, jede Menge Lore. Was ist deine Story?",
+    "text_other": "Mein TrackGeek Replay {{year}}: {{count, number}} Titel, jede Menge Lore. Was ist deine Story?",
+    "error": "Teilen hat nicht geklappt. Versuch es erneut oder nutze das Teilen-Menü deines Browsers."
+  },
+  "method": {
+    "title": "Was zählt eigentlich?",
+    "description": "Fortschritt nutzt gespeicherte Start- oder Enddaten aus {{year}}, sonst das Hinzufügedatum, wenn beide fehlen. Älter datierte Importe bleiben draußen. Abschlüsse brauchen ein Enddatum. Gesamte Stunden, Folgen und Seiten sind keine Jahressummen. Community-Zahlen zählen persönliche Einträge, keine einzigartigen Titel. Rankings nutzen Reviews aus diesem Jahr mit Bonus für im selben Jahr hinzugefügte Favoriten. Datensätze können sich ändern; dies ist kein unveränderlicher Verlauf. Originalmusik wechselt je Kategorie und lässt sich stummschalten."
+  },
+  "controls": {
+    "readMode": "Als Seite statt als horizontale Story lesen",
+    "staticMode": "Bei reduzierter Bewegung oder kleinem Bildschirm bleibt der Lesemodus aktiv.",
+    "chapters": "Replay-Kapitel",
+    "position": "{{current}} / {{total}}",
+    "exit": "Replay verlassen",
+    "mute": "Soundtrack stummschalten",
+    "unmute": "Soundtrack abspielen",
+    "soundOn": "Ton an",
+    "soundOff": "Ton aus",
+    "volume": "Soundtrack-Lautstärke",
+    "originalAudio": "Originalsoundtrack, standardmäßig an. Wird Autoplay blockiert, startet der Ton mit deiner ersten Interaktion. Jederzeit stummschaltbar.",
+    "audioError": "Der Ton konnte nicht starten. Du kannst ohne Ton weitermachen."
+  },
+  "chapters": {
+    "intro": "Dein Replay",
+    "overview": "Dein Jahr in Titeln",
+    "first": "Wo es anfing",
+    "rhythm": "Dein Rhythmus",
+    "global": "Wir alle",
+    "outro": "Abspann"
+  }
+}

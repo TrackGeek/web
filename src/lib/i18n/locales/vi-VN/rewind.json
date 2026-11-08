@@ -1,0 +1,93 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "{{year}} của bạn qua phim, series, anime, game, manga và sách. Câu chuyện TrackGeek với bạn là nhân vật chính.",
+  "back": "Về TrackGeek",
+  "untitled": "Không có tên tác phẩm",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "Những nhiệm vụ phụ của bạn cũng xứng đáng có danh đề riêng.",
+    "start": "Bật replay của mình",
+    "signIn": "Đăng nhập để xem replay",
+    "community": "Gặp gỡ cộng đồng",
+    "loading": "Đang tìm những cú twist của bạn...",
+    "error": "Không tải được replay. Thử lại để xem số liệu thực tế của bạn.",
+    "empty": "Chưa có tiến độ mang ngày trong năm {{year}}. Thêm tác phẩm vào thư viện rồi quay lại nhé.",
+    "launch": "TrackGeek gia nhập cuộc vui vào {{date}}.",
+    "preview": "{{year}} vẫn đang tiếp diễn. Đây là replay của bạn tính đến hiện tại."
+  },
+  "overview": {
+    "title": "Vũ trụ của bạn đã lớn hơn.",
+    "count_one": "<value>{{count, number}}</value> tác phẩm trong câu chuyện của bạn.",
+    "count_other": "<value>{{count, number}}</value> tác phẩm trong câu chuyện của bạn."
+  },
+  "first": { "title": "Mọi hành trình đều có khởi đầu.", "date": "Ngày đầu tiên được lưu trong năm nay: {{date}}." },
+  "rhythm": {
+    "title": "{{month}} là thời của bạn.",
+    "description": "Tác phẩm theo ngày đầu tiên được lưu trong năm nay. Mỗi tác phẩm chỉ tính một lần, không tính theo từng tập."
+  },
+  "category": {
+    "story": {
+      "movie": "Bạn đã ở lại đến hết danh đề.",
+      "tv": "Thêm một tập nữa thôi, nhỉ?",
+      "anime": "Arc anime của bạn đỉnh thật.",
+      "game": "Nhiệm vụ phụ chiếm luôn sân khấu.",
+      "manga": "Chương tiếp theo cứ liên tục gọi tên.",
+      "book": "Cú twist. Trên những trang sách thật."
+    },
+    "count": "<value>{{count, number}}</value> {{type}} trong năm {{year}} của bạn.",
+    "completed_one": "{{count, number}} tác phẩm có ngày hoàn thành trong năm nay. Chốt đơn!",
+    "completed_other": "{{count, number}} tác phẩm có ngày hoàn thành trong năm nay. Chốt đơn!"
+  },
+  "shelf": {
+    "title": "{{type}} để lại dấu ấn.",
+    "description": "Đánh giá bạn viết trong năm {{year}}, xếp theo điểm tổng thể và cộng {{bonus}} điểm cho tác phẩm được thêm vào yêu thích cùng năm.",
+    "empty": "Chưa có đánh giá trong năm {{year}} ở mục này. Các tác phẩm đã theo dõi vẫn được tính."
+  },
+  "global": {
+    "title": "Chúng ta cùng xây vũ trụ này.",
+    "loading": "Đang đếm những cú twist của cộng đồng...",
+    "error": "Không tải được thống kê cộng đồng. Replay cá nhân của bạn vẫn ở đây.",
+    "count_one": "<value>{{count, number}}</value> tác phẩm được cộng đồng theo dõi.",
+    "count_other": "<value>{{count, number}}</value> tác phẩm được cộng đồng theo dõi.",
+    "people_one": "{{count, number}} tài khoản tham gia từ {{date}}. Chưa trọn một năm, đã trọn một câu chuyện.",
+    "people_other": "{{count, number}} tài khoản tham gia từ {{date}}. Chưa trọn một năm, đã trọn một câu chuyện.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "Bạn luôn là cốt truyện chính.",
+    "description": "Hẹn ở chương tiếp nhé? Danh sách chờ của bạn chẳng đi đâu cả.",
+    "restart": "Phát lại"
+  },
+  "share": {
+    "action": "Chia sẻ replay của mình",
+    "text_one": "TrackGeek Replay {{year}} của mình: {{count, number}} tác phẩm, vô vàn câu chuyện. Câu chuyện của bạn là gì?",
+    "text_other": "TrackGeek Replay {{year}} của mình: {{count, number}} tác phẩm, vô vàn câu chuyện. Câu chuyện của bạn là gì?",
+    "error": "Không chia sẻ được. Thử lại hoặc dùng menu chia sẻ của trình duyệt."
+  },
+  "method": {
+    "title": "Những gì được tính?",
+    "description": "Tiến độ dùng ngày bắt đầu hoặc hoàn thành được lưu trong {{year}}, hoặc ngày thêm nếu thiếu cả hai. Bản nhập có ngày cũ hơn không được tính. Hoàn thành cần ngày kết thúc rõ ràng. Tổng giờ, tập và trang tích lũy không phải tổng theo năm. Cộng đồng tính từng bản ghi cá nhân, không phải số tác phẩm duy nhất. Xếp hạng dùng đánh giá tạo trong năm đó và cộng điểm cho yêu thích được thêm cùng năm. Bản ghi có thể đổi; đây không phải lịch sử bất biến. Nhạc gốc đổi theo từng mục và có thể tắt."
+  },
+  "controls": {
+    "readMode": "Đọc dạng trang thay vì câu chuyện ngang",
+    "staticMode": "Chế độ đọc luôn bật khi giảm chuyển động hoặc dùng màn hình nhỏ.",
+    "chapters": "Các chương replay",
+    "position": "{{current}} / {{total}}",
+    "exit": "Thoát replay",
+    "mute": "Tắt nhạc nền",
+    "unmute": "Phát nhạc nền",
+    "soundOn": "Âm thanh bật",
+    "soundOff": "Âm thanh tắt",
+    "volume": "Âm lượng nhạc nền",
+    "originalAudio": "Nhạc nền gốc, mặc định bật. Nếu tự động phát bị chặn, nhạc bắt đầu khi bạn tương tác lần đầu. Tắt bất cứ lúc nào.",
+    "audioError": "Không phát được âm thanh. Bạn có thể tiếp tục xem không tiếng."
+  },
+  "chapters": {
+    "intro": "Replay của bạn",
+    "overview": "Năm của bạn qua tác phẩm",
+    "first": "Nơi bắt đầu",
+    "rhythm": "Nhịp của bạn",
+    "global": "Tất cả chúng ta",
+    "outro": "Danh đề cuối"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "Jou {{year}} in flieks, reekse, anime, speletjies, manga en boeke. 'n TrackGeek-verhaal met jou in die hoofrol.",
+  "back": "Terug na TrackGeek",
+  "untitled": "Titel nie beskikbaar nie",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "Jou sy-avonture verdien hul eie eindkrediete.",
+    "start": "Speel my replay",
+    "signIn": "Meld aan vir jou replay",
+    "community": "Ontmoet die gemeenskap",
+    "loading": "Op soek na jou storiewendings...",
+    "error": "Jou replay kon nie laai nie. Probeer weer vir jou werklike statistieke.",
+    "empty": "Nog geen vordering met 'n datum in {{year}} nie. Voeg iets by jou biblioteek en kom terug.",
+    "launch": "TrackGeek het op {{date}} by die gesprek aangesluit.",
+    "preview": "{{year}} is nog aan die gang. Hier is jou replay tot dusver."
+  },
+  "overview": {
+    "title": "Jou verhaal het gegroei.",
+    "count_one": "<value>{{count, number}}</value> titel in jou verhaal.",
+    "count_other": "<value>{{count, number}}</value> titels in jou verhaal."
+  },
+  "first": { "title": "Elke storielyn begin iewers.", "date": "Jou eerste gestoorde datum vanjaar: {{date}}." },
+  "rhythm": {
+    "title": "{{month}} was jou era.",
+    "description": "Titels volgens hul eerste gestoorde datum vanjaar. Elke titel tel een keer, nie per episode nie."
+  },
+  "category": {
+    "story": {
+      "movie": "Jy het tot die eindkrediete gebly.",
+      "tv": "Net nog een episode, né?",
+      "anime": "Jou anime-storielyn was op 'n ander vlak.",
+      "game": "Sy-opdragte het oorgeneem.",
+      "manga": "Die volgende hoofstuk het bly roep.",
+      "book": "Storiewendings. Op regte bladsye."
+    },
+    "count": "<value>{{count, number}}</value> {{type}} in jou {{year}}.",
+    "completed_one": "{{count, number}} titel het 'n einddatum vanjaar. Klaar gespeel.",
+    "completed_other": "{{count, number}} titels het 'n einddatum vanjaar. Klaar gespeel."
+  },
+  "shelf": {
+    "title": "{{type}} wat uitgestaan het.",
+    "description": "Jou resensies uit {{year}}, volgens algehele punt plus {{bonus}} bonuspunt vir titels wat jy daardie jaar by gunstelinge gevoeg het.",
+    "empty": "Nog geen resensies uit {{year}} in dié kategorie nie. Jou aangetekende titels tel steeds."
+  },
+  "global": {
+    "title": "Ons het dié verhaal saam gebou.",
+    "loading": "Ons tel die gemeenskap se storiewendings...",
+    "error": "Gemeenskapstatistieke kon nie laai nie. Jou persoonlike replay is steeds hier.",
+    "count_one": "<value>{{count, number}}</value> titel deur die gemeenskap aangeteken.",
+    "count_other": "<value>{{count, number}}</value> titels deur die gemeenskap aangeteken.",
+    "people_one": "{{count, number}} rekening sedert {{date}} geskep. Nie eens 'n volle jaar nie. Reeds 'n hele verhaal.",
+    "people_other": "{{count, number}} rekeninge sedert {{date}} geskep. Nie eens 'n volle jaar nie. Reeds 'n hele verhaal.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "Jy was die storie al die tyd.",
+    "description": "Sien ons jou by die volgende hoofstuk? Jou waglys gaan nêrens heen nie.",
+    "restart": "Speel dit weer"
+  },
+  "share": {
+    "action": "Deel my replay",
+    "text_one": "My TrackGeek Replay {{year}}: {{count, number}} titel, hope stories. Wat is jou verhaal?",
+    "text_other": "My TrackGeek Replay {{year}}: {{count, number}} titels, hope stories. Wat is jou verhaal?",
+    "error": "Kon nie deel nie. Probeer weer of gebruik jou blaaier se deelkieslys."
+  },
+  "method": {
+    "title": "Wat tel werklik?",
+    "description": "Vordering gebruik gestoorde begin- of einddatums in {{year}}, of die byvoegdatum as albei ontbreek. Invoere met ouer datums tel nie. Voltooiings vereis 'n einddatum. Opgehoopte ure, episodes en bladsye is nie jaartotale nie. Die gemeenskap tel elke persoon se inskrywing, nie unieke titels nie. Ranglyste gebruik resensies uit daardie jaar met 'n bonus vir gunstelinge wat dieselfde jaar bygevoeg is. Rekords kan verander; dit is nie 'n onveranderlike geskiedenis nie. Oorspronklike musiek verander per kategorie en kan gedemp word."
+  },
+  "controls": {
+    "readMode": "Lees as 'n bladsy eerder as 'n horisontale verhaal",
+    "staticMode": "Leesmodus bly aan vir verminderde beweging of 'n klein skerm.",
+    "chapters": "Replay-hoofstukke",
+    "position": "{{current}} / {{total}}",
+    "exit": "Verlaat replay",
+    "mute": "Demp klankbaan",
+    "unmute": "Speel klankbaan",
+    "soundOn": "Klank aan",
+    "soundOff": "Klank af",
+    "volume": "Klankbaanvolume",
+    "originalAudio": "Oorspronklike klankbaan, by verstek aan. As outospeel geblokkeer word, begin klank met jou eerste interaksie. Demp dit enige tyd.",
+    "audioError": "Klank kon nie begin nie. Jy kan stil voortgaan."
+  },
+  "chapters": {
+    "intro": "Jou replay",
+    "overview": "Jou jaar in titels",
+    "first": "Waar dit begin het",
+    "rhythm": "Jou ritme",
+    "global": "Ons almal",
+    "outro": "Eindkrediete"
+  }
+}

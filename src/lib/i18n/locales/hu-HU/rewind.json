@@ -1,0 +1,93 @@
+{
+  "pageTitle": "Replay {{year}}",
+  "pageDescription": "A te {{year}} éved filmekben, sorozatokban, animékben, játékokban, mangákban és könyvekben. TrackGeek-történet, veled a főszerepben.",
+  "back": "Vissza a TrackGeekre",
+  "untitled": "A cím nem érhető el",
+  "hero": {
+    "title": "Replay <year>{{year}}</year>",
+    "description": "A mellékküldetéseid saját stáblistát érdemeltek.",
+    "start": "Induljon a replayem",
+    "signIn": "Lépj be a replayedért",
+    "community": "Ismerd meg a közösséget",
+    "loading": "Keressük a fordulataidat...",
+    "error": "Nem sikerült betölteni a replayed. Próbáld újra a valódi statisztikáidért.",
+    "empty": "Még nincs {{year}} évre dátumozott haladás. Adj valamit a könyvtáradhoz, majd gyere vissza.",
+    "launch": "A TrackGeek ekkor csatlakozott a beszélgetéshez: {{date}}.",
+    "preview": "{{year}} még tart. Íme az eddigi replayed."
+  },
+  "overview": {
+    "title": "Bővült a saját univerzumod.",
+    "count_one": "<value>{{count, number}}</value> cím a történetedben.",
+    "count_other": "<value>{{count, number}}</value> cím a történetedben."
+  },
+  "first": { "title": "Minden történetszál elkezdődik valahol.", "date": "Az első mentett dátumod idén: {{date}}." },
+  "rhythm": {
+    "title": "{{month}} volt a te korszakod.",
+    "description": "Címek az idei első mentett dátumuk alapján. Minden cím egyszer számít, nem epizódonként."
+  },
+  "category": {
+    "story": {
+      "movie": "Maradtál a stáblistáig.",
+      "tv": "Még egy rész, ugye?",
+      "anime": "Az animekorszakod nagyot ment.",
+      "game": "Átvették az irányítást a mellékküldetések.",
+      "manga": "A következő fejezet folyton hívott.",
+      "book": "Fordulatok. Igazi lapokon."
+    },
+    "count": "<value>{{count, number}}</value> {{type}} a te {{year}} évedben.",
+    "completed_one": "{{count, number}} címnek van idei befejezési dátuma. Kész is.",
+    "completed_other": "{{count, number}} címnek van idei befejezési dátuma. Kész is."
+  },
+  "shelf": {
+    "title": "{{type}}, amik nyomot hagytak.",
+    "description": "A {{year}} évi értékeléseid összpontszám szerint, plusz {{bonus}} bónuszpont az abban az évben kedvencekhez adott címekért.",
+    "empty": "Még nincs {{year}} évi értékelés ebben a kategóriában. A követett címeid ettől még számítanak."
+  },
+  "global": {
+    "title": "Ezt a történetet együtt építettük.",
+    "loading": "Számoljuk a közösség fordulatait...",
+    "error": "A közösségi statisztikák nem töltődtek be. A személyes replayed továbbra is itt van.",
+    "count_one": "<value>{{count, number}}</value> követett cím a közösségben.",
+    "count_other": "<value>{{count, number}}</value> követett cím a közösségben.",
+    "people_one": "{{count, number}} fiók jött létre {{date}} óta. Még egy teljes év sem telt el. Máris egy egész történet.",
+    "people_other": "{{count, number}} fiók jött létre {{date}} óta. Még egy teljes év sem telt el. Máris egy egész történet.",
+    "category": "{{type}}: {{count, number}}"
+  },
+  "outro": {
+    "title": "Végig te voltál a főszál.",
+    "description": "Találkozunk a következő fejezetben? A várólistád nem szalad el.",
+    "restart": "Játsszuk újra"
+  },
+  "share": {
+    "action": "Replayem megosztása",
+    "text_one": "TrackGeek Replay {{year}}: {{count, number}} cím, rengeteg történet. Mi a tiéd?",
+    "text_other": "TrackGeek Replay {{year}}: {{count, number}} cím, rengeteg történet. Mi a tiéd?",
+    "error": "A megosztás nem sikerült. Próbáld újra, vagy használd a böngésződ megosztási menüjét."
+  },
+  "method": {
+    "title": "Mi számít bele?",
+    "description": "A haladás a {{year}} évre mentett kezdési vagy befejezési dátumot használja, ezek hiányában a hozzáadás dátumát. A régebbre dátumozott importok kimaradnak. A befejezéshez befejezési dátum kell. Az összesített órák, epizódok és oldalak nem éves összegek. A közösség minden személyes bejegyzést számol, nem egyedi címeket. A rangsor az abban az évben létrehozott értékelésekre épül, az ugyanakkor hozzáadott kedvencek bónuszával. Az adatok változhatnak; ez nem megváltoztathatatlan előzmény. A saját zene kategóriánként változik és némítható."
+  },
+  "controls": {
+    "readMode": "Olvasás oldalként a vízszintes történet helyett",
+    "staticMode": "Csökkentett mozgásnál vagy kis képernyőn az olvasási mód aktív marad.",
+    "chapters": "Replay-fejezetek",
+    "position": "{{current}} / {{total}}",
+    "exit": "Kilépés a replayből",
+    "mute": "Zene némítása",
+    "unmute": "Zene lejátszása",
+    "soundOn": "Hang bekapcsolva",
+    "soundOff": "Hang kikapcsolva",
+    "volume": "Zene hangereje",
+    "originalAudio": "Saját zene, alapból bekapcsolva. Ha az automatikus lejátszás tiltott, az első interakciónál indul. Bármikor némítható.",
+    "audioError": "A hang nem indult el. Csendben is folytathatod."
+  },
+  "chapters": {
+    "intro": "A te replayed",
+    "overview": "Az éved címekben",
+    "first": "Ahol elkezdődött",
+    "rhythm": "A te ritmusod",
+    "global": "Mi mindannyian",
+    "outro": "Stáblista"
+  }
+}

@@ -5,23 +5,28 @@ import type { RewindTitle } from "@/types/rewind";
 
 interface RewindTitleArtProps {
   title: RewindTitle;
+  alternatives?: RewindTitle[];
   type: ContentTypeSlug;
   className?: string;
 }
 
-export function RewindTitleArt({ title, type, className = "" }: RewindTitleArtProps) {
-  const [failed, setFailed] = useState(false);
+export function RewindTitleArt({ title, alternatives = [], type, className = "" }: RewindTitleArtProps) {
+  const [failedImages, setFailedImages] = useState<string[]>([]);
+  const image = [title, ...alternatives].find(
+    (candidate) => candidate.image?.trim() && !failedImages.includes(candidate.image),
+  )?.image;
 
   return (
-    <div className={`relative aspect-2/3 overflow-clip rounded-lg bg-replay-ink/10 ${className}`}>
-      {title.image && !failed ? (
+    <div data-replay-art className={`relative aspect-2/3 overflow-clip rounded-lg bg-replay-ink/10 ${className}`}>
+      {image ? (
         <img
-          src={title.image}
+          key={image}
+          src={image}
           alt=""
           width={400}
           height={600}
           loading="lazy"
-          onError={() => setFailed(true)}
+          onError={() => setFailedImages((failed) => [...failed, image])}
           className="size-full object-cover"
         />
       ) : (

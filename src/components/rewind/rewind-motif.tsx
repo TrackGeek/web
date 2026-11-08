@@ -6,7 +6,7 @@ interface RewindMotifProps {
 export function RewindMotif({ variant = "ribbon", className = "" }: RewindMotifProps) {
   if (variant === "flower") {
     return (
-      <svg viewBox="0 0 400 400" fill="none" aria-hidden="true" className={className}>
+      <svg data-replay-motif viewBox="0 0 400 400" fill="none" aria-hidden="true" className={className}>
         {Array.from({ length: 8 }, (_, index) => (
           <ellipse
             key={index}
@@ -23,7 +23,7 @@ export function RewindMotif({ variant = "ribbon", className = "" }: RewindMotifP
   }
 
   return (
-    <svg viewBox="0 0 600 600" fill="none" aria-hidden="true" className={className}>
+    <svg data-replay-motif viewBox="0 0 600 600" fill="none" aria-hidden="true" className={className}>
       {Array.from({ length: 11 }, (_, index) => (
         <path
           key={index}

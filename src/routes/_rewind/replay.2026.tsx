@@ -55,15 +55,7 @@ function RewindRoute() {
       data-replay-root
       className="bg-replay-ink font-replay text-base leading-normal text-replay-paper antialiased selection:bg-replay-ink selection:text-replay-pink [font-synthesis:none] [font-variation-settings:normal] [&_button]:cursor-pointer [&_h1]:text-balance [&_h2]:min-w-0 [&_h2]:wrap-break-word [&_p]:text-pretty **:focus-visible:outline-3 **:focus-visible:outline-offset-4 **:focus-visible:outline-current motion-reduce:**:animate-none motion-reduce:**:scroll-auto motion-reduce:**:transition-none"
     >
-      <RewindControls
-        scenes={scenes}
-        activeIndex={story.activeIndex}
-        readMode={!story.animated}
-        canAnimate={story.motionAvailable}
-        onReadModeChange={() => story.setReadMode(!story.readMode)}
-        onNavigate={story.goTo}
-        audio={audio}
-      />
+      <RewindControls scenes={scenes} activeIndex={story.activeIndex} onNavigate={story.goTo} audio={audio} />
       <RewindStage
         rootRef={story.rootRef}
         animated={story.animated}
@@ -76,7 +68,6 @@ function RewindRoute() {
             id={scene.id}
             index={index}
             label={rewindSceneLabel(scene, t)}
-            animated={story.animated}
             active={index === story.activeIndex}
           >
             {scene.kind === "intro" && (

@@ -4,24 +4,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export function useRewindStory(sceneCount: number) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [readMode, setReadMode] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [shortScreen, setShortScreen] = useState(false);
   const activeRef = useRef(activeIndex);
   const previousCount = useRef(sceneCount);
   activeRef.current = activeIndex;
   const reducedMotion = useReducedMotion();
-  const motionAvailable = mounted && !reducedMotion && !shortScreen;
-  const animated = motionAvailable && !readMode;
+  const animated = mounted && !reducedMotion;
 
-  useEffect(() => {
-    const query = window.matchMedia("(max-height: 560px), (max-width: 640px) and (max-height: 740px)");
-    const update = () => setShortScreen(query.matches);
-    update();
-    query.addEventListener("change", update);
-    setMounted(true);
-    return () => query.removeEventListener("change", update);
-  }, []);
+  useEffect(() => setMounted(true), []);
 
   const onProgress = useCallback(
     (progress: number) => {
@@ -37,11 +27,14 @@ export function useRewindStory(sceneCount: number) {
       const target = Math.max(0, Math.min(sceneCount - 1, index));
 
       if (animated) {
+        const track = root.querySelector<HTMLElement>("[data-replay-track]");
+        if (track) track.scrollLeft = 0;
         const start = root.getBoundingClientRect().top + window.scrollY;
         const distance = root.offsetHeight - window.innerHeight;
-        window.scrollTo({ top: start + (target / (sceneCount - 1)) * distance, behavior: "instant" });
+        window.scrollTo({ top: start + (target / Math.max(1, sceneCount - 1)) * distance, behavior: "instant" });
       } else {
-        root.querySelectorAll<HTMLElement>("[data-replay-scene]")[target]?.scrollIntoView({ behavior: "instant" });
+        const track = root.querySelector<HTMLElement>("[data-replay-track]");
+        if (track) track.scrollTo({ left: target * track.clientWidth, behavior: "instant" });
       }
 
       setActiveIndex(target);
@@ -58,19 +51,52 @@ export function useRewindStory(sceneCount: number) {
 
   useEffect(() => {
     if (animated) return;
-    const scenes = rootRef.current?.querySelectorAll<HTMLElement>("[data-replay-scene]");
-    if (!scenes) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActiveIndex(Number((entry.target as HTMLElement).dataset.replayScene));
-        }
-      },
-      { threshold: 0, rootMargin: "-40% 0px -40% 0px" },
-    );
-    for (const scene of Array.from(scenes).slice(0, sceneCount)) observer.observe(scene);
-    return () => observer.disconnect();
-  }, [animated, sceneCount]);
+    const track = rootRef.current?.querySelector<HTMLElement>("[data-replay-track]");
+    if (!track) return;
+    const update = () => setActiveIndex(Math.round(track.scrollLeft / Math.max(1, track.clientWidth)));
+    const wheel = (event: WheelEvent) => {
+      if (event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+      const scene = track.querySelectorAll<HTMLElement>("[data-replay-scene]")[activeRef.current];
+      if (
+        scene &&
+        (event.deltaY > 0 ? scene.scrollTop + scene.clientHeight < scene.scrollHeight - 1 : scene.scrollTop > 0)
+      )
+        return;
+      event.preventDefault();
+      const step = Math.sign(event.deltaY);
+      if (step) goTo(activeRef.current + step);
+    };
+    track.addEventListener("scroll", update, { passive: true });
+    track.addEventListener("wheel", wheel, { passive: false });
+    return () => {
+      track.removeEventListener("scroll", update);
+      track.removeEventListener("wheel", wheel);
+    };
+  }, [animated, goTo]);
 
-  return { rootRef, activeIndex, animated, motionAvailable, onProgress, readMode, setReadMode, goTo };
+  useEffect(() => {
+    const resize = () => goTo(activeRef.current);
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, [goTo]);
+
+  useEffect(() => {
+    const navigate = (event: KeyboardEvent) => {
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      if (
+        event.target instanceof Element &&
+        event.target.closest("input, select, textarea, button, a, summary, [contenteditable=true], [role=dialog]")
+      )
+        return;
+      const target =
+        event.key === "ArrowRight" ? activeRef.current + 1 : event.key === "ArrowLeft" ? activeRef.current - 1 : null;
+      if (target === null) return;
+      event.preventDefault();
+      goTo(target);
+    };
+    window.addEventListener("keydown", navigate);
+    return () => window.removeEventListener("keydown", navigate);
+  }, [goTo]);
+
+  return { rootRef, activeIndex, animated, onProgress, goTo };
 }

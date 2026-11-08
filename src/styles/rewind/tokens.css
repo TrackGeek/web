@@ -20,3 +20,94 @@ body:has([data-replay-root]) {
 html:has([data-replay-root]) * {
   scroll-behavior: auto;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-replay-scene][data-active] :is(h1, h2) {
+    animation: replay-enter 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  [data-replay-scene][data-active] p {
+    animation: replay-enter 800ms 100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  [data-replay-scene][data-active] li {
+    animation: replay-enter 650ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 120ms;
+  }
+
+  [data-replay-scene][data-active] li:nth-child(2) {
+    animation-delay: 185ms;
+  }
+  [data-replay-scene][data-active] li:nth-child(3) {
+    animation-delay: 250ms;
+  }
+  [data-replay-scene][data-active] li:nth-child(4) {
+    animation-delay: 315ms;
+  }
+  [data-replay-scene][data-active] li:nth-child(5) {
+    animation-delay: 380ms;
+  }
+  [data-replay-scene][data-active] li:nth-child(6) {
+    animation-delay: 445ms;
+  }
+
+  [data-replay-scene][data-active] strong {
+    display: block;
+    transform-origin: left center;
+    animation: replay-pop 900ms 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  [data-replay-scene][data-active] [data-replay-art] {
+    animation: replay-art 6s ease-in-out infinite;
+  }
+
+  [data-replay-scene][data-active] [data-replay-motif] {
+    animation: replay-drift 14s ease-in-out infinite alternate;
+  }
+
+  [data-replay-scene][data-active] dd {
+    transform-origin: center bottom;
+    animation: replay-pop 900ms 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@keyframes replay-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(3rem, 1rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes replay-pop {
+  from {
+    opacity: 0;
+    scale: 0.8;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes replay-art {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -0.75rem;
+  }
+}
+
+@keyframes replay-drift {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(-2rem, 1.5rem, 0) rotate(12deg);
+  }
+}

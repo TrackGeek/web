@@ -32,15 +32,17 @@ export function RewindStage({ rootRef, animated, sceneCount, onProgress, childre
   return (
     <Root disabled={!animated} callbacks={callbacks}>
       <div ref={rootRef} style={animated ? { height: `${sceneCount * 100}svh` } : undefined}>
-        <div
-          className={
-            animated
-              ? "sticky top-0 h-svh overflow-clip pt-27 pb-[calc(4.5rem+env(safe-area-inset-bottom))]"
-              : "pt-27 pb-[calc(4.5rem+env(safe-area-inset-bottom))]"
-          }
-        >
+        <div className={animated ? "sticky top-0 h-svh overflow-clip pt-27" : "h-svh overflow-clip pt-27"}>
           <Animation disabled={!animated} tween={tween}>
-            <div dir="ltr" className={animated ? "flex h-full w-full will-change-transform" : "block"}>
+            <div
+              dir="ltr"
+              data-replay-track
+              className={
+                animated
+                  ? "flex h-full w-full will-change-transform"
+                  : "flex h-full w-full snap-x snap-mandatory overflow-x-auto [contain:layout_paint]"
+              }
+            >
               {children}
             </div>
           </Animation>

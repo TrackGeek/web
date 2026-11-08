@@ -8,22 +8,11 @@ import { rewindSceneLabel } from "@/utils/rewind-scenes";
 interface RewindControlsProps {
   scenes: RewindScene[];
   activeIndex: number;
-  readMode: boolean;
-  canAnimate: boolean;
-  onReadModeChange: () => void;
   onNavigate: (index: number) => void;
   audio: ReturnType<typeof useRewindAudio>;
 }
 
-export function RewindControls({
-  scenes,
-  activeIndex,
-  readMode,
-  canAnimate,
-  onReadModeChange,
-  onNavigate,
-  audio,
-}: RewindControlsProps) {
+export function RewindControls({ scenes, activeIndex, onNavigate, audio }: RewindControlsProps) {
   const { t } = useTranslation();
   const control =
     "inline-flex size-11 shrink-0 items-center justify-center rounded-full hover:bg-replay-paper/15 disabled:cursor-default disabled:opacity-30";
@@ -42,21 +31,6 @@ export function RewindControls({
             TrackGeek
           </Link>
           <div className="flex items-center gap-1 sm:gap-2">
-            <button
-              type="button"
-              className={control}
-              disabled={!canAnimate}
-              onClick={onReadModeChange}
-              aria-pressed={readMode}
-              aria-label={t("rewind:controls.readMode")}
-              title={t(canAnimate ? "rewind:controls.readMode" : "rewind:controls.staticMode")}
-            >
-              <Icon
-                icon={readMode ? "lucide:gallery-horizontal-end" : "lucide:text"}
-                className="size-5"
-                aria-hidden="true"
-              />
-            </button>
             <button
               type="button"
               className={`${control} sm:w-auto sm:gap-2 sm:px-3`}
@@ -117,51 +91,14 @@ export function RewindControls({
           ))}
         </nav>
       </header>
-      <footer className="fixed inset-x-0 bottom-0 z-30 bg-replay-ink pb-[env(safe-area-inset-bottom)] text-replay-paper">
-        <div className="mx-auto flex min-h-18 max-w-360 items-center gap-3 px-4 sm:px-10 lg:px-16">
-          <label className="sr-only" htmlFor="replay-chapter">
-            {t("rewind:controls.chapters")}
-          </label>
-          <select
-            id="replay-chapter"
-            value={activeIndex}
-            onChange={(event) => onNavigate(Number(event.target.value))}
-            className="min-h-11 min-w-0 flex-1 cursor-pointer rounded-lg bg-replay-ink py-2 pr-2 text-sm font-medium text-replay-paper sm:max-w-80"
-          >
-            {scenes.map((scene, index) => (
-              <option key={scene.id} value={index}>
-                {rewindSceneLabel(scene, t)}
-              </option>
-            ))}
-          </select>
-          <span aria-live="polite" aria-atomic="true" className="ml-auto shrink-0 text-xs tabular-nums">
-            {t("rewind:controls.position", { current: activeIndex + 1, total: scenes.length })}
-          </span>
-          <button
-            type="button"
-            className={control}
-            onClick={() => onNavigate(activeIndex - 1)}
-            disabled={activeIndex === 0}
-            aria-label={t("common:previous")}
-          >
-            <Icon icon="lucide:chevron-left" className="size-5" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            className={control}
-            onClick={() => onNavigate(activeIndex + 1)}
-            disabled={activeIndex === scenes.length - 1}
-            aria-label={t("common:next")}
-          >
-            <Icon icon="lucide:chevron-right" className="size-5" aria-hidden="true" />
-          </button>
-        </div>
-        {audio.failed && (
-          <p role="alert" className="px-4 pb-3 text-center text-xs">
-            {t("rewind:controls.audioError")}
-          </p>
-        )}
-      </footer>
+      {audio.failed && (
+        <p
+          role="alert"
+          className="fixed inset-x-0 bottom-0 z-30 bg-replay-ink px-4 py-3 text-center text-xs text-replay-paper"
+        >
+          {t("rewind:controls.audioError")}
+        </p>
+      )}
     </>
   );
 }

@@ -25,9 +25,11 @@ export function RewindCategory({ category }: { category: Category }) {
             }}
           />
         </p>
-        <p className="mt-7 max-w-[40ch] text-base leading-relaxed">
-          {t("rewind:category.completed", { count: category.completed })}
-        </p>
+        {category.type !== "movie" && (
+          <p className="mt-7 max-w-[40ch] text-base leading-relaxed">
+            {t("rewind:category.completed", { count: category.completed })}
+          </p>
+        )}
       </div>
     </div>
   );

@@ -101,7 +101,7 @@ function RewindRoute() {
           </RewindScene>
         ))}
       </RewindStage>
-      <AuthModal />
+      <AuthModal showTrigger={false} />
     </div>
   );
 }

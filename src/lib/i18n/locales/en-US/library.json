@@ -309,10 +309,16 @@
   "editionPageCount_one": "{{count}} page",
   "editionPageCount_other": "{{count}} pages",
   "protonDb": {
-    "title": "ProtonDB · Linux compatibility",
-    "viewOnProtonDb": "View on ProtonDB",
-    "noReports": "No compatibility reports yet.",
-    "loadError": "Could not load ProtonDB reports. Try again or open ProtonDB.",
-    "version": "Proton {{version}}"
+    "noSummary": "No compatibility summary available.",
+    "loadError": "Could not load ProtonDB data. Try again or open ProtonDB.",
+    "tier": "Tier",
+    "score": "Score",
+    "deck": {
+      "verified": "Verified",
+      "playable": "Playable",
+      "unsupported": "Unsupported",
+      "unknown": "Unknown",
+      "unavailable": "Unavailable"
+    }
   }
 }

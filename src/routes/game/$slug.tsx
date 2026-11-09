@@ -16,6 +16,7 @@ import { MoreOptionsDialog } from "@/components/pages/details/more-options-dialo
 import { QuickStatusButtons } from "@/components/pages/details/quick-status-buttons";
 import { Relations } from "@/components/pages/details/relations";
 import { ReviewItem } from "@/components/pages/details/review-item";
+import { ProtonDbPanel } from "@/components/pages/game/protondb-panel";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { CompanyLink } from "@/components/shared/company-link";
@@ -565,6 +566,12 @@ function GameDetailsRoute() {
           </div>
         )}
       </Grid>
+      <ProtonDbPanel
+        steamAppId={game.steamAppId ?? null}
+        protonDbTier={game.protonDbTier ?? null}
+        protonDbScore={game.protonDbScore ?? null}
+        steamDeckCategory={game.steamDeckCategory ?? null}
+      />
       {isAuthenticated && (
         <RefreshData
           isPending={mutation.isPending}

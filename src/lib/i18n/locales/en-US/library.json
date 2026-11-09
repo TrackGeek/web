@@ -307,5 +307,12 @@
   "usingThisCover": "Using this cover",
   "editionCoverOptions": "Cover options for {{title}}",
   "editionPageCount_one": "{{count}} page",
-  "editionPageCount_other": "{{count}} pages"
+  "editionPageCount_other": "{{count}} pages",
+  "protonDb": {
+    "title": "ProtonDB · Linux compatibility",
+    "viewOnProtonDb": "View on ProtonDB",
+    "noReports": "No compatibility reports yet.",
+    "loadError": "Could not load ProtonDB reports. Try again or open ProtonDB.",
+    "version": "Proton {{version}}"
+  }
 }

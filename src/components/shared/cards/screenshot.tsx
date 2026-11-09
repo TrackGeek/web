@@ -211,6 +211,7 @@ function ScreenshotMedia({ image, title, index, total, isActive, isRevealed }: S
   return (
     <iframe
       src={videoEmbedUrl(video)}
+      referrerPolicy="strict-origin-when-cross-origin"
       title={label}
       className="aspect-video max-h-full w-full"
       allow="autoplay; fullscreen; picture-in-picture; encrypted-media"

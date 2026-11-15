@@ -58,7 +58,7 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 type RequestPasswordResetFormData = z.infer<typeof requestPasswordResetSchema>;
 
-export function AuthModal() {
+export function AuthModal({ showTrigger = true }: { showTrigger?: boolean }) {
   const { t } = useTranslation();
 
   const { open: authModalOpen, tab, step } = useAuthModal();
@@ -282,13 +282,15 @@ export function AuthModal() {
         }, 500);
       }}
     >
-      <DialogTrigger asChild>
-        <Button className="font-semibold">
-          <Icon icon={"lucide:log-in"} />
+      {showTrigger && (
+        <DialogTrigger asChild>
+          <Button className="font-semibold">
+            <Icon icon={"lucide:log-in"} />
 
-          {t("auth:login")}
-        </Button>
-      </DialogTrigger>
+            {t("auth:login")}
+          </Button>
+        </DialogTrigger>
+      )}
 
       <DialogContent className="sm:max-w-md">
         {step === "twoFactor" && (

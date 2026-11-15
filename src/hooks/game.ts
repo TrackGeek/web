@@ -1,6 +1,8 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 
+import type { HowLongToBeatData } from "@/types/how-long-to-beat";
+
 const SCREENSHOTS_PER_PAGE = 20;
 
 const SCREENSHOT_MAX_SIZE = 1024 * 1024 * 5;
@@ -152,5 +154,20 @@ export function useDeleteGameScreenshot() {
   return useMutation({
     mutationFn: (screenshotId: string) => api.delete(apiEndpoints.gameScreenshotById(screenshotId)),
     onSuccess: invalidate,
+  });
+}
+
+export function useHowLongToBeat(igdbId: number | undefined) {
+  return useQuery({
+    queryKey: ["game-how-long-to-beat", igdbId],
+    queryFn: async () => {
+      const { data } = await api.get<{ howLongToBeat: HowLongToBeatData | null }>(
+        `/game/detail/${igdbId}/how-long-to-beat`,
+      );
+      return data.howLongToBeat;
+    },
+    enabled: !!igdbId,
+    staleTime: 60000,
+    retry: false,
   });
 }

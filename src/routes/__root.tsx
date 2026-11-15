@@ -24,7 +24,7 @@ const resolveLanguage = createIsomorphicFn()
 
 declare module "@tanstack/react-router" {
   interface StaticDataRouteOption {
-    layout?: "full" | "main";
+    layout?: "full" | "main" | "rewind";
   }
 }
 
@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootLayout() {
   const layout = useRouterState({
-    select: (s) => s.matches.at(-1)?.staticData.layout ?? "main",
+    select: (s) => [...s.matches].reverse().find((match) => match.staticData.layout)?.staticData.layout ?? "main",
   });
 
   useDataxamasIdentify();

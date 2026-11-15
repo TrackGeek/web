@@ -112,7 +112,6 @@ src/
 │   ├── auth.ts             # Better Auth client
 │   ├── i18n/               # i18next setup + locales (30 languages)
 │   ├── comparison.config.ts# Compare feature config
-│   ├── mockups/            # Mock data
 │   └── utils/              # Helpers (seo, status, genre, infinite scroll, debounce)
 ├── providers/              # App, TanStack Query, and devtools providers
 └── routes/                 # File-based routes (TanStack Router)

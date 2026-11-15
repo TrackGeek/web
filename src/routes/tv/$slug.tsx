@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -58,10 +58,13 @@ import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
 import { nextEpisodeFromSeasons } from "@/lib/watch-links";
+import { resolveTmdbAnime } from "@/utils/resolve-tmdb-anime";
 import { getEpisodeRuntime, getRemainingWatchHours } from "@/utils/watch-time";
 
 export const Route = createFileRoute("/tv/$slug")({
   loader: async ({ params }) => {
+    const anime = await resolveTmdbAnime("tv", params.slug);
+    if (anime) throw redirect({ to: "/anime/$slug", params: { slug: String(anime.malId) }, replace: true });
     const item = await api.get(apiEndpoints.getTvShowDetails(params.slug)).then(({ data }) => data.tvShow);
     return { item };
   },

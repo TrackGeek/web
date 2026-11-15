@@ -378,6 +378,8 @@ export namespace ApiTypes {
       bannerEffect: string | null;
       language: string;
       timezone: string;
+      animeMangaTitleLanguage: "romaji" | "native" | "english";
+      defaultSearchType: ContentType;
       about: string;
       bannerUrl: string;
       avatarUrl: string;
@@ -899,7 +901,7 @@ export namespace ApiTypes {
 
   export type ProgressStatusCounts = Partial<Record<ProgressStatus, number>>;
 
-  export type ProgressSortBy = "name" | "addedAt" | "updatedAt" | "releaseDate";
+  export type ProgressSortBy = "name" | "addedAt" | "updatedAt" | "releaseDate" | "rating";
 
   export type ProgressSortOrder = "asc" | "desc";
 
@@ -1459,6 +1461,8 @@ export namespace ApiTypes {
 }
 
 export const apiEndpoints = {
+  getPersonalRewind: "/rewind/2026/me",
+  getGlobalRewind: "/rewind/2026/global",
   bookCover: (hardcoverId: number) => `/book/cover/${hardcoverId}`,
   getCurrency: "/stripe/currency",
   getPrices: "/stripe/price",

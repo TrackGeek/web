@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -25,6 +25,7 @@ import {
   CONTENT_TYPE_LABELS,
   CONTENT_TYPE_SLUGS,
   type ContentTypeSlug,
+  toContentTypeSlug,
 } from "@/lib/content-types";
 import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES, setLanguageCookie } from "@/lib/i18n/config";
 
@@ -32,12 +33,16 @@ type ProfilePreferences = {
   language?: string;
   timezone?: string;
   contentTypes?: ApiTypes.ContentType[];
+  defaultSearchType?: ApiTypes.ContentType;
+  animeMangaTitleLanguage?: "romaji" | "native" | "english";
 };
 
 export function SettingsPreferencesTab() {
   const { t, i18n } = useTranslation();
 
   const session = useSession();
+  const queryClient = useQueryClient();
+  const titleLanguage = session.data?.user?.profile?.animeMangaTitleLanguage ?? "romaji";
 
   const serverLanguage = session.data?.user?.profile?.language ?? i18n.language;
   const serverTimezone = session.data?.user?.profile?.timezone ?? new Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -59,6 +64,10 @@ export function SettingsPreferencesTab() {
     },
     onSuccess: async (_, variables) => {
       await session.refetch();
+
+      if (variables.animeMangaTitleLanguage) {
+        await queryClient.invalidateQueries();
+      }
 
       if (variables.language && variables.language !== i18n.language) {
         setLanguageCookie(variables.language);
@@ -166,6 +175,62 @@ export function SettingsPreferencesTab() {
                     ))}
                   </SelectGroup>
                 ))}
+              </SelectContent>
+            </Select>
+          </Field>
+          <Field className="gap-2 sm:col-span-2">
+            <FieldLabel htmlFor="default-search-type">{t("settings:preferences.defaultSearchType.title")}</FieldLabel>
+            <p className="text-sm text-muted-foreground" id="default-search-type-description">
+              {t("settings:preferences.defaultSearchType.description")}
+            </p>
+            <Select
+              value={toContentTypeSlug(session.data?.user?.profile?.defaultSearchType ?? "Movie") ?? "movie"}
+              onValueChange={(value: ContentTypeSlug) =>
+                updatePreferencesMutation.mutate({ defaultSearchType: CONTENT_TYPE_API[value] })
+              }
+            >
+              <SelectTrigger
+                id="default-search-type"
+                aria-describedby="default-search-type-description"
+                className="w-full max-w-full"
+                disabled={updatePreferencesMutation.isPending}
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent position="popper">
+                {CONTENT_TYPE_SLUGS.map((slug) => (
+                  <SelectItem key={slug} value={slug}>
+                    {t(CONTENT_TYPE_LABELS[slug])}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </Field>
+          <Field className="gap-2 sm:col-span-2">
+            <FieldLabel htmlFor="anime-manga-title-language">
+              {t("settings:preferences.animeMangaTitleLanguage.title")}
+            </FieldLabel>
+            <p className="text-sm text-muted-foreground" id="anime-manga-title-description">
+              {t("settings:preferences.animeMangaTitleLanguage.description")}
+            </p>
+            <Select
+              value={titleLanguage}
+              onValueChange={(value: "romaji" | "native" | "english") => {
+                updatePreferencesMutation.mutate({ animeMangaTitleLanguage: value });
+              }}
+            >
+              <SelectTrigger
+                id="anime-manga-title-language"
+                aria-describedby="anime-manga-title-description"
+                className="w-full max-w-full"
+                disabled={updatePreferencesMutation.isPending}
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent position="popper">
+                <SelectItem value="romaji">{t("settings:preferences.animeMangaTitleLanguage.romaji")}</SelectItem>
+                <SelectItem value="native">{t("settings:preferences.animeMangaTitleLanguage.native")}</SelectItem>
+                <SelectItem value="english">{t("common:languages.enUS")}</SelectItem>
               </SelectContent>
             </Select>
           </Field>

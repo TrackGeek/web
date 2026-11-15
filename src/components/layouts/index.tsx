@@ -4,16 +4,25 @@ import { InstallPrompt } from "../shared/install-prompt";
 import { ProductTour } from "../shared/tour/product-tour";
 
 interface LayoutProps {
-  variant: "full" | "main";
+  variant: "full" | "main" | "rewind";
   children: React.ReactNode;
 }
 
 const contentClassName: Record<LayoutProps["variant"], string> = {
   full: "flex flex-col w-full flex-1",
   main: "flex flex-col grow py-5 px-4 max-w-7xl w-full flex-1 mx-auto",
+  rewind: "w-full min-h-svh",
 };
 
 export function Layout({ variant, children }: LayoutProps) {
+  if (variant === "rewind") {
+    return (
+      <main id="main-content" className={contentClassName.rewind}>
+        {children}
+      </main>
+    );
+  }
+
   return (
     <div className="antialiased bg-background flex flex-col min-h-screen">
       <Header />

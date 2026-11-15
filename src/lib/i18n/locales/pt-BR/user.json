@@ -114,24 +114,24 @@
   "presenceInfoNotInGuild": "A pessoa não é um membro do servidor do Discord TrackGeek.",
   "presenceInfoOffline": "A pessoa está offline na {{provider}}.",
   "presenceInfoNotPublic": "A pessoa não está compartilhando sua atividade do {{provider}} publicamente.",
-  "psnTrophies": "PlayStation trophies",
+  "psnTrophies": "Troféus do PlayStation",
   "psn": {
-    "recentGames": "Recent games",
-    "nextLevel": "{{progress}} to level {{level}}",
-    "updatedAt": "Updated {{time}}",
-    "refresh": "Refresh trophies",
-    "refreshed": "PlayStation trophies updated.",
+    "recentGames": "Jogos recentes",
+    "nextLevel": "{{progress}} para o nível {{level}}",
+    "updatedAt": "Atualizado {{time}}",
+    "refresh": "Atualizar troféus",
+    "refreshed": "Troféus de PlayStation atualizados.",
     "notLinked": {
-      "title": "No PlayStation account",
-      "description": "Connect your PSN account to show your trophies here."
+      "title": "Nenhuma conta PlayStation",
+      "description": "Conecte sua conta PSN para mostrar seus troféus aqui."
     },
     "expired": {
-      "title": "PlayStation connection expired",
-      "description": "Reconnect your PSN account to keep your trophies up to date."
+      "title": "Conexão ao PlayStation expirada",
+      "description": "Reconecte sua conta da PSN para manter seus troféus atualizados."
     },
     "unavailable": {
-      "title": "Trophies unavailable",
-      "description": "PlayStation Network didn't respond. Try again later."
+      "title": "Troféus indisponíveis",
+      "description": "PlayStation Network não respondeu. Tente novamente mais tarde."
     }
   },
   "followed": "Seguido com sucesso",

@@ -6,6 +6,7 @@ import { FeedComposer } from "@/components/pages/feed/composer";
 import { FeedListFollowing } from "@/components/pages/feed/user-following";
 import { FeedListGlobal } from "@/components/pages/feed/user-global";
 import { FeedListTrending } from "@/components/pages/feed/user-trending";
+import { RewindPromo } from "@/components/shared/sidebar/rewind-promo";
 import { StillReading, StillWatching } from "@/components/shared/sidebar/still-tracking";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "@/lib/auth/client";
@@ -75,6 +76,7 @@ function FeedRoute() {
 
         {hasSidebar && sessionUser?.username && (
           <aside data-tour="feed-sidebar" className="flex flex-col gap-5 md:sticky md:top-4 md:w-1/3 md:shrink-0">
+            <RewindPromo />
             <StillWatching userId={sessionUser.id} username={sessionUser.username} />
             <StillReading userId={sessionUser.id} username={sessionUser.username} />
           </aside>

@@ -16,6 +16,8 @@ import { MoreOptionsDialog } from "@/components/pages/details/more-options-dialo
 import { QuickStatusButtons } from "@/components/pages/details/quick-status-buttons";
 import { Relations } from "@/components/pages/details/relations";
 import { ReviewItem } from "@/components/pages/details/review-item";
+import { HowLongToBeatPanel } from "@/components/pages/game/how-long-to-beat-panel";
+import { ProtonDbPanel } from "@/components/pages/game/protondb-panel";
 import { NotFoundComponent } from "@/components/shared/404.tsx";
 import { DetailsCard } from "@/components/shared/cards/details";
 import { CompanyLink } from "@/components/shared/company-link";
@@ -33,7 +35,7 @@ import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useGameScreenshots } from "@/hooks/game";
+import { useGameScreenshots, useHowLongToBeat } from "@/hooks/game";
 import { useToggleReviewReaction } from "@/hooks/review";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api.ts";
 import { useSession } from "@/lib/auth/client";
@@ -255,6 +257,7 @@ function GameDetailsRoute() {
     initialData: loaderGame,
   });
   const game = data;
+  const howLongToBeatQuery = useHowLongToBeat(game?.igdbId);
 
   const rating = game?.tgReviewScore ?? 0;
 
@@ -565,6 +568,12 @@ function GameDetailsRoute() {
           </div>
         )}
       </Grid>
+      <ProtonDbPanel
+        steamAppId={game.steamAppId ?? null}
+        protonDbTier={game.protonDbTier ?? null}
+        protonDbScore={game.protonDbScore ?? null}
+        steamDeckCategory={game.steamDeckCategory ?? null}
+      />
       {isAuthenticated && (
         <RefreshData
           isPending={mutation.isPending}
@@ -589,7 +598,7 @@ function GameDetailsRoute() {
 
   return (
     <>
-      <DetailsPageLayout sidebar={sidebar}>
+      <DetailsPageLayout sidebar={sidebar} belowSidebar={<HowLongToBeatPanel data={howLongToBeatQuery.data} />}>
         <h1 className="text-3xl lg:text-4xl font-bold text-card-foreground bg-linear-to-r from-card-foreground to-muted-foreground bg-clip-text">
           {game.name}
         </h1>

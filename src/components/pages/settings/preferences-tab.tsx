@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -32,12 +32,15 @@ type ProfilePreferences = {
   language?: string;
   timezone?: string;
   contentTypes?: ApiTypes.ContentType[];
+  animeMangaTitleLanguage?: "romaji" | "native" | "english";
 };
 
 export function SettingsPreferencesTab() {
   const { t, i18n } = useTranslation();
 
   const session = useSession();
+  const queryClient = useQueryClient();
+  const titleLanguage = session.data?.user?.profile?.animeMangaTitleLanguage ?? "romaji";
 
   const serverLanguage = session.data?.user?.profile?.language ?? i18n.language;
   const serverTimezone = session.data?.user?.profile?.timezone ?? new Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -59,6 +62,10 @@ export function SettingsPreferencesTab() {
     },
     onSuccess: async (_, variables) => {
       await session.refetch();
+
+      if (variables.animeMangaTitleLanguage) {
+        await queryClient.invalidateQueries();
+      }
 
       if (variables.language && variables.language !== i18n.language) {
         setLanguageCookie(variables.language);
@@ -166,6 +173,34 @@ export function SettingsPreferencesTab() {
                     ))}
                   </SelectGroup>
                 ))}
+              </SelectContent>
+            </Select>
+          </Field>
+          <Field className="gap-2 sm:col-span-2">
+            <FieldLabel htmlFor="anime-manga-title-language">
+              {t("settings:preferences.animeMangaTitleLanguage.title")}
+            </FieldLabel>
+            <p className="text-sm text-muted-foreground" id="anime-manga-title-description">
+              {t("settings:preferences.animeMangaTitleLanguage.description")}
+            </p>
+            <Select
+              value={titleLanguage}
+              onValueChange={(value: "romaji" | "native" | "english") => {
+                updatePreferencesMutation.mutate({ animeMangaTitleLanguage: value });
+              }}
+            >
+              <SelectTrigger
+                id="anime-manga-title-language"
+                aria-describedby="anime-manga-title-description"
+                className="w-full max-w-full"
+                disabled={updatePreferencesMutation.isPending}
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent position="popper">
+                <SelectItem value="romaji">{t("settings:preferences.animeMangaTitleLanguage.romaji")}</SelectItem>
+                <SelectItem value="native">{t("settings:preferences.animeMangaTitleLanguage.native")}</SelectItem>
+                <SelectItem value="english">{t("common:languages.enUS")}</SelectItem>
               </SelectContent>
             </Select>
           </Field>

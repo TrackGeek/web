@@ -1001,7 +1001,10 @@ function AnimeDetailsRoute() {
                   mediaType: "anime",
                   malId: anime.malId,
                   title: englishTitle ?? anime.title,
-                  titleRomaji: anime.title,
+                  titleRomaji:
+                    anime.titles?.find((entry: AnimeTitle) => entry.type === "Romaji")?.title ??
+                    anime.titles?.find((entry: AnimeTitle) => entry.type === "Default")?.title ??
+                    anime.title,
                   episode: nextEpisode(mySeason.totalEpisodes, mySeason.watchedEpisodes),
                 }}
               />

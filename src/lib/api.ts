@@ -378,6 +378,7 @@ export namespace ApiTypes {
       bannerEffect: string | null;
       language: string;
       timezone: string;
+      animeMangaTitleLanguage: "romaji" | "native" | "english";
       about: string;
       bannerUrl: string;
       avatarUrl: string;

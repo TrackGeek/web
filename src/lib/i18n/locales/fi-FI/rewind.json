@@ -1,93 +1,96 @@
 {
   "pageTitle": "Replay {{year}}",
-  "pageDescription": "Vuotesi {{year}} elokuvina, sarjoina, animena, peleinä, mangana ja kirjoina. TrackGeek-tarina, jonka pääosassa olet sinä.",
-  "back": "Takaisin TrackGeekiin",
-  "untitled": "Nimi ei saatavilla",
+  "pageDescription": "Your {{year}} in movies, shows, anime, games, manga and books. A TrackGeek story, starring you.",
+  "back": "Back to TrackGeek",
+  "untitled": "Title unavailable",
   "hero": {
     "title": "Replay <year>{{year}}</year>",
-    "description": "Sivutehtäväsi ansaitsivat omat lopputekstinsä.",
-    "start": "Käynnistä replay",
-    "signIn": "Kirjaudu nähdäksesi replayn",
-    "community": "Tutustu yhteisöön",
-    "loading": "Etsitään juonenkäänteitäsi...",
-    "error": "Replay ei latautunut. Yritä uudelleen nähdäksesi oikeat tilastosi.",
-    "empty": "Ei vielä vuodelle {{year}} päivättyä edistymistä. Lisää jotain kirjastoosi ja palaa sitten.",
-    "launch": "TrackGeek liittyi keskusteluun {{date}}.",
-    "preview": "{{year}} on vielä kesken. Tässä replay tähän asti."
+    "description": "Your side quests deserved their own end credits.",
+    "start": "Roll my replay",
+    "signIn": "Sign in for your replay",
+    "community": "Meet the community",
+    "loading": "Finding your plot twists...",
+    "error": "Your replay could not load. Try again to get your real stats.",
+    "empty": "No progress dated {{year}} yet. Add something to your library, then come back.",
+    "launch": "TrackGeek joined the chat on {{date}}.",
+    "preview": "{{year}} is still cooking. This is your replay so far."
   },
   "overview": {
-    "title": "Tarinasi kasvoi.",
-    "count_one": "<value>{{count, number}}</value> nimike tarinassasi.",
-    "count_other": "<value>{{count, number}}</value> nimikettä tarinassasi."
+    "title": "Your lore got bigger.",
+    "count_one": "<value>{{count, number}}</value> title in your story.",
+    "count_other": "<value>{{count, number}}</value> titles in your story."
   },
-  "first": { "title": "Jokainen tarina alkaa jostain.", "date": "Vuoden ensimmäinen tallennettu päiväsi: {{date}}." },
+  "first": {
+    "title": "Every arc starts somewhere.",
+    "date": "Your first saved date this year: {{date}}."
+  },
   "rhythm": {
-    "title": "{{month}} oli sinun aikakautesi.",
-    "description": "Nimikkeet vuoden ensimmäisen tallennetun päivämäärän mukaan. Kukin nimike lasketaan kerran, ei kerran jaksoa kohden."
+    "title": "{{month}} was your era.",
+    "description": "Titles by their first saved date this year. Each title counts once, not once per episode."
   },
   "category": {
     "story": {
-      "movie": "Jäit lopputeksteihin asti.",
-      "tv": "Vielä yksi jakso, eikö?",
-      "anime": "Animekaarensi oli omaa luokkaansa.",
-      "game": "Sivutehtävät veivät mennessään.",
-      "manga": "Seuraava luku kutsui aina.",
-      "book": "Juonenkäänteitä. Oikeilla sivuilla."
+      "movie": "You stayed for the credits.",
+      "tv": "One more episode, right?",
+      "anime": "Your anime arc went hard.",
+      "game": "Side quests took over.",
+      "manga": "The next chapter kept calling.",
+      "book": "Plot twists. On actual pages."
     },
-    "count": "<value>{{count, number}}</value> {{type}} vuonna {{year}}.",
-    "completed_one": "{{count, number}} nimikkeellä on valmistumispäivä tältä vuodelta. Valmista.",
-    "completed_other": "{{count, number}} nimikkeellä on valmistumispäivä tältä vuodelta. Valmista."
+    "count": "<value>{{count, number}}</value> {{type}} in your {{year}}.",
+    "completed_one": "{{count, number}} title has a finish date this year. That's a wrap.",
+    "completed_other": "{{count, number}} titles have finish dates this year. That's a wrap."
   },
   "shelf": {
-    "title": "{{type}}, jotka jäivät mieleen.",
-    "description": "Vuoden {{year}} arviosi kokonaisarvosanan mukaan. Samana vuonna suosikkeihin lisätyt nimikkeet saavat {{bonus}} bonuspisteen.",
-    "empty": "Ei vielä vuoden {{year}} arvioita tässä kategoriassa. Seuraamasi nimikkeet lasketaan silti."
+    "title": "{{type}} that made the cut.",
+    "description": "Your {{year}} reviews, ranked by overall rating plus {{bonus}} bonus point for titles you favorited that year.",
+    "empty": "No reviews in {{year}} for this category yet. Your tracked titles still count."
   },
   "global": {
-    "title": "Rakensimme tämän tarinan yhdessä.",
-    "loading": "Lasketaan yhteisön juonenkäänteitä...",
-    "error": "Yhteisön tilastot eivät latautuneet. Oma replaysi on yhä täällä.",
-    "count_one": "<value>{{count, number}}</value> yhteisön seuraama nimike.",
-    "count_other": "<value>{{count, number}}</value> yhteisön seuraamaa nimikettä.",
-    "people_one": "{{count, number}} tili luotu päivästä {{date}} alkaen. Ei edes kokonaista vuotta. Silti kokonainen tarina.",
-    "people_other": "{{count, number}} tiliä luotu päivästä {{date}} alkaen. Ei edes kokonaista vuotta. Silti kokonainen tarina.",
+    "title": "We built this lore together.",
+    "loading": "Counting the community's plot twists...",
+    "error": "Community stats could not load. Your personal replay is still here.",
+    "count_one": "<value>{{count, number}}</value> title tracked across the community.",
+    "count_other": "<value>{{count, number}}</value> titles tracked across the community.",
+    "people_one": "{{count, number}} account joined since {{date}}. Not even a full year. Still a whole story.",
+    "people_other": "{{count, number}} accounts joined since {{date}}. Not even a full year. Still a whole story.",
     "category": "{{type}}: {{count, number}}"
   },
   "outro": {
-    "title": "Sinä olit tarina koko ajan.",
-    "description": "Nähdäänkö seuraavassa luvussa? Odotuslistasi ei katoa mihinkään.",
-    "restart": "Toista uudelleen"
+    "title": "You were the plot all along.",
+    "description": "Same time, next chapter? Your backlog isn't going anywhere.",
+    "restart": "Play it again"
   },
   "share": {
-    "action": "Jaa replayni",
-    "text_one": "TrackGeek Replay {{year}}: {{count, number}} nimike ja paljon tarinoita. Mikä on sinun tarinasi?",
-    "text_other": "TrackGeek Replay {{year}}: {{count, number}} nimikettä ja paljon tarinoita. Mikä on sinun tarinasi?",
-    "error": "Jakaminen ei onnistunut. Yritä uudelleen tai käytä selaimesi jakovalikkoa."
+    "action": "Share my replay",
+    "text_one": "My TrackGeek Replay {{year}}: {{count, number}} title, a whole lot of lore. What's your story?",
+    "text_other": "My TrackGeek Replay {{year}}: {{count, number}} titles, a whole lot of lore. What's your story?",
+    "error": "Sharing did not work. Try again, or use your browser's share menu."
   },
   "method": {
-    "title": "Mikä oikeasti lasketaan?",
-    "description": "Edistyminen käyttää vuonna {{year}} tallennettuja aloitus- tai lopetuspäiviä tai lisäyspäivää, jos molemmat puuttuvat. Vanhemmille päiville merkityt tuonnit jäävät pois. Valmistuminen vaatii lopetuspäivän. Kertyneet tunnit, jaksot ja sivut eivät ole vuosisummia. Yhteisö laskee henkilökohtaiset merkinnät, ei yksilöllisiä nimikkeitä. Ranking käyttää kyseisenä vuonna luotuja arvioita ja saman vuoden suosikeista saatavaa bonusta. Tietueet voivat muuttua; historia ei ole muuttumaton. Alkuperäismusiikki vaihtuu kategorian mukaan ja sen voi mykistää."
+    "title": "What actually counts?",
+    "description": "Progress uses saved start or finish dates in {{year}}, or the date added if both are missing. Older dated imports stay out. Finishes need a finish date. Lifetime hours, episodes and pages are not yearly totals. Community counts include each person's entry, not unique titles. Rankings use reviews created that year, with a bonus for favorites added that year. Records can change; this is not an immutable history. Original audio changes by category and can be muted."
   },
   "controls": {
-    "readMode": "Lue sivuna vaakasuuntaisen tarinan sijaan",
-    "staticMode": "Lukutila pysyy päällä, kun liikettä on vähennetty tai näyttö on pieni.",
-    "chapters": "Replay-luvut",
+    "readMode": "Read as a page instead of a horizontal story",
+    "staticMode": "Reading mode stays on for reduced motion or a compact screen.",
+    "chapters": "Replay chapters",
     "position": "{{current}} / {{total}}",
-    "exit": "Poistu replaysta",
-    "mute": "Mykistä ääniraita",
-    "unmute": "Toista ääniraita",
-    "soundOn": "Ääni päällä",
-    "soundOff": "Ääni pois",
-    "volume": "Ääniraidan voimakkuus",
-    "originalAudio": "Alkuperäinen ääniraita on oletuksena päällä. Jos automaattitoisto estetään, ääni alkaa ensimmäisestä toiminnosta. Mykistä milloin vain.",
-    "audioError": "Ääni ei käynnistynyt. Voit jatkaa ilman ääntä."
+    "exit": "Exit replay",
+    "mute": "Mute soundtrack",
+    "unmute": "Play soundtrack",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off",
+    "volume": "Soundtrack volume",
+    "originalAudio": "Original soundtrack, on by default. If autoplay is blocked, sound starts with your first interaction. Mute anytime.",
+    "audioError": "Sound could not start. You can keep watching silently."
   },
   "chapters": {
-    "intro": "Oma replay",
-    "overview": "Vuotesi nimikkeinä",
-    "first": "Mistä kaikki alkoi",
-    "rhythm": "Oma rytmisi",
-    "global": "Me kaikki",
-    "outro": "Lopputekstit"
+    "intro": "Your replay",
+    "overview": "Your year in titles",
+    "first": "Where it started",
+    "rhythm": "Your rhythm",
+    "global": "All of us",
+    "outro": "End credits"
   }
 }

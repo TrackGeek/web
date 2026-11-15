@@ -307,5 +307,18 @@
   "usingThisCover": "Using this cover",
   "editionCoverOptions": "Cover options for {{title}}",
   "editionPageCount_one": "{{count}} page",
-  "editionPageCount_other": "{{count}} pages"
+  "editionPageCount_other": "{{count}} pages",
+  "protonDb": {
+    "noSummary": "No compatibility summary available.",
+    "loadError": "Could not load ProtonDB data. Try again or open ProtonDB.",
+    "tier": "Tier",
+    "score": "Score",
+    "deck": {
+      "verified": "Verified",
+      "playable": "Playable",
+      "unsupported": "Unsupported",
+      "unknown": "Unknown",
+      "unavailable": "Unavailable"
+    }
+  }
 }

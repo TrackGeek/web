@@ -1,93 +1,96 @@
 {
   "pageTitle": "Replay {{year}}",
-  "pageDescription": "用電影、影集、動畫、遊戲、漫畫與書籍回顧你的{{year}}年。這段TrackGeek故事，你就是主角。",
-  "back": "返回TrackGeek",
-  "untitled": "暫無標題",
+  "pageDescription": "Your {{year}} in movies, shows, anime, games, manga and books. A TrackGeek story, starring you.",
+  "back": "Back to TrackGeek",
+  "untitled": "Title unavailable",
   "hero": {
     "title": "Replay <year>{{year}}</year>",
-    "description": "你的支線任務，也值得專屬片尾。",
-    "start": "開啟我的Replay",
-    "signIn": "登入查看你的Replay",
-    "community": "看看大家的故事",
-    "loading": "正在尋找你的劇情反轉...",
-    "error": "無法載入你的Replay。請重試，查看真實統計。",
-    "empty": "還沒有日期屬於{{year}}年的進度。先將作品加入收藏庫，再回來看看。",
-    "launch": "TrackGeek於{{date}}加入聊天室。",
-    "preview": "{{year}}年還沒完結。這是你目前的Replay。"
+    "description": "Your side quests deserved their own end credits.",
+    "start": "Roll my replay",
+    "signIn": "Sign in for your replay",
+    "community": "Meet the community",
+    "loading": "Finding your plot twists...",
+    "error": "Your replay could not load. Try again to get your real stats.",
+    "empty": "No progress dated {{year}} yet. Add something to your library, then come back.",
+    "launch": "TrackGeek joined the chat on {{date}}.",
+    "preview": "{{year}} is still cooking. This is your replay so far."
   },
   "overview": {
-    "title": "你的世界觀，又擴展了。",
-    "count_one": "你的故事裡有<value>{{count, number}}</value>部作品。",
-    "count_other": "你的故事裡有<value>{{count, number}}</value>部作品。"
+    "title": "Your lore got bigger.",
+    "count_one": "<value>{{count, number}}</value> title in your story.",
+    "count_other": "<value>{{count, number}}</value> titles in your story."
   },
-  "first": { "title": "每段故事，都有起點。", "date": "今年最早儲存的日期：{{date}}。" },
+  "first": {
+    "title": "Every arc starts somewhere.",
+    "date": "Your first saved date this year: {{date}}."
+  },
   "rhythm": {
-    "title": "{{month}}是你的主場。",
-    "description": "依今年最早儲存的日期統計作品。每部作品只計算一次，不按單集重複計數。"
+    "title": "{{month}} was your era.",
+    "description": "Titles by their first saved date this year. Each title counts once, not once per episode."
   },
   "category": {
     "story": {
-      "movie": "你看到了片尾字幕。",
-      "tv": "再看一集，就一集？",
-      "anime": "你的追番篇章，真的神。",
-      "game": "支線任務成功上位。",
-      "manga": "下一話，總在呼喚。",
-      "book": "紙頁之間，也有神展開。"
+      "movie": "You stayed for the credits.",
+      "tv": "One more episode, right?",
+      "anime": "Your anime arc went hard.",
+      "game": "Side quests took over.",
+      "manga": "The next chapter kept calling.",
+      "book": "Plot twists. On actual pages."
     },
-    "count": "你的{{year}}年裡有<value>{{count, number}}</value>部{{type}}。",
-    "completed_one": "{{count, number}}部作品有今年的完成日期。完結灑花！",
-    "completed_other": "{{count, number}}部作品有今年的完成日期。完結灑花！"
+    "count": "<value>{{count, number}}</value> {{type}} in your {{year}}.",
+    "completed_one": "{{count, number}} title has a finish date this year. That's a wrap.",
+    "completed_other": "{{count, number}} titles have finish dates this year. That's a wrap."
   },
   "shelf": {
-    "title": "那些留下印記的{{type}}。",
-    "description": "依你在{{year}}年發表的評論綜合評分排名。同年加入最愛的作品額外加{{bonus}}分。",
-    "empty": "這個分類還沒有{{year}}年的評論。已記錄的作品仍會計入統計。"
+    "title": "{{type}} that made the cut.",
+    "description": "Your {{year}} reviews, ranked by overall rating plus {{bonus}} bonus point for titles you favorited that year.",
+    "empty": "No reviews in {{year}} for this category yet. Your tracked titles still count."
   },
   "global": {
-    "title": "這個世界觀，由我們一起打造。",
-    "loading": "正在統計社群的劇情反轉...",
-    "error": "無法載入社群統計。你的個人Replay仍可查看。",
-    "count_one": "整個社群記錄了<value>{{count, number}}</value>部作品。",
-    "count_other": "整個社群記錄了<value>{{count, number}}</value>部作品。",
-    "people_one": "自{{date}}起，{{count, number}}個帳號加入。還不到一年，已經寫下一整段故事。",
-    "people_other": "自{{date}}起，{{count, number}}個帳號加入。還不到一年，已經寫下一整段故事。",
-    "category": "{{type}}：{{count, number}}"
+    "title": "We built this lore together.",
+    "loading": "Counting the community's plot twists...",
+    "error": "Community stats could not load. Your personal replay is still here.",
+    "count_one": "<value>{{count, number}}</value> title tracked across the community.",
+    "count_other": "<value>{{count, number}}</value> titles tracked across the community.",
+    "people_one": "{{count, number}} account joined since {{date}}. Not even a full year. Still a whole story.",
+    "people_other": "{{count, number}} accounts joined since {{date}}. Not even a full year. Still a whole story.",
+    "category": "{{type}}: {{count, number}}"
   },
   "outro": {
-    "title": "原來，你一直是主角。",
-    "description": "下個篇章再見？待看清單又不會跑。",
-    "restart": "再看一遍"
+    "title": "You were the plot all along.",
+    "description": "Same time, next chapter? Your backlog isn't going anywhere.",
+    "restart": "Play it again"
   },
   "share": {
-    "action": "分享我的Replay",
-    "text_one": "我的TrackGeek Replay {{year}}：{{count, number}}部作品，滿滿的故事。你的故事是什麼？",
-    "text_other": "我的TrackGeek Replay {{year}}：{{count, number}}部作品，滿滿的故事。你的故事是什麼？",
-    "error": "分享失敗。請重試，或使用瀏覽器的分享選單。"
+    "action": "Share my replay",
+    "text_one": "My TrackGeek Replay {{year}}: {{count, number}} title, a whole lot of lore. What's your story?",
+    "text_other": "My TrackGeek Replay {{year}}: {{count, number}} titles, a whole lot of lore. What's your story?",
+    "error": "Sharing did not work. Try again, or use your browser's share menu."
   },
   "method": {
-    "title": "到底怎麼統計？",
-    "description": "進度使用儲存的{{year}}年開始或完成日期；兩者都沒有時使用新增日期。帶有更早日期的匯入記錄不計入。完成數需要明確的完成日期。累計時數、集數和頁數不是年度總量。社群統計累加每個人的記錄，不對作品去重。排名採用當年建立的評論，同年加入最愛的作品獲得加分。記錄可能被修改，這不是不可變的歷史快照。原創音樂隨分類切換，可隨時靜音。"
+    "title": "What actually counts?",
+    "description": "Progress uses saved start or finish dates in {{year}}, or the date added if both are missing. Older dated imports stay out. Finishes need a finish date. Lifetime hours, episodes and pages are not yearly totals. Community counts include each person's entry, not unique titles. Rankings use reviews created that year, with a bonus for favorites added that year. Records can change; this is not an immutable history. Original audio changes by category and can be muted."
   },
   "controls": {
-    "readMode": "以頁面閱讀，取代橫向故事",
-    "staticMode": "開啟減少動態效果或使用小螢幕時，保持閱讀模式。",
-    "chapters": "Replay章節",
+    "readMode": "Read as a page instead of a horizontal story",
+    "staticMode": "Reading mode stays on for reduced motion or a compact screen.",
+    "chapters": "Replay chapters",
     "position": "{{current}} / {{total}}",
-    "exit": "離開Replay",
-    "mute": "將背景音樂靜音",
-    "unmute": "播放背景音樂",
-    "soundOn": "聲音已開啟",
-    "soundOff": "聲音已關閉",
-    "volume": "背景音樂音量",
-    "originalAudio": "原創背景音樂預設開啟。如果自動播放被阻擋，將在你首次操作時開始。隨時可以靜音。",
-    "audioError": "無法播放聲音。你可以繼續靜音觀看。"
+    "exit": "Exit replay",
+    "mute": "Mute soundtrack",
+    "unmute": "Play soundtrack",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off",
+    "volume": "Soundtrack volume",
+    "originalAudio": "Original soundtrack, on by default. If autoplay is blocked, sound starts with your first interaction. Mute anytime.",
+    "audioError": "Sound could not start. You can keep watching silently."
   },
   "chapters": {
-    "intro": "你的Replay",
-    "overview": "用作品回顧這一年",
-    "first": "故事的起點",
-    "rhythm": "你的節奏",
-    "global": "我們所有人",
-    "outro": "片尾字幕"
+    "intro": "Your replay",
+    "overview": "Your year in titles",
+    "first": "Where it started",
+    "rhythm": "Your rhythm",
+    "global": "All of us",
+    "outro": "End credits"
   }
 }

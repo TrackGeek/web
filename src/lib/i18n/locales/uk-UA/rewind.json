@@ -1,103 +1,96 @@
 {
   "pageTitle": "Replay {{year}}",
-  "pageDescription": "Твій {{year}} рік у фільмах, серіалах, аніме, іграх, манзі та книжках. Історія TrackGeek з тобою в головній ролі.",
-  "back": "Назад до TrackGeek",
-  "untitled": "Назва недоступна",
+  "pageDescription": "Your {{year}} in movies, shows, anime, games, manga and books. A TrackGeek story, starring you.",
+  "back": "Back to TrackGeek",
+  "untitled": "Title unavailable",
   "hero": {
     "title": "Replay <year>{{year}}</year>",
-    "description": "Твої побічні квести заслужили власні титри.",
-    "start": "Запустити мій replay",
-    "signIn": "Увійди заради свого replay",
-    "community": "Знайомся зі спільнотою",
-    "loading": "Шукаємо твої сюжетні повороти...",
-    "error": "Не вдалося завантажити replay. Спробуй ще раз, щоб побачити справжню статистику.",
-    "empty": "Поки немає прогресу з датою за {{year}} рік. Додай щось до бібліотеки й повертайся.",
-    "launch": "TrackGeek приєднався до чату {{date}}.",
-    "preview": "{{year}} рік ще триває. Ось твій replay на сьогодні."
+    "description": "Your side quests deserved their own end credits.",
+    "start": "Roll my replay",
+    "signIn": "Sign in for your replay",
+    "community": "Meet the community",
+    "loading": "Finding your plot twists...",
+    "error": "Your replay could not load. Try again to get your real stats.",
+    "empty": "No progress dated {{year}} yet. Add something to your library, then come back.",
+    "launch": "TrackGeek joined the chat on {{date}}.",
+    "preview": "{{year}} is still cooking. This is your replay so far."
   },
   "overview": {
-    "title": "Твій лор став більшим.",
-    "count_one": "<value>{{count, number}}</value> твір у твоїй історії.",
-    "count_few": "<value>{{count, number}}</value> твори у твоїй історії.",
-    "count_many": "<value>{{count, number}}</value> творів у твоїй історії.",
-    "count_other": "<value>{{count, number}}</value> твору у твоїй історії."
+    "title": "Your lore got bigger.",
+    "count_one": "<value>{{count, number}}</value> title in your story.",
+    "count_other": "<value>{{count, number}}</value> titles in your story."
   },
-  "first": { "title": "Кожна арка з чогось починається.", "date": "Твоя перша збережена дата цього року: {{date}}." },
+  "first": {
+    "title": "Every arc starts somewhere.",
+    "date": "Your first saved date this year: {{date}}."
+  },
   "rhythm": {
-    "title": "{{month}} — твоя ера.",
-    "description": "Твори за першою збереженою датою цього року. Кожен рахується раз, а не за епізодами."
+    "title": "{{month}} was your era.",
+    "description": "Titles by their first saved date this year. Each title counts once, not once per episode."
   },
   "category": {
     "story": {
-      "movie": "Ти залишився до титрів.",
-      "tv": "Ще одну серію, так?",
-      "anime": "Твоя аніме-арка була на висоті.",
-      "game": "Побічні квести захопили все.",
-      "manga": "Наступний розділ знову кликав.",
-      "book": "Сюжетні повороти. На справжніх сторінках."
+      "movie": "You stayed for the credits.",
+      "tv": "One more episode, right?",
+      "anime": "Your anime arc went hard.",
+      "game": "Side quests took over.",
+      "manga": "The next chapter kept calling.",
+      "book": "Plot twists. On actual pages."
     },
-    "count": "<value>{{count, number}}</value> {{type}} у твоєму {{year}} році.",
-    "completed_one": "{{count, number}} твір має дату завершення цього року. Готово.",
-    "completed_few": "{{count, number}} твори мають дату завершення цього року. Готово.",
-    "completed_many": "{{count, number}} творів мають дату завершення цього року. Готово.",
-    "completed_other": "{{count, number}} твору має дату завершення цього року. Готово."
+    "count": "<value>{{count, number}}</value> {{type}} in your {{year}}.",
+    "completed_one": "{{count, number}} title has a finish date this year. That's a wrap.",
+    "completed_other": "{{count, number}} titles have finish dates this year. That's a wrap."
   },
   "shelf": {
-    "title": "{{type}}, що запам'яталися.",
-    "description": "Твої відгуки за {{year}} рік за загальною оцінкою, плюс {{bonus}} бонусний бал за твори, додані до улюбленого того ж року.",
-    "empty": "Поки немає відгуків за {{year}} рік у цій категорії. Відстежувані твори все одно враховуються."
+    "title": "{{type}} that made the cut.",
+    "description": "Your {{year}} reviews, ranked by overall rating plus {{bonus}} bonus point for titles you favorited that year.",
+    "empty": "No reviews in {{year}} for this category yet. Your tracked titles still count."
   },
   "global": {
-    "title": "Цей лор ми будували разом.",
-    "loading": "Рахуємо сюжетні повороти спільноти...",
-    "error": "Не вдалося завантажити статистику спільноти. Твій особистий replay залишається тут.",
-    "count_one": "<value>{{count, number}}</value> твір відстежується спільнотою.",
-    "count_few": "<value>{{count, number}}</value> твори відстежуються спільнотою.",
-    "count_many": "<value>{{count, number}}</value> творів відстежується спільнотою.",
-    "count_other": "<value>{{count, number}}</value> твору відстежується спільнотою.",
-    "people_one": "{{count, number}} обліковий запис створено з {{date}}. Навіть не повний рік. Уже ціла історія.",
-    "people_few": "{{count, number}} облікові записи створено з {{date}}. Навіть не повний рік. Уже ціла історія.",
-    "people_many": "{{count, number}} облікових записів створено з {{date}}. Навіть не повний рік. Уже ціла історія.",
-    "people_other": "{{count, number}} облікового запису створено з {{date}}. Навіть не повний рік. Уже ціла історія.",
+    "title": "We built this lore together.",
+    "loading": "Counting the community's plot twists...",
+    "error": "Community stats could not load. Your personal replay is still here.",
+    "count_one": "<value>{{count, number}}</value> title tracked across the community.",
+    "count_other": "<value>{{count, number}}</value> titles tracked across the community.",
+    "people_one": "{{count, number}} account joined since {{date}}. Not even a full year. Still a whole story.",
+    "people_other": "{{count, number}} accounts joined since {{date}}. Not even a full year. Still a whole story.",
     "category": "{{type}}: {{count, number}}"
   },
   "outro": {
-    "title": "Увесь цей час сюжетом був ти.",
-    "description": "Побачимось у наступному розділі? Твій список очікування нікуди не втече.",
-    "restart": "Відтворити знову"
+    "title": "You were the plot all along.",
+    "description": "Same time, next chapter? Your backlog isn't going anywhere.",
+    "restart": "Play it again"
   },
   "share": {
-    "action": "Поділитися моїм replay",
-    "text_one": "Мій TrackGeek Replay {{year}}: {{count, number}} твір і купа лору. А яка твоя історія?",
-    "text_few": "Мій TrackGeek Replay {{year}}: {{count, number}} твори і купа лору. А яка твоя історія?",
-    "text_many": "Мій TrackGeek Replay {{year}}: {{count, number}} творів і купа лору. А яка твоя історія?",
-    "text_other": "Мій TrackGeek Replay {{year}}: {{count, number}} твору і купа лору. А яка твоя історія?",
-    "error": "Не вдалося поділитися. Спробуй знову або скористайся меню браузера."
+    "action": "Share my replay",
+    "text_one": "My TrackGeek Replay {{year}}: {{count, number}} title, a whole lot of lore. What's your story?",
+    "text_other": "My TrackGeek Replay {{year}}: {{count, number}} titles, a whole lot of lore. What's your story?",
+    "error": "Sharing did not work. Try again, or use your browser's share menu."
   },
   "method": {
-    "title": "Що насправді враховується?",
-    "description": "Прогрес використовує збережені дати початку чи завершення за {{year}} рік або дату додавання, якщо обох немає. Імпорт зі старішими датами виключено. Завершенню потрібна дата завершення. Накопичені години, епізоди та сторінки не є річними підсумками. Спільнота рахує особисті записи, а не унікальні твори. Рейтинг використовує відгуки, створені того року, з бонусом за улюблене, додане тоді ж. Записи можуть змінюватися; це не незмінна історія. Авторська музика змінюється за категоріями, її можна вимкнути."
+    "title": "What actually counts?",
+    "description": "Progress uses saved start or finish dates in {{year}}, or the date added if both are missing. Older dated imports stay out. Finishes need a finish date. Lifetime hours, episodes and pages are not yearly totals. Community counts include each person's entry, not unique titles. Rankings use reviews created that year, with a bonus for favorites added that year. Records can change; this is not an immutable history. Original audio changes by category and can be muted."
   },
   "controls": {
-    "readMode": "Читати сторінкою замість горизонтальної історії",
-    "staticMode": "Режим читання залишається активним зі зменшеним рухом або малим екраном.",
-    "chapters": "Розділи replay",
+    "readMode": "Read as a page instead of a horizontal story",
+    "staticMode": "Reading mode stays on for reduced motion or a compact screen.",
+    "chapters": "Replay chapters",
     "position": "{{current}} / {{total}}",
-    "exit": "Вийти з replay",
-    "mute": "Вимкнути музику",
-    "unmute": "Увімкнути музику",
-    "soundOn": "Звук увімкнено",
-    "soundOff": "Звук вимкнено",
-    "volume": "Гучність музики",
-    "originalAudio": "Авторська музика ввімкнена за замовчуванням. Якщо автозапуск заблоковано, звук почнеться з першою взаємодією. Вимикай будь-коли.",
-    "audioError": "Не вдалося ввімкнути звук. Можна продовжити без нього."
+    "exit": "Exit replay",
+    "mute": "Mute soundtrack",
+    "unmute": "Play soundtrack",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off",
+    "volume": "Soundtrack volume",
+    "originalAudio": "Original soundtrack, on by default. If autoplay is blocked, sound starts with your first interaction. Mute anytime.",
+    "audioError": "Sound could not start. You can keep watching silently."
   },
   "chapters": {
-    "intro": "Твій replay",
-    "overview": "Твій рік у творах",
-    "first": "Із чого почалося",
-    "rhythm": "Твій ритм",
-    "global": "Усі ми",
-    "outro": "Фінальні титри"
+    "intro": "Your replay",
+    "overview": "Your year in titles",
+    "first": "Where it started",
+    "rhythm": "Your rhythm",
+    "global": "All of us",
+    "outro": "End credits"
   }
 }

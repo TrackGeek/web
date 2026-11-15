@@ -1,93 +1,96 @@
 {
   "pageTitle": "Replay {{year}}",
-  "pageDescription": "영화, 시리즈, 애니, 게임, 만화, 책으로 돌아보는 당신의 {{year}}년. 당신이 주인공인 TrackGeek 이야기.",
-  "back": "TrackGeek으로 돌아가기",
-  "untitled": "제목을 불러올 수 없음",
+  "pageDescription": "Your {{year}} in movies, shows, anime, games, manga and books. A TrackGeek story, starring you.",
+  "back": "Back to TrackGeek",
+  "untitled": "Title unavailable",
   "hero": {
     "title": "Replay <year>{{year}}</year>",
-    "description": "당신의 서브 퀘스트도 엔딩 크레딧을 받을 자격이 있어요.",
-    "start": "내 Replay 시작",
-    "signIn": "로그인하고 내 Replay 보기",
-    "community": "커뮤니티 만나기",
-    "loading": "당신의 반전을 찾는 중...",
-    "error": "Replay를 불러오지 못했어요. 실제 통계를 보려면 다시 시도해 주세요.",
-    "empty": "{{year}}년으로 기록된 진행 상황이 아직 없어요. 라이브러리에 작품을 추가한 뒤 다시 와 주세요.",
-    "launch": "TrackGeek이 합류한 날은 {{date}}.",
-    "preview": "{{year}}년은 아직 진행 중. 지금까지의 Replay예요."
+    "description": "Your side quests deserved their own end credits.",
+    "start": "Roll my replay",
+    "signIn": "Sign in for your replay",
+    "community": "Meet the community",
+    "loading": "Finding your plot twists...",
+    "error": "Your replay could not load. Try again to get your real stats.",
+    "empty": "No progress dated {{year}} yet. Add something to your library, then come back.",
+    "launch": "TrackGeek joined the chat on {{date}}.",
+    "preview": "{{year}} is still cooking. This is your replay so far."
   },
   "overview": {
-    "title": "당신의 세계관이 더 커졌어요.",
-    "count_one": "당신의 이야기에 <value>{{count, number}}</value>개 작품.",
-    "count_other": "당신의 이야기에 <value>{{count, number}}</value>개 작품."
+    "title": "Your lore got bigger.",
+    "count_one": "<value>{{count, number}}</value> title in your story.",
+    "count_other": "<value>{{count, number}}</value> titles in your story."
   },
-  "first": { "title": "모든 서사에는 시작이 있죠.", "date": "올해 처음 저장된 날짜: {{date}}." },
+  "first": {
+    "title": "Every arc starts somewhere.",
+    "date": "Your first saved date this year: {{date}}."
+  },
   "rhythm": {
-    "title": "{{month}}, 당신의 전성기.",
-    "description": "올해 처음 저장된 날짜를 기준으로 집계해요. 에피소드마다가 아니라 작품당 한 번만 세어요."
+    "title": "{{month}} was your era.",
+    "description": "Titles by their first saved date this year. Each title counts once, not once per episode."
   },
   "category": {
     "story": {
-      "movie": "엔딩 크레딧까지 함께했네요.",
-      "tv": "한 편만 더, 맞죠?",
-      "anime": "당신의 애니 서사, 폼 미쳤다.",
-      "game": "서브 퀘스트가 메인이 됐어요.",
-      "manga": "다음 화가 계속 불렀어요.",
-      "book": "반전의 연속. 진짜 책장 위에서."
+      "movie": "You stayed for the credits.",
+      "tv": "One more episode, right?",
+      "anime": "Your anime arc went hard.",
+      "game": "Side quests took over.",
+      "manga": "The next chapter kept calling.",
+      "book": "Plot twists. On actual pages."
     },
-    "count": "당신의 {{year}}년에 {{type}} <value>{{count, number}}</value>개.",
-    "completed_one": "올해 완료 날짜가 있는 작품 {{count, number}}개. 엔딩 달성!",
-    "completed_other": "올해 완료 날짜가 있는 작품 {{count, number}}개. 엔딩 달성!"
+    "count": "<value>{{count, number}}</value> {{type}} in your {{year}}.",
+    "completed_one": "{{count, number}} title has a finish date this year. That's a wrap.",
+    "completed_other": "{{count, number}} titles have finish dates this year. That's a wrap."
   },
   "shelf": {
-    "title": "기억에 남은 {{type}}.",
-    "description": "{{year}}년에 작성한 리뷰를 총점순으로 정렬해요. 같은 해 즐겨찾기에 추가한 작품은 보너스 {{bonus}}점을 받아요.",
-    "empty": "이 카테고리에는 아직 {{year}}년 리뷰가 없어요. 기록한 작품 수에는 영향이 없어요."
+    "title": "{{type}} that made the cut.",
+    "description": "Your {{year}} reviews, ranked by overall rating plus {{bonus}} bonus point for titles you favorited that year.",
+    "empty": "No reviews in {{year}} for this category yet. Your tracked titles still count."
   },
   "global": {
-    "title": "이 세계관, 함께 만들었어요.",
-    "loading": "커뮤니티의 반전을 세는 중...",
-    "error": "커뮤니티 통계를 불러오지 못했어요. 개인 Replay는 계속 볼 수 있어요.",
-    "count_one": "커뮤니티 전체에서 기록한 작품 <value>{{count, number}}</value>개.",
-    "count_other": "커뮤니티 전체에서 기록한 작품 <value>{{count, number}}</value>개.",
-    "people_one": "{{date}}부터 계정 {{count, number}}개가 합류했어요. 아직 일 년도 안 됐지만, 벌써 하나의 이야기.",
-    "people_other": "{{date}}부터 계정 {{count, number}}개가 합류했어요. 아직 일 년도 안 됐지만, 벌써 하나의 이야기.",
+    "title": "We built this lore together.",
+    "loading": "Counting the community's plot twists...",
+    "error": "Community stats could not load. Your personal replay is still here.",
+    "count_one": "<value>{{count, number}}</value> title tracked across the community.",
+    "count_other": "<value>{{count, number}}</value> titles tracked across the community.",
+    "people_one": "{{count, number}} account joined since {{date}}. Not even a full year. Still a whole story.",
+    "people_other": "{{count, number}} accounts joined since {{date}}. Not even a full year. Still a whole story.",
     "category": "{{type}}: {{count, number}}"
   },
   "outro": {
-    "title": "처음부터 주인공은 당신.",
-    "description": "다음 챕터에서 또 볼까요? 밀린 작품은 어디 안 가요.",
-    "restart": "다시 재생"
+    "title": "You were the plot all along.",
+    "description": "Same time, next chapter? Your backlog isn't going anywhere.",
+    "restart": "Play it again"
   },
   "share": {
-    "action": "내 Replay 공유",
-    "text_one": "나의 TrackGeek Replay {{year}}: 작품 {{count, number}}개, 수많은 이야기. 당신의 이야기는?",
-    "text_other": "나의 TrackGeek Replay {{year}}: 작품 {{count, number}}개, 수많은 이야기. 당신의 이야기는?",
-    "error": "공유하지 못했어요. 다시 시도하거나 브라우저의 공유 메뉴를 사용해 주세요."
+    "action": "Share my replay",
+    "text_one": "My TrackGeek Replay {{year}}: {{count, number}} title, a whole lot of lore. What's your story?",
+    "text_other": "My TrackGeek Replay {{year}}: {{count, number}} titles, a whole lot of lore. What's your story?",
+    "error": "Sharing did not work. Try again, or use your browser's share menu."
   },
   "method": {
-    "title": "무엇을 집계하나요?",
-    "description": "진행 상황은 {{year}}년 시작일이나 완료일을 사용하고, 둘 다 없으면 추가일을 사용해요. 이전 날짜로 가져온 기록은 제외해요. 완료 수에는 명시적인 완료일이 필요해요. 누적 시간, 에피소드, 페이지는 연간 합계가 아니에요. 커뮤니티는 고유 작품 수가 아니라 각자의 기록을 더해요. 순위는 해당 연도에 작성한 리뷰를 사용하고 같은 해 추가한 즐겨찾기에 보너스를 줘요. 기록은 변경될 수 있으며 고정된 이력이 아니에요. 오리지널 음악은 카테고리별로 바뀌고 음소거할 수 있어요."
+    "title": "What actually counts?",
+    "description": "Progress uses saved start or finish dates in {{year}}, or the date added if both are missing. Older dated imports stay out. Finishes need a finish date. Lifetime hours, episodes and pages are not yearly totals. Community counts include each person's entry, not unique titles. Rankings use reviews created that year, with a bonus for favorites added that year. Records can change; this is not an immutable history. Original audio changes by category and can be muted."
   },
   "controls": {
-    "readMode": "가로 이야기 대신 페이지로 읽기",
-    "staticMode": "동작 줄이기 설정이나 작은 화면에서는 읽기 모드가 유지돼요.",
-    "chapters": "Replay 챕터",
+    "readMode": "Read as a page instead of a horizontal story",
+    "staticMode": "Reading mode stays on for reduced motion or a compact screen.",
+    "chapters": "Replay chapters",
     "position": "{{current}} / {{total}}",
-    "exit": "Replay 나가기",
-    "mute": "배경 음악 끄기",
-    "unmute": "배경 음악 재생",
-    "soundOn": "소리 켜짐",
-    "soundOff": "소리 꺼짐",
-    "volume": "배경 음악 볼륨",
-    "originalAudio": "오리지널 음악은 기본으로 켜져 있어요. 자동 재생이 차단되면 첫 조작 때 시작돼요. 언제든 음소거할 수 있어요.",
-    "audioError": "소리를 재생하지 못했어요. 소리 없이 계속 볼 수 있어요."
+    "exit": "Exit replay",
+    "mute": "Mute soundtrack",
+    "unmute": "Play soundtrack",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off",
+    "volume": "Soundtrack volume",
+    "originalAudio": "Original soundtrack, on by default. If autoplay is blocked, sound starts with your first interaction. Mute anytime.",
+    "audioError": "Sound could not start. You can keep watching silently."
   },
   "chapters": {
-    "intro": "나의 Replay",
-    "overview": "작품으로 보는 올해",
-    "first": "시작된 곳",
-    "rhythm": "나의 리듬",
-    "global": "우리 모두",
-    "outro": "엔딩 크레딧"
+    "intro": "Your replay",
+    "overview": "Your year in titles",
+    "first": "Where it started",
+    "rhythm": "Your rhythm",
+    "global": "All of us",
+    "outro": "End credits"
   }
 }

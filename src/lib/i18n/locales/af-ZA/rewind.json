@@ -1,93 +1,96 @@
 {
   "pageTitle": "Replay {{year}}",
-  "pageDescription": "Jou {{year}} in flieks, reekse, anime, speletjies, manga en boeke. 'n TrackGeek-verhaal met jou in die hoofrol.",
-  "back": "Terug na TrackGeek",
-  "untitled": "Titel nie beskikbaar nie",
+  "pageDescription": "Your {{year}} in movies, shows, anime, games, manga and books. A TrackGeek story, starring you.",
+  "back": "Back to TrackGeek",
+  "untitled": "Title unavailable",
   "hero": {
     "title": "Replay <year>{{year}}</year>",
-    "description": "Jou sy-avonture verdien hul eie eindkrediete.",
-    "start": "Speel my replay",
-    "signIn": "Meld aan vir jou replay",
-    "community": "Ontmoet die gemeenskap",
-    "loading": "Op soek na jou storiewendings...",
-    "error": "Jou replay kon nie laai nie. Probeer weer vir jou werklike statistieke.",
-    "empty": "Nog geen vordering met 'n datum in {{year}} nie. Voeg iets by jou biblioteek en kom terug.",
-    "launch": "TrackGeek het op {{date}} by die gesprek aangesluit.",
-    "preview": "{{year}} is nog aan die gang. Hier is jou replay tot dusver."
+    "description": "Your side quests deserved their own end credits.",
+    "start": "Roll my replay",
+    "signIn": "Sign in for your replay",
+    "community": "Meet the community",
+    "loading": "Finding your plot twists...",
+    "error": "Your replay could not load. Try again to get your real stats.",
+    "empty": "No progress dated {{year}} yet. Add something to your library, then come back.",
+    "launch": "TrackGeek joined the chat on {{date}}.",
+    "preview": "{{year}} is still cooking. This is your replay so far."
   },
   "overview": {
-    "title": "Jou verhaal het gegroei.",
-    "count_one": "<value>{{count, number}}</value> titel in jou verhaal.",
-    "count_other": "<value>{{count, number}}</value> titels in jou verhaal."
+    "title": "Your lore got bigger.",
+    "count_one": "<value>{{count, number}}</value> title in your story.",
+    "count_other": "<value>{{count, number}}</value> titles in your story."
   },
-  "first": { "title": "Elke storielyn begin iewers.", "date": "Jou eerste gestoorde datum vanjaar: {{date}}." },
+  "first": {
+    "title": "Every arc starts somewhere.",
+    "date": "Your first saved date this year: {{date}}."
+  },
   "rhythm": {
-    "title": "{{month}} was jou era.",
-    "description": "Titels volgens hul eerste gestoorde datum vanjaar. Elke titel tel een keer, nie per episode nie."
+    "title": "{{month}} was your era.",
+    "description": "Titles by their first saved date this year. Each title counts once, not once per episode."
   },
   "category": {
     "story": {
-      "movie": "Jy het tot die eindkrediete gebly.",
-      "tv": "Net nog een episode, né?",
-      "anime": "Jou anime-storielyn was op 'n ander vlak.",
-      "game": "Sy-opdragte het oorgeneem.",
-      "manga": "Die volgende hoofstuk het bly roep.",
-      "book": "Storiewendings. Op regte bladsye."
+      "movie": "You stayed for the credits.",
+      "tv": "One more episode, right?",
+      "anime": "Your anime arc went hard.",
+      "game": "Side quests took over.",
+      "manga": "The next chapter kept calling.",
+      "book": "Plot twists. On actual pages."
     },
-    "count": "<value>{{count, number}}</value> {{type}} in jou {{year}}.",
-    "completed_one": "{{count, number}} titel het 'n einddatum vanjaar. Klaar gespeel.",
-    "completed_other": "{{count, number}} titels het 'n einddatum vanjaar. Klaar gespeel."
+    "count": "<value>{{count, number}}</value> {{type}} in your {{year}}.",
+    "completed_one": "{{count, number}} title has a finish date this year. That's a wrap.",
+    "completed_other": "{{count, number}} titles have finish dates this year. That's a wrap."
   },
   "shelf": {
-    "title": "{{type}} wat uitgestaan het.",
-    "description": "Jou resensies uit {{year}}, volgens algehele punt plus {{bonus}} bonuspunt vir titels wat jy daardie jaar by gunstelinge gevoeg het.",
-    "empty": "Nog geen resensies uit {{year}} in dié kategorie nie. Jou aangetekende titels tel steeds."
+    "title": "{{type}} that made the cut.",
+    "description": "Your {{year}} reviews, ranked by overall rating plus {{bonus}} bonus point for titles you favorited that year.",
+    "empty": "No reviews in {{year}} for this category yet. Your tracked titles still count."
   },
   "global": {
-    "title": "Ons het dié verhaal saam gebou.",
-    "loading": "Ons tel die gemeenskap se storiewendings...",
-    "error": "Gemeenskapstatistieke kon nie laai nie. Jou persoonlike replay is steeds hier.",
-    "count_one": "<value>{{count, number}}</value> titel deur die gemeenskap aangeteken.",
-    "count_other": "<value>{{count, number}}</value> titels deur die gemeenskap aangeteken.",
-    "people_one": "{{count, number}} rekening sedert {{date}} geskep. Nie eens 'n volle jaar nie. Reeds 'n hele verhaal.",
-    "people_other": "{{count, number}} rekeninge sedert {{date}} geskep. Nie eens 'n volle jaar nie. Reeds 'n hele verhaal.",
+    "title": "We built this lore together.",
+    "loading": "Counting the community's plot twists...",
+    "error": "Community stats could not load. Your personal replay is still here.",
+    "count_one": "<value>{{count, number}}</value> title tracked across the community.",
+    "count_other": "<value>{{count, number}}</value> titles tracked across the community.",
+    "people_one": "{{count, number}} account joined since {{date}}. Not even a full year. Still a whole story.",
+    "people_other": "{{count, number}} accounts joined since {{date}}. Not even a full year. Still a whole story.",
     "category": "{{type}}: {{count, number}}"
   },
   "outro": {
-    "title": "Jy was die storie al die tyd.",
-    "description": "Sien ons jou by die volgende hoofstuk? Jou waglys gaan nêrens heen nie.",
-    "restart": "Speel dit weer"
+    "title": "You were the plot all along.",
+    "description": "Same time, next chapter? Your backlog isn't going anywhere.",
+    "restart": "Play it again"
   },
   "share": {
-    "action": "Deel my replay",
-    "text_one": "My TrackGeek Replay {{year}}: {{count, number}} titel, hope stories. Wat is jou verhaal?",
-    "text_other": "My TrackGeek Replay {{year}}: {{count, number}} titels, hope stories. Wat is jou verhaal?",
-    "error": "Kon nie deel nie. Probeer weer of gebruik jou blaaier se deelkieslys."
+    "action": "Share my replay",
+    "text_one": "My TrackGeek Replay {{year}}: {{count, number}} title, a whole lot of lore. What's your story?",
+    "text_other": "My TrackGeek Replay {{year}}: {{count, number}} titles, a whole lot of lore. What's your story?",
+    "error": "Sharing did not work. Try again, or use your browser's share menu."
   },
   "method": {
-    "title": "Wat tel werklik?",
-    "description": "Vordering gebruik gestoorde begin- of einddatums in {{year}}, of die byvoegdatum as albei ontbreek. Invoere met ouer datums tel nie. Voltooiings vereis 'n einddatum. Opgehoopte ure, episodes en bladsye is nie jaartotale nie. Die gemeenskap tel elke persoon se inskrywing, nie unieke titels nie. Ranglyste gebruik resensies uit daardie jaar met 'n bonus vir gunstelinge wat dieselfde jaar bygevoeg is. Rekords kan verander; dit is nie 'n onveranderlike geskiedenis nie. Oorspronklike musiek verander per kategorie en kan gedemp word."
+    "title": "What actually counts?",
+    "description": "Progress uses saved start or finish dates in {{year}}, or the date added if both are missing. Older dated imports stay out. Finishes need a finish date. Lifetime hours, episodes and pages are not yearly totals. Community counts include each person's entry, not unique titles. Rankings use reviews created that year, with a bonus for favorites added that year. Records can change; this is not an immutable history. Original audio changes by category and can be muted."
   },
   "controls": {
-    "readMode": "Lees as 'n bladsy eerder as 'n horisontale verhaal",
-    "staticMode": "Leesmodus bly aan vir verminderde beweging of 'n klein skerm.",
-    "chapters": "Replay-hoofstukke",
+    "readMode": "Read as a page instead of a horizontal story",
+    "staticMode": "Reading mode stays on for reduced motion or a compact screen.",
+    "chapters": "Replay chapters",
     "position": "{{current}} / {{total}}",
-    "exit": "Verlaat replay",
-    "mute": "Demp klankbaan",
-    "unmute": "Speel klankbaan",
-    "soundOn": "Klank aan",
-    "soundOff": "Klank af",
-    "volume": "Klankbaanvolume",
-    "originalAudio": "Oorspronklike klankbaan, by verstek aan. As outospeel geblokkeer word, begin klank met jou eerste interaksie. Demp dit enige tyd.",
-    "audioError": "Klank kon nie begin nie. Jy kan stil voortgaan."
+    "exit": "Exit replay",
+    "mute": "Mute soundtrack",
+    "unmute": "Play soundtrack",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off",
+    "volume": "Soundtrack volume",
+    "originalAudio": "Original soundtrack, on by default. If autoplay is blocked, sound starts with your first interaction. Mute anytime.",
+    "audioError": "Sound could not start. You can keep watching silently."
   },
   "chapters": {
-    "intro": "Jou replay",
-    "overview": "Jou jaar in titels",
-    "first": "Waar dit begin het",
-    "rhythm": "Jou ritme",
-    "global": "Ons almal",
-    "outro": "Eindkrediete"
+    "intro": "Your replay",
+    "overview": "Your year in titles",
+    "first": "Where it started",
+    "rhythm": "Your rhythm",
+    "global": "All of us",
+    "outro": "End credits"
   }
 }

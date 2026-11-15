@@ -301,11 +301,24 @@
     "notAvailableDescription": "No momento não há nada listado para este país. Experimente outro.",
     "attribution": "Disponibilidade de streaming fornecida pelo JustWatch"
   },
-  "useThisCover": "Use this cover",
-  "useDefaultCover": "Use default cover",
-  "coverUpdated": "Cover updated",
-  "usingThisCover": "Using this cover",
-  "editionCoverOptions": "Cover options for {{title}}",
-  "editionPageCount_one": "{{count}} page",
-  "editionPageCount_other": "{{count}} pages"
+  "useThisCover": "Usar esta capa",
+  "useDefaultCover": "Usar capa padrão",
+  "coverUpdated": "Capa atualizada",
+  "usingThisCover": "Usando esta capa",
+  "editionCoverOptions": "Opções de capa do {{title}}",
+  "editionPageCount_one": "{{count}} página",
+  "editionPageCount_other": "{{count}} páginas",
+  "protonDb": {
+    "noSummary": "No compatibility summary available.",
+    "loadError": "Could not load ProtonDB data. Try again or open ProtonDB.",
+    "tier": "Tier",
+    "score": "Score",
+    "deck": {
+      "verified": "Verified",
+      "playable": "Playable",
+      "unsupported": "Unsupported",
+      "unknown": "Unknown",
+      "unavailable": "Unavailable"
+    }
+  }
 }

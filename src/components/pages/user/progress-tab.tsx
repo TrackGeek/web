@@ -80,7 +80,7 @@ export function UserProgressTab({
 
   const optionsQuery = useProgressFilterOptions(contentType, userId);
   const progressQuery = useUserProgress(contentType, userId, selectedStatus, appliedFilters, sort);
-  const sortOptions = useMemo(() => progressSortOptions(contentType), [contentType]);
+  const sortOptions = useMemo(() => progressSortOptions(contentType, selectedStatus), [contentType, selectedStatus]);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   const { hasNextPage, isFetchingNextPage, fetchNextPage } = progressQuery;
@@ -179,6 +179,7 @@ export function UserProgressTab({
               type="button"
               onClick={() => {
                 setSelectedStatus(section.status);
+                if (sort.by === "rating") setSort(DEFAULT_PROGRESS_SORT);
                 if (section.status !== "Completed" && section.status !== "Dropped") {
                   setFilters((current) => ({ ...current, completion: [], selectedPlatforms: [] }));
                 }
@@ -218,7 +219,13 @@ export function UserProgressTab({
             <div className="flex gap-1.5">
               <Select
                 value={sort.by}
-                onValueChange={(by) => setSort((current) => ({ ...current, by: by as ApiTypes.ProgressSortBy }))}
+                onValueChange={(by) =>
+                  setSort((current) => ({
+                    ...current,
+                    by: by as ApiTypes.ProgressSortBy,
+                    order: by === "rating" ? "desc" : current.order,
+                  }))
+                }
               >
                 <SelectTrigger className="flex-1 min-w-0 bg-muted/50">
                   <SelectValue placeholder={t("user:sort.placeholder")} />

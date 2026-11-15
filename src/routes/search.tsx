@@ -1,306 +1,46 @@
 import { Icon } from "@iconify/react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import type { AxiosResponse } from "axios";
-import { parseAsArrayOf, parseAsFloat, parseAsString, parseAsStringLiteral, useQueryState, useQueryStates } from "nuqs";
-import { memo, useMemo } from "react";
+import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { type ContentType, type FilterParams, Filters } from "@/components/layouts/filters.tsx";
-import { Grid } from "@/components/layouts/grid";
+import { type ContentType, Filters } from "@/components/layouts/filters";
 import { CastSearchResults } from "@/components/pages/search/cast-results";
+import { SearchResults } from "@/components/pages/search/search-results";
 import { UserSearchResults } from "@/components/pages/search/user-results";
-import { CardItem } from "@/components/shared/cards/card";
-import { ErrorComponent } from "@/components/shared/error.tsx";
-import { LoadingFiltered } from "@/components/shared/loadings/filtered.tsx";
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useContentTypes, useVisibleContentType } from "@/hooks/content-type";
-import { api } from "@/lib/api";
+import { NON_CONTENT_SEARCH_TYPES, SEARCH_TYPES } from "@/constants/search";
+import { useSearch } from "@/hooks/use-search";
 import { seo } from "@/lib/utils/seo";
-import { useDebounce } from "@/lib/utils/useDebounce.ts";
-import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
-
-const CONTENT_TYPES: { value: ContentType; labelKey: string }[] = [
-  { value: "movie", labelKey: "common:types.movie" },
-  { value: "tv", labelKey: "common:types.tv" },
-  { value: "game", labelKey: "common:types.game" },
-  { value: "anime", labelKey: "common:types.anime" },
-  { value: "manga", labelKey: "common:types.manga" },
-  { value: "book", labelKey: "common:types.book" },
-];
-
-type SearchType = ContentType | "user" | "cast";
-
-const SEARCH_TYPES: { value: SearchType; labelKey: string }[] = [
-  ...CONTENT_TYPES,
-  { value: "cast", labelKey: "common:types.cast" },
-  { value: "user", labelKey: "common:profile" },
-];
-
-const NON_CONTENT_SEARCH_TYPES: SearchType[] = ["user", "cast"];
+import { CLEARED_FILTER_QUERY } from "@/utils/search";
 
 export const Route = createFileRoute("/search")({
   head: () => ({
     meta: [...seo({ title: "Search" })],
   }),
-  beforeLoad: ({ search }) => {
-    if (!(search as { type?: string }).type) {
-      throw redirect({ to: "/search", search: { type: "movie" }, replace: true });
-    }
-  },
   component: RouteComponent,
 });
 
-function buildSearchUrl(contentType: ContentType, query: string, filters: FilterParams, page: number): string {
-  const qs = new URLSearchParams();
-
-  if (page > 1) qs.set("page", String(page));
-  if (query) qs.set("query", query);
-  if (filters.type) qs.set("type", filters.type);
-  if (filters.status) qs.set("status", filters.status);
-  if (filters.genres?.length) qs.set("genres", filters.genres.join(","));
-  if (filters.year) qs.set("year", filters.year);
-  if (filters.sort) qs.set("orderBy", filters.sort);
-  if (filters.gameMode) qs.set("gameMode", filters.gameMode);
-  if (filters.platforms?.length) qs.set("platforms", filters.platforms.join(","));
-  if (filters.minTgScore != null) qs.set("minTgScore", String(filters.minTgScore));
-
-  const qsStr = qs.toString();
-  return qsStr ? `/${contentType}/search?${qsStr}` : `/${contentType}/search`;
-}
-
-// `type` is already taken by the content type, so the anime/manga format filter rides on `format`.
-const FILTER_QUERY_PARSERS = {
-  minTgScore: parseAsFloat,
-  format: parseAsString,
-  status: parseAsString,
-  genres: parseAsArrayOf(parseAsString),
-  year: parseAsString,
-  sort: parseAsString,
-  gameMode: parseAsString,
-  platforms: parseAsArrayOf(parseAsString),
-};
-
-type FilterQueryState = {
-  minTgScore: number | null;
-  format: string | null;
-  status: string | null;
-  genres: string[] | null;
-  year: string | null;
-  sort: string | null;
-  gameMode: string | null;
-  platforms: string[] | null;
-};
-
-const CLEARED_FILTER_QUERY: FilterQueryState = {
-  minTgScore: null,
-  format: null,
-  status: null,
-  genres: null,
-  year: null,
-  sort: null,
-  gameMode: null,
-  platforms: null,
-};
-
-function getItemsFromPage(page: AxiosResponse, contentType: ContentType) {
-  const data = page?.data;
-  switch (contentType) {
-    case "movie":
-      return data?.movies?.items ?? [];
-    case "tv":
-      return data?.tvShows?.items ?? [];
-    case "anime":
-      return data?.animes?.items ?? [];
-    case "manga":
-      return data?.mangas?.items ?? [];
-    case "book":
-      return data?.books?.items ?? [];
-    case "game":
-      return data?.games?.items ?? [];
-    default:
-      return [];
-  }
-}
-
-function getPaginationFromPage(page: AxiosResponse, contentType: ContentType) {
-  const data = page?.data;
-  switch (contentType) {
-    case "anime":
-      return data?.animes;
-    case "manga":
-      return data?.mangas;
-    case "book":
-      return data?.books;
-    case "game":
-      return data?.games;
-    case "movie":
-      return data?.movies;
-    case "tv":
-      return data?.tvShows;
-    default:
-      return undefined;
-  }
-}
-
-type SearchResultsProps = {
-  items: ReturnType<typeof getItemsFromPage>;
-  contentType: ContentType;
-  isLoading: boolean;
-  isError: boolean;
-  isFetchingNextPage: boolean;
-  sentinelRef: React.Ref<HTMLDivElement>;
-};
-
-const SearchResults = memo(
-  ({ items, contentType, isLoading, isError, isFetchingNextPage, sentinelRef }: SearchResultsProps) => {
-    const { t } = useTranslation();
-
-    return (
-      <div className="flex-1 md:w-2/3 space-y-4">
-        {isError && <ErrorComponent />}
-
-        {isLoading && <LoadingFiltered />}
-
-        {!isLoading && !isError && items.length === 0 && (
-          <Empty className="border-0">
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <Icon icon="lucide:search-x" />
-              </EmptyMedia>
-              <EmptyTitle>{t("common:noResults")}</EmptyTitle>
-              <EmptyDescription>{t("common:noResultsDescription")}</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        )}
-
-        {!isLoading && !isError && items.length > 0 && (
-          <Grid minColSize="128px" className="grid gap-6">
-            {items.map((item: any) => (
-              <CardItem
-                key={item.anilistId ?? item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}
-                title={item.title ?? item.name}
-                url={`/${contentType}/${item.anilistId ?? item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId}`}
-                imageURL={item.imageUrl ?? item.coverUrl ?? item.posterUrl ?? null}
-                isAdult={item.isAdult}
-              />
-            ))}
-          </Grid>
-        )}
-
-        <div ref={sentinelRef} className="h-px" />
-
-        {isFetchingNextPage && <LoadingFiltered />}
-      </div>
-    );
-  },
-);
-
 function RouteComponent() {
-  const [searchType, setSearchType] = useQueryState(
-    "type",
-    parseAsStringLiteral(SEARCH_TYPES.map((c) => c.value))
-      .withDefault("movie")
-      .withOptions({ clearOnDefault: false }),
-  );
-
-  const isUserSearch = searchType === "user";
-  const isCastSearch = searchType === "cast";
-  const isContentSearch = !isUserSearch && !isCastSearch;
-  const contentType: ContentType = isUserSearch || isCastSearch ? "movie" : searchType;
-
-  const [searchQuery, setSearchQuery] = useQueryState("query", parseAsString.withDefault(""));
-  const [filterQuery, setFilterQuery] = useQueryStates(FILTER_QUERY_PARSERS);
-
-  const debouncedQuery = useDebounce(searchQuery, 600);
-
   const { t } = useTranslation();
-
-  const filters = useMemo<FilterParams>(
-    () => ({
-      minTgScore: filterQuery.minTgScore ?? undefined,
-      type: filterQuery.format ?? undefined,
-      status: filterQuery.status ?? undefined,
-      genres: filterQuery.genres ?? undefined,
-      year: filterQuery.year ?? undefined,
-      sort: filterQuery.sort ?? undefined,
-      gameMode: filterQuery.gameMode ?? undefined,
-      platforms: filterQuery.platforms ?? undefined,
-    }),
-    [filterQuery],
-  );
-
-  const handleFilterChange = (patch: Partial<FilterParams>) => {
-    const next: Partial<FilterQueryState> = {};
-
-    if ("minTgScore" in patch) next.minTgScore = patch.minTgScore ?? null;
-    if ("type" in patch) next.format = patch.type ?? null;
-    if ("status" in patch) next.status = patch.status ?? null;
-    if ("genres" in patch) next.genres = patch.genres ?? null;
-    if ("year" in patch) next.year = patch.year ?? null;
-    if ("sort" in patch) next.sort = patch.sort ?? null;
-    if ("gameMode" in patch) next.gameMode = patch.gameMode ?? null;
-    if ("platforms" in patch) next.platforms = patch.platforms ?? null;
-
-    setFilterQuery(next);
-  };
-
-  const handleSearchTypeChange = (value: string) => {
-    setSearchType(value as SearchType);
-    setSearchQuery("");
-    setFilterQuery(CLEARED_FILTER_QUERY);
-  };
-
-  const { hiddenClass, visible } = useContentTypes();
-
-  useVisibleContentType(isContentSearch ? contentType : visible[0], handleSearchTypeChange);
-
-  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["search", contentType, debouncedQuery, filters],
-    queryFn: ({ pageParam }) => api.get(buildSearchUrl(contentType, debouncedQuery, filters, pageParam as number)),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      const pagination = getPaginationFromPage(lastPage, contentType);
-      if (!pagination) return undefined;
-
-      const current = pagination.inPage ?? 1;
-
-      if (pagination.pages != null) return current < pagination.pages ? current + 1 : undefined;
-      if (pagination.itemsPerPage != null)
-        return pagination.itemsInPage >= pagination.itemsPerPage ? current + 1 : undefined;
-
-      return undefined;
-    },
-    enabled: isContentSearch,
-  });
-
-  const sentinelRef = useInfiniteScroll(fetchNextPage, hasNextPage && !isFetchingNextPage);
-
-  const handlePaste = async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-
-      setSearchQuery(text);
-    } catch (err) {
-      console.error("Failed to read clipboard:", err);
-    }
-  };
-
-  const items = useMemo(() => {
-    const seen = new Set<number | string>();
-
-    return (data?.pages.flatMap((p) => getItemsFromPage(p, contentType)) ?? []).filter((item: any) => {
-      const id = item.malId ?? item.tmdbId ?? item.hardcoverId ?? item.igdbId;
-
-      if (id == null) return true;
-      if (seen.has(id)) return false;
-
-      seen.add(id);
-
-      return true;
-    });
-  }, [data, contentType]);
+  const {
+    searchType,
+    handleSearchTypeChange,
+    hiddenClass,
+    searchQuery,
+    setSearchQuery,
+    handlePaste,
+    isUserSearch,
+    isCastSearch,
+    debouncedQuery,
+    contentType,
+    filters,
+    handleFilterChange,
+    setFilterQuery,
+    items,
+    isLoading,
+    isError,
+    isFetchingNextPage,
+    sentinelRef,
+  } = useSearch();
 
   return (
     <div>

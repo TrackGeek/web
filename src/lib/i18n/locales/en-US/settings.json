@@ -312,6 +312,10 @@
       "description": "Choose how anime and manga titles are displayed. Unavailable translations fall back to romaji.",
       "romaji": "Romaji",
       "native": "Native Japanese"
+    },
+    "defaultSearchType": {
+      "title": "Default search content type",
+      "description": "Choose the content type selected when you open search."
     }
   },
   "contentTypes": {

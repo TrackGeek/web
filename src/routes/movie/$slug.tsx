@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { type ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -46,6 +46,7 @@ import { mediaJsonLd } from "@/lib/utils/json-ld";
 import { isMediaUnreleased } from "@/lib/utils/release";
 import { seo } from "@/lib/utils/seo";
 import { getStatusLabel } from "@/lib/utils/status.ts";
+import { resolveTmdbAnime } from "@/utils/resolve-tmdb-anime";
 
 type MovieProgressStatus = "Planning" | "Watching" | "Completed" | "Paused" | "Dropped";
 
@@ -72,6 +73,8 @@ interface MovieProgress {
 
 export const Route = createFileRoute("/movie/$slug")({
   loader: async ({ params }) => {
+    const anime = await resolveTmdbAnime("movie", params.slug);
+    if (anime) throw redirect({ to: "/anime/$slug", params: { slug: String(anime.malId) }, replace: true });
     const movie = await api.get(apiEndpoints.getMovieDetails(params.slug)).then(({ data }) => data.movie);
     return { movie };
   },

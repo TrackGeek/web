@@ -379,6 +379,7 @@ export namespace ApiTypes {
       language: string;
       timezone: string;
       animeMangaTitleLanguage: "romaji" | "native" | "english";
+      defaultSearchType: ContentType;
       about: string;
       bannerUrl: string;
       avatarUrl: string;
@@ -900,7 +901,7 @@ export namespace ApiTypes {
 
   export type ProgressStatusCounts = Partial<Record<ProgressStatus, number>>;
 
-  export type ProgressSortBy = "name" | "addedAt" | "updatedAt" | "releaseDate";
+  export type ProgressSortBy = "name" | "addedAt" | "updatedAt" | "releaseDate" | "rating";
 
   export type ProgressSortOrder = "asc" | "desc";
 

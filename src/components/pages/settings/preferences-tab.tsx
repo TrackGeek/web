@@ -25,6 +25,7 @@ import {
   CONTENT_TYPE_LABELS,
   CONTENT_TYPE_SLUGS,
   type ContentTypeSlug,
+  toContentTypeSlug,
 } from "@/lib/content-types";
 import { LANGUAGE_TOKEN, SUPPORTED_LANGUAGES, setLanguageCookie } from "@/lib/i18n/config";
 
@@ -32,6 +33,7 @@ type ProfilePreferences = {
   language?: string;
   timezone?: string;
   contentTypes?: ApiTypes.ContentType[];
+  defaultSearchType?: ApiTypes.ContentType;
   animeMangaTitleLanguage?: "romaji" | "native" | "english";
 };
 
@@ -172,6 +174,34 @@ export function SettingsPreferencesTab() {
                       </SelectItem>
                     ))}
                   </SelectGroup>
+                ))}
+              </SelectContent>
+            </Select>
+          </Field>
+          <Field className="gap-2 sm:col-span-2">
+            <FieldLabel htmlFor="default-search-type">{t("settings:preferences.defaultSearchType.title")}</FieldLabel>
+            <p className="text-sm text-muted-foreground" id="default-search-type-description">
+              {t("settings:preferences.defaultSearchType.description")}
+            </p>
+            <Select
+              value={toContentTypeSlug(session.data?.user?.profile?.defaultSearchType ?? "Movie") ?? "movie"}
+              onValueChange={(value: ContentTypeSlug) =>
+                updatePreferencesMutation.mutate({ defaultSearchType: CONTENT_TYPE_API[value] })
+              }
+            >
+              <SelectTrigger
+                id="default-search-type"
+                aria-describedby="default-search-type-description"
+                className="w-full max-w-full"
+                disabled={updatePreferencesMutation.isPending}
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent position="popper">
+                {CONTENT_TYPE_SLUGS.map((slug) => (
+                  <SelectItem key={slug} value={slug}>
+                    {t(CONTENT_TYPE_LABELS[slug])}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>

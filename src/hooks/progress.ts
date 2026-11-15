@@ -211,13 +211,16 @@ const SORT_LABEL_KEYS: Record<ApiTypes.ProgressSortBy, string> = {
   addedAt: "user:sort.lastAdded",
   updatedAt: "user:sort.lastUpdated",
   releaseDate: "common:releaseDate",
+  rating: "common:rating",
 };
 
-export function progressSortOptions(contentType: ApiTypes.ReviewContentType) {
+export function progressSortOptions(contentType: ApiTypes.ReviewContentType, status?: ApiTypes.ProgressStatus) {
   const fields = Object.keys(SORT_LABEL_KEYS) as ApiTypes.ProgressSortBy[];
 
   return fields
-    .filter((field) => field !== "releaseDate" || contentType !== "manga")
+    .filter(
+      (field) => (field !== "releaseDate" || contentType !== "manga") && (field !== "rating" || status === "Completed"),
+    )
     .map((field) => ({ value: field, labelKey: SORT_LABEL_KEYS[field] }));
 }
 

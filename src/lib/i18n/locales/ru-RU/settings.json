@@ -299,13 +299,23 @@
   },
   "preferences": {
     "title": "Localization",
-    "description": "Set the language and timezone for your account.",
+    "description": "Set language, timezone and title preferences for your account.",
     "language": {
       "placeholder": "Select your preferred language"
     },
     "timezone": {
       "title": "Timezone",
       "placeholder": "Select your timezone"
+    },
+    "animeMangaTitleLanguage": {
+      "title": "Anime and manga titles",
+      "description": "Choose how anime and manga titles are displayed. Unavailable translations fall back to romaji.",
+      "romaji": "Romaji",
+      "native": "Native Japanese"
+    },
+    "defaultSearchType": {
+      "title": "Default search content type",
+      "description": "Choose the content type selected when you open search."
     }
   },
   "contentTypes": {

@@ -1,98 +1,96 @@
 {
   "pageTitle": "Replay {{year}}",
-  "pageDescription": "El teu {{year}} en pel·lícules, sèries, anime, jocs, manga i llibres. Una història TrackGeek que protagonitzes tu.",
-  "back": "Torna a TrackGeek",
-  "untitled": "Títol no disponible",
+  "pageDescription": "Your {{year}} in movies, shows, anime, games, manga and books. A TrackGeek story, starring you.",
+  "back": "Back to TrackGeek",
+  "untitled": "Title unavailable",
   "hero": {
     "title": "Replay <year>{{year}}</year>",
-    "description": "Les teves missions secundàries mereixien crèdits propis.",
-    "start": "Som-hi amb el meu replay",
-    "signIn": "Inicia sessió per veure el teu replay",
-    "community": "Coneix la comunitat",
-    "loading": "Buscant els teus girs de guió...",
-    "error": "No s'ha pogut carregar el teu replay. Torna-ho a provar per veure les estadístiques reals.",
-    "empty": "Encara no hi ha progressos datats de {{year}}. Afegeix alguna cosa a la biblioteca i torna.",
-    "launch": "TrackGeek va entrar al xat el {{date}}.",
-    "preview": "{{year}} encara s'està cuinant. Aquest és el teu replay fins ara."
+    "description": "Your side quests deserved their own end credits.",
+    "start": "Roll my replay",
+    "signIn": "Sign in for your replay",
+    "community": "Meet the community",
+    "loading": "Finding your plot twists...",
+    "error": "Your replay could not load. Try again to get your real stats.",
+    "empty": "No progress dated {{year}} yet. Add something to your library, then come back.",
+    "launch": "TrackGeek joined the chat on {{date}}.",
+    "preview": "{{year}} is still cooking. This is your replay so far."
   },
   "overview": {
-    "title": "La teva història ha crescut.",
-    "count_one": "<value>{{count, number}}</value> títol a la teva història.",
-    "count_many": "<value>{{count, number}}</value> títols a la teva història.",
-    "count_other": "<value>{{count, number}}</value> títols a la teva història."
+    "title": "Your lore got bigger.",
+    "count_one": "<value>{{count, number}}</value> title in your story.",
+    "count_other": "<value>{{count, number}}</value> titles in your story."
   },
-  "first": { "title": "Tot arc comença en algun lloc.", "date": "La teva primera data desada enguany: {{date}}." },
+  "first": {
+    "title": "Every arc starts somewhere.",
+    "date": "Your first saved date this year: {{date}}."
+  },
   "rhythm": {
-    "title": "{{month}} va ser la teva era.",
-    "description": "Títols per primera data desada enguany. Cada títol compta una vegada, no una per episodi."
+    "title": "{{month}} was your era.",
+    "description": "Titles by their first saved date this year. Each title counts once, not once per episode."
   },
   "category": {
     "story": {
-      "movie": "Et vas quedar fins als crèdits.",
-      "tv": "Només un episodi més, oi?",
-      "anime": "El teu arc d'anime va ser brutal.",
-      "game": "Les missions secundàries van prendre el control.",
-      "manga": "El capítol següent et cridava.",
-      "book": "Girs de guió. En pàgines de debò."
+      "movie": "You stayed for the credits.",
+      "tv": "One more episode, right?",
+      "anime": "Your anime arc went hard.",
+      "game": "Side quests took over.",
+      "manga": "The next chapter kept calling.",
+      "book": "Plot twists. On actual pages."
     },
-    "count": "<value>{{count, number}}</value> {{type}} al teu {{year}}.",
-    "completed_one": "{{count, number}} títol amb data de finalització enguany. Fet.",
-    "completed_many": "{{count, number}} títols amb data de finalització enguany. Fet.",
-    "completed_other": "{{count, number}} títols amb data de finalització enguany. Fet."
+    "count": "<value>{{count, number}}</value> {{type}} in your {{year}}.",
+    "completed_one": "{{count, number}} title has a finish date this year. That's a wrap.",
+    "completed_other": "{{count, number}} titles have finish dates this year. That's a wrap."
   },
   "shelf": {
-    "title": "{{type}} que van deixar empremta.",
-    "description": "Les teves ressenyes de {{year}}, ordenades per nota global més {{bonus}} punt extra per títols afegits als preferits aquell any.",
-    "empty": "Encara no hi ha ressenyes de {{year}} en aquesta categoria. Els títols registrats continuen comptant."
+    "title": "{{type}} that made the cut.",
+    "description": "Your {{year}} reviews, ranked by overall rating plus {{bonus}} bonus point for titles you favorited that year.",
+    "empty": "No reviews in {{year}} for this category yet. Your tracked titles still count."
   },
   "global": {
-    "title": "Hem construït aquesta història plegats.",
-    "loading": "Comptant els girs de la comunitat...",
-    "error": "No s'han pogut carregar les estadístiques globals. El teu replay personal continua aquí.",
-    "count_one": "<value>{{count, number}}</value> títol registrat per la comunitat.",
-    "count_many": "<value>{{count, number}}</value> títols registrats per la comunitat.",
-    "count_other": "<value>{{count, number}}</value> títols registrats per la comunitat.",
-    "people_one": "{{count, number}} compte creat des del {{date}}. Ni un any sencer. Ja tota una història.",
-    "people_many": "{{count, number}} comptes creats des del {{date}}. Ni un any sencer. Ja tota una història.",
-    "people_other": "{{count, number}} comptes creats des del {{date}}. Ni un any sencer. Ja tota una història.",
+    "title": "We built this lore together.",
+    "loading": "Counting the community's plot twists...",
+    "error": "Community stats could not load. Your personal replay is still here.",
+    "count_one": "<value>{{count, number}}</value> title tracked across the community.",
+    "count_other": "<value>{{count, number}}</value> titles tracked across the community.",
+    "people_one": "{{count, number}} account joined since {{date}}. Not even a full year. Still a whole story.",
+    "people_other": "{{count, number}} accounts joined since {{date}}. Not even a full year. Still a whole story.",
     "category": "{{type}}: {{count, number}}"
   },
   "outro": {
-    "title": "El gir de guió eres tu.",
-    "description": "Ens veiem al proper capítol? La llista de pendents no fugirà.",
-    "restart": "Torna a veure el replay"
+    "title": "You were the plot all along.",
+    "description": "Same time, next chapter? Your backlog isn't going anywhere.",
+    "restart": "Play it again"
   },
   "share": {
-    "action": "Comparteix el meu replay",
-    "text_one": "El meu TrackGeek Replay {{year}}: {{count, number}} títol i molta història. Quina és la teva?",
-    "text_many": "El meu TrackGeek Replay {{year}}: {{count, number}} títols i molta història. Quina és la teva?",
-    "text_other": "El meu TrackGeek Replay {{year}}: {{count, number}} títols i molta història. Quina és la teva?",
-    "error": "No s'ha pogut compartir. Torna-ho a provar o fes servir el menú del navegador."
+    "action": "Share my replay",
+    "text_one": "My TrackGeek Replay {{year}}: {{count, number}} title, a whole lot of lore. What's your story?",
+    "text_other": "My TrackGeek Replay {{year}}: {{count, number}} titles, a whole lot of lore. What's your story?",
+    "error": "Sharing did not work. Try again, or use your browser's share menu."
   },
   "method": {
-    "title": "Què compta de debò?",
-    "description": "Els progressos usen dates d'inici o finalització desades de {{year}}, o la data d'addició si falten totes dues. Les importacions amb dates anteriors queden fora. Les finalitzacions necessiten data de fi. Hores, episodis i pàgines acumulats no són totals anuals. La comunitat compta cada registre personal, no títols únics. El rànquing usa ressenyes creades aquell any, amb bonificació per preferits afegits el mateix any. Els registres poden canviar; no són un historial immutable. La música original canvia per categoria i es pot silenciar."
+    "title": "What actually counts?",
+    "description": "Progress uses saved start or finish dates in {{year}}, or the date added if both are missing. Older dated imports stay out. Finishes need a finish date. Lifetime hours, episodes and pages are not yearly totals. Community counts include each person's entry, not unique titles. Rankings use reviews created that year, with a bonus for favorites added that year. Records can change; this is not an immutable history. Original audio changes by category and can be muted."
   },
   "controls": {
-    "readMode": "Llegeix com a pàgina en lloc d'història horitzontal",
-    "staticMode": "El mode lectura es manté amb moviment reduït o pantalla compacta.",
-    "chapters": "Capítols del replay",
+    "readMode": "Read as a page instead of a horizontal story",
+    "staticMode": "Reading mode stays on for reduced motion or a compact screen.",
+    "chapters": "Replay chapters",
     "position": "{{current}} / {{total}}",
-    "exit": "Surt del replay",
-    "mute": "Silencia la banda sonora",
-    "unmute": "Reprodueix la banda sonora",
-    "soundOn": "So activat",
-    "soundOff": "So desactivat",
-    "volume": "Volum de la banda sonora",
-    "originalAudio": "Banda sonora original, activada per defecte. Si es bloqueja la reproducció automàtica, comença amb la primera interacció. Silencia-la quan vulguis.",
-    "audioError": "No s'ha pogut iniciar el so. Pots continuar en silenci."
+    "exit": "Exit replay",
+    "mute": "Mute soundtrack",
+    "unmute": "Play soundtrack",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off",
+    "volume": "Soundtrack volume",
+    "originalAudio": "Original soundtrack, on by default. If autoplay is blocked, sound starts with your first interaction. Mute anytime.",
+    "audioError": "Sound could not start. You can keep watching silently."
   },
   "chapters": {
-    "intro": "El teu replay",
-    "overview": "El teu any en títols",
-    "first": "On va començar",
-    "rhythm": "El teu ritme",
-    "global": "Tothom",
-    "outro": "Crèdits finals"
+    "intro": "Your replay",
+    "overview": "Your year in titles",
+    "first": "Where it started",
+    "rhythm": "Your rhythm",
+    "global": "All of us",
+    "outro": "End credits"
   }
 }

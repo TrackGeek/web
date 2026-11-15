@@ -230,18 +230,18 @@
   },
   "psn": {
     "title": "PlayStation Network",
-    "description": "Show your PlayStation trophies on your profile.",
+    "description": "Mostre seus troféus do PlayStation no seu perfil.",
     "steps": {
-      "signIn": "Sign in to your PlayStation account at <link>playstation.com</link>.",
-      "openCookie": "In the same browser, open <link>{{url}}</link> to get your NPSSO cookie.",
-      "copy": "The page shows {\"npsso\":\"...\"}. Copy only the 64-character value and paste it below."
+      "signIn": "Entre na sua conta PlayStation em <link>playstation.com</link>.",
+      "openCookie": "No mesmo navegador, abra <link>{{url}}</link> para obter seu cookie de NPSSO.",
+      "copy": "A página mostra {\"npsso\":\"...\"}. Copie apenas o valor de 64 caracteres e cole-o abaixo."
     },
     "npssoLabel": "NPSSO token",
-    "npssoInvalid": "The NPSSO token must have {{count}} characters.",
-    "securityNote": "The token is exchanged with PlayStation right away and never stored. Only an encrypted refresh token is kept.",
-    "linked": "PlayStation account connected.",
-    "expired": "Expired",
-    "reconnect": "Reconnect"
+    "npssoInvalid": "A chave NPSSO deve conter {{count}} caracteres.",
+    "securityNote": "O token é trocado com o PlayStation agora mesmo e nunca armazenado. Apenas um token de atualização criptografado é mantido.",
+    "linked": "Conta PlayStation conectada.",
+    "expired": "Expirado",
+    "reconnect": "Reconectar"
   },
   "banner": {
     "title": "Banner",
@@ -299,13 +299,23 @@
   },
   "preferences": {
     "title": "Localização",
-    "description": "Defina o idioma e o fuso horário para sua conta.",
+    "description": "Set language, timezone and title preferences for your account.",
     "language": {
       "placeholder": "Selecione seu idioma de preferência"
     },
     "timezone": {
       "title": "Fuso horário",
       "placeholder": "Selecione o seu fuso horário"
+    },
+    "animeMangaTitleLanguage": {
+      "title": "Anime and manga titles",
+      "description": "Choose how anime and manga titles are displayed. Unavailable translations fall back to romaji.",
+      "romaji": "Romaji",
+      "native": "Native Japanese"
+    },
+    "defaultSearchType": {
+      "title": "Default search content type",
+      "description": "Choose the content type selected when you open search."
     }
   },
   "contentTypes": {

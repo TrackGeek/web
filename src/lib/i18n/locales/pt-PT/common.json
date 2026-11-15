@@ -182,74 +182,74 @@
     "ArchiveMaster": "Mestre do Arquivo"
   },
   "tour": {
-    "menu": "Product tour",
-    "start": "Start tour",
-    "continue": "Continue",
-    "finish": "Finish",
+    "menu": "Tour do Produto",
+    "start": "Iniciar tutorial",
+    "continue": "Continuar",
+    "finish": "Terminar",
     "welcome": {
       "welcome": {
-        "title": "Welcome to TrackGeek!",
-        "description": "Let's take a quick tour of the main places: the feed, your progress, search and how to add things to it. You can leave at any time."
+        "title": "Bem-vindo ao TrackGeek!",
+        "description": "Vamos fazer um rápido tour pelos lugares principais: o feed, o seu progresso, a busca e como adicionar coisas a ele. Podes partir a qualquer momento."
       }
     },
     "feed": {
       "tabs": {
-        "title": "The feed",
-        "description": "This is where activity shows up. Following has what the people you follow are doing, Global shows everyone, and Trending shows what is getting attention."
+        "title": "O Feed",
+        "description": "É aqui que a atividade aparece. Na sequência do que as pessoas que segues fazem, o Global mostra a todas as pessoas, e as tendências mostram o que merece atenção."
       },
       "composer": {
-        "title": "Share something",
-        "description": "Write a post, attach a title or a screenshot, and share it with the community. Others can react and comment."
+        "title": "Compartilhe alguma coisa",
+        "description": "Escreva uma publicação, anexe um título ou uma captura de tela e compartilhe-o com a comunidade. Outros podem reagir e comentar."
       },
       "sidebar": {
-        "title": "Keep going",
-        "description": "Titles you are in the middle of watching or reading show up here, so you can pick up right where you stopped."
+        "title": "Continue",
+        "description": "Títulos que está no meio de assistir ou ler aparecem aqui, então podes pegar exatamente onde parou."
       },
       "userMenu": {
-        "title": "Your account menu",
-        "description": "Your profile, notifications, settings and this tour live here. Let's open your profile next."
+        "title": "Menu da sua conta",
+        "description": "O seu perfil, notificações, configurações e este tour ao vivo aqui. Vamos abrir o seu perfil em seguida."
       }
     },
     "profile": {
       "tabs": {
-        "title": "Your profile",
-        "description": "Each tab shows a different side of your account. Once you track something, a Progress tab appears with everything you are watching, reading or playing."
+        "title": "Seu perfil",
+        "description": "Cada guia mostra um lado diferente da sua conta. Assim que rastreia algo, uma aba de Progresso aparece com tudo o que você está a assistir, ler ou a jogar."
       },
       "stats": {
-        "title": "Your progress at a glance",
-        "description": "Counters for each type of media. Click one to jump to the full list for that type."
+        "title": "Seu progresso de imediato",
+        "description": "Contadores para cada tipo de mídia. Clique em um para ir para a lista completa para esse tipo."
       },
       "sections": {
-        "title": "Organized by status",
-        "description": "Your progress is split by status, like in progress, planned, completed, paused and dropped. Pick one to see its titles."
+        "title": "Organizado por status",
+        "description": "O seu progresso é dividido por estado, como em andamento, planeado, concluído, pausado e largado. Escolha um para ver os seus títulos."
       },
       "filters": {
-        "title": "Find things fast",
-        "description": "Search inside your progress, sort it and filter by genre, year and more."
+        "title": "Encontre coisas rápido",
+        "description": "Pesquise dentro do seu progresso, classifique e filtre por género, ano e muito mais."
       },
       "xp": {
-        "title": "Levels and coins",
-        "description": "Tracking things earns XP and coins. Level up, unlock medals and spend coins in the shop."
+        "title": "Níveis e moedas",
+        "description": "Rastrear coisas ganha XP e moedas. Suba, desbloqueie medalhas e gaste moedas na loja."
       }
     },
     "search": {
       "type": {
-        "title": "Choose what to look for",
-        "description": "Search movies, TV shows, anime, manga, games and books, as well as cast and other users."
+        "title": "Escolha o que procurar",
+        "description": "Busque filmes, séries, animes, mangás, jogos e livros, bem como elenco e outros usuários."
       },
       "input": {
-        "title": "Search",
-        "description": "Type a name to see results and use the filters to narrow them down. Open any title to continue the tour and see how to add it to your progress."
+        "title": "Pesquisar",
+        "description": "Digite um nome para ver os resultados e use os filtros para reduzi-los. Abra qualquer título para continuar o tour e ver como adicioná-lo ao seu progresso."
       }
     },
     "details": {
       "status": {
-        "title": "Add it to your progress",
-        "description": "Pick a status to add this title to your progress. After that you can update episodes, chapters or hours, rate it and write a review."
+        "title": "Adicione ao seu progresso",
+        "description": "Escolha um estado para adicionar este título ao seu progresso. Depois disso, poderá atualizar episódios, capítulos ou horas, avaliá-lo e escrever uma avaliação."
       },
       "userMenu": {
-        "title": "All done",
-        "description": "Everything you add shows up in your profile and in the feed. You can replay this tour from the account menu at any time."
+        "title": "Tudo concluído",
+        "description": "Tudo o que adicionar aparece no seu perfil e no feed. Pode refazer esse tour a qualquer momento no menu da conta."
       }
     }
   },

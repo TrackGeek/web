@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { type ReactNode, useEffect } from "react";
+import { patchAdminMessageInCache } from "@/hooks/admin";
 import {
   addMessageToCache,
   chatConversationsQueryKey,
@@ -83,12 +84,22 @@ export function ChatRealtimeProvider({ children }: ChatRealtimeProviderProps) {
       if (typingUserId !== userId) setConversationTyping(conversationId, isTyping);
     };
 
+    const onAdminMessageNew = () => queryClient.invalidateQueries({ queryKey: ["admin", "chat"] });
+    const onAdminMessageDeleted = (message: ApiTypes.AdminChatMessage) => {
+      patchAdminMessageInCache(queryClient, message);
+      queryClient.invalidateQueries({ queryKey: ["admin", "reports"] });
+    };
+    const onAdminReportNew = () => queryClient.invalidateQueries({ queryKey: ["admin", "reports"] });
+
     socket.on("connect", onConnect);
     socket.on("message:new", onMessageNew);
     socket.on("message:deleted", onMessageDeleted);
     socket.on("conversation:read", onConversationRead);
     socket.on("presence:update", onPresenceUpdate);
     socket.on("typing", onTyping);
+    socket.on("admin:message:new", onAdminMessageNew);
+    socket.on("admin:message:deleted", onAdminMessageDeleted);
+    socket.on("admin:report:new", onAdminReportNew);
 
     return () => {
       stopTracker();
@@ -99,6 +110,9 @@ export function ChatRealtimeProvider({ children }: ChatRealtimeProviderProps) {
       socket.off("conversation:read", onConversationRead);
       socket.off("presence:update", onPresenceUpdate);
       socket.off("typing", onTyping);
+      socket.off("admin:message:new", onAdminMessageNew);
+      socket.off("admin:message:deleted", onAdminMessageDeleted);
+      socket.off("admin:report:new", onAdminReportNew);
     };
   }, [userId, queryClient]);
 

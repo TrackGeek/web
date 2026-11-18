@@ -1,0 +1,51 @@
+{
+  "title": "Administration",
+  "chats": "Chats",
+  "reports": "Reports",
+  "link": "Admin",
+  "searchPlaceholder": "Search by user...",
+  "conversationBetween": "{{userA}} and {{userB}}",
+  "noConversations": "No conversations found.",
+  "noMessages": "This conversation has no messages.",
+  "noReports": "No reports found.",
+  "backToChats": "Back to chats",
+  "removeMessage": "Remove message",
+  "removeMessageSuccess": "Message removed.",
+  "removeMessageError": "Could not remove this message.",
+  "deletedByAuthor": "Deleted by the author",
+  "removedByAdmin": "Removed by an administrator",
+  "originalContent": "Original content",
+  "viewConversation": "View conversation",
+  "reporter": "Reporter",
+  "reportedUser": "Reported user",
+  "target": "Target",
+  "reason": "Reason",
+  "reportedContent": "Reported content",
+  "noContent": "No content available.",
+  "createdAt": "Reported at",
+  "actions": "Actions",
+  "resolve": "Resolve",
+  "dismiss": "Dismiss",
+  "resolveTitle": "Resolve report",
+  "dismissTitle": "Dismiss report",
+  "removeContent": "Also remove the reported content",
+  "note": "Resolution note (optional)",
+  "notePlaceholder": "Add a note about this decision...",
+  "updateSuccess": "Report updated.",
+  "updateError": "Could not update this report.",
+  "filters": {
+    "status": "Status",
+    "targetType": "Target type"
+  },
+  "statuses": {
+    "Pending": "Pending",
+    "Resolved": "Resolved",
+    "Dismissed": "Dismissed"
+  },
+  "targetTypes": {
+    "User": "User",
+    "Message": "Message",
+    "Comment": "Comment"
+  },
+  "removeComment": "Remove comment"
+}

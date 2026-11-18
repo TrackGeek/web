@@ -104,6 +104,15 @@ export function UserDropdown() {
           </Link>
         </DropdownMenuItem>
 
+        {session.data?.user?.role === "Administrator" && (
+          <DropdownMenuItem asChild>
+            <Link to="/admin" className="cursor-pointer">
+              <Icon icon={"lucide:shield"} className="text-white size-4.5" />
+              {t("admin:link")}
+            </Link>
+          </DropdownMenuItem>
+        )}
+
         <DropdownMenuItem asChild>
           <Link to="/shop" className="cursor-pointer">
             <Icon icon={"lucide:shopping-bag"} className="text-white size-4.5" />

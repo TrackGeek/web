@@ -1464,6 +1464,7 @@ export namespace ApiTypes {
   export type MessageType = "Text" | "Sticker";
   export type MessageDeletedBy = "Author" | "Admin";
   export type ReportTargetType = "User" | "Message" | "Comment";
+  export type ReportStatus = "Pending" | "Resolved" | "Dismissed";
   export type ReportReason = "Spam" | "Harassment" | "HateSpeech" | "Inappropriate" | "Other";
 
   export interface ChatUser {
@@ -1494,6 +1495,10 @@ export namespace ApiTypes {
     createdAt: string;
   }
 
+  export interface AdminChatMessage extends ChatMessage {
+    deletedByUserId?: string | null;
+  }
+
   export interface ChatConversation {
     id: string;
     otherUser: ChatUser | null;
@@ -1502,6 +1507,16 @@ export namespace ApiTypes {
     lastMessage: ChatMessage | null;
     lastMessageAt: string | null;
     unreadCount: number;
+  }
+
+  export interface AdminChatConversation {
+    id: string;
+    userA: ChatUser | null;
+    userB: ChatUser | null;
+    lastMessage: AdminChatMessage | null;
+    lastMessageAt: string | null;
+    messagesCount: number;
+    createdAt: string;
   }
 
   export interface CursorPage<T> {
@@ -1539,11 +1554,60 @@ export namespace ApiTypes {
     message: ChatMessage;
   }
 
+  export interface GetAdminChatConversationsResponse {
+    conversations: PaginatedResponse<AdminChatConversation>;
+  }
+
+  export interface AdminChatConversationSummary {
+    id: string;
+    lastMessageAt: string | null;
+    createdAt: string;
+    userA: ChatUser | null;
+    userB: ChatUser | null;
+  }
+
+  export interface GetAdminChatMessagesResponse {
+    conversation: AdminChatConversationSummary;
+    messages: CursorPage<AdminChatMessage>;
+  }
+
+  export interface AdminReport {
+    id: string;
+    targetType: ReportTargetType;
+    reason: ReportReason;
+    details: string | null;
+    status: ReportStatus;
+    createdAt: string;
+    resolvedAt: string | null;
+    resolutionNote: string | null;
+    reporterId: string | null;
+    reportedUserId: string | null;
+    reporter: ChatUser | null;
+    reportedUser: ChatUser | null;
+    messageId: string | null;
+    resolvedById: string | null;
+    updatedAt: string;
+    message: AdminChatMessage | null;
+    commentId: string | null;
+    comment: { id: string; content: string; type: CommentType; profileId: string | null; createdAt: string } | null;
+    contentSnapshot: string | null;
+  }
+
+  export interface GetAdminReportsResponse {
+    reports: PaginatedResponse<AdminReport>;
+  }
+
   export interface CreateReportInput {
     targetType: ReportTargetType;
     targetId: string;
     reason: ReportReason;
     details?: string;
+  }
+
+  export interface UpdateReportInput {
+    status: Exclude<ReportStatus, "Pending">;
+    resolutionNote?: string;
+    removeContent?: boolean;
   }
 }
 
@@ -1728,4 +1792,10 @@ export const apiEndpoints = {
   deleteChatMessage: (messageId: string) => `/chat/messages/${messageId}`,
   markChatConversationRead: (conversationId: string) => `/chat/conversations/${conversationId}/read`,
   createReport: "/report",
+  getAdminChatConversations: "/admin/chat/conversations",
+  getAdminChatMessages: (conversationId: string) => `/admin/chat/conversations/${conversationId}/messages`,
+  adminDeleteChatMessage: (messageId: string) => `/admin/chat/messages/${messageId}`,
+  getAdminReports: "/admin/reports",
+  updateAdminReport: (reportId: string) => `/admin/reports/${reportId}`,
+  adminDeleteComment: (commentId: string) => `/admin/comments/${commentId}`,
 };

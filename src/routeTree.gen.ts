@@ -25,6 +25,7 @@ import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TosRouteImport } from './routes/tos'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated/billing'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
@@ -45,6 +46,8 @@ import { Route as OauthAuthorizeRouteImport } from './routes/oauth/authorize'
 import { Route as SitemapChar123sectionChar125DotxmlRouteImport } from './routes/sitemap/{$section}[.]xml'
 import { Route as TvIndexRouteImport } from './routes/tv/index'
 import { Route as TvSlugRouteImport } from './routes/tv/$slug'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminReportsRouteImport } from './routes/_authenticated/admin/reports'
 import { Route as AuthenticatedMessagesIndexRouteImport } from './routes/_authenticated/messages/index'
 import { Route as AuthenticatedMessagesConversationIdRouteImport } from './routes/_authenticated/messages/$conversationId'
 import { Route as RewindReplay2026RouteImport } from './routes/_rewind/replay.2026'
@@ -80,6 +83,8 @@ import { Route as TvPopularIndexRouteImport } from './routes/tv/popular/index'
 import { Route as TvTrendingIndexRouteImport } from './routes/tv/trending/index'
 import { Route as TvUpcomingIndexRouteImport } from './routes/tv/upcoming/index'
 import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
+import { Route as AuthenticatedAdminChatsIndexRouteImport } from './routes/_authenticated/admin/chats.index'
+import { Route as AuthenticatedAdminChatsConversationIdRouteImport } from './routes/_authenticated/admin/chats.$conversationId'
 import { Route as AuthenticatedDonateErrorIndexRouteImport } from './routes/_authenticated/donate/error/index'
 import { Route as AuthenticatedDonateSuccessIndexRouteImport } from './routes/_authenticated/donate/success/index'
 import { Route as AuthenticatedSettingsImportAnilistRouteImport } from './routes/_authenticated/settings_.import.anilist'
@@ -167,6 +172,11 @@ const TosRoute = TosRouteImport.update({
   id: '/tos',
   path: '/tos',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedBillingRoute = AuthenticatedBillingRouteImport.update({
   id: '/billing',
@@ -270,6 +280,17 @@ const TvSlugRoute = TvSlugRouteImport.update({
   path: '/tv/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminReportsRoute =
+  AuthenticatedAdminReportsRouteImport.update({
+    id: '/reports',
+    path: '/reports',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedMessagesIndexRoute =
   AuthenticatedMessagesIndexRouteImport.update({
     id: '/',
@@ -449,6 +470,18 @@ const UserUsernameIndexRoute = UserUsernameIndexRouteImport.update({
   path: '/user/$username/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminChatsIndexRoute =
+  AuthenticatedAdminChatsIndexRouteImport.update({
+    id: '/chats/',
+    path: '/chats/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminChatsConversationIdRoute =
+  AuthenticatedAdminChatsConversationIdRouteImport.update({
+    id: '/chats/$conversationId',
+    path: '/chats/$conversationId',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedDonateErrorIndexRoute =
   AuthenticatedDonateErrorIndexRouteImport.update({
     id: '/donate/error/',
@@ -517,6 +550,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tos': typeof TosRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/billing': typeof AuthenticatedBillingRoute
   '/messages': typeof AuthenticatedMessagesRouteWithChildren
   '/notifications': typeof AuthenticatedNotificationsRoute
@@ -537,6 +571,7 @@ export interface FileRoutesByFullPath {
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/replay/2026': typeof RewindReplay2026Route
   '/anime/company/$slug': typeof AnimeCompanySlugRoute
@@ -548,6 +583,7 @@ export interface FileRoutesByFullPath {
   '/movie/company/$slug': typeof MovieCompanySlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
   '/tv/company/$slug': typeof TvCompanySlugRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/messages/': typeof AuthenticatedMessagesIndexRoute
   '/anime/airing/': typeof AnimeAiringIndexRoute
   '/anime/recommendations/': typeof AnimeRecommendationsIndexRoute
@@ -572,12 +608,14 @@ export interface FileRoutesByFullPath {
   '/tv/trending/': typeof TvTrendingIndexRoute
   '/tv/upcoming/': typeof TvUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
+  '/admin/chats/$conversationId': typeof AuthenticatedAdminChatsConversationIdRoute
   '/settings/import/anilist': typeof AuthenticatedSettingsImportAnilistRoute
   '/settings/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
   '/settings/import/myanimelist': typeof AuthenticatedSettingsImportMyanimelistRoute
   '/settings/import/trackgeek': typeof AuthenticatedSettingsImportTrackgeekRoute
   '/settings/import/trakt': typeof AuthenticatedSettingsImportTraktRoute
   '/api/og/user/$username': typeof ApiOgUserUsernameRoute
+  '/admin/chats/': typeof AuthenticatedAdminChatsIndexRoute
   '/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
   '/api/og/media/$type/$slug': typeof ApiOgMediaTypeSlugRoute
@@ -616,6 +654,7 @@ export interface FileRoutesByTo {
   '/manga': typeof MangaIndexRoute
   '/movie': typeof MovieIndexRoute
   '/tv': typeof TvIndexRoute
+  '/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/replay/2026': typeof RewindReplay2026Route
   '/anime/company/$slug': typeof AnimeCompanySlugRoute
@@ -627,6 +666,7 @@ export interface FileRoutesByTo {
   '/movie/company/$slug': typeof MovieCompanySlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
   '/tv/company/$slug': typeof TvCompanySlugRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/messages': typeof AuthenticatedMessagesIndexRoute
   '/anime/airing': typeof AnimeAiringIndexRoute
   '/anime/recommendations': typeof AnimeRecommendationsIndexRoute
@@ -651,12 +691,14 @@ export interface FileRoutesByTo {
   '/tv/trending': typeof TvTrendingIndexRoute
   '/tv/upcoming': typeof TvUpcomingIndexRoute
   '/user/$username': typeof UserUsernameIndexRoute
+  '/admin/chats/$conversationId': typeof AuthenticatedAdminChatsConversationIdRoute
   '/settings/import/anilist': typeof AuthenticatedSettingsImportAnilistRoute
   '/settings/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
   '/settings/import/myanimelist': typeof AuthenticatedSettingsImportMyanimelistRoute
   '/settings/import/trackgeek': typeof AuthenticatedSettingsImportTrackgeekRoute
   '/settings/import/trakt': typeof AuthenticatedSettingsImportTraktRoute
   '/api/og/user/$username': typeof ApiOgUserUsernameRoute
+  '/admin/chats': typeof AuthenticatedAdminChatsIndexRoute
   '/donate/error': typeof AuthenticatedDonateErrorIndexRoute
   '/donate/success': typeof AuthenticatedDonateSuccessIndexRoute
   '/api/og/media/$type/$slug': typeof ApiOgMediaTypeSlugRoute
@@ -679,6 +721,7 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tos': typeof TosRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/billing': typeof AuthenticatedBillingRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRouteWithChildren
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
@@ -699,6 +742,7 @@ export interface FileRoutesById {
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/_authenticated/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/_authenticated/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/_rewind/replay/2026': typeof RewindReplay2026Route
   '/anime/company/$slug': typeof AnimeCompanySlugRoute
@@ -710,6 +754,7 @@ export interface FileRoutesById {
   '/movie/company/$slug': typeof MovieCompanySlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
   '/tv/company/$slug': typeof TvCompanySlugRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/messages/': typeof AuthenticatedMessagesIndexRoute
   '/anime/airing/': typeof AnimeAiringIndexRoute
   '/anime/recommendations/': typeof AnimeRecommendationsIndexRoute
@@ -734,12 +779,14 @@ export interface FileRoutesById {
   '/tv/trending/': typeof TvTrendingIndexRoute
   '/tv/upcoming/': typeof TvUpcomingIndexRoute
   '/user/$username/': typeof UserUsernameIndexRoute
+  '/_authenticated/admin/chats/$conversationId': typeof AuthenticatedAdminChatsConversationIdRoute
   '/_authenticated/settings_/import/anilist': typeof AuthenticatedSettingsImportAnilistRoute
   '/_authenticated/settings_/import/backloggd': typeof AuthenticatedSettingsImportBackloggdRoute
   '/_authenticated/settings_/import/myanimelist': typeof AuthenticatedSettingsImportMyanimelistRoute
   '/_authenticated/settings_/import/trackgeek': typeof AuthenticatedSettingsImportTrackgeekRoute
   '/_authenticated/settings_/import/trakt': typeof AuthenticatedSettingsImportTraktRoute
   '/api/og/user/$username': typeof ApiOgUserUsernameRoute
+  '/_authenticated/admin/chats/': typeof AuthenticatedAdminChatsIndexRoute
   '/_authenticated/donate/error/': typeof AuthenticatedDonateErrorIndexRoute
   '/_authenticated/donate/success/': typeof AuthenticatedDonateSuccessIndexRoute
   '/api/og/media/$type/$slug': typeof ApiOgMediaTypeSlugRoute
@@ -761,6 +808,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/sitemap.xml'
     | '/tos'
+    | '/admin'
     | '/billing'
     | '/messages'
     | '/notifications'
@@ -781,6 +829,7 @@ export interface FileRouteTypes {
     | '/manga/'
     | '/movie/'
     | '/tv/'
+    | '/admin/reports'
     | '/messages/$conversationId'
     | '/replay/2026'
     | '/anime/company/$slug'
@@ -792,6 +841,7 @@ export interface FileRouteTypes {
     | '/movie/company/$slug'
     | '/movie/franchises/$slug'
     | '/tv/company/$slug'
+    | '/admin/'
     | '/messages/'
     | '/anime/airing/'
     | '/anime/recommendations/'
@@ -816,12 +866,14 @@ export interface FileRouteTypes {
     | '/tv/trending/'
     | '/tv/upcoming/'
     | '/user/$username/'
+    | '/admin/chats/$conversationId'
     | '/settings/import/anilist'
     | '/settings/import/backloggd'
     | '/settings/import/myanimelist'
     | '/settings/import/trackgeek'
     | '/settings/import/trakt'
     | '/api/og/user/$username'
+    | '/admin/chats/'
     | '/donate/error/'
     | '/donate/success/'
     | '/api/og/media/$type/$slug'
@@ -860,6 +912,7 @@ export interface FileRouteTypes {
     | '/manga'
     | '/movie'
     | '/tv'
+    | '/admin/reports'
     | '/messages/$conversationId'
     | '/replay/2026'
     | '/anime/company/$slug'
@@ -871,6 +924,7 @@ export interface FileRouteTypes {
     | '/movie/company/$slug'
     | '/movie/franchises/$slug'
     | '/tv/company/$slug'
+    | '/admin'
     | '/messages'
     | '/anime/airing'
     | '/anime/recommendations'
@@ -895,12 +949,14 @@ export interface FileRouteTypes {
     | '/tv/trending'
     | '/tv/upcoming'
     | '/user/$username'
+    | '/admin/chats/$conversationId'
     | '/settings/import/anilist'
     | '/settings/import/backloggd'
     | '/settings/import/myanimelist'
     | '/settings/import/trackgeek'
     | '/settings/import/trakt'
     | '/api/og/user/$username'
+    | '/admin/chats'
     | '/donate/error'
     | '/donate/success'
     | '/api/og/media/$type/$slug'
@@ -922,6 +978,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/sitemap.xml'
     | '/tos'
+    | '/_authenticated/admin'
     | '/_authenticated/billing'
     | '/_authenticated/messages'
     | '/_authenticated/notifications'
@@ -942,6 +999,7 @@ export interface FileRouteTypes {
     | '/manga/'
     | '/movie/'
     | '/tv/'
+    | '/_authenticated/admin/reports'
     | '/_authenticated/messages/$conversationId'
     | '/_rewind/replay/2026'
     | '/anime/company/$slug'
@@ -953,6 +1011,7 @@ export interface FileRouteTypes {
     | '/movie/company/$slug'
     | '/movie/franchises/$slug'
     | '/tv/company/$slug'
+    | '/_authenticated/admin/'
     | '/_authenticated/messages/'
     | '/anime/airing/'
     | '/anime/recommendations/'
@@ -977,12 +1036,14 @@ export interface FileRouteTypes {
     | '/tv/trending/'
     | '/tv/upcoming/'
     | '/user/$username/'
+    | '/_authenticated/admin/chats/$conversationId'
     | '/_authenticated/settings_/import/anilist'
     | '/_authenticated/settings_/import/backloggd'
     | '/_authenticated/settings_/import/myanimelist'
     | '/_authenticated/settings_/import/trackgeek'
     | '/_authenticated/settings_/import/trakt'
     | '/api/og/user/$username'
+    | '/_authenticated/admin/chats/'
     | '/_authenticated/donate/error/'
     | '/_authenticated/donate/success/'
     | '/api/og/media/$type/$slug'
@@ -1170,6 +1231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/billing': {
       id: '/_authenticated/billing'
       path: '/billing'
@@ -1309,6 +1377,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/tv/$slug'
       preLoaderRoute: typeof TvSlugRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/reports': {
+      id: '/_authenticated/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AuthenticatedAdminReportsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/messages/': {
       id: '/_authenticated/messages/'
@@ -1555,6 +1637,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserUsernameIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/chats/': {
+      id: '/_authenticated/admin/chats/'
+      path: '/chats'
+      fullPath: '/admin/chats/'
+      preLoaderRoute: typeof AuthenticatedAdminChatsIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/chats/$conversationId': {
+      id: '/_authenticated/admin/chats/$conversationId'
+      path: '/chats/$conversationId'
+      fullPath: '/admin/chats/$conversationId'
+      preLoaderRoute: typeof AuthenticatedAdminChatsConversationIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/donate/error/': {
       id: '/_authenticated/donate/error/'
       path: '/donate/error'
@@ -1633,6 +1729,24 @@ const RewindRouteRouteWithChildren = RewindRouteRoute._addFileChildren(
   RewindRouteRouteChildren,
 )
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminReportsRoute: typeof AuthenticatedAdminReportsRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminChatsConversationIdRoute: typeof AuthenticatedAdminChatsConversationIdRoute
+  AuthenticatedAdminChatsIndexRoute: typeof AuthenticatedAdminChatsIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminReportsRoute: AuthenticatedAdminReportsRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedAdminChatsConversationIdRoute:
+    AuthenticatedAdminChatsConversationIdRoute,
+  AuthenticatedAdminChatsIndexRoute: AuthenticatedAdminChatsIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
 interface AuthenticatedMessagesRouteChildren {
   AuthenticatedMessagesConversationIdRoute: typeof AuthenticatedMessagesConversationIdRoute
   AuthenticatedMessagesIndexRoute: typeof AuthenticatedMessagesIndexRoute
@@ -1650,6 +1764,7 @@ const AuthenticatedMessagesRouteWithChildren =
   )
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRouteWithChildren
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
@@ -1665,6 +1780,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedBillingRoute: AuthenticatedBillingRoute,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRouteWithChildren,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,

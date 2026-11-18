@@ -23,6 +23,7 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/
 import { Field, FieldError } from "@/components/ui/field";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
+import { useAdminDeleteComment } from "@/hooks/admin";
 import {
   type AddCommentInput,
   type CommentTarget,
@@ -58,23 +59,28 @@ export function Comments({
   headerClassName,
   contentClassName,
   showTitle = true,
-  canModerate = false,
+  canModerate: canModerateProp = false,
   ...target
 }: CommentsProps) {
   const { t } = useTranslation();
   const session = useSession();
   const sessionUserId = session.data?.user?.id;
+  const isAdmin = session.data?.user?.role === "Administrator";
+  const canModerate = canModerateProp || isAdmin;
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useComments(target);
   const addComment = useAddComment(target);
   const deleteComment = useDeleteComment(target);
+  const adminDeleteComment = useAdminDeleteComment();
   const toggleReaction = useToggleCommentReaction(target);
 
   const sentinelRef = useInfiniteScroll(fetchNextPage, hasNextPage && !isFetchingNextPage);
 
   const comments = data?.pages.flatMap((page) => page.items) ?? [];
   const total = data?.pages[0]?.total ?? 0;
-  const deletingId = deleteComment.isPending ? deleteComment.variables : undefined;
+  const deletingId =
+    (deleteComment.isPending ? deleteComment.variables : undefined) ??
+    (adminDeleteComment.isPending ? adminDeleteComment.variables : undefined);
   const canComment = Boolean(sessionUserId);
 
   function handleAdd(input: AddCommentInput, onSuccess?: () => void) {
@@ -88,7 +94,9 @@ export function Comments({
   }
 
   function handleDelete(comment: ApiTypes.Comment) {
-    deleteComment.mutate(comment.id, {
+    const mutation = isAdmin && comment.userId !== sessionUserId ? adminDeleteComment : deleteComment;
+
+    mutation.mutate(comment.id, {
       onSuccess: () => toast.success(t("comments:deleteSuccess")),
       onError: () => toast.error(t("comments:deleteError")),
     });

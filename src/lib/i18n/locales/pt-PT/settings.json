@@ -299,7 +299,7 @@
   },
   "preferences": {
     "title": "Localização",
-    "description": "Set language, timezone and title preferences for your account.",
+    "description": "Defina preferências de idioma, fuso horário e título para a sua conta.",
     "language": {
       "placeholder": "Selecione o seu idioma preferido"
     },
@@ -308,14 +308,14 @@
       "placeholder": "Selecione o seu fuso horário"
     },
     "animeMangaTitleLanguage": {
-      "title": "Anime and manga titles",
-      "description": "Choose how anime and manga titles are displayed. Unavailable translations fall back to romaji.",
+      "title": "Títulos de anime e mangá",
+      "description": "Escolha como títulos de anime e mangá são exibidos. Traduções indisponíveis voltam para romaji.",
       "romaji": "Romaji",
-      "native": "Native Japanese"
+      "native": "Japonês Nativo"
     },
     "defaultSearchType": {
-      "title": "Default search content type",
-      "description": "Choose the content type selected when you open search."
+      "title": "Tipo de conteúdo de pesquisa padrão",
+      "description": "Escolha o tipo de conteúdo selecionado quando abre a pesquisa."
     }
   },
   "contentTypes": {

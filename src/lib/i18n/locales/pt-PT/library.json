@@ -309,16 +309,16 @@
   "editionPageCount_one": "{{count}} página",
   "editionPageCount_other": "{{count}} páginas",
   "protonDb": {
-    "noSummary": "No compatibility summary available.",
-    "loadError": "Could not load ProtonDB data. Try again or open ProtonDB.",
-    "tier": "Tier",
-    "score": "Score",
+    "noSummary": "Nenhum resumo de compatibilidade disponível.",
+    "loadError": "Não foi possível carregar os dados do ProtonDB. Tente novamente ou abra o ProtonDB.",
+    "tier": "Categoria",
+    "score": "Pontuação",
     "deck": {
-      "verified": "Verified",
-      "playable": "Playable",
-      "unsupported": "Unsupported",
-      "unknown": "Unknown",
-      "unavailable": "Unavailable"
+      "verified": "Verificado",
+      "playable": "Jogável",
+      "unsupported": "Não suportado",
+      "unknown": "Desconhecido",
+      "unavailable": "Não disponível"
     }
   }
 }

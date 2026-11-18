@@ -262,7 +262,7 @@
       "select": "Select Amount",
       "fixed": "Fixed Amount",
       "custom": "Custom Amount",
-      "currency": "货币",
+      "currency": "Currency",
       "enter": "Enter amount",
       "method": "Payment Method",
       "card": "Credit Card",

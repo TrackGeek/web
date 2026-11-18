@@ -262,7 +262,7 @@
       "select": "Selecionar Quantia",
       "fixed": "Montante fixo",
       "custom": "Valor personalizado",
-      "currency": "Moeda",
+      "currency": "Currency",
       "enter": "Introduzir quantia",
       "method": "Método de pagamento",
       "card": "Cartão de Crédito",

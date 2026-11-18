@@ -262,7 +262,7 @@
       "select": "Select Amount",
       "fixed": "Fixed Amount",
       "custom": "Custom Amount",
-      "currency": "Pénznem",
+      "currency": "Currency",
       "enter": "Enter amount",
       "method": "Payment Method",
       "card": "Credit Card",

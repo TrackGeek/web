@@ -13,6 +13,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Field, FieldError } from "@/components/ui/field";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -31,6 +37,7 @@ import { AVATAR_FRAME_CLASSES, hasAvatarFrame } from "@/lib/cosmetics";
 import { QUICK_REACTIONS } from "@/lib/reactions";
 import { cn } from "@/lib/utils";
 import { useInfiniteScroll } from "@/lib/utils/useInfiniteScroll.ts";
+import { ReportDialog } from "../report-dialog";
 import { Markdown } from "./markdown";
 
 const MAX_LENGTH = 500;
@@ -44,7 +51,6 @@ type CommentsProps = CommentTarget & {
 };
 
 type AddComment = ReturnType<typeof useAddComment>;
-type DeleteComment = ReturnType<typeof useDeleteComment>;
 type ToggleReaction = ReturnType<typeof useToggleCommentReaction>;
 
 export function Comments({
@@ -68,6 +74,7 @@ export function Comments({
 
   const comments = data?.pages.flatMap((page) => page.items) ?? [];
   const total = data?.pages[0]?.total ?? 0;
+  const deletingId = deleteComment.isPending ? deleteComment.variables : undefined;
   const canComment = Boolean(sessionUserId);
 
   function handleAdd(input: AddCommentInput, onSuccess?: () => void) {
@@ -80,8 +87,8 @@ export function Comments({
     });
   }
 
-  function handleDelete(commentId: string) {
-    deleteComment.mutate(commentId, {
+  function handleDelete(comment: ApiTypes.Comment) {
+    deleteComment.mutate(comment.id, {
       onSuccess: () => toast.success(t("comments:deleteSuccess")),
       onError: () => toast.error(t("comments:deleteError")),
     });
@@ -142,7 +149,7 @@ export function Comments({
                 canModerate={canModerate}
                 sessionUserId={sessionUserId}
                 addComment={addComment}
-                deleteComment={deleteComment}
+                deletingId={deletingId}
                 toggleReaction={toggleReaction}
                 onAdd={handleAdd}
                 onDelete={handleDelete}
@@ -244,7 +251,7 @@ function CommentItem({
   canModerate,
   sessionUserId,
   addComment,
-  deleteComment,
+  deletingId,
   toggleReaction,
   onAdd,
   onDelete,
@@ -254,17 +261,19 @@ function CommentItem({
   canModerate: boolean;
   sessionUserId?: string;
   addComment: AddComment;
-  deleteComment: DeleteComment;
+  deletingId?: string;
   toggleReaction: ToggleReaction;
   onAdd: (input: AddCommentInput, onSuccess?: () => void) => void;
-  onDelete: (commentId: string) => void;
+  onDelete: (comment: ApiTypes.Comment) => void;
 }) {
   const { t } = useTranslation();
   const [replying, setReplying] = useState(false);
   const [revealed, setRevealed] = useState(false);
+  const [reporting, setReporting] = useState(false);
 
   const canDelete = comment.userId === sessionUserId || canModerate;
-  const isDeleting = deleteComment.isPending && deleteComment.variables === comment.id;
+  const isDeleting = deletingId === comment.id;
+  const canReport = Boolean(sessionUserId) && comment.userId !== sessionUserId;
   const replies = comment.replies ?? [];
 
   const reactionList = comment.reactions ?? [];
@@ -322,17 +331,40 @@ function CommentItem({
             </time>
           </div>
 
-          {canDelete && (
-            <Button
-              variant="ghost"
-              size="icon"
-              type="button"
-              onClick={() => onDelete(comment.id)}
-              disabled={isDeleting}
-              className="size-6 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity text-muted-foreground hover:text-destructive"
-            >
-              <Icon icon="lucide:trash-2" className="size-4" />
-            </Button>
+          {(canDelete || canReport) && (
+            <>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    type="button"
+                    aria-label={t("common:showMore")}
+                    className="size-6 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 data-[state=open]:opacity-100 transition-opacity text-muted-foreground"
+                  >
+                    <Icon icon="lucide:ellipsis" className="size-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {canReport && (
+                    <DropdownMenuItem onSelect={() => setReporting(true)}>
+                      <Icon icon="lucide:flag" className="size-4" />
+                      {t("feed:report")}
+                    </DropdownMenuItem>
+                  )}
+                  {canDelete && (
+                    <DropdownMenuItem variant="destructive" disabled={isDeleting} onSelect={() => onDelete(comment)}>
+                      <Icon icon="lucide:trash-2" className="size-4" />
+                      {t("common:delete")}
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {canReport && (
+                <ReportDialog open={reporting} onOpenChange={setReporting} targetType="Comment" targetId={comment.id} />
+              )}
+            </>
           )}
         </div>
 
@@ -422,7 +454,7 @@ function CommentItem({
                 canModerate={canModerate}
                 sessionUserId={sessionUserId}
                 addComment={addComment}
-                deleteComment={deleteComment}
+                deletingId={deletingId}
                 toggleReaction={toggleReaction}
                 onAdd={onAdd}
                 onDelete={onDelete}

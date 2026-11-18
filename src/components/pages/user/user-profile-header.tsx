@@ -1,8 +1,11 @@
+import { Icon } from "@iconify/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { ReportDialog } from "@/components/shared/report-dialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -60,29 +63,46 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
     },
   });
 
+  const [reporting, setReporting] = useState(false);
+
+  const messageButton = (size: "default" | "lg", className?: string) => (
+    <>
+      <Button
+        variant="ghost"
+        size={size === "lg" ? "lg" : "icon"}
+        aria-label={t("report:targets.User")}
+        onClick={() => setReporting(true)}
+      >
+        <Icon icon="lucide:flag" className="size-4" />
+      </Button>
+    </>
+  );
+
   return (
     <div className="relative -mt-30 flex items-center gap-6 w-full flex-col lg:flex-row">
-      <Avatar
-        className={cn(
-          "size-40 cursor-pointer",
-          !hasAvatarFrame(user.profile.avatarFrame) &&
-            cn("border border-border", isGradientColor(user.profile.color) && "border-2"),
-          AVATAR_FRAME_CLASSES[user.profile.avatarFrame ?? "none"],
-        )}
-      >
-        {user.profile.avatarUrl ? (
-          <Image
-            className="aspect-square size-full"
-            src={user.profile.avatarUrl}
-            width={160}
-            height={160}
-            background={AVATAR_BLUR}
-            alt={user.name ?? ""}
-          />
-        ) : (
-          <AvatarFallback className="text-4xl">{getInitialsFromName(user.name ?? "")}</AvatarFallback>
-        )}
-      </Avatar>
+      <div className="relative shrink-0">
+        <Avatar
+          className={cn(
+            "size-40 cursor-pointer",
+            !hasAvatarFrame(user.profile.avatarFrame) &&
+              cn("border border-border", isGradientColor(user.profile.color) && "border-2"),
+            AVATAR_FRAME_CLASSES[user.profile.avatarFrame ?? "none"],
+          )}
+        >
+          {user.profile.avatarUrl ? (
+            <Image
+              className="aspect-square size-full"
+              src={user.profile.avatarUrl}
+              width={160}
+              height={160}
+              background={AVATAR_BLUR}
+              alt={user.name ?? ""}
+            />
+          ) : (
+            <AvatarFallback className="text-4xl">{getInitialsFromName(user.name ?? "")}</AvatarFallback>
+          )}
+        </Avatar>
+      </div>
 
       <div className="flex justify-between gap-4 w-full flex-col items-start lg:flex-row lg:items-center">
         <div className="flex flex-col items-start gap-1">
@@ -185,6 +205,7 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
           {session.data?.user && session.data?.user.id !== user.id && (
             <div className="hidden lg:flex items-center gap-3">
               <div className="flex items-center gap-2">
+                {messageButton("default")}
                 {followStatusQuery.data?.isFollowing ? (
                   <Button
                     variant="outline"
@@ -216,7 +237,8 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
       </div>
 
       {session.data?.user && session.data?.user.id !== user.id && (
-        <div className="flex lg:hidden w-full">
+        <div className="flex lg:hidden w-full gap-2">
+          {messageButton("lg", "flex-1")}
           {followStatusQuery.data?.isFollowing ? (
             <Button
               variant="outline"
@@ -239,6 +261,10 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
             </Button>
           )}
         </div>
+      )}
+
+      {sessionUser && !isOwnProfile && (
+        <ReportDialog open={reporting} onOpenChange={setReporting} targetType="User" targetId={user.id} />
       )}
     </div>
   );

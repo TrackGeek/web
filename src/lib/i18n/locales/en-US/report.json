@@ -1,0 +1,25 @@
+{
+  "title": "Report",
+  "description": "Tell us what is wrong. Our moderators will review it.",
+  "reasonLabel": "Reason",
+  "reasonPlaceholder": "Select a reason",
+  "detailsLabel": "Details (optional)",
+  "detailsPlaceholder": "Add more context to help us review this report...",
+  "reasonRequired": "Select a reason.",
+  "detailsTooLong": "Details must have at most 1000 characters.",
+  "success": "Report sent. Thank you.",
+  "error": "Could not send your report.",
+  "alreadyReported": "You already reported this and it is still pending.",
+  "reasons": {
+    "Spam": "Spam",
+    "Harassment": "Harassment",
+    "HateSpeech": "Hate speech",
+    "Inappropriate": "Inappropriate content",
+    "Other": "Other"
+  },
+  "targets": {
+    "User": "Report user",
+    "Message": "Report message",
+    "Comment": "Report comment"
+  }
+}

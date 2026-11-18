@@ -1459,6 +1459,16 @@ export namespace ApiTypes {
   export interface GetWatchProviderRegionsResponse {
     regions: WatchProviderRegion[];
   }
+
+  export type ReportTargetType = "User" | "Message" | "Comment";
+  export type ReportReason = "Spam" | "Harassment" | "HateSpeech" | "Inappropriate" | "Other";
+
+  export interface CreateReportInput {
+    targetType: ReportTargetType;
+    targetId: string;
+    reason: ReportReason;
+    details?: string;
+  }
 }
 
 export const apiEndpoints = {
@@ -1633,4 +1643,5 @@ export const apiEndpoints = {
   markNotificationAsRead: (notificationId: string) => `/notifications/${notificationId}/read`,
   markNotificationAsUnread: (notificationId: string) => `/notifications/${notificationId}/read`,
   deleteNotification: (notificationId: string) => `/notifications/${notificationId}`,
+  createReport: "/report",
 };

@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useChatUnreadCount } from "@/hooks/chat";
 import { useContentTypes } from "@/hooks/content-type";
 import { useSession } from "@/lib/auth/client";
 import { AuthModal } from "./auth-modal";
@@ -20,6 +22,8 @@ export function Header() {
   const session = useSession();
 
   const { hiddenClass } = useContentTypes();
+
+  const unreadMessages = useChatUnreadCount();
 
   return (
     <>
@@ -108,6 +112,21 @@ export function Header() {
               {t("common:donate")}
             </Button>
           </Link>
+
+          {session.data?.user && (
+            <Link to="/messages" aria-label={t("chat:title")} className="relative">
+              <Button>
+                <Icon icon={"lucide:messages-square"} />
+              </Button>
+
+              {unreadMessages > 0 && (
+                <Badge variant="destructive" className="absolute -right-2 -top-2 h-4 min-w-4 px-1 text-[10px]">
+                  <span className="sr-only">{t("chat:unreadCount", { count: unreadMessages })}</span>
+                  <span aria-hidden="true">{unreadMessages > 99 ? "99+" : unreadMessages}</span>
+                </Badge>
+              )}
+            </Link>
+          )}
 
           {session.isPending ? <Skeleton className="h-8 w-8" /> : session.data ? <UserDropdown /> : <AuthModal />}
         </div>

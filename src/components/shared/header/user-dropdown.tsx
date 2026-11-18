@@ -3,6 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { PresenceDot } from "@/components/shared/presence/presence-dot";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -18,6 +19,7 @@ import { useProgressionToasts } from "@/hooks/progression-toasts";
 import { startTour } from "@/hooks/use-product-tour";
 import { signOut, useSession } from "@/lib/auth/client";
 import { AVATAR_BLUR } from "@/lib/image";
+import { useMyPresenceStatus } from "@/lib/presence/activity";
 import { getInitialsFromName } from "@/lib/utils";
 
 export function UserDropdown() {
@@ -28,6 +30,8 @@ export function UserDropdown() {
   const session = useSession();
 
   const { data: unreadCount } = useUnreadNotificationsCount();
+
+  const myStatus = useMyPresenceStatus();
 
   useProgressionToasts(Boolean(session.data?.user));
 
@@ -52,6 +56,11 @@ export function UserDropdown() {
               <AvatarFallback>{getInitialsFromName(session.data?.user?.name ?? "")}</AvatarFallback>
             )}
           </Avatar>
+
+          <PresenceDot
+            presence={{ status: myStatus, lastSeenAt: null }}
+            className="absolute bottom-0 right-0 size-3 ring-background"
+          />
 
           {hasUnread && (
             <span className="absolute right-0 top-0 size-2.5 rounded-full bg-destructive ring-2 ring-background">

@@ -381,6 +381,7 @@ export namespace ApiTypes {
       timezone: string;
       animeMangaTitleLanguage: "romaji" | "native" | "english";
       defaultSearchType: ContentType;
+      showChatPresence: boolean;
       about: string;
       bannerUrl: string;
       avatarUrl: string;
@@ -1460,8 +1461,83 @@ export namespace ApiTypes {
     regions: WatchProviderRegion[];
   }
 
+  export type MessageType = "Text" | "Sticker";
+  export type MessageDeletedBy = "Author" | "Admin";
   export type ReportTargetType = "User" | "Message" | "Comment";
   export type ReportReason = "Spam" | "Harassment" | "HateSpeech" | "Inappropriate" | "Other";
+
+  export interface ChatUser {
+    id: string;
+    name: string;
+    username: string;
+    profile: { avatarUrl: string | null; avatarFrame: string | null; title: string | null } | null;
+  }
+
+  export type PresenceStatus = "online" | "away" | "offline";
+
+  export type PresenceState = { status: PresenceStatus; lastSeenAt: string | null } | { hidden: true };
+
+  export interface GetPresencesResponse {
+    presences: Record<string, PresenceState>;
+  }
+
+  export type ChatFriend = ChatUser & { presence: PresenceState };
+
+  export interface ChatMessage {
+    id: string;
+    conversationId: string;
+    senderId: string | null;
+    type: MessageType;
+    content: string | null;
+    deletedAt: string | null;
+    deletedBy: MessageDeletedBy | null;
+    createdAt: string;
+  }
+
+  export interface ChatConversation {
+    id: string;
+    otherUser: ChatUser | null;
+    otherUserPresence: PresenceState;
+    otherUserLastReadAt: string | null;
+    lastMessage: ChatMessage | null;
+    lastMessageAt: string | null;
+    unreadCount: number;
+  }
+
+  export interface CursorPage<T> {
+    items: T[];
+    nextCursor: string | null;
+    hasNextPage: boolean;
+  }
+
+  export interface GetChatFriendsResponse {
+    friends: ChatFriend[];
+  }
+
+  export interface GetChatConversationsResponse {
+    conversations: PaginatedResponse<ChatConversation>;
+  }
+
+  export interface StartChatConversationResponse {
+    conversation: ChatConversation;
+  }
+
+  export type ChatMessagesPage = CursorPage<ChatMessage> & {
+    otherUser: ChatUser | null;
+    otherUserPresence: PresenceState;
+    otherUserLastReadAt: string | null;
+  };
+
+  export interface GetChatMessagesResponse {
+    messages: CursorPage<ChatMessage>;
+    otherUser: ChatUser | null;
+    otherUserPresence: PresenceState;
+    otherUserLastReadAt: string | null;
+  }
+
+  export interface SendChatMessageResponse {
+    message: ChatMessage;
+  }
 
   export interface CreateReportInput {
     targetType: ReportTargetType;
@@ -1643,5 +1719,13 @@ export const apiEndpoints = {
   markNotificationAsRead: (notificationId: string) => `/notifications/${notificationId}/read`,
   markNotificationAsUnread: (notificationId: string) => `/notifications/${notificationId}/read`,
   deleteNotification: (notificationId: string) => `/notifications/${notificationId}`,
+  getChatFriends: "/chat/friends",
+  getChatConversations: "/chat/conversations",
+  getPresences: "/presence",
+  startChatConversation: "/chat/conversations",
+  getChatMessages: (conversationId: string) => `/chat/conversations/${conversationId}/messages`,
+  sendChatMessage: (conversationId: string) => `/chat/conversations/${conversationId}/messages`,
+  deleteChatMessage: (messageId: string) => `/chat/messages/${messageId}`,
+  markChatConversationRead: (conversationId: string) => `/chat/conversations/${conversationId}/read`,
   createReport: "/report",
 };

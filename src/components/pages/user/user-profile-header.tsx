@@ -5,10 +5,14 @@ import { Image } from "@unpic/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { PresenceDot } from "@/components/shared/presence/presence-dot";
+import { PresenceLabel } from "@/components/shared/presence/presence-label";
 import { ReportDialog } from "@/components/shared/report-dialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useStartChatConversation } from "@/hooks/chat";
+import { usePresence, usePresenceSubscription } from "@/hooks/presence";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth/client";
 import { AVATAR_FRAME_CLASSES, hasAvatarFrame, isGradientColor } from "@/lib/cosmetics";
@@ -65,8 +69,36 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
 
   const [reporting, setReporting] = useState(false);
 
+  const presenceUserId = sessionUser ? user.id : undefined;
+
+  usePresenceSubscription([presenceUserId]);
+
+  const { data: presence } = usePresence(presenceUserId);
+
+  const startConversation = useStartChatConversation();
+
+  const canMessage = Boolean(followStatusQuery.data?.isFollowing && followStatusQuery.data?.followsYou);
+
   const messageButton = (size: "default" | "lg", className?: string) => (
     <>
+      {canMessage && (
+        <Button
+          variant="outline"
+          size={size}
+          className={className}
+          disabled={startConversation.isPending}
+          onClick={() =>
+            startConversation.mutate(user.id, {
+              onSuccess: (conversation) =>
+                navigate({ to: "/messages/$conversationId", params: { conversationId: conversation.id } }),
+              onError: () => toast.error(t("chat:startError")),
+            })
+          }
+        >
+          <Icon icon="lucide:message-circle" className="size-4" />
+          {t("chat:message")}
+        </Button>
+      )}
       <Button
         variant="ghost"
         size={size === "lg" ? "lg" : "icon"}
@@ -102,6 +134,7 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
             <AvatarFallback className="text-4xl">{getInitialsFromName(user.name ?? "")}</AvatarFallback>
           )}
         </Avatar>
+        <PresenceDot presence={presence} className="absolute bottom-3 right-3 size-5 ring-background" />
       </div>
 
       <div className="flex justify-between gap-4 w-full flex-col items-start lg:flex-row lg:items-center">
@@ -129,6 +162,8 @@ export function UserProfileHeader({ user, username, onUserRefresh, onActiveTabCh
             >
               @{user.username}
             </button>
+
+            <PresenceLabel presence={presence} />
 
             {followStatusQuery.data?.followsYou && (
               <span className="bg-muted px-2 py-0.5 rounded-full text-xs text-muted-foreground">

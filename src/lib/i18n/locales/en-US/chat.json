@@ -1,0 +1,51 @@
+{
+  "title": "Messages",
+  "description": "Talk privately with people you follow who follow you back.",
+  "conversations": "Conversations",
+  "newMessage": "New message",
+  "selectConversation": {
+    "title": "Select a conversation",
+    "description": "Pick a chat on the left or start a new one."
+  },
+  "emptyConversations": {
+    "title": "No conversations yet",
+    "description": "Pick a friend to start chatting."
+  },
+  "emptyFriends": {
+    "title": "No friends to message",
+    "description": "You can message people you follow who also follow you back."
+  },
+  "emptyMessages": "No messages yet. Say hi!",
+  "message": "Message",
+  "startError": "Could not open this conversation.",
+  "sendError": "Could not send your message.",
+  "deleteError": "Could not delete this message.",
+  "deleteMessage": "Delete message",
+  "messageOptions": "Message options",
+  "placeholder": "Write a message...",
+  "emoji": "Emoji",
+  "sticker": "Send the TrackGeek sticker",
+  "stickerAlt": "TrackGeek sticker",
+  "deleted": "Message deleted",
+  "removedByAdmin": "Message removed by an administrator",
+  "you": "You",
+  "unreadCount_one": "{{count}} unread message",
+  "unreadCount_other": "{{count}} unread messages",
+  "backToMessages": "Back to messages",
+  "unknownUser": "Conversation",
+  "deletedUser": "Deleted user",
+  "deletedUserComposer": "You can no longer reply to this conversation.",
+  "typing": "typing...",
+  "online": "online",
+  "sent": "Sent",
+  "read": "Read",
+  "lastSeen": {
+    "today": "last seen today at {{time}}",
+    "yesterday": "last seen yesterday at {{time}}",
+    "date": "last seen {{date}} at {{time}}"
+  },
+  "away": "away",
+  "statusOnline": "Online",
+  "statusAway": "Away",
+  "statusOffline": "Offline"
+}

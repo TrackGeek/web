@@ -26,6 +26,7 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TosRouteImport } from './routes/tos'
 import { Route as AuthenticatedBillingRouteImport } from './routes/_authenticated/billing'
+import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedShopRouteImport } from './routes/_authenticated/shop'
@@ -44,6 +45,8 @@ import { Route as OauthAuthorizeRouteImport } from './routes/oauth/authorize'
 import { Route as SitemapChar123sectionChar125DotxmlRouteImport } from './routes/sitemap/{$section}[.]xml'
 import { Route as TvIndexRouteImport } from './routes/tv/index'
 import { Route as TvSlugRouteImport } from './routes/tv/$slug'
+import { Route as AuthenticatedMessagesIndexRouteImport } from './routes/_authenticated/messages/index'
+import { Route as AuthenticatedMessagesConversationIdRouteImport } from './routes/_authenticated/messages/$conversationId'
 import { Route as RewindReplay2026RouteImport } from './routes/_rewind/replay.2026'
 import { Route as AnimeAiringIndexRouteImport } from './routes/anime/airing/index'
 import { Route as AnimeCompanySlugRouteImport } from './routes/anime/company/$slug'
@@ -170,6 +173,11 @@ const AuthenticatedBillingRoute = AuthenticatedBillingRouteImport.update({
   path: '/billing',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedMessagesRoute = AuthenticatedMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedNotificationsRoute =
   AuthenticatedNotificationsRouteImport.update({
     id: '/notifications',
@@ -262,6 +270,18 @@ const TvSlugRoute = TvSlugRouteImport.update({
   path: '/tv/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedMessagesIndexRoute =
+  AuthenticatedMessagesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedMessagesRoute,
+  } as any)
+const AuthenticatedMessagesConversationIdRoute =
+  AuthenticatedMessagesConversationIdRouteImport.update({
+    id: '/$conversationId',
+    path: '/$conversationId',
+    getParentRoute: () => AuthenticatedMessagesRoute,
+  } as any)
 const RewindReplay2026Route = RewindReplay2026RouteImport.update({
   id: '/replay/2026',
   path: '/replay/2026',
@@ -498,6 +518,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tos': typeof TosRoute
   '/billing': typeof AuthenticatedBillingRoute
+  '/messages': typeof AuthenticatedMessagesRouteWithChildren
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/shop': typeof AuthenticatedShopRoute
@@ -516,6 +537,7 @@ export interface FileRoutesByFullPath {
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/replay/2026': typeof RewindReplay2026Route
   '/anime/company/$slug': typeof AnimeCompanySlugRoute
   '/api/og/page': typeof ApiOgPageRoute
@@ -526,6 +548,7 @@ export interface FileRoutesByFullPath {
   '/movie/company/$slug': typeof MovieCompanySlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
   '/tv/company/$slug': typeof TvCompanySlugRoute
+  '/messages/': typeof AuthenticatedMessagesIndexRoute
   '/anime/airing/': typeof AnimeAiringIndexRoute
   '/anime/recommendations/': typeof AnimeRecommendationsIndexRoute
   '/anime/top/': typeof AnimeTopIndexRoute
@@ -593,6 +616,7 @@ export interface FileRoutesByTo {
   '/manga': typeof MangaIndexRoute
   '/movie': typeof MovieIndexRoute
   '/tv': typeof TvIndexRoute
+  '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/replay/2026': typeof RewindReplay2026Route
   '/anime/company/$slug': typeof AnimeCompanySlugRoute
   '/api/og/page': typeof ApiOgPageRoute
@@ -603,6 +627,7 @@ export interface FileRoutesByTo {
   '/movie/company/$slug': typeof MovieCompanySlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
   '/tv/company/$slug': typeof TvCompanySlugRoute
+  '/messages': typeof AuthenticatedMessagesIndexRoute
   '/anime/airing': typeof AnimeAiringIndexRoute
   '/anime/recommendations': typeof AnimeRecommendationsIndexRoute
   '/anime/top': typeof AnimeTopIndexRoute
@@ -655,6 +680,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tos': typeof TosRoute
   '/_authenticated/billing': typeof AuthenticatedBillingRoute
+  '/_authenticated/messages': typeof AuthenticatedMessagesRouteWithChildren
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/shop': typeof AuthenticatedShopRoute
@@ -673,6 +699,7 @@ export interface FileRoutesById {
   '/manga/': typeof MangaIndexRoute
   '/movie/': typeof MovieIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/_authenticated/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/_rewind/replay/2026': typeof RewindReplay2026Route
   '/anime/company/$slug': typeof AnimeCompanySlugRoute
   '/api/og/page': typeof ApiOgPageRoute
@@ -683,6 +710,7 @@ export interface FileRoutesById {
   '/movie/company/$slug': typeof MovieCompanySlugRoute
   '/movie/franchises/$slug': typeof MovieFranchisesSlugRoute
   '/tv/company/$slug': typeof TvCompanySlugRoute
+  '/_authenticated/messages/': typeof AuthenticatedMessagesIndexRoute
   '/anime/airing/': typeof AnimeAiringIndexRoute
   '/anime/recommendations/': typeof AnimeRecommendationsIndexRoute
   '/anime/top/': typeof AnimeTopIndexRoute
@@ -734,6 +762,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tos'
     | '/billing'
+    | '/messages'
     | '/notifications'
     | '/settings'
     | '/shop'
@@ -752,6 +781,7 @@ export interface FileRouteTypes {
     | '/manga/'
     | '/movie/'
     | '/tv/'
+    | '/messages/$conversationId'
     | '/replay/2026'
     | '/anime/company/$slug'
     | '/api/og/page'
@@ -762,6 +792,7 @@ export interface FileRouteTypes {
     | '/movie/company/$slug'
     | '/movie/franchises/$slug'
     | '/tv/company/$slug'
+    | '/messages/'
     | '/anime/airing/'
     | '/anime/recommendations/'
     | '/anime/top/'
@@ -829,6 +860,7 @@ export interface FileRouteTypes {
     | '/manga'
     | '/movie'
     | '/tv'
+    | '/messages/$conversationId'
     | '/replay/2026'
     | '/anime/company/$slug'
     | '/api/og/page'
@@ -839,6 +871,7 @@ export interface FileRouteTypes {
     | '/movie/company/$slug'
     | '/movie/franchises/$slug'
     | '/tv/company/$slug'
+    | '/messages'
     | '/anime/airing'
     | '/anime/recommendations'
     | '/anime/top'
@@ -890,6 +923,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tos'
     | '/_authenticated/billing'
+    | '/_authenticated/messages'
     | '/_authenticated/notifications'
     | '/_authenticated/settings'
     | '/_authenticated/shop'
@@ -908,6 +942,7 @@ export interface FileRouteTypes {
     | '/manga/'
     | '/movie/'
     | '/tv/'
+    | '/_authenticated/messages/$conversationId'
     | '/_rewind/replay/2026'
     | '/anime/company/$slug'
     | '/api/og/page'
@@ -918,6 +953,7 @@ export interface FileRouteTypes {
     | '/movie/company/$slug'
     | '/movie/franchises/$slug'
     | '/tv/company/$slug'
+    | '/_authenticated/messages/'
     | '/anime/airing/'
     | '/anime/recommendations/'
     | '/anime/top/'
@@ -1141,6 +1177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBillingRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/messages': {
+      id: '/_authenticated/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof AuthenticatedMessagesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/notifications': {
       id: '/_authenticated/notifications'
       path: '/notifications'
@@ -1266,6 +1309,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/tv/$slug'
       preLoaderRoute: typeof TvSlugRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/messages/': {
+      id: '/_authenticated/messages/'
+      path: '/'
+      fullPath: '/messages/'
+      preLoaderRoute: typeof AuthenticatedMessagesIndexRouteImport
+      parentRoute: typeof AuthenticatedMessagesRoute
+    }
+    '/_authenticated/messages/$conversationId': {
+      id: '/_authenticated/messages/$conversationId'
+      path: '/$conversationId'
+      fullPath: '/messages/$conversationId'
+      preLoaderRoute: typeof AuthenticatedMessagesConversationIdRouteImport
+      parentRoute: typeof AuthenticatedMessagesRoute
     }
     '/_rewind/replay/2026': {
       id: '/_rewind/replay/2026'
@@ -1576,8 +1633,25 @@ const RewindRouteRouteWithChildren = RewindRouteRoute._addFileChildren(
   RewindRouteRouteChildren,
 )
 
+interface AuthenticatedMessagesRouteChildren {
+  AuthenticatedMessagesConversationIdRoute: typeof AuthenticatedMessagesConversationIdRoute
+  AuthenticatedMessagesIndexRoute: typeof AuthenticatedMessagesIndexRoute
+}
+
+const AuthenticatedMessagesRouteChildren: AuthenticatedMessagesRouteChildren = {
+  AuthenticatedMessagesConversationIdRoute:
+    AuthenticatedMessagesConversationIdRoute,
+  AuthenticatedMessagesIndexRoute: AuthenticatedMessagesIndexRoute,
+}
+
+const AuthenticatedMessagesRouteWithChildren =
+  AuthenticatedMessagesRoute._addFileChildren(
+    AuthenticatedMessagesRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
   AuthenticatedBillingRoute: typeof AuthenticatedBillingRoute
+  AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRouteWithChildren
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedShopRoute: typeof AuthenticatedShopRoute
@@ -1592,6 +1666,7 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedBillingRoute: AuthenticatedBillingRoute,
+  AuthenticatedMessagesRoute: AuthenticatedMessagesRouteWithChildren,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedShopRoute: AuthenticatedShopRoute,

@@ -4,6 +4,7 @@ import { CookiesProvider } from "react-cookie";
 
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ChatRealtimeProvider } from "./chat-realtime-provider";
 import { TanstackDevtoolsProvider } from "./tanstack-devtools-provider";
 import { TanstackQueryProvider } from "./tanstack-query-provider";
 
@@ -16,6 +17,7 @@ const providers: ComponentType<ProviderProps>[] = [
   ({ children }) => <TooltipProvider>{children}</TooltipProvider>,
   ({ children }) => <CookiesProvider>{children}</CookiesProvider>,
   ({ children }) => <TanstackQueryProvider>{children}</TanstackQueryProvider>,
+  ({ children }) => <ChatRealtimeProvider>{children}</ChatRealtimeProvider>,
   ({ children }) => <TanstackDevtoolsProvider>{children}</TanstackDevtoolsProvider>,
 ];
 

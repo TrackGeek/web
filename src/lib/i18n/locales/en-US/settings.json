@@ -316,6 +316,10 @@
     "defaultSearchType": {
       "title": "Default search content type",
       "description": "Choose the content type selected when you open search."
+    },
+    "showChatPresence": {
+      "title": "Show online status and last seen",
+      "description": "Everyone can see whether you are online, away or when you were last seen. If you turn this off, your status is hidden and you won't see other people's status either."
     }
   },
   "contentTypes": {

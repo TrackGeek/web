@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useContentTypes } from "@/hooks/content-type";
+import { resubscribeAllPresence } from "@/hooks/presence";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth/client";
 import {
@@ -35,6 +36,7 @@ type ProfilePreferences = {
   contentTypes?: ApiTypes.ContentType[];
   defaultSearchType?: ApiTypes.ContentType;
   animeMangaTitleLanguage?: "romaji" | "native" | "english";
+  showChatPresence?: boolean;
 };
 
 export function SettingsPreferencesTab() {
@@ -64,6 +66,12 @@ export function SettingsPreferencesTab() {
     },
     onSuccess: async (_, variables) => {
       await session.refetch();
+
+      if (variables.showChatPresence !== undefined) {
+        await queryClient.invalidateQueries({ queryKey: ["presence"] });
+
+        resubscribeAllPresence();
+      }
 
       if (variables.animeMangaTitleLanguage) {
         await queryClient.invalidateQueries();
@@ -234,6 +242,20 @@ export function SettingsPreferencesTab() {
               </SelectContent>
             </Select>
           </Field>
+          <div className="flex items-center justify-between gap-4 sm:col-span-2">
+            <div className="flex min-w-0 flex-col gap-1">
+              <Label htmlFor="show-chat-presence">{t("settings:preferences.showChatPresence.title")}</Label>
+              <p className="text-sm text-muted-foreground">{t("settings:preferences.showChatPresence.description")}</p>
+            </div>
+
+            <Switch
+              id="show-chat-presence"
+              className="shrink-0"
+              checked={session.data?.user?.profile?.showChatPresence ?? true}
+              disabled={updatePreferencesMutation.isPending}
+              onCheckedChange={(value) => updatePreferencesMutation.mutate({ showChatPresence: value })}
+            />
+          </div>
         </CardContent>
       </Card>
 

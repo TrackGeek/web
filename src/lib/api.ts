@@ -61,6 +61,7 @@ export namespace ApiTypes {
   export interface CreatePaymentRequest {
     frequency: PaymentFrequency;
     value: number;
+    currency: string;
   }
 
   export interface CreatePaymentResponse {

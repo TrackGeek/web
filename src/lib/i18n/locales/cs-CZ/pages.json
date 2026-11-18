@@ -262,6 +262,7 @@
       "select": "Select Amount",
       "fixed": "Fixed Amount",
       "custom": "Custom Amount",
+      "currency": "Měna",
       "enter": "Enter amount",
       "method": "Payment Method",
       "card": "Credit Card",

@@ -262,6 +262,7 @@
       "select": "Select Amount",
       "fixed": "Fixed Amount",
       "custom": "Custom Amount",
+      "currency": "Geldeenheid",
       "enter": "Enter amount",
       "method": "Payment Method",
       "card": "Credit Card",

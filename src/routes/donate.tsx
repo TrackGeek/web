@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
-import { useMutation, useQueries } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { type ApiTypes, api, apiEndpoints } from "@/lib/api";
 import { useSession } from "@/lib/auth/client";
@@ -36,9 +37,33 @@ const createDonatePaymentSchema = z.object({
 
 type CreateDonatePaymentFormData = z.infer<typeof createDonatePaymentSchema>;
 
+const FIXED_CURRENCIES = ["eur", "usd", "chf"];
+const DEFAULT_CURRENCY = "eur";
+
+function getCurrencySymbol(currency: string) {
+  try {
+    return (
+      new Intl.NumberFormat("en", { style: "currency", currency }).formatToParts(0).find((p) => p.type === "currency")
+        ?.value ?? currency.toUpperCase()
+    );
+  } catch {
+    return currency.toUpperCase();
+  }
+}
+
+function getCurrencyName(currency: string, locale: string) {
+  try {
+    return new Intl.DisplayNames([locale], { type: "currency" }).of(currency.toUpperCase()) ?? currency.toUpperCase();
+  } catch {
+    return currency.toUpperCase();
+  }
+}
+
 function DonateRoute() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const session = useSession();
+
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
 
   const [donationType, setDonationType] = useState<ApiTypes.PaymentFrequency>("OneTime");
   const [amountType, setAmountType] = useState<"fixed" | "custom">("fixed");
@@ -92,20 +117,24 @@ function DonateRoute() {
         staleTime: 1000 * 60 * 60,
       },
       {
-        queryKey: ["perks"],
+        queryKey: ["perks", selectedCurrency],
         queryFn: async () => {
-          return api.get<ApiTypes.GetPerksResponse>(apiEndpoints.getPerks).then((response) => response.data);
+          return api
+            .get<ApiTypes.GetPerksResponse>(apiEndpoints.getPerks, {
+              params: selectedCurrency ? { currency: selectedCurrency } : undefined,
+            })
+            .then((response) => response.data);
         },
+        placeholderData: keepPreviousData,
         staleTime: 1000 * 60 * 60,
       },
     ],
   });
 
-  const currencySymbol = currencyQuery.data?.currency
-    ? (new Intl.NumberFormat("en", { style: "currency", currency: currencyQuery.data.currency })
-        .formatToParts(0)
-        .find((p) => p.type === "currency")?.value ?? "€")
-    : "€";
+  const localCurrency = currencyQuery.data?.currency?.toLowerCase() ?? DEFAULT_CURRENCY;
+  const currency = selectedCurrency ?? localCurrency;
+  const currencyOptions = [...new Set([localCurrency, ...FIXED_CURRENCIES])];
+  const currencySymbol = getCurrencySymbol(currency);
 
   const createPaymentMutation = useMutation({
     mutationFn: async (data: ApiTypes.CreatePaymentRequest) => {
@@ -136,6 +165,7 @@ function DonateRoute() {
       const { payment } = await createPaymentMutation.mutateAsync({
         frequency: donationType,
         value: Math.round(finalAmount * 100),
+        currency,
       });
 
       window.location.href = payment.url;
@@ -156,151 +186,167 @@ function DonateRoute() {
           <p className="text-base leading-relaxed">{t("pages:donate.description")}</p>
         </div>
         <div className="flex w-full shrink-0 flex-col items-start gap-2 lg:w-auto lg:items-end">
-          <Dialog open={isDonateModalOpen} onOpenChange={handleDonateModalOpenChange}>
-            <DialogTrigger asChild>
-              <Button className="h-12 w-full sm:w-auto sm:min-w-40">
-                <Icon icon={"lucide:coffee"} />
-                {t("common:donate")}
-              </Button>
-            </DialogTrigger>
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+            <Select value={currency} onValueChange={setSelectedCurrency}>
+              <SelectTrigger aria-label={t("pages:donate.modal.currency")} className="h-12 w-full sm:w-56">
+                <SelectValue />
+              </SelectTrigger>
 
-            <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto p-6 gap-6 flex flex-col bg-card text-card-foreground">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-bold">{t("common:donate")}</DialogTitle>
+              <SelectContent>
+                {currencyOptions.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {getCurrencyName(option, i18n.language)} ({getCurrencySymbol(option)})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-                <DialogDescription className="text-sm text-muted-foreground">
-                  {t("pages:donate.modal.description")}
-                </DialogDescription>
-              </DialogHeader>
-
-              <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-3">
-                <Button
-                  aria-pressed={donationType === "OneTime"}
-                  onClick={() => setDonationType("OneTime")}
-                  className={`flex-1 h-12 rounded-lg font-medium transition-colors ${
-                    donationType === "OneTime"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
-                  }`}
-                >
-                  {t("common:frequencies.OneTime")}
+            <Dialog open={isDonateModalOpen} onOpenChange={handleDonateModalOpenChange}>
+              <DialogTrigger asChild>
+                <Button className="h-12 w-full sm:w-auto sm:min-w-40">
+                  <Icon icon={"lucide:coffee"} />
+                  {t("common:donate")}
                 </Button>
+              </DialogTrigger>
 
-                <Button
-                  aria-pressed={donationType === "Monthly"}
-                  onClick={() => setDonationType("Monthly")}
-                  className={`flex-1 h-12 rounded-lg font-medium transition-colors ${
-                    donationType === "Monthly"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
-                  }`}
-                >
-                  {t("common:frequencies.Monthly")}
-                </Button>
-              </div>
+              <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto p-6 gap-6 flex flex-col bg-card text-card-foreground">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-bold">{t("common:donate")}</DialogTitle>
 
-              <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-3">
-                <Button
-                  aria-pressed={amountType === "fixed"}
-                  onClick={() => {
-                    setAmountType("fixed");
-                    createDonatePaymentForm.clearErrors("value");
-                  }}
-                  className={`flex-1 h-12 py-3 px-4 rounded-lg font-medium transition-colors ${
-                    amountType === "fixed"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
-                  }`}
-                >
-                  {t("pages:donate.modal.fixed")}
-                </Button>
+                  <DialogDescription className="text-sm text-muted-foreground">
+                    {t("pages:donate.modal.description")}
+                  </DialogDescription>
+                </DialogHeader>
 
-                <Button
-                  aria-pressed={amountType === "custom"}
-                  onClick={() => setAmountType("custom")}
-                  className={`flex-1 h-12 py-3 px-4 rounded-lg font-medium transition-colors ${
-                    amountType === "custom"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
-                  }`}
-                >
-                  {t("pages:donate.modal.custom")}
-                </Button>
-              </div>
+                <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-3">
+                  <Button
+                    aria-pressed={donationType === "OneTime"}
+                    onClick={() => setDonationType("OneTime")}
+                    className={`flex-1 h-12 rounded-lg font-medium transition-colors ${
+                      donationType === "OneTime"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    {t("common:frequencies.OneTime")}
+                  </Button>
 
-              {amountType === "fixed" ? (
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  {fixedAmounts.map((amount) => (
-                    <Button
-                      key={amount}
-                      aria-pressed={selectedAmount === amount}
-                      onClick={() => setSelectedAmount(amount)}
-                      className={`h-12 py-3 px-4 rounded-lg font-semibold transition-colors ${
-                        selectedAmount === amount
-                          ? "bg-primary text-primary-foreground border-2 border-primary"
-                          : "bg-muted text-muted-foreground hover:bg-muted/80 border-2 border-transparent"
-                      }`}
-                    >
-                      {currencySymbol} {amount}
-                    </Button>
-                  ))}
+                  <Button
+                    aria-pressed={donationType === "Monthly"}
+                    onClick={() => setDonationType("Monthly")}
+                    className={`flex-1 h-12 rounded-lg font-medium transition-colors ${
+                      donationType === "Monthly"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    {t("common:frequencies.Monthly")}
+                  </Button>
                 </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <Icon icon={"lucide:coins"} className="size-5 shrink-0 text-primary" />
 
-                  <Input
-                    aria-label={t("pages:donate.modal.enter")}
-                    aria-invalid={!!createDonatePaymentForm.formState.errors.value}
-                    aria-describedby={
-                      createDonatePaymentForm.formState.errors.value ? "donation-amount-error" : undefined
-                    }
-                    type="number"
-                    min="1"
-                    step="0.01"
-                    placeholder={t("pages:donate.modal.enter")}
-                    {...createDonatePaymentForm.register("value", {
-                      valueAsNumber: true,
-                    })}
-                    className="flex-1"
-                  />
+                <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-3">
+                  <Button
+                    aria-pressed={amountType === "fixed"}
+                    onClick={() => {
+                      setAmountType("fixed");
+                      createDonatePaymentForm.clearErrors("value");
+                    }}
+                    className={`flex-1 h-12 py-3 px-4 rounded-lg font-medium transition-colors ${
+                      amountType === "fixed"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    {t("pages:donate.modal.fixed")}
+                  </Button>
+
+                  <Button
+                    aria-pressed={amountType === "custom"}
+                    onClick={() => setAmountType("custom")}
+                    className={`flex-1 h-12 py-3 px-4 rounded-lg font-medium transition-colors ${
+                      amountType === "custom"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    }`}
+                  >
+                    {t("pages:donate.modal.custom")}
+                  </Button>
                 </div>
-              )}
 
-              {amountType === "custom" && createDonatePaymentForm.formState.errors.value ? (
-                <p id="donation-amount-error" role="alert" className="mt-2 text-sm text-destructive">
-                  {createDonatePaymentForm.formState.errors.value.message}
-                </p>
-              ) : null}
-
-              <div className="bg-muted/50 rounded-lg p-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-primary">
-                    {currencySymbol} {(isValidAmount ? finalAmount : 0)?.toLocaleString()}
-                  </span>
-                </div>
-              </div>
-
-              <Button
-                onClick={handleDonate}
-                disabled={!isValidAmount || createPaymentMutation.isPending}
-                className="w-full py-3 text-md font-semibold"
-              >
-                {createPaymentMutation.isPending ? (
-                  <>
-                    <Icon icon={"lucide:loader-2"} className="animate-spin motion-reduce:animate-none" />
-                    {t("common:loading")}
-                  </>
+                {amountType === "fixed" ? (
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    {fixedAmounts.map((amount) => (
+                      <Button
+                        key={amount}
+                        aria-pressed={selectedAmount === amount}
+                        onClick={() => setSelectedAmount(amount)}
+                        className={`h-12 py-3 px-4 rounded-lg font-semibold transition-colors ${
+                          selectedAmount === amount
+                            ? "bg-primary text-primary-foreground border-2 border-primary"
+                            : "bg-muted text-muted-foreground hover:bg-muted/80 border-2 border-transparent"
+                        }`}
+                      >
+                        {currencySymbol} {amount}
+                      </Button>
+                    ))}
+                  </div>
                 ) : (
-                  <>
-                    {t("common:donate")} {currencySymbol} {(isValidAmount ? finalAmount : 0)?.toLocaleString()}
-                  </>
-                )}
-              </Button>
+                  <div className="flex items-center gap-2">
+                    <Icon icon={"lucide:coins"} className="size-5 shrink-0 text-primary" />
 
-              <p className="text-xs text-muted-foreground text-center">{t("pages:donate.modal.footer")}</p>
-            </DialogContent>
-          </Dialog>
+                    <Input
+                      aria-label={t("pages:donate.modal.enter")}
+                      aria-invalid={!!createDonatePaymentForm.formState.errors.value}
+                      aria-describedby={
+                        createDonatePaymentForm.formState.errors.value ? "donation-amount-error" : undefined
+                      }
+                      type="number"
+                      min="1"
+                      step="0.01"
+                      placeholder={t("pages:donate.modal.enter")}
+                      {...createDonatePaymentForm.register("value", {
+                        valueAsNumber: true,
+                      })}
+                      className="flex-1"
+                    />
+                  </div>
+                )}
+
+                {amountType === "custom" && createDonatePaymentForm.formState.errors.value ? (
+                  <p id="donation-amount-error" role="alert" className="mt-2 text-sm text-destructive">
+                    {createDonatePaymentForm.formState.errors.value.message}
+                  </p>
+                ) : null}
+
+                <div className="bg-muted/50 rounded-lg p-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-2xl font-bold text-primary">
+                      {currencySymbol} {(isValidAmount ? finalAmount : 0)?.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+
+                <Button
+                  onClick={handleDonate}
+                  disabled={!isValidAmount || createPaymentMutation.isPending}
+                  className="w-full py-3 text-md font-semibold"
+                >
+                  {createPaymentMutation.isPending ? (
+                    <>
+                      <Icon icon={"lucide:loader-2"} className="animate-spin motion-reduce:animate-none" />
+                      {t("common:loading")}
+                    </>
+                  ) : (
+                    <>
+                      {t("common:donate")} {currencySymbol} {(isValidAmount ? finalAmount : 0)?.toLocaleString()}
+                    </>
+                  )}
+                </Button>
+
+                <p className="text-xs text-muted-foreground text-center">{t("pages:donate.modal.footer")}</p>
+              </DialogContent>
+            </Dialog>
+          </div>
           <p className="text-sm">{t("pages:donate.supportOptions")}</p>
         </div>
       </header>
